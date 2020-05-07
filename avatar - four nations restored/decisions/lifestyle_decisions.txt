@@ -1,0 +1,84 @@
+decisions = {
+
+	spiritual_journey = {	# For all Spiritualities
+		potential = {
+			is_ruler = yes
+			NOT = { culture_group = republic_city_culture }
+			NOT = { culture_group = outlaw_culture }
+			NOT = { culture_group = spirit_culture }
+			NOT = { has_character_flag = spirit_journey }
+		}
+		allow = {
+			war = no
+			in_command = no
+			any_demesne_title = {
+				is_occupied = no
+			}
+			prisoner = no
+			NOT = { trait = in_hiding }
+			hidden_tooltip = {
+				NOT = { trait = headdaili }
+			}
+			scaled_wealth = 0.2
+			age = 16
+			custom_tooltip = {
+				text = health_travel_condition
+				hidden_tooltip = {
+					NOT = {	trait = pregnant }
+					NOT = {	trait = incapable }
+				}
+			}
+			custom_tooltip = {
+				text = is_not_busy_trigger_tooltip
+				hidden_tooltip = {
+					NOT = {
+						OR = {
+							has_character_flag = do_not_disturb
+							has_global_flag = HYW_0
+						}
+					} 
+				}
+			}
+		}
+		effect = {
+			scaled_wealth = -0.2
+			set_character_flag = spirit_journey
+			set_character_flag = do_not_disturb
+			hidden_tooltip = {
+				character_event = { id = ATLAR.1 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+
+			modifier = {
+				factor = 3
+				trait = zealous
+			}
+			modifier = {
+				factor = 0
+				NOT = { wealth = 150 }
+			}			
+			modifier = {
+				factor = 0
+				NOT = { age = 24 }
+			}
+			modifier = {
+				factor = 0
+				higher_tier_than = KING
+			}
+			modifier = {
+				factor = 0
+				trait = cynical
+			}
+			modifier = { # Monthly randomizer for when AI takes decision (1% chance)
+				factor = 0
+				random = 1
+			}
+		}
+	}
+
+}

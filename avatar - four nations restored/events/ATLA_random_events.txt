@@ -1,0 +1,2110 @@
+namespace = ATLAR
+
+### Random Events
+## Spiritual Journey 1-49
+## Water Tribe 50-200
+## Fire Nation 201-350
+## Earth Kingdom 351-501
+## Air Nomads 501-650
+## Spirit Crisis 651-1000
+
+character_event = { # Spiritual Journey - START
+	id = ATLAR.1
+	desc = "EVTDESCATLAR.1"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.1"
+		hidden_tooltip = {
+			add_trait = on_journey
+			character_event = { id = ATLAR.2 days = 320 }
+			random_list = { # First Event 30-80
+				25 = { # Gain Martial
+					character_event = { id = ATLAR.3 days = 30 random = 50 }
+				}
+				25 = { # Gain Tech Points
+					character_event = { id = ATLAR.4 days = 30 random = 50 }
+				}
+				25 = { # Pos Trait
+					character_event = { id = ATLAR.5 days = 30 random = 50 }
+				}
+				25 = { # Neg Trait
+					character_event = { id = ATLAR.6 days = 30 random = 50 }
+				}
+			}
+			random_list = { # Second Event 100-150
+				25 = { # Gain Pet
+					character_event = { id = ATLAR.7 days = 100 random = 50 }
+				}
+				25 = { # Gain Combat Trait 
+					character_event = { id = ATLAR.8 days = 100 random = 50 }
+				}
+				25 = { # Pos Trait
+					character_event = { id = ATLAR.9 days = 100 random = 50 }
+				}
+				25 = { # Neg Trait
+					character_event = { id = ATLAR.10 days = 100 random = 50 }
+				}
+			}
+			random_list = { # Third Event 180-250
+				25 = { # Culture Group Event
+					character_event = { id = ATLAR.11 days = 180 random = 50 }
+				}
+				25 = { # Gain Combat Trait
+					character_event = { id = ATLAR.12 days = 180 random = 50 }
+				}
+				25 = { # Visit Ruler
+					character_event = { id = ATLAR.13 days = 180 random = 50 }
+				}
+				25 = { # Neg Trait
+					character_event = { id = ATLAR.14 days = 180 random = 50 }
+				}
+			}
+		}
+	}
+	
+}
+
+character_event = { # Spiritual Journey - END
+	id = ATLAR.2
+	desc = "EVTDESCATLAR.2"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.2"
+		clr_character_flag = do_not_disturb
+		hidden_tooltip = { 
+			remove_trait = on_journey
+			if = {
+				limit = { has_quest = quest_indian_monastic_order_pilgrimage }
+				character_event = { id = MNSAK.5009 }
+			}
+			if = {
+				limit = { has_quest = quest_tes_pilgrimage }
+				character_event = { id = MNSAK.5135 }
+			}
+		}
+	}
+}
+
+character_event = { # Meet Superior Warriors
+	id = ATLAR.3
+	desc = "EVTDESCATLAR.3"
+	picture = "GFX_evt_terra_team"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.3"
+		change_martial = 1
+	}
+}
+
+character_event = { # See New Technology
+	id = ATLAR.4
+	desc = "EVTDESCATLAR.4"
+	picture = "GFX_evt_fire_nation_festival"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.4"
+		economy_techpoints = 50
+	}
+}
+
+character_event = { # Village in need
+	id = ATLAR.5
+	desc = "EVTDESCATLAR.5"
+	picture = "GFX_evt_earth_kingdom_village"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.5"
+		scaled_wealth = { value = -0.05 min = -10 }
+		add_trait = charitable
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.5"
+	}
+}
+
+character_event = { # Find Relic
+	id = ATLAR.6
+	desc = "EVTDESCATLAR.6"
+	picture = "GFX_evt_firenation_temple"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.6"
+		scaled_wealth = { value = 0.1 min = 100 }
+		add_trait = greedy
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.6"
+		piety = 200
+	}
+}
+
+character_event = { # Find Pet
+	id = ATLAR.7
+	desc = "EVTDESCATLAR.7"
+	picture = "GFX_evt_landscape_3"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.7"
+		if = {
+			limit = {
+				culture_group = fire_nation_culture
+			}
+			add_trait = fireferret
+		}
+		if = {
+			limit = {
+				culture_group = earth_kingdom_culture
+			}
+			add_trait = cat
+		}
+		if = {
+			limit = {
+				culture_group = air_nomad_culture
+			}
+			add_trait = wingedlemur
+		}
+		if = {
+			limit = {
+				culture_group = water_tribe_culture
+			}
+			add_trait = buffaloyak
+		}
+	}
+}
+
+character_event = { # Find Master
+	id = ATLAR.8
+	desc = {
+		trigger = {
+			OR = {
+				trait = waterbender
+				trait = earthbender
+				trait = airbender
+				trait = firebender
+			}
+		}
+		text = EVTDESCATLARA.8
+	}
+	desc = {
+		trigger = {
+			NOR = {
+				trait = waterbender
+				trait = earthbender
+				trait = airbender
+				trait = firebender
+			}
+		}
+		text = EVTDESCATLARB.8
+	}
+	picture = "GFX_evt_noble_house"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.8"
+		if = {
+			limit = {
+				NOR = {
+					trait = waterbender
+					trait = earthbender
+					trait = airbender
+					trait = firebender
+				}
+			}
+			add_trait = weapons_expert
+		}
+		if = {
+			limit = {
+				OR = {
+					trait = waterbender
+					trait = earthbender
+					trait = airbender
+					trait = firebender
+				}
+			}
+			trigger_switch = {
+				on_trigger = trait
+				incompetent_bender = { remove_trait = incompetent_bender add_trait = competent_bender }
+				competent_bender = { remove_trait = competent_bender add_trait = powerful_bender }
+				powerful_bender = { remove_trait = powerful_bender add_trait = master_bender }
+				master_bender = { remove_trait = master_bender add_trait = legendary_bender }
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.8"
+		piety = 50
+	}
+}
+
+character_event = { # Visit Shrine
+	id = ATLAR.9
+	desc = "EVTDESCATLAR.9"
+	picture = "GFX_evt_firenation_temple"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.9"
+		add_trait = humble
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.9"
+		add_trait = proud
+	}
+}
+
+character_event = { # Discover Traveller
+	id = ATLAR.10
+	desc = "EVTDESCATLAR.10"
+	picture = "GFX_evt_wanshi_desert"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.10"
+		add_trait = kind
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.10"
+		add_trait = paranoid
+	}
+}
+
+character_event = { # Culture Group Event
+	id = ATLAR.11
+	desc = {
+		trigger = {
+			culture_group = fire_nation_culture
+		}
+		text = EVTDESCATLARA.11
+	}
+	desc = {
+		trigger = {
+			culture_group = earth_kingdom_culture
+		}
+		text = EVTDESCATLARB.11
+	}
+	desc = {
+		trigger = {
+			culture_group = air_nomad_culture
+		}
+		text = EVTDESCATLARC.11
+	}
+	desc = {
+		trigger = {
+			culture_group = water_tribe_culture
+		}
+		text = EVTDESCATLARD.11
+	}
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.11"
+		if = {
+			limit = {
+				culture_group = fire_nation_culture
+			}
+			character_event = { id = ATLAR.15 days = 7 }
+		}
+		if = {
+			limit = {
+				culture_group = earth_kingdom_culture
+			}
+			character_event = { id = ATLAR.20 days = 7 }
+		}
+		if = {
+			limit = {
+				culture_group = air_nomad_culture
+			}
+			character_event = { id = ATLAR.22 days = 7 }
+		}
+		if = {
+			limit = {
+				culture_group = water_tribe_culture
+			}
+			character_event = { id = ATLAR.26 days = 7 }
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.11"
+		hidden_tooltip = {
+			random_list = {
+				33 = {
+					character_event = { id = ATLAR.12 days = 7 }
+				}
+				33 = {
+					character_event = { id = ATLAR.13 days = 7 }
+				}
+				33 = {
+					character_event = { id = ATLAR.14 days = 7 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Meet Master
+	id = ATLAR.12
+	desc = "EVTDESCATLAR.12"
+	picture = "GFX_evt_landscape_5"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.12"
+		add_trait = positive_jing
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.12"
+		add_trait = neutral_jing
+	}
+	
+	option = {
+		name = "EVTOPTAATLARC.12"
+		add_trait = negative_jing
+	}
+}
+
+character_event = { # Visit Ruler
+	id = ATLAR.13
+	desc = "EVTDESCATLAR.13"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.13"
+		random_playable_ruler = {
+			limit = {
+				NOT = { same_realm = ROOT }
+				NOT = { higher_tier_than = DUKE }
+			}
+			character_event = { id = ATLAR.31 days = 7 }
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.13"
+		scaled_wealth = { value = -0.02 min = -10 }
+	}
+}
+
+character_event = { # Cactus Juice
+	id = ATLAR.14
+	desc = "EVTDESCATLAR.14"
+	picture = "GFX_evt_wanshi_desert"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.14"
+		add_trait = cactusaddict
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.14"
+		add_trait = stressed
+	}
+}
+
+character_event = { # Find a Dragon
+	id = ATLAR.15
+	desc = "EVTDESCATLAR.15"
+	picture = "GFX_evt_dragon"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.15"
+		random_list = {
+			50 = {
+				if = {
+					limit = {
+						trait = firebender
+					}
+					add_trait = innerflame
+				}
+				hidden_tooltip = {
+					character_event = { id = ATLAR.16 days = 7 }
+				}
+				modifier = {
+					factor = 0
+					trait = gluttonous
+				}
+				modifier = {
+					factor = 0
+					trait = greedy
+				}
+				modifier = {
+					factor = 0
+					trait = slothful
+				}
+				modifier = {
+					factor = 0
+					trait = envious
+				}
+				modifier = {
+					factor = 0
+					trait = wroth
+				}
+				modifier = {
+					factor = 5
+					trait = humble
+				}
+				modifier = {
+					factor = 5
+					trait = kind
+				}
+			}
+			50 = {
+				prestige = -50
+				hidden_tooltip = {
+					character_event = { id = ATLAR.17 days = 7 }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.15"
+		add_trait = craven
+		prestige = -100
+	}
+	
+	option = {
+		name = "EVTOPTAATLARC.15"
+		trigger = {
+			religion = fire_nation_imperialism
+		}
+		random_list = {
+			10 = {
+				death = { death_reason = death_battle }
+				modifier = {
+					factor = 5
+					trait = incompetent_bender
+				}
+				modifier = {
+					factor = 2
+					NOT = { trait = firebender }
+				}
+			}
+			50 = {
+				add_trait = maimed
+				hidden_tooltip = {
+					character_event = { id = ATLAR.18 days = 7 }
+				}
+				modifier = {
+					factor = 2
+					NOT = { trait = firebender }
+				}
+				modifier = {
+					factor = 2
+					trait = competent_bender
+				}
+			}
+			40 = {
+				give_nickname = nick_the_dragon
+				hidden_tooltip = {
+					character_event = { id = ATLAR.19 days = 7 }
+				}
+			}
+		}
+		
+	}
+}
+
+character_event = { # Dragon - Learn Innerflame
+	id = ATLAR.16
+	desc = "EVTDESCATLAR.16"
+	picture = "GFX_evt_dragon"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.16"
+		prestige = 100
+		piety = 200
+	}
+}
+
+character_event = { # Dragon - Learn Nothing
+	id = ATLAR.17
+	desc = "EVTDESCATLAR.17"
+	picture = "GFX_evt_dragon"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.17"
+		add_trait = cynical
+	}
+}
+
+character_event = { # Dragon - Maimed
+	id = ATLAR.18
+	desc = "EVTDESCATLAR.18"
+	picture = "GFX_evt_dragon"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.18"
+		add_trait = wroth
+	}
+}
+
+character_event = { # Dragon - Dragon Slain
+	id = ATLAR.19
+	desc = "EVTDESCATLAR.19"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.19"
+		prestige = 500
+		add_trait = proud
+		if = {
+			limit = {
+				trait = firebender
+			}
+			trigger_switch = {
+				on_trigger = trait
+				incompetent_bender = { remove_trait = incompetent_bender add_trait = competent_bender }
+				competent_bender = { remove_trait = competent_bender add_trait = powerful_bender }
+				powerful_bender = { remove_trait = powerful_bender add_trait = master_bender }
+				master_bender = { remove_trait = master_bender add_trait = legendary_bender }
+			}
+		}
+	}
+}
+
+character_event = { # Badger Mole
+	id = ATLAR.20
+	desc = "EVTDESCATLAR.20"
+	picture = "GFX_evt_badgermole"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.20"
+		trigger = {
+			trait = earthbender
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAR.21 days = 7 }
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.20"
+		trigger = {
+			NOT = { trait = earthbender }
+			NOT = { trait = neutral_jing }
+		}
+		add_trait = neutral_jing
+	}
+	
+	option = {
+		name = "EVTOPTAATLARC.20"
+		piety = -50
+	}
+}
+
+character_event = { # Badger Mole - Learning
+	id = ATLAR.21
+	desc = "EVTDESCATLAR.21"
+	picture = "GFX_evt_badgermole"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.21"
+		trigger_switch = {
+			on_trigger = trait
+			incompetent_bender = { remove_trait = incompetent_bender add_trait = competent_bender }
+			competent_bender = { remove_trait = competent_bender add_trait = powerful_bender }
+			powerful_bender = { remove_trait = powerful_bender add_trait = master_bender }
+			master_bender = { remove_trait = master_bender add_trait = legendary_bender }
+		}
+		add_trait = seismicsense_nonblind
+	}
+}
+
+character_event = { # The Seven Chakras
+	id = ATLAR.22
+	desc = "EVTDESCATLAR.22"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.22"
+		hidden_tooltip = {
+			if = {
+				limit = {
+					OR = {
+						trait = craven
+						trait = lustful
+						trait = gluttonous
+						trait = greedy
+						trait = depressed
+						trait = slothful
+						trait = envious
+						trait = wroth
+						trait = proud
+					}
+				}
+				character_event = { id = ATLAR.23 days = 7 }
+			}
+			if = {
+				limit = {
+					NOR = {
+						trait = craven
+						trait = lustful
+						trait = gluttonous
+						trait = greedy
+						trait = depressed
+						trait = slothful
+						trait = envious
+						trait = wroth
+						trait = proud
+					}
+				}
+				character_event = { id = ATLAR.24 days = 7 }
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.22"
+		piety = -100
+	}
+}
+
+character_event = { # The Seven Chakras - Block
+	id = ATLAR.23
+	desc = "EVTDESCATLAR.23"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.23"
+		piety = -150
+	}
+}
+
+character_event = { # The Seven Chakras - Achieved
+	id = ATLAR.24
+	desc = "EVTDESCATLAR.24"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.24"
+		hidden_tooltip = {
+			character_event = { id = ATLAR.25 days = 7 }
+		}
+	}
+}
+
+character_event = { # The Seven Chakras - Trait
+	id = ATLAR.25
+	desc = "EVTDESCATLAR.25"
+	picture = "GFX_evt_landscape_2"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.25"
+		add_trait = enlightened
+	}
+}
+
+character_event = { # Journey to Oasis
+	id = ATLAR.26
+	desc = "EVTDESCATLAR.26"
+	picture = "GFX_evt_water_tribe_tundra"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.26"
+		hidden_tooltip = {
+			random_list = {
+				50 = {
+					character_event = { id = ATLAR.27 days = 7 }
+				}
+				50 = {
+					character_event = { id = ATLAR.28 days = 7 }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.26"
+		prestige = -50
+	}
+}
+
+character_event = { # Journey to Oasis - Encounter Wolves
+	id = ATLAR.27
+	desc = "EVTDESCATLAR.27"
+	picture = "GFX_evt_wolf_attack"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.27"
+		add_trait = wounded
+		hidden_tooltip = {
+			character_event = { id = ATLAR.28 days = 7 }
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.27"
+		prestige = -50
+	}
+}
+
+character_event = { # Journey to Oasis - Arrival
+	id = ATLAR.28
+	desc = "EVTDESCATLAR.28"
+	picture = "GFX_evt_water_tribe_tundra"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.28"
+		piety = 250
+	}
+}
+
+character_event = { # Journey to Oasis - Spirit World - Pos
+	id = ATLAR.29
+	desc = "EVTDESCATLAR.29"
+	picture = "GFX_evt_spirit_world"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.29"
+		add_trait = zealous
+	}
+}
+
+character_event = { # Journey to Oasis - Spirit World - Neg
+	id = ATLAR.30
+	desc = "EVTDESCATLAR.30"
+	picture = "GFX_evt_spirit_world"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.30"
+		add_trait = lunatic
+	}
+}
+
+character_event = { # Ruler Visited
+	id = ATLAR.31
+	desc = "EVTDESCATLAR.31"
+	picture = "GFX_evt_landscape_5"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.31"
+		trigger = {
+			culture_group = air_nomad_culture
+		}
+		hidden_tooltip = {
+			FROM = { character_event = { id = ATLAR.32 days = 7 } }
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				OR = {
+					trait = wroth
+					trait = proud
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.31"
+		trigger = {
+			NOT = { culture_group = air_nomad_culture }
+		}
+		hidden_tooltip = {
+			FROM = { character_event = { id = ATLAR.32 days = 7 } }
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				trait = wroth
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARC.31"
+		hidden_tooltip = {
+			FROM = { character_event = { id = ATLAR.33 days = 7 } }
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+character_event = { # Ruler Visited - Reply Pos
+	id = ATLAR.32
+	desc = "EVTDESCATLAR.32"
+	picture = "GFX_evt_landscape_5"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLARA.32"
+		hidden_tooltip = {
+			FROM = { character_event = { id = ATLAR.34 days = 1 } }
+			add_trait = humble
+		}
+	}
+	
+	option = {
+		name = "EVTOPTAATLARB.32"
+		hidden_tooltip = {
+			FROM = { character_event = { id = ATLAR.35 days = 1 } }
+			add_trait = proud
+		}
+	}
+}
+
+character_event = { # Ruler Visited - Reply Neg
+	id = ATLAR.33
+	desc = "EVTDESCATLAR.33"
+	picture = "GFX_evt_landscape_5"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.33"
+		opinion = { modifier = insulted who = FROM years = 5 }
+	}
+}
+
+character_event = { # Ruler Visited - Ruler End - Pos
+	id = ATLAR.34
+	desc = "EVTDESCATLAR.34"
+	picture = "GFX_evt_landscape_5"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.34"
+		prestige = 10
+	}
+}
+
+character_event = { # Ruler Visited - Ruler End - Neg
+	id = ATLAR.35
+	desc = "EVTDESCATLAR.35"
+	picture = "GFX_evt_landscape_5"
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAATLAR.35"
+		prestige = 5
+	}
+}
+
+### WATER TRIBE EVENTS 50-100 ###
+
+character_event = { # WT: Wolves threaten settlement
+	id = ATLAR.50
+	desc = "EVTDESCATLAR.50"
+	picture = "GFX_evt_wolf_attack"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		higher_real_tier_than = COUNT
+		OR = {
+			culture = northern_water
+			culture = southern_water
+		}
+	}
+	
+	option = { # Fight The Wolves
+		name = "EVTOPTAATLARA.50"
+		prestige = 50
+		random_list = {
+			25 = {
+				add_trait = brave
+				modifier = {
+					factor = 2
+					trait = waterbender
+				}
+				modifier = {
+					factor = 2
+					trait = strong
+				}
+			}
+			50 = {
+				add_trait = wounded
+			}
+			25 = {
+				add_trait = maimed
+				modifier = {
+					factor = 2
+					trait = weak
+				}
+			}
+		}
+	}
+	
+	option = { # Wait it out
+		name = "EVTOPTAATLARB.50"
+		prestige = -50
+		capital_scope = {
+			add_province_modifier = { name = wolves_threaten_tribe duration = 360 }
+		}
+	}
+}
+
+character_event = { # WT: Waterbender Healer Arrives - Start of Event Chain
+	id = ATLAR.51
+	desc = "EVTDESCATLAR.51"
+	picture = "GFX_evt_southern_water_tribe"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		higher_real_tier_than = BARON 
+		culture = southern_water
+	}
+	
+	option = { # Welcome Her
+		name = "EVTOPTAATLARA.51"
+		piety = 50
+		create_character = {
+			random_traits = no
+			dynasty = random
+			religion = tui_and_la
+			culture = northern_water
+			female = yes
+			age = 17
+			attributes = {
+				martial = 3
+				diplomacy = 9
+				stewardship = 3
+				intrigue = 9
+				learning = 12
+			}
+			trait = underhanded_rogue
+			trait = wroth
+			trait = waterbender
+			trait = competent_bender
+			trait = healer
+		}
+	}
+	
+	option = { # Turn Her Away
+		name = "EVTOPTAATLARB.51"
+		piety = -50
+	}
+}
+
+character_event = { # WT: Polar Bear Dog
+	id = ATLAR.52
+	desc = "EVTDESCATLAR.52"
+	picture = "GFX_evt_water_tribe_tundra"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		higher_real_tier_than = BARON 
+		OR = {
+			culture = northern_water
+			culture = southern_water
+		}
+	}
+	
+	option = { # Fight It
+		name = "EVTOPTAATLARA.52"
+		random_list = {
+			25 = {
+				add_trait = brave
+				prestige = 100
+				modifier = {
+					factor = 2
+					trait = waterbender
+				}
+				modifier = {
+					factor = 2
+					trait = strong
+				}
+				modifier = {
+					factor = 2
+					trait = brave
+				}
+			}
+			50 = {
+				add_trait = maimed
+			}
+			25 = {
+				death = { death_reason = death_accident }
+				modifier = {
+					factor = 2
+					trait = weak
+				}
+			}
+		}
+	}
+	
+	option = { # Wait it out
+		name = "EVTOPTAATLARB.52"
+		random_list = {
+			70 = {
+			
+			}
+			20 = {
+				add_trait = craven
+			}
+			10 = {
+				add_trait = maimed
+			}
+		}
+	}
+}
+
+character_event = { # WT: Earth Kingdom Traders
+	id = ATLAR.53
+	desc = "EVTDESCATLAR.53"
+	picture = "GFX_evt_southern_water_tribe"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		higher_real_tier_than = BARON 
+		OR = {
+			culture = northern_water
+			culture = southern_water
+		}
+	}
+	
+	option = { # Trade
+		name = "EVTOPTAATLARA.53"
+		scaled_wealth = { value = 0.4 min = 30 }
+		any_vassal = {
+			opinion = { modifier = opinion_disappointed who = ROOT years = 1 }
+		}
+	}
+	
+	option = { # Send Them Away
+		name = "EVTOPTAATLARB.53"
+		prestige = 10
+		any_vassal = {
+			opinion = { modifier = opinion_satisfied who = ROOT years = 1 }
+		}
+	}
+}
+
+### FIRE NATION EVENTS ###
+
+character_event = { # FN: Firebending Bandits
+	id = ATLAR.201
+	desc = "EVTDESCATLAR.201"
+	picture = "GFX_evt_firebenders_fight"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		higher_real_tier_than = BARON 
+		culture_group = fire_nation_culture
+	}
+	
+	option = { # Stop Them
+		name = "EVTOPTAATLARA.201"
+		scaled_wealth = { value = -0.5 min = -80 }
+		capital_scope = {
+			add_province_modifier = { name = peasants_protected duration = 1200 }
+		}
+	}
+	
+	option = { # Ignore Them
+		name = "EVTOPTAATLARB.201"
+		prestige = -50
+		capital_scope = {
+			add_province_modifier = { name = thugs_rampant duration = 1200 }
+		}
+	}
+	
+	option = { # Crack Down
+		name = "EVTOPTAATLARC.201"
+		trigger = {
+			NOT = { trait = firebender }
+		}
+		capital_scope = {
+			add_province_modifier = { name = firebender_unrest duration = 1200 }
+		}
+	}
+}
+
+character_event = { # FN: Forest Fire
+	id = ATLAR.202
+	desc = "EVTDESCATLAR.202"
+	picture = "GFX_evt_landscape_4"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		higher_real_tier_than = BARON 
+		culture_group = fire_nation_culture
+	}
+	
+	option = { # Stop it
+		name = "EVTOPTAATLARA.202"
+		scaled_wealth = { value = -0.5 min = -60 }
+	}
+	
+	option = { # Let it burn
+		name = "EVTOPTAATLARB.202"
+		prestige = -50
+		capital_scope = {
+			add_province_modifier = { name = incompetent_rule duration = 1200 }
+		}
+	}
+	
+	option = { # I'll deal with it
+		name = "EVTOPTAATLARC.202"
+		tooltip_info = firebender
+		trigger = {
+			trait = firebender
+		}
+		prestige = 50
+		random_list = {
+			50 = {
+				add_trait = wounded
+			}
+			50 = {
+				add_trait = brave
+			}
+		}
+	}
+}
+
+character_event = { # FN: Volcano Errupts - START
+	id = ATLAR.203
+	desc = "EVTDESCATLAR.203"
+	picture = "GFX_evt_volcano"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		capital_scope = {
+			region = world_fire_isles
+		}
+		OR = {
+			NOT = { has_global_flag = volcano_errupts }
+			had_global_flag = { flag = volcano_errupts days = 7200 }
+		}
+		NOT = { has_landed_title = e_fire_nation }
+		total_years_played = 10
+	}
+	
+	immediate = {
+		set_global_flag = volcano_errupts
+	}
+	
+	option = { # Stand our ground!
+		name = "EVTOPTAATLARA.203"
+		random_list = {
+			50 = {
+				hidden_tooltip = {
+					death = { death_reason = death_volcano }
+				}
+				custom_tooltip = { text = EVTTOOLTIPAATLARAA.203 }
+				modifier = {
+					factor = 0.5
+					trait = strong
+				}
+				modifier = {
+					factor = 0.5
+					trait = quick
+				}
+				modifier = {
+					factor = 0.5
+					trait = brave
+				}
+				modifier = {
+					factor = 0.5
+					trait = diligent
+				}
+			}
+			50 = {
+				hidden_tooltip = {
+					add_trait = brave
+				}
+				custom_tooltip = { text = EVTTOOLTIPAATLARAB.203 }
+			}
+		}
+	}
+	
+	option = { # Evacuate the people!
+		name = "EVTOPTAATLARB.203"
+		random_list = {
+			10 = {
+				hidden_tooltip = {
+					death = { death_reason = death_volcano }
+				}
+				custom_tooltip = { text = EVTTOOLTIPAATLARBA.203 }
+			}
+			70 = {
+				hidden_tooltip = {
+					random_courtier = {
+						limit = {
+							prisoner = no
+							is_landed = no
+							NOT = { character = ROOT }
+						}
+						death = { death_reason = death_volcano }
+					}
+				}
+				custom_tooltip = { text = EVTTOOLTIPAATLARBB.203 }
+			}
+			20 = {
+				custom_tooltip = { text = EVTTOOLTIPAATLARBC.203 }
+			}
+		}
+		hidden_tooltip = {
+			remove_province_modifier = prosperity_modifier_1
+			remove_province_modifier = prosperity_modifier_2
+			remove_province_modifier = prosperity_modifier_3
+		}
+		if = {
+			limit = {
+				capital_scope = {
+					NOR = {
+						has_province_modifier = depopulated_2
+						has_province_modifier = depopulated_3
+						has_province_modifier = colony_1
+						has_province_modifier = colony_2
+						has_province_modifier = colony_3
+					}
+				}
+			}
+			capital_scope = {
+				add_province_modifier = { name = depopulated_1 duration = -1 }
+			}
+		}
+	}
+	
+	option = { # Save me!
+		name = "EVTOPTAATLARC.203"
+		add_trait = craven
+		hidden_tooltip = {
+			remove_province_modifier = prosperity_modifier_1
+			remove_province_modifier = prosperity_modifier_2
+			remove_province_modifier = prosperity_modifier_3
+			remove_province_modifier = depopulated_2
+			remove_province_modifier = depopulated_1
+		}
+		if = {
+			limit = {
+				capital_scope = {
+					NOR = {
+						has_province_modifier = colony_1
+						has_province_modifier = colony_2
+						has_province_modifier = colony_3
+					}
+				}
+			}
+			capital_scope = {
+				add_province_modifier = { name = depopulated_3 duration = -1 }
+			}
+		}
+	}
+	
+	option = { # Spirits save us!
+		name = "EVTOPTAATLARD.203"
+		hidden_tooltip = {
+			remove_province_modifier = prosperity_modifier_1
+			remove_province_modifier = prosperity_modifier_2
+			remove_province_modifier = prosperity_modifier_3
+			remove_province_modifier = depopulated_1
+		}
+		if = {
+			limit = {
+				capital_scope = {
+					NOR = {
+						has_province_modifier = depopulated_2
+						has_province_modifier = depopulated_3
+						has_province_modifier = colony_1
+						has_province_modifier = colony_2
+						has_province_modifier = colony_3
+					}
+				}
+			}
+			capital_scope = {
+				add_province_modifier = { name = depopulated_2 duration = -1 }
+			}
+		}
+		random_list = {
+			10 = {
+				death = { death_reason = death_volcano }
+			}
+			40 = {
+				random_courtier = {
+					limit = {
+						prisoner = no
+						is_landed = no
+					}
+					death = { death_reason = death_volcano }
+				}
+			}
+			50 = {
+				piety = 100
+			}
+		}
+	}
+}
+
+character_event = { # FN: Dragon Hunt
+	id = ATLAR.204
+	desc = "EVTDESCATLAR.204"
+	picture = "GFX_evt_volcano"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = { # Begin Hunt
+		name = "ATLARoptA.204"
+		hidden_tooltip = {
+			create_character = {
+				random_traits = no
+				dynasty = random
+				religion = ROOT
+				culture = dragon
+				female = no
+				age = 231
+				attributes = {
+					martial = 15
+					diplomacy = 9
+					stewardship = 12
+					intrigue = 12
+					learning = 12
+				}
+				health = 12
+				fertility = 0.1
+				trait = brilliant_strategist
+				trait = dragon
+				trait = diligent
+				trait = wroth
+				trait = proud
+			}
+			ROOT = {
+				random_demesne_province = {
+					new_character = {
+						create_title = {
+							tier = EMPEROR 
+							name = "DRAGON_CRUSADE" 
+							holder = THIS
+							culture = THIS
+							landless = yes
+							adventurer = yes
+							base_title = PREV
+						}
+						spawn_unit = {
+							owner = THIS
+							province = PREV
+							home = PREV
+							troops = {
+								archers = { 200 200 }
+								heavy_infantry = { 600 600 }
+								dragon_riders = { 1 1 }
+							}
+							attrition = 0.0
+							maintenance = no
+							can_toggle_looting = no
+							is_looter = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+### EARTH KINGDOM EVENTS ###
+character_event = {
+	id = ATLAR.300
+	desc = ATLARdesc.300
+	picture = "GFX_evt_landscape_3"
+	is_triggered_only = yes
+	only_playable = yes
+	ai = no
+
+	trigger = {
+		NOT = { set_global_flag = welcomed_merchant }
+		culture_group = earth_kingdom_culture
+		war = no
+		prisoner = no
+	}
+
+	option = { # Welcome Merchant
+		name = "ATLARoptA.300"
+		set_global_flag = welcomed_merchant
+		random_list = {
+			50 = {
+				hidden_tooltip = {
+					create_character = {
+						random_traits = no
+						name = "Gao"
+						dynasty = 2
+						religion = earth_spirituality
+						culture = northern_earth
+						employer = ROOT
+						female = no
+						historical = yes
+						age = 32
+						dna = "00ac00f0c00"
+						attributes = {
+							martial = 3
+							diplomacy = 5
+							stewardship = 9
+							intrigue = 5
+							learning = 9
+						}
+						health = 6
+						trait = midas_touched
+						trait = gardener
+						trait = temperate
+						trait = diligent
+						trait = brave
+						trait = wroth
+						trait = paranoid
+					}
+					new_character = {
+						set_character_flag = is_cabbage_man
+						set_character_flag = good_cabbage_man
+						give_nickname = nick_the_cabbage_man
+						dynasty = 2
+					}
+					character_event = { id = ATLAR.301 days = 14 }
+				}
+				custom_tooltip = { text = EVTTOOLTIPAATLARAA.300 }
+			}
+			50 = {
+				hidden_tooltip = {
+					create_character = {
+						random_traits = no
+						name = "Gao"
+						dynasty = 2
+						religion = earth_spirituality
+						culture = northern_earth
+						employer = ROOT
+						female = no
+						historical = yes
+						age = 32
+						dna = "00ac00f0c00"
+						attributes = {
+							martial = 2
+							diplomacy = 1
+							stewardship = 5
+							intrigue = 2
+							learning = 4
+						}
+						health = 5
+						trait = indulgent_wastrel
+						trait = weak
+						trait = gardener
+						trait = wroth
+						trait = content
+						trait = paranoid
+					}
+					new_character = {
+						set_character_flag = is_cabbage_man
+						give_nickname = nick_the_cabbage_man
+						dynasty = 2
+					}
+					character_event = { id = ATLAR.302 days = 14 }
+				}
+				custom_tooltip = { text = EVTTOOLTIPAATLARAB.300 }
+			}
+		}
+	}
+	option = { # Ignore
+		name = "ATLARoptB.300"
+	}
+	option = { # Steal
+		trigger = { 
+			OR = { 
+				trait = cruel
+				trait = greedy
+			}
+		}
+		name = "ATLARoptC.300"
+		custom_tooltip = { text = EVTTOOLTIPAATLARAC.300 }
+		scaled_wealth = { value = 0.05 min = 1 }
+	}
+
+}
+
+character_event = {
+	id = ATLAR.301
+	desc = ATLARdesc.301
+	picture = "GFX_evt_landscape_3"
+	is_triggered_only = yes
+	
+	option = {
+		name = "ATLARoptA.301"
+		prestige = 100
+	}
+}
+
+character_event = {
+	id = ATLAR.302
+	desc = ATLARdesc.302
+	picture = "GFX_evt_landscape_3"
+	is_triggered_only = yes
+	
+	option = {
+		name = "ATLARoptA.302"
+		any_courtier = {
+			limit = {
+				has_character_flag = is_cabbage_man
+			}
+			give_minor_title = title_court_jester
+		}
+	}
+	
+	option = {
+		name = "ATLARoptB.302"
+		any_courtier = {
+			limit = {
+				has_character_flag = is_cabbage_man
+			}
+			death = { death_reason = death_missing }
+		}
+	}
+}
+
+character_event = {
+	id = ATLAR.303
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		has_character_flag = is_cabbage_man
+	}
+	
+	immediate = {
+		clr_global_flag = welcomed_merchant
+	}
+	
+	option = {
+		trigger = {
+			has_character_flag = good_cabbage_man
+		}
+		liege = {
+			character_event = { id = ATLAR.304 }
+		}
+	}
+	
+	option = {
+		name = "ATLARoptB.303"
+		trigger = {
+			NOT = { has_character_flag = good_cabbage_man }
+		}
+	}
+}
+
+narrative_event = {
+	id = ATLAR.304
+	desc = "ATLARdesc.304"
+	title = "ATLARtitle.304"
+	picture = "GFX_evt_landscape_3"
+	is_triggered_only = yes
+	
+	option = {
+		name = "ATLARoptB.304"
+	}
+	
+	option = {
+		name = "ATLARoptA.304"
+	}
+}
+
+### AIR NOMADS EVENTS ###
+
+### ALL RANDOM EVENTS ###
+character_event = { # Mysterious Stranger
+	id = ATLAR.500
+	desc = ATLARdesc.500
+	picture = "GFX_evt_mysterious_stranger"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = "ATLARoptA.500"
+		wealth = 300
+		hidden_tooltip = {
+			character_event = { id = ATLAR.501 days = 90 }
+		}
+	}
+	
+	option = {
+		name = "ATLARoptB.500"
+		piety = 100
+	}
+}
+
+character_event = { # Mysterious Stranger - Complications
+	id = ATLAR.501
+	desc = ATLARdesc.501
+	picture = "GFX_evt_mysterious_stranger"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = "ATLARoptA.501"
+		wealth = 200
+		if = {
+			limit = { NOT = { trait = greedy } }
+			add_trait = greedy
+		}
+		capital_scope = {
+			add_province_modifier = { name = peasant_unrest_and_hysteria duration = 960 }
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAR.503 days = 70 }
+		}
+	}
+	
+	option = {
+		name = "ATLARoptB.501"
+		hidden_tooltip = {
+			character_event = { id = ATLAR.502 }
+		}
+	}	
+}
+
+character_event = { # Mysterious Stranger - End (Bad)
+	id = ATLAR.502
+	desc = ATLARdesc.502
+	picture = "GFX_evt_mysterious_stranger"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = "ATLARoptA.502"
+		piety = -100
+	}
+	
+	option = {
+		name = "ATLARoptB.502"
+		wealth = -100
+	}
+}
+
+character_event = { # Mysterious Stranger - End (Good?)
+	id = ATLAR.503
+	desc = ATLARdesc.503
+	picture = "GFX_evt_mysterious_stranger"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = "ATLARoptA.503"
+		wealth = 300
+	}
+}
+
+### SPIRIT CRISIS EVENTS ###
+character_event = { # Spirit Crisis - START
+	id = ATLAR.651
+	is_triggered_only = yes
+	only_rulers = yes
+	capable_only = yes
+	war = no
+	hide_window = yes
+	
+	trigger = {
+		higher_tier_than = COUNT
+		NOT = { piety = 1 }
+	}
+	
+	option = {
+		random_list = { # Crisis Level
+			1 = { # EXTREME: General Old Iron, Tui
+				
+			}
+			2 = { # HIGH: Koh, Hei-Bei
+				
+			}
+			3 = { # MODERATE: Painted Lady, Plague Spirit
+				
+			}
+			4 = { # LOW: Dark Spirits, Nature Spirits
+				
+			}
+			90 = { # No Crisis
+			
+			}
+		}
+	}
+	
+}
+
+character_event = { # General Old Iron - START
+	id = ATLAR.652
+	desc = "EVTDESCATLAR.652"
+	picture = "GFX_evt_landscape_4"
+	is_triggered_only = yes
+	only_rulers = yes
+	capable_only = yes
+	war = no
+	
+	trigger = {
+		232 = { # Makapu
+			has_hospital = yes
+		}
+	}
+	
+	option = {
+		
+	}
+	
+}
+
+### Decision Events ###
+character_event = { # Raise Shrine
+	id = ATLAR.750
+	desc = ATLARdesc.750
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = { # Shrine to the Avatar - Piety/Prestige/Command
+		name = ATLARoptA.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAA.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.751 days = 21 } }
+		trigger = { 
+			OR = {
+				trait = just
+				trait = directdescendantavatar
+				trait = descendantavatar
+			}
+		}
+	}
+	option = { # Shrine to Hei-Bei - Construction Speed
+		name = ATLARoptB.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAB.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.752 days = 21 } }
+		trigger = { religion = earth_spirituality }
+	}
+	option = { # Shrine to General Old Iron - Command
+		name = ATLARoptC.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAC.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.753 days = 21 } }
+		trigger = { religion = earth_spirituality }
+	}
+	option = { # Shrine to Painted Lady - Disease Risk
+		name = ATLARoptD.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAD.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.754 days = 21 } }
+		trigger = { religion = fire_spirituality }
+	}
+	option = { # Shrine to Agni - Levies
+		name = ATLARoptE.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAE.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.755 days = 21 } }
+		trigger = { 
+			OR = { 
+				religion = fire_spirituality
+				religion = the_eternal_flame
+				religion = bhanti_spirituality
+			}
+		}
+	}
+	option = { # Shrine to Kemurikage - Chance/Defence
+		name = ATLARoptF.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAF.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.756 days = 21 } }
+		trigger = { religion = bhanti_spirituality }
+	}
+	option = { # Shrine to Mother of Faces - Revolt Risk
+		name = ATLARoptG.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAG.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.757 days = 21 } }
+		trigger = { religion = bhanti_spirituality }
+	}
+	option = { # Shrine to Tienhai - Income
+		name = ATLARoptH.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAH.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.758 days = 21 } }
+		trigger = { 
+			OR = {
+				religion = earth_spirituality
+				religion = nomadic_pacifism
+			}
+		}
+	}
+	option = { # Shrine to Tui - Defence/Piety
+		name = ATLARoptI.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAI.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.759 days = 21 } }
+		trigger = { 
+			OR = { 
+				religion = tui_and_la
+				religion = southern_spirituality
+			}
+		}
+	}
+	option = { # Shrine to La - Transports/Piety
+		name = ATLARoptL.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAL.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.762 days = 21 } }
+		trigger = { 
+			OR = { 
+				religion = tui_and_la
+				religion = southern_spirituality
+			}
+		}
+	}
+	option = { # Shrine to Yue - Piety/Levies
+		name = ATLARoptJ.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAJ.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.760 days = 21 } }
+		trigger = {
+			has_global_flag = moon_sacrifice
+			OR = {
+				dynasty = 163
+				has_character_flag = is_sokka
+			}
+		}
+	}
+	option = { # Shrine to Spirits - Piety
+		name = ATLARoptK.750
+		custom_tooltip = { text = EVTTOOLTIPAATLARAK.750 }
+		hidden_tooltip = { character_event = { id = ATLAR.761 days = 21 } }
+		trigger = { religion = southern_spirituality }
+	}
+}
+
+character_event = { # Raise Shrine - Avatar
+	id = ATLAR.751
+	desc = ATLARdesc.751
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_avatar
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Hei-Bei
+	id = ATLAR.752
+	desc = ATLARdesc.752
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_heibai
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - General Old Iron
+	id = ATLAR.753
+	desc = ATLARdesc.753
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_generaloldiron
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Painted Lady
+	id = ATLAR.754
+	desc = ATLARdesc.754
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_paintedlady
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Agni
+	id = ATLAR.755
+	desc = ATLARdesc.755
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_agni
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Kemurikage
+	id = ATLAR.756
+	desc = ATLARdesc.756
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_kemurikage
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Mother of Faces 
+	id = ATLAR.757
+	desc = ATLARdesc.757
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_motheroffaces
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Tienhai
+	id = ATLAR.758
+	desc = ATLARdesc.758
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_tienhai
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Tui
+	id = ATLAR.759
+	desc = ATLARdesc.759
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_tui
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Yue
+	id = ATLAR.760
+	desc = ATLARdesc.760
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_yue
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - Spirits
+	id = ATLAR.761
+	desc = ATLARdesc.761
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_spirits
+				years = 10
+			}
+		}
+	}
+}
+
+character_event = { # Raise Shrine - La
+	id = ATLAR.762
+	desc = ATLARdesc.762
+	picture = "GFX_evt_avatar_shrine"
+	is_triggered_only = yes
+	only_playable = yes
+	
+	option = {
+		name = ATLARoptA.751
+		any_realm_province = {
+			add_province_modifier = {
+				modifier = shrine_to_la
+				years = 10
+			}
+		}
+	}
+}

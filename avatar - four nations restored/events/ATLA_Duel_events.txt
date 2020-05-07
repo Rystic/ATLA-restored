@@ -1,0 +1,4795 @@
+###########################################
+#                                         #
+# ATLA DUEL events		                  #
+#                                         #
+#                                      	  #
+#                                         #
+###########################################
+
+namespace = ADUEL
+
+character_event = { # START DUEL - Event Handler - Current Scope: Challenged
+	id = ADUEL.1
+	is_triggered_only = yes
+	hide_window = yes
+	
+	option = { # Duel: Firebender v Firebender
+		trigger = {
+			trait = firebender
+			FROMFROM = {
+				trait = firebender
+			}
+		}
+		character_event = { id = ADUEL.2 days = 3 } # Agni Kai - Challenge
+	}
+	option = { # Duel: Bender v Bender
+		trigger = {
+			is_bender_trait_trigger = yes
+			FROMFROM = {
+				is_bender_trait_trigger = yes
+			}
+			NOR = {
+				AND = {
+					trait = firebender
+					FROMFROM = {
+						trait = firebender
+					}
+				}
+			}
+		}
+		character_event = { id = ADUEL.3 days = 3 } # Bending Battle - Challenge
+	}
+	option = { # Duel Muggle v Muggle
+		trigger = {
+			is_bender_trait_trigger = no
+			FROMFROM = {
+				is_bender_trait_trigger = no
+			}
+		}
+		character_event = { id = ADUEL.3 days = 3 } # Nonbender Battle - Challenge
+	}
+	option = { # Duel Bender v Muggle
+		trigger = {
+			is_bender_trait_trigger = no
+			FROMFROM = {
+				is_bender_trait_trigger = yes
+			}
+		}
+		character_event = { id = ADUEL.3 days = 3 } # Nonbender v Bender Battle - Challenge
+		#FROMFROM = {
+			#character_event = { id = ADUEL.4 } # Bender v Nonbender Battle - Challenger (Currently Not Compelte)
+		#}
+	}
+	option = { # Duel Muggle v Bender
+		trigger = {
+			is_bender_trait_trigger = yes
+			FROMFROM = {
+				is_bender_trait_trigger = no
+			}
+		}
+		character_event = { id = ADUEL.3 days = 3 } # Nonbender v Bender Battle - Challenge
+	}
+}
+
+# Agni Kai - Challenged - Current Scope: Challenged
+character_event = {
+	id = ADUEL.2
+	desc = ADUELdesc.2
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = { 
+		FROMFROMFROM = {
+			save_event_target_as = challenger
+		}
+	}
+	
+	option = { # Accept Challenge
+		name = ADUELoptA.2
+		event_target:challenger = {
+			character_event = { id = ADUEL.7 days = 3 } # Agni Kai - Accepted
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 2
+				trait = proud
+			}
+			modifier = {
+				factor = 0.05
+				trait = craven
+			}
+		}
+	}
+	option = { # Refuse Challenge - Great Dishonor
+		name = ADUELoptB.2
+		trigger = {
+			is_great_fire_duelist_trigger = no
+		}
+		if = {
+			limit = { 
+				NOT = { trait = craven }
+				NOT = { trait = brave }
+			}
+			random = {
+				chance = 40
+				add_trait = craven
+			}
+		}
+		if = {
+			limit = {
+				trait = brave
+			}
+			remove_trait = brave
+		}
+		prestige = -100
+		add_character_modifier = {
+			modifier = agni_kai_refused_dishonor
+			duration = 1095
+		}
+		event_target:challenger = {
+			character_event = { id = ADUEL.8 days = 3 } # Agni Kai - Fled
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = { # Refuse Challenge - No Dishonor
+		name = ADUELoptC.2
+		trigger = {
+			is_great_fire_duelist_trigger = yes
+			FROMFROMFROM = {
+				is_great_fire_duelist_trigger = no
+			}
+		}
+		add_character_modifier = {
+			modifier = duel_refused_freely
+			hidden = yes
+			duration = 1095
+		}
+		event_target:challenger = {
+			character_event = { id = ADUEL.9 days = 3 } # Agni Kai - Insulted
+		}
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				trait = fullyrealisedavatar
+			}
+			modifier = {
+				factor = 2
+				trait = firelord
+			}
+		}
+	}
+}
+
+# Bender Duel - Challenged - Current Scope: Challenged
+character_event = {
+	id = ADUEL.3
+	desc = {
+		trigger = {
+			is_bender_trait_trigger = yes
+		}
+		text = ADUELdescA.3
+	}
+	desc = {
+		trigger = {
+			is_bender_trait_trigger = no
+		}
+		text = ADUELdescB.3
+	}
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = { 
+		FROMFROMFROM = {
+			save_event_target_as = challenger
+		}
+	}
+	
+	option = { # Accept Challenge
+		name = ADUELoptA.3
+		event_target:challenger = {
+			character_event = { id = ADUEL.12 days = 3 } # Bender Duel - Accepted
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 2
+				trait = proud
+			}
+			modifier = {
+				factor = 0.05
+				trait = craven
+			}
+		}
+	}
+	option = { # Refuse Challenge - Great Dishonor
+		name = ADUELoptB.3
+		trigger = {
+			is_great_bender_duelist_trigger = no
+		}
+		if = {
+			limit = { 
+				NOT = { trait = craven }
+				NOT = { trait = brave }
+			}
+			random = {
+				chance = 40
+				add_trait = craven
+			}
+		}
+		if = {
+			limit = {
+				trait = brave
+			}
+			remove_trait = brave
+		}
+		prestige = -100
+		add_character_modifier = {
+			modifier = duel_refused_dishonor
+			duration = 1095
+		}
+		event_target:challenger = {
+			character_event = { id = ADUEL.8 days = 3 } # Bender Duel - Fled
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = { # Refuse Challenge - No Dishonor
+		name = ADUELoptC.3
+		trigger = {
+			is_great_bender_duelist_trigger = yes
+			FROMFROMFROM = {
+				is_great_bender_duelist_trigger = no
+			}
+		}
+		add_character_modifier = {
+			modifier = duel_refused_freely
+			hidden = yes
+			duration = 1095
+		}
+		event_target:challenger = {
+			character_event = { id = ADUEL.9 days = 3 } # Bender Duel - Insulted
+		}
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				trait = fullyrealisedavatar
+			}
+		}
+	}
+}
+
+# Bender challenges Muggle - Challenger - Current Scope: Challenger
+character_event = {
+	id = ADUEL.4
+	desc = ADUELdesc.4
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # With Bending
+		name = ADUELoptA.4
+		FROM = {
+			character_event = { id = ADUEL.5 days = 3 } # Bender Duel - Challenge with Bending
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = cruel
+			}
+			modifier = {
+				factor = 2
+				trait = craven
+			}
+		}
+	}
+	option = { # Without Bending
+		name = ADUELoptB.4
+		FROM = {
+			character_event = { id = ADUEL.6 days = 3 } # Bender Duel - Challenge without Bending
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = brave
+			}
+			modifier = {
+				factor = 0.05
+				trait = craven
+			}
+		}
+	}
+	option = { # Abort
+		name = ADUELoptC.3
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+# Bender faces Muggle (Unfair Terms) - Challenged - Current Scope: Challenged
+character_event = {
+	id = ADUEL.5
+	desc = ADUELdesc.5
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Accept Challenge
+		name = ADUELoptA.5
+		FROM = {
+			character_event = { id = ADUEL.12 days = 3 } # Duel - Accepted
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = proud
+			}
+			modifier = {
+				factor = 0.05
+				trait = craven
+			}
+		}
+	}
+	option = { # Refuse Challenge - No Dishonor
+		name = ADUELoptB.5
+		add_character_modifier = {
+			modifier = duel_refused_freely
+			hidden = yes
+			duration = 1095
+		}
+		FROM = {
+			character_event = { id = ADUEL.10 days = 3 } # Duel - Refused
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = craven
+			}
+		}
+	}
+}
+
+# Bender faces Muggle (Fair Terms) - Challenged - Current Scope: Challenged
+character_event = {
+	id = ADUEL.6
+	desc = ADUELdesc.6
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Accept Challenge
+		name = ADUELoptA.5
+		FROM = {
+			character_event = { id = ADUEL.12 days = 3 } # Duel - Accepted
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = proud
+			}
+			modifier = {
+				factor = 0.05
+				trait = craven
+			}
+		}
+	}
+	option = { # Refuse Challenge - Great Dishonor
+		name = ADUELoptB.3
+		if = {
+			limit = { 
+				NOT = { trait = craven }
+				NOT = { trait = brave }
+			}
+			random = {
+				chance = 40
+				add_trait = craven
+			}
+		}
+		if = {
+			limit = {
+				trait = brave
+			}
+			remove_trait = brave
+		}
+		prestige = -150
+		add_character_modifier = {
+			modifier = duel_refused_dishonor
+			duration = 1095
+		}
+		FROM = {
+			character_event = { id = ADUEL.8 days = 3 } # Duel - Fled
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
+# Agni Kai - Challenge Accepted - Current Scope: Challenger
+character_event = {
+	id = ADUEL.7
+	desc = ADUELdesc.7
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Begin Duel
+		name = ADUELoptA.7
+		FROM = {
+			character_event = { id = ADUEL.11 } # Agni Kai - Begin Duel
+		}
+	}
+}
+
+# Agni Kai - Challenge Refused - Current Scope: Challenger
+character_event = {
+	id = ADUEL.8
+	desc = ADUELdesc.8
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # END
+		name = ADUELoptA.8
+		prestige = 100
+		opinion = {
+			modifier = opinion_agni_kai_cowadice
+			who = FROM
+			years = 100
+		}
+	}
+}
+
+# Duel - Challenger Insulted - Current Scope: Challenger
+character_event = {
+	id = ADUEL.9
+	desc = ADUELdesc.9
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # END
+		name = ADUELoptA.9
+		prestige = -10
+		opinion = {
+			modifier = opinion_agni_kai_cowadice
+			who = FROM
+			years = 100
+		}
+	}
+}
+
+# Duel - Challenge Refused as unfair - Current Scope: Challenger
+character_event = {
+	id = ADUEL.10
+	desc = ADUELdesc.10
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # END
+		name = ADUELoptA.10
+		prestige = -10
+		opinion = {
+			modifier = opinion_agni_kai_cowadice
+			who = FROM
+			years = 100
+		}
+	}
+}
+
+# Agni Kai - Duel Begin
+character_event = {
+	id = ADUEL.11
+	desc = { # Strong / Master
+		trigger = {
+			OR = {
+				trait = strong
+				trait = robust
+			}
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		text = ADUELdescA.11
+	}
+	desc = { # Average / Master
+		trigger = {
+			NOR = {
+				trait = strong
+				trait = robust
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		text = ADUELdescB.11
+	}
+	desc = { # Weak / Master
+		trigger = {
+			OR = {
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		text = ADUELdescC.11
+	}
+	desc = { # Strong / Adept
+		trigger = {
+			OR = {
+				trait = strong
+				trait = robust
+			}
+			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+		}
+		text = ADUELdescD.11
+	}
+	desc = { # Average / Adept
+		trigger = {
+			NOR = {
+				trait = strong
+				trait = robust
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+		}
+		text = ADUELdescE.11
+	}
+	desc = { # Weak / Adept
+		trigger = {
+			OR = {
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+		}
+		text = ADUELdescF.11
+	}
+	desc = { # Strong / Unskilled
+		trigger = {
+			OR = {
+				trait = strong
+				trait = robust
+			}
+			trait = incompetent_bender
+		}
+		text = ADUELdescG.11
+	}
+	desc = { # Average / Unskilled
+		trigger = {
+			NOR = {
+				trait = strong
+				trait = robust
+				trait = feeble
+				trait = weak
+			}
+			trait = incompetent_bender
+		}
+		text = ADUELdescH.11
+	}
+	desc = { # Weak / Unskilled
+		trigger = {
+			OR = {
+				trait = feeble
+				trait = weak
+			}
+			trait = incompetent_bender
+		}
+		text = ADUELdescI.11
+	}
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = { # Set up Character Stats
+		set_character_flag = preparedForDuel
+		clr_character_flag = used_earthquake
+		clr_character_flag = has_used_fireball
+		ROOT = {
+			set_variable = { which = myHP value = 30 } # SET UP HP
+			if = { # Avatar = +20 HP
+				limit = { trait = avatar }
+				change_variable = { which = myHP value = 20 }
+			}
+			if = { # Trained Avatar = +40 HP
+				limit = { trait = fullyrealisedavatar }
+				change_variable = { which = myHP value = 40 }
+			}
+			if = { # Secret Buff = +10 HP
+				limit = { trait = canon_character }
+				change_variable = { which = myHP value = 10 }
+			}
+			if = { # Strong = +10 HP
+				limit = { trait = strong }
+				change_variable = { which = myHP value = 10 }
+			}
+			if = { # Robust = +5 HP
+				limit = { trait = robust }
+				change_variable = { which = myHP value = 5 }
+			}
+			if = { # Wounded = -5 HP
+				limit = { trait = wounded }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Maimed = -5 HP
+				limit = { trait = maimed }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Ill = -5 HP
+				limit = { trait = ill }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Weak = -5 HP
+				limit = { trait = weak }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Feeble = -5 HP
+				limit = { trait = feeble }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			set_variable = { which = myATK value = 10 } # SET UP ATK
+			if = { # Military Education = +1 ATK
+				limit = { has_education_martial_trigger = yes }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Avatar = +3 ATK
+				limit = { trait = avatar }
+				change_variable = { which = myATK value = 3 }
+			}
+			if = { # Trained Avatar = +4 ATK
+				limit = { trait = fullyrealisedavatar }
+				change_variable = { which = myATK value = 4 }
+			}
+			if = { # Secret Buff = +1 ATK
+				limit = { trait = canon_character }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Quick = +2 ATK
+				limit = { trait = quick }
+				change_variable = { which = myATK value = 2 }
+			}
+			if = { # Shrewd = +1 ATK
+				limit = { trait = shrewd }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Impaler = +1 ATK
+				limit = { trait = impaler }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Duelist = +2 ATK
+				limit = { trait = duelist }
+				change_variable = { which = myATK value = 2 }
+			}
+			if = { # Wroth = +1 ATK
+				limit = { trait = wroth }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Cruel = +1 ATK
+				limit = { trait = cruel }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Brave = +1 ATK
+				limit = { trait = brave }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Slow = -1 ATK
+				limit = { trait = slow }
+				subtract_variable = { which = myATK value = 1 }
+			}
+			if = { # Craven = -2 ATK
+				limit = { trait = craven }
+				subtract_variable = { which = myATK value = 2 }
+			}
+			if = { # One Handed = -2 ATK
+				limit = { trait = one_handed }
+				subtract_variable = { which = myATK value = 2 }
+			}
+			set_variable = { which = myDEF value = 3 } # SET UP DEF
+			if = { # Military Education = +1 DEF
+				limit = { has_education_martial_trigger = yes }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Avatar = +2 DEF
+				limit = { trait = avatar }
+				change_variable = { which = myDEF value = 2 }
+			}
+			if = { # Trained Avatar = +3 DEF
+				limit = { trait = fullyrealisedavatar }
+				change_variable = { which = myDEF value = 3 }
+			}
+			if = { # Secret Buff = +1 DEF
+				limit = { trait = canon_character }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Strong = +1 DEF
+				limit = { trait = strong }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Robust = +1 DEF
+				limit = { trait = robust }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Wounded = -1 DEF
+				limit = { trait = wounded }
+				subtract_variable = { which = myDEF value = 1 }
+			}
+			if = { # Maimed = -2 DEF
+				limit = { trait = maimed }
+				subtract_variable = { which = myDEF value = 2 }
+			}
+			if = { # Ill = -1 DEF
+				limit = { trait = ill }
+				subtract_variable = { which = myDEF value = 1 }
+			}
+			if = { # Weak = -1 DEF
+				limit = { trait = weak }
+				subtract_variable = { which = myDEF value = 1 }
+			}
+			set_variable = { which = mySTA value = 1 } # SET UP STA
+			export_to_variable = { which = addSTA value = combat_rating }
+			change_variable = { which = mySTA which = addSTA }
+			set_variable = { which = mySTAcap which = addSTA } # SET UP STA CAP
+			subtract_variable = { which = mySTAcap value = 1 }
+			set_variable = { which = mySTAcha value = 1 } # SET UP STA CHA
+			set_variable = { which = myHPcap which = myHP } # SET UP HP CAP
+		}
+	}
+	
+	option = { # Begin Duel
+		name = ADUELoptA.7
+		trigger = {
+			FROM = { has_character_flag = preparedForDuel }
+		}
+		clr_character_flag = preparedForDuel
+		FROM = {
+			clr_character_flag = preparedForDuel
+		}
+		character_event = { id = ADUEL.14 } # Duel - First Action
+	}
+	
+	option = { # Ping opponent
+		name = ADUELoptA.7
+		save_event_target_as = other_hostile
+		trigger = {
+			FROM = { NOT = { has_character_flag = preparedForDuel } }
+		}
+		FROM = {
+			character_event = { id = ADUEL.11 } # PING
+		}
+	}
+}
+
+# Duel - Challenge Accepted - Current Scope: Challenger
+character_event = {
+	id = ADUEL.12
+	desc = ADUELdesc.12
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Begin Duel
+		name = ADUELoptA.12
+		FROM = {
+			character_event = { id = ADUEL.13 } # Duel - Begin Duel
+		}
+	}
+}
+
+# Duel - Duel Begin
+long_character_event = {
+	id = ADUEL.13
+	desc = ADUELdesc.13
+	picture = GFX_evt_eartharena
+	is_triggered_only = yes
+	
+	immediate = { # Set up Character Stats
+		set_character_flag = preparedForDuel
+		clr_character_flag = used_earthquake
+		clr_character_flag = has_used_fireball
+		ROOT = {
+			set_variable = { which = myHP value = 30 } # SET UP HP
+			if = { # Avatar = +20 HP
+				limit = { trait = avatar }
+				change_variable = { which = myHP value = 20 }
+			}
+			if = { # Trained Avatar = +40 HP
+				limit = { trait = fullyrealisedavatar }
+				change_variable = { which = myHP value = 40 }
+			}
+			if = { # Secret Buff = +10 HP
+				limit = { trait = canon_character }
+				change_variable = { which = myHP value = 10 }
+			}
+			if = { # Strong = +10 HP
+				limit = { trait = strong }
+				change_variable = { which = myHP value = 10 }
+			}
+			if = { # Robust = +5 HP
+				limit = { trait = robust }
+				change_variable = { which = myHP value = 5 }
+			}
+			if = { # Wounded = -5 HP
+				limit = { trait = wounded }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Maimed = -5 HP
+				limit = { trait = maimed }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Ill = -5 HP
+				limit = { trait = ill }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Weak = -5 HP
+				limit = { trait = weak }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			if = { # Feeble = -5 HP
+				limit = { trait = feeble }
+				subtract_variable = { which = myHP value = 5 }
+			}
+			set_variable = { which = myATK value = 10 } # SET UP ATK
+			if = { # Military Education = +1 ATK
+				limit = { has_education_martial_trigger = yes }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Avatar = +3 ATK
+				limit = { trait = avatar }
+				change_variable = { which = myATK value = 3 }
+			}
+			if = { # Trained Avatar = +4 ATK
+				limit = { trait = fullyrealisedavatar }
+				change_variable = { which = myATK value = 4 }
+			}
+			if = { # Secret Buff = +1 ATK
+				limit = { trait = canon_character }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Quick = +2 ATK
+				limit = { trait = quick }
+				change_variable = { which = myATK value = 2 }
+			}
+			if = { # Shrewd = +1 ATK
+				limit = { trait = shrewd }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Impaler = +1 ATK
+				limit = { trait = impaler }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Duelist = +2 ATK
+				limit = { trait = duelist }
+				change_variable = { which = myATK value = 2 }
+			}
+			if = { # Wroth = +1 ATK
+				limit = { trait = wroth }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Cruel = +1 ATK
+				limit = { trait = cruel }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Brave = +1 ATK
+				limit = { trait = brave }
+				change_variable = { which = myATK value = 1 }
+			}
+			if = { # Slow = -1 ATK
+				limit = { trait = slow }
+				subtract_variable = { which = myATK value = 1 }
+			}
+			if = { # Craven = -2 ATK
+				limit = { trait = craven }
+				subtract_variable = { which = myATK value = 2 }
+			}
+			if = { # One Handed = -2 ATK
+				limit = { trait = one_handed }
+				subtract_variable = { which = myATK value = 2 }
+			}
+			set_variable = { which = myDEF value = 3 } # SET UP DEF
+			if = { # Military Education = +1 DEF
+				limit = { has_education_martial_trigger = yes }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Avatar = +2 DEF
+				limit = { trait = avatar }
+				change_variable = { which = myDEF value = 2 }
+			}
+			if = { # Trained Avatar = +3 DEF
+				limit = { trait = fullyrealisedavatar }
+				change_variable = { which = myDEF value = 3 }
+			}
+			if = { # Secret Buff = +1 DEF
+				limit = { trait = canon_character }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Strong = +1 DEF
+				limit = { trait = strong }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Robust = +1 DEF
+				limit = { trait = robust }
+				change_variable = { which = myDEF value = 1 }
+			}
+			if = { # Wounded = -1 DEF
+				limit = { trait = wounded }
+				subtract_variable = { which = myDEF value = 1 }
+			}
+			if = { # Maimed = -2 DEF
+				limit = { trait = maimed }
+				subtract_variable = { which = myDEF value = 2 }
+			}
+			if = { # Ill = -1 DEF
+				limit = { trait = ill }
+				subtract_variable = { which = myDEF value = 1 }
+			}
+			if = { # Weak = -1 DEF
+				limit = { trait = weak }
+				subtract_variable = { which = myDEF value = 1 }
+			}
+			set_variable = { which = mySTA value = 1 } # SET UP STA
+			export_to_variable = { which = addSTA value = combat_rating }
+			change_variable = { which = mySTA which = addSTA }
+			set_variable = { which = mySTAcap which = addSTA } # SET UP STA CAP
+			subtract_variable = { which = mySTAcap value = 1 }
+			set_variable = { which = mySTAcha value = 1 } # SET UP STA CHA
+			set_variable = { which = myHPcap which = myHP } # SET UP HP CAP
+		}
+	}
+	
+	option = { # Begin Duel
+		name = ADUELoptA.7
+		trigger = {
+			FROM = { has_character_flag = preparedForDuel }
+		}
+		clr_character_flag = preparedForDuel
+		FROM = {
+			clr_character_flag = preparedForDuel
+		}
+		character_event = { id = ADUEL.14 } # Duel - First Action
+	}
+	
+	option = { # Ping opponent
+		name = ADUELoptA.7
+		save_event_target_as = other_hostile
+		trigger = {
+			FROM = { NOT = { has_character_flag = preparedForDuel } }
+		}
+		FROM = {
+			character_event = { id = ADUEL.13 } # PING
+		}
+	}
+}
+
+# Duel - First Strike
+character_event = {
+	id = ADUEL.14
+	desc = ADUELdesc.14
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		event_target:other_hostile = {
+			save_event_target_as = hostile
+		}
+		ROOT = {
+			save_event_target_as = other_hostile
+		}
+		if = {
+			limit = {
+				check_variable = { which = mySTAcap which = mySTA }
+				NOT = { has_character_flag = been_crushed }
+				NOT = { has_character_flag = is_chi_blocked }
+			}
+			change_variable = { which = mySTAcha value = 1 }
+			if = {
+				limit = {
+					check_variable = { which = mySTAcha value = 3 }
+				}
+				change_variable = { which = mySTA value = 1 }
+				set_variable = { which = mySTAcha value = 1 }
+			}
+		}
+		if = {
+			limit = {
+				ROOT = { has_character_flag = ADUEL_defensive_stance }
+			}
+			clr_character_flag = ADUEL_defensive_stance
+			subtract_variable = { which = myDEF value = 2 }
+		}
+	}
+	
+	option = { # Attack
+		name = ADUELoptA.14
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		ai_chance = {
+			factor = 1
+		}
+		trigger = {
+			event_target:hostile = {
+				check_variable = { which = myHP value = 1 }
+			}
+		}
+		random_list = {
+			5 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_CRIT_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.16 } # Attack
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 2
+					trait = quick
+				}
+				modifier = {
+					factor = 1.5
+					is_bender_trait_trigger = yes
+					event_target:hostile = { is_bender_trait_trigger = no }
+				}
+			}
+			30 = { # Full Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_FULL_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.17 } # Attack
+					}
+				}
+				modifier = {
+					factor = 2
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 1.8
+					trait = master_bender
+				}
+				modifier = {
+					factor = 1.6
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = firebender
+				}
+				modifier = {
+					factor = 1.4
+					trait = competent_bender
+				}
+				modifier = {
+					factor = 2
+					is_bender_trait_trigger = yes
+					event_target:hostile = { is_bender_trait_trigger = no }
+				}
+			}
+			30 = { # Half Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_HALF_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.18 } # Attack
+					}
+				}
+			}
+			25 = { # Quarter Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_QUARTER_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.19 } # Attack
+					}
+				}
+			}
+			10 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_MISS_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.20 } # Attack
+					}
+				}
+				modifier = {
+					factor = 5
+					event_target:hostile = { has_character_flag = ADUEL_defensive_stance }
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 2
+					NOT = { trait = airbender }
+					event_target:hostile = { trait = airbender }
+				}
+				modifier = {
+					factor = 1.3
+					event_target:hostile = { trait = competent_bender }
+				}
+				modifier = {
+					factor = 1.2
+					event_target:hostile = { trait = earthbender }
+				}
+				modifier = {
+					factor = 1.5
+					event_target:hostile = { trait = quick }
+				}
+				modifier = {
+					factor = 0.8
+					has_character_flag = used_earthquake
+				}
+			}
+		}
+	}
+	option = { # Counter
+		name = ADUELoptB.14
+		trigger = {
+			event_target:hostile = {
+				check_variable = { which = myHP value = 1 }
+			}
+		}
+		ai_chance = {
+			factor = 0.1
+		}
+		custom_tooltip = {
+			text = ADUEL_DEFEND_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.26 } # Defend
+			}
+		}
+	}
+	option = { # Ability
+		name = ADUELoptC.14
+		ai_chance = {
+			factor = 1
+		}
+		custom_tooltip = {
+			text = ADUEL_ABILITY_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.15 } # Duel - Select Ability
+			}
+		}
+		trigger = {
+			event_target:hostile = {
+				check_variable = { which = myHP value = 1 }
+			}
+			check_variable = { which = mySTA value = 2 }
+			OR = {
+				trait = waterbender
+				trait = earthbender
+				trait = firebender
+				trait = airbender
+				trait = combustionbender
+				trait = lightningbender
+				trait = smokebender
+				trait = healer
+				trait = metalbender
+				trait = seismicsense_nonblind
+				trait = seismicsense
+				trait = sandbender
+				trait = lavabender
+				trait = voidbender
+				trait = chi_blocker
+				trait = poison_expert
+				trait = explosives_expert
+				trait = weapons_expert
+				trait = weapon_master
+				trait = avatar
+				trait = fullyrealisedavatar
+			}
+		}
+	}
+	
+	option = { # Now, Strike the killing blow!
+		name = ADUELoptE.14
+		custom_tooltip = {
+			text = ADUEL_END_DUEL_TOOLTIP
+		}
+		ai_chance = {
+			factor = 1
+		}
+		trigger = {
+			event_target:hostile = {
+				NOT = { check_variable = { which = myHP value = 1 } }
+			}
+		}
+		hidden_tooltip = {
+			event_target:hostile = {
+				character_event = { id = ADUEL.31 } # Duel - End - Victory
+			}
+		}
+	}
+	
+	option = { # Yield
+		name = ADUELoptD.14
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		ai_chance = {
+			factor = 0.5
+		}
+		trigger = {
+			NOT = { check_variable = { which = myHP value = 10 } }
+		}
+		hidden_tooltip = {
+			event_target:hostile = {
+				character_event = { id = ADUEL.28 } # Duel - End - Victory
+			}
+		}
+	}
+}
+
+# Duel - Ability Select
+character_event = {
+	id = ADUEL.15
+	desc = ADUELdesc.15
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.15
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		random_list = {
+			5 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_CRIT_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.16 } # Attack
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 2
+					trait = quick
+				}
+				modifier = {
+					factor = 1.5
+					is_bender_trait_trigger = yes
+					event_target:hostile = { is_bender_trait_trigger = no }
+				}
+			}
+			30 = { # Full Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_FULL_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.17 } # Attack
+					}
+				}
+				modifier = {
+					factor = 2
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 1.8
+					trait = master_bender
+				}
+				modifier = {
+					factor = 1.6
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = firebender
+				}
+				modifier = {
+					factor = 1.4
+					trait = competent_bender
+				}
+				modifier = {
+					factor = 2
+					is_bender_trait_trigger = yes
+					event_target:hostile = { is_bender_trait_trigger = no }
+				}
+			}
+			30 = { # Half Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_HALF_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.18 } # Attack
+					}
+				}
+			}
+			25 = { # Quarter Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_QUARTER_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.19 } # Attack
+					}
+				}
+			}
+			10 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_MISS_TOOLTIP
+					hidden_tooltip = {
+						character_event = { id = ADUEL.20 } # Attack
+					}
+				}
+				modifier = {
+					factor = 5
+					event_target:hostile = { has_character_flag = ADUEL_defensive_stance }
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 2
+					NOT = { trait = airbender }
+					event_target:hostile = { trait = airbender }
+				}
+				modifier = {
+					factor = 1.3
+					event_target:hostile = { trait = competent_bender }
+				}
+				modifier = {
+					factor = 1.2
+					event_target:hostile = { trait = earthbender }
+				}
+				modifier = {
+					factor = 1.5
+					event_target:hostile = { trait = quick }
+				}
+				modifier = {
+					factor = 0.8
+					has_character_flag = used_earthquake
+				}
+			}
+		}
+	}
+	
+	option = { # Earthbender - Earthquake
+		name = ADUELoptB.15
+		tooltip_info = earthbender
+		trigger = {
+			trait = earthbender
+			NOT = { has_character_flag = used_earthquake }
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_EARTHBENDER_TOOLTIP
+			hidden_tooltip = {
+				set_character_flag = used_earthquake
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.29 } # Earthquake Attack
+			}
+		}
+	}
+	option = { # Lightningbender - Lightning Strike
+		name = ADUELoptC.15
+		tooltip_info = lightningbender
+		trigger = {
+			trait = lightningbender
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_LIGHTNING_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.44 } # Lightning Strike
+			}
+		}
+	}
+	option = { # Combustionbender - Combustion Blast
+		name = ADUELoptD.15
+		tooltip_info = combustionbender
+		trigger = {
+			trait = combustionbender
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_COMBUSTION_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.49 } # Combustion Blast
+			}
+		}
+	}
+	option = { # Smokebender - Smoke Screen
+		name = ADUELoptE.15
+		tooltip_info = smokebender
+		trigger = {
+			trait = smokebender
+			NOT = { has_character_flag = used_smoke_screen }
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_SMOKE_TOOLTIP
+			hidden_tooltip = {
+				set_character_flag = used_smoke_screen
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.53 } # Smoke Screen
+			}
+		}
+	}
+	option = { # Healer - Restoration
+		name = ADUELoptF.15
+		tooltip_info = healer
+		trigger = {
+			trait = healer
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_RESTORATION_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.55 } # Restoration
+			}
+		}
+	}
+	option = { # Firebender - Firebolt
+		name = ADUELoptG.15
+		tooltip_info = firebender
+		trigger = {
+			trait = firebender
+			NOT = { has_character_flag = has_used_fireball }
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_FIREBENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.57 } # Firebender Attack
+			}
+		}
+	}
+	option = { # Waterbender - Freeze
+		name = ADUELoptH.15
+		tooltip_info = waterbender
+		trigger = {
+			trait = waterbender
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_WATERBENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.60 } # Waterbender Attack
+			}
+		}
+	}
+	option = { # Airbender - Baffle
+		name = ADUELoptI.15
+		tooltip_info = airbender
+		trigger = {
+			trait = airbender
+			OR = {
+				ai = no
+				NOT = { check_variable = { which = myHP value = 15 } }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_AIRBENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.63 } # Airbender Retreat
+			}
+		}
+	}
+	option = { # Metalbender - Crush
+		name = ADUELoptJ.15
+		tooltip_info = metalbender
+		trigger = {
+			trait = metalbender
+			event_target:hostile = { 
+				NOT = { has_character_flag = been_crushed }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_METALBENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.68 } # Metalbender Attack
+			}
+		}
+	}
+	option = { # Earth Sense - Anticipaite
+		name = ADUELoptK.15
+		tooltip_info = seismicsense_nonblind
+		trigger = {
+			OR = {
+				trait = seismicsense_nonblind
+				trait = seismicsense
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_EARTHSENSE_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.71 }
+			}
+		}
+	}
+	option = { # Sandbender - Erode
+		name = ADUELoptL.15
+		tooltip_info = sandbender
+		trigger = {
+			trait = sandbender
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_SANDBENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.74 }
+			}
+		}
+	}
+	option = { # Lavabender - Volcano
+		name = ADUELoptM.15
+		tooltip_info = lavabender
+		trigger = {
+			trait = lavabender
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_LAVABENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.77 }
+			}
+		}
+	}
+	option = { # Voidbender - Void
+		name = ADUELoptN.15
+		tooltip_info = voidbender
+		trigger = {
+			trait = voidbender
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_VOIDBENDER_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.82 }
+			}
+		}
+	}
+	option = { # Chi-Blocker - Block
+		name = ADUELoptO.15
+		tooltip_info = chi_blocker
+		trigger = {
+			trait = chi_blocker
+			event_target:hostile = { 
+				NOT = { has_character_flag = is_chi_blocked }
+				OR = {
+					trait = earthbender
+					trait = firebender
+					trait = airbender
+					trait = waterbender
+				}
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_CHIBLOCK_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.87 }
+			}
+		}
+	}
+	option = { # Weapon Master - Power Attack
+		name = ADUELoptP.15
+		tooltip_info = weapons_expert
+		trigger = {
+			NOT = { has_character_flag = has_power_attacked }
+			OR = {
+				trait = weapons_expert
+				trait = weapon_master
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_WEAPON_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.90 }
+			}
+		}
+	}
+	option = { # Poison Expert - Deadly Toxin
+		name = ADUELoptQ.15
+		tooltip_info = poison_expert
+		trigger = {
+			trait = poison_expert
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_POISON_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.93 }
+			}
+		}
+	}
+	option = { # Explosive Expert - Explosive Blast
+		name = ADUELoptR.15
+		tooltip_info = explosives_expert
+		trigger = {
+			trait = explosives_expert
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_EXPLOSIVE_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.96 }
+			}
+		}
+	}
+	option = { # Avatar - Avatar State
+		name = ADUELoptS.15
+		tooltip_info = avatar
+		trigger = {
+			OR = {
+				trait = avatar
+				trait = fullyrealisedavatar
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_ATK_AVATAR_TOOLTIP
+			hidden_tooltip = {
+				subtract_variable = { which = mySTA value = 2 }
+				character_event = { id = ADUEL.99 }
+			}
+		}
+	}
+}
+
+# Duel - Attack - Crit Hit - Attacker
+character_event = {
+	id = ADUEL.16
+	desc = { # Nonbender
+		trigger = {
+			is_bender_trait_trigger = no
+		}
+		text = ADUELdescA.16
+	}
+	desc = { # Earthbender
+		trigger = {
+			trait = earthbender
+		}
+		text = ADUELdescB.16
+	}
+	desc = { # Firebender
+		trigger = {
+			trait = firebender
+		}
+		text = ADUELdescC.16
+	}
+	desc = { # Waterbender
+		trigger = {
+			trait = waterbender
+		}
+		text = ADUELdescD.16
+	}
+	desc = { # Airbender
+		trigger = {
+			trait = airbender
+		}
+		text = ADUELdescE.16
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk which = myATK }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.16
+		custom_tooltip = {
+			text = ADUEL_CRIT_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.21 } # Duel - Attack - Broadcast Crit Damage
+				}
+			}
+		}
+	}
+}
+
+# Duel - Attack - Full Hit
+character_event = {
+	id = ADUEL.17
+	desc = { # Nonbender
+		trigger = {
+			is_bender_trait_trigger = no
+		}
+		text = ADUELdescA.17
+	}
+	desc = { # Earthbender
+		trigger = {
+			trait = earthbender
+		}
+		text = ADUELdescB.17
+	}
+	desc = { # Firebender
+		trigger = {
+			trait = firebender
+		}
+		text = ADUELdescC.17
+	}
+	desc = { # Waterbender
+		trigger = {
+			trait = waterbender
+		}
+		text = ADUELdescD.17
+	}
+	desc = { # Airbender
+		trigger = {
+			trait = airbender
+		}
+		text = ADUELdescE.17
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk which = myATK }
+		set_variable = { which = global_memory which = global_atk}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = global_memory which = myDEF }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = global_atk which = myDEF }
+				subtract_variable = { which = myHP which = global_atk }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.17
+		trigger = {
+			event_target:hostile = {
+				check_variable = { which = global_memory which = myDEF }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.22 } # Duel - Attack - Broadcast Crit Damage
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptB.19
+		trigger = {
+			event_target:hostile = {
+				NOT = { check_variable = { which = global_memory which = myDEF } }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_MISS_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
+				}
+			}
+		}
+	}
+}
+
+# Duel - Attack - Half Hit
+character_event = {
+	id = ADUEL.18
+	desc = { # Nonbender
+		trigger = {
+			is_bender_trait_trigger = no
+		}
+		text = ADUELdescA.18
+	}
+	desc = { # Earthbender
+		trigger = {
+			trait = earthbender
+		}
+		text = ADUELdescB.18
+	}
+	desc = { # Firebender
+		trigger = {
+			trait = firebender
+		}
+		text = ADUELdescC.18
+	}
+	desc = { # Waterbender
+		trigger = {
+			trait = waterbender
+		}
+		text = ADUELdescD.18
+	}
+	desc = { # Airbender
+		trigger = {
+			trait = airbender
+		}
+		text = ADUELdescE.18
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk which = myATK }
+		divide_variable = { which = global_atk value = 2 }
+		set_variable = { which = global_memory which = global_atk}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = global_memory which = myDEF }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = global_atk which = myDEF }
+				subtract_variable = { which = myHP which = global_atk }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.18
+		trigger = {
+			event_target:hostile = {
+				check_variable = { which = global_memory which = myDEF }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.23 } # Duel - Attack - Broadcast Crit Damage
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptB.19
+		trigger = {
+			event_target:hostile = {
+				NOT = { check_variable = { which = global_memory which = myDEF } }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_MISS_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
+				}
+			}
+		}
+	}
+}
+
+# Duel - Attack - Third Hit
+character_event = {
+	id = ADUEL.19
+	desc = { # Nonbender
+		trigger = {
+			is_bender_trait_trigger = no
+		}
+		text = ADUELdescA.19
+	}
+	desc = { # Earthbender
+		trigger = {
+			trait = earthbender
+		}
+		text = ADUELdescB.19
+	}
+	desc = { # Firebender
+		trigger = {
+			trait = firebender
+		}
+		text = ADUELdescC.19
+	}
+	desc = { # Waterbender
+		trigger = {
+			trait = waterbender
+		}
+		text = ADUELdescD.19
+	}
+	desc = { # Airbender
+		trigger = {
+			trait = airbender
+		}
+		text = ADUELdescE.19
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk which = myATK }
+		divide_variable = { which = global_atk value = 3 }
+		set_variable = { which = global_memory which = global_atk}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = global_memory which = myDEF }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = global_atk which = myDEF }
+				subtract_variable = { which = myHP which = global_atk }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.19
+		trigger = {
+			event_target:hostile = {
+				check_variable = { which = global_memory which = myDEF }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.24 } # Duel - Attack - Broadcast Crit Damage
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptB.19
+		trigger = {
+			event_target:hostile = {
+				NOT = { check_variable = { which = global_memory which = myDEF } }
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_MISS_DAM_ATK_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
+				}
+			}
+		}
+	}
+}
+
+# Duel - Attack - Miss
+character_event = {
+	id = ADUEL.20
+	desc = { # Nonbender
+		trigger = {
+			is_bender_trait_trigger = no
+		}
+		text = ADUELdescA.20
+	}
+	desc = { # Earthbender
+		trigger = {
+			trait = earthbender
+		}
+		text = ADUELdescB.20
+	}
+	desc = { # Firebender
+		trigger = {
+			trait = firebender
+		}
+		text = ADUELdescC.20
+	}
+	desc = { # Waterbender
+		trigger = {
+			trait = waterbender
+		}
+		text = ADUELdescD.20
+	}
+	desc = { # Airbender
+		trigger = {
+			trait = airbender
+		}
+		text = ADUELdescE.20
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.20
+		custom_tooltip = {
+			text = ADUEL_MISS_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss
+				}
+			}
+		}
+	}
+}
+
+# Duel - Attack - Crit Hit - Defender
+character_event = {
+	id = ADUEL.21
+	desc = { # Nonbender
+		trigger = {
+			FROM = { is_bender_trait_trigger = no }
+		}
+		text = ADUELdescA.21
+	}
+	desc = { # Earthbender
+		trigger = {
+			FROM = { trait = earthbender }
+		}
+		text = ADUELdescB.21
+	}
+	desc = { # Firebender
+		trigger = {
+			FROM = { trait = firebender }
+		}
+		text = ADUELdescC.21
+	}
+	desc = { # Waterbender
+		trigger = {
+			FROM = { trait = waterbender }
+		}
+		text = ADUELdescD.21
+	}
+	desc = { # Airbender
+		trigger = {
+			FROM = { trait = airbender }
+		}
+		text = ADUELdescE.21
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.21
+		custom_tooltip = {
+			text = ADUEL_CRIT_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Attack - Full Hit
+character_event = {
+	id = ADUEL.22
+	desc = { # Nonbender
+		trigger = {
+			FROM = { is_bender_trait_trigger = no }
+		}
+		text = ADUELdescA.22
+	}
+	desc = { # Earthbender
+		trigger = {
+			FROM = { trait = earthbender }
+		}
+		text = ADUELdescB.22
+	}
+	desc = { # Firebender
+		trigger = {
+			FROM = { trait = firebender }
+		}
+		text = ADUELdescC.22
+	}
+	desc = { # Waterbender
+		trigger = {
+			FROM = { trait = waterbender }
+		}
+		text = ADUELdescD.22
+	}
+	desc = { # Airbender
+		trigger = {
+			FROM = { trait = airbender }
+		}
+		text = ADUELdescE.22
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.22
+		trigger = {
+			check_variable = { which = global_memory which = myDEF }
+		}
+		custom_tooltip = {
+			text = ADUEL_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptB.22
+		trigger = {
+			NOT = { check_variable = { which = global_memory which = myDEF } }
+		}
+		custom_tooltip = {
+			text = ADUEL_MISS_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Attack - Half Hit
+character_event = {
+	id = ADUEL.23
+	desc = { # Nonbender
+		trigger = {
+			FROM = { is_bender_trait_trigger = no }
+		}
+		text = ADUELdescA.23
+	}
+	desc = { # Earthbender
+		trigger = {
+			FROM = { trait = earthbender }
+		}
+		text = ADUELdescB.23
+	}
+	desc = { # Firebender
+		trigger = {
+			FROM = { trait = firebender }
+		}
+		text = ADUELdescC.23
+	}
+	desc = { # Waterbender
+		trigger = {
+			FROM = { trait = waterbender }
+		}
+		text = ADUELdescD.23
+	}
+	desc = { # Airbender
+		trigger = {
+			FROM = { trait = airbender }
+		}
+		text = ADUELdescE.23
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.23
+		trigger = {
+			check_variable = { which = global_memory which = myDEF }
+		}
+		custom_tooltip = {
+			text = ADUEL_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptB.23
+		trigger = {
+			NOT = { check_variable = { which = global_memory which = myDEF } }
+		}
+		custom_tooltip = {
+			text = ADUEL_MISS_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Attack - Third Hit
+character_event = {
+	id = ADUEL.24
+	desc = { # Nonbender
+		trigger = {
+			FROM = { is_bender_trait_trigger = no }
+		}
+		text = ADUELdescA.24
+	}
+	desc = { # Earthbender
+		trigger = {
+			FROM = { trait = earthbender }
+		}
+		text = ADUELdescB.24
+	}
+	desc = { # Firebender
+		trigger = {
+			FROM = { trait = firebender }
+		}
+		text = ADUELdescC.24
+	}
+	desc = { # Waterbender
+		trigger = {
+			FROM = { trait = waterbender }
+		}
+		text = ADUELdescD.24
+	}
+	desc = { # Airbender
+		trigger = {
+			FROM = { trait = airbender }
+		}
+		text = ADUELdescE.24
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.24
+		trigger = {
+			check_variable = { which = global_memory which = myDEF }
+		}
+		custom_tooltip = {
+			text = ADUEL_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptB.24
+		trigger = {
+			NOT = { check_variable = { which = global_memory which = myDEF } }
+		}
+		custom_tooltip = {
+			text = ADUEL_MISS_DAM_DEF_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Attack - Miss
+character_event = {
+	id = ADUEL.25
+	desc = { # Nonbender
+		trigger = {
+			FROM = { is_bender_trait_trigger = no }
+		}
+		text = ADUELdescA.25
+	}
+	desc = { # Earthbender
+		trigger = {
+			FROM = { trait = earthbender }
+		}
+		text = ADUELdescB.25
+	}
+	desc = { # Firebender
+		trigger = {
+			FROM = { trait = firebender }
+		}
+		text = ADUELdescC.25
+	}
+	desc = { # Waterbender
+		trigger = {
+			FROM = { trait = waterbender }
+		}
+		text = ADUELdescD.25
+	}
+	desc = { # Airbender
+		trigger = {
+			FROM = { trait = airbender }
+		}
+		text = ADUELdescE.25
+	}
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.25
+		custom_tooltip = {
+			text = ADUEL_MISS_DEF_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.14 } # Duel - Attack - Broadcast Miss
+				}
+			}
+		}
+	}
+}
+
+# Duel - Defensive
+character_event = {
+	id = ADUEL.26
+	desc = ADUELdesc.26
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		change_variable = { which = myDEF value = 2 }
+		set_character_flag = ADUEL_defensive_stance
+	}
+	
+	option = {
+		name = ADUELoptA.26
+		custom_tooltip = {
+			text = ADUEL_DEFEND_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.27 } # Duel - Attack - Broadcast Crit Damage
+				}
+			}
+		}
+	}
+}
+
+# Duel - Attack - Miss
+character_event = {
+	id = ADUEL.27
+	desc = ADUELdesc.27
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.27
+		hidden_tooltip = {
+			character_event = { id = ADUEL.14 }
+		}
+	}
+}
+
+# Duel - Victory - Yield
+character_event = {
+	id = ADUEL.28
+	desc = ADUELdesc.28
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			save_event_target_as = hostile
+		}
+	}
+	
+	option = { # Spare Enemy
+		name = ADUELoptA.28
+		trigger = {
+			NOT = { has_character_flag = duel_spar }
+		}
+		custom_tooltip = {
+			text = ADUEL_SPARE_ENEMY
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.35 } # Duel - Spare
+				}
+			}
+		}
+	}
+	option = { # Execute Enemy
+		name = ADUELoptB.28
+		trigger = {
+			NOT = { has_character_flag = duel_spar }
+		}
+		custom_tooltip = {
+			text = ADUEL_EXECUTE_ENEMY
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.32 } # Duel - Execute
+				}
+			}
+		}
+	}
+	option = { # Imprison Enemy
+		name = ADUELoptC.28
+		trigger = {
+			NOT = { has_character_flag = duel_spar }
+			event_target:hostile = {
+				is_foe = ROOT
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_CAPTURE_ENEMY
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.33 } # Duel - Imprison
+				}
+			}
+		}
+	}
+	option = { # Shame Enemy
+		name = ADUELoptD.28
+		trigger = {
+			trait = firebender
+			NOR = {
+				trait = avatar
+				trait = fullyrealisedavatar
+				has_character_flag = duel_spar
+			}
+		}
+		custom_tooltip = {
+			text = ADUEL_BURN_ENEMY
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.34 } # Duel - Burn
+				}
+			}
+		}
+	}
+	option = { # End Practice Match
+		name = ADUELoptE.28
+		trigger = {
+			has_character_flag = duel_spar
+		}
+		custom_tooltip = {
+			text = ADUEL_SPAR_ENEMY
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.36 } # Duel - Spar
+				}
+			}
+		}
+	}
+}
+
+# Duel - Earthquake - Ability
+character_event = {
+	id = ADUEL.29
+	desc = ADUELdesc.29
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		event_target:hostile = {
+			subtract_variable = { which = myDEF value = 1 }
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.29
+		hidden_tooltip = {
+			event_target:hostile = {
+				character_event = { id = ADUEL.30 } # Duel - Earthquake - Hit
+			}
+		}
+	}
+}
+
+# Duel - Earthquake - Ability
+character_event = {
+	id = ADUEL.30
+	desc = ADUELdesc.30
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.30
+		custom_tooltip = {
+			text = ADUEL_EARTHQUAKE_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Defeat - Yield
+character_event = {
+	id = ADUEL.31
+	desc = ADUELdesc.31
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Defeat
+		name = ADUELoptA.31
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.28 }
+			}
+		}
+	}
+}
+
+# Duel - Execution - Receiver
+character_event = {
+	id = ADUEL.32
+	desc = ADUELdesc.32
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # I accept defeat.
+		name = ADUELoptA.32
+		death = { death_reason = death_duel killer = FROM }
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.37 } # Duel - Execution - Accepted
+			}
+		}
+	}
+	option = { # I spit on you!
+		name = ADUELoptB.32
+		death = { death_reason = death_duel killer = FROM }
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.38 } # Duel - Execution - Defied
+			}
+		}
+	}
+}
+
+# Duel - Imprison - Receiver
+character_event = {
+	id = ADUEL.33
+	desc = ADUELdesc.33
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # I accept defeat.
+		name = ADUELoptA.33
+		imprison = FROM
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.39 } # Duel - Imprisoned - Accepted
+			}
+		}
+	}
+}
+
+# Duel - Shame - Receiver
+character_event = {
+	id = ADUEL.34
+	desc = ADUELdesc.34
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Burned
+		name = ADUELoptA.34
+		add_trait = agnikaiburnt
+		opinion = { modifier = agni_kai_burner who = FROM years = 100 }
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.40 } # Duel - Shame - Accepted
+			}
+		}
+	}
+}
+
+# Duel - Spared - Receiver
+character_event = {
+	id = ADUEL.35
+	desc = ADUELdesc.35
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # I accept defeat.
+		name = ADUELoptA.35
+		remove_rival = FROM
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.41 } # Duel - Spared - Accepted
+			}
+		}
+	}
+	
+	option = { # Defy
+		name = ADUELoptB.35
+		opinion = { modifier = insulted who = FROM years = 100 }
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.42 } # Duel - Spared - Refused
+			}
+		}
+	}
+}
+
+# Duel - Spar - Receiver
+character_event = {
+	id = ADUEL.36
+	desc = ADUELdesc.36
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # I accept defeat.
+		name = ADUELoptA.36
+		hidden_tooltip = {
+			clr_character_flag = duel_spar
+			FROM = {
+				clr_character_flag = duel_spar
+				character_event = { id = ADUEL.43 } # Duel - Spar - Accepted
+			}
+		}
+	}
+}
+
+# Duel - Execution - Victor
+character_event = {
+	id = ADUEL.37
+	desc = ADUELdesc.37
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.37
+		hidden_tooltip = {
+			if = {
+				limit = {
+					FROM = {
+						NOT = { dynasty = ROOT }
+					}
+				}
+				FROM = {
+					any_close_relative = {
+						opinion = { modifier = opinion_killed_close_kin who = ROOT }
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Victory - Gain
+		name = ADUELoptB.37
+		hidden_tooltip = {
+			if = {
+				limit = {
+					FROM = {
+						NOT = { dynasty = ROOT }
+					}
+				}
+				FROM = {
+					any_close_relative = {
+						opinion = { modifier = opinion_killed_close_kin who = ROOT }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Duel - Execution - Victor - Defied
+character_event = {
+	id = ADUEL.38
+	desc = ADUELdesc.38
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.38
+		hidden_tooltip = {
+			if = {
+				limit = {
+					FROM = {
+						NOT = { dynasty = ROOT }
+					}
+				}
+				FROM = {
+					any_close_relative = {
+						opinion = { modifier = opinion_killed_close_kin who = ROOT }
+					}
+					any_close_relative = {
+						limit = {
+							is_adult = yes
+							martial = 10
+						}
+						add_rival = ROOT
+					}
+				}
+			}
+		}
+	}
+}
+
+# Duel - Imprisoned - Victor
+character_event = {
+	id = ADUEL.39
+	desc = ADUELdesc.39
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.39
+	}
+}
+
+# Duel - Shamed - Victor
+character_event = {
+	id = ADUEL.40
+	desc = ADUELdesc.40
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.40
+	}
+}
+
+# Duel - Spared - Victor - Accepted
+character_event = {
+	id = ADUEL.41
+	desc = ADUELdesc.41
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.41
+		remove_rival = FROM
+	}
+}
+
+# Duel - Spared - Victor - Rejected
+character_event = {
+	id = ADUEL.42
+	desc = ADUELdesc.42
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.42
+	}
+}
+
+# Duel - Spar - Victor
+character_event = {
+	id = ADUEL.43
+	desc = ADUELdesc.43
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Victory
+		name = ADUELoptA.43
+		add_society_currency_medium_effect = yes
+		hidden_tooltip = {
+			if = {
+				limit = { has_quest = quest_bak_spar }
+				character_event = { id = MNSAK.5089 }
+			}
+		}
+		FROM = {
+			opinion = { modifier = opinion_mutual_respect who = ROOT years = 2 }
+		}
+	}
+}
+
+# Duel - Lightening - Ability
+character_event = {
+	id = ADUEL.44
+	desc = ADUELdesc.44
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.44
+		random_list = {
+			50 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_LIGHTENING_CRIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.45 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_LIGHTENING_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.46 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Lightening - HIT
+character_event = {
+	id = ADUEL.45
+	desc = ADUELdesc.45
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 100 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.45
+		trigger = {
+			NOT = { trait = lightningbender }
+		}
+		custom_tooltip = {
+			text = ADUEL_LIGHTENING_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+	
+	option = { # Redirect
+		name = ADUELoptB.45
+		trigger = {
+			trait = lightningbender
+		}
+		custom_tooltip = {
+			text = ADUEL_LIGHTENING_REVERSE_TOOLTIP
+			hidden_tooltip = {
+				FROM = { 
+					character_event = { id = ADUEL.47 } 
+				}
+			}
+		}
+	}
+}
+
+# Duel - Lightening - MISS
+character_event = {
+	id = ADUEL.46
+	desc = ADUELdesc.46
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.46
+		custom_tooltip = {
+			text = ADUEL_LIGHTENING_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Lightening - Redirect
+character_event = {
+	id = ADUEL.47
+	desc = ADUELdesc.47
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.47
+		death = { death_reason = death_duel killer = FROM }
+		FROM = {
+			hidden_tooltip = {
+				character_event = { id = ADUEL.48 }
+			}
+		}
+	}
+}
+
+# Duel - Lightening - Redirect
+character_event = {
+	id = ADUEL.48
+	desc = ADUELdesc.48
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.48
+		prestige = 100
+		### CLEAN UP
+	}
+}
+
+# Duel - Combustion - Ability
+character_event = {
+	id = ADUEL.49
+	desc = ADUELdesc.49
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.49
+		random_list = {
+			33 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_COMBUSTION_CRIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.50 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_COMBUSTION_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.51 } # HIT
+						}
+					}
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_LIGHTENING_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.52 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Combustion - Crit
+character_event = {
+	id = ADUEL.50
+	desc = ADUELdesc.50
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 20 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.50
+		custom_tooltip = {
+			text = ADUEL_COMBUSTION_GOT_CRIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Combustion - Hit
+character_event = {
+	id = ADUEL.51
+	desc = ADUELdesc.51
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 10 }
+		set_variable = { which = global_memory which = global_atk}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = global_memory which = myDEF }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = global_atk which = myDEF }
+				subtract_variable = { which = myHP which = global_atk }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.51
+		custom_tooltip = {
+			text = ADUEL_COMBUSTION_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Combustion - MISS
+character_event = {
+	id = ADUEL.52
+	desc = ADUELdesc.52
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.52
+		custom_tooltip = {
+			text = ADUEL_COMBUSTION_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Smoke Screen - Ability
+character_event = {
+	id = ADUEL.53
+	desc = ADUELdesc.53
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		ROOT = {
+			change_variable = { which = myDEF value = 2 }
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.53
+		custom_tooltip = {
+			text = ADUEL_SMOKESCREEN_USED_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.54 } # Duel - Smoke Screen - Hit
+				}
+			}
+		}
+	}
+}
+
+# Duel - Smoke Screen - Ability
+character_event = {
+	id = ADUEL.54
+	desc = ADUELdesc.54
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.54
+		custom_tooltip = {
+			text = ADUEL_SMOKESCREEN_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Restoration - Ability
+character_event = {
+	id = ADUEL.55
+	desc = ADUELdesc.55
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		ROOT = {
+			change_variable = { which = myHP value = 5 }
+			if = {
+				limit = {
+					check_variable = { which = myHPcap which = myHP }
+				}
+				set_variable = { which = myHP which = myHPcap }
+			}
+		}
+	}
+	
+	option = {
+		name = ADUELoptA.55
+		custom_tooltip = {
+			text = ADUEL_RESTORATION_USED_TOOLTIP
+			hidden_tooltip = {
+				event_target:hostile = {
+					character_event = { id = ADUEL.56 } # Duel - Restoration - Hit
+				}
+			}
+		}
+	}
+}
+
+# Duel - Restoration - Ability
+character_event = {
+	id = ADUEL.56
+	desc = ADUELdesc.56
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.56
+		custom_tooltip = {
+			text = ADUEL_RESOTRATION_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Fireball - Ability
+character_event = {
+	id = ADUEL.57
+	desc = ADUELdesc.57
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.57
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_FIREBOLT_HIT_TOOLTIP
+					hidden_tooltip = {
+						set_character_flag = has_used_fireball
+						event_target:hostile = {
+							character_event = { id = ADUEL.58 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_FIREBOLT_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.59 } # MISS
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Duel - Fireball - Hit
+character_event = {
+	id = ADUEL.58
+	desc = ADUELdesc.58
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = myDEF value = 1 }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = myDEF value = 2 }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.58
+		custom_tooltip = {
+			text = ADUEL_FIREBOLT_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Fireball - MISS
+character_event = {
+	id = ADUEL.59
+	desc = ADUELdesc.59
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.59
+		custom_tooltip = {
+			text = ADUEL_FIREBOLT_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Freeze - Ability
+character_event = {
+	id = ADUEL.60
+	desc = ADUELdesc.60
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.60
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_FREEZE_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.61 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_FREEZE_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.62 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = powerful_bender }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Freeze - Hit
+character_event = {
+	id = ADUEL.61
+	desc = ADUELdesc.61
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk which = myATK }
+		set_variable = { which = global_memory which = global_atk}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = global_memory which = myDEF }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = global_atk which = myDEF }
+				multiply_variable = { which = global_atk value = 2 }
+				subtract_variable = { which = myHP which = global_atk }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.61
+		custom_tooltip = {
+			text = ADUEL_FREEZE_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Freeze - MISS
+character_event = {
+	id = ADUEL.62
+	desc = ADUELdesc.62
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.62
+		custom_tooltip = {
+			text = ADUEL_FREEZE_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Baffle - Ability
+character_event = {
+	id = ADUEL.63
+	desc = ADUELdesc.63
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.63
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_BAFFLE_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.64 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_BAFFLE_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.66 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = powerful_bender }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Baffle - Hit
+character_event = {
+	id = ADUEL.64
+	desc = ADUELdesc.64
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.64
+		custom_tooltip = {
+			text = ADUEL_BAFFLE_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.65 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Baffle - Escape!
+character_event = {
+	id = ADUEL.65
+	desc = ADUELdesc.65
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.65
+	}
+}
+
+# Duel - Baffle - Miss
+character_event = {
+	id = ADUEL.66
+	desc = ADUELdesc.66
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.66
+		custom_tooltip = {
+			text = ADUEL_BAFFLE_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.67 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Baffle - Failure!
+character_event = {
+	id = ADUEL.67
+	desc = ADUELdesc.67
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.67
+		hidden_tooltip = {
+			event_target:hostile = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Crush - Ability
+character_event = {
+	id = ADUEL.68
+	desc = ADUELdesc.68
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.68
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_CRUSH_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.69 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_CRUSH_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.70 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = powerful_bender }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Crush - Hit
+character_event = {
+	id = ADUEL.69
+	desc = ADUELdesc.69
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		event_target:hostile = {
+			set_variable = { which = mySTA value = 0 }
+			set_character_flag = been_crushed
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.69
+		custom_tooltip = {
+			text = ADUEL_CRUSH_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Crush - MISS
+character_event = {
+	id = ADUEL.70
+	desc = ADUELdesc.70
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.70
+		custom_tooltip = {
+			text = ADUEL_CRUSH_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Sense - Ability
+character_event = {
+	id = ADUEL.71
+	desc = ADUELdesc.71
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.71
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_SENSE_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.72 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_SENSE_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.73 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = powerful_bender }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Sense - Hit
+character_event = {
+	id = ADUEL.72
+	desc = ADUELdesc.72
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk which = myATK }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.71
+		custom_tooltip = {
+			text = ADUEL_SENSE_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Sense - MISS
+character_event = {
+	id = ADUEL.73
+	desc = ADUELdesc.73
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.73
+		custom_tooltip = {
+			text = ADUEL_SENSE_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Erode - Ability
+character_event = {
+	id = ADUEL.74
+	desc = ADUELdesc.74
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.74
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_ERODE_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.75 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_ERODE_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.76 } # MISS
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Duel - Erode - Hit
+character_event = {
+	id = ADUEL.75
+	desc = ADUELdesc.75
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = myDEF value = 2 }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = myDEF value = 3 }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.75
+		custom_tooltip = {
+			text = ADUEL_ERODE_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Erode - MISS
+character_event = {
+	id = ADUEL.76
+	desc = ADUELdesc.76
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.76
+		custom_tooltip = {
+			text = ADUEL_ERODE_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Volcano - Ability
+character_event = {
+	id = ADUEL.77
+	desc = ADUELdesc.77
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.77
+		random_list = {
+			33 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_VOLCANO_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.78 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_VOLCANO_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.80 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Volcano - Hit
+character_event = {
+	id = ADUEL.78
+	desc = ADUELdesc.78
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 30 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.78
+		custom_tooltip = {
+			text = ADUEL_VOLCANO_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.79 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Volcano - Hit Return
+character_event = {
+	id = ADUEL.79
+	desc = ADUELdesc.79
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.79
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Volcano - MISS
+character_event = {
+	id = ADUEL.80
+	desc = ADUELdesc.80
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.80
+		custom_tooltip = {
+			text = ADUEL_VOLCANO_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.81 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Volcano - MISS Return
+character_event = {
+	id = ADUEL.81
+	desc = ADUELdesc.81
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.81
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Void - Ability
+character_event = {
+	id = ADUEL.82
+	desc = ADUELdesc.82
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.82
+		random_list = {
+			33 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_VOID_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.83 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_VOID_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.85 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Void - Hit
+character_event = {
+	id = ADUEL.83
+	desc = ADUELdesc.83
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 50 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.83
+		custom_tooltip = {
+			text = ADUEL_VOID_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.84 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Void - Hit Return
+character_event = {
+	id = ADUEL.84
+	desc = ADUELdesc.84
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.84
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Void - MISS
+character_event = {
+	id = ADUEL.85
+	desc = ADUELdesc.85
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.85
+		custom_tooltip = {
+			text = ADUEL_VOID_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.86 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Void - MISS Return
+character_event = {
+	id = ADUEL.86
+	desc = ADUELdesc.86
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.86
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Chi-Block - Ability
+character_event = {
+	id = ADUEL.87
+	desc = ADUELdesc.87
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.87
+		random_list = {
+			33 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_CHI_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.88 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_CHI_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.89 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Chi-Block - Hit
+character_event = {
+	id = ADUEL.88
+	desc = ADUELdesc.88
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		event_target:hostile = {
+			set_character_flag = is_chi_blocked
+			set_variable = { which = mySTA value = 0 }
+		}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = myATK value = 2 }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = myATK value = 3 }
+			}
+		}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = myDEF value = 2 }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = myDEF value = 3 }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.88
+		custom_tooltip = {
+			text = ADUEL_CHI_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Chi-Block - MISS
+character_event = {
+	id = ADUEL.89
+	desc = ADUELdesc.89
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.89
+		custom_tooltip = {
+			text = ADUEL_CHI_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Power Attack - Ability
+character_event = {
+	id = ADUEL.90
+	desc = ADUELdesc.90
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.90
+		random_list = {
+			33 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_POWER_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.91 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_POWER_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.92 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Power Attack - Hit
+character_event = {
+	id = ADUEL.91
+	desc = ADUELdesc.91
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = { 
+			set_character_flag = has_power_attacked
+		}
+		if = {
+			limit = {
+				event_target:hostile = {
+					check_variable = { which = myATK value = 2 }
+				}
+			}
+			event_target:hostile = {
+				subtract_variable = { which = myATK value = 3 }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.91
+		custom_tooltip = {
+			text = ADUEL_POWER_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Power Attack - MISS
+character_event = {
+	id = ADUEL.92
+	desc = ADUELdesc.92
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.92
+		custom_tooltip = {
+			text = ADUEL_POWER_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Toxin - Ability
+character_event = {
+	id = ADUEL.93
+	desc = ADUELdesc.93
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.93
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_TOXIN_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.94 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_TOXIN_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.95 } # MISS
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Duel - Toxin - Hit
+character_event = {
+	id = ADUEL.94
+	desc = ADUELdesc.94
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			event_target:hostile = {
+				change_variable = { which = myDEF value = 0 }
+			}
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.94
+		custom_tooltip = {
+			text = ADUEL_TOXIN_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Toxin - MISS
+character_event = {
+	id = ADUEL.95
+	desc = ADUELdesc.95
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.95
+		custom_tooltip = {
+			text = ADUEL_TOXIN_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Explosive - Ability
+character_event = {
+	id = ADUEL.96
+	desc = ADUELdesc.96
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.96
+		random_list = {
+			50 = { # Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_EXPLOSIVE_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.97 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			50 = { # Miss
+				custom_tooltip = {
+					text = ADUEL_ATK_EXPLOSIVE_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.98 } # MISS
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Duel - Explosive - Hit
+character_event = {
+	id = ADUEL.97
+	desc = ADUELdesc.97
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 16 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.97
+		custom_tooltip = {
+			text = ADUEL_EXPLOSIVE_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Explosive - MISS
+character_event = {
+	id = ADUEL.98
+	desc = ADUELdesc.98
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.98
+		custom_tooltip = {
+			text = ADUEL_EXPLOSIVE_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Avatar - Ability
+character_event = {
+	id = ADUEL.99
+	desc = ADUELdesc.99
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.99
+		random_list = {
+			66 = { # Crit Hit
+				custom_tooltip = {
+					text = ADUEL_ATK_AVATAR_HIT_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.100 } # HIT
+						}
+					}
+				}
+				modifier = {
+					factor = 5
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 4
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = powerful_bender
+				}
+			}
+			33 = {
+				custom_tooltip = {
+					text = ADUEL_ATK_AVATAR_MISS_TOOLTIP
+					hidden_tooltip = {
+						event_target:hostile = {
+							character_event = { id = ADUEL.102 } # MISS
+						}
+					}
+				}
+				modifier = {
+					factor = 3
+					event_target:hostile = { trait = legendary_bender }
+				}
+				modifier = {
+					factor = 2.5
+					event_target:hostile = { trait = master_bender }
+				}
+				modifier = {
+					factor = 2
+					event_target:hostile = { trait = powerful_bender }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = avatar }
+				}
+				modifier = {
+					factor = 4
+					event_target:hostile = { trait = fullyrealisedavatar }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Avatar - Hit
+character_event = {
+	id = ADUEL.100
+	desc = ADUELdesc.100
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 100 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Hit
+		name = ADUELoptA.100
+		custom_tooltip = {
+			text = ADUEL_AVATAR_GOT_HIT_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.101 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Avatar - Hit Return
+character_event = {
+	id = ADUEL.102
+	desc = ADUELdesc.102
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Hit
+		name = ADUELoptA.102
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}
+
+# Duel - Avatar - MISS
+character_event = {
+	id = ADUEL.102
+	desc = ADUELdesc.102
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Miss
+		name = ADUELoptA.102
+		custom_tooltip = {
+			text = ADUEL_AVATAR_GOT_MISS_TOOLTIP
+			hidden_tooltip = {
+				FROM = {
+					character_event = { id = ADUEL.103 }
+				}
+			}
+		}
+	}
+}
+
+# Duel - Avatar - MISS Return
+character_event = {
+	id = ADUEL.103
+	desc = ADUELdesc.103
+	picture = GFX_evt_eartharena
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = {
+		set_variable = { which = global_atk value = 25 }
+		event_target:hostile = {
+			subtract_variable = { which = myHP which = global_atk }
+		}
+	}
+	
+	option = { # Miss
+		name = ADUELoptA.103
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ADUEL.14 }
+			}
+		}
+	}
+}

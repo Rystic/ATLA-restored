@@ -1,0 +1,143 @@
+###########################################
+#                                         #
+# ATLA DUEL events		                  #
+#                                         #
+#                                      	  #
+#                                         #
+###########################################
+
+namespace = ADUEL
+
+character_event = { # AI Duel - Bounce
+	id = ADUEL.500
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		FROM = {
+			character_event = { id = ADUEL.501 }
+		}
+	}
+}
+
+character_event = { # AI Duel - Resolve
+	id = ADUEL.501
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		random_list = {
+			200 = { # Challenger Wins
+			
+			}
+			200 = { # Opponent Wins
+			
+			}
+		}
+	}
+}
+
+character_event = { # Recover Arifact
+	id = ADUEL.900
+	desc = ADUELdesc.900
+	picture = GFX_evt_sun_warrior_city
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.900
+		add_artifact = crownSunWarrior
+	}
+}
+
+narrative_event = { # Restore Kingdom
+	id = ADUEL.901
+	title = ADUELtitle.901
+	desc = ADUELdesc.901
+	picture = GFX_evt_sun_warrior_city
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.901
+		piety = 50
+		trigger = {
+			religion = the_eternal_flame
+		}
+	}
+	option = {
+		name = ADUELoptB.901
+		prestige = -50
+		trigger = {
+			religion_group = fire_religions
+			NOT = { religion = the_eternal_flame }
+		}
+	}
+	option = {
+		name = ADUELoptC.901
+		trigger = {
+			NOT = { religion_group = fire_religions }
+		}
+	}
+}
+
+narrative_event = { # A New Empire
+	id = ADUEL.902
+	title = ADUELtitle.902
+	desc = ADUELdesc.902
+	picture = GFX_evt_landscape_2
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	option = {
+		name = ADUELoptA.901
+		piety = 100
+		trigger = {
+			religion = the_eternal_flame
+		}
+	}
+	option = {
+		name = ADUELoptB.901
+		prestige = -100
+		trigger = {
+			religion_group = fire_religions
+			NOT = { religion = the_eternal_flame }
+		}
+	}
+	option = {
+		name = ADUELoptC.901
+		trigger = {
+			NOT = { religion_group = fire_religions }
+		}
+	}
+}
+
+character_event = { # START REDEMPTION - PING
+	id = ADUEL.1000
+	is_triggered_only = yes
+	hide_window = yes
+	
+	option = {
+		FROM = {
+			character_event = { id = ADUEL.1001 } # Ping Sender
+		}
+	}
+}
+
+character_event = { # Choose Approach
+	id = ADUEL.1001
+	desc = ADUELdesc.1001
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+
+	option = { # Order Duel
+		name = ADUELoptA.1001
+	}
+	
+	option = { # Demmand they shape up
+		name = ADUELoptB.1001
+	}
+}

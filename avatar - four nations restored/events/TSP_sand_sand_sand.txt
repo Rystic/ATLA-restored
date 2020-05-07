@@ -1,0 +1,113 @@
+# Sandbender Events #
+
+namespace = sand
+
+narrative_event = {
+	id = sand.1
+	picture = GFX_evt_wanshi_desert
+	major = yes
+	is_triggered_only = yes
+
+	title = SIWONGANNOUNCETITLE
+	desc = {
+		trigger = {
+			#Conditions for 1st description to be chosen
+			OR = {
+				culture = sandbender
+				religion = children_of_si_wong
+			}
+		}
+
+		# Sandbenders get this
+		text = SIWONGANNOUNCESAND
+	}
+
+	desc = {
+		trigger = {
+			#Conditions for 2nd description to be chosen
+			NOT = {
+				culture = sandbender
+				religion = children_of_si_wong
+			}
+		}
+
+		# Everyone else
+		text = SIWONGANNOUNCEABROAD
+	}
+
+	option = {
+		name = {
+			text = SIWONGSAND
+			trigger = {
+				OR = {
+					culture = sandbender
+					religion = children_of_si_wong
+				}
+			}
+		}
+
+		name = {
+			text = SIWONGEARTHKING
+			trigger = {
+				OR = {
+					trait = earthking
+					trait = earthkingpuppet
+					has_landed_title = e_earth_kingdom
+					has_landed_title = e_earthen_republic
+					has_landed_title = e_earth_empire
+					de_jure_liege_or_above = e_earth_kingdom
+				}
+				NOT = {
+					religion = children_of_si_wong
+					culture = sandbender
+				}
+			}
+		}
+
+		name = {
+			text = SIWONGFIRE
+			trigger = {
+				OR = {
+					has_landed_title = k_fire_nation
+					has_landed_title = e_fire_nation
+					has_landed_title = e_phoenix_kingdom
+					trait = firelord
+					religion = fire_nation_imperialism
+				}
+			}
+		}
+
+		name = {
+			text = SIWONGALLELSE
+			trigger = {
+				NOT = {
+					culture = sandbender
+					religion = children_of_si_wong
+				}
+			}
+		}
+	}
+
+	option = {
+		trigger = {
+			OR = {
+				culture = sandbender
+				religion = children_of_si_wong
+			}
+		}
+
+		name = NEEDSMORESAND
+		prestige = 1
+	}
+
+	option = {
+		trigger = {
+			NOT = {
+				culture = sandbender
+				religion = children_of_si_wong
+			}
+		}
+
+		name = SIWONGALLELSE
+	}
+}

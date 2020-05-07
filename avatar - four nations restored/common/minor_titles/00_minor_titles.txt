@@ -1,0 +1,790 @@
+########################################################
+# MINOR TITLES
+# Characters can have any number of these
+########################################################
+#	grant_limit: Max number of holders.
+#	realm_in_name: Append the name of the country after the title (Queen [of Sweden])
+#	allowed_to_hold: conditions for the character to hold the title
+#	allowed_to_grant: conditions for a ruler to grant the title
+#	regent: This is the title for regents (not really "minor")
+#	gain_effect: fires when the title is granted
+#	lose_effect: fires when a title is lost if dismissal_trigger evaluates to false
+#	message: should fire a message to the its owner when set
+#	The other fields are all character modifiers.
+
+#######################################
+# HARD: AUTO-GRANTED - DO NOT REMOVE!
+#######################################
+
+title_regent = {
+	realm_in_name = yes
+	dignity = 0.9
+	revoke_allowed = no
+	is_voter = yes
+	
+	monthly_salary = 0.1
+	monthly_prestige = 1.50
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_appointed_regent = {
+	dignity = 0.9
+	grant_limit = 1
+	opinion_effect = 10
+	revoke_allowed = yes
+	is_high_prio = yes
+	monthly_salary = 0.05
+	monthly_prestige = 0.75
+
+	allowed_to_hold = {
+		is_adult = yes
+		prisoner = no
+		has_regent = no
+	}
+	
+	allowed_to_grant = {
+		has_regent = no
+	}
+
+	gain_effect = {
+	}
+
+	lose_effect = {
+	}
+}
+
+title_ruler_consort = {
+	dignity = 0.88
+	show_as_title = yes
+	realm_in_name = yes
+	spouse_context = no # Title name as if the other gender version of the spouse's ruler title
+	revoke_allowed = no
+	
+	monthly_salary = 0.1
+	monthly_prestige = 1.00
+	
+	gain_effect = {
+	}
+	
+	lose_effect = {
+	}
+
+	message = no
+}
+
+title_tanist = {
+	dignity = 0.86
+	show_as_title = yes
+	realm_in_name = yes
+	revoke_allowed = no
+	
+	monthly_salary = 0.07
+	monthly_prestige = 0.75
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = no
+}
+
+title_queen_mother = {
+	dignity = 0.85
+	show_as_title = yes
+	realm_in_name = yes
+	revoke_allowed = no
+	
+	monthly_salary = 0.05
+	monthly_prestige = 1.00
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = no
+}
+
+title_prince = {
+	dignity = 0.8
+	show_as_title = yes
+	realm_in_name = yes
+	revoke_allowed = no
+	
+	monthly_salary = 0.05
+	monthly_prestige = 0.25
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = no
+}
+
+# Pagan consort
+title_courtesan = {
+	dignity = 0.05
+	realm_in_name = yes
+	revoke_allowed = no
+	
+	monthly_salary = 0.02
+	monthly_prestige = 0.10
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = no
+}
+
+# Commander, granted via its own interaction, so very special
+title_commander = {
+	is_high_prio = yes
+	
+	attribute = martial
+	dignity = 0.05
+	opinion_effect = 10
+	realm_in_name = yes
+	
+	monthly_salary = 0.05
+	monthly_prestige = 0.005
+	
+	allowed_to_hold = {
+		OR = {
+			AND = {
+				is_female = no
+				NOT = { culture = western_air_nomad }
+				NOT = { culture = eastern_air_nomad }
+			}
+			AND = {
+				is_female = yes
+				NOT = { culture = northern_water }
+				NOT = { culture = northern_air_nomad }
+				NOT = { culture = southern_air_nomad }
+				OR = {
+					culture = western_air_nomad
+					culture = eastern_air_nomad
+					trait = kyoshiwarrior
+					OR = {
+						liege = {
+							OR = {
+								is_female = yes
+								primary_title = {
+									OR = {
+										has_law = status_of_women_2
+										has_law = status_of_women_3
+										has_law = status_of_women_4
+									}
+								}
+							}
+						}
+					}
+				}
+			}		
+		}
+	
+		prisoner = no
+		is_adult = yes
+		NOT = { trait = incapable }
+		NOT = { trait = avatar }
+		NOT = { trait = fullyrealisedavatar }
+		NOT = { trait = in_hiding }
+		NOT = { has_character_flag = guru }
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+	
+	message = yes
+}
+
+#######################################
+# SOFT: GRANTABLE - FULLY MODDABLE
+#######################################
+
+title_court_jester = {
+	dignity = 0.01
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = -5
+	
+	monthly_salary = 0.02
+	monthly_prestige = -0.25
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+		NOT = { has_character_flag = guru }
+	}
+	
+	allowed_to_grant = {
+		OR = {
+			is_feudal = yes
+			is_tribal = yes
+		}
+		primary_title = {
+			OR = {
+				tier = king
+				tier = emperor
+			}
+		}
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_high_almoner = {
+	dignity = 0.03
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 5
+	
+	monthly_salary = 0.02
+	monthly_prestige = 0.40
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+	}
+	
+	allowed_to_grant = {
+		OR = {
+			is_feudal = yes
+			is_tribal = yes
+		}
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_cupbearer = {
+	dignity = 0.1
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 5
+	
+	monthly_salary = 0.05
+	monthly_prestige = 0.60
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+		is_female = no
+		NOT = { has_character_flag = guru }
+	}
+	
+	allowed_to_grant = {
+		OR = {
+			is_feudal = yes
+			is_tribal = yes
+		}
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_seneschal = {
+	dignity = 0.15
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 10
+	
+	monthly_salary = 0.05
+	monthly_prestige = 0.60
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+		is_female = no
+		NOT = { has_character_flag = guru }
+	}
+	
+	allowed_to_grant = {
+		OR = {
+			is_feudal = yes
+			is_tribal = yes
+		}
+		primary_title = {
+			OR = {
+				tier = king
+				tier = emperor
+			}
+		}
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+# MERCHANT REPUBLIC TITLES
+
+# State Inquisitor
+title_state_inquisitor = {
+	dignity = 0.06
+	realm_in_name = yes
+	grant_limit = 3
+	opinion_effect = 6
+	
+	monthly_salary = 0.02
+	monthly_prestige = 0.40
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+		is_female = no
+	}
+
+	allowed_to_grant = {
+		is_merchant_republic = yes
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_high_admiral = {
+	dignity = 0.1
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 10
+	
+	monthly_salary = 0.05
+	monthly_prestige = 0.60
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+		is_female = no
+	}
+	
+	allowed_to_grant = {
+		is_merchant_republic = yes
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_high_judge = {
+	dignity = 0.15
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 10
+	
+	monthly_salary = 0.05
+	monthly_prestige = 0.60
+	
+	is_unique = yes
+	
+	allowed_to_hold = {
+		is_adult = yes
+		is_female = no
+	}
+
+	allowed_to_grant = {
+		is_merchant_republic = yes
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+# Special - This title determines the heir of a Patrician
+title_patrician_heir = {
+	is_high_prio = yes
+	
+	dignity = 0.05
+	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 25
+	
+	patrician_heir = yes
+	
+	monthly_salary = 0.01
+	monthly_prestige = 0.20
+	
+	allowed_to_hold = {
+		is_landed = no
+		dynasty = FROM
+		NOT = { trait = incapable }
+		NOT = { trait = bastard }
+		NOT = { trait = eunuch }
+		NOT = { trait = celibate }
+	}
+
+	allowed_to_grant = {
+		is_patrician = yes
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_guru = {
+	dignity = 0.050
+	grant_limit = 1
+	opinion_effect = 10
+	monthly_salary = 0.02
+	monthly_prestige = 0.75
+
+	revoke_allowed = no
+	
+	allowed_to_hold = {
+		OR = {
+			has_character_flag = guru
+			has_character_flag = fake_guru
+		}
+		is_adult = yes
+	}
+	
+	allowed_to_grant = {
+		is_adult = yes
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+
+title_avatar = {
+	dignity = 1000
+	show_as_title = yes
+	realm_in_name = no
+	revoke_allowed = no
+	grant_limit = 1
+	replace_order = yes
+	
+	monthly_salary = 0.1
+	monthly_prestige = 0.1
+	
+	allowed_to_grant = {
+		always = no
+	}
+	allowed_to_hold = {
+		OR = {
+			has_character_flag = avatar_revealed
+			trait = avatar
+			trait = fullyrealisedavatar
+		}
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = no
+}
+
+title_councilmember_king = {
+	dignity = 0.050
+	grant_limit = 1
+	opinion_effect = 10
+	monthly_salary = 0.00
+	monthly_prestige = 0.75
+	is_voter = yes
+	
+	allowed_to_grant = {
+		higher_tier_than = DUKE
+		has_dlc = "Zeus"
+		primary_title = { has_law = law_voting_power_1 }
+	}
+	
+	allowed_to_hold = {
+		OR = {
+			AND = {
+				is_female = no
+				NOT = { culture = western_air_nomad }
+				NOT = { culture = eastern_air_nomad }
+			}
+			AND = {
+				is_female = yes
+				NOT = { culture = northern_water }
+				NOT = { culture = northern_air_nomad }
+				NOT = { culture = southern_air_nomad }
+				OR = {
+					culture = western_air_nomad
+					culture = eastern_air_nomad
+					trait = kyoshiwarrior
+					OR = {
+						liege = {
+							OR = {
+								is_female = yes
+								primary_title = {
+									OR = {
+										has_law = status_of_women_2
+										has_law = status_of_women_3
+										has_law = status_of_women_4
+									}
+								}
+							}
+						}
+					}
+				}
+			}		
+		}
+	
+		prisoner = no
+		is_adult = yes
+		NOT = { trait = incapable }
+		NOT = { trait = avatar }
+		NOT = { trait = fullyrealisedavatar }
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+		opinion = { who = FROM modifier = opinion_fired_from_council }
+		opinion = { who = FROM modifier = opinion_recently_fired }
+	}
+	retire_effect = {
+	}
+
+	message = yes
+}
+
+title_councilmember_emperor = {
+	dignity = 0.060
+	grant_limit = 1
+	opinion_effect = 10
+	monthly_salary = 0.00
+	monthly_prestige = 1.00
+	is_voter = yes
+	
+	allowed_to_grant = {
+		higher_tier_than = KING
+		has_dlc = "Zeus"
+		primary_title = { has_law = law_voting_power_1 }
+	}
+	
+	allowed_to_hold = {
+		OR = {
+			AND = {
+				is_female = no
+				NOT = { culture = western_air_nomad }
+				NOT = { culture = eastern_air_nomad }
+			}
+			AND = {
+				is_female = yes
+				NOT = { culture = northern_water }
+				NOT = { culture = northern_air_nomad }
+				NOT = { culture = southern_air_nomad }
+				OR = {
+					culture = western_air_nomad
+					culture = eastern_air_nomad
+					trait = kyoshiwarrior
+					OR = {
+						liege = {
+							OR = {
+								is_female = yes
+								primary_title = {
+									OR = {
+										has_law = status_of_women_2
+										has_law = status_of_women_3
+										has_law = status_of_women_4
+									}
+								}
+							}
+						}
+					}
+				}
+			}		
+		}
+	
+		prisoner = no
+		is_adult = yes
+		NOT = { trait = incapable }
+		NOT = { trait = avatar }
+		NOT = { trait = fullyrealisedavatar }
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+		opinion = { who = FROM modifier = opinion_fired_from_council }
+		opinion = { who = FROM modifier = opinion_recently_fired }
+	}
+	retire_effect = {
+	}
+
+	message = yes
+}
+
+## Court Physician
+title_court_physician = {
+	is_high_prio = yes
+	attribute = learning
+    dignity = 5
+   	realm_in_name = yes
+	grant_limit = 1
+	opinion_effect = 15
+	monthly_salary = 0.2
+	monthly_prestige = 0.5
+	
+	allowed_to_grant = {
+		OR = {
+			higher_tier_than = BARON
+			is_patrician = yes
+		}
+		has_dlc = "Reapers"
+	}
+	
+	allowed_to_hold = {
+		custom_tooltip = {
+			text = court_physician_tooltip_1
+			OR = {
+				primary_title = { temporary = no }
+				NOT = {
+					primary_title = {
+						always = yes
+					}
+				}
+			}
+		}
+		OR = {
+			learning = 15
+			AND = {
+				learning = 10
+				OR = {
+					trait = physician
+					trait = scholar
+					trait = mystic
+					trait = healer
+				}
+			}
+			custom_tooltip = { 
+				text = educated_court_physician
+				hidden_tooltip = {
+					has_character_flag = is_court_physician
+				}
+			}
+		}
+		is_adult = yes
+
+		prisoner = no
+		NOT = { trait = in_hiding }
+		NOT = { trait = incapable }
+	}
+
+	revoke_trigger = {
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+	retire_effect = {
+	}
+
+	message = yes
+}
+
+
+###JADE DRAGON MINOR TITLES###
+
+title_spirit_emperor = {			# this title is not granted by a character to another, it is automatically obtained
+								# when one character becomes emperor of china. It is used solely to identify them as such
+	is_offmap_holder = yes
+	offmap_power = offmap_spirit_world
+	show_as_title = yes
+	dignity = 1000 				# this should always be higher than 0, or it won't be applied in all cases
+}
+
+
+# Special Title. Do not Delete or alter the name of the tag!
+# The Teacher serves as the default Educator for all children at court who are not close relatives of the ruler
+title_teacher = {
+	dignity = 0.1
+	grant_limit = 1
+	opinion_effect = 5
+	
+	monthly_salary = 0.02
+
+	is_unique = yes
+	
+	allowed_to_grant = {
+		has_dlc = "Zeus"
+		is_theocracy = no
+		OR = {
+			is_republic = no
+			is_patrician = yes
+		}
+		is_landed = yes
+		is_playable = yes
+	}
+	
+	allowed_to_hold = {
+		is_adult = yes
+		is_ruler = no
+		prisoner = no
+		NOR = {
+			trait = incapable
+			trait = infirm
+			trait = imbecile
+		} 
+		learning = 5
+	}
+	
+	gain_effect = {
+	}
+	lose_effect = {
+	}
+
+	message = yes
+}
+

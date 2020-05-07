@@ -1,0 +1,1430 @@
+# This file holds the diseases for The Reaper's due, with all new values and effects
+# note the "rip = yes" -- this will make it so that the disease is The Reaper's Due exclusive, so that we can have both versions of the disease
+# if "rip" is not specified, the disease will be available in both version (with the same values in both) and doesn't need to be set twice
+
+deadly_purple_pentapox = { # Dreaded Deadly Purple Pentapox
+	rip = yes
+	contagiousness = 0.125
+	outbreak_chance = 0.02
+	effect = {
+		local_tax_modifier = -0.1
+		supply_limit = -2
+		max_attrition = 0.025
+		disease_defence = 0.2
+	}
+	yearly_province_pulse = {
+		random_list = {		
+			95 = {
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 1
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 2
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 3
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 4
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 5
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 6
+					}
+				}
+			}
+			5 = {
+				increase_depopulation_effect = yes
+			}
+		}
+	}
+	icon = 5
+	tooltip = DEADLYPURPLEPENTAPOXINFO
+	months = 18
+	trait = has_pentapox
+	character_infection_chances = {
+		months = 3
+	}
+	on_character_infection = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = immune_pentapox
+					has_character_flag = got_pentapox
+					trait = has_pentapox
+					
+					has_character_flag = got_takun_cough
+					has_character_flag = got_black_frost
+					has_character_flag = got_scorch_blight
+					has_character_flag = got_verminbite
+					has_character_flag = got_ashbreath
+				}
+			}			
+			random_list = {
+				10 = { # Get the disease
+					modifier = {
+						factor = 0
+						has_character_modifier = in_seclusion
+					}
+					modifier = {
+						factor = 0.5
+						AND = {
+							is_tribal = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 25
+						is_unimportant_trigger = yes
+					}
+					set_character_flag = got_pentapox
+					set_character_flag = developing_illness
+					character_event = { id = ATLAILL.1 }
+				}
+				90 = { # Nothing happens
+				}
+			}
+		}
+	}
+	on_province_infection = {
+		province_event = {
+			id = RIP.11703 #prosperity ended by epidemic
+		}
+	}
+	always_get_message = no
+	color = { 51 0 12 }
+	
+	timeperiod = { # Minor Outbreak
+		start_date = 500.1.1
+		end_date = 1020.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+
+		max_total_provinces = 5
+		
+		spread_through_water = no
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+
+	timeperiod = { # Normal Outbreak
+		start_date = 500.1.1
+		end_date = 920.1.1	
+		
+		outbreak_chance = 0.003
+
+		max_total_provinces = 19
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Normal Outbreak
+		start_date = 500.1.1
+		end_date = 920.1.1	
+		
+		outbreak_chance = 0.002
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+
+		max_total_provinces = 19
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # Major Outbreak
+		start_date = 500.1.1
+		end_date = 920.1.1	
+		
+		outbreak_chance = 0.0004
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+		
+		months = 24
+
+		max_total_provinces = 42
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Major Outbreak
+		start_date = 500.1.1
+		end_date = 920.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+		
+		months = 24
+
+		max_total_provinces = 42
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	disease_gfx = disease_gfx_measles
+}
+
+takun_cough = { # Takun Cough
+	rip = yes
+	contagiousness = 0.13
+	outbreak_chance = 0.025
+	effect = {
+		local_tax_modifier = -0.40
+		supply_limit = -3
+		max_attrition = 0.075
+		disease_defence = 0.2
+	}
+	yearly_province_pulse = {
+		random_list = {		
+			92 = {
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 1
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 2
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 3
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 4
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 5
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 6
+					}
+				}
+			}
+			8 = {
+				increase_depopulation_effect = yes
+			}
+		}
+	}
+	icon = 1
+	tooltip = TAKUNCOUGHINFO
+	months = 30
+	trait = has_takuan_cough
+	character_infection_chances = {
+		months = 3
+	}
+	on_character_infection = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = immune_takun_cough
+					has_character_flag = got_takun_cough
+					trait = has_takuan_cough
+					
+					has_character_flag = got_pentapox
+					has_character_flag = got_black_frost
+					has_character_flag = got_scorch_blight
+					has_character_flag = got_verminbite
+					has_character_flag = got_ashbreath
+				}
+			}			
+			random_list = {
+				10 = { # Get the disease
+					modifier = {
+						factor = 0
+						has_character_modifier = in_seclusion
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							is_nomadic = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						AND = {
+							is_tribal = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 40
+						is_unimportant_trigger = yes
+					}
+					clr_character_flag = disease_not_serious
+					set_character_flag = got_takun_cough
+					set_character_flag = developing_illness
+					character_event = { id = ATLAILL.7 }
+				}
+				90 = { # Nothing happens
+				}
+			}
+		}
+	}
+	on_province_infection = {
+		province_event = {
+			id = RIP.11703 #prosperity ended by epidemic
+		}
+	}
+	always_get_message = no
+	color = { 18 61 55 }
+	
+	timeperiod = { # Minor Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.005
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+
+		max_total_provinces = 4
+		
+		spread_through_water = no
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+
+	timeperiod = { # Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.004
+
+		max_total_provinces = 17
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.002
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+
+		max_total_provinces = 17
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 47
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 47
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	disease_gfx = disease_gfx_typhoid_fever
+}
+
+black_frost = { # Black Frost - Water Tribe Plague
+	rip = yes
+	contagiousness = 0.13
+	outbreak_chance = 0.02
+	effect = {
+		local_tax_modifier = -0.40
+		supply_limit = -3
+		max_attrition = 0.075
+		disease_defence = 0.2
+	}
+	yearly_province_pulse = {
+		random_list = {		
+			92 = {
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 1
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 2
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 3
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 4
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 5
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 6
+					}
+				}
+			}
+			8 = {
+				increase_depopulation_effect = yes
+			}
+		}
+	}
+	icon = 3
+	tooltip = BLACKFROSTINFO
+	months = 18
+	trait = has_black_frost
+	character_infection_chances = {
+		months = 3
+	}
+	on_character_infection = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = immune_black_frost
+					has_character_flag = got_black_frost
+					trait = has_black_frost
+					
+					has_character_flag = got_pentapox
+					has_character_flag = got_takun_cough
+					has_character_flag = got_scorch_blight
+					has_character_flag = got_verminbite
+					has_character_flag = got_ashbreath
+				}
+			}			
+			random_list = {
+				10 = { # Get the disease
+					modifier = {
+						factor = 0
+						has_character_modifier = in_seclusion
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							is_nomadic = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						AND = {
+							is_tribal = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 40
+						is_unimportant_trigger = yes
+					}
+					clr_character_flag = disease_not_serious
+					set_character_flag = got_black_frost
+					set_character_flag = developing_illness
+					character_event = { id = ATLAILL.12 }
+				}
+				90 = { # Nothing happens
+				}
+			}
+		}
+	}
+	on_province_infection = {
+		province_event = {
+			id = RIP.11703 #prosperity ended by epidemic
+		}
+	}
+	always_get_message = no
+	color = { 105 104 96 }
+	
+	timeperiod = { # Minor Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.005
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+
+		max_total_provinces = 7
+		
+		spread_through_water = no
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+
+	timeperiod = { # Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.004
+
+		max_total_provinces = 22
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.002
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+
+		max_total_provinces = 22
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 55
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 55
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	disease_gfx = disease_gfx_typhus
+}
+
+scorch_blight = { # Sandbender Plague
+	rip = yes
+	contagiousness = 0.135
+	outbreak_chance = 0.022
+	effect = {
+		local_tax_modifier = -0.25
+		supply_limit = -3
+		max_attrition = 0.05
+		disease_defence = 0.2
+	}
+	yearly_province_pulse = {
+		random_list = {		
+			92 = {
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 1
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 2
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 3
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 4
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 5
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 6
+					}
+				}
+			}
+			8 = {
+				increase_depopulation_effect = yes
+			}
+		}
+	}
+	icon = 6
+	tooltip = SCORCHBLIGHTINFO
+	months = 18
+	trait = has_scorch_blight 
+	character_infection_chances = {
+		months = 3
+	}
+	on_character_infection = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = immune_scorch_blight
+					has_character_flag = got_scorch_blight
+					trait = has_scorch_blight
+					
+					has_character_flag = got_pentapox
+					has_character_flag = got_takun_cough
+					has_character_flag = got_black_frost
+					has_character_flag = got_verminbite
+					has_character_flag = got_ashbreath
+				}
+			}			
+			random_list = {
+				10 = { # Get the disease
+					modifier = {
+						factor = 0
+						has_character_modifier = in_seclusion
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							is_nomadic = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						AND = {
+							is_tribal = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 50
+						is_unimportant_trigger = yes
+					}
+					clr_character_flag = disease_not_serious
+					set_character_flag = got_scorch_blight
+					set_character_flag = developing_illness
+					character_event = { id = ATLAILL.17 }
+				}
+				90 = { # Nothing happens
+				}
+			}
+		}
+	}
+	on_province_infection = {
+		province_event = {
+			id = RIP.11703 #prosperity ended by epidemic
+		}
+	}
+	always_get_message = no
+	color = { 222 194 14 }
+	
+	timeperiod = { # Minor Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.005
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+
+		max_total_provinces = 5
+		
+		spread_through_water = no
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+
+	timeperiod = { # Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.004
+
+		max_total_provinces = 30
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.002
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+
+		max_total_provinces = 30
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 90
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 90
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	disease_gfx = disease_gfx_small_pox
+}
+
+verminbite = { # Ba Sing Se Plague
+	rip = yes
+	contagiousness = 0.12
+	outbreak_chance = 0.02
+	effect = {
+		local_tax_modifier = -0.25
+		supply_limit = -2
+		max_attrition = 0.05
+		disease_defence = 0.2
+	}
+	yearly_province_pulse = {
+		random_list = {		
+			92 = {
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 1
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 2
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 3
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 4
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 5
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 6
+					}
+				}
+			}
+			8 = {
+				increase_depopulation_effect = yes
+			}
+		}
+	}
+	icon = 1
+	tooltip = VERMINBITEINFO
+	months = 30
+	trait = has_verminbite
+	character_infection_chances = {
+		months = 3
+	}
+	on_character_infection = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = immune_verminbite
+					has_character_flag = got_verminbite
+					trait = has_verminbite
+					
+					has_character_flag = got_pentapox
+					has_character_flag = got_takun_cough
+					has_character_flag = got_scorch_blight
+					has_character_flag = got_black_frost
+					has_character_flag = got_ashbreath
+				}
+			}			
+			random_list = {
+				10 = { # Get the disease
+					modifier = {
+						factor = 0
+						has_character_modifier = in_seclusion
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							is_nomadic = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 0.5
+						AND = {
+							is_tribal = yes
+							NOT = { is_unimportant_trigger = yes }
+						}
+					}
+					modifier = {
+						factor = 50
+						is_unimportant_trigger = yes
+					}
+					clr_character_flag = disease_not_serious
+					set_character_flag = got_verminbite
+					set_character_flag = developing_illness
+					character_event = { id = ATLAILL.21 }
+				}
+				90 = { # Nothing happens
+				}
+			}
+		}
+	}
+	on_province_infection = {
+		province_event = {
+			id = RIP.11703 #prosperity ended by epidemic
+		}
+	}
+	always_get_message = no
+	color = { 207 238 177 }
+	
+	timeperiod = { # Minor Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.004
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+
+		max_total_provinces = 5
+		
+		spread_through_water = no
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+
+	timeperiod = { # Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.003
+
+		max_total_provinces = 20
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Normal Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.002
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+
+		max_total_provinces = 20
+		
+		min_nb_province = 1	# ignored if 0
+		max_nb_province = 1	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			NOT = {
+				has_game_rule = {
+					name = minor_epidemics
+					value = fewer
+				}
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 45
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	
+	timeperiod = { # 'More' Major Outbreak
+		start_date = 769.1.1
+		end_date = 1452.1.1	
+		
+		outbreak_chance = 0.001
+		
+		can_outbreak = {
+			has_game_rule = {
+				name = minor_epidemics
+				value = more
+			}
+		}
+		
+		months = 36
+
+		max_total_provinces = 45
+		
+		min_nb_province = 2	# ignored if 0
+		max_nb_province = 4	# ignored if 0
+
+		one_only = no
+	}
+	disease_gfx = disease_gfx_tuberculosis
+}
+
+ashbreath = { # Apocylpse Plague
+	rip = yes
+	contagiousness = 0.75
+	outbreak_chance = 0
+	effect = {
+		local_tax_modifier = -0.95
+		supply_limit = -1
+	}
+	yearly_province_pulse = {
+		random_list = {		
+			10 = {
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 1
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 2
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 3
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 4
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 5
+					}
+				}
+				modifier = {
+					factor = 1.1
+					location = {
+						hospital_level = 6
+					}
+				}
+			}
+			90 = {
+				increase_depopulation_effect = yes
+			}
+		}
+	}
+	icon = 4
+	tooltip = ASHBREATHINFO
+	months = 6
+	trait = has_ashbreath
+	character_infection_chances = {
+		months = 3
+	}
+	on_character_infection = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = immune_ashbreath
+					has_character_flag = got_ashbreath
+					trait = has_ashbreath
+					
+					has_character_flag = got_pentapox
+					has_character_flag = got_takun_cough
+					has_character_flag = got_scorch_blight
+					has_character_flag = got_black_frost
+					has_character_flag = got_verminbite
+				}
+			}
+			random_list = {
+				90 = { # Get the disease
+					modifier = {
+						factor = 0
+						has_character_modifier = in_seclusion
+					}
+					modifier = {
+						factor = 5000
+						is_unimportant_trigger = yes
+					}
+					clr_character_flag = disease_not_serious
+					
+					set_character_flag = got_ashbreath
+					set_character_flag = developing_illness
+					character_event = { id = ATLAILL.25 }
+				}
+				10 = { # Nothing happens
+				}
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = ashbreath_happened }
+			}
+			set_global_flag = ashbreath_happened
+		}
+	}
+	on_province_infection = {
+		province_event = {
+			id = RIP.10000
+		}
+		province_event = {
+			id = RIP.10005
+		}
+		province_event = {
+			id = RIP.11703 #prosperity ended by epidemic
+		}
+	}
+	always_get_message = yes
+	color = { 255 0 0 }
+	major = yes
+	
+	timeperiod = {	# Sozin's Comet Aftermath
+		start_date = 931.1.1
+		end_date = 933.1.1
+		
+		outbreak_chance = 0.8
+		
+		can_outbreak = {
+			has_global_flag = ashbreath_trigger
+			NOT = { has_global_flag = ashbreath_happened }
+			NOT = {
+				has_game_rule = {
+					name = canon_events
+					value = strict_canon
+				}
+			}
+		}
+		
+		min_nb_province = 1		# ignored if 0
+		max_nb_province = 15	# ignored if 0
+
+		one_only = yes
+
+		province_infection_duration = 18
+		
+		outbreak_scenario = {
+			chance = 0.30
+			start_provinces = {
+				31
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = {
+			chance = 0.20
+			start_provinces = {
+				44
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = {
+			chance = 0.10
+			start_provinces = {
+				46
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = {
+			chance = 0.10
+			start_provinces = {
+				55
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = {
+			chance = 0.10
+			start_provinces = {
+				34
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = {
+			chance = 0.10
+			start_provinces = {
+				40
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = {
+			chance = 0.10
+			start_provinces = {
+				57
+			}
+			excluded_regions = {
+			}
+		}
+		
+	}
+	
+	timeperiod = {	# If Comet passes twice, returns much worse
+		start_date = 930.1.1
+		end_date = 1000.1.1
+		
+		outbreak_chance = 0.05
+		
+		can_outbreak = {
+			has_global_flag = HYW_22
+		}
+		
+		min_nb_province = 1		# ignored if 0
+		max_nb_province = 15	# ignored if 0
+
+		one_only = yes
+
+		province_infection_duration = 162
+		
+		outbreak_scenario = { # Ba Sing Se
+			chance = 0.30
+			start_provinces = {
+				118
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = { # Fire Nation
+			chance = 0.20
+			start_provinces = {
+				61
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = { # Northern Water Tribe
+			chance = 0.10
+			start_provinces = {
+				7
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = { # Omashu
+			chance = 0.10
+			start_provinces = {
+				309
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = { # Gaoling
+			chance = 0.10
+			start_provinces = {
+				340
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = { # Yu Dao
+			chance = 0.10
+			start_provinces = {
+				228
+			}
+			excluded_regions = {
+			}
+		}
+		
+		outbreak_scenario = { # Fire Islands
+			chance = 0.10
+			start_provinces = {
+				93
+			}
+			excluded_regions = {
+			}
+		}
+	}
+	
+	disease_gfx = disease_gfx_bubonic_plague
+}

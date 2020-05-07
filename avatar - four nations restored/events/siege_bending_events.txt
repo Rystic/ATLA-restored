@@ -1,0 +1,103 @@
+######################
+### Using bending in sieges  ###
+namespace = bending
+### bending.1500-1600
+
+character_event = { # Earthbender speeds up Siege
+	id = bending.1501
+	desc = EVTDESCbattle.1
+	picture = GFX_evt_siege
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	notification = yes
+
+	trigger = { 
+		siege = {
+			is_attacker = yes
+			ROOT = { trait = earthbender }
+			troops = {
+				who = troops
+				value = 0.1
+				enemy = yes
+			}
+		}
+	}
+
+	weight_multiplier = {
+		months = 1
+		modifier = {
+			factor = 1.5
+			trait = competent_bender
+		}
+		modifier = {
+			factor = 1.75
+			trait = powerful_bender
+		}
+		modifier = {
+			factor = 2
+			trait = master_bender
+		}
+		modifier = {
+			factor = 2.5
+			trait = legendary_bender
+		}
+	}
+	
+	immediate = {
+		siege = {
+			enemy = {
+				morale = -0.1
+				troops = -0.05
+				leader = {
+					any_liege = {
+						limit = {
+							war_with = ROOT
+							NOT = {
+								ROOT = {
+									liege = { has_landed_title = e_rebels }
+								}
+							}
+						}
+						character_event = { id = bending.1502 }
+					}
+					if = {
+						limit = {
+							war_with = ROOT
+						}
+						character_event = { id = bending.1502 }
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA62000
+		
+		tooltip = {
+			siege = {
+				enemy = {
+					morale = -0.1
+					troops = -0.05
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Other side gets event
+	id = bending.1502
+	desc = EVTDESCbattle.2
+	picture = GFX_evt_siege
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	notification = yes
+	
+	trigger = {
+		ai = no
+	}
+	
+	option = {
+		name = EVTOPTA62000
+	}
+}

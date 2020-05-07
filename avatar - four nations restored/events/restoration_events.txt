@@ -1,0 +1,1375 @@
+namespace = ATLAE
+
+# 'Focus' Trees: Power, Authority and Defence
+# Namespace ATLAE 200-600
+
+character_event = { # Earth Kingdom Focus Tree: Start
+	id = ATLAE.200
+	desc = "EVTDESCRES.0"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	
+	option = {
+		name = EVTOPTAr.0
+		prestige = 100
+		custom_tooltip = {
+			text = EVTTOOLTIPRES01
+		}
+	}
+}
+
+character_event = { # Royal Mail Service: Start
+	id = ATLAE.201
+	desc = "EVTDESCRES.1"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_1"
+	
+	option = {
+		name = EVTOPTAr.1
+		custom_tooltip = {
+			text = EVTTOOLTIPRES02
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.207 days = 1085 }
+			character_event = { id = ATLAE.202 days = 65 random = 250 }
+			character_event = { id = ATLAE.203 days = 365 random = 250 }
+			character_event = { id = ATLAE.204 days = 730 random = 250 }
+		}
+	}
+}
+
+character_event = { # Royal Mail Service: Corruption
+	id = ATLAE.202
+	desc = "EVTDESCRES.2"
+	picture = "GFX_evt_ba_sing_sa_1"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = earthkingpuppet
+	}
+	
+	option = {
+		name = EVTOPTAr.2
+		wealth = -250
+	}
+	
+	option = {
+		name = EVTOPTAr.3
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAr.4
+		wealth = -50
+		tooltip_info = stewardship
+		trigger = {
+			stewardship = 10
+		}
+	}
+}
+
+character_event = { # Royal Mail Service: Delay
+	id = ATLAE.203
+	desc = "EVTDESCRES.3"
+	picture = "GFX_evt_ba_sing_sa_1"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = earthkingpuppet
+	}
+	
+	option = {
+		name = EVTOPTAr.5
+		wealth = -100
+	}
+	
+	option = {
+		name = EVTOPTAr.6
+		prestige = -200
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAr.7
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+		tooltip_info = martial
+		trigger = {
+			martial = 10
+		}
+	}
+}
+
+character_event = { # Royal Mail Service: Dai Li
+	id = ATLAE.204
+	desc = "EVTDESCRES.4"
+	picture = "GFX_evt_dai_li"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = earthkingpuppet
+	}
+	
+	option = {
+		name = EVTOPTAr.8
+		random_courtier = {
+			limit = {
+				is_adult = yes
+				prisoner = no
+				is_ruler = no
+			}
+			death = { death_reason = death_execution killer = ROOT }
+		}
+		random_list = {
+			70 = { 
+				character_event = { id = ATLAE.205 days = 7 tooltip = EVTTOOLTIPRES05 } 
+			}
+			30 = { 
+				character_event = { id = ATLAE.206 days = 7 tooltip = EVTTOOLTIPRES06 } 
+				modifier = {
+					factor = 1.5
+					NOT = { intrigue = 8 } 
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAr.9
+		wealth = -250
+		random_list = {
+			50 = { 
+				character_event = { id = ATLAE.205 days = 7 tooltip = EVTTOOLTIPRES05 } 
+				modifier = {
+					factor = 1.5
+					diplomacy = 10
+				}
+			}
+			50 = { 
+				character_event = { id = ATLAE.206 days = 7 tooltip = EVTTOOLTIPRES06 } 
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAr.10
+		tooltip_info = intrigue
+		trigger = {
+			intrigue = 10
+		}
+		random_list = {
+			80 = { 
+				character_event = { id = ATLAE.205 days = 7 tooltip = EVTTOOLTIPRES05 } 
+				modifier = {
+					factor = 1.2
+					intrigue = 16
+				}
+			}
+			20 = { 
+				character_event = { id = ATLAE.206 days = 7 tooltip = EVTTOOLTIPRES06 } 
+			}
+		}
+	}
+}
+
+character_event = { # Royal Mail Service: Dai Li Avoided
+	id = ATLAE.205
+	desc = "EVTDESCRES.5"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li"
+	
+	option = {
+		name = EVTOPTAr.12
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+	}
+}
+
+character_event = { # Royal Mail Service: Failed
+	id = ATLAE.206
+	desc = "EVTDESCRES.6"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li"
+	
+	option = {
+		name = EVTOPTAr.11
+		custom_tooltip = {
+			text = EVTTOOLTIPRES03
+		}
+		set_global_flag = restoration_ambition_delay
+		clr_global_flag = restoration_ambition
+	}
+}
+
+character_event = { # Royal Mail Service: Completed
+	id = ATLAE.207
+	desc = "EVTDESCRES.7"
+	picture = "GFX_evt_ba_sing_sa_1"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = earthkingpuppet
+		NOT = { has_global_flag = restoration_ambition_delay }
+	}
+	
+	option = {
+		custom_tooltip = {
+			text = EVTTOOLTIPRES04
+		}
+		name = EVTOPTAr.12
+		prestige = 300
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 5 }
+			}
+		}
+		set_global_flag = restoration_ambition_1
+		clr_global_flag = restoration_ambition
+		#e_earth_kingdom = { add_law = earthking_1 }
+	}
+}
+
+character_event = { # Earth Kingdom Territory Rebels - Earth King
+	id = ATLAE.208
+	desc = "EVTDESCRES.8"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.13
+	}
+	#option = { # Strike if Independent
+	#	name = EVTOPTAr.14
+	#	tooltip_info = martial
+	#	trigger = {
+	#		OR = {
+	#			has_law = earthking_2
+	#		}
+	#	}
+	#}
+	#option = { # Invade if Absloute
+	#	name = EVTOPTAr.15
+	#	tooltip_info = martial
+	#	trigger = {
+	#		has_law = earthking_3
+	#		has_law = earthking_4
+	#	}
+	#}
+}
+
+character_event = { # Earth Kingdom Territory Rebels - ROOT
+	id = ATLAE.209
+	desc = "EVTDESCRES.9"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_kingdom"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.16
+	}
+}
+
+character_event = { # Earth Kingdom Territory Rebels - Neighbour
+	id = ATLAE.210
+	desc = "EVTDESCRES.10"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_kingdom"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.17
+	}
+}
+
+character_event = { # New Earth King - Cancel Focus
+	id = ATLAE.211
+	desc = "EVTDESCRES.11"
+	picture = "GFX_evt_earth_kingdom"
+	is_triggered_only = yes
+	hide_window = no
+	
+	trigger = {
+		has_global_flag = restoration_ambition
+	}
+	
+	option = {
+		name = EVTOPTAr.12
+		clr_global_flag = restoration_ambition
+	}
+}
+
+character_event = { # Territory re-joins Earth Kingdom
+	id = ATLAE.212
+	desc = "EVTDESCRES.12"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_kingdom"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.12
+	}
+}
+
+character_event = { # Rebuild The Outer Wall : Start
+	id = ATLAE.213
+	desc = "EVTDESCRES.13"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = {
+		name = EVTOPTAr.18
+		custom_tooltip = {
+			text = EVTTOOLTIPRES02
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.218 days = 1085 }
+			random_list = {
+				25 = {
+					character_event = { id = ATLAE.214 days = 21 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.215 days = 21 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.216 days = 21 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.217 days = 21 random = 300 }
+				}
+			}
+			random_list = {
+				25 = {
+					character_event = { id = ATLAE.214 days = 321 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.215 days = 321 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.216 days = 321 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.217 days = 321 random = 300 }
+				}
+			}
+			random_list = {
+				25 = {
+					character_event = { id = ATLAE.214 days = 621 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.215 days = 621 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.216 days = 621 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.217 days = 621 random = 300 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Rebuild The Outer Wall : Military Tech
+	id = ATLAE.214
+	desc = "EVTDESCRES.14"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.19
+		military_techpoints = 50
+	}
+}
+
+character_event = { # Rebuild The Outer Wall : Corruption
+	id = ATLAE.215
+	desc = "EVTDESCRES.15"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Tax
+		name = EVTOPTAr.20
+		random_realm_province = {
+			add_province_modifier = { name = high_taxes duration = 720 }
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+	}
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.21
+		wealth = -100
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+}
+
+character_event = { # Rebuild The Outer Wall : Wall Collapse
+	id = ATLAE.216
+	desc = "EVTDESCRES.16"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Pay
+		name = EVTOPTAr.22
+		wealth = -250
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.23
+		prestige = -50
+		random_realm_province = {
+			add_province_modifier = { name = construction_accident duration = 720 }
+			add_province_modifier = { name = collapsed_wall duration = 720 }
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+}
+
+character_event = { # Rebuild The Outer Wall : Reinforced
+	id = ATLAE.217
+	desc = "EVTDESCRES.17"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.24
+		wealth = -5
+		capital_scope = {
+			add_province_modifier = { name = master_builder duration = 3600 }
+		}
+	}
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.25
+		prestige = 5
+		random_realm_province = {
+			add_province_modifier = { name = master_builder duration = 3600 }
+		}
+	}
+}
+
+character_event = { # Rebuild The Outer Wall : Finish
+	id = ATLAE.218
+	desc = "EVTDESCRES.18"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.26
+		hidden_tooltip = {
+			any_realm_province = {
+				add_province_modifier = { name = restored_ba_sing_sa duration = -1 }
+			}
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+	}
+}
+
+character_event = { # The Royal Guard : Start
+	id = ATLAE.219
+	desc = "EVTDESCRES.19"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	
+	option = {
+		name = EVTOPTAr.27
+		custom_tooltip = {
+			text = EVTTOOLTIPRES02
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.220 days = 1085 }
+			random_list = {
+				25 = {
+					character_event = { id = ATLAE.221 days = 21 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.222 days = 21 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.223 days = 21 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.224 days = 21 random = 300 }
+				}
+			}
+			random_list = {
+				25 = {
+					character_event = { id = ATLAE.221 days = 321 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.222 days = 321 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.223 days = 321 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.224 days = 321 random = 300 }
+				}
+			}
+			random_list = {
+				25 = {
+					character_event = { id = ATLAE.221 days = 621 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.222 days = 621 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.223 days = 621 random = 300 }
+				}
+				25 = {
+					character_event = { id = ATLAE.224 days = 621 random = 300 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # The Royal Guard : Finish
+	id = ATLAE.220
+	desc = "EVTDESCRES.20"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	
+	option = { # Spawn Guard
+		name = EVTOPTAr.19
+		set_global_flag = restoration_ambition_2
+		clr_global_flag = restoration_ambition
+		spawn_unit = {
+			owner = ROOT
+			province = 109
+			troops = {
+				archers = { 200 200 }
+				heavy_infantry = { 300 300 }
+				light_cavalry = { 300 300 }
+				pikemen = { 400 400 }
+				earth_benders = { 600 600 }
+			}
+			attrition = 1.0
+			earmark = royal_guard
+			maintenance = yes
+			maintenance_multiplier = 0.5
+			reinforces	= yes
+		}
+	}
+}
+
+character_event = { # The Royal Guard : General Complains
+	id = ATLAE.221
+	desc = "EVTDESCRES.21"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_general"
+	
+	option = { # Promise replacement
+		name = EVTOPTAr.28
+		wealth = -100
+	}
+	
+	option = { # Dismiss
+		name = EVTOPTAr.29
+		random_realm_province = {
+			add_province_modifier = { name = missing_reinforcements duration = 600 }
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+}
+
+character_event = { # The Royal Guard : Dai Li Informant
+	id = ATLAE.222
+	desc = "EVTDESCRES.22"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li"
+	
+	option = { # Remove Him
+		name = EVTOPTAr.30
+		prestige = -50
+		add_character_modifier = { name = comprimised_operations duration = 1200 }
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -5 }
+			}
+		}
+	}
+	
+	option = { # Eliminate Him
+		name = EVTOPTAr.31
+		random_list = {
+			30 = {
+				custom_tooltip = {
+					text = EVTTOOLTIPRES08
+				}
+				add_character_modifier = { name = convert_operations duration = 1200 }
+				modifier = {
+					factor = 2
+					intrigue = 9
+				}
+				modifier = {
+					factor = 2
+					intrigue = 12
+				}
+				modifier = {
+					factor = 2
+					intrigue = 15
+				}
+			}
+			70 = {
+				hidden_tooltip = {
+					any_realm_character = {
+						opinion = { modifier = accused_of_murder who = ROOT years = 5 }
+					}
+				}
+				custom_tooltip = {
+					text = EVTTOOLTIPRES07
+				}
+			}
+		}
+	}
+}
+
+character_event = { # The Royal Guard : The Old Guard
+	id = ATLAE.223
+	desc = "EVTDESCRES.23"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_1"
+	
+	option = { # Remove Them
+		name = EVTOPTAr.32
+		prestige = -300
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+	
+	option = { # Keep Them
+		name = EVTOPTAr.33
+		military_techpoints = -25
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+	}
+	
+	option = { # Pay Them
+		name = EVTOPTAr.34
+		wealth = -250
+	}
+}
+
+character_event = { # The Royal Guard : The Elite
+	id = ATLAE.224
+	desc = "EVTDESCRES.24"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_kingdom_army"
+	
+	option = { # Heed their advice
+		name = EVTOPTAr.35
+		military_techpoints = 25
+	}
+}
+
+character_event = { # Watch the Watchmen - START
+	id = ATLAE.225
+	desc = "EVTDESCRES.25"
+	is_triggered_only = yes
+	picture = "GFX_evt_night_earthkingdom"
+	
+	option = {
+		name = EVTOPTAr.36
+		custom_tooltip = {
+			text = EVTTOOLTIPRES02
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.226 days = 1085 }
+			character_event = { id = ATLAE.227 days = 30 random = 60 } # Outpost
+			character_event = { id = ATLAE.227 days = 130 random = 60 } # Outpost
+			character_event = { id = ATLAE.228 days = 230 random = 60 } # Stronghold
+			character_event = { id = ATLAE.227 days = 330 random = 60 } # Outpost
+			character_event = { id = ATLAE.227 days = 630 random = 60 } # Outpost
+			character_event = { id = ATLAE.228 days = 730 random = 60 } # Stronghold
+			character_event = { id = ATLAE.230 days = 930 random = 60 } # Primary Stronghold
+		}
+	}
+}
+
+character_event = { # Watch the Watchmen - FINISH
+	id = ATLAE.226
+	desc = "EVTDESCRES.26"
+	is_triggered_only = yes
+	picture = "GFX_evt_night_earthkingdom"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.37
+		set_global_flag = restoration_ambition_3
+		clr_global_flag = restoration_ambition
+	}
+}
+
+character_event = { # Watch the Watchmen - Discover Outpost
+	id = ATLAE.227
+	desc = "EVTDESCRES.27"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li_5"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.38
+		random_realm_province = {
+			limit = {
+				NOT = { province_id = 109 }
+				NOT = { has_province_modifier = dai_li_headquarters }
+				NOT = { has_province_modifier = dai_li_outpost }
+				NOT = { has_province_modifier = dai_li_stronghold }
+			}
+			add_province_modifier = { name = dai_li_outpost duration = -1 }
+		}
+	}
+}
+
+character_event = { # Watch the Watchmen - Discover Stronghold
+	id = ATLAE.228
+	desc = "EVTDESCRES.28"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li_5"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.39
+		random_realm_province = {
+			limit = {
+				NOT = { province_id = 109 }
+				NOT = { has_province_modifier = dai_li_headquarters }
+				NOT = { has_province_modifier = dai_li_outpost }
+				NOT = { has_province_modifier = dai_li_stronghold }
+			}
+			add_province_modifier = { name = dai_li_stronghold duration = -1 }
+		}
+	}
+}
+
+character_event = { # Watch the Watchmen - Discover Primary Stronghold
+	id = ATLAE.230
+	desc = "EVTDESCRES.30"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li_5"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.40
+		random_realm_province = {
+			limit = {
+				NOT = { province_id = 109 }
+				NOT = { has_province_modifier = dai_li_headquarters }
+				NOT = { has_province_modifier = dai_li_outpost }
+				NOT = { has_province_modifier = dai_li_stronghold }
+			}
+			add_province_modifier = { name = dai_li_headquarters duration = -1 }
+		}
+	}
+}
+
+character_event = { # Royal Allies - START
+	id = ATLAE.231
+	desc = "EVTDESCRES.31"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	
+	option = {
+		name = EVTOPTAr.41
+		custom_tooltip = {
+			text = EVTTOOLTIPRES02
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.232 days = 1085 }
+			character_event = { id = ATLAE.233 days = 10 random = 90 } # Noble
+			character_event = { id = ATLAE.237 days = 100 random = 90 } # Tributary
+			character_event = { id = ATLAE.233 days = 200 random = 90 } # Noble
+			character_event = { id = ATLAE.233 days = 300 random = 90 } # Noble
+			character_event = { id = ATLAE.233 days = 400 random = 90 } # Noble
+			character_event = { id = ATLAE.237 days = 600 random = 90 } # Tributary
+			character_event = { id = ATLAE.237 days = 800 random = 90 } # Tributary
+			character_event = { id = ATLAE.233 days = 900 random = 90 } # Noble
+		}
+	}
+}
+
+character_event = { # Royal Allies - FINISH
+	id = ATLAE.232
+	desc = "EVTDESCRES.32"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.42
+		set_global_flag = restoration_ambition_4
+		clr_global_flag = restoration_ambition
+	}
+}
+
+character_event = { # Royal Allies - Invite Noble
+	id = ATLAE.233
+	desc = "EVTDESCRES.33"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	
+	immediate = {
+		random_vassal = {
+			limit = {
+				higher_tier_than = BARON
+				NOT = { has_landed_title = d_dai_li }
+				NOT = { has_character_flag = earth_king_supporter }
+				NOT = { has_character_flag = will_not_support_earth_king }
+			}
+			save_event_target_as = noble_ally_target
+		}
+	}
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.43
+		event_target:noble_ally_target = {
+			character_event = { id = ATLAE.234 days = 3 random = 7 }
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Noble - Receives Message
+	id = ATLAE.234
+	desc = "EVTDESCRES.34"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	
+	option = { # Support
+		name = EVTOPTAr.44
+		FROM = {
+			character_event = { id = ATLAE.235 days = 3 random = 7 }
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0.5
+				NOT = { opinion = { who = FROM value = 25 } }
+			}
+			modifier = {
+				factor = 1.2
+				trait = brave
+			}
+			modifier = {
+				factor = 2.5
+				opinion = { who = FROM value = 50 }
+			}
+		}
+	}
+	
+	option = { # Refuse
+		name = EVTOPTAr.45
+		FROM = {
+			character_event = { id = ATLAE.236 days = 3 random = 7 }
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				NOT = { opinion = { who = FROM value = 5 } }
+			}
+			modifier = {
+				factor = 1.5
+				trait = craven
+			}
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Noble - Good Reply
+	id = ATLAE.235
+	desc = "EVTDESCRES.35"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.46
+		FROM = {
+			set_character_flag = earth_king_supporter
+			reverse_opinion = { modifier = opinion_supported_coup who = ROOT years = 10 }
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Noble - Bad Reply
+	id = ATLAE.236
+	desc = "EVTDESCRES.36"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.47
+		FROM = {
+			set_character_flag = will_not_support_earth_king
+			reverse_opinion = { modifier = opinion_refused_to_support_coup who = ROOT years = 10 }
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Tributary
+	id = ATLAE.237
+	desc = "EVTDESCRES.37"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	immediate = {
+		random_playable_ruler = {
+			limit = {
+				higher_tier_than = BARON
+				culture = eastern_earth
+				is_tributary = yes
+				NOT = { has_character_flag = earth_king_supporter }
+				NOT = { has_character_flag = will_not_support_earth_king }
+			}
+			save_event_target_as = tribune_ally_target
+		}
+	}
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.48
+		event_target:tribune_ally_target = {
+			character_event = { id = ATLAE.238 days = 3 random = 7 }
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Tributary - Receives Message
+	id = ATLAE.238
+	desc = "EVTDESCRES.38"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Support
+		name = EVTOPTAr.44
+		FROM = {
+			character_event = { id = ATLAE.239 days = 3 random = 7 }
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0.5
+				NOT = { opinion = { who = FROM value = 25 } }
+			}
+			modifier = {
+				factor = 1.2
+				trait = brave
+			}
+			modifier = {
+				factor = 2.5
+				opinion = { who = FROM value = 50 }
+			}
+		}
+	}
+	
+	option = { # Refuse
+		name = EVTOPTAr.45
+		FROM = {
+			character_event = { id = ATLAE.240 days = 3 random = 7 }
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 2
+				NOT = { opinion = { who = FROM value = 5 } }
+			}
+			modifier = {
+				factor = 1.5
+				trait = craven
+			}
+			modifier = {
+				factor = 0.5
+				opinion = { who = FROM value = 50 }
+			}
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Tributary - Good Reply
+	id = ATLAE.239
+	desc = "EVTDESCRES.35"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.49
+		FROM = {
+			set_character_flag = earth_king_supporter
+			reverse_opinion = { modifier = opinion_supported_coup who = ROOT years = 10 }
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+	}
+}
+
+character_event = { # Royal Allies - Invite Tributary - Bad Reply
+	id = ATLAE.240
+	desc = "EVTDESCRES.36"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa_2"
+	
+	option = { # Do Nothing
+		name = EVTOPTAr.50
+		FROM = {
+			set_character_flag = will_not_support_earth_king
+			reverse_opinion = { modifier = opinion_refused_to_support_coup who = ROOT years = 10 }
+		}
+	}
+}
+
+character_event = { # Secure the Palace - START CIVIL WAR
+	id = ATLAE.241
+	desc = "EVTDESCRES.41"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	
+	option = {
+		name = EVTOPTAr.51
+		set_global_flag = restoration_ambition_5
+		character_event = { id = ATLAE.242 }
+		hidden_tooltip = {
+			any_realm_province = {
+				limit = {
+					has_province_modifier = dai_li_outpost
+				}
+				d_dai_li = {
+					owner = {
+						ROOT = {
+							spawn_unit = {
+								province = PREVPREVPREV
+								home = PREVPREVPREV
+								owner = PREV
+								troops = {
+									earth_benders = { 800 800 }
+								}
+								attrition = 0.5
+								maintenance = no
+							}
+						}
+					}
+				}
+				remove_province_modifier = dai_li_outpost
+			}
+			any_realm_province = {
+				limit = {
+					has_province_modifier = dai_li_stronghold
+				}
+				d_dai_li = {
+					owner = {
+						ROOT = {
+							spawn_unit = {
+								province = PREVPREVPREV
+								home = PREVPREVPREV
+								owner = PREV
+								troops = {
+									earth_benders = { 1500 1500 }
+								}
+								attrition = 0.5
+								maintenance = no
+							}
+						}
+					}
+				}
+				remove_province_modifier = dai_li_stronghold
+			}
+			any_realm_province = {
+				limit = {
+					has_province_modifier = dai_li_headquarters
+				}
+				d_dai_li = {
+					owner = {
+						ROOT = {
+							spawn_unit = {
+								province = PREVPREVPREV
+								home = PREVPREVPREV
+								owner = PREV
+								troops = {
+									earth_benders = { 3600 3600 }
+								}
+								attrition = 0.5
+								maintenance = no
+							}
+						}
+					}
+				}
+				remove_province_modifier = dai_li_headquarters
+			}
+			any_vassal = {
+				limit = {
+					has_character_flag = earth_king_supporter
+				}
+				capital_scope = {
+					ROOT = {
+						spawn_unit = {
+							province = PREV
+							home = PREV
+							owner = ROOT
+							troops = {
+								archers = { 250 250 }
+								light_cavalry = { 100 100 }
+								light_infantry = { 250 250 }
+								earth_benders = { 200 200 }
+							}
+							disband_on_peace = yes
+							maintenance = no
+						}
+					}
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					has_character_flag = earth_king_supporter
+					independent = yes
+				}
+				capital_scope = {
+					ROOT = {
+						spawn_unit = {
+							province = PREV
+							home = PREV
+							owner = ROOT
+							troops = {
+								archers = { 300 300 }
+								light_cavalry = { 100 100 }
+								light_infantry = { 500 500 }
+								earth_benders = { 400 400 }
+							}
+							disband_on_peace = yes
+							maintenance = no
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Secure the Palace - Dai Li Attack
+	id = ATLAE.242
+	desc = "EVTDESCRES.42"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li"
+	
+	option = {
+		name = EVTOPTAr.52
+		d_dai_li = {
+			ROOT = {
+				reverse_war = {
+					target = PREV 
+					casus_belli = dai_li_revolt
+				}
+			}
+		}
+		any_playable_ruler = {
+			limit = {
+				NOT = { trait = earthkingpuppet }
+			}
+			character_event = { id = ATLAE.246 days = 3 random = 7 }
+		}
+	}
+}
+
+character_event = { # Secure the Palace - Dai Li Defeated
+	id = ATLAE.243
+	desc = "EVTDESCRES.43"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_kingdom_army"
+	
+	option = {
+		name = EVTOPTAr.53
+		clr_global_flag = restoration_ambition
+		character_event = { id = ATLAE.245 }
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MAJOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 10 }
+			}
+		}
+	}
+}
+
+character_event = { # Secure the Palace - Dai Li Victory
+	id = ATLAE.244
+	desc = "EVTDESCRES.44"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li_3"
+	
+	option = {
+		name = EVTOPTAr.54
+		set_global_flag = restoration_ambition_delay
+		clr_global_flag = restoration_ambition
+		clr_global_flag = restoration_ambition_0
+		clr_global_flag = restoration_ambition_1
+		clr_global_flag = restoration_ambition_2
+		clr_global_flag = restoration_ambition_3
+		clr_global_flag = restoration_ambition_4
+		clr_global_flag = restoration_ambition_5
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MAJOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -10 }
+			}
+		}
+	}
+}
+
+narrative_event = { # Secure the Palace - Earth King Restored To Power
+	id = ATLAE.245
+	title = EVTTITLERES.1
+	desc = "EVTDESCRES.45"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	border = GFX_event_narrative_frame_war
+	
+	option = {
+		name = EVTOPTAr.55
+		set_global_flag = earthking_in_power
+		remove_trait = earthkingpuppet
+		add_trait = earthking
+		set_global_flag = restoration_ambition_6
+		clr_global_flag = restoration_ambition
+		activate_title = { title = d_dai_li status = no }
+		d_dai_li = {
+			holder_scope = {
+				death = { death_reason = death_execution_hanging killer = ROOT }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAr.60
+		set_global_flag = earthking_in_power
+		remove_trait = earthkingpuppet
+		add_trait = earthking
+		set_global_flag = restoration_ambition_6
+		clr_global_flag = restoration_ambition
+		d_dai_li = {
+			holder_scope = {
+				death = { death_reason = death_execution_hanging killer = ROOT }
+			}
+		}
+		d_dai_li = {
+			holder_scope = {
+				set_defacto_liege = ROOT
+			}
+		}
+	}
+}
+
+character_event = { # Secure the Palace - World hears of Civil War
+	id = ATLAE.246
+	desc = "EVTDESCRES.46"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_kingdom_army"
+	
+	option = {
+		trigger = {
+			NOT = { religion = fire_nation_imperialism }
+		}
+		name = EVTOPTAr.56
+	}
+	
+	option = {
+		trigger = {
+			religion = fire_nation_imperialism 
+		}
+		name = EVTOPTAr.59
+	}
+}
+
+character_event = { # Secure the Palace - World hears of Earth King victory
+	id = ATLAE.247
+	desc = "EVTDESCRES.47"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_sa"
+	
+	option = {
+		name = EVTOPTAr.57
+	}
+}
+
+character_event = { # Secure the Palace - World hears of Dai Li victory
+	id = ATLAE.248
+	desc = "EVTDESCRES.48"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li_2"
+	
+	option = {
+		trigger = {
+			NOT = { has_character_flag = earth_king_supporter }
+		}
+		name = EVTOPTAr.58
+	}
+	
+	option = {
+		trigger = {
+			has_character_flag = earth_king_supporter
+		}
+		name = EVTOPTAr.61
+		d_dai_li = {
+			holder_scope = {
+				ROOT = {
+					death = { death_reason = death_execution_hanging killer = PREV }
+				}			
+			}
+		}
+	}
+}

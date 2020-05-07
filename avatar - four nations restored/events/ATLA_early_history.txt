@@ -1,0 +1,1251 @@
+namespace = ATLAE
+
+narrative_event = { # Formation of the Kyoshi Warriors
+	id = ATLAE.4000
+	picture = "GFX_evt_kyoshi_training"
+	title = EVTTITLETLA.4000
+	desc = EVTDESCTLA.4000
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = kyoshi_warriors_founded }
+	}
+	
+	immediate = {
+		set_global_flag = kyoshi_warriors_founded
+		any_player = {
+			character_event = { id = ATLAE.13001 }
+		}
+	}
+
+	option = { # Follower
+		name = EVTOPTTLAA.4000
+		trigger = {
+			religion = followers_of_kyoshi
+			NOT = { has_character_flag = is_kyoshi }
+		}
+	}
+	
+	option = { # Way
+		name = EVTOPTTLAB.4000
+		trigger = {
+			religion = way_of_chin
+			NOT = { has_character_flag = is_kyoshi }
+		}
+	}
+	
+	option = { # World
+		name = EVTOPTTLAC.4000
+		trigger = {
+			NOT = { religion = followers_of_kyoshi }
+			NOT = { religion = way_of_chin }
+			NOT = { has_character_flag = is_kyoshi }
+		}
+	}
+	
+	option = { # Kyoshi
+		name = EVTOPTTLAD.4000
+		trigger = {
+			has_character_flag = is_kyoshi
+		}
+		activate_title = { title = d_kyoshi_warriors status = yes }
+	}
+}
+
+long_character_event = { # Fire Nation - Founding
+	id = ATLAE.4001
+	desc = EVTDESCTLA.4001
+	picture = "GFX_evt_early_firelord"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = founded_FN }
+		year = 640
+		NOT = { year = 700 }
+		has_landed_title = c_fire_palace
+		realm_size = 16
+		e_fire_nation = {
+			has_holder = no
+		}
+		NOT = { has_character_flag = refused_to_found_fire_nation }
+	}
+	
+	option = {
+		name = EVTOPTTLAA.4001
+		e_fire_nation = {
+			grant_title = ROOT
+		}
+		set_global_flag = founded_FN
+		hidden_tooltip = {
+			ROOT = {
+				culture = fire_nation
+				any_realm_province = {
+					limit = {
+						culture_group = fire_nation_culture
+					}
+					culture = fire_nation
+				}
+				any_courtier = {
+					limit = {
+						prisoner = no
+						culture_group = fire_nation_culture
+					}
+					culture = fire_nation
+				}
+				any_vassal = {
+					limit = {
+						culture_group = fire_nation_culture
+					}
+					culture = fire_nation
+					any_courtier = {
+						limit = {
+							prisoner = no
+							culture_group = fire_nation_culture
+						}
+						culture = fire_nation
+					}
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = {
+		name = EVTOPTTLAB.4001
+		set_character_flag = refused_to_found_fire_nation
+		prestige = -50
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+narrative_event = { # Birth of Sozin
+	id = ATLAE.4002
+	picture = "GFX_evt_night_firenation"
+	title = EVTTITLETLA.4002
+	desc = EVTDESCTLA.4002
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+	
+	major_trigger = {
+		culture_group = fire_nation_culture
+	}
+
+	option = { # Parents
+		name = EVTOPTTLAA.4002
+		trigger = {
+			FROM = { is_child_of = ROOT }
+		}
+		set_global_flag = SOZIN_START
+	}
+	
+	option = { # World
+		name = EVTOPTTLAB.4002
+		trigger = {
+			FROM = { NOT = { is_child_of = ROOT } }
+		}
+	}
+}
+
+character_event = { # Chin Remnant faces collapse
+	id = ATLAE.4003
+	desc = EVTDESCTLA.4003
+	picture = "GFX_evt_chin_army"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTTLAA.4003
+		trigger = {
+			religion = way_of_chin
+		}
+		any_realm_province = {
+			limit = {
+				religion = way_of_chin
+			}
+			add_province_modifier = { name = chin_fall_modifier duration = 4000 }
+		}
+	}
+	
+	option = {
+		name = EVTOPTTLAB.4003
+		trigger = {
+			NOT = { religion = way_of_chin }
+		}
+		any_realm_province = {
+			limit = {
+				religion = way_of_chin
+			}
+			religion = ROOT
+		}
+	}
+}
+
+long_character_event = { # Reunification - START
+	id = ATLAE.4004
+	picture = "GFX_evt_night_earthkingdom"
+	desc = EVTDESCTLA.4004
+	is_triggered_only = yes
+	
+	immediate = {
+		set_global_flag = whispers_of_rebellion_early
+	}
+
+	option = { # Earth King
+		name = EVTOPTTLAA.4004
+		custom_tooltip = {
+			text = begin_reunification
+			hidden_tooltip = {
+				any_realm_province = {
+					limit = { region = world_ba_sing_se }
+					add_province_modifier = { name = reunificationEffortsBoon duration = -1 }
+				}
+				any_independent_ruler = {
+					limit = { NOT = { character = ROOT } }
+					narrative_event = { id = ATLAE.4005 }
+				}
+				capital_scope = {
+					ROOT = {
+						spawn_unit = {
+							province = PREV
+							home = PREV
+							owner = ROOT
+							troops = {
+								light_infantry = { 800 800 }
+								heavy_infantry = { 400 400 }
+								pikemen = { 200 200 }
+								light_cavalry = { 400 400 }
+								archers = { 600 600 }
+								earth_benders = { 800 800 }
+							}
+							attrition = 0
+							maintenance = no
+						}
+						spawn_unit = {
+							province = PREV
+							home = PREV
+							owner = ROOT
+							troops = {
+								light_infantry = { 800 800 }
+								heavy_infantry = { 400 400 }
+								pikemen = { 200 200 }
+								light_cavalry = { 400 400 }
+								archers = { 600 600 }
+								earth_benders = { 800 800 }
+							}
+							attrition = 0
+							maintenance = no
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+narrative_event = { # Reunification - World
+	id = ATLAE.4005
+	picture = "GFX_evt_night_earthkingdom"
+	title = EVTTITLETLA.4005
+	desc = EVTDESCTLA.4005
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	
+	option = { # Earth Kingdom - Rebellion
+		name = EVTOPTTLAB.4005
+		trigger = {
+			culture_group = earth_kingdom_culture
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = { # Earth Kingdom - Safe
+		name = EVTOPTTLAC.4005
+		trigger = {
+			culture_group = earth_kingdom_culture
+			NOR = { 
+				religion = way_of_chin
+				religion = children_of_si_wong
+				religion = piracy
+			}
+		}
+		custom_tooltip = {
+			text = rw_submit_as_tributary
+			hidden_tooltip = {
+				e_earth_kingdom = {
+					owner = {
+						make_tributary = {						
+							who = ROOT							
+							percentage = 0.01					
+							tributary_type = earth_kingdom_territory_tributary
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 0
+				OR = {
+					culture = northern_earth
+					culture = eastern_earth
+					culture = barbarians
+				}
+			}
+			modifier = {
+				factor = 0.5
+				OR = {
+					religion = omashuan_ethics
+					religion = the_divided
+					religion = fortune_telling
+				}
+			}
+			modifier = {
+				factor = 2.5
+				OR = {
+					religion = followers_of_kyoshi
+					culture = southern_earth
+					culture = earth_islander
+				}
+			}
+		}
+	}
+	
+	option = { # World
+		name = EVTOPTTLAD.4005
+		trigger = {
+			NOT = { culture_group = earth_kingdom_culture }
+		}
+	}
+}
+
+narrative_event = { # The Golden Age of Piracy - START
+	id = ATLAE.4006
+	picture = "GFX_evt_pirate_hold"
+	title = EVTTITLETLA.4006
+	desc = EVTDESCTLA.4006
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+	
+	trigger = {
+		NOT = { has_global_flag = golden_age_of_piracy }
+	}
+	
+	immediate = {
+		set_global_flag = golden_age_of_piracy
+	}
+
+	option = { # Pirates
+		name = EVTOPTTLAA.4006
+		trigger = {
+			religion = piracy
+		}
+		if = {
+			limit = {
+				is_landed = yes
+			}
+			capital_scope = {
+				owner = {
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = PREVPREV
+						troops = {
+							archers = { 600 600 }
+							light_cavalry = { 800 800 }
+							light_infantry = { 1800 1800 }
+							earth_benders = { 1400 1400 }
+						}
+						attrition = 0.5
+						maintenance = no
+						reinforces = yes
+						is_looter = yes
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAB.4006
+		trigger = {
+			NOT = { religion = piracy }
+			culture_group = earth_kingdom_culture
+		}
+	}
+	
+	option = { # World
+		name = EVTOPTTLAC.4006
+		trigger = {
+			NOT = { religion = piracy }
+			NOT = { culture_group = earth_kingdom_culture }
+		}
+	}
+}
+
+# narrative_event = { # The Golden Age of Piracy - Kyoshi
+	# id = ATLAE.4007
+	# picture = "GFX_evt_grassfire"
+	# title = EVTTITLETLA.4007
+	# desc = EVTDESCTLA.4007
+	# border = GFX_event_narrative_frame_war
+	# major = yes
+	# is_triggered_only = yes
+	
+	# trigger = {
+		# has_global_flag = golden_age_of_piracy
+		# FROM = { 
+			# title = b_kyoshi_island 
+			# owner = {
+				# has_character_flag = is_kyoshi
+			# }
+		# }
+		# religion = piracy
+	# }
+	
+	# immediate = {
+		# clr_global_flag = golden_age_of_piracy
+	# }
+	
+	# option = { # Avatar
+		# name = EVTOPTTLAA.4007
+		# trigger = {
+			# has_character_flag = is_kyoshi
+			# NOT = { religion = followers_of_kyoshi}
+		# }
+	# }
+
+	# option = { # FoK
+		# name = EVTOPTTLAA.4007
+		# trigger = {
+			# NOT = { has_character_flag = is_kyoshi }
+			# religion = followers_of_kyoshi
+		# }
+	# }
+	
+	# option = { # Pirates
+		# name = EVTOPTTLAA.4007
+		# trigger = {
+			# religion = piracy
+		# }
+	# }
+	
+	# option = { # Earth Kingdom
+		# name = EVTOPTTLAB.4007
+		# trigger = {
+			# NOT = { religion = piracy }
+			# NOT = { religion = followers_of_kyoshi}
+			# culture_group = earth_kingdom_culture
+		# }
+	# }
+	
+	# option = { # World
+		# name = EVTOPTTLAC.4007
+		# trigger = {
+			# NOT = { religion = piracy }
+			# NOT = { religion = followers_of_kyoshi}
+			# NOT = { culture_group = earth_kingdom_culture }
+		# }
+	# }
+# }
+
+character_event = { # Age Update
+	id = ATLAE.4007
+	is_triggered_only = yes
+	hide_window = yes
+	only_rulers = yes
+	
+	trigger = {
+		has_landed_title = c_sufauraaqtaaq
+	}
+	
+	option = {
+		if = { # Founding of the Kyoshi Warriors
+			limit = {
+				year = 569
+				NOT = { year = 571 }
+				NOT = { has_global_flag = kyoshi_warriors_founded }
+				d_avatar = {
+					owner = {
+						has_character_flag = is_kyoshi
+					}
+				}
+			}
+			d_avatar = {
+				owner = {
+					narrative_event = { id = ATLAE.4000 }
+				}
+			}
+		}
+		if = { # Golden Age of Piracy Event
+			limit = {
+				year = 576
+				NOT = { year = 578 }
+				NOT = { has_global_flag = golden_age_of_piracy }
+			}
+			c_kyoshi_island = {
+				owner = {
+					narrative_event = { id = ATLAE.4006 }
+				}
+			}
+		}
+		if = { # Begin Reunification of the Earth Kingdom
+			limit = {
+				year = 579
+				NOT = { year = 581 }
+				NOT = { has_global_flag = whispers_of_rebellion_early }
+			}
+			e_earth_kingdom = {
+				owner = {
+					narrative_event = { id = ATLAE.4004 }
+				}
+			}
+		}
+		if = { # Fall of the Chin Remnant
+			limit = {
+				year = 588
+				NOT = { year = 580 }
+				NOT = { has_global_flag = fall_of_chin_remnant }
+			}
+			random_independent_ruler = {
+				limit = { religion = way_of_chin }
+				character_event = { id = ATLAE.4008 }
+			}
+		}
+		if = { # Whispers of Rebellion
+			limit = {
+				year = 594
+				NOT = { year = 596 }
+				NOT = { has_global_flag = whispers_of_rebellion }
+			}
+			e_earth_kingdom = {
+				owner = {
+					narrative_event = { id = ATLAE.4014 }
+				}
+			}
+		}
+		if = { # Rebellion in Chin States
+			limit = {
+				year = 608
+				NOT = { year = 610 }
+				NOT = { has_global_flag = age_of_rebellion_in_chin }
+			}
+			any_independent_ruler = {
+				limit = { religion = way_of_chin }
+				character_event = { id = ATLAE.4021 }
+			}
+			set_global_flag = age_of_rebellion_in_chin
+		}
+		if = { # End of Fortune
+			limit = {
+				year = 628
+				NOT = { year = 630 }
+				NOT = { has_global_flag = age_of_rebellion_in_fortune }
+			}
+			any_independent_ruler = {
+				limit = { religion = fortune_telling }
+				character_event = { id = ATLAE.4022 }
+			}
+			set_global_flag = age_of_rebellion_in_fortune
+		}
+		if = { # Fire Nation confronted over Colonies - End of an Age
+			limit = {
+				year = 793
+				NOT = { year = 795 }
+				NOT = { has_global_flag = HYW_1 }
+			}
+			e_earth_kingdom = {
+				owner = {
+					character_event = { id = ATLAE.4015 }
+				}
+			}
+		}
+		if = { # Siege of Ba Sing Se
+			limit = {
+				year = 910
+				NOT = { year = 923 }
+				NOT = { has_global_flag = SOBSE1 }
+			}
+			e_fire_nation = {
+				owner = {
+					narrative_event = { id = ATLAE.92 }
+				}
+			}
+		}
+		if = { # The Banished Prince
+			limit = {
+				year = 925
+				NOT = { year = 927 }
+				NOT = { has_global_flag = has_banished_son }
+				e_fire_nation = {
+					owner = {
+						has_character_flag = is_ozai
+						NOT = { has_character_flag = banished_son }
+					}
+				}
+			}
+			e_fire_nation = {
+				owner = {
+					character_event = { id = ATLAE.134 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # The Fall of Chin - Call Meeting
+	id = ATLAE.4008
+	picture = "GFX_evt_grassfire"
+	desc = EVTDESCTLA.4008
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTTLA.4008
+		hidden_tooltip = {
+			any_independent_ruler = {
+				limit = { religion = way_of_chin }
+				character_event = { id = ATLAE.4009 }
+			}
+			e_earth_kingdom = {
+				owner = {
+					character_event = { id = ATLAE.4010 days = 3 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # The Fall of Chin - Called to Meeting
+	id = ATLAE.4009
+	picture = "GFX_evt_grassfire"
+	desc = EVTDESCTLA.4009
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTTLA.4009
+		hidden_tooltip = {
+			set_character_flag = fallen_for_trap
+			character_event = { id = ATLAE.4011 days = 31 } # Backup in Case
+		}
+	}
+	option = {
+		name = EVTOPTTLB.4009
+		trigger = {
+			ai = no
+		}
+	}
+}
+
+character_event = { # The Fall of Chin - Chance for Earth King
+	id = ATLAE.4010
+	picture = "GFX_evt_grassfire"
+	desc = EVTDESCTLA.4010
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTTLA.4010
+		hidden_tooltip = {
+			any_independent_ruler = {
+				limit = {
+					religion = way_of_chin
+					has_character_flag = fallen_for_trap
+				}
+				character_event = { id = ATLAE.4012 days = 16 } # Eliminate
+			}
+			narrative_event = { id = ATLAE.4013 days = 21 } # Major Event
+		}
+	}
+}
+
+character_event = { # The Fall of Chin - Meeting has no outcome
+	id = ATLAE.4011
+	picture = "GFX_evt_colony_village"
+	desc = EVTDESCTLA.4011
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTTLA.4011
+		hidden_tooltip = {
+			clr_character_flag = fallen_for_trap
+		}
+		prestige = -50
+	}
+}
+
+character_event = { # The Fall of Chin - Eliminated
+	id = ATLAE.4012
+	picture = "GFX_evt_colony_village"
+	desc = EVTDESCTLA.4012
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTTLA.4012
+		hidden_tooltip = {
+			e_earth_kingdom = {
+				owner = {
+					ROOT = {
+						death = { death_reason = death_execution_live_burial killer = PREV }
+					}
+				}
+			}
+		}
+	}
+}
+
+narrative_event = { # The Fall of Chin - Realm Shatter
+	id = ATLAE.4013
+	picture = "GFX_evt_grassfire"
+	title = EVTTITLETLA.4013
+	desc = EVTDESCTLA.4013
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	option = { # Avatar
+		name = EVTOPTTLAA.4013
+		trigger = {
+			has_character_flag = is_kyoshi
+		}
+	}
+	
+	option = { # Earth King
+		name = EVTOPTTLAB.4013
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+	}
+	
+	option = { # Chin
+		name = EVTOPTTLAC.4013
+		custom_tooltip = {
+			text = CHIN_REALM_SHATTER
+			hidden_tooltip = {
+				any_vassal = {
+					limit = {
+						higher_tier_than = BARON
+					}
+					set_defacto_liege = THIS
+				}
+			}
+		}
+		trigger = {
+			religion = way_of_chin
+		}
+	}
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAD.4013
+		trigger = {
+			NOT = { religion = way_of_chin }
+			NOT = { has_landed_title = e_earth_kingdom }
+			NOT = { has_character_flag = is_kyoshi }
+			culture_group = earth_kingdom_culture
+		}
+	}
+	
+	option = { # World
+		name = EVTOPTTLAE.4013
+		trigger = {
+			NOT = { religion = way_of_chin }
+			NOT = { has_landed_title = e_earth_kingdom }
+			NOT = { has_character_flag = is_kyoshi }
+			NOT = { culture_group = earth_kingdom_culture }
+		}
+	}
+}
+
+narrative_event = { # Whispers of Rebellion
+	id = ATLAE.4014
+	picture = "GFX_evt_ba_sing_sa_rebellion"
+	title = EVTTITLETLA.4014
+	desc = EVTDESCTLA.4014
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	option = { # Earth King
+		name = EVTOPTTLAA.4014
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+	}
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAB.4014
+		trigger = {
+			NOT = { has_landed_title = e_earth_kingdom }
+			culture_group = earth_kingdom_culture
+		}
+	}
+	
+	option = { # World
+		name = EVTOPTTLAC.4014
+		trigger = {
+			NOT = { has_landed_title = e_earth_kingdom }
+			NOT = { culture_group = earth_kingdom_culture }
+		}
+	}
+}
+
+character_event = { # Colonies Conforntation - Check if Avatar or Earth King sends message
+	id = ATLAE.4015
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				d_avatar = {
+					has_holder = yes
+				}
+			}
+			d_avatar = {
+				character_event = { id = ATLAE.1 }
+			}
+		}
+		else = {
+			ROOT = {
+				character_event = { id = ATLAE.4016 }
+			}
+		}
+	}
+}
+
+character_event = { # Earth King confronts Firelord
+	id = ATLAE.4016
+	picture = "GFX_evt_avatar_firelord"
+	desc = EVTDESCTLA.4016
+	is_triggered_only = yes
+	
+	immediate = {
+		set_global_flag = HYW_1
+		any_playable_ruler = {
+			narrative_event = { id = ATLAE.4019 days = 48 }
+		}
+	}
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAA.4016
+		e_fire_nation = {
+			owner = {
+				character_event = { id = ATLAE.4017 days = 7 }
+			}
+		}
+	}
+}
+
+character_event = { # Firelord Replies
+	id = ATLAE.4017
+	picture = "GFX_evt_avatar_firelord"
+	desc = EVTDESCTLA.4017
+	is_triggered_only = yes
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAA.4017
+		FROM = {
+			character_event = { id = ATLAE.4018 days = 7 }
+		}
+	}
+}
+
+character_event = { # Earth King advances Age
+	id = ATLAE.4018
+	picture = "GFX_evt_avatar_firelord"
+	desc = EVTDESCTLA.4018
+	is_triggered_only = yes
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAA.4018
+	}
+}
+
+narrative_event = { # End of an Age - Prosperity to Aggression
+	id = ATLAE.4019
+	picture = GFX_evt_fire_nation_colony
+	title = EVTTITLETLA.4019
+	desc = EVTDESCTLA.4019
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				has_landed_title = c_fire_palace
+			}
+			offmap_spirit_world = {
+				set_status = spirit_world_age_of_aggression
+			}
+			any_province = {
+				remove_province_modifier = age_of_prosperity_malus
+				add_province_modifier = { name = age_of_aggression_malus duration = -1 }
+			}
+			set_trade_route_value_multiplier = {
+				which = taki_trade_route
+				value = 0.5
+			}
+			set_trade_route_value_multiplier = {
+				which = yu_dao_trade_route
+				value = 0.5
+			}
+			set_trade_route_value_multiplier = {
+				which = omashu_trade_route
+				value = 0.5
+			}
+			set_trade_route_value_multiplier = {
+				which = gaoling_trade_route
+				value = 0.5
+			}
+		}
+	}
+	
+	option = { # Fire Nation
+		name = EVTOPTTLAA.4019
+		trigger = { culture_group = fire_nation_culture }
+		custom_tooltip = { text = ATLAE_END_ERA_PROSPERITY }
+	}
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAB.4019
+		trigger = { culture_group = earth_kingdom_culture }
+		custom_tooltip = { text = ATLAE_END_ERA_PROSPERITY }
+	}
+	
+	option = { # World
+		name = EVTOPTTLAC.4019
+		trigger = { 
+			NOR = {
+				culture_group = fire_nation_culture
+				culture_group = earth_kingdom_culture
+			}
+		}
+		custom_tooltip = { text = ATLAE_END_ERA_PROSPERITY }
+	}
+}
+
+narrative_event = { # End of an Age - Uncertainty to Rebellion
+	id = ATLAE.4020
+	picture = GFX_evt_ba_sing_sa_rebellion
+	title = EVTTITLETLA.4020
+	desc = EVTDESCTLA.4020
+	border = GFX_event_narrative_frame_war
+	major = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				has_landed_title = e_earth_kingdom
+			}
+			offmap_spirit_world = {
+				set_status = spirit_world_age_of_rebellion
+			}
+			any_province = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					NOT = { religion = followers_of_kyoshi }
+				}
+				add_province_modifier = { name = age_of_rebellion_malus duration = -1 }
+			}
+			any_province = {
+				limit = {
+					OR = {
+						NOT = { culture_group = earth_kingdom_culture }
+						religion = followers_of_kyoshi
+					}
+				}
+				add_province_modifier = { name = age_of_rebellion_malus_world duration = -1 }
+			}
+			136 = {
+				province_event = { id = TOG.1000 }
+			}
+			129 = {
+				province_event = { id = TOG.1000 }
+			}
+			124 = {
+				province_event = { id = TOG.1000 }
+			}
+			119 = {
+				province_event = { id = TOG.1000 }
+			}
+		}
+	}
+	
+	option = { # Earth King
+		name = EVTOPTTLAA.4020
+		trigger = { 
+			has_landed_title = e_earth_kingdom 
+		}
+		custom_tooltip = { text = ATLAE_END_ERA_UNCERTAINTY }
+	}
+	
+	option = { # Earth Kingdom
+		name = EVTOPTTLAB.4020
+		trigger = {
+			NOT = { has_landed_title = e_earth_kingdom }
+			culture_group = earth_kingdom_culture 
+		}
+		custom_tooltip = { text = ATLAE_END_ERA_UNCERTAINTY }
+	}
+	
+	option = { # World
+		name = EVTOPTTLAC.4020
+		trigger = { 
+			NOR = {
+				has_landed_title = e_earth_kingdom 
+				culture_group = earth_kingdom_culture
+			}
+		}
+		custom_tooltip = { text = ATLAE_END_ERA_UNCERTAINTY }
+	}
+}
+
+character_event = { # Conversion of Chin Lords
+	id = ATLAE.4021
+	picture = "GFX_evt_ba_sing_sa_rebellion"
+	desc = EVTDESCTLA.4021
+	is_triggered_only = yes
+	
+	option = { # Convert
+		name = EVTOPTTLAA.4021
+		custom_tooltip = {
+			text = ATLAE4021_Convert
+			hidden_tooltip = {
+				religion = earth_spirituality
+				any_realm_character = {
+					limit = { 
+						ai = no 
+						religion = way_of_chin
+					}
+					religion = earth_spirituality
+				}
+				any_realm_province = {
+					limit = { religion = way_of_chin }
+					remove_province_modifier = age_of_rebellion_malus
+					religion = earth_spirituality
+					add_province_modifier = { name = age_of_rebellion_malus_world duration = -1 }
+				}
+			}
+		}
+		trigger = {
+			OR = {
+				ai = no
+				capital_scope = {
+					NOT = { region = world_hu_xin_provinces }
+				}
+			}
+		}
+	}
+	option = { # Face Revolt
+		name = EVTOPTTLAB.4021
+		custom_tooltip = {
+			text = ATLAE4021_Revolt
+			hidden_tooltip = {
+				capital_scope = {
+					province_event = { id = TOG.1000 }
+				}
+				random_realm_province = {
+					limit = { religion = way_of_chin }
+					religion = earth_spirituality
+				}
+			}
+		}
+		trigger = {
+			OR = {
+				ai = no
+				higher_tier_than = DUKE
+				capital_scope = {
+					OR = {
+						region = world_hu_xin_provinces
+						region = world_western_shore
+					}
+				}
+			}
+		}
+	}
+}
+
+character_event = { # End of Fortune
+	id = ATLAE.4022
+	picture = "GFX_evt_city_ruins"
+	desc = EVTDESCTLA.4022
+	is_triggered_only = yes
+	
+	option = { # Convert
+		name = EVTOPTTLAA.4022
+		custom_tooltip = {
+			text = ATLAE4022_Convert
+			hidden_tooltip = {
+				religion = earth_spirituality
+				any_realm_character = {
+					limit = { 
+						ai = no 
+						religion = fortune_telling
+					}
+					religion = earth_spirituality
+				}
+				any_realm_province = {
+					limit = { religion = fortune_telling }
+					remove_province_modifier = age_of_rebellion_malus
+					religion = earth_spirituality
+					add_province_modifier = { name = age_of_rebellion_malus_world duration = -1 }
+				}
+			}
+		}
+		trigger = {
+			OR = {
+				ai = no
+				capital_scope = {
+					NOT = { region = world_hu_xin_provinces }
+				}
+			}
+		}
+	}
+	option = { # Face Revolt
+		name = EVTOPTTLAB.4022
+		custom_tooltip = {
+			text = ATLAE4022_Revolt
+			hidden_tooltip = {
+				capital_scope = {
+					province_event = { id = TOG.1000 }
+				}
+				random_realm_province = {
+					limit = { religion = fortune_telling }
+					religion = earth_spirituality
+				}
+			}
+		}
+		trigger = {
+			OR = {
+				ai = no
+				higher_tier_than = DUKE
+				capital_scope = {
+					region = world_hu_xin_provinces
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Observence of the Comet - 615
+	id = ATLAE.4023
+	picture = "GFX_evt_fire_comet"
+	desc = EVTDESCTLA.4023
+	is_triggered_only = yes
+	
+	option = { # Okay
+		name = EVTOPTTLAA.4023
+	}
+}
+
+character_event = { # Comet of 630 - Random Outcome
+	id = ATLAE.4024
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		is_landed = yes
+	}
+	
+	immediate = {
+		random_list = {
+			33 = { # Strength
+				character_event = { id = ATLAE.4025 }
+			}
+			33 = { # Riots
+				character_event = { id = ATLAE.4026 }
+			}
+			33 = { # Great Fires
+				character_event = { id = ATLAE.4027 }
+			}
+		}
+	}
+}
+
+character_event = { # Comet of 630 - Strength
+	id = ATLAE.4025
+	picture = "GFX_evt_fire_comet"
+	desc = EVTDESCTLA.4025
+	is_triggered_only = yes
+	
+	option = { # Okay
+		name = EVTOPTTLAA.4025
+		trigger = {
+			trait = firebender
+		}
+		add_character_modifier = { name = power_of_the_comet duration = 4000 }
+		add_character_modifier = { name = agni_blessing duration = -1 }
+	}
+	option = { # Okay
+		name = EVTOPTTLAB.4025
+		piety = 250
+		trigger = {
+			NOT = { trait = firebender }
+		}
+	}
+}
+
+character_event = { # Comet of 630 - Riots
+	id = ATLAE.4026
+	picture = "GFX_evt_fire_comet"
+	desc = EVTDESCTLA.4026
+	is_triggered_only = yes
+	
+	immediate = {
+		random_demesne_province = {
+			province_event = { id = TOG.1000 }
+		}
+	}
+	
+	option = { # Okay
+		name = EVTOPTTLAA.4026
+		trigger = {
+			trait = firebender
+		}
+		add_character_modifier = { name = power_of_the_comet duration = 4000 }
+		add_character_modifier = { name = agni_blessing duration = -1 }
+	}
+	option = { # Okay
+		name = EVTOPTTLAB.4026
+		trigger = {
+			NOT = { trait = firebender }
+		}
+	}
+}
+
+character_event = { # Comet of 630 - Great Fires
+	id = ATLAE.4027
+	picture = "GFX_evt_fire_comet"
+	desc = EVTDESCTLA.4027
+	is_triggered_only = yes
+	
+	immediate = {
+		any_demesne_province = {
+			add_province_modifier = { name = province_malus_comet_damage duration = 1480 }
+		}
+	}
+	
+	option = { # Okay
+		name = EVTOPTTLAA.4027
+		trigger = {
+			trait = firebender
+		}
+		add_character_modifier = { name = power_of_the_comet duration = 4000 }
+		add_character_modifier = { name = agni_blessing duration = -1 }
+	}
+	option = { # Okay
+		name = EVTOPTTLAB.4027
+		trigger = {
+			NOT = { trait = firebender }
+		}
+	}
+}

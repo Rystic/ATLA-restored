@@ -1,0 +1,179 @@
+feudal_governments = {
+
+	feudal_government = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = { 
+			CASTLE 
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			#feudal_government_city
+			feudal_government_temple
+			feudal_government_earth_kingdom
+			#feudal_government_military
+		}
+		potential = {
+			NOT = { culture_group = earth_kingdom_culture }
+			NOT = {	religion_group = air_religions }
+			NOT = { is_government_potential = water_tribe_government }
+			is_patrician = no
+		}
+		
+		color = { 91 133 207 }
+		
+		dukes_called_kings = yes
+		barons_need_dynasty = yes
+		can_grant_kingdoms_and_empires_to_other_government = yes
+		can_build_tribal = no
+		uses_decadence = yes
+		vassal_limit = 10
+
+		ignore_in_vassal_limit_calculation = {
+			feudal_government_communist
+		}
+	}
+	
+	feudal_government_earth_kingdom = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = { 
+			CASTLE 
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			#feudal_government_city
+			feudal_government_temple
+			feudal_government
+			#feudal_government_military
+		}
+		potential = {
+			culture_group = earth_kingdom_culture
+			NOT = {	religion_group = air_religions }
+			NOT = { is_government_potential = water_tribe_government }
+			is_patrician = no
+		}
+		
+		color = { 2 80 2 }
+		
+		dukes_called_kings = yes
+		barons_need_dynasty = yes
+		gets_religion_opinion_penalties = no
+		gives_religion_opinion_penalties = no
+		vassal_government_opinion_penalties = no
+		can_grant_kingdoms_and_empires_to_other_government_group = yes
+		can_build_tribal = no
+		uses_decadence = yes
+		vassal_limit = 15
+
+		ignore_in_vassal_limit_calculation = {
+			feudal_government_communist
+		}
+	}
+	
+	feudal_government_temple = {
+		preferred_holdings = { TEMPLE }
+		allowed_holdings = { 
+			TEMPLE 
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			#feudal_government
+			#feudal_government_city
+			#feudal_government_military
+		}
+		potential = {
+			NOT = {	religion_group = air_religions }
+			higher_real_tier_than = baron
+			is_patrician = no
+			NOT = { is_government_potential = water_tribe_government }
+		}
+		
+		color = { 246 255 179 }
+
+		can_build_tribal = no
+		can_grant_kingdoms_and_empires_to_other_government = yes
+		ignore_in_vassal_limit_calculation = {
+			feudal_government_communist
+		}
+	}
+	
+	feudal_government_city = {
+		preferred_holdings = { CITY }
+		allowed_holdings = { 
+			CITY 
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			feudal_government
+			republic_government
+		}
+		frame_suffix = "_republic"
+		title_prefix = "city_"
+		potential = {
+			NOT = {	religion_group = air_religions }
+			higher_real_tier_than = baron
+			is_patrician = no
+			OR = {
+				capital_holding = {
+					holding_type = city
+				}
+			}
+			NOT = { is_government_potential = merchant_republic_government }
+		}
+		
+		color = { 220 138 135 }
+		
+		can_imprison_without_reason = no
+		can_revoke_without_reason = no
+		can_build_tribal = no
+	}
+	
+	feudal_government_air_nomad = {
+		preferred_holdings = { TEMPLE }
+		frame_suffix = "_nomadic"
+		#title_prefix = "nomadic_"
+		allowed_holdings = { 
+			TEMPLE
+			CASTLE
+			CITY
+			TRIBAL
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		potential = {
+			religion_group = air_religions
+			NOT = { religion = sandbender_communism }
+			NOT = { religion = communism }
+			is_patrician = no
+		}
+		
+		uses_piety_for_law_change = yes
+		color = { 255 162 0 }
+		can_build_tribal = no
+		allow_looting = no
+		can_change_to_nomad_on_start = yes
+		can_grant_kingdoms_and_empires_to_other_government = yes
+		demesne_size = -1
+		ignore_in_vassal_limit_calculation = {
+			feudal_government_communist
+		}
+	}
+}

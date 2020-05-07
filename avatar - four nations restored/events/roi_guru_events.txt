@@ -1,0 +1,1269 @@
+###########################################
+#                                         #
+# Rajas of India feast events             #
+#                                         #
+# ID RoI.3000-RoI.3999                    #
+#                                         #
+###########################################
+
+# Written by Tobias Bodlund
+
+namespace = RoI
+
+###########################################
+# Arrival of guru                         #
+###########################################
+
+# Start looking for guru
+character_event = {
+	id = RoI.3000
+	desc = EVTDESC_RoI_3000
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_RoI_3000
+		hidden_tooltip = { character_event = { id = RoI.3001 days = 30 random = 60 } }
+	}
+}
+
+# Guru is found
+character_event = {
+	id = RoI.3001
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+
+	immediate = {
+		clr_character_flag = looking_for_guru
+		set_character_flag = found_guru
+		random_list = {
+			15 = { # Finds great guru
+				create_character = {
+					random_traits = no
+					dynasty = NONE
+					religion = ROOT
+					culture = ROOT
+					female = no
+					age = 50
+					attributes = {
+						diplomacy = 12
+						stewardship = 10
+						intrigue = 11
+						learning = 14
+					}
+					trait = genius
+					trait = scholar
+					trait = patient
+					trait = mastermind_theologian
+				}
+				new_character = {
+					set_character_flag = guru
+					give_minor_title = title_guru
+					piety = 600
+					prestige = 150
+					opinion = {
+						modifier = opinion_loyal_servant
+						who = ROOT
+						years = 100
+					}
+					random_list = {  # Small chance of having some unusual memorable trait
+						1 = { add_trait = blind }
+						1 = { add_trait = dwarf }
+						50 = {}
+					}
+					character_event = { id = RoI.3002 }
+				}
+			}
+			80 = { # Finds ordinary guru
+				create_character = {
+					random_traits = no
+					dynasty = NONE
+					religion = ROOT
+					culture = ROOT
+					female = no
+					age = 50
+					attributes = {
+						diplomacy = 10
+						stewardship = 8
+						intrigue = 9
+						learning = 12
+					}
+					trait = quick
+					trait = scholar
+					trait = patient
+					trait = mastermind_theologian
+				}
+				new_character = {
+					set_character_flag = guru
+					give_minor_title = title_guru
+					piety = 300
+					prestige = 750
+					opinion = {
+						modifier = opinion_loyal_servant
+						who = ROOT
+						years = 100
+					}
+					character_event = { id = RoI.3002 }
+				}
+			}
+			5 = { # Finds con artist pretending to be guru - but doesn't know it yet...
+				create_character = {
+					random_traits = no
+					dynasty = NONE
+					religion = ROOT
+					culture = ROOT
+					female = no
+					age = 40
+					attributes = {
+						diplomacy = 12
+						stewardship = 8
+						intrigue = 16
+						learning = 10
+					}
+					trait = quick
+					trait = martial_cleric
+					trait = weak
+				}
+				new_character = {
+					set_character_flag = guru
+					set_character_flag = fake_guru
+					give_minor_title = title_guru
+					piety = 100
+					prestige = 50
+					opinion = {
+						modifier = opinion_loyal_servant
+						who = ROOT
+						years = 100
+					}
+					character_event = { id = RoI.3002 }
+				}
+			}
+		}
+	}
+}
+
+# Guru bounce event
+character_event = {
+	id = RoI.3002
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { character_event = { id = RoI.3003 } }
+	}
+}
+
+# Notify player that guru has been found
+character_event = {
+	id = RoI.3003
+	desc = EVTDESC_RoI_3003
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_RoI_3003
+	}
+}
+
+###########################################
+# Guru offers moral advice                #
+###########################################
+
+# Drunkard
+character_event = {
+	id = RoI.3100
+	desc = EVTDESC_RoI_3100
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+
+
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = { trait = airbender }
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = drunkard
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = drunkard
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Hedonist
+character_event = {
+	id = RoI.3101
+	desc = EVTDESC_RoI_3101
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = hedonist
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = hedonist
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Impaler
+character_event = {
+	id = RoI.3102
+	desc = EVTDESC_RoI_3102
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = { trait = airbender }
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = impaler
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = impaler
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_3100
+		piety = -50
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			ROOT = {
+				imprison = PREV
+			}
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = -1
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+# Lustful
+character_event = {
+	id = RoI.3103
+	desc = EVTDESC_RoI_3103
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = lustful
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = lustful
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Gluttonous
+character_event = {
+	id = RoI.3104
+	desc = EVTDESC_RoI_3104
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = gluttonous
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = gluttonous
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Greedy
+character_event = {
+	id = RoI.3105
+	desc = EVTDESC_RoI_3105
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = greedy
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = greedy
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Envious
+character_event = {
+	id = RoI.3106
+	desc = EVTDESC_RoI_3106
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = envious
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = envious
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Wroth
+character_event = {
+	id = RoI.3107
+	desc = EVTDESC_RoI_3107
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = wroth
+	}
+
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = wroth
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_3100
+		piety = -50
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			ROOT = {
+				imprison = PREV
+			}
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = -1
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+# Proud
+character_event = {
+	id = RoI.3108
+	desc = EVTDESC_RoI_3108
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = proud
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = proud
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_3100
+		piety = -50
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			ROOT = {
+				imprison = PREV
+			}
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = -1
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+
+# Arbitrary
+character_event = {
+	id = RoI.3109
+	desc = EVTDESC_RoI_3109
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = arbitrary
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = arbitrary
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+
+# Cynical
+character_event = {
+	id = RoI.3110
+	desc = EVTDESC_RoI_3110
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = cynical
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = cynical
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+
+# Cruel
+character_event = {
+	id = RoI.3111
+	desc = EVTDESC_RoI_3111
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = cruel
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = cruel
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+
+# Duelist
+character_event = {
+	id = RoI.3112
+	desc = EVTDESC_RoI_3112
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		trait = airbender
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = duelist
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = duelist
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Hunter
+character_event = {
+	id = RoI.3113
+	desc = EVTDESC_RoI_3113
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		trait = airbender
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		OR = {
+			trait = hunter
+			trait = falconer
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = hunter
+		}
+		random = {
+			chance = 10
+			remove_trait = falconer
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+# Paranoid
+character_event = {
+	id = RoI.3114
+	desc = EVTDESC_RoI_3114
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+		trait = paranoid
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3100
+		prestige = -20
+		random = {
+			chance = 10
+			remove_trait = paranoid
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3100
+		piety = -20
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			opinion = {
+				modifier = opinion_unhappy
+				who = ROOT
+				years = 1
+			}
+		}
+	}
+}
+
+###########################################
+# False guru found out                    #
+###########################################
+
+# False guru?
+character_event = {
+	id = RoI.3150
+	desc = EVTDESC_RoI_3150
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	ai = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = { trait = slow }
+		NOT = { trait = inbred }
+		NOT = { trait = imbecile }
+		NOT = { trait = trusting }
+		any_courtier = {
+			has_minor_title = title_guru
+			has_character_flag = fake_guru
+			NOT = { has_character_flag = fake_guru_suspected }
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 60
+	}
+
+	immediate = {
+		any_courtier = {
+			limit = {
+				has_minor_title = title_guru
+				has_character_flag = fake_guru
+			}
+			add_trait = drunkard
+			set_character_flag = fake_guru_suspected
+			piety = -50
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3150
+		hidden_tooltip = { character_event = { id = RoI.3151 days = 15 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_3150
+	}
+}
+
+# Guru is obviously false - confront him?
+character_event = {
+	id = RoI.3151
+	desc = EVTDESC_RoI_3151
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_courtier = {
+			limit = {
+				has_minor_title = title_guru
+				has_character_flag = fake_guru
+			}
+			piety = -100
+			add_trait = arbitrary
+			add_trait = deceitful
+			add_trait = cynical
+			add_character_modifier = {
+				name = whoremaster
+				duration = -1
+			}
+			add_character_modifier = {
+				name = gambler
+				duration = -1
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3151
+		hidden_tooltip = { character_event = { id = RoI.3152 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_3151
+		any_courtier = {
+			limit = {
+				has_minor_title = title_guru
+				has_character_flag = fake_guru
+			}
+			add_friend = ROOT
+		}
+	}
+}
+
+# Confront false guru, decide what to do
+character_event = {
+	id = RoI.3152
+	desc = EVTDESC_RoI_3152
+	picture = GFX_evt_lunatic
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_courtier = {
+			limit = {
+				has_minor_title = title_guru
+				has_character_flag = fake_guru
+			}
+			add_trait = arbitrary
+			add_trait = deceitful
+			add_trait = cynical
+			add_character_modifier = {
+				name = whoremaster
+				duration = -1
+			}
+			add_character_modifier = {
+				name = gambler
+				duration = -1
+			}
+			clr_character_flag = guru
+			prestige = -100
+			piety = -100
+			remove_trait = brahmin
+			remove_trait = vaishya
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_3152
+		prestige = -30
+		any_courtier = {
+			limit = {
+				has_minor_title = title_guru
+				has_character_flag = fake_guru
+			}
+			imprison = ROOT
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3152
+		prestige = -30
+		any_courtier = {
+			limit = {
+				has_minor_title = title_guru
+				has_character_flag = fake_guru
+			}
+			clr_character_flag = fake_guru
+			remove_title = title_guru
+			banish = yes
+		}
+	}
+}
+
+###########################################
+# Guru meditation...                      #
+###########################################
+
+character_event = {
+	id = RoI.3400
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		OR = {
+			trait = stressed
+			trait = depressed
+		}
+		any_courtier = {
+			has_minor_title = title_guru
+			NOT = { has_character_flag = fake_guru }
+		}
+	}
+	
+	immediate = {
+		any_courtier = {
+			limit = { has_minor_title = title_guru }
+			character_event = { id = RoI.3401 }
+		}
+	}
+}
+
+# Guru bounce event
+character_event = {
+	id = RoI.3401
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				trait = genius
+			}
+			FROM = { narrative_event = { id = RoI.3402 } } # Meditation helps
+		}
+		if = {
+			limit = {
+				NOT = {	trait = genius }
+			}
+			random = {
+				chance = 50
+				FROM = { narrative_event = { id = RoI.3402 } } # Meditation helps
+			}
+		}
+	}
+}
+
+# Meditation helps
+narrative_event = {
+	id = RoI.3402
+	title = EVTTITLE_RoI_3402
+	desc = EVTDESC_RoI_3402
+	picture = GFX_evt_bishop
+	border = GFX_event_narrative_frame_religion
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_3402
+		trigger = {
+			OR = {
+				religion_group = earth_religions
+			}
+		}
+		if = {
+			limit = { trait = stressed }
+			remove_trait = stressed
+		}
+		if = {
+			limit = { trait = depressed }
+			remove_trait = depressed
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3402
+		trigger = {
+			OR = {
+				religion_group = water_religions
+			}
+		}
+		if = {
+			limit = { trait = stressed }
+			remove_trait = stressed
+		}
+		if = {
+			limit = { trait = depressed }
+			remove_trait = depressed
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_3402
+		trigger = {
+			OR = {
+				religion_group = air_religions
+			}
+		}
+		if = {
+			limit = { trait = stressed }
+			remove_trait = stressed
+		}
+		if = {
+			limit = { trait = depressed }
+			remove_trait = depressed
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_3402
+		trigger = {
+			OR = {
+				religion_group = fire_religions
+			}
+		}
+		if = {
+			limit = { trait = stressed }
+			remove_trait = stressed
+		}
+		if = {
+			limit = { trait = depressed }
+			remove_trait = depressed
+		}
+	}
+}

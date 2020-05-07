@@ -1,0 +1,2007 @@
+# Hardcoded society tag. If this exists, religions will get versions of this society generated for them unless specifically opted out, or another is specificed. See dynamic_societies.info for more documentation
+#### Societies
+### Fire Nation
+# Brotherhood of Agni Kai = Firebenders
+# Kemurikage Sisterhood = Kemurikage
+### Air Nomads
+# Elder Council = Air Nomads
+### Earth Kingdom
+# Five-Seven-Fiver = Five-Seven-Fiver
+### Water Tribe
+# Enlightend = Vautuism
+### OTHER
+# Equalist Society = Equalism
+# The White Lotus
+# The Red Lotus
+
+secret_religious_society_template = {
+	template = yes
+	primary_attribute = diplomacy
+	is_religious = yes
+	is_secret = yes
+	opinion_to_other_members = +10
+	opinion_per_rank_above = +5
+	opinion_to_perceived_members = +10
+	criminal = yes
+	sound = secret_cults_interface
+	society_ranks_gfx = secret_ranks
+	non_interference = {
+		FROM = {
+			same_realm = ROOT
+		}
+	}
+	
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = FROM
+					rank = 1
+				}
+			}
+		}
+		age = 16
+		any_society_member = { society_member_of = FROM }
+		secret_religion = FROM
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+
+	show_society = {
+		any_society_member = { society_member_of = FROM }
+		secret_religion = FROM
+	}
+	
+	potential = {
+		age = 16
+		secret_religion = FROM
+	}
+	
+	society_rank = {
+		level = 1
+		limit = 200
+		startup_limit = 0
+		decisions = {
+			secret_religions_induct_child
+			secret_religions_evoke_sympathy
+		}
+	}
+	
+	society_rank = {
+		level = 2
+		limit = 100
+		startup_limit = 0
+		modifier = { 
+			is_visible = {
+				OR = {
+					same_society_as = FROM
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			diplomacy = 1
+		}
+		decisions = {
+			secret_religions_induct_character
+		}
+	}
+	
+	society_rank = {
+		level = 3
+		limit = 50
+		startup_limit = 0
+		modifier = {
+			is_visible = {
+				OR = {
+					same_society_as = FROM
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			diplomacy = 2
+		}
+		decisions = {
+			secret_religions_prepare_grounds
+		}
+	}
+
+	society_rank = {
+		level = 4
+		limit = 20
+		startup_limit = 0
+		modifier = { 
+			diplomacy = 3
+			is_visible = {
+				OR = {
+					same_society_as = FROM
+					FROM = { is_society_discovered = yes }
+				}
+			}
+		}
+		decisions = {
+			secret_religions_openly_adopt_faith
+		}
+	}
+	
+	plots = {
+	
+	}
+	
+	monthly_currency_gain = {
+		name = secret_religion_currency
+		
+		per_attribute = {
+    		name = diplomacy
+    		value = 0.5
+    	}
+		has_trait = {
+			trait = zealous
+			value = 3
+		}
+		has_trait = {
+			trait = scholar
+			value = 3
+		}
+		has_trait = {
+			trait = theologian
+			value = 3
+		}	
+		has_trait = {
+			trait = celibate
+			value = 2
+		}
+		has_trait = {
+			trait = diligent
+			value = 1
+		}
+    	has_trait = {
+			trait = chaste
+			value = 1
+		}
+		has_trait = {
+			trait = temperate
+			value = 1
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		has_trait = {
+			trait = kind
+			value = 1
+		}
+		has_trait = {
+			trait = patient
+			value = 1
+		}
+		has_trait = {
+			trait = humble
+			value = 1
+		}
+		has_trait = {
+			trait = honest
+			value = 1
+		}
+		has_trait = {
+			trait = erudite
+			value = 1
+		}
+		has_trait = {
+			trait = pilgrim
+			value = 1
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			trait = zealous
+			factor = 1.3
+		}
+		modifier = {
+			trait = scholar
+			factor = 1.3
+		}
+		modifier = {
+			trait = theologian
+			factor = 1.3
+		}
+		modifier = {
+			trait = celibate
+			factor = 1.2
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.2
+		}
+    	modifier = {
+			trait = chaste
+			factor = 1.1
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}
+		modifier = {
+			trait = kind
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = humble
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = erudite
+			factor = 1.1
+		}
+		modifier = {
+			trait = pilgrim
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+	    	always = no
+		}
+	}
+}
+
+monastic_order_elder_council = { # Air Nomad Hierarchy
+	primary_attribute = learning
+	is_religious = yes
+	opinion_to_other_members = +10
+	opinion_per_rank_above = +5
+	sound = monastic_orders_interface
+	society_ranks_gfx = monk_ranks
+	non_interference = {
+		always = yes
+	}
+	
+	active = {
+		always = yes
+	}
+	indestructible = no
+
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = monastic_order_elder_council
+					rank = 1
+				}
+			}
+		}
+		age = 16
+		religion_group = air_religions
+		custom_tooltip = {
+			text = did_not_betray_society
+			NOT = { has_character_flag = betrayed_monastic_order_elder_council }
+		}
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+
+	show_society = {
+		religion_group = air_religions
+	}
+
+	potential = { religion_group = air_religions }
+
+	society_rank = { # Monk / Nun
+		level = 1
+		limit = 100 
+		startup_limit = 12
+		modifier = {
+			monthly_character_piety = 0.05
+		}
+	}
+	
+	society_rank = { # High Monk / Nun
+		level = 2
+		limit = 50
+		startup_limit = 8
+		modifier = { 
+			monthly_character_piety = 0.1
+			learning = 1
+			fertility = -0.15
+		}
+		decisions = {
+			monastic_orders_go_celibate #Power: toggle celibacy
+			monastic_orders_stop_celibate
+			monastic_orders_spiritual_guidance
+		}
+	}
+	
+	society_rank = { # Sage
+		level = 3
+		limit = 25 
+		startup_limit = 5
+		modifier = {
+			monthly_character_piety = 0.2
+			learning = 2
+			build_cost_temple_modifier = -0.25
+			fertility = -0.15
+		}
+		decisions = {
+			monastic_orders_teach_virtue
+		}
+	}
+
+	society_rank = { # Elder
+		level = 4
+		limit = 4 
+		startup_limit = 4
+		modifier = { 
+			monthly_character_piety = 0.5
+			learning = 3
+			build_cost_temple_modifier = -0.5
+			fertility = -0.15
+		}
+		decisions = {
+			monastic_order_teach_airbending
+			monastic_order_decide_policy
+		}
+	}
+
+	monthly_currency_gain = {
+		name = currency_name_monastic_order_dominican
+    	
+    	per_attribute = {
+    		name = learning
+    		value = 0.5
+    	}
+		has_trait = {
+			trait = legendary_bender
+			value = 5
+		}
+		has_trait = {
+			trait = master_bender
+			value = 4
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = zealous
+			value = 3
+		}
+		has_trait = {
+			trait = scholar
+			value = 3
+		}
+		has_trait = {
+			trait = theologian
+			value = 3
+		}	
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		has_trait = {
+			trait = celibate
+			value = 2
+		}
+		has_trait = {
+			trait = diligent
+			value = 1
+		}
+    	has_trait = {
+			trait = chaste
+			value = 1
+		}
+		has_trait = {
+			trait = temperate
+			value = 1
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		has_trait = {
+			trait = kind
+			value = 1
+		}
+		has_trait = {
+			trait = patient
+			value = 1
+		}
+		has_trait = {
+			trait = humble
+			value = 1
+		}
+		has_trait = {
+			trait = honest
+			value = 1
+		}
+		has_trait = {
+			trait = erudite
+			value = 1
+		}
+		has_trait = {
+			trait = pilgrim
+			value = 1
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			is_priest = yes
+			factor = 1.1
+		}
+		modifier = {
+			tier = EMPEROR
+			factor = 2.5
+		}
+		modifier = {
+			tier = KING
+			factor = 2.0
+		}
+		modifier = {
+			tier = DUKE
+			factor = 1.5
+		}
+		modifier = {
+			tier = COUNT
+			factor = 1.1
+		}
+		modifier = {
+			trait = legendary_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = zealous
+			factor = 1.3
+		}
+		modifier = {
+			trait = scholar
+			factor = 1.3
+		}
+		modifier = {
+			trait = theologian
+			factor = 1.3
+		}
+		modifier = {
+			trait = celibate
+			factor = 1.2
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.2
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.2
+		}
+    	modifier = {
+			trait = chaste
+			factor = 1.1
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}
+		modifier = {
+			trait = kind
+			factor = 1.1
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = humble
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = erudite
+			factor = 1.1
+		}
+		modifier = {
+			trait = pilgrim
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+		   	religion_group = air_religions
+			age = 16
+			is_in_society = no
+			NOR = {
+				mercenary = yes
+				holy_order = yes
+			}
+			has_secret_religion_trait_trigger = no
+			OR = {
+				trait = zealous
+				trait = scholar
+				learning = 12
+				is_priest = yes
+			}
+		}
+	}
+}
+
+brotherhood_of_agni_kai = { # Art of Agni Kai
+	primary_attribute = martial
+	opinion_to_other_members = +5
+	opinion_per_rank_above = +10
+	sound = monastic_orders_interface
+	society_ranks_gfx = monk_ranks
+	non_interference = {
+		always = yes
+	}
+	
+	active = {
+		always = yes
+	}
+	indestructible = no
+	
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = brotherhood_of_agni_kai
+					rank = 1
+				}
+			}
+		}
+		age = 16
+		custom_tooltip = {
+			text = bak_religion_req
+			hidden_tooltip = {
+				OR = {
+					religion = fire_spirituality
+					religion = fire_nation_imperialism
+				}
+			}
+		}
+		trait = firebender
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+	show_society = {
+		always = yes
+	}
+	potential = {
+		religion_group = fire_religions
+	}
+	
+	society_rank = { # Novice - Train
+		level = 1
+		limit = 100 
+		startup_limit = 10
+		modifier = {
+			monthly_character_piety = 0.05
+		}
+		decisions = {
+			challenge_fellow_member_to_spar
+		}
+	}
+	
+	society_rank = { # Duelist
+		level = 2
+		limit = 50
+		startup_limit = 6
+		modifier = { 
+			monthly_character_piety = 0.1
+			health = 0.25
+		}
+		decisions = {
+			bak_physical_training
+			bak_recruit_member
+		}
+	}
+	
+	society_rank = { # Master
+		level = 3
+		limit = 5 
+		startup_limit = 3
+		modifier = {
+			monthly_character_piety = 0.2
+			health = 0.5
+			build_cost_temple_modifier = -0.1
+		}
+		decisions = {
+			bak_learn_bending
+			bak_instruct_others
+		}
+	}
+
+	society_rank = { # Grandmaster
+		level = 4
+		limit = 1
+		startup_limit = 1
+		modifier = { 
+			monthly_character_piety = 0.5
+			health = 1.0
+			build_cost_temple_modifier = -0.2 
+		}
+		decisions = {
+			bak_learn_new_bending
+		}
+	}
+	
+	monthly_currency_gain = {
+		name = currency_name_brotherhood_of_agni_kai
+    	
+    	per_attribute = {
+    		name = martial
+    		value = 0.5
+    	}
+		has_trait = {
+			trait = firelord
+			value = 5
+		}
+		has_trait = {
+			trait = legendary_bender
+			value = 5
+		}
+		has_trait = {
+			trait = lightningbender
+			value = 3
+		}
+		has_trait = {
+			trait = master_bender
+			value = 3
+		}
+    	has_trait = {
+			trait = innerflame
+			value = 3
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = combustionbender
+			value = 2
+		}
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		has_trait = {
+			trait = incompetent_bender
+			value = 1
+		}
+		has_trait = {
+			trait = positive_jing
+			value = 1
+		}
+		has_trait = {
+			trait = zealous
+			value = 1
+		}
+		has_trait = {
+			trait = wroth
+			value = 1
+		}
+		has_trait = {
+			trait = strong
+			value = 1
+		}
+		has_trait = {
+			trait = duelist
+			value = 1
+		}
+		has_trait = {
+			trait = hunter
+			value = 1
+		}
+		has_trait = {
+			trait = brave
+			value = 1
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+	
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+	
+	member_score = {
+		value = 10
+		modifier = {
+			trait = firelord
+			factor = 5
+		}
+		modifier = {
+			trait = legendary_bender
+			factor = 5
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.3
+		}
+    	modifier = {
+			trait = competent_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.3
+		}
+		modifier = {
+			trait = brave
+			factor = 1.1
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = duelist
+			factor = 1.1
+		}
+		modifier = {
+			trait = zealous
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = positive_jing
+			factor = 1.1
+		}
+		modifier = {
+			trait = hunter
+			factor = 1.1
+		}
+		modifier = {
+			trait = innerflame
+			factor = 1.1
+		}
+		modifier = {
+			trait = incompetent_bender
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+		   	OR = {
+				religion = fire_spirituality
+				religion = fire_nation_imperialism
+			}
+			age = 16
+			trait = firebender
+			is_in_society = no
+		}
+	}
+}
+
+the_enlightened  = { # Vautuism
+	primary_attribute = intrigue
+	is_secret = yes
+	criminal = yes
+	devil_worshipper = yes
+	opinion_to_other_members = +5
+	opinion_to_pretenders = -40			#Pretenders is the opinion you have of people perceived/discovered to be in your society.
+	opinion_to_perceived_members = -40	#Perceived is the opinion you have of people perceived/discovered to be of a society you're not part of
+	opinion_per_rank_above = +10
+	sound = devil_worshippers_interface
+	society_ranks_gfx = devil_ranks
+	
+	active = {
+		NOT = {
+			has_game_rule = {
+				name = devil_worshipers
+				value = none
+			}
+		}
+	}
+	indestructible = yes
+	
+	can_join_society = {
+		is_adult = yes
+		has_vice_trigger = yes
+		OR = {
+			learning = 12
+			intrigue = 12
+		}
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = the_enlightened
+					rank = 1
+				}
+			}
+		}
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+	
+	show_society = {
+		NOT = {
+			has_game_rule = {
+				name = devil_worshipers
+				value = none
+			}
+		}
+		OR = {
+			religion_group = water_religions
+			religion_group = outlaw_religions
+		}
+	}
+	
+	society_rank = {
+		level = 1
+		limit = 100 
+		startup_limit = 10
+		decisions = {
+			tes_spiritual_study
+		}
+	}
+	
+	society_rank = { 
+		level = 2
+		limit = 50
+		startup_limit = 6
+		modifier = { 
+			is_visible = {
+				OR = {
+					society_member_of = the_enlightened
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			intrigue = 1
+		}
+		decisions = {
+			tes_inflict_terror
+			tes_invite_member
+		}
+	}
+	
+	society_rank = {
+		level = 3
+		limit = 25 
+		startup_limit = 3
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_enlightened
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			intrigue = 2
+		}
+		decisions = {
+			tes_learn_dark_arts
+			tes_use_spiritual_energy
+		}
+	}
+
+	society_rank = {
+		level = 4
+		limit = 1 
+		startup_limit = 1
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_enlightened
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			intrigue = 3
+		}
+		decisions = {
+			tes_eliminate_rival
+		}
+		obedience_tooltip = obedience_tooltip #this can be unique per rank/society 
+		obedient = {
+			ROOT = {
+				always = yes
+			}
+		}
+	}
+
+	plots = {
+		plot1_tag
+		plot2_tag
+	}
+    
+	ambitions = {
+		ambition1_tag
+		ambition2_tag
+	}
+
+	monthly_currency_gain = {
+		name = currency_name_the_enlightened
+    
+		per_attribute = {
+			name = intrigue
+			value = 0.5
+		}
+		has_trait = {
+			trait = ambitious
+			value = 5
+		}
+		has_trait = {
+			trait = genius
+			value = 4
+		}
+		has_trait = {
+			trait = quick
+			value = 3
+		}
+		has_trait = {
+			trait = shrewd
+			value = 3
+		}
+		has_trait = {
+			trait = hedonist
+			value = 3
+		}
+		has_trait = {
+			trait = mystic
+			value = 3
+		}
+		has_trait = {
+			trait = seducer
+			value = 3
+		}
+		has_trait = {
+			trait = seductress
+			value = 3
+		}
+		has_trait = {
+			trait = schemer
+			value = 3
+		}
+		has_trait = {
+			trait = impaler
+			value = 3
+		}
+		has_trait = {
+			trait = lustful
+			value = 1
+		}
+		has_trait = {
+			trait = proud
+			value = 1
+		}
+		has_trait = {
+			trait = greedy
+			value = 1
+		}
+		has_trait = {
+			trait = deceitful
+			value = 1
+		}
+		has_trait = {
+			trait = arbitrary
+			value = 1
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			trait = ambitious
+			factor = 1.5
+		}
+		modifier = {
+			trait = genius
+			factor = 1.3
+		}
+		modifier = {
+			trait = quick
+			factor = 1.3
+		}
+		modifier = {
+			trait = shrewd
+			factor = 1.3
+		}
+		modifier = {
+			trait = hedonist
+			factor = 1.3
+		}
+		modifier = {
+			trait = mystic
+			factor = 1.3
+		}
+		modifier = {
+			trait = seducer
+			factor = 1.3
+		}
+		modifier = {
+			trait = seductress
+			factor = 1.3
+		}
+		modifier = {
+			trait = schemer
+			factor = 1.3
+		}
+		modifier = {
+			trait = impaler
+			factor = 1.3
+		}
+		modifier = {
+			trait = lustful
+			factor = 1.1
+		}
+		modifier = {
+			trait = proud
+			factor = 1.1
+		}
+		modifier = {
+			trait = greedy
+			factor = 1.1
+		}
+		modifier = {
+			trait = deceitful
+			factor = 1.1
+		}
+		modifier = {
+			trait = arbitrary
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			NOT = {
+				has_game_rule = {
+					name = devil_worshipers
+					value = none
+				}
+			}
+			ai = yes
+	    	controls_religion = no
+			OR = {
+				has_impious_trait_trigger = yes
+				has_vice_trigger = yes
+				trait = drunkard
+				trait = possessed
+				trait = lunatic
+			}
+			OR = {
+				is_landed = yes
+				female = no
+			}
+			OR = {
+				religion = witchcraft
+				religion = tui_and_la
+				religion = barbarism
+			}
+			age = 16
+			is_in_society = no
+			NOT = { higher_tier_than = DUKE }
+			NOR = {
+				mercenary = yes
+				holy_order = yes
+			}
+		}
+	}
+}
+
+the_kemurikage_sisterhood = { # Kemurikage
+	primary_attribute = intrigue
+	is_secret = yes
+	devil_worshipper = no
+	opinion_to_other_members = +10
+	opinion_to_pretenders = -20			#Pretenders is the opinion you have of people perceived/discovered to be in your society.
+	opinion_to_perceived_members = -20 	#Perceived is the opinion you have of people perceived/discovered to be of a society you're not part of
+	opinion_per_rank_above = +10
+	society_rank_up_decision = request_to_rank_up_within_society
+	sound = monastic_orders_interface
+	society_ranks_gfx = generic_ranks
+	
+	active = {
+		has_dlc = "Mystics"
+	}
+	indestructible = yes
+
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = the_kemurikage_sisterhood
+					rank = 1
+				}
+			}
+		}
+		custom_tooltip = {
+			text = ks_fire_group
+			OR = {
+				religion = bhanti_spirituality
+				religion = fire_spirituality
+				religion = fire_nation_imperialism
+			}
+		}
+		age = 16
+		is_female = yes
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+	
+	show_society = {
+		religion_group = fire_religions
+	}
+
+	potential = {
+		OR = {
+			religion = bhanti_spirituality
+			religion = fire_spirituality
+			religion = fire_nation_imperialism
+			secret_religion = bhanti_spirituality
+		}
+	}
+
+	society_rank = {
+		level = 1
+		limit = 20 
+		startup_limit = 10
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_kemurikage_sisterhood
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			murder_plot_power_modifier = 0.1 # increased plotpower
+		}
+		decisions = {
+			ks_donate
+			ks_train
+		}
+	}
+	
+	society_rank = {
+		level = 2
+		limit = 15
+		startup_limit = 6
+		modifier = { 
+			is_visible = {
+				OR = {
+					society_member_of = the_kemurikage_sisterhood
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			murder_plot_power_modifier = 0.2 # further increased plotpower
+			defensive_plot_power_modifier = 0.1
+			intrigue = 1
+		}
+		decisions = {
+			ks_scare_ruler
+			ks_invite_member
+			ks_poison_effect
+		}
+	}
+	
+	society_rank = {
+		level = 3
+		limit = 5 
+		startup_limit = 3
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_kemurikage_sisterhood
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			murder_plot_power_modifier = 0.30 # further increased plotpower
+			defensive_plot_power_modifier = 0.15
+			intrigue = 2 # further increase
+			plot_discovery_chance = 0.1 # bonus to plot discovery chance
+		}
+		decisions = {
+			ks_raise_sisters
+		}
+	}
+
+	society_rank = {
+		level = 4
+		limit = 1 
+		startup_limit = 1
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_kemurikage_sisterhood
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			murder_plot_power_modifier = 0.50 # further increased plotpower
+			defensive_plot_power_modifier = 0.25
+			intrigue = 3 # further increase
+			plot_discovery_chance = 0.2 # further bonus to plot discovery chance
+		}
+		decisions = {
+			ks_enforce_doctrine
+			ks_mark_for_punishment
+		}
+		obedience_tooltip = obedience_tooltip #this can be unique per rank/society 
+		obedient = {
+			ROOT = {
+				always = yes
+			}
+		}
+	}
+
+	monthly_currency_gain = {
+		name = currency_name_the_kemurikage_sisterhood
+    
+		per_attribute = {
+			name = intrigue 
+			value = 0.5
+		}
+		has_trait = {
+			trait = zealous
+			value = 3
+		}
+		has_trait = {
+			trait = erudite
+			value = 3
+		}
+		has_trait = {
+			trait = scholar
+			value = 3
+		}
+		has_trait = {
+			trait = theologian
+			value = 3
+		}
+		has_trait = {
+			trait = schemer
+			value = 3
+		}
+		has_trait = {
+			trait = strong
+			value = 1
+		}
+		has_trait = {
+			trait = robust
+			value = 1
+		}
+		has_trait = {
+			trait = genius
+			value = 1
+		}
+		has_trait = {
+			trait = quick
+			value = 1
+		}
+		has_trait = {
+			trait = shrewd
+			value = 1
+		}
+		has_trait = {
+			trait = diligent
+			value = 1
+		}
+		has_trait = {
+			trait = patient
+			value = 1
+		}
+		has_trait = {
+			trait = temperate
+			value = 1
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			trait = zealous
+			factor = 1.3
+		}
+		modifier = {
+			trait = erudite
+			factor = 1.3
+		}
+		modifier = {
+			trait = scholar
+			factor = 1.3
+		}
+		modifier = {
+			trait = theologian
+			factor = 1.3
+		}
+		modifier = {
+			trait = schemer
+			factor = 1.3
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = robust
+			factor = 1.1
+		}
+		modifier = {
+			trait = genius
+			factor = 1.1
+		}
+		modifier = {
+			trait = quick
+			factor = 1.1
+		}
+		modifier = {
+			trait = shrewd
+			factor = 1.1
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}	
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			OR = {
+				religion = bhanti_spirituality
+				religion = fire_spirituality
+				religion = fire_nation_imperialism
+			}
+			age = 16
+			is_female = yes
+			NOT = { trait = decadent }
+			OR = {
+				trait = zealous
+				trait = schemer
+				trait = elusive_shadow
+				trait = deceitful
+				trait = ambitious
+				intrigue = 12
+			}
+			is_in_society = no
+			NOT = { higher_tier_than = DUKE }
+			NOT = { mercenary = yes }
+			NOT = { holy_order = yes }
+		}
+	}
+}
+
+five_seven_fiver_society = { # Five-Seven-Fiver
+	primary_attribute = diplomacy
+	opinion_to_other_members = +15
+	opinion_per_rank_above = +5
+	sound = secret_cults_interface
+	society_ranks_gfx = monk_ranks
+	society_rank_up_decision = request_to_rank_up_within_society
+	non_interference = {
+		always = yes
+	}
+	
+	active = {
+		always = yes
+	}
+	indestructible = yes
+	
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = five_seven_fiver_society
+					rank = 1
+				}
+			}
+			OR = {
+				is_landed = yes
+				is_patrician = yes
+			}
+		}
+		is_adult = yes
+		is_female = yes
+		custom_tooltip = {
+			text = FSV_JOIN_REQ
+			hidden_tooltip = {
+				OR = {
+					religion = ba_sing_se_cultural_heritage
+					religion = earth_spirituality
+					trait = poet
+				}
+			}
+		}
+		NOR = {
+			is_nomadic = yes
+			is_tribal = yes
+		}
+		hidden_trigger = { mercenary = no }
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+
+	show_society = {
+		always = yes
+	}
+	
+	potential = {
+		NOR = {
+			is_nomadic = yes
+			is_tribal = yes
+		}
+		age = 16
+	}
+	
+	society_rank = {
+		level = 1
+		limit = 200
+		startup_limit = 10
+		modifier = {
+			church_opinion = -10
+		}
+		decisions = {
+			monastic_order_learn_poetry # Learn Poetry
+		}
+	}
+	
+	society_rank = {
+		level = 2
+		limit = 100
+		startup_limit = 6
+		modifier = { 
+			diplomacy = 1
+			church_opinion = -10
+		}
+		decisions = {
+			five_seven_fiver_educate_family_member # Boost Stats of Other Character
+			five_seven_fiver_write_poem # Write Poem
+			five_seven_fiver_recruit_member # Invite Ally
+		}
+	}
+	
+	society_rank = {
+		level = 3
+		limit = 50
+		startup_limit = 4
+		modifier = {
+			diplomacy = 2
+			church_opinion = -10
+		}
+		decisions = {
+			five_seven_fiver_boost_relations # Use Poetry
+		}
+	}
+
+	society_rank = {
+		level = 4
+		limit = 20
+		startup_limit = 2
+		modifier = { 
+			diplomacy = 3
+			church_opinion = -10
+		}
+		decisions = {
+			five_seven_fiver_gain_favour # Gain Favour
+		}
+	}
+	
+	plots = {
+	}
+	
+	monthly_currency_gain = {
+		name = currency_name_five_seven_fiver
+		
+		per_attribute = {
+    		name = learning
+    		value = 0.5
+    	}
+		has_trait = {
+			value = 2
+			trait = diligent
+		}
+		has_trait = {
+			value = 1
+			trait = scholar
+		}
+		has_trait = {
+			value = 1
+			trait = mystic
+		}
+		has_trait = {
+			value = 1
+			trait = erudite
+		}
+		has_trait = {
+			value = 1
+			trait = stubborn
+		}
+		has_trait = {
+			value = 1
+			trait = patient
+		}
+		has_trait = {
+			value = 1
+			trait = genius
+		}
+		has_trait = {
+			value = 1
+			trait = quick
+		}
+		has_trait = {
+			value = 1
+			trait = shrewd
+		}
+		has_trait = {
+			value = 1
+			trait = just
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			factor = 2
+			trait = diligent
+		}
+		modifier = {
+			factor = 1.5
+			trait = scholar
+		}
+		modifier = {
+			factor = 1.5
+			trait = mystic
+		}
+		modifier = {
+			factor = 1.5
+			trait = erudite
+		}
+		modifier = {
+			factor = 1.5
+			trait = stubborn
+		}
+		modifier = {
+			factor = 1.5
+			trait = patient
+		}
+		modifier = {
+			factor = 1.5
+			OR = {
+				trait = genius
+				trait = quick
+				trait = shrewd
+			}
+		}
+		modifier = {
+			factor = 1.5
+			trait = just
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			age = 16
+			is_in_society = no
+			is_dumb_trigger = no
+			NOR = {
+				trait = avatar
+				trait = fullyrealisedavatar
+			}
+			OR = {
+				is_landed = yes
+				learning = 14
+				trait = scholar
+				trait = erudite
+				trait = genius
+				trait = poet
+			}
+			is_female = yes
+			OR = {
+				religion = ba_sing_se_cultural_heritage
+				religion = earth_spirituality
+			}
+		}
+	}
+}
+
+the_white_lotus = { # The White Lotus
+	primary_attribute = intrigue
+	is_secret = yes
+	devil_worshipper = no
+	opinion_to_other_members = +15
+	opinion_to_pretenders = -20			#Pretenders is the opinion you have of people perceived/discovered to be in your society.
+	opinion_to_perceived_members = -20 	#Perceived is the opinion you have of people perceived/discovered to be of a society you're not part of
+	opinion_per_rank_above = +10
+	society_rank_up_decision = request_to_rank_up_within_society
+	sound = assassins_interface
+	society_ranks_gfx = generic_ranks
+	
+	active = {
+		has_dlc = "Mystics"
+	}
+	indestructible = yes
+
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = the_white_lotus
+					rank = 1
+				}
+			}
+		}
+		age = 16
+		learning = 9
+		OR = {
+			is_benevolent_trigger = yes
+			is_smart_trigger = yes
+			has_vice_trigger = no
+		}
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+
+	show_society = {
+		always = yes
+	}
+
+	potential = {
+		learning = 9
+		age = 16
+		custom_tooltip = {
+			text = white_lotus_join_req
+			hidden_tooltip = {
+				NOR = {
+					religion = witchcraft
+					religion = nomadic_nihilism
+					religion = barbarism
+					religion = fire_nation_imperialism
+				}
+			}
+		}
+	}
+
+	society_rank = {
+		level = 1
+		limit = 20 
+		startup_limit = 10
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_white_lotus
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			murder_plot_power_modifier = 0.1 # increased plotpower
+		}
+		decisions = {
+			white_lotus_safeguard
+			#white_lotus_calm_spirits
+		}
+	}
+	
+	society_rank = {
+		level = 2
+		limit = 15
+		startup_limit = 6
+		modifier = { 
+			is_visible = {
+				OR = {
+					society_member_of = the_white_lotus
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			defensive_plot_power_modifier = 0.1
+			intrigue = 1
+		}
+		decisions = {
+			white_lotus_investigate_court
+			white_lotus_spiritual_study
+		}
+	}
+	
+	society_rank = {
+		level = 3
+		limit = 5 
+		startup_limit = 3
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_white_lotus
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			defensive_plot_power_modifier = 0.15
+			intrigue = 2 # further increase
+			plot_discovery_chance = 0.1 # bonus to plot discovery chance
+		}
+		decisions = {
+			white_lotus_pacify_rebellion
+			white_lotus_attain_mastery
+		}
+	}
+
+	society_rank = {
+		level = 4
+		limit = 1 
+		startup_limit = 1
+		modifier = {
+			is_visible = {
+				OR = {
+					society_member_of = the_white_lotus
+					FROM = { is_society_discovered = yes }
+				}
+			}
+			defensive_plot_power_modifier = 0.25
+			intrigue = 3 # further increase
+			plot_discovery_chance = 0.2 # further bonus to plot discovery chance
+		}
+		decisions = {
+			white_lotus_stir_rebellion
+		}
+		obedience_tooltip = obedience_tooltip #this can be unique per rank/society 
+		obedient = {
+			ROOT = {
+				always = yes
+			}
+		}
+	}
+
+	monthly_currency_gain = {
+		name = currency_name_the_white_lotus
+    
+		per_attribute = {
+			name = intrigue 
+			value = 0.5
+		}
+		has_trait = {
+			trait = zealous
+			value = 3
+		}
+		has_trait = {
+			trait = erudite
+			value = 3
+		}
+		has_trait = {
+			trait = scholar
+			value = 3
+		}
+		has_trait = {
+			trait = theologian
+			value = 3
+		}
+		has_trait = {
+			trait = schemer
+			value = 3
+		}
+		has_trait = {
+			trait = strong
+			value = 1
+		}
+		has_trait = {
+			trait = robust
+			value = 1
+		}
+		has_trait = {
+			trait = genius
+			value = 1
+		}
+		has_trait = {
+			trait = quick
+			value = 1
+		}
+		has_trait = {
+			trait = shrewd
+			value = 1
+		}
+		has_trait = {
+			trait = diligent
+			value = 1
+		}
+		has_trait = {
+			trait = patient
+			value = 1
+		}
+		has_trait = {
+			trait = temperate
+			value = 1
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			trait = zealous
+			factor = 1.3
+		}
+		modifier = {
+			trait = erudite
+			factor = 1.3
+		}
+		modifier = {
+			trait = scholar
+			factor = 1.3
+		}
+		modifier = {
+			trait = theologian
+			factor = 1.3
+		}
+		modifier = {
+			trait = schemer
+			factor = 1.3
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = robust
+			factor = 1.1
+		}
+		modifier = {
+			trait = genius
+			factor = 1.1
+		}
+		modifier = {
+			trait = quick
+			factor = 1.1
+		}
+		modifier = {
+			trait = shrewd
+			factor = 1.1
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}	
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			age = 16
+			learning = 9
+			NOR = {
+				religion = witchcraft
+				religion = nomadic_nihilism
+				religion = barbarism
+				religion = fire_nation_imperialism
+			}
+			OR = {
+				is_benevolent_trigger = yes
+				is_smart_trigger = yes
+				has_vice_trigger = no
+				trait = kind
+				trait = elusive_shadow
+				trait = just
+			}
+			is_in_society = no
+			NOT = { higher_tier_than = KING }
+			NOT = { mercenary = yes }
+			NOT = { holy_order = yes }
+		}
+	}
+}

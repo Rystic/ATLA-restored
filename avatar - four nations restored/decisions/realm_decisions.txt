@@ -1,0 +1,526 @@
+decisions = {
+	
+	demand_liege_title = {
+		is_high_prio = yes
+		potential = {
+			NOT = { has_character_flag = requested_de_jure_title }
+			liege = {
+				NOT = { character = ROOT }
+			}
+			age = 16
+			prisoner = no
+			is_playable = yes
+			tier = count
+			NOT = { trait = incapable }
+		}
+		allow = {
+			liege = {
+				opinion = {
+					who = ROOT
+					value = 25
+				}
+			}
+			liege = {
+				any_demesne_title = {
+					tier = duke
+					has_de_jure_pretension = ROOT
+					can_be_given_away = yes
+					lower_tier_than = PREV
+				}
+			}
+		}
+		effect = {
+			set_character_flag = requested_de_jure_title
+			liege = { letter_event = { id = 63041 days = 4 tooltip = "EVTTOOLTIP63041" } } # "vassal_request_events.txt"
+		}
+		ai_will_do = {
+			factor = 0 # The AI is limited to the similar event 63040
+		}
+	}
+	
+	claim_royal_earth_palace = {
+		is_high_prio = yes
+		potential = {
+			NOT = { has_landed_title = c_royal_earth_palace }
+			has_landed_title = e_earth_kingdom
+			any_realm_lord = { 
+				AND = {
+					ai = yes
+					has_landed_title = c_royal_earth_palace
+				}
+			}
+		}
+		allow = {
+			NOT = { has_landed_title = c_royal_earth_palace }
+			any_realm_lord = { 
+				has_landed_title = c_royal_earth_palace 
+			}
+		}
+		effect = {
+			ROOT = {
+				c_royal_earth_palace = {
+					usurp_title_plus_barony_if_unlanded_and_vassals = PREV
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	petition_doge_for_tp = {
+		is_high_prio = yes
+		potential = {
+			is_merchant_republic = no
+			is_patrician = yes
+			liege = { is_merchant_republic = yes }
+			NOT = { has_character_flag = petition_doge_for_tp_taken }
+			OR = {
+				liege = {
+					any_vassal = {
+						is_patrician = yes
+						num_of_trade_post_diff = {
+							character = ROOT
+							value = 10
+						}
+					}
+				}
+				AND = {
+					NOT = { num_of_trade_posts = 1 }
+					liege = {
+						any_vassal = {
+							is_patrician = yes
+							num_of_trade_posts = 10
+						}
+					}
+				}
+			}
+		}
+		allow = {
+			liege = {
+				opinion = {
+					who = ROOT
+					value = 25
+				}
+			}
+		}
+		effect = {
+			set_character_flag = petition_doge_for_tp_taken
+			liege = {
+				letter_event = { id = REP.500 days = 5 tooltip = EVTTOOLTIP_REP_500 }
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	usurp_tp = {
+		is_high_prio = yes
+		potential = {
+			is_merchant_republic = yes
+			is_patrician = yes
+			NOT = { has_character_flag = usurp_tp_taken }
+			OR = {
+				any_vassal = {
+					is_patrician = yes
+					num_of_trade_post_diff = {
+						character = ROOT
+						value = 10
+					}
+				}
+				AND = {
+					NOT = { num_of_trade_posts = 1 }
+					any_vassal = {
+						is_patrician = yes
+						num_of_trade_posts = 10
+					}
+				}
+			}
+		}
+		allow = {
+			is_merchant_republic = yes
+		}
+		effect = {
+			set_character_flag = usurp_tp_taken
+			if = {
+				limit = {
+					num_of_trade_posts = 1
+					any_vassal = {
+						is_patrician = yes
+						num_of_trade_post_diff = {
+							character = ROOT
+							value = 10
+						}
+					}
+				}
+				random_vassal = {
+					limit = {
+						is_patrician = yes
+						num_of_trade_post_diff = {
+							character = ROOT
+							value = 10
+						}
+					}
+					set_character_flag = target_patrician_doge
+					letter_event = { id = REP.510 days = 5 tooltip = EVTTOOLTIP_REP_510 }
+				}
+			}
+			if = {
+				limit = {
+					NOT = { num_of_trade_posts = 1 }
+					any_vassal = {
+						is_patrician = yes
+						num_of_trade_posts = 10
+					}
+				}
+				random_vassal = {
+					limit = {
+						is_patrician = yes
+						num_of_trade_posts = 10
+					}
+					set_character_flag = target_patrician_doge
+					letter_event = { id = REP.510 days = 5 tooltip = EVTTOOLTIP_REP_510 }
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	form_new_empire = {
+		is_high_prio = yes
+		potential = {
+			has_dlc = "Charlemagne"
+			is_playable = yes
+			tier = KING
+			is_nomadic = no
+			NOT = { tier = EMPEROR }
+			OR = {
+				ai = no
+				AND = {
+					trait = proud
+					prestige = 40000
+				}
+				AND = {
+					trait = ambitious
+					prestige = 40000
+				}
+				prestige = 120000
+			}
+		}
+		allow = {
+			is_adult = yes
+			prisoner = no
+			NOT = { trait = incapable }
+			independent = yes
+			prestige = 1000
+			OR = {
+				realm_size = 180
+				custom_tooltip = {
+					text = form_new_empire_requirement_tooltip
+					hidden_tooltip = {
+						any_demesne_title = {
+							count = 3
+							tier = KING
+						}
+					}
+				}
+			}
+			wealth = 1000
+		}
+		effect = {
+			primary_title = {
+				create_title = {
+					tier = EMPEROR
+					landless = no
+					temporary = no
+					custom_created = yes
+					culture = ROOT
+					holder = ROOT
+					base_title = THIS
+					copy_title_laws = yes
+				}
+
+				hidden_tooltip = {
+					ROOT = {
+						primary_title = {
+							holder_scope = {
+								any_title_under = {
+									limit = {
+										tier = KING
+										empire = {
+											has_holder = no
+										}
+									}
+									de_jure_liege = PREVPREV
+								}
+								any_title_under = {
+									limit = {
+										tier = DUKE
+										location = {
+											kingdom = {
+												empire = {
+													has_holder = no
+												}
+												
+												NOT = { de_jure_liege_or_above = PREVPREVPREVPREV }
+												ROOT = {
+													completely_controls = PREV
+												}
+											}
+										}
+									}
+									location = {
+										kingdom = {
+											de_jure_liege = PREVPREVPREVPREV
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			wealth = -1000
+			custom_tooltip = { text = form_new_empire_tooltip }
+			chronicle = {
+				entry = CHRONICLE_FOUNDED_NEW_KINGDOM_OR_EMPIRE
+				portrait = [Root.GetID]
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	convert_to_feudalism_indep  = {
+		only_independent = yes
+		is_high_prio = yes
+		
+		potential = {
+			is_playable = yes
+			is_tribal = yes
+			independent = yes
+		}
+		allow = {
+			war = no
+			primary_title = { has_law = tribal_organization_4 }
+			capital_holding = {
+				OR = {
+					AND = {
+						holding_type = tribal
+						has_building = tb_hillfort_4
+					}
+					holding_type = castle
+				}
+			}
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = feudal_government
+			
+			if = {
+				limit = {
+					higher_tier_than = king
+				}
+				primary_title = {
+					add_law = feudal_administration
+				}
+			}
+			
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = CASTLE
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding  ={
+								type = temple
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	convert_to_feudalism_vassal = {
+		only_rulers = yes
+		is_high_prio = yes
+		
+		potential = {
+			is_ruler = yes
+			is_tribal = yes
+			independent = no
+		}
+		allow = {
+			war = no
+			liege = {
+				OR = {
+					is_feudal = yes
+					is_republic = yes
+					is_theocracy = yes
+				}
+			}
+			capital_holding = {
+				OR = {
+					AND = {
+						holding_type = tribal
+						has_building = tb_hillfort_4
+					}
+					holding_type = castle
+				}
+			}
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = feudal_government
+			
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = CASTLE
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = temple
+							}
+						}
+					}
+				}
+				
+				liege = {
+					character_event = { id = 55100 } # Notify Liege
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.001
+				liege = {
+					NOT = { religion_group = ROOT }
+				}
+			}
+			modifier = {
+				factor = 0.01
+				liege = {
+					NOT = { culture_group = ROOT }
+				}
+			}
+			
+			modifier = {
+				factor = 0.1
+				liege = {
+					religion_group = ROOT
+					NOT = { religion = ROOT }
+				}
+			}
+		}
+	}
+	
+}

@@ -1,0 +1,612 @@
+decisions = {
+
+	### Record of Flags
+	# imperial_ambition = Is the Firelord currently doing something?
+	# imperial_ambition_0 = Firelord has started the Focus Trees.
+	# imperial_ambition_1 = Firelord has Colony CBs
+	# imperial_ambition_2 = Firelord has conquered Yu Dao
+	# imperial_ambition_3 = Firelord has started building colonies
+	# imperial_ambition_4 = Firelord has founded Imperialism
+	# imperial_ambition_5 = Firelord has started Imperial Pride Movement
+	# imperial_ambition_6 = Firelord has started Industry Focus: The Waking Dragon.
+	# imperial_ambition_7 = Firelord has conquered Garsai
+	# imperial_ambition_8 = Firelord has conquered Wuying & Badaji
+	# imperial_ambition_9 = Firelord has conquered Han Tai
+	# imperial_ambition_10 = Firelord has conquered Qizhaicun
+	# imperial_ambition_11 = Firelord has conquered Xitaozi
+	# imperial_ambition_12 = Firelord has conquered Beisu
+	# imperial_ambition_13 = Firelord has started Propoganda I
+	# imperial_ambition_14 = Firelord has started building Navy Shipyards
+	# imperial_ambition_15 = Firelord is recruting the Southern Raiders
+	# imperial_ambition_16 = Firelord is recruting the Rough Rhinos
+	# imperial_ambition_17 = Firelord is recruting the Yu Yuan Archers
+	# imperial_ambition_18 = Firelord has started Propoganda II
+	# imperial_ambition_19 = Firelord has launched Southern Campaign
+	# imperial_ambition_20 = Firelord has launched Northern Campaign
+	# imperial_ambition_21 = Firelord has launched Taki Campaign
+	# imperial_ambition_22 = World Warned of Colonies
+
+	imperial_ambitions_0 = { # Beginning of Focus Trees - 0
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition_0 }
+			year = 730
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+			hidden_tooltip = {
+				has_game_rule = {
+					name = campaign_events
+					value = on
+				}
+			}
+		}
+		allow = {
+			prisoner = no
+		}
+		effect = {
+			hidden_tooltip = {
+				set_global_flag = imperial_ambition_0
+				character_event = { id = ATLAE.600 }
+			}
+			add_trait = ambitious
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_1 = { # Beginning of Colony Event Chain - 1
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_1 }
+			has_global_flag = imperial_ambition_0
+			has_global_flag = imperial_ambition_4
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			war = no
+			prisoner = no
+			prestige = 100
+		}
+		effect = {
+			set_global_flag = imperial_ambition
+			custom_tooltip = {
+				text = EVTTOOLTIPIMP000
+				hidden_tooltip = {
+					character_event = { id = ATLAE.601 }
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	imperial_ambitions_3 = { # Found Imperialism - 4
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			OR = {
+				AND = {
+					NOT = { has_global_flag = imperial_ambition }
+					NOT = { has_global_flag = imperial_ambition_4 }
+				}
+				AND = {
+					NOT = { religion = fire_nation_imperialism }
+					has_global_flag = imperial_ambition_4
+				}
+			}
+			has_global_flag = imperial_ambition_0
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			prestige = 100
+		}
+		effect = {
+			prestige = -100
+			piety = 100
+			if = {
+				limit = {
+					has_global_flag = imperial_ambition_4
+				}
+				religion = fire_nation_imperialism
+			}
+			if = {
+				limit = {
+					NOT = { has_global_flag = imperial_ambition_4 }
+				}
+				set_global_flag = imperial_ambition
+				hidden_tooltip = {
+					character_event = { id = ATLAE.604 }
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_4 = { # Imperial Pride - 5
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_5 }
+			has_global_flag = imperial_ambition_4
+			#year = 780
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 200
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -200
+			piety = 50
+			set_global_flag = imperial_ambition_5
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.607 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_5 = { # The Waking Dragon - 6
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_6 }
+			has_global_flag = imperial_ambition_0
+			#year = 780
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 200
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -200
+			set_global_flag = imperial_ambition_6
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.611 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_13 = { # National Supremacy - 13
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_13 }
+			has_global_flag = imperial_ambition_5
+			#year = 780
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						hidden_tooltip = {
+							treasury = 250
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -250
+			piety = 50
+			set_global_flag = imperial_ambition_13
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.636 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_14 = { # Navy Shipyards - 14
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_14 }
+			has_global_flag = imperial_ambition_6
+			#year = 780
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 200
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -200
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.640 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_15 = { # Found the Southern Raiders - 15
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_15 }
+			has_global_flag = imperial_ambition_4
+			has_global_flag = HYW_0
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 600
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+			c_whaletail_island = {
+				owner = {
+					OR = {
+						is_liege_or_above = ROOT
+						de_facto_liege = ROOT
+					}
+				}
+			}
+		}
+		effect = {
+			wealth = -600
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.648 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_16 = { # Found the Rough Rhinos - 16
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_16 }
+			has_global_flag = imperial_ambition_6
+			has_global_flag = imperial_ambition_4
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						hidden_tooltip = {
+						treasury = 400
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -400
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.644 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_17 = { # Found the Yuyan Archers - 17
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_17 }
+			has_global_flag = imperial_ambition_4
+			has_global_flag = HYW_0
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 600
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+			c_pohai = {
+				owner = {
+					OR = {
+						is_liege_or_above = ROOT
+						de_facto_liege = ROOT
+					}
+				}
+			}
+		}
+		effect = {
+			wealth = -600
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.646 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_18 = { # Convert to Imperialism - VASSAL 1
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			has_global_flag = imperial_ambition_5
+			is_ruler = yes
+			religion_group = fire_religions
+			NOT = { religion = fire_nation_imperialism }
+			liege = {
+				NOT = { character = ROOT }
+				religion = fire_nation_imperialism
+			}
+		}
+		allow = {
+			prisoner = no
+			NOT = { trait = zealous }
+		}
+		effect = {
+			prestige = -100
+			piety = 50
+			religion = fire_nation_imperialism
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0.01
+		}
+	}
+	imperial_ambitions_19 = { # Mandatory Education - 18
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			NOT = { has_global_flag = imperial_ambition_18 }
+			has_global_flag = imperial_ambition_13
+			#year = 780
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 300
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -300
+			piety = 50
+			set_global_flag = imperial_ambition_18
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				character_event = { id = ATLAE.654 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	imperial_ambitions_21 = { # Earth Kingdom Campaign
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			has_global_flag = HYW_0
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+			NOT = { has_global_flag = campaign_everywhere }
+		}
+		allow = {
+			prisoner = no
+			custom_tooltip = {
+				text = EVTTOOLIPIMP_TENYEAR_DELAY
+				hidden_tooltip = {
+					OR = {
+						had_global_flag = { flag = imperial_campaign days = 3650 }
+						NOT = { has_global_flag = imperial_campaign }
+					}
+				}
+			}
+		}
+		effect = {
+			hidden_tooltip = {
+				character_event = { id = ATLAE.700 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	imperial_ambitions_22 = { # Recruit the Barbarians
+		is_high_prio = yes
+		only_playable = yes
+		ai_check_interval = 12
+		potential = {
+			NOT = { has_global_flag = imperial_ambition }
+			has_global_flag = imperial_ambition_4
+			has_global_flag = HYW_8
+			has_global_flag = campaign_old_makapu
+			has_global_flag = HYW_0
+			is_ruler = yes
+			prisoner = no
+			trait = firelord
+		}
+		allow = {
+			prisoner = no
+			hidden_tooltip = {
+				OR = {
+					AND = {
+						custom_tooltip = {
+							treasury = 200
+						}
+						ai = no
+					}
+					ai = yes
+				}
+			}
+		}
+		effect = {
+			wealth = -200
+			set_global_flag = imperial_ambition
+			hidden_tooltip = {
+				any_independent_ruler = {
+					limit = {
+						culture = barbarians
+					}
+					character_event = { id = ATLAE.703 }
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

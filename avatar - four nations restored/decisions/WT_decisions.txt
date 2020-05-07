@@ -1,0 +1,226 @@
+decisions = {
+
+	### Index
+	# wt_0 - Conquest of the South
+	# wt_1 - Gain Expansion CB
+	# wt_2 - Gain Empire Title
+	# wt_3 - Side with Earth Kingdom
+	# wt_4 - Side with Fire Nation
+	
+	wt_0 = { # Conquest of the South
+		is_high_prio = yes
+		only_playable = yes
+		potential = {
+			independent = yes
+			mercenary = no
+			holy_order = no
+			culture_group = water_tribe_culture
+			has_landed_title = k_northern_water_tribe
+			NOT = { has_global_flag = wt_0 }
+		}
+		allow = {
+			prisoner = no
+			prestige = 500
+			completely_controls = k_northern_water_tribe
+		}
+		effect = {
+			hidden_tooltip = {
+				prestige = -250
+				set_global_flag = wt_0
+				character_event = { id = watertribe.1 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	wt_1 = { # Greater Water Tribe
+		is_high_prio = yes
+		only_playable = yes
+		potential = {
+			independent = yes
+			mercenary = no
+			holy_order = no
+			culture_group = water_tribe_culture
+			NOT = { has_dynasty_flag = wt_1 }
+		}
+		allow = {
+			prisoner = no
+			prestige = 500
+			realm_size = 20
+		}
+		effect = {
+			prestige = -250
+			hidden_tooltip = {
+				set_dynasty_flag = wt_1
+				character_event = { id = watertribe.5 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	wt_2 = { # Empire Title
+		is_high_prio = yes
+		only_playable = yes
+		potential = {
+			NOT = { has_global_flag = foundedWaterEmpire }
+			independent = yes
+			mercenary = no
+			holy_order = no
+			culture_group = water_tribe_culture
+			hidden_tooltip = {
+				has_game_rule = {
+					name = campaign_events
+					value = on
+				}
+			}
+		}
+		allow = {
+			prisoner = no
+			prestige = 1000
+			OR = {
+				AND = {
+					completely_controls = k_northern_water_tribe
+					completely_controls = k_southern_water_tribe
+				}
+				AND = {
+					completely_controls = k_northern_water_tribe
+					k_southern_water_tribe = {
+						owner = {
+							pays_tribute_to = ROOT
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			set_global_flag = foundedWaterEmpire
+			e_water_tribes = {
+				grant_title = ROOT
+			}
+			hidden_tooltip = {
+				character_event = { id = watertribe.7 }
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	wt_3 = { #  Join the Hundred Year War - Earth Kingdom
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {
+			independent = yes
+			culture_group = water_tribe_culture
+			has_global_flag = HYW_0
+			NOT = { has_dynasty_flag = wt_3 }
+			NOT = { has_dynasty_flag = wt_4 }
+			is_ruler = yes
+			mercenary = no
+			holy_order = no
+			e_earth_kingdom = {
+				has_holder = yes
+			}
+		}
+		allow = {
+			prisoner = no
+		}
+		effect = {
+			custom_tooltip = {
+				text = wt3_joinEarthKingdomAsAlly
+				hidden_tooltip = {
+					set_dynasty_flag = wt_3
+					character_event = { id = watertribe.9 }
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.1
+				NOT = { realm_levies = 4000 }
+			}
+			modifier = {
+				factor = 0.1
+			}
+			modifier = {
+				factor = 0
+				has_landed_title = k_northern_water_tribe
+			}
+			modifier = {
+				factor = 0
+				trait = craven
+			}
+			modifier = {
+				factor = 0
+				has_evil_trait_trigger = yes
+			}
+		}
+	}
+	wt_4 = { #  Join the Hundred Year War - Fire Nation
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {
+			independent = yes
+			culture_group = water_tribe_culture
+			has_global_flag = HYW_0
+			NOT = { has_dynasty_flag = wt_3 }
+			NOT = { has_dynasty_flag = wt_4 }
+			is_ruler = yes
+			mercenary = no
+			holy_order = no
+			e_fire_nation = {
+				has_holder = yes
+			}
+		}
+		allow = {
+			prisoner = no
+		}
+		effect = {
+			custom_tooltip = {
+				text = wt4_joinFireNationAlly
+				hidden_tooltip = {
+					set_dynasty_flag = wt_4
+					character_event = { id = watertribe.14 }
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.1
+				NOT = { realm_levies = 4000 }
+			}
+			modifier = {
+				factor = 0.1
+			}
+			modifier = {
+				factor = 0
+				trait = craven
+			}
+			modifier = {
+				factor = 0
+				is_evil_trigger = no
+			}
+		}
+	}
+	
+}

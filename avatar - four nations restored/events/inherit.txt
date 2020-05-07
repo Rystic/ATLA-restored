@@ -1,0 +1,107 @@
+namespace = inherit
+
+character_event = {
+	id = inherit.1
+	hide_window = yes
+	is_triggered_only = yes
+	culture_group = earth_kingdom_culture
+	
+	trigger = {
+		OR = {
+			any_independent_ruler = { #check if ROOT has any tributaries
+				pays_tribute_to = ROOT
+			}
+			is_tributary = yes #checks if tributary
+		}
+	}
+	option = {
+		name = "ok"
+		if = { #Make suzerain's heir the new suzerain
+			limit = {
+				any_independent_ruler = {
+					suzerain = { character = ROOT }
+				}
+			}
+			any_independent_ruler = {
+				limit = {
+					pays_tribute_to = ROOT
+				}
+				ROOT = {
+					current_heir = {
+						make_tributary = { who = PREVPREV percentage = 0.1 }
+						character_event = { id = inherit.5 }
+					}
+				}
+			}
+		}
+		if = { #make tributary's heir a new tributary
+			limit = {
+				is_tributary = yes
+			}
+			current_heir = {
+				character_event = { id = inherit.5 days = 1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = inherit.5
+	hide_window = yes
+	is_triggered_only = yes
+	culture_group = earth_kingdom_culture
+	
+	option = {
+		name = "EVTOPTinherit.3"
+		e_earth_kingdom = {
+			owner = {
+				make_tributary = { who = ROOT percentage = 0.05 }
+			}
+		}
+	}
+}
+
+character_event = { # creating title
+	id = inherit.6
+	is_triggered_only = yes
+	hide_window = yes
+	culture_group = earth_kingdom_culture
+	
+	trigger = {
+		is_tributary = yes
+	}
+	
+	option = {
+		character_event = { id = inherit.5 days = 1 }
+	}
+}
+character_event = { #on new holder
+	id = inherit.7
+	is_triggered_only = yes
+	hide_window = yes
+	culture_group = earth_kingdom_culture
+	
+	trigger = {
+		is_tributary = yes
+		suzerain = {
+			ROOT = { #PREVPREV
+				FROMFROM = { #PREV
+					suzerain = { #THIS
+						character = PREVPREVPREV
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		if = {
+			limit = {
+				FROMFROM = {
+					is_tributary = yes
+				}
+			}
+			character_event = { id = inherit.5 days = 1 }
+		}
+	}
+}

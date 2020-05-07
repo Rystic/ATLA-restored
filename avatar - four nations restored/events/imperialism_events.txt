@@ -1,0 +1,2225 @@
+namespace = ATLAE
+
+# 'Focus' Trees: Imperialism, Industry and Colonisation
+# Namespace ATLAE 600-1000
+
+character_event = { # Fire Nation Focus Tree: Start
+	id = ATLAE.600
+	desc = "EVTDESCIMP.0"
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_nation_festival"
+	
+	option = {
+		name = EVTOPTAi.0
+		prestige = 50
+	}
+}
+
+character_event = { # Colonisation: Start
+	id = ATLAE.601
+	desc = "EVTDESCIMP.1"
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_army"
+	
+	option = {
+		name = EVTOPTAi.1
+		character_event = { id = ATLAE.603 days = 360 }
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE01
+		}
+	}
+}
+
+character_event = { # Colonisation: The Fire Nation Attacks
+	id = ATLAE.602
+	desc = "EVTDESCIMP.2"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = imperial_ambition_1
+		NOT = { has_global_flag = imperial_ambition_2 }
+		trait = firelord
+		c_yu_dao = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_yu_dao = {
+			location = {
+				if = {
+					limit = {
+						has_province_modifier = prosperity_modifier_1
+					}
+					remove_province_modifier = prosperity_modifier_1
+				}
+				if = {
+					limit = {
+						has_province_modifier = prosperity_modifier_2
+					}
+					remove_province_modifier = prosperity_modifier_2
+				}
+				if = {
+					limit = {
+						has_province_modifier = prosperity_modifier_3
+					}
+					remove_province_modifier = prosperity_modifier_3
+				}
+				if = {
+					limit = {
+						has_province_modifier = depopulated_1
+					}
+					remove_province_modifier = depopulated_1
+				}
+				if = {
+					limit = {
+						has_province_modifier = depopulated_2
+					}
+					remove_province_modifier = depopulated_2
+				}
+				if = {
+					limit = {
+						has_province_modifier = depopulated_3
+					}
+					remove_province_modifier = depopulated_3
+				}
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		set_global_flag = imperial_ambition_2
+	}
+}
+
+character_event = { # Colonisation: Ready to Attack
+	id = ATLAE.603
+	desc = "EVTDESCIMP.3"
+	picture = "GFX_evt_fire_army"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		set_global_flag = imperial_ambition_1
+		clr_global_flag = imperial_ambition
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE03
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.615 }
+			character_event = { id = ATLAE.625 days = 700 }
+			character_event = { id = ATLAE.626 days = 1500 }
+			character_event = { id = ATLAE.627 days = 3000 }
+			character_event = { id = ATLAE.628 days = 4000 }
+			character_event = { id = ATLAE.629 days = 5000 }
+			character_event = { id = ATLAE.630 days = 6000 }
+		}
+	}
+}
+
+character_event = { # Imperialism: Found Imperialism
+	id = ATLAE.604
+	desc = "EVTDESCIMP.4"
+	picture = "GFX_evt_fire_army"
+	is_triggered_only = yes
+	
+	immediate = {
+		any_courtier = {
+			religion = fire_nation_imperialism
+			limit = {
+				prisoner = no
+				is_ruler = no
+				NOT = { trait = avatar }
+				NOT = { trait = uninterested }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		character_event = { id = ATLAE.605 days = 60 }
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE04
+			hidden_tooltip = {
+				religion = fire_nation_imperialism
+			}
+		}
+	}
+}
+
+character_event = { # Imperialism: Fire Sages confront Firelord
+	id = ATLAE.605
+	desc = "EVTDESCIMP.6"
+	picture = "GFX_evt_fire_sages"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.5
+		set_global_flag = imperial_ambition_4
+		clr_global_flag = imperial_ambition
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE06
+		}
+	}
+}
+
+character_event = { # Colonisation: World Reacts
+	id = ATLAE.606
+	desc = {
+		trigger = {
+			culture_group = fire_nation_culture
+			NOT = { culture = sun_warrior }
+		}
+		text = EVTDESCIMP.47
+	}
+	desc = {
+		trigger = {
+			NOT = { culture_group = fire_nation_culture }
+		}
+		text = EVTDESCIMP.46
+	}
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	ai = no
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_22 }
+		NOT = { trait = firelord }
+	}
+
+	option = {
+		name = EVTOPTAh.30
+		set_global_flag = imperial_ambition_22
+		character_event = { id = CM.10550 }
+		trigger = {
+			culture_group = fire_nation_culture
+			NOT = { culture = sun_warrior }
+		}
+	}
+	option = {
+		name = EVTOPTAh.29
+		set_global_flag = imperial_ambition_22
+		character_event = { id = CM.10550 }
+		trigger = {
+			NOT = { culture_group = fire_nation_culture }
+		}
+	}
+}
+
+character_event = { # Imperialism: Imperial Pride Movement Begins
+	id = ATLAE.607
+	desc = "EVTDESCIMP.7"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		character_event = { id = ATLAE.609 days = 730 }
+		hidden_tooltip = {
+			character_event = { id = ATLAE.608 days = 20 random = 30 }
+			character_event = { id = ATLAE.610 days = 60 random = 30 }
+			character_event = { id = ATLAE.608 days = 100 random = 30 }
+			character_event = { id = ATLAE.610 days = 140 random = 30 }
+			character_event = { id = ATLAE.608 days = 180 random = 30 }
+			character_event = { id = ATLAE.608 days = 220 random = 30 }
+			character_event = { id = ATLAE.608 days = 260 random = 30 }
+			character_event = { id = ATLAE.608 days = 300 random = 30 }
+			character_event = { id = ATLAE.610 days = 340 random = 30 }
+			character_event = { id = ATLAE.608 days = 380 random = 30 }
+			character_event = { id = ATLAE.610 days = 420 random = 30 }
+			character_event = { id = ATLAE.608 days = 460 random = 30 }
+			character_event = { id = ATLAE.608 days = 500 random = 30 }
+			character_event = { id = ATLAE.610 days = 540 random = 30 }
+			character_event = { id = ATLAE.608 days = 580 random = 30 }
+			character_event = { id = ATLAE.610 days = 620 random = 30 }
+		}
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE07
+			capital_scope ={
+				hidden_tooltip = {
+					religion = fire_nation_imperialism
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Imperialism: Imperial Pride Movement Converts Province
+	id = ATLAE.608
+	desc = "EVTDESCIMP.8"
+	picture = "GFX_evt_fire_nation_festival"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		prestige = 5
+		random_realm_province = {
+			religion = fire_nation_imperialism
+			limit = {
+				NOT = { religion = fire_nation_imperialism }
+				religion = fire_spirituality
+			}
+		}
+	}
+}
+
+character_event = { # Imperialism: Imperial Pride Movement Ends
+	id = ATLAE.609
+	desc = "EVTDESCIMP.9"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE08
+		}
+		name = EVTOPTAi.4
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Imperialism: Imperial Pride Movement Converts Character
+	id = ATLAE.610
+	desc = "EVTDESCIMP.10"
+	picture = "GFX_evt_fire_nation_festival"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		prestige = 5
+		random_vassal = {
+			religion = fire_nation_imperialism
+			hidden_tooltip = {
+				any_courtier = {
+					religion = fire_nation_imperialism
+					limit = {
+						prisoner = no
+						is_ruler = no
+					}
+				}
+			}
+			limit = {
+				prisoner = no
+				religion = fire_spirituality
+				is_priest = no
+				ai = yes
+				NOT = { trait = zealous }
+				NOT = { trait = proud }
+				NOT = { trait = kind }
+				NOT = { trait = cynical }
+			}
+		}
+	}
+}
+
+character_event = { # Industry: The Waking Dragon
+	id = ATLAE.611
+	desc = "EVTDESCIMP.11"
+	picture = "GFX_evt_fire_factory"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE09
+			61 = {
+				if = {
+					limit = {
+						county = {
+							has_hospital = no
+						}
+					}
+					if = {
+						limit = {
+							has_dlc = "Reapers"
+						}
+						build_holding = {
+							type = hospital
+						}
+					}
+					if = {
+						limit = {
+							NOT = { has_dlc = "Reapers" }
+						}
+						add_province_modifier = { name = local_factories duration = -1 }
+					}
+				}
+			}
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.614 days = 730 }
+			character_event = { id = ATLAE.612 days = 30 random = 70 }
+			character_event = { id = ATLAE.613 days = 120 random = 70 }
+			character_event = { id = ATLAE.613 days = 210 random = 70 }
+			character_event = { id = ATLAE.613 days = 300 random = 70 }
+			character_event = { id = ATLAE.613 days = 390 random = 70 }
+			character_event = { id = ATLAE.613 days = 480 random = 70 }
+			character_event = { id = ATLAE.612 days = 570 random = 70 }
+			character_event = { id = ATLAE.613 days = 650 random = 70 }
+		}
+	}
+}
+
+character_event = { # Industry: The Waking Dragon: Factory Built
+	id = ATLAE.612
+	desc = "EVTDESCIMP.12"
+	picture = "GFX_evt_fire_factory"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		random_realm_province = {
+			limit = {
+				NOT = { has_province_modifier = local_factories }
+				county = {
+					has_hospital = no
+				}
+			}
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				build_holding = {
+					type = hospital
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_dlc = "Reapers" }
+				}
+				add_province_modifier = { name = local_factories duration = -1 }
+			}
+		}
+	}
+}
+
+character_event = { # Industry: The Waking Dragon: Funding Required
+	id = ATLAE.613
+	desc = "EVTDESCIMP.13"
+	picture = "GFX_evt_fire_factory"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.8
+		wealth = -120
+		random_realm_province = {
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				build_holding = {
+					type = hospital
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_dlc = "Reapers" }
+				}
+				add_province_modifier = { name = local_factories duration = -1 }
+			}
+			owner = {
+				opinion = { modifier = opinion_approves  who = ROOT years = 5 }
+			}
+			limit = {
+				NOT = { has_province_modifier = local_factories }
+				county = {
+					has_hospital = no
+				}
+			}
+		}
+	}
+	option = {
+		name = EVTOPTAi.9
+	}
+}
+
+character_event = { # Industry: The Waking Dragon: Ending
+	id = ATLAE.614
+	desc = "EVTDESCIMP.14"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE10
+		}
+		name = EVTOPTAi.4
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Colonisation: Colony of Yu Dao AI ONLY
+	id = ATLAE.615
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		d_yu_dao = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Flip foreign Character to Colonial Culture
+	id = ATLAE.616
+	desc = "EVTDESCIMP.16"
+	picture = "GFX_evt_fire_nation_festival"
+	only_rulers = yes
+	
+	trigger = {
+		OR = {
+			AND = {
+				culture_group = fire_nation_culture
+				NOR = {
+					culture = colonial
+					culture = colonial_fire_water
+					culture = colonial_fire_air
+					culture = southern_raider
+					culture = sun_warrior
+				}
+				primary_title = {
+					NOT = { region = world_fire_isles }
+				}
+			}
+		}
+		OR = {
+			AND = {
+				culture_group = earth_kingdom_culture
+				NOR = {
+					culture = sandbender
+					culture = barbarians
+					culture = colonial_earth_fire
+					culture = colonial_earth_water
+					culture = colonial_earth_air
+				}
+				primary_title = {
+					NOT = { region = world_greater_earth_kingdom }
+				}
+			}
+		}
+		OR = {
+			AND = {
+				culture_group = water_tribe_culture
+				NOR = {
+					culture = foggy_swamp
+					culture = colonial_water_fire
+					culture = colonial_water_earth
+					culture = colonial_water_air
+				}
+				primary_title = {
+					NOT = { region = world_water_tribes }
+				}
+			}
+		}
+		OR = {
+			AND = {
+				culture_group = air_nomad_culture
+				NOR = {
+					culture = colonial_air_fire
+					culture = colonial_air_earth
+					culture = colonial_air_water
+				}
+				primary_title = {
+					AND = {
+						NOT = { region = world_air_temples }
+						NOT = { region = world_northern_ranges }
+						NOT = { region = world_earth_islands }
+					}
+				}
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 3
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		hidden_tooltip = {
+			# Fire Nation Colonial Cultures
+			if = {
+				limit = {
+					culture_group = fire_nation_culture
+					primary_title = {
+						region = world_greater_earth_kingdom
+					}
+				}
+				culture = colonial
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial }
+					}
+					culture = colonial
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = fire_nation_culture
+					primary_title = {
+						region = world_water_tribes
+					}
+				}
+				culture = colonial_fire_water
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_fire_water }
+					}
+					culture = colonial_fire_water
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = fire_nation_culture
+					primary_title = {
+						region = world_air_temples
+					}
+				}
+				culture = colonial_fire_air
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_fire_air }
+					}
+					culture = colonial_fire_air
+				}
+				break = yes
+			}
+			# Water Tribe Colonial Cultures
+			if = {
+				limit = {
+					culture_group = water_tribe_culture
+					primary_title = {
+						region = world_greater_earth_kingdom
+					}
+				}
+				culture = colonial_water_earth
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_water_earth }
+					}
+					culture = colonial_water_earth
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = water_tribe_culture
+					primary_title = {
+						region = world_fire_isles
+					}
+				}
+				culture = colonial_water_fire
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_water_fire }
+					}
+					culture = colonial_water_fire
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = water_tribe_culture
+					primary_title = {
+						region = world_air_temples
+					}
+				}
+				culture = colonial_water_air
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_water_air }
+					}
+					culture = colonial_water_air
+				}
+				break = yes
+			}
+			# Earth Kingdom Colonial Cultures
+			if = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					primary_title = {
+						region = world_water_tribes
+					}
+				}
+				culture = colonial_earth_water
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_earth_water }
+					}
+					culture = colonial_earth_water
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					primary_title = {
+						region = world_fire_isles
+					}
+				}
+				culture = colonial_earth_fire
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_earth_fire }
+					}
+					culture = colonial_earth_fire
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					primary_title = {
+						region = world_air_temples
+					}
+				}
+				culture = colonial_earth_air
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_earth_air }
+					}
+					culture = colonial_earth_air
+				}
+				break = yes
+			}
+			# Air Nomad Colonial Cultures
+			if = {
+				limit = {
+					culture_group = air_nomad_culture
+					primary_title = {
+						region = world_water_tribes
+					}
+				}
+				culture = colonial_air_water
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_air_water }
+					}
+					culture = colonial_air_water
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = air_nomad_culture
+					primary_title = {
+						region = world_fire_isles
+					}
+				}
+				culture = colonial_air_fire
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_air_fire }
+					}
+					culture = colonial_air_fire
+				}
+				break = yes
+			}
+			if = {
+				limit = {
+					culture_group = air_nomad_culture
+					primary_title = {
+						region = world_greater_earth_kingdom
+					}
+				}
+				culture = colonial_air_earth
+				any_courtier = {
+					limit = {
+						prisoner = no
+						is_ruler = no
+						NOT = { culture = colonial_air_earth }
+					}
+					culture = colonial_air_earth
+				}
+				break = yes
+			}
+		}
+	}
+}
+
+character_event = { # Colonisation: Unlock Colony Mechanic
+	id = ATLAE.617
+	desc = "EVTDESCIMP.5"
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_nation_colony"
+	
+	option = {
+		name = EVTOPTAi.1
+		character_event = { id = ATLAE.618 days = 360 }
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE01
+		}
+	}
+}
+
+character_event = { # Colonisation: Colony Mechanic Unlocked
+	id = ATLAE.618
+	desc = "EVTDESCIMP.15"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		set_global_flag = imperial_ambition_3
+		clr_global_flag = imperial_ambition
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE17
+		}
+	}
+}
+
+character_event = { # Colonisation: Garsai Captured
+	id = ATLAE.619
+	desc = "EVTDESCIMP.17"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_7 }
+		has_global_flag = imperial_ambition_1
+		trait = firelord
+		c_garsai = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_garsai = {
+			location = {
+				remove_province_modifier = prosperity_modifier_1
+				remove_province_modifier = prosperity_modifier_2
+				remove_province_modifier = prosperity_modifier_3
+				remove_province_modifier = depopulated_1
+				remove_province_modifier = depopulated_2
+				remove_province_modifier = depopulated_3
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		trigger = {
+			trait = firelord
+		}
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE12
+		}
+		set_global_flag = imperial_ambition_7
+	}
+}
+
+character_event = { # Colonisation: Badaji & Wuying Captured
+	id = ATLAE.620
+	desc = "EVTDESCIMP.19"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_8 }
+		has_global_flag = imperial_ambition_1
+		trait = firelord
+		c_badaji = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_badaji = {
+			location = {
+				remove_province_modifier = prosperity_modifier_1
+				remove_province_modifier = prosperity_modifier_2
+				remove_province_modifier = prosperity_modifier_3
+				remove_province_modifier = depopulated_1
+				remove_province_modifier = depopulated_2
+				remove_province_modifier = depopulated_3
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		trigger = {
+			trait = firelord
+		}
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE12
+		}
+		set_global_flag = imperial_ambition_8
+	}
+}
+
+character_event = { # Colonisation: Han Tai Captured
+	id = ATLAE.621
+	desc = "EVTDESCIMP.21"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_9 }
+		has_global_flag = imperial_ambition_1
+		trait = firelord
+		c_han_tui = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_han_tui = {
+			location = {
+				remove_province_modifier = prosperity_modifier_1
+				remove_province_modifier = prosperity_modifier_2
+				remove_province_modifier = prosperity_modifier_3
+				remove_province_modifier = depopulated_1
+				remove_province_modifier = depopulated_2
+				remove_province_modifier = depopulated_3
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		trigger = {
+			trait = firelord
+		}
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE12
+		}
+		set_global_flag = imperial_ambition_9
+	}
+}
+
+character_event = { # Colonisation: Qizhaicun Captured
+	id = ATLAE.622
+	desc = "EVTDESCIMP.23"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_10 }
+		has_global_flag = imperial_ambition_1
+		trait = firelord
+		c_qizhaicun = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_qizhaicun = {
+			location = {
+				remove_province_modifier = prosperity_modifier_1
+				remove_province_modifier = prosperity_modifier_2
+				remove_province_modifier = prosperity_modifier_3
+				remove_province_modifier = depopulated_1
+				remove_province_modifier = depopulated_2
+				remove_province_modifier = depopulated_3
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		trigger = {
+			trait = firelord
+		}
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE12
+		}
+		set_global_flag = imperial_ambition_10
+	}
+}
+
+character_event = { # Colonisation: Xitaozi Captured
+	id = ATLAE.623
+	desc = "EVTDESCIMP.25"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_11 }
+		has_global_flag = imperial_ambition_1
+		trait = firelord
+		c_xitaozi = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_xitaozi = {
+			location = {
+				remove_province_modifier = prosperity_modifier_1
+				remove_province_modifier = prosperity_modifier_2
+				remove_province_modifier = prosperity_modifier_3
+				remove_province_modifier = depopulated_1
+				remove_province_modifier = depopulated_2
+				remove_province_modifier = depopulated_3
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		trigger = {
+			trait = firelord
+		}
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE12
+		}
+		set_global_flag = imperial_ambition_11
+	}
+}
+
+character_event = { # Colonisation: Beisu Captured
+	id = ATLAE.624
+	desc = "EVTDESCIMP.27"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = imperial_ambition_12 }
+		has_global_flag = imperial_ambition_1
+		trait = firelord
+		c_beisu = {
+			owner = {
+				OR = {
+					is_liege_or_above = ROOT
+					de_facto_liege = ROOT
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		c_beisu = {
+			location = {
+				remove_province_modifier = prosperity_modifier_1
+				remove_province_modifier = prosperity_modifier_2
+				remove_province_modifier = prosperity_modifier_3
+				remove_province_modifier = depopulated_1
+				remove_province_modifier = depopulated_2
+				remove_province_modifier = depopulated_3
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.2
+		trigger = {
+			trait = firelord
+		}
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE12
+		}
+		set_global_flag = imperial_ambition_12
+	}
+}
+
+character_event = { # Colonisation: Colony of c_garsai AI ONLY
+	id = ATLAE.625
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		d_riluodi = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Colonisation: Colony of d_badaji AI ONLY
+	id = ATLAE.626
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		d_badaji = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Colonisation: Colony of d_han_tui AI ONLY
+	id = ATLAE.627
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		d_han_tui = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Colonisation: Colony of c_qizhaicun AI ONLY
+	id = ATLAE.628
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		d_haiyang = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Colonisation: Colony of c_xitaozi AI ONLY
+	id = ATLAE.629
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		d_lower_sikouzi = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Colonisation: Colony of c_beisu AI ONLY
+	id = ATLAE.630
+	is_triggered_only = yes
+	hide_window = yes
+	ai = yes
+	
+	option = {
+		name = EVTOPTAi.1
+		c_beisu = {
+			owner = {
+				FROM = { war = { target = PREVPREV casus_belli = fire_expansion thirdparty_title = PREV tier = DUKE } } 
+			}
+		}
+	}
+}
+
+character_event = { # Propoganda I: Begins
+	id = ATLAE.636
+	desc = "EVTDESCIMP.29"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE07
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.638 days = 730 }
+			character_event = { id = ATLAE.637 days = 30 random = 90 }
+			character_event = { id = ATLAE.637 days = 130 random = 90 }
+			character_event = { id = ATLAE.637 days = 230 random = 90 }
+			character_event = { id = ATLAE.637 days = 330 random = 90 }
+			character_event = { id = ATLAE.637 days = 430 random = 90 }
+			character_event = { id = ATLAE.637 days = 530 random = 90 }
+			character_event = { id = ATLAE.637 days = 630 random = 90 }
+		}
+	}
+}
+
+character_event = { # Propoganda I: Converts Province
+	id = ATLAE.637
+	desc = "EVTDESCIMP.8"
+	picture = "GFX_evt_fire_nation_festival"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		random_realm_province = {
+			religion = fire_nation_imperialism
+			limit = {
+				NOT = { religion = fire_nation_imperialism }
+				county = {
+					NOT = { de_jure_liege_or_above = e_earth_kingdom }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Propoganda I: Ends
+	id = ATLAE.638
+	desc = "EVTDESCIMP.30"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE08
+		}
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Prepare Air Temple Attack
+	id = ATLAE.639
+	desc = "EVTDESCIMP.31"
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_army"
+	
+	option = {
+		name = EVTOPTAi.1
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE14
+		}
+	}
+}
+
+character_event = { # Industry: Navy Shipyards Started
+	id = ATLAE.640
+	desc = "EVTDESCIMP.32"
+	picture = "GFX_evt_fire_factory"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE09
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.641 days = 730 }
+			character_event = { id = ATLAE.643 days = 7 random = 700 }
+			character_event = { id = ATLAE.643 days = 7 random = 700 }
+			character_event = { id = ATLAE.642 days = 7 random = 700 }
+		}
+	}
+}
+
+character_event = { # Industry: Navy Shipyards Constructed
+	id = ATLAE.641
+	desc = "EVTDESCIMP.33"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE10
+			61 ={
+				hidden_tooltip = {
+					add_province_modifier = { name = navy_shipyards duration = -1 }
+				}
+			}
+		}
+		name = EVTOPTAi.4
+		set_global_flag = imperial_ambition_14
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Industry: Navy Shipyard Problem
+	id = ATLAE.642
+	desc = "EVTDESCIMP.34"
+	picture = "GFX_evt_fire_factory"
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = imperial_ambition_25
+		NOT = { has_global_flag = imperial_ambition_26 }
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.10
+		wealth = -120
+	}
+}
+
+character_event = { # Industry: Navy Shipyards Bonus
+	id = ATLAE.643
+	desc = "EVTDESCIMP.35"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = imperial_ambition_25
+		NOT = { has_global_flag = imperial_ambition_26 }
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.11
+		military_techpoints = 50
+	}
+}
+
+character_event = { # Industry: Rough Rhino Recruitment
+	id = ATLAE.644
+	desc = "EVTDESCIMP.36"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE09
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.645 days = 360 }
+		}
+	}
+}
+
+character_event = { # Industry: Rough Rhino's Founded
+	id = ATLAE.645
+	desc = "EVTDESCIMP.37"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	immediate = {
+		activate_title = { title = d_rough_rhinos status = yes }
+		create_character = {
+			random_traits = no
+			name = "Tzuneaki"
+			dynasty = random
+			religion = fire_nation_imperialism
+			culture = fire_nation
+			female = no
+			age = 36
+			attributes = {
+				martial = 12
+				diplomacy = 3
+				stewardship = 5
+				intrigue = 9
+				learning = 6
+			}
+			health = 6
+			fertility = 0.8
+			trait = skilled_tactician
+			trait = zealous
+			trait = scholar
+			trait = temperate
+			trait = komodorhino
+		}
+		new_character = {
+			wealth = 200
+			d_rough_rhinos = {
+				grant_title = PREV
+			}
+			set_defacto_liege = ROOT
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE10
+		}
+		set_global_flag = imperial_ambition_16
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Industry: Yuyan Archer Recruitment
+	id = ATLAE.646
+	desc = "EVTDESCIMP.38"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE09
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.647 days = 360 }
+		}
+	}
+}
+
+character_event = { # Industry: Yuyan Archers Founded
+	id = ATLAE.647
+	desc = "EVTDESCIMP.39"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	immediate = {
+		activate_title = { title = d_yuyan_archers status = yes }
+		create_character = {
+			random_traits = no
+			name = "Wuyu"
+			dynasty = random
+			religion = fire_nation_imperialism
+			culture = fire_nation
+			female = no
+			age = 24
+			attributes = {
+				martial = 11
+				diplomacy = 5
+				stewardship = 4
+				intrigue = 14
+				learning = 12
+			}
+			health = 6
+			fertility = 0.8
+			trait = elusive_shadow
+			trait = weapons_expert
+			trait = patient
+			trait = zealous
+			trait = hunter
+		}
+		new_character = {
+			wealth = 200
+			d_yuyan_archers = {
+				grant_title = PREV
+			}
+			set_defacto_liege = ROOT
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE10
+		}
+		set_global_flag = imperial_ambition_17
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Industry: Southern Raider Construction
+	id = ATLAE.648
+	desc = "EVTDESCIMP.40"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE09
+		}
+		hidden_tooltip = {
+			character_event = { id = ATLAE.649 days = 360 }
+		}
+	}
+}
+
+character_event = { # Industry: Southern Raiders Founded
+	id = ATLAE.649
+	desc = "EVTDESCIMP.41"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	immediate = {
+		activate_title = { title = d_southern_raiders status = yes }
+		create_character = {
+			random_traits = no
+			name = "Ako"
+			dynasty = random
+			religion = fire_nation_imperialism
+			culture = southern_raider
+			female = no
+			age = 29
+			attributes = {
+				martial = 12
+				diplomacy = 3
+				stewardship = 6
+				intrigue = 6
+				learning = 7
+			}
+			health = 6
+			fertility = 0.8
+			trait = tough_soldier
+			trait = firebender 
+			trait = master_bender
+			trait = zealous
+			trait = strong
+		}
+		new_character = {
+			wealth = 200
+			d_southern_raiders = {
+				grant_title = PREV
+			}
+			c_whaletail_island = {
+				grant_title = PREV
+			}
+			set_defacto_liege = ROOT
+		}
+		40 = {
+			culture = southern_raider
+			religion = fire_nation_imperialism
+			remove_province_modifier = temple_outpost
+			add_province_modifier = { name = south_raiders_base duration = -1 }
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE10
+		}
+		set_global_flag = imperial_ambition_15
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Colonisation: Settlers Arrive
+	id = ATLAE.652
+	desc = "EVTDESCIMP.18"
+	picture = "GFX_evt_fire_nation_colony"
+	is_triggered_only = yes
+	
+	trigger = {
+		any_realm_province = {
+			has_province_modifier = building_colony
+		}
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				has_province_modifier = building_colony
+			}
+			culture = colonial
+			religion = fire_nation_imperialism
+			clr_character_flag = building_colony
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		custom_tooltip = {
+				text = EVTTOOLTIPIMPE03
+		}
+		clr_global_flag = colony_construction
+	}
+}
+
+character_event = { # New Fire Lord - Cancel Focus
+	id = ATLAE.653
+	desc = "EVTDESCRES.11"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	hide_window = no
+	
+	trigger = {
+		has_global_flag = imperial_ambition
+	}
+	
+	option = {
+		name = EVTOPTAr.11
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Imperialism: Mandatory Education Begins
+	id = ATLAE.654
+	desc = "EVTDESCIMP.42"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		character_event = { id = ATLAE.657 days = 730 }
+		hidden_tooltip = {
+			character_event = { id = ATLAE.655 days = 30 random = 60 }
+			character_event = { id = ATLAE.655 days = 100 random = 60 }
+			character_event = { id = ATLAE.655 days = 170 random = 60 }
+			character_event = { id = ATLAE.655 days = 240 random = 60 }
+			character_event = { id = ATLAE.655 days = 310 random = 60 }
+			character_event = { id = ATLAE.656 days = 360 random = 60 }
+			character_event = { id = ATLAE.655 days = 380 random = 60 }
+			character_event = { id = ATLAE.655 days = 450 random = 60 }
+			character_event = { id = ATLAE.655 days = 520 random = 60 }
+			character_event = { id = ATLAE.656 days = 590 random = 60 }
+			character_event = { id = ATLAE.655 days = 640 random = 60 }
+		}
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE07
+		}
+	}
+}
+
+character_event = { # Propoganda II: Converts Province
+	id = ATLAE.655
+	desc = "EVTDESCIMP.43"
+	picture = "GFX_evt_fire_nation_festival"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		random_realm_province = {
+			religion = fire_nation_imperialism
+			limit = {
+				NOT = { religion = fire_nation_imperialism }
+				NOT = { has_province_modifier = cultural_unrest }
+				county = {
+					NOT = { de_jure_liege_or_above = e_earth_kingdom }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Propoganda II: Upsets Locals
+	id = ATLAE.656
+	desc = "EVTDESCIMP.44"
+	picture = "GFX_evt_fire_nation_festival"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAh.17
+		random_realm_province = {
+			add_province_modifier = { name = cultural_unrest duration = 60 }
+			limit = {
+				NOT = { religion = fire_nation_imperialism }
+			}
+		}
+	}
+}
+
+character_event = { # Propoganda II: Ends
+	id = ATLAE.657
+	desc = "EVTDESCIMP.45"
+	picture = "GFX_evt_fire_council"
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+	}
+	
+	option = {
+		name = EVTOPTAi.4
+		hidden_tooltip = {
+			any_realm_province = {
+				limit = {
+					religion = fire_nation_imperialism
+				}
+				add_province_modifier = { name = realm_religious_fervor duration = 360 }
+				add_province_modifier = { name = troops_increases duration = 240 }
+			}
+		}
+		custom_tooltip = {
+			text = EVTTOOLTIPIMPE08
+		}
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Campaign: Attack the South Start
+	id = ATLAE.658
+	desc = "EVTDESCIMP.48"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		hidden_tooltip = {
+			character_event = { id = ATLAE.659 days = 360 }
+		}
+	}
+}
+
+character_event = { # Campaign: Attack the South End
+	id = ATLAE.659
+	desc = "EVTDESCIMP.49"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+		hidden_tooltip = {
+			spawn_unit = {
+				province = 40 # Whaletail Island
+				owner = ROOT
+				troops = {
+					light_infantry = { 200 200 }
+					heavy_infantry = { 400 400 }
+					pikemen = { 100 100 }
+					light_cavalry = { 200 200 }
+					archers = { 300 300 }
+					fire_benders = { 1000 1000 }
+				}
+				attrition = 0.5
+			}
+			spawn_fleet = {
+				province = 40
+				owner = ROOT
+				troops =
+				{
+					galleys = { 30 30 }
+				}
+			}
+			hidden_tooltip = {
+				any_playable_ruler = {
+					limit = {
+						culture = southern_water
+					}
+					character_event = { id = ATLAE.663 days = 31 }
+				}
+			}
+		}
+		clr_global_flag = imperial_ambition
+	}
+}
+
+character_event = { # Waterbender Captured - Raider
+	id = ATLAE.660
+	desc = "EVTDESCIMP.50"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = imperial_ambition_19
+		new_character = {
+			trait = waterbender
+		}
+		ROOT = { 
+			religion = fire_nation_imperialism
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 2
+			new_character = {
+				is_female = yes
+			}
+		}
+		modifier = {
+			factor = 4
+			new_character = {
+				not = { age = 18 }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.12
+		new_character = {
+			ROOT = {
+				imprison = PREV
+			}
+		}
+		hidden_tooltip = {
+			new_character = {
+				character_event = { id = ATLAE.661 }
+				employer = {
+					character_event = { id = ATLAE.662 }
+				}
+			}
+		}
+	}
+	
+}
+
+character_event = { # Waterbender Captured - Captive
+	id = ATLAE.661
+	desc = "EVTDESCIMP.51"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.14
+	}
+}
+
+character_event = { # Waterbender Captured - Host
+	id = ATLAE.662
+	desc = "EVTDESCIMP.52"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.13
+	}
+}
+
+character_event = { # Southern Assault Begins
+	id = ATLAE.663
+	desc = "EVTDESCIMP.53"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.4
+	}
+}
+
+character_event = { # Waterbender Killed - Raider
+	id = ATLAE.664
+	desc = "EVTDESCIMP.54"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = imperial_ambition_19
+		new_character = {
+			trait = waterbender
+		}
+		ROOT = { 
+			religion = fire_nation_imperialism
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 2
+			new_character = {
+				NOT = { is_female = yes }
+			}
+		}
+		modifier = {
+			factor = 4
+			new_character = {
+				age = 18
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.12
+		new_character = {
+			ROOT = {
+				imprison = PREV
+			}
+		}
+		hidden_tooltip = {
+			new_character = {
+				character_event = { id = ATLAE.665 }
+				employer = {
+					character_event = { id = ATLAE.666 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Waterbender Killed - Death
+	id = ATLAE.665
+	desc = "EVTDESCIMP.55"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.14
+	}
+}
+
+character_event = { # Waterbender Killed - Host
+	id = ATLAE.666
+	desc = "EVTDESCIMP.56"
+	picture = "GFX_evt_fire_navy_raid"
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAi.13
+	}
+}
+
+character_event = { # Military Campaign: Selection
+	id = ATLAE.700
+	desc = "EVTDESCIMP.700"
+	picture = "GFX_evt_fire_council"
+	border = "GFX_event_normal_frame_war"
+	is_triggered_only = yes
+	
+	option = { # Hu Xin Provinces
+		trigger = {
+			NOT = { has_global_flag = campaign_hu_xin_provinces }
+		}
+		name = EVTOPTAiA.700
+		hidden_tooltip = {
+			any_playable_ruler = {
+				limit = {
+					ai = no
+					NOT = { character = ROOT }
+				}
+				character_event = { id = ATLAE.702 }
+			}
+		}
+		set_global_flag = campaign_hu_xin_provinces
+		set_global_flag = imperial_campaign
+	}
+	option = { # Xiong Lin Territory
+		trigger = {
+			has_global_flag = campaign_hu_xin_provinces
+			NOT = { has_global_flag = campaign_xiong_lin_territory }
+		}
+		name = EVTOPTAiB.700
+		set_global_flag = campaign_xiong_lin_territory
+		set_global_flag = imperial_campaign
+	}
+	option = { # Old Makapu
+		trigger = {
+			has_global_flag = campaign_hu_xin_provinces
+			NOT = { has_global_flag = campaign_old_makapu }
+		}
+		name = EVTOPTAiC.700
+		set_global_flag = campaign_old_makapu
+		set_global_flag = imperial_campaign
+	}
+	option = { # Northern Plains
+		trigger = {
+			has_global_flag = campaign_northern_ranges
+			NOT = { has_global_flag = campaign_northern_plains }
+		}
+		name = EVTOPTAiD.700
+		set_global_flag = campaign_northern_plains
+		set_global_flag = imperial_campaign
+	}
+	option = { # Southern Plains
+		trigger = {
+			OR = {
+				has_global_flag = campaign_northern_plains
+				has_global_flag = campaign_dongfang_peninsular
+				has_global_flag = campaign_central_desert
+			}
+			NOT = { has_global_flag = campaign_southern_plains }
+		}
+		name = EVTOPTAiE.700
+		set_global_flag = campaign_southern_plains
+		set_global_flag = imperial_campaign
+	}
+	option = { # Northern Ranges
+		trigger = {
+			has_global_flag = campaign_old_makapu
+			NOT = { has_global_flag = campaign_northern_ranges }
+		}
+		name = EVTOPTAiF.700
+		set_global_flag = campaign_northern_ranges
+		set_global_flag = imperial_campaign
+	}
+	option = { # Dongfang Peninsular
+		trigger = {
+			has_global_flag = campaign_earth_islands
+			NOT = { has_global_flag = campaign_dongfang_peninsular }
+		}
+		name = EVTOPTAiG.700
+		set_global_flag = campaign_dongfang_peninsular
+		set_global_flag = imperial_campaign
+	}
+	option = { # Earth Islands
+		trigger = {
+			has_global_flag = campaign_hu_xin_provinces
+			NOT = { has_global_flag = campaign_earth_islands }
+		}
+		name = EVTOPTAiH.700
+		set_global_flag = campaign_earth_islands
+		set_global_flag = imperial_campaign
+	}
+	option = { # Southern Coast
+		trigger = {
+			has_global_flag = campaign_earth_islands
+			NOT = { has_global_flag = campaign_southern_coast }
+		}
+		name = EVTOPTAiI.700
+		set_global_flag = campaign_southern_coast
+		set_global_flag = imperial_campaign
+	}
+	option = { # Southern Valley
+		trigger = {
+			has_global_flag = campaign_southern_coast_victory
+			NOT = { has_global_flag = campaign_southern_valley }
+		}
+		name = EVTOPTAiJ.700
+		set_global_flag = campaign_southern_valley
+		set_global_flag = imperial_campaign
+	}
+	option = { # Central Desert
+		trigger = {
+			has_global_flag = campaign_old_makapu_victory
+			NOT = { has_global_flag = campaign_central_desert }
+		}
+		name = EVTOPTAiK.700
+		set_global_flag = campaign_central_desert
+		set_global_flag = imperial_campaign
+	}
+	
+	option = { # Western Plains
+		trigger = {
+			has_global_flag = campaign_central_desert
+			NOT = { has_global_flag = campaign_western_plains }
+		}
+		name = EVTOPTAiL.700
+		set_global_flag = campaign_western_plains
+		set_global_flag = imperial_campaign
+	}
+	option = { # Eastern Coast
+		trigger = {
+			has_global_flag = campaign_southern_valley
+			NOT = { has_global_flag = campaign_eastern_coast }
+		}
+		name = EVTOPTAiM.700
+		set_global_flag = campaign_eastern_coast
+		set_global_flag = imperial_campaign
+	}
+	option = { # Omashu Plains
+		trigger = {
+			has_global_flag = campaign_western_plains
+			NOT = { has_global_flag = campaign_omashu_plains }
+		}
+		name = EVTOPTAiN.700
+		set_global_flag = campaign_omashu_plains
+		set_global_flag = imperial_campaign
+	}
+	option = { # Western Shore
+		trigger = {
+			has_global_flag = campaign_southern_valley
+			NOT = { has_global_flag = campaign_western_shore }
+		}
+		name = EVTOPTAiO.700
+		set_global_flag = campaign_western_shore
+		set_global_flag = imperial_campaign
+	}
+	option = { # Everywhere Else
+		trigger = {
+			has_global_flag = campaign_ba_sing_se
+			NOT = { has_global_flag = campaign_everywhere }
+		}
+		name = EVTOPTAiP.700
+		set_global_flag = campaign_everywhere
+		set_global_flag = imperial_campaign
+	}
+	option = { # I've changed by mind
+		name = EVTOPTAi.700
+	}
+}
+
+character_event = { # Military Campaign: Hu-Xin Provinces Victory
+	id = ATLAE.701
+	desc = "EVTDESCIMP.701"
+	picture = "GFX_evt_fire_navy_landing"
+	border = "GFX_event_normal_frame_war"
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTAiA.701
+		trigger = {
+			religion = fire_nation_imperialism
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTAiB.701
+		trigger = {
+			NOT = { religion = fire_nation_imperialism }
+		}
+	}
+}
+
+character_event = { # Military Campaign: Hu-Xin Provinces Warning
+	id = ATLAE.702
+	desc = "EVTDESCIMP.702"
+	picture = "GFX_evt_fire_navy_landing"
+	border = "GFX_event_normal_frame_war"
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTAiA.702
+		trigger = {
+			religion = fire_nation_imperialism
+		}
+	}
+	
+	option = {
+		name = EVTOPTAiB.702
+		trigger = {
+			NOT = { religion = fire_nation_imperialism }
+		}
+	}
+}
+
+character_event = { # Military Campaign: Barbarian Allies
+	id = ATLAE.703
+	desc = "EVTDESCIMP.703"
+	picture = "GFX_evt_fire_navy_landing"
+	border = "GFX_event_normal_frame_war"
+	major = yes
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTAiA.703
+		liege = FROM
+		opinion = { modifier = opinion_paragon  who = FROM years = 20 }
+		hidden_tooltip = {
+			any_independent_ruler = {
+				limit = {
+					NOT = { culture = barbarians }
+					NOT = { has_character_flag = warned_of_barbarians }
+				}
+				set_character_flag = warned_of_barbarians
+				character_event = { id = ATLAE.704 }
+			}
+		}
+		capital_scope = {
+			FROM = {
+				spawn_unit = {
+					owner = FROM
+					province = PREV
+					home = PREV
+					troops = {
+						archers = { 250 250 }
+						light_infantry = { 1000 1000 }
+						heavy_infantry = { 100 100 }
+						light_cavalry = { 200 200 }
+					}
+					attrition = 0.5
+					reinforces = no
+					maintenance = no
+				}
+			}
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	
+	option = {
+		name = EVTOPTAiB.703
+		prestige = 100
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+

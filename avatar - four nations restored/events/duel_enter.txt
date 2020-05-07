@@ -1,0 +1,184 @@
+#####
+## Entering duel
+## 1-XXX
+#####
+
+namespace = duel_in
+
+character_event = {
+	id = duel_in.1
+	picture = GFX_evt_desert
+	desc = "EVTDESCduel_in.1"
+	is_triggered_only = yes
+	
+	#on_combat_pulse FROM is the opposing army's commander
+	
+	trigger = {
+		in_command = yes
+		ROOT = {
+			at_location = FROM
+		}
+		FROM = {
+			war_with = ROOT
+		}
+	}
+	weight_multiplier = {
+		days = 1 # higher factor increases the likelyhood it will happen
+		modifier = {
+			factor = 5
+			trait = brave
+		}
+		modifier = {
+			factor = 5
+			trait = proud
+		}
+		modifier = {
+			factor = 0.8
+			trait = depressed
+		}
+		#modifier = {
+			#factor = 0.4
+			#trait = slothful
+		#}
+	}
+	immediate = {
+		FROM = { set_character_flag = duel_def }
+		ROOT = { set_character_flag = duel_agg }
+	}
+	option = {
+		name = {
+			trigger = { 
+				ROOT = { trait = firebender }
+				NOT = {
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}
+			text = "EVTOPTAduel_ent.1"
+		}
+		name = {
+			text = "EVTOPTBduel_ent.1"
+			trigger = {
+				ROOT = { trait = airbender }
+				NOT = {
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}
+		}
+		name = {
+			text = "EVTOPTCduel_ent.1"
+			trigger = {
+				ROOT = { trait = waterbender }
+				NOT = {
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}
+		}
+		name = {
+			text = "EVTOPTDduel_ent.1"
+			trigger = {
+				ROOT = { trait = earthbender }
+				NOT = {
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}
+		}
+		name = {
+			text = "EVTOPTFduel_ent.1"
+			trigger = {
+				ROOT = {
+					NOT = {
+						trait = earthbender
+						trait = airbender
+						trait = waterbender
+						trait = firebender
+					}
+				}
+			}
+		}
+		name = {
+			text = "EVTOPTGduel_ent.1"
+			trigger = {
+				OR = {
+					trait = avatar
+					trait = fullyrealisedavatar
+				}
+			}
+		}
+		prestige = 10
+		custom_tooltip = {
+			text = "EVTTOOLTIPduel_ent.1"
+			hidden_tooltip = {
+				FROM = { character_event = { id = duel.100 } }
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTEduel_ent.1"
+		prestige = -50
+		hidden_tooltip = {
+			FROM = { clr_character_flag = duel_def }
+			ROOT = { clr_character_flag = duel_agg }
+		}
+	}
+}
+
+#Challenge to Agni Kai
+character_event = {
+	id = duel_in.2
+	desc = EVTDESCduel_in.2 #ROOT has been challenged and has to decide which course of action to take
+	is_triggered_only = yes
+	picture = GFX_evt_battle
+	
+	immediate = {
+		ROOT = { set_character_flag = agni_def }
+		FROMFROM = { set_character_flag = agni_agg }
+	}
+	
+	option = {
+		name = EVTOPTAduel_in.2 #ROOT accepts the challenge
+		prestige = 25
+		custom_tooltip = {
+			text = EVTTOOLTIPAduel_in.2
+			hidden_tooltip = {
+				FROMFROM = {
+					character_event = { id = duel.100 days = 1 }
+				}
+			}
+		}
+	}
+	option = {
+		name = EVTOPTBduel_in.2
+		prestige = 50
+		if = {
+			limit = {
+				NOT = { trait = craven }
+			}
+			random = {
+				chance = 20
+				add_trait = craven
+			}
+		}
+		custom_tooltip = {
+			text = EVTTOOLTIPBduel_in.2
+			hidden_tooltip = {
+				ROOT = { clr_character_flag = agni_def }
+				FROMFROM = { clr_character_flag = agni_agg }
+				FROMFROM = {
+					character_event = { id = duel_out.6 }
+				}
+			}
+		}
+	}
+}

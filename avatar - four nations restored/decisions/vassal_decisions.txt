@@ -1,0 +1,250 @@
+
+# Targetted decisions are possible vs _all_ other characters and shown are in the Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
+#
+# filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] ('self' MUST be set for decisions targetting only the taker, the other filter types can be set to lessen CPU load)
+# ai_target_filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] (which characters for which the AI evaluates the decision.)
+#	court: all characters in the AI's host court, including prisoners, and characters currently away (wards, prisoners, etc)
+#	home_court: all characters in the AI's home court, including prisoners, and characters currently away (wards, prisoners, etc)
+#	vassals: direct vassal rulers of the AI's employer
+#	sub_realm: all characters below the AI's employer
+#	realm: all characters in the same top realm as the AI
+#	dynasty: all members of the same dynasty
+#	rivals: your rivals plus any character you have an opinion modifier with 'crime = yes' set (the same set of characters the 'is_foe' trigger evaluates)
+#	all: all living characters (Avoid if possible. VERY CPU-HEAVY!)
+#	
+
+
+targetted_decisions = {
+
+	force_vassal_to_develop = {
+		filter = vassals
+		ai_target_filter = vassals
+		
+		from_potential = {
+			is_ruler = yes
+			OR = {
+				is_feudal = yes
+				is_republic = yes
+				is_theocracy = yes
+			}
+			OR = {
+				is_independent = yes
+				liege = {
+					OR = {
+						is_feudal = yes
+						is_republic = yes
+						is_theocracy = yes
+					}
+				}
+			}
+		}
+		
+		potential = {
+			is_ruler = yes
+			is_tribal = yes
+		}
+		
+		allow = {
+			war = no
+			FROM = { wealth = 200 }
+			FROM = { prestige = 300 }
+		}
+		
+		effect = {
+			FROM = {
+				wealth = -200
+				prestige = -300
+			}
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = feudal_government
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = CASTLE
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = temple
+							}
+						}
+					}
+				}
+				
+				liege = {
+					character_event = { id = 55100 } # Notify Liege
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.001
+				NOT = { religion_group = ROOT }
+			}
+			modifier = {
+				factor = 0.01
+				NOT = { culture_group = ROOT }
+			}
+		}
+	}
+	
+	prisoner_to_oubilette = {
+		filter = court
+		ai_target_filter = court
+
+		from_potential = {
+			ai = no
+		}
+	
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+			NOT = { has_character_modifier = the_oubliette }
+		}
+		allow = {
+			prisoner = yes
+		}
+		effect = {
+			add_character_modifier = { 
+				name = the_oubliette
+				duration = -1
+			}
+			hidden_tooltip = {
+				remove_character_modifier = the_dungeon
+				remove_character_modifier = house_arrest
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	prisoner_to_dungeon = {
+		filter = court
+		ai_target_filter = court
+
+		from_potential = {
+			ai = no
+		}
+	
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+			OR = {
+				has_character_modifier = the_oubliette
+				has_character_modifier = house_arrest
+			}
+		}
+		allow = {
+			prisoner = yes
+		}
+		effect = {
+			add_character_modifier = { 
+				name = the_dungeon
+				duration = -1
+			}
+			hidden_tooltip = {
+				remove_character_modifier = the_oubliette
+				remove_character_modifier = house_arrest
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	prisoner_to_suite = {
+		filter = court
+		ai_target_filter = court
+
+		from_potential = {
+			ai = no
+		}
+	
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+			NOT = { has_character_modifier = house_arrest }
+		}
+		allow = {
+			prisoner = yes
+		}
+		effect = {
+			add_character_modifier = { 
+				name = house_arrest
+				duration = -1
+			}
+			hidden_tooltip = {
+				remove_character_modifier = the_oubliette
+				remove_character_modifier = the_dungeon
+				character_event = { id = ZE.12219 } # Loses pet rat
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+}

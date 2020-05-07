@@ -1,0 +1,1088 @@
+namespace = ATLAE
+
+character_event = { # Event Server
+	id = ATLAE.2000
+	hide_window = yes
+	is_triggered_only = yes
+	ai = no
+	
+	trigger = {
+		NOT = { has_global_flag = GAME_BOOT }
+	}
+	
+	immediate = { # Setup Campaign
+		if = {
+			limit = {
+				NOT = { has_global_flag = GAME_BOOT }
+			}
+			set_global_flag = GAME_BOOT
+			## Remove Early Characters
+			if = {
+				limit = {
+					NOT = { year = 775 }
+				}
+				any_character = {
+					limit = {
+						religion = fire_nation_imperialism 
+					}
+					death = { death_reason = death_missing }
+				}
+			}
+			if = {
+				limit = {
+					year = 831
+					NOT = { month = 11 }
+					NOT = { year = 929 }
+				}
+				any_character = {
+					limit = {
+						has_character_flag = is_aang
+					}
+					death = { death_reason = death_missing }
+				}
+			}
+			if = {
+				limit = {
+					NOT = { year = 934 }
+				}
+				any_character = {
+					limit = {
+						religion = air_acolytism 
+					}
+					death = { death_reason = death_missing }
+				}
+			}
+			if = {
+				limit = {
+					NOT = { year = 936 }
+				}
+				any_character = {
+					limit = {
+						religion = modernism 
+					}
+					death = { death_reason = death_missing }
+				}
+			}
+			if = {
+				limit = {
+					year = 930
+				}
+				any_character = {
+					limit = {
+						OR = {
+							religion = air_acolytism
+							culture = southern_air_nomad
+						}
+					}
+					culture = air_acolytes
+					set_graphical_culture = airacogfx
+				}
+			}
+			if = {
+				limit = {
+					NOT = { year = 830 }
+				}
+				any_society_member = {
+					limit = {
+						society_member_of = monastic_order_elder_council
+						society_rank = 4
+					}
+					society_rank_down = 1
+				}
+				any_independent_ruler = {
+					limit = {
+						real_tier = KING
+						OR = {
+							culture = northern_air_nomad
+							culture = eastern_air_nomad
+							culture = southern_air_nomad
+							culture = western_air_nomad
+						}
+					}
+					set_character_flag = elder_council_member
+					join_society = monastic_order_elder_council
+					society_rank_up = 3
+				}
+				any_player = {
+					limit = {
+						real_tier = KING
+						OR = {
+							culture = northern_air_nomad
+							culture = eastern_air_nomad
+							culture = southern_air_nomad
+							culture = western_air_nomad
+						}
+					}
+					join_society = monastic_order_elder_council
+					society_rank_up = 3
+				}
+				random_society_member = {
+					limit = {
+						society_member_of = monastic_order_elder_council
+						society_rank = 4
+					}
+					set_society_grandmaster = yes
+				}
+			}
+			if = {
+				limit = {
+					NOT = { year = 810 }
+				}
+				any_character = {
+					limit = {
+						culture_group = air_nomad_culture
+						is_ruler = no
+						age = 16
+						NOT = { age = 28 }
+					}
+					add_trait = on_journey
+					set_character_flag = nomad_journey
+					set_character_flag = do_not_disturb
+				}
+			}
+			if = {
+				limit = {
+					year = 780
+				}
+				set_global_flag = imperial_ambition_0
+				set_global_flag = imperial_ambition_1
+				set_global_flag = imperial_ambition_2
+				set_global_flag = imperial_ambition_3
+				set_global_flag = imperial_ambition_4
+				set_global_flag = imperial_ambition_5
+			}
+			if = {
+				limit = {
+					year = 830
+				}
+				set_global_flag = imperial_ambition_13
+			}
+			if = {
+				limit = {
+					year = 830
+					NOT = { year = 930 }
+				}
+				set_global_flag = HYW_0
+				set_global_flag = HYW_16
+				set_global_flag = HYW_17
+			}
+			if = {
+				limit = {
+					year = 930
+				}
+				set_global_flag = HYW_18
+			}
+			if = {
+				limit = {
+					year = 830
+				}
+				set_global_flag = campaign_hu_xin_provinces
+			}
+			if = {
+				limit = {
+					year = 850
+				}
+				set_global_flag = campaign_xiong_lin_territory
+				set_global_flag = campaign_old_makapu
+			}
+		}
+	}
+
+	option = { # Send out Intro Events
+		if = { # Fall of Chin
+			limit = {
+				year = 560
+				NOT = { year = 570 }
+			}
+			narrative_event = { id = ATLAE.2011 }
+			break = yes
+		}
+		if = { # Peasent Rebellion
+			limit = {
+				year = 600
+				NOT = { year = 610 }
+			}
+			narrative_event = { id = ATLAE.2012 }
+			break = yes
+		}
+		if = { # Fire Nation
+			limit = {
+				year = 640
+				NOT = { year = 650 }
+			}
+			narrative_event = { id = ATLAE.2013 }
+			break = yes
+		}
+		if = { # Sozin
+			limit = {
+				year = 770
+				NOT = { year = 780 }
+			}
+			narrative_event = { id = ATLAE.2009 }
+			break = yes
+		}
+		if = { # Hundred Year War
+			limit = {
+				year = 830
+				NOT = { year = 840 }
+			}
+			narrative_event = { id = ATLAE.2010 }
+			break = yes
+		}
+		if = { # Azulon
+			limit = {
+				year = 840
+				NOT = { year = 860 }
+			}
+			narrative_event = { id = ATLAE.2014 }
+			break = yes
+		}
+		if = { # Iroh
+			limit = {
+				year = 920
+				NOT = { year = 926 }
+			}
+			narrative_event = { id = ATLAE.2015 }
+			break = yes
+		}
+		if = { # Airbender
+			limit = {
+				year = 929
+				NOT = { year = 931 }
+			}
+			narrative_event = { id = ATLAE.2016 }
+			break = yes
+		}
+		if = { # Zuko
+			limit = {
+				year = 931
+				NOT = { year = 936 }
+			}
+			break = yes
+		}
+		if = { # Republic
+			limit = {
+				year = 936
+				NOT = { year = 940 }
+			}
+			break = yes
+		}
+		if = { # Legend
+			limit = {
+				year = 1000
+				NOT = { year = 1001 }
+			}
+			break = yes
+		}
+		if = { # Earth Empire
+			limit = {
+				year = 1002
+				NOT = { year = 1003 }
+			}
+			break = yes
+		}
+		## GENERIC INTROS
+		if = { # Water Tribe
+			limit = {
+				culture_group = water_tribe_culture
+			}
+			if = { # Generic Intro - Water Tribe
+				limit = {
+					OR = {
+						AND = {
+							year = 570
+							NOT = { year = 600 }
+						}
+						AND = {
+							year = 610
+							NOT = { year = 640 }
+						}
+						AND = {
+							year = 650
+							NOT = { year = 770 }
+						}
+						AND = {
+							year = 780
+							NOT = { year = 829 }
+						}
+					}
+				}
+				narrative_event = { id = ATLAE.2001 }
+				break = yes
+			}
+			if = { # Hundred Year War Intro - Water Tribe
+				limit = {
+					OR = {
+						AND = {
+							year = 860
+							NOT = { year = 920 }
+						}
+						AND = {
+							year = 826
+							NOT = { year = 929 }
+						}
+					}
+				}
+				break = yes
+			}
+			if = { # Modern Era Intro - Water Tribe
+				limit = {
+					year = 940
+					NOT = { year = 999 }
+				}
+				break = yes
+			}
+		}
+		if = { # Earth Kingdom
+			limit = {
+				culture_group = earth_kingdom_culture
+				NOT = { culture = ba_sing_se }
+				NOT = { culture = sandbender }
+			}
+			if = { # Generic Intro - Earth Kingdom
+				limit = {
+					OR = {
+						AND = {
+							year = 570
+							NOT = { year = 600 }
+						}
+						AND = {
+							year = 610
+							NOT = { year = 640 }
+						}
+						AND = {
+							year = 650
+							NOT = { year = 770 }
+						}
+						AND = {
+							year = 780
+							NOT = { year = 829 }
+						}
+					}
+				}
+				narrative_event = { id = ATLAE.2002 }
+				break = yes
+			}
+			if = { # Hundred Year War Intro - Earth Kingdom
+				limit = {
+					OR = {
+						AND = {
+							year = 860
+							NOT = { year = 920 }
+						}
+						AND = {
+							year = 826
+							NOT = { year = 929 }
+						}
+					}
+				}
+				break = yes
+			}
+			if = { # Modern Era Intro - Earth Kingdom
+				limit = {
+					year = 940
+					NOT = { year = 999 }
+				}
+				break = yes
+			}
+		}
+		if = { # Ba Sing Se
+			limit = {
+				culture = ba_sing_se
+			}
+			if = { # Generic Intro - Ba Sing Se
+				limit = {
+					OR = {
+						AND = {
+							year = 570
+							NOT = { year = 600 }
+						}
+						AND = {
+							year = 610
+							NOT = { year = 640 }
+						}
+						AND = {
+							year = 650
+							NOT = { year = 770 }
+						}
+						AND = {
+							year = 780
+							NOT = { year = 829 }
+						}
+					}
+				}
+				narrative_event = { id = ATLAE.2003 }
+				break = yes
+			}
+			if = { # Hundred Year War Intro - Ba Sing Se
+				limit = {
+					OR = {
+						AND = {
+							year = 860
+							NOT = { year = 920 }
+						}
+						AND = {
+							year = 826
+							NOT = { year = 929 }
+						}
+					}
+				}
+				break = yes
+			}
+			if = { # Modern Era Intro - Ba Sing Se
+				limit = {
+					year = 940
+					NOT = { year = 999 }
+				}
+				break = yes
+			}
+		}
+	}
+}
+
+narrative_event = { # GAME START - WATER TRIBE - Generic Intro
+	id = ATLAE.2001
+	title = ATLA_INTRO_WATERTRIBE_TITLE
+	desc = {
+		trigger = {
+			culture = northern_water
+		}
+		text = ATLA_INTRO_WATERTRIBE_NORTH
+	}
+	desc = {
+		trigger = {
+			culture = southern_water
+		}
+		text = ATLA_INTRO_WATERTRIBE_SOUTH
+	}
+	desc = {
+		trigger = {
+			NOT = { culture = southern_water }
+			NOT = { culture = northern_water }
+		}
+		text = ATLA_INTRO_WATERTRIBE
+	}
+	is_triggered_only = yes
+	picture = "GFX_evt_water_tribe_navy"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - EARTH KINGDOM - Generic Intro
+	id = ATLAE.2002
+	title = ATLA_INTRO_EARTHKINGDOM_TITLE
+	desc = "ATLA_INTRO_EARTHKINGDOM"
+	is_triggered_only = yes
+	picture = "GFX_evt_earth_city"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.2
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - BA SING SE - Generic Intro
+	id = ATLAE.2003
+	title = ATLA_INTRO_BASINGSE_TITLE
+	desc = "ATLA_INTRO_BASINGSE"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.2
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - FIRE NATION - Generic Intro
+	id = ATLAE.2004
+	title = ATLA_INTRO_FIRENATION_TITLE
+	desc = "ATLA_INTRO_FIRENATION"
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_county"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - AIR NOMAD - Generic Intro
+	id = ATLAE.2005
+	title = ATLA_INTRO_AIRNOMAD_TITLE
+	desc = "ATLA_INTRO_AIRNOMAD"
+	is_triggered_only = yes
+	picture = "GFX_evt_air_west"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - SUN WARRIOR - Generic Intro
+	id = ATLAE.2006
+	title = ATLA_INTRO_SUNWARRIOR_TITLE
+	desc = "ATLA_INTRO_SUNWARRIOR"
+	is_triggered_only = yes
+	picture = "GFX_evt_sun_warrior_city"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - SWAMP TRIBE - Generic Intro
+	id = ATLAE.2007
+	title = ATLA_INTRO_SWAMPTRIBE_TITLE
+	desc = "ATLA_INTRO_SWAMPTRIBE"
+	is_triggered_only = yes
+	picture = "GFX_evt_swamptribe"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - SANDBENDER - Generic Intro
+	id = ATLAE.2008
+	title = ATLA_INTRO_SANDBENDER_TITLE
+	desc = "ATLA_INTRO_SANDBENDER"
+	is_triggered_only = yes
+	picture = "GFX_evt_sandbender"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+
+	option = {
+		name = EVTOPTINTRO.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - SOZIN
+	id = ATLAE.2009
+	title = BM_SOZIN
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_nation"
+	border = GFX_event_narrative_frame_diplomacy
+	ai = no
+	only_rulers = yes
+	
+	desc = {
+		trigger = {
+			culture_group = fire_nation_culture
+			NOT = { culture = sun_warrior }
+			NOT = { trait = firelord }
+		}
+		text = BM_BM_SOZIN_DESC_FN
+	}
+	desc = {
+		trigger = {
+			culture_group = earth_kingdom_culture
+			NOT = { culture = sandbender }
+			NOT = { trait = earthkingpuppet }
+		}
+		text = BM_BM_SOZIN_DESC_EK
+	}
+	desc = {
+		trigger = {
+			culture_group = air_nomad_culture
+		}
+		text = BM_BM_SOZIN_DESC_AN
+	}
+	desc = {
+		trigger = {
+			trait = earthkingpuppet
+		}
+		text = BM_BM_SOZIN_DESC_EM
+	}
+	desc = {
+		trigger = {
+			trait = firelord
+		}
+		text = BM_BM_SOZIN_DESC_FL
+	}
+	desc = {
+		trigger = {
+			culture = northern_water
+		}
+		text = BM_BM_SOZIN_DESC_WTN
+	}
+	desc = {
+		trigger = {
+			culture = southern_water
+		}
+		text = BM_BM_SOZIN_DESC_WTS
+	}
+	desc = {
+		trigger = {
+			OR = {
+				culture = sandbender
+				culture = foggy_swamp
+				culture = sun_warrior
+			}
+		}
+		text = BM_BM_SOZIN_DESC_T
+	}
+	
+	immediate = {
+		set_global_flag = SOZIN_START
+		if = {
+			limit = {
+				trait = firelord
+			}
+			add_artifact = mountDragon
+			new_artifact = {
+				set_creation_date = 1.1.1
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - HUNDRED YEAR WAR
+	id = ATLAE.2010
+	title = BM_HUNDRED
+	desc = "BM_BM_HUNDRD_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_air_defeat"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = HYW_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - Fall of Chin
+	id = ATLAE.2011
+	title = BM_CHIN
+	desc = "BM_BM_CHIN_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_chin_army"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = CHIN_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - Ba Sing Se Rebellion
+	id = ATLAE.2012
+	title = BM_REBELLION
+	desc = "BM_BM_REBELLION_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = REBELLION_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - Fire Nation Start
+	id = ATLAE.2013
+	title = BM_UNIFICATION
+	desc = "BM_BM_UNIFICATION_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_early_firelord"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = UNIFICATION_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - Azulon Start
+	id = ATLAE.2014
+	title = BM_AZULON
+	desc = "BM_BM_AZULON_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_son_asks_firelord"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = AZULON_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - Iroh Start
+	id = ATLAE.2015
+	title = BM_IROH
+	desc = "BM_BM_IROH_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_ruined_town"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = IROH_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - TLA Start
+	id = ATLAE.2016
+	title = BM_AIRBENDER
+	desc = "BM_BM_AIRBENDER_DESC"
+	is_triggered_only = yes
+	picture = "GFX_evt_beam_of_light"
+	border = GFX_event_narrative_frame_war
+	ai = no
+	only_rulers = yes
+	
+	immediate = {
+		set_global_flag = TLA_START
+	}
+
+	option = {
+		name = EVTOPTAi.1
+	}
+	
+	option = {
+		name = EVTOPTAiTutorial
+		narrative_event = { id = ATLAE.2017 }
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL
+	id = ATLAE.2017
+	title = TUTORIAL_OPENING
+	desc = "TUTORIAL_DESC_1"
+	is_triggered_only = yes
+	picture = "GFX_evt_beam_of_light"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL1a
+		narrative_event = { id = ATLAE.2019 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1b
+		narrative_event = { id = ATLAE.2018 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - VERSION SUMMARY
+	id = ATLAE.2018
+	title = TUTORIAL_2_UPDATE
+	desc = "TUTORIAL_DESC_2"
+	is_triggered_only = yes
+	picture = "GFX_evt_dragon"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL2a
+		narrative_event = { id = ATLAE.2017 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - BENDING
+	id = ATLAE.2019
+	title = TUTORIAL_BENDING
+	desc = "TUTORIAL_DESC_3"
+	is_triggered_only = yes
+	picture = "GFX_evt_firebenders_fight"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL5a
+		narrative_event = { id = ATLAE.2023 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL3b
+		narrative_event = { id = ATLAE.2017 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+character_event = { # Boot Age
+	id = ATLAE.2020
+	hide_window = yes
+	is_triggered_only = yes
+	ai = no
+	
+	trigger = {
+		NOT = { has_global_flag = AGE_BOOT }
+	}
+	
+	immediate = { # Setup Age System
+		set_global_flag = AGE_BOOT
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - Spirit World
+	id = ATLAE.2021
+	title = TUTORIAL_SPIRITS
+	desc = "TUTORIAL_DESC_4"
+	is_triggered_only = yes
+	picture = "GFX_evt_spirit_world"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL4a
+		narrative_event = { id = ATLAE.2022 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL4b
+		narrative_event = { id = ATLAE.2019 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - Ages
+	id = ATLAE.2022
+	title = TUTORIAL_AGES
+	desc = "TUTORIAL_DESC_5"
+	is_triggered_only = yes
+	picture = "GFX_evt_world_map"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL5a
+		narrative_event = { id = ATLAE.2023 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL5b
+		narrative_event = { id = ATLAE.2021 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - The Avatar
+	id = ATLAE.2023
+	title = TUTORIAL_AVATAR
+	desc = "TUTORIAL_DESC_6"
+	is_triggered_only = yes
+	picture = "GFX_evt_avatar_conflict"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL6a
+		narrative_event = { id = ATLAE.2024 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL4b
+		narrative_event = { id = ATLAE.2019 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - The Earth Kingdom
+	id = ATLAE.2024
+	title = TUTORIAL_EARTH_KINGDOM
+	desc = "TUTORIAL_DESC_7"
+	is_triggered_only = yes
+	picture = "GFX_evt_ba_sing_se_upper_ring"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL7a
+		narrative_event = { id = ATLAE.2025 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL7b
+		narrative_event = { id = ATLAE.2023 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - Colonies
+	id = ATLAE.2025
+	title = TUTORIAL_COLONIES
+	desc = "TUTORIAL_DESC_8"
+	is_triggered_only = yes
+	picture = "GFX_evt_fire_nation_colony"
+	border = GFX_event_narrative_frame_war
+
+	option = {
+		name = EVTOPTTUTORIAL8a
+		narrative_event = { id = ATLAE.2026 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL8b
+		narrative_event = { id = ATLAE.2024 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}
+
+narrative_event = { # GAME START - TUTORIAL - Air Nomads
+	id = ATLAE.2026
+	title = TUTORIAL_AIRNOMADS
+	desc = "TUTORIAL_DESC_9"
+	is_triggered_only = yes
+	picture = "GFX_evt_air_west"
+	border = GFX_event_narrative_frame_war
+	
+	option = {
+		name = EVTOPTTUTORIAL9b
+		narrative_event = { id = ATLAE.2025 }
+	}
+	
+	option = {
+		name = EVTOPTTUTORIAL1c
+	}
+}

@@ -1,0 +1,2296 @@
+###########################################
+#                                         #
+# RoI India various events                #
+#                                         #
+###########################################
+
+# Written by Tobias Bodlund & Henrik Fåhraeus
+
+namespace = RoI
+
+###########################################
+# Reincarnation Events
+###########################################
+# by Henrik Fåhraeus
+###########################################
+
+# [on_birth] Child might be a reincarnation
+character_event = {
+	id = RoI.10000
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	only_men = yes
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		OR = {
+			father = {
+				ai = no
+				is_reincarnated = no
+				father_even_if_dead = {
+					OR = {
+						is_alive = no
+						father_even_if_dead = {
+							is_alive = no
+						}
+					}
+				}
+				NOT = {
+					any_sibling = {
+						is_reincarnated = yes
+					}
+				}
+			}
+			mother = {
+				ai = no
+				is_reincarnated = no
+				father_even_if_dead = {
+					OR = {
+						is_alive = no
+						father_even_if_dead = {
+							is_alive = no
+						}
+					}
+				}
+				NOT = {
+					any_sibling = {
+						is_reincarnated = yes
+					}
+				}
+			}
+		}
+		NOT = {
+			any_sibling = {
+				is_reincarnated = yes
+			}
+		}
+	}
+	
+	option = {
+		name = OK
+		if = {
+			limit = {
+				father = { 
+					ai = no
+				}
+			}
+			if = {
+				limit = {
+					father = {
+						father_even_if_dead = {
+							father_even_if_dead = {
+								is_alive = no
+							}
+						}
+					}
+				}
+				father = {
+					father_even_if_dead = {
+						father_even_if_dead = {
+							ROOT = {
+								set_reincarnation = THIS
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					is_reincarnated = no
+				}
+				father = {
+					father_even_if_dead = {
+						ROOT = {
+							set_reincarnation = THIS
+						}
+					}
+				}
+			}
+			
+			father = {
+				character_event = {
+					id = RoI.10001
+					days = 3
+				}
+			}
+		}
+		if = {
+			limit = {
+				mother = { ai = no }
+				is_reincarnated = no
+			}
+			if = {
+				limit = {
+					mother = {
+						father_even_if_dead = {
+							father_even_if_dead = {
+								is_alive = no
+							}
+						}
+					}
+				}
+				mother = {
+					father_even_if_dead = {
+						father_even_if_dead = {
+							ROOT = {
+								set_reincarnation = THIS
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					is_reincarnated = no
+				}
+				mother = {
+					father_even_if_dead = {
+						ROOT = {
+							set_reincarnation = THIS
+						}
+					}
+				}
+			}
+			
+			mother = {
+				character_event = {
+					id = RoI.10001
+					days = 3
+				}
+			}
+		}
+	}
+}
+
+# Reincarnation: Player notices the similarities
+character_event = {
+	id = RoI.10001
+	desc = EVTDESC_RoI_10001
+	picture = GFX_evt_reincarnation
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_10001 # Yes, clearly
+		
+		hidden_tooltip = {
+			FROM = {
+				add_trait = reincarnation
+				character_event = {
+					id = RoI.10002
+					days = 912
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_RoI_10001 # Nonsense!
+		
+		hidden_tooltip = {
+			FROM = {
+				set_reincarnation = 0
+			}
+		}
+	}
+}
+
+# Reincarnation: Toddler thinks of the past life
+character_event = {
+	id = RoI.10002
+	desc = EVTDESC_RoI_10002
+	picture = GFX_evt_reincarnation
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_10002
+		hidden_tooltip = {
+			FROM = {
+				character_event = {
+					id = RoI.10003
+					days = 2
+				}
+			}
+		}
+	}
+}
+
+# Reincarnation: Toddler speaks of the past life
+character_event = {
+	id = RoI.10003
+	desc = EVTDESC_RoI_10003
+	picture = GFX_evt_reincarnation
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_10003
+		hidden_tooltip = {
+			FROM = {
+				set_character_flag = reincarnation_education
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_10003
+	}
+}
+
+# [on_yearly_childhood_pulse] Reincarnation: Youth picks up a personality trait from the previous life
+character_event = {
+	id = RoI.10010
+	desc = EVTDESC_RoI_10010
+	picture = GFX_evt_reincarnation
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		has_character_flag = reincarnation_education
+		NOT = { personality_traits = 5 }
+		reincarnation_scope = {
+			ROOT = {
+				can_copy_personality_trait_from = PREV
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_10010
+		reincarnation_scope = {
+			ROOT = {
+				copy_random_personality_trait = PREV
+			}
+		}
+		hidden_tooltip = {
+			if = {
+				limit = {
+					father = {
+						ai = no
+					}
+				}
+				father = {
+					character_event = {
+						id = RoI.10011
+						days = 2
+					}
+				}
+			}
+			if = {
+				limit = {
+					mother = {
+						ai = no
+					}
+				}
+				mother = {
+					character_event = {
+						id = RoI.10011
+						days = 2
+					}
+				}
+			}
+			if = {
+				limit = {
+					guardian = {
+						ai = no
+					}
+				}
+				guardian = {
+					character_event = {
+						id = RoI.10011
+						days = 2
+					}
+				}
+			}
+		}
+	}
+}
+
+# Reincarnation: Notification of a youth picking up a personality trait from the previous life
+character_event = {
+	id = RoI.10011
+	desc = EVTDESC_RoI_10011
+	picture = GFX_evt_reincarnation
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_10011
+	}
+}
+
+# [on_yearly_pulse] Reincarnation: Reincarnated player remembers his murderer
+character_event = {
+	id = RoI.10020
+	desc = EVTDESC_RoI_10020
+	picture = GFX_evt_shadow
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	ai = no
+	min_age = 14
+	
+	trigger = {
+		is_reincarnated = yes
+		trait = reincarnation
+		has_dlc = "Rajas of India"
+		reincarnation_scope = {
+			OR = {
+				death_reason = death_murder
+				death_reason = death_murder_unknown
+				death_reason = death_execution
+			}
+			killer = {
+				always = yes
+			}
+		}
+		NOT = { has_character_flag = reinc_remembered_killer }
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_10020
+		
+		set_character_flag = reinc_remembered_killer
+		
+		if = {
+			limit = {
+				reincarnation_scope = {
+					killer = {
+						is_alive = yes
+					}
+				}
+			}
+			reincarnation_scope = {
+				killer = {
+					reverse_opinion = {
+						who = ROOT
+						years = 100
+						modifier = opinion_dishonorable
+					}
+				}
+			}
+		}
+	}
+}
+
+# [on_yearly_pulse] Reincarnation: Reincarnated player remembers spouse
+character_event = {
+	id = RoI.10021
+	desc = EVTDESC_RoI_10021
+	picture = GFX_evt_lovers
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	ai = no
+	min_age = 14
+	
+	trigger = {
+		is_reincarnated = yes
+		trait = reincarnation
+		has_dlc = "Rajas of India"
+		reincarnation_scope = {
+			spouse_even_if_dead = {
+				always = yes
+			} 
+		}
+		NOT = { has_character_flag = reinc_remembered_spouse }
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_10021
+		
+		set_character_flag = reinc_remembered_spouse
+	}
+}
+
+# [on_yearly_pulse] Reincarnation: Reincarnated player remembers birth of oldest child
+character_event = {
+	id = RoI.10022
+	desc = EVTDESC_RoI_10022
+	picture = GFX_evt_child_play
+	border = GFX_event_normal_frame_religion
+	
+	is_triggered_only = yes
+	
+	ai = no
+	min_age = 14
+	
+	trigger = {
+		is_reincarnated = yes
+		trait = reincarnation
+		has_dlc = "Rajas of India"
+		reincarnation_scope = {
+			num_of_children = 1
+		}
+		NOT = { has_character_flag = reinc_remembered_oldest_child }
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_10022
+		
+		set_character_flag = reinc_remembered_oldest_child
+	}
+}
+
+###########################################
+# The cursed diamond                      #
+###########################################
+
+# Diamond is found
+character_event = {
+	id = RoI.215
+	desc = EVTDESC_RoI_215
+	picture = GFX_evt_emissary
+
+	is_triggered_only = yes
+	
+	ai = no
+	only_capable = yes
+	prisoner = no
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = {	primary_title = { tier = COUNT } }
+		NOT = { has_global_flag = cursed_diamond }
+		
+		NOT = { trait = in_hiding }
+	}
+	
+	immediate = {
+		set_global_flag = cursed_diamond
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_215
+		wealth = -30
+		prestige = 30
+		hidden_tooltip = { character_event = { id = RoI.216 days = 60 } }  # Make a grand crown
+	}
+	option = {
+		name = EVTOPTB_RoI_215
+		hidden_tooltip = { character_event = { id = RoI.221 days = 60 } } # Put it in the treasury
+	}
+	option = {
+		name = EVTOPTC_RoI_215
+		trigger = {
+			is_married = yes
+			spouse = { ai= yes }
+		}
+		spouse = {
+			add_lover = ROOT
+			set_character_flag = spouse_diamond
+			hidden_tooltip = { character_event = { id = RoI.225 days = 60 } } # Give it to your spouse
+		}
+	}
+	option = {
+		name = EVTOPTD_RoI_215
+		wealth = 100
+	}
+}
+
+# Diamond sparkles in crown
+character_event = {
+	id = RoI.216
+	desc = EVTDESC_RoI_216
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_216
+		prestige = 10
+		hidden_tooltip = {
+			random_list = {
+				10 = { character_event = { id = RoI.217 days = 60 } }
+				10 = { character_event = { id = RoI.218 days = 60 } }
+				10 = {
+					random_courtier = {
+						limit = {
+							ai = yes
+							NOT = { father = { character = ROOT } }
+							NOT = { mother = { character = ROOT } }
+							NOT = { spouse = { character = ROOT } }
+						}
+						character_event = { id = RoI.219 days = 60 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Thief tries to steal crown
+character_event = {
+	id = RoI.217
+	desc = EVTDESC_RoI_217
+	picture = GFX_evt_large_army
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_217
+		if = {
+			limit = { NOT = { trait = stressed } }
+			random = {
+				chance = 20
+				add_trait = stressed
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Diamonds sparkles and frightens elephant
+character_event = {
+	id = RoI.218
+	desc = EVTDESC_RoI_218
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_218
+		random_courtier = {
+			limit = {
+				NOT = { trait = incapable }
+				NOT = { trait = maimed }
+				NOT = { trait = wounded }
+			}
+			random_list = {
+				70 = { add_trait = wounded }
+				25 = { add_trait = maimed }
+				5 = { add_trait = incapable }
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Courtier tries to murder owner of diamond
+character_event = {
+	id = RoI.219
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = { character_event = { id = RoI.220 } }
+	}
+}
+
+# Owner subjected to murder attempt
+character_event = {
+	id = RoI.220
+	desc = EVTDESC_RoI_220
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_220
+		random = {
+			chance = 20
+			add_trait = wounded
+		}
+		FROM = {
+			death = {
+				death_reason = death_execution
+				killer = ROOT
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Diamond is lovely in your treasury
+character_event = {
+	id = RoI.221
+	desc = EVTDESC_RoI_221
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_221
+		prestige = 10
+		random_list = {
+			10 = { character_event = { id = RoI.222 days = 60 } }
+			10 = { character_event = { id = RoI.223 days = 60 } }
+			10 = { character_event = { id = RoI.224 days = 60 } }
+		}
+	}
+}
+
+# Spending too much time in the treasury with the Precious... becoming troglodytic and weird
+character_event = {
+	id = RoI.222
+	desc = EVTDESC_RoI_222
+	picture = GFX_evt_lunatic
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_222
+		set_character_flag = loves_diamond
+		if = {
+			limit = { NOT = { trait = shy } }
+			add_trait = shy
+		}
+		if = {
+			limit = { NOT = { trait = greedy } }
+			random = {
+				chance = 30
+				add_trait = greedy
+			}
+		}
+		if = {
+			limit = { NOT = { trait = envious } }
+			random = {
+				chance = 30
+				add_trait = envious
+			}
+		}
+		if = {
+			limit = { NOT = { trait = lunatic } }
+			random = {
+				chance = 10
+				add_trait = lunatic
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Diamond is stolen from your treasury
+character_event = {
+	id = RoI.223
+	desc = EVTDESC_RoI_223
+	picture = GFX_evt_emissary
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_223
+		prestige = -30
+		if = {
+			limit = { NOT = { trait = paranoid } }
+			random = {
+				chance = 30
+				add_trait = paranoid
+			}
+		}
+		if = {
+			limit = { NOT = { trait = stressed } }
+			random = {
+				chance = 10
+				add_trait = stressed
+			}
+		}
+	}
+}
+
+# Worries about diamond
+character_event = {
+	id = RoI.224
+	desc = EVTDESC_RoI_224
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_224
+		if = {
+			limit = {
+				trait = stressed
+				NOT = { trait = paranoid }
+			}
+				add_trait = paranoid
+		}
+		if = {
+			limit = {
+				NOT = { trait = stressed }
+			}
+			random = {
+				chance = 30
+				add_trait = stressed
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Spouse
+character_event = {
+	id = RoI.225
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { has_character_flag = spouse_diamond } # Still same spouse?
+			spouse = {
+				character_event = { id = RoI.226 }
+			}
+		}
+	}
+}
+
+# Spouse is happy about magnificent diamond
+character_event = {
+	id = RoI.226
+	desc = EVTDESC_RoI_226
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_226
+		spouse = {
+			prestige = 30
+		}
+		random_list = {
+			10 = { spouse = { character_event = { id = RoI.227 days = 60 } } }
+			10 = { spouse = { character_event = { id = RoI.229 days = 60 } } }
+			10 = { spouse = { character_event = { id = RoI.231 days = 60 } } }
+		}
+	}
+}
+
+# Spouse
+character_event = {
+	id = RoI.227
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { has_character_flag = spouse_diamond } # Still same spouse?
+			FROM = {
+				character_event = { id = RoI.228 }
+			}
+		}
+	}
+}
+
+# Spouse is robbed of diamond
+character_event = {
+	id = RoI.228
+	desc = EVTDESC_RoI_228
+	picture = GFX_evt_market
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_228
+		prestige = -20
+	}
+}
+
+# Spouse
+character_event = {
+	id = RoI.229
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { has_character_flag = spouse_diamond } # Still same spouse?
+			FROM = {
+				character_event = { id = RoI.230 }
+			}
+		}
+	}
+}
+
+# Diamond drives spouse insane
+character_event = {
+	id = RoI.230
+	desc = EVTDESC_RoI_230
+	picture = GFX_evt_lunatic
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_230
+		spouse = {
+			if = {
+				limit = { NOT = { trait = lunatic } }
+				add_trait = lunatic
+			}
+			if = {
+				limit = { trait = lunatic }
+				add_trait = possessed
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Spouse
+character_event = {
+	id = RoI.231
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { has_character_flag = spouse_diamond } # Still same spouse?
+			FROM = {
+				character_event = { id = RoI.232 }
+			}
+		}
+	}
+}
+
+# Spouse killed by robbers but diamond retained
+character_event = {
+	id = RoI.232
+	desc = EVTDESC_RoI_232
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_232
+		spouse = {
+			death = {
+				death_reason = death_murder
+			}
+		}
+		random = {
+			chance = 20
+			add_trait = depressed
+		}
+		hidden_tooltip = { character_event = { id = RoI.240 } }
+	}
+}
+
+# Diamond may be cursed. What to do with it?
+character_event = {
+	id = RoI.240
+	desc = EVTDESC_RoI_240
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_240
+		trigger = {
+			NOT = { has_character_flag = loves_diamond }
+		}
+		wealth = 100
+		hidden_tooltip = { character_event = { id = RoI.241 days = 30 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_240
+		hidden_tooltip = { character_event = { id = RoI.243 days = 30 } }
+	}
+	option = {
+		name = EVTOPTC_RoI_240
+		hidden_tooltip = { character_event = { id = RoI.245 days = 30 } }
+	}
+	option = {
+		name = EVTOPTD_RoI_240
+		trigger = {
+			has_character_flag = loves_diamond
+		}
+		death = {
+			death_reason = death_suicide
+		}
+	}
+}
+
+# Sold diamond but regrets it
+character_event = {
+	id = RoI.241
+	desc = EVTDESC_RoI_241
+	picture = GFX_evt_large_army
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_241
+		hidden_tooltip = { character_event = { id = RoI.242 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_241
+	}
+}
+
+# Sends riders after buyers
+character_event = {
+	id = RoI.242
+	desc = EVTDESC_RoI_242
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_242
+		add_character_modifier = {
+			name = the_diamond_thief
+			duration = 1800
+		}
+		hidden_tooltip = { character_event = { id = RoI.245 days = 60 } }
+	}
+}
+
+# Threw diamond in river but regrets it
+character_event = {
+	id = RoI.243
+	desc = EVTDESC_RoI_243
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_243
+		hidden_tooltip = { character_event = { id = RoI.244 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_243
+	}
+}
+
+# Searches but cannot find diamond
+character_event = {
+	id = RoI.244
+	desc = EVTDESC_RoI_244
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_244
+		if = {
+			limit = {
+				NOT = { trait = ill }
+			}
+			random = {
+				chance = 30
+				add_trait = ill
+			}
+		}
+		if = {
+			limit = {
+				trait = ill
+			}
+			random = {
+				chance = 30
+				add_trait = pneumonic
+			}
+		}
+	}
+}
+
+# Keeps diamond
+character_event = {
+	id = RoI.245
+	desc = EVTDESC_RoI_245
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_245
+		trigger = {
+			any_spouse = {
+				NOT = { has_character_flag = spouse_diamond }
+				ai = yes
+				at_location = ROOT
+			}
+		}
+		random_spouse = {
+			limit = {
+				ai = yes
+				at_location = ROOT
+			}
+			hidden_tooltip = { character_event = { id = RoI.246 } }
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_245
+		trigger = {
+			any_sibling = {
+				ai = yes
+				at_location = ROOT
+			}
+		}
+		random_sibling = {
+			limit = {
+				ai = yes
+				at_location = ROOT
+			}
+			hidden_tooltip = { character_event = { id = RoI.246 } }
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_245
+		trigger = {
+			any_courtier = {
+				ai = yes
+				is_councillor = yes
+				at_location = ROOT
+			}
+		}
+		random_courtier = {
+			limit = {
+				ai = yes
+				is_councillor = yes
+				at_location = ROOT
+			}
+			hidden_tooltip = { character_event = { id = RoI.246 } }
+		}
+	}
+	option = {
+		name = EVTOPTD_RoI_245
+		trigger = {
+			NOT = {
+				any_courtier = {
+					ai = yes
+					is_councillor = yes
+					at_location = ROOT
+				}
+			}
+			NOT = {
+				any_sibling = {
+					ai = yes
+					at_location = ROOT
+				}
+			}
+			NOT = {
+				any_spouse = {
+					NOT = { has_character_flag = spouse_diamond }
+					ai = yes
+					at_location = ROOT
+				}
+			}
+		}
+		random_courtier = {
+			limit = {
+				ai = yes
+				at_location = ROOT
+			}
+			hidden_tooltip = { character_event = { id = RoI.246 } }
+		}
+	}
+}
+
+# Blamed character
+character_event = {
+	id = RoI.246
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = { character_event = { id = RoI.247 } }
+	}
+}
+
+# Verdict - guilty or innocent?
+character_event = {
+	id = RoI.247
+	desc = EVTDESC_RoI_247
+	picture = GFX_evt_into_the_dungeon
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_247
+		FROM = {
+			opinion = {
+				who = ROOT
+				modifier = insulted
+				years = 5
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_247
+		FROM = {
+			death = {
+				death_reason = death_execution
+				killer = ROOT
+			}
+		}
+	}
+}
+
+###########################################
+# Thugs                                   #
+###########################################
+
+character_event = {
+	id = RoI.20147
+
+	hide_window = yes
+
+	is_triggered_only = yes
+	
+	ai = no
+	only_capable = yes
+	prisoner = no
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = { has_global_flag = thugs_global }
+		NOT = { trait = in_hiding }
+	}
+
+	immediate = {
+		set_global_flag = thugs_global
+		random_demesne_province = {
+			set_province_flag = thugs
+			province_event = { id = RoI.20148 }
+		}
+	}
+}
+
+province_event = {
+	id = RoI.20148
+
+	hide_window = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = { character_event = { id = RoI.147 } }
+	}
+}
+
+# Thug problem appears
+character_event = {
+	id = RoI.147
+	desc = EVTDESC_RoI_147
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_147
+		hidden_tooltip = { character_event = { id = RoI.148 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_147
+		random_demesne_province = {
+			limit = {
+				has_province_flag = thugs
+			}
+			add_province_modifier = {
+				name = thugs_rampant
+				duration = 3650
+			}
+		}
+	}
+}
+
+# Agents disappear
+character_event = {
+	id = RoI.148
+	desc = EVTDESC_RoI_148
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_148
+		hidden_tooltip = { character_event = { id = RoI.155 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_148
+		hidden_tooltip = { character_event = { id = RoI.149 days = 120 } }
+		if = {
+			limit = { NOT = { trait = cruel } }
+			add_trait = cruel
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_148
+		random_demesne_province = {
+			limit = {
+				has_province_flag = thugs
+			}
+			add_province_modifier = {
+				name = thugs_rampant
+				duration = 3650
+			}
+		}
+	}
+}
+
+# Terror in the countryside but the peasants are not to blame
+character_event = {
+	id = RoI.149
+	desc = EVTDESC_RoI_149
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_149
+		hidden_tooltip = { character_event = { id = RoI.150 days = 60 } }
+		scaled_wealth = -0.1
+	}
+	option = {
+		name = EVTOPTB_RoI_149
+		random_demesne_province = {
+			limit = {
+				has_province_flag = thugs
+			}
+			add_province_modifier = {
+				name = thugs_rampant
+				duration = 3650
+			}
+		}
+	}
+}
+
+# Send out armed parties?
+character_event = {
+	id = RoI.150
+	desc = EVTDESC_RoI_150
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_150
+		scaled_wealth = -0.2
+		hidden_tooltip = { character_event = { id = RoI.155 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_150
+		scaled_wealth = -0.1
+		hidden_tooltip = { character_event = { id = RoI.151 days = 60 } }
+	}
+}
+
+# Thug assassin arrives
+character_event = {
+	id = RoI.151
+	desc = EVTDESC_RoI_151
+	picture = GFX_evt_emissary
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_151
+		if = {
+			limit = {
+				any_courtier = {
+					ai = yes
+					at_location = ROOT
+					prisoner = no
+					NOT = { trait = incapable }
+					opinion = { who = ROOT value = 25 }
+					NOT = { trait = craven }
+				}
+			}
+			random_courtier = {
+				limit = {
+					ai = yes
+					at_location = ROOT
+					prisoner = no
+					NOT = { trait = incapable }
+					opinion = { who = ROOT value = 25 }
+					NOT = { trait = craven }
+				}
+				hidden_tooltip = { character_event = { id = RoI.20152 } }
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_courtier = {
+						ai = yes
+						at_location = ROOT
+						prisoner = no
+						NOT = { trait = incapable }
+						opinion = { who = ROOT value = 25 }
+						NOT = { trait = craven }
+					}
+				}
+			}
+			random_courtier = {
+				limit = {
+					ai = yes
+					at_location = ROOT
+					prisoner = no
+					NOT = { trait = incapable }
+				}
+				hidden_tooltip = { character_event = { id = RoI.20152 } }
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_courtier = {
+						ai = yes
+						at_location = ROOT
+						prisoner = no
+						NOT = { trait = incapable }
+					}
+				}
+			}
+			random_courtier = {
+				limit = {
+					ai = yes
+					at_location = ROOT
+					NOT = { trait = incapable }
+				}
+				hidden_tooltip = { character_event = { id = RoI.20152 } }
+			}
+		}
+	}
+}
+
+# Courtier that will save us from thug assassin
+character_event = {
+	id = RoI.20152
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = { narrative_event = { id = RoI.152 } }
+	}
+}
+
+# Thug assassin strikes
+narrative_event = {
+	id = RoI.152
+	title = EVTNAME_RoI_152
+	desc = EVTDESC_RoI_152
+	picture = GFX_evt_emissary
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_152
+		FROM = {
+			death = {
+				death_reason = death_murder
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.153 } }
+	}
+}
+
+# Hold council after assassination attempt - what to do?
+character_event = {
+	id = RoI.153
+	desc = EVTDESC_RoI_153
+	picture = GFX_evt_council
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_153
+		hidden_tooltip = { character_event = { id = RoI.155 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_153
+		prestige = -100
+		if = {
+			limit = { NOT = { trait = craven } }
+			add_trait = craven
+		}
+		random_demesne_province = {
+			limit = {
+				has_province_flag = thugs
+			}
+			add_province_modifier = {
+				name = thugs_rampant
+				duration = 3650
+			}
+		}
+	}
+}
+
+# Riders haven't found thugs - what to do?
+character_event = {
+	id = RoI.155
+	desc = EVTDESC_RoI_155
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_155
+		scaled_wealth = -0.4
+		hidden_tooltip = {
+			random_demesne_province = {
+				limit = {
+					has_province_flag = thugs
+				}
+				province_event = { id = RoI.20156 }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_155
+		random_demesne_province = {
+			limit = {
+				has_province_flag = thugs
+			}
+			add_province_modifier = {
+				name = thugs_rampant
+				duration = 3650
+			}
+		}
+	}
+}
+
+province_event = {
+	id = RoI.20156
+
+	hide_window = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			character_event = { id = RoI.156 }
+		}
+	}
+}
+
+# Thugs have left, not our problem anymore
+character_event = {
+	id = RoI.156
+	desc = EVTDESC_RoI_156
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_156
+	}
+}
+
+###########################################
+# Elephants                               #
+###########################################
+
+# Peasants need elephants for clearing forest
+character_event = {
+	id = RoI.157
+	desc = EVTDESC_RoI_157
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	ai = no
+	only_capable = yes
+	prisoner = no
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_157
+		scaled_wealth = -0.2
+		prestige = 50
+	}
+	option = {
+		name = EVTOPTB_RoI_157
+		scaled_wealth = -0.1
+		prestige = 25
+	}
+	option = {
+		name = EVTOPTC_RoI_157
+		random_demesne_province = {
+			add_province_modifier = {
+				name = neglected_development
+				duration = 1085
+			}
+		}
+	}
+}
+
+# Crazed elephant runs amuck
+character_event = {
+	id = RoI.158
+	desc = EVTDESC_RoI_158
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	ai = no
+	only_capable = yes
+	prisoner = no
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = { has_character_flag = crazed_elephant }
+	}
+	
+	immediate = {
+		set_character_flag = crazed_elephant
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_158
+		hidden_tooltip = {
+			random_list = {
+				50 = { character_event = { id = RoI.159 } }
+				50 = { character_event = { id = RoI.160 } }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_158
+		hidden_tooltip = {
+			random_list = {
+				50 = { character_event = { id = RoI.161 } }
+				50 = { character_event = { id = RoI.162 } }
+			}
+		}
+	}
+}
+
+# Crazed elephant is killed by soldiers in a messy way
+character_event = {
+	id = RoI.159
+	desc = EVTDESC_RoI_159
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_159
+		capital_scope = {
+			add_province_modifier = {
+				name = peasants_upset
+				duration = 1460
+			}
+		}
+	}
+}
+
+# Crazed elephant is killed by soldiers in a discrete way
+character_event = {
+	id = RoI.160
+	desc = EVTDESC_RoI_160
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_160
+		capital_scope = {
+			add_province_modifier = {
+				name = peasants_protected
+				duration = 1460
+			}
+		}
+	}
+}
+
+# Crazed elephant kills people, then escapes
+character_event = {
+	id = RoI.161
+	desc = EVTDESC_RoI_161
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_161
+		scaled_wealth = -0.1
+		prestige = -20
+		capital_scope = {
+			add_province_modifier = {
+				name = peasants_upset
+				duration = 1460
+			}
+		}
+	}
+}
+
+# Crazed elephant is captured
+character_event = {
+	id = RoI.162
+	desc = EVTDESC_RoI_162
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_162
+		capital_scope = {
+			add_province_modifier = {
+				name = peasants_protected
+				duration = 1460
+			}
+		}
+	}
+}
+
+
+###########################################
+# The White Elephant                      #
+###########################################
+
+# Determine who gives player the white elephant
+character_event = {
+	id = RoI.20164
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	ai = no
+	only_capable = yes
+	prisoner = no
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		NOT = { has_global_flag = white_elephant }
+		NOT = {	primary_title = { tier = COUNT } }
+		NOT = { trait = airbender }
+		OR = {
+			AND = {
+				independent = no
+				liege = { ai = yes }
+			}
+			AND = {
+				independent = yes
+				any_independent_ruler = {
+					ai = yes
+					NOT = { trait = airbender }
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		set_global_flag = white_elephant
+		if = {
+			limit = {
+				independent = no
+				liege = { ai = yes }
+			}
+			liege = {
+				character_event = { id = RoI.20165 }
+			}
+		}
+		if = {
+			limit = {
+				independent = yes
+			}
+			random_independent_ruler = {
+				limit = {
+					ai = yes
+					NOT = { trait = airbender }
+				}
+				character_event = { id = RoI.20165 }
+			}
+		}
+	}
+}
+
+# Giver of white elephant
+character_event = {
+	id = RoI.20165
+
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		set_character_flag = gave_white_elephant
+		FROM = { character_event = { id = RoI.164 } }
+	}
+}
+
+# White elephant is offered as a gift
+character_event = {
+	id = RoI.164
+	desc = EVTDESC_RoI_164
+	picture = GFX_evt_emissary
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_164
+		add_friend = FROM
+		hidden_tooltip = { character_event = { id = RoI.165 days = 5 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_164
+		add_rival = FROM
+		FROM = {
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+}
+
+# White elephant needs a suitable stable
+character_event = {
+	id = RoI.165
+	desc = EVTDESC_RoI_165
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_165
+		scaled_wealth = -0.4
+		set_character_flag = white_elephant_nice_stable
+		hidden_tooltip = { character_event = { id = RoI.166 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_165
+		scaled_wealth = -0.05
+		add_rival = FROMFROM
+		FROMFROM = {
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+		hidden_tooltip = { character_event = { id = RoI.166 days = 60 } }
+	}
+}
+
+# Weird local Ganesha cult steals white elephant's droppings
+character_event = {
+	id = RoI.166
+	desc = EVTDESC_RoI_166
+	picture = GFX_evt_hindu_temple_interior
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_166
+		scaled_wealth = -0.4
+		if = {
+			limit = { NOT = { trait = cruel } }
+			add_trait = cruel
+		}
+		hidden_tooltip = { character_event = { id = RoI.167 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_166
+		if = {
+			limit = { NOT = { trait = charitable } }
+			add_trait = charitable
+		}
+		hidden_tooltip = { character_event = { id = RoI.167 days = 60 } }
+	}
+	option = {
+		name = EVTOPTC_RoI_166
+		random = {
+			chance = 30
+			change_stewardship = 1
+		}
+		hidden_tooltip = { character_event = { id = RoI.167 days = 60 } }
+	}
+}
+
+# Elephant is bored and trashes stable
+character_event = {
+	id = RoI.167
+	desc = EVTDESC_RoI_167
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_167
+		if = {
+			limit = { has_character_flag = white_elephant_nice_stable }
+			scaled_wealth = -0.3
+		}
+		if = {
+			limit = { NOT = { has_character_flag = white_elephant_nice_stable } }
+			scaled_wealth = -0.03
+		}
+		hidden_tooltip = { character_event = { id = RoI.168 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_167
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_167
+		scaled_wealth = 0.2
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_RoI_167
+		hidden_tooltip = { character_event = { id = RoI.169 } }
+	}
+}
+
+# Elephant escapes and tries to mate with other elephants
+character_event = {
+	id = RoI.168
+	desc = EVTDESC_RoI_168
+	picture = GFX_evt_india_rural_scene
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_168
+		scaled_wealth = -0.05
+		hidden_tooltip = { character_event = { id = RoI.177 days = 60 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_168
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_168
+		wealth = 30
+		if = {
+			limit = { NOT = { trait = airbender } }
+			piety = -100
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_RoI_168
+		hidden_tooltip = { character_event = { id = RoI.169 } }
+	}
+}
+
+# Killing the white elephant
+character_event = {
+	id = RoI.169
+	desc = EVTDESC_RoI_169
+	picture = GFX_evt_throne_room
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_169
+		hidden_tooltip = {
+			random_list = {
+				50 = { character_event = { id = RoI.170 } }
+				50 = { character_event = { id = RoI.171 } }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB_RoI_169
+		hidden_tooltip = {
+			random_list = {
+				50 = { character_event = { id = RoI.172 days = 10 } }
+				50 = { character_event = { id = RoI.173 days = 10 } }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC_RoI_169
+		hidden_tooltip = {
+			random_list = {
+				50 = { character_event = { id = RoI.174 days = 3 } }
+				50 = { character_event = { id = RoI.175 days = 3 } }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTD_RoI_169
+		hidden_tooltip = { character_event = { id = RoI.176 } }
+	}
+}
+
+# Poisons elephant and gets away with it
+character_event = {
+	id = RoI.170
+	desc = EVTDESC_RoI_170
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_170
+		random = {
+			chance = 20
+			change_intrigue = 1
+		}
+	}
+}
+
+# Poisons elephant but is found out
+character_event = {
+	id = RoI.171
+	desc = EVTDESC_RoI_171
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_171
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+# Starves elephant to death and gets away with it
+character_event = {
+	id = RoI.172
+	desc = EVTDESC_RoI_172
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_172
+		change_intrigue = 1
+	}
+}
+
+# Starves elephant to death but is found out
+character_event = {
+	id = RoI.173
+	desc = EVTDESC_RoI_173
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_173
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+# Pushes elephant over cliff and gets away with it
+character_event = {
+	id = RoI.174
+	desc = EVTDESC_RoI_174
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_174
+		change_intrigue = 1
+	}
+}
+
+# Pushes elephant over cliff but is found out
+character_event = {
+	id = RoI.175
+	desc = EVTDESC_RoI_175
+	picture = GFX_evt_bad_news
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_175
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+# Elephant is killed with lances and dies, no attempt at subterfuge
+character_event = {
+	id = RoI.176
+	desc = EVTDESC_RoI_176
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_176
+		any_playable_ruler  = {
+			limit = { has_character_flag = gave_white_elephant }
+			add_rival = ROOT
+			opinion = {
+				modifier = grievously_offended
+				who = ROOT
+				years = 10
+			}
+		}
+		custom_tooltip = { text = sacrilege_tooltip }
+		hidden_tooltip = {
+			any_realm_character  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+			any_playable_ruler  = {
+				limit = { NOT = { trait = airbender } }
+				opinion = {
+					who = ROOT
+					years = 3
+					modifier = opinion_sacrilege
+				}
+			}
+		}
+	}
+}
+
+# Elephant is alive and has calmed down now. Happy ending.
+character_event = {
+	id = RoI.177
+	desc = EVTDESC_RoI_177
+	picture = GFX_evt_india_temple
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_RoI_177
+		prestige = 10
+	}
+}
+
+###########################################
+# Minor events                            #
+###########################################
+
+
+# Visit Nalanda University?
+character_event = {
+	id = RoI.401
+	desc = EVTDESC_RoI_401
+	picture = GFX_evt_ba_sing_sa_1
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	
+	ai = no
+	prisoner = no
+	only_capable = yes
+	min_age = 16
+	
+	trigger = {
+		has_dlc = "Rajas of India"
+		prestige = 100
+		in_command = no
+		OR = {
+			NOT = { trait = airbender }
+			trait = inventor
+		}
+		NOT = { has_character_flag = do_not_disturb }
+		NOT = { trait = in_hiding }
+	}
+	
+	option = {
+		name = EVTOPTA_RoI_401
+		scaled_wealth = -0.05
+		set_character_flag = do_not_disturb
+		hidden_tooltip = { narrative_event = { id = RoI.402 days = 20 } }
+	}
+	option = {
+		name = EVTOPTB_RoI_401
+		piety = -5
+	}
+}
+
+# Visiting Nalanda University
+narrative_event = {
+	id = RoI.402
+	title = EVTNAME_RoI_402
+	desc = EVTDESC_RoI_402
+	picture = GFX_evt_ba_sing_sa_1
+	border = GFX_event_narrative_frame_religion
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_RoI_402
+		random = {
+			chance = 50
+			change_stewardship = 1
+		}
+		clr_character_flag = do_not_disturb
+	}
+	option = {
+		name = EVTOPTB_RoI_402
+		if = {
+			limit = {
+				NOT = { lifestyle_traits = 1 }
+				NOT = { has_dlc = "Way of Life" }
+			}
+			random = {
+				chance = 50
+				add_trait = scholar
+			}
+		}
+		random = {
+			chance = 30
+			change_learning = 1
+		}
+		clr_character_flag = do_not_disturb
+	}
+	option = {
+		name = EVTOPTC_RoI_402
+		trigger = {
+			NOT = { trait = cynical }
+		}
+		piety = 30
+		if = {
+			limit = { NOT = { trait = zealous } }
+			random = {
+				chance = 50
+				add_trait = zealous
+			}
+		}
+	}
+}
+

@@ -1,0 +1,518 @@
+#########################################
+#										#
+# RIP Factory Events					#
+# ID RIP.4500-RIP.4699					#
+#										#
+#########################################
+#
+# Written by Emil Tisander
+
+namespace = RIP
+
+# Genius Engineer found 
+character_event = {
+	id = RIP.4501
+	desc = EVTDESC_ATLA_RIP_4501
+	picture = GFX_evt_fire_factory
+	border = GFX_event_normal_frame_religion
+	
+	min_age = 16
+	capable_only = yes
+	only_playable = yes
+	prisoner = no
+	has_dlc = "Reapers"
+
+	is_triggered_only = yes
+
+	trigger = {
+		higher_tier_than = BARON
+		any_demesne_province = {
+			AND = {
+				OR = {
+					hospital_level = 1
+					hospital_level = 2
+					hospital_level = 3
+					hospital_level = 4
+					hospital_level = 5
+					hospital_level = 6
+				}
+				religion = ROOT
+			}
+		}
+		OR = {
+			NOT = {
+				any_courtier_or_vassal = {
+					has_minor_title = title_commander
+				}
+			}
+			any_courtier_or_vassal = {
+				has_minor_title = title_commander
+				NOT = { martial = 9 }
+			}
+		}
+	}
+	
+	immediate = {
+		any_courtier_or_vassal = {
+			limit = {
+				has_minor_title = title_commander
+				NOT = { martial = 9 }
+			}
+			save_event_target_as = previous_physician
+		}
+		any_demesne_province = {
+			limit = {
+				AND = {
+					OR = {
+						hospital_level = 1
+						hospital_level = 2
+						hospital_level = 3
+						hospital_level = 4
+						hospital_level = 5
+						hospital_level = 6
+					}
+					religion = ROOT
+				}
+			}
+			save_event_target_as = pilgrim_physician_hospital
+		}
+		create_character = {
+			religion = ROOT
+			culture = ROOT
+			dynasty = none
+			age = 29
+			random_traits = yes
+			female = no
+			attributes = {
+				martial = 7
+			}
+			health = 6
+			trait = tough_soldier
+			trait = siege_leader
+			trait = shrewd
+			trait = patient
+		}
+		new_character = {
+			remove_trait = scholar
+			remove_trait = administrator
+			remove_trait = architect
+			remove_trait = gardener
+			remove_trait = schemer
+			remove_trait = impaler
+			remove_trait = seducer
+			remove_trait = seductress
+			remove_trait = mystic
+			save_event_target_as = pilgrim_physician
+		}
+	}
+	
+	option = { # Appoint the Engineer as a commander
+		name = EVTOPTA_ATLA_RIP_4501
+		event_target:previous_physician = {
+			remove_title = title_commander
+		}
+		event_target:pilgrim_physician = {
+			give_minor_title = title_commander
+		}
+	}
+	option = { # Ignore him
+		name = EVTOPTB_ATLA_RIP_4501
+		hidden_tooltip = {
+			event_target:pilgrim_physician = {
+				death = {
+					death_reason = death_missing
+				}
+			}
+		}
+	}
+}
+
+# Pollution - Villagers Protest
+character_event = {
+	id = RIP.4504
+	desc = EVTDESC_ATLA_RIP_4504
+	picture = GFX_evt_fire_factory
+	
+	min_age = 16
+	capable_only = yes
+	only_playable = yes
+	prisoner = no
+	has_dlc = "Reapers"
+	war = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_character_flag = dealt_with_pollution }
+		any_demesne_province = {
+			OR = {
+				hospital_level = 1
+				hospital_level = 2
+				hospital_level = 3
+				hospital_level = 4
+				hospital_level = 5
+				hospital_level = 6
+			}
+		}
+	}
+	
+	immediate = {
+		set_character_flag = dealt_with_pollution
+		any_demesne_province = {
+			limit = {
+				OR = {
+					hospital_level = 1
+					hospital_level = 2
+					hospital_level = 3
+					hospital_level = 4
+					hospital_level = 5
+					hospital_level = 6
+				}
+			}
+			save_event_target_as = hospital_location
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_ATLA_RIP_4504
+		event_target:hospital_location = {
+			add_province_modifier = { name = peasant_unrest duration = 1200 }
+		}
+		hidden_tooltip = {
+			character_event = { id = RIP.4505 days = 30 random = 60 }
+		}
+		piety = -100
+		prestige = -100
+	}
+	
+	option = {
+		name = EVTOPTA_ATLA_RIP_4504
+		scaled_wealth = -0.5
+		piety = 200
+	}
+}
+
+# Pollution - Response
+character_event = {
+	id = RIP.4505
+	desc = EVTDESC_ATLA_RIP_4505
+	picture = GFX_evt_fire_factory
+	
+	min_age = 16
+	capable_only = yes
+	only_playable = yes
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		any_demesne_province = {
+			OR = {
+				hospital_level = 1
+				hospital_level = 2
+				hospital_level = 3
+				hospital_level = 4
+				hospital_level = 5
+				hospital_level = 6
+			}
+		}
+	}
+	
+	immediate = {
+		any_demesne_province = {
+			limit = {
+				OR = {
+					hospital_level = 1
+					hospital_level = 2
+					hospital_level = 3
+					hospital_level = 4
+					hospital_level = 5
+					hospital_level = 6
+				}
+			}
+			save_event_target_as = hospital_location
+		}
+	}
+	
+	option = { # Give into demands
+		name = EVTOPTA_ATLA_RIP_4505
+		scaled_wealth = -0.6
+		prestige = -250
+		ai_chance = { factor = 100 }
+	}
+	
+	option = { # Punish Them
+		name = EVTOPTB_ATLA_RIP_4505
+		scaled_wealth = -0.3
+		piety = -250
+		event_target:hospital_location = {
+			add_province_modifier = { name = damaged_factory duration = 1200 }
+		}
+	}
+}
+
+# Worker injured in Factory
+character_event = {
+	id = RIP.4512
+	desc = EVTDESC_ATLA_RIP_4512
+	picture = GFX_evt_bloody_tools
+	border = GFX_event_normal_frame_religion
+	
+	min_age = 16
+	capable_only = yes
+	only_playable = yes
+	prisoner = no
+	has_dlc = "Reapers"
+	war = no
+
+	is_triggered_only = yes
+	
+	trigger = {
+		higher_tier_than = BARON
+		any_demesne_province = {
+			AND = {
+				OR = {
+					hospital_level = 1
+					hospital_level = 2
+					hospital_level = 3
+					hospital_level = 4
+					hospital_level = 5
+					hospital_level = 6
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		any_demesne_province = {
+			limit = {
+				AND = {
+					OR = {
+						hospital_level = 1
+						hospital_level = 2
+						hospital_level = 3
+						hospital_level = 4
+						hospital_level = 5
+						hospital_level = 6
+					}
+				}
+			}
+			save_event_target_as = hospital_location
+		}
+	}
+	
+	option = { # Accept demand
+		name = EVTOPTA_ATLA_RIP_4512
+		scaled_wealth = { value = -0.2 min = -50 }
+		piety = 20
+	}
+	option = { # Refuse demand
+		name = EVTOPTB_ATLA_RIP_4512
+		piety = -100
+		event_target:hospital_location = {
+			add_province_modifier = { name = peasant_unrest duration = 1200 }
+		}
+	}
+}
+
+# Food Stockpile distribution
+character_event = {
+	id = RIP.4514
+	desc = EVTDESC_ATLA_RIP_4514
+	picture = GFX_evt_fire_factory
+	border = GFX_event_normal_frame_religion
+	
+	min_age = 16
+	capable_only = yes
+	only_playable = yes
+	prisoner = no
+	has_dlc = "Reapers"
+	war = no
+
+	is_triggered_only = yes
+
+	trigger = {
+		higher_tier_than = BARON
+		any_demesne_province = {
+			OR = {
+				hospital_level = 1
+				hospital_level = 2
+				hospital_level = 3
+				hospital_level = 4
+				hospital_level = 5
+				hospital_level = 6
+			}
+			OR = {
+				hospital_has_building = agricultural_plant_1
+				hospital_has_building = agricultural_plant_2
+				hospital_has_building = agricultural_plant_3
+			}
+		}
+	}
+	
+	immediate = {
+		any_demesne_province = {
+			limit = {
+				OR = {
+					hospital_level = 1
+					hospital_level = 2
+					hospital_level = 3
+					hospital_level = 4
+					hospital_level = 5
+					hospital_level = 6
+				}
+				OR = {
+					hospital_has_building = agricultural_plant_1
+					hospital_has_building = agricultural_plant_2
+					hospital_has_building = agricultural_plant_3
+				}
+			}
+			save_event_target_as = hospital_location
+		}
+	}
+	
+	option = { # Release Store
+		name = EVTOPTA_ATLA_RIP_4514
+		piety = 300
+		custom_tooltip = {
+			text = increase_prosperity_custom_tooltip
+			hidden_tooltip = {
+				event_target:hospital_location = {
+					change_variable = { which = prosperity_value value = 3 }
+				}
+			}
+		}
+		random = {
+			chance = 25
+			add_trait = kind
+			hidden_tooltip = {
+				character_event = { id = 38268 }
+			}
+		}
+	}
+	
+	option = { # Release Store for a price
+		name = EVTOPTB_ATLA_RIP_4514
+		scaled_wealth = { value = 0.1 min = 60 }
+		random = {
+			chance = 25
+			add_trait = greedy
+			hidden_tooltip = {
+				character_event = { id = 38252 }
+			}
+		}
+	}
+}
+
+# Chemical Plant damaged in explosion
+character_event = {
+	id = RIP.4520
+	desc = EVTDESC_ATLA_RIP_4520
+	picture = GFX_evt_fire_factory
+	border = GFX_event_normal_frame_religion
+	
+	only_playable = yes
+	has_dlc = "Reapers"
+	war = no
+
+	is_triggered_only = yes
+
+	trigger = {
+		higher_tier_than = BARON
+		any_demesne_province = {
+			owner = { character = ROOT }
+			NOT = { has_province_modifier = damaged_hospital }
+			OR = {
+				hospital_level = 1
+				hospital_level = 2
+				hospital_level = 3
+				hospital_level = 4
+				hospital_level = 5
+				hospital_level = 6
+			}
+			hospital_has_building = chemical_plant_1
+		}
+	}
+	
+	immediate = {
+		any_demesne_province = {
+			limit = {
+				AND = {
+					owner = { character = ROOT }
+					NOT = { has_province_modifier = damaged_hospital }
+					OR = {
+						hospital_level = 1
+						hospital_level = 2
+						hospital_level = 3
+						hospital_level = 4
+						hospital_level = 5
+						hospital_level = 6
+					}
+					hospital_has_building = chemical_plant_1
+				}
+			}
+			save_event_target_as = hospital_location
+		}
+	}
+	
+	option = { # Pay for the repairs
+		name = EVTOPTA_ATLA_RIP_4520
+		scaled_wealth = -0.20
+		if = {
+			limit = {
+				NOT = { trait = cruel }
+				NOT = { trait = envious }
+				NOT = { trait = kind }
+			}
+			random = {
+				chance = 25
+				add_trait = kind
+				hidden_tooltip = {
+					character_event = { id = 38268 }
+				}
+			}
+		}
+		
+		ai_chance = {
+			factor = 30
+			
+			modifier = {
+				factor = 2
+				trait = kind
+			}
+			modifier = {
+				factor = 2
+				trait = humble
+			}
+			modifier = {
+				factor = 0
+				NOT = { scaled_wealth = 0.20 }
+			}
+		}
+	}
+	option = { # Pay minimum costs
+		name = EVTOPTC_ATLA_RIP_4520
+		scaled_wealth = -0.10
+		piety = -20
+		if = {
+			limit = {
+				NOT = { trait = greedy }
+			}
+			random = {
+				chance = 25
+				add_trait = greedy
+				hidden_tooltip = {
+					character_event = { id = 38252 }
+				}
+			}
+		}
+		ai_chance = {
+			factor = 20
+			
+			modifier = {
+				factor = 4
+				trait = greedy
+			}
+		}
+	}
+}

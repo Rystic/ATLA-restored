@@ -1,0 +1,727 @@
+namespace = firelord
+
+character_event = {
+	id = firelord.1
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		primary_title = {
+			title = e_fire_nation
+		}
+		NOT = { trait = firelord }
+		independent = yes
+	}
+	option = {
+		name = EVTOPTfirelord.1
+		if = {
+			limit = {
+				NOT = { check_variable = { which = zeal value = -100 } }
+			}
+			set_variable = { which = zeal value = 50 }
+		}
+		add_trait = firelord
+		set_variable = { which = zeal value = 5 }
+		character_event = { id = ATLAE.653 }
+	}
+}
+
+character_event = {
+	id = firelord.2
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		NOT = {
+			OR = {
+				primary_title = {
+					title = e_fire_nation
+				}
+				independent = yes
+			}
+		}
+		trait = firelord
+	}
+	option = {
+		name = EVTOPTAfirelord.2
+		remove_trait = firelord
+	}
+}
+
+# On-action event: Royal Marriage
+character_event = {
+	id = firelord.3
+	desc = EVTDESCFRM.0
+	desc = {
+		trigger = {
+			new_character = {
+				trait = firebender
+			}
+		}
+		text = EVTDESCFRM.0
+	}
+	desc = {
+		trigger = {
+			new_character = {
+				NOT = { trait = firebender }
+				NOT = { trait = earthbender }
+				NOT = { trait = waterbender }
+				NOT = { trait = airbender }
+			}
+		}
+		text = EVTDESCFRM.1
+	}
+	desc = {
+		trigger = {
+			new_character = {
+				OR = {
+					trait = earthbender
+					trait = waterbender
+					trait = airbender
+				}
+			}
+		}
+		text = EVTDESCFRM.2
+	}
+	picture = GFX_evt_fire_wedding
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		OR = {
+			NOT = { new_character = { is_close_relative = FROM } }
+		}
+		OR = {
+			FROM = { character = ROOT }
+			AND = {
+				FROM = {
+					dynasty = ROOT
+					is_primary_heir = ROOT
+				}
+				new_character = {
+					NOT = { character = ROOT }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTAi.6
+		prestige = 200
+		scaled_wealth = {
+			value = -0.1
+			min = 10
+		}
+		hidden_tooltip = {
+			if = {
+				limit = {
+					new_character = {
+						NOT = { trait = firebender }
+						NOT = { trait = earthbender }
+						NOT = { trait = waterbender }
+						NOT = { trait = airbender }
+					}
+				}
+				any_vassal = {
+						opinion = { modifier = opinion_disappointed who = ROOT years = 5 }
+				}
+			}
+			if = {
+				limit = {
+					new_character = {
+						trait = earthbender
+						trait = waterbender
+						trait = airbender
+					}
+				}
+				any_vassal = {
+					opinion = { modifier = opinion_shocked who = ROOT years = 5 }
+				}
+			}
+		}
+	}
+	option = {
+		name = EVTOPTAi.7
+		prestige = -100
+		hidden_tooltip = {
+			if = {
+				limit = {
+					new_character = {
+						NOT = { trait = firebender }
+						NOT = { trait = earthbender }
+						NOT = { trait = waterbender }
+						NOT = { trait = airbender }
+					}
+				}
+				any_vassal = {
+						opinion = { modifier = opinion_disappointed who = ROOT years = 5 }
+				}
+			}
+			if = {
+				limit = {
+					new_character = {
+						trait = earthbender
+						trait = waterbender
+						trait = airbender
+					}
+				}
+				any_vassal = {
+					opinion = { modifier = opinion_shocked who = ROOT years = 5 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - START
+	id = firelord.4
+	desc = firelordDESC.4
+	picture = GFX_evt_night_firenation
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.4
+		hidden_tooltip = {
+			character_event = { id = firelord.5 days = 240 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Nightmare
+	id = firelord.5
+	desc = firelordDESC.5
+	picture = GFX_evt_night_firenation
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.5
+		hidden_tooltip = {
+			character_event = { id = firelord.6 days = 240 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Nightmare
+	id = firelord.6
+	desc = firelordDESC.6
+	picture = GFX_evt_night_firenation
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelordA.6
+		hidden_tooltip = {
+			character_event = { id = firelord.7 days = 120 }
+		}
+	}
+	option = {
+		name = EVTOPTfirelordB.6
+		hidden_tooltip = {
+			character_event = { id = firelord.14 days = 2 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Seek no help
+	id = firelord.7
+	desc = firelordDESC.7
+	picture = GFX_evt_night_firepalace
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.7
+		add_trait = lunatic
+		hidden_tooltip = {
+			any_vassal = {
+				opinion = { modifier = opinion_afraid who = ROOT years = 50 }
+				character_event = { id = firelord.12 days = 7 }
+			}
+			character_event = { id = firelord.8 days = 180 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - The Mad
+	id = firelord.8
+	desc = firelordDESC.8
+	picture = GFX_evt_night_firepalace
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelordA.8
+		hidden_tooltip = {
+			character_event = { id = firelord.9 days = 120 }
+		}
+	}
+	option = {
+		name = EVTOPTfirelordB.8
+		hidden_tooltip = {
+			character_event = { id = firelord.9 days = 120 }
+			any_courtier = {
+				limit = {
+					NOT = { family = ROOT }
+					NOT = { is_landed = yes }
+				}
+				banish = yes
+			}
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Night Attack
+	id = firelord.9
+	desc = firelordDESC.9
+	picture = GFX_evt_kemurikage_3
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.9
+		any_child = {
+			limit = {
+				location = ROOT
+			}
+			death = { death_reason = death_murder_unknown }
+		}
+		hidden_tooltip = {
+			character_event = { id = firelord.10 days = 90 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - People Flee The Capitol
+	id = firelord.10
+	desc = firelordDESC.10
+	picture = GFX_evt_night_fire_nation
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelordA.10
+		capital_scope = {
+			add_province_modifier = { name = missing_reinforcements duration = 900 }
+		}
+		hidden_tooltip = {
+			character_event = { id = firelord.11 days = 90 }
+		}
+	}
+	option = {
+		name = EVTOPTfirelordB.10
+		capital_scope = {
+			add_province_modifier = { name = incompetent_rule duration = 900 }
+		}
+		hidden_tooltip = {
+			any_vassal = {
+				opinion = { modifier = opinion_horrified who = ROOT years = 50 }
+				character_event = { id = firelord.13 days = 60 }
+			}
+			character_event = { id = firelord.11 days = 90 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Hong Reclaimer
+	id = firelord.11
+	desc = firelordDESC.11
+	picture = GFX_evt_fire_palace_dark
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.11
+		set_global_flag = hong_reclaimer
+		hidden_tooltip = {
+			create_character = {
+				random_traits = no
+				dynasty = 7
+				religion = fire_spirituality
+				culture = fire_nation
+				age = 19
+				trait = firebender
+				trait = master_bender
+				trait = innerflame
+				trait = quick
+				trait = patient
+				trait = brave
+			}
+			new_character = {
+				add_claim = e_fire_nation
+				create_title = {
+					tier = DUKE
+					landless = yes
+					temporary = yes
+					rebel = yes
+					culture = ROOT
+					name = "HONG_REBELLION"
+					holder = THIS
+				}
+				wealth = 500
+				ROOT = {
+					87 = {
+						new_character = {
+							spawn_unit = {
+								province = PREV
+								home = PREV
+								owner = new_character
+								troops = {
+									archers = { 800 800 }
+									light_cavalry = { 800 800 }
+									light_infantry = { 1800 1800 }
+									fire_benders = { 1400 1400 }
+								}
+								attrition = 1.0
+								maintenance_multiplier = 0.5
+							}
+							create_character = {
+								random_traits = yes
+								dynasty = none
+								religion = new_character
+								culture = new_character
+								employer = new_character
+								female = no
+								age = 19
+								trait = peasant_leader
+								trait = tough_soldier
+							}
+						}
+					}
+					80 = {
+						new_character = {
+							spawn_unit = {
+								province = PREV
+								home = PREV
+								owner = new_character
+								troops = {
+									archers = { 800 800 }
+									light_cavalry = { 800 800 }
+									light_infantry = { 2400 2400 }
+									fire_benders = { 1600 1600 }
+								}
+								attrition = 1.0
+								maintenance_multiplier = 0.5
+							}
+							create_character = {
+								random_traits = yes
+								dynasty = none
+								religion = new_character
+								culture = new_character
+								employer = new_character
+								female = no
+								age = 19
+								trait = peasant_leader
+								trait = tough_soldier
+							}
+						}
+					}
+					82 = {
+						new_character = {
+							spawn_unit = {
+								province = PREV
+								home = PREV
+								owner = new_character
+								troops = {
+									archers = { 900 900 }
+									light_cavalry = { 800 800 }
+									light_infantry = { 2440 2440 }
+									fire_benders = { 1600 1600 }
+								}
+								attrition = 1.0
+								maintenance_multiplier = 0.5
+							}
+							create_character = {
+								random_traits = yes
+								dynasty = none
+								religion = new_character
+								culture = new_character
+								employer = new_character
+								female = no
+								age = 19
+								trait = peasant_leader
+								trait = tough_soldier
+							}
+						}
+					}
+				}
+				war = {
+					target = ROOT
+					casus_belli = claim_on_liege
+					thirdparty_title = e_fire_nation 
+				}
+				opinion = {
+					who = ROOT
+					modifier = opinion_evil_tyrant
+				}
+				ROOT = {
+					any_vassal = {
+						if = {
+							limit = {
+								has_character_flag = for_prince_hong
+							}
+							capital_scope = {
+								spawn_unit = {
+									province = PREV
+									home = PREV
+									owner = new_character
+									troops = {
+										archers = { 200 200 }
+										light_cavalry = { 100 100 }
+										light_infantry = { 400 400 }
+										fire_benders = { 300 300 }
+									}
+									attrition = 1.0
+									maintenance_multiplier = 0.5
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Vassals - Mad Firelord
+	id = firelord.12
+	desc = firelordDESC.12
+	picture = GFX_evt_fire_palace_dark
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTfirelord.12
+	}
+}
+
+character_event = { # Smoke and Shadow - Vassals - Hong Reclaimer
+	id = firelord.13
+	desc = firelordDESC.13
+	picture = GFX_evt_fire_palace_dark
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTfirelordA.13
+	}
+	option = {
+		name = EVTOPTfirelordB.13
+		set_character_flag = for_prince_hong
+	}
+}
+
+character_event = { # Smoke and Shadow - The Fire Sages
+	id = firelord.14
+	desc = firelordDESC.14
+	picture = GFX_evt_night_fire_nation
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.14
+		hidden_tooltip = {
+			character_event = { id = firelord.15 days = 90 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Elder Sage replies
+	id = firelord.15
+	desc = firelordDESC.15
+	picture = GFX_evt_fire_temple
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelordA.15
+		hidden_tooltip = {
+			character_event = { id = firelord.7 days = 90 }
+		}
+	}
+	option = {
+		name = EVTOPTfirelordB.15
+		hidden_tooltip = {
+			character_event = { id = firelord.16 days = 1 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Source Revealed
+	id = firelord.16
+	desc = firelordDESC.16
+	picture = GFX_evt_kemurikage_1
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.16
+		hidden_tooltip = {
+			character_event = { id = firelord.17 days = 1 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Source Revealed
+	id = firelord.17
+	desc = firelordDESC.17
+	picture = GFX_evt_kemurikage_2
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelordA.17
+		hidden_tooltip = {
+			character_event = { id = firelord.18 days = 1 }
+		}
+	}
+	option = {
+		name = EVTOPTfirelordB.17
+		hidden_tooltip = {
+			character_event = { id = firelord.7 days = 90 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Appease the Spirits
+	id = firelord.18
+	desc = firelordDESC.18
+	picture = GFX_evt_kemurikage_2
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelordA.18
+		hidden_tooltip = {
+			if = {
+				limit = {
+					OR = {
+						trait = impaler
+						trait = greedy
+						trait = envious
+						trait = wroth
+						trait = deceitful
+						trait = arbitrary
+						trait = cruel
+					}
+				}
+				character_event = { id = firelord.19 days = 3 }
+			}
+			if = {
+				limit = {
+					AND = {
+						NOT = { trait = impaler }
+						NOT = { trait = greedy }
+						NOT = { trait = envious }
+						NOT = { trait = wroth }
+						NOT = { trait = deceitful }
+						NOT = { trait = arbitrary }
+						NOT = { trait = cruel }
+					}
+				}
+				character_event = { id = firelord.20 days = 1 }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTfirelordB.18
+		hidden_tooltip = {
+			character_event = { id = firelord.7 days = 90 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Spirits Attack
+	id = firelord.19
+	desc = firelordDESC.19
+	picture = GFX_evt_fire_palace_dark
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.19
+		add_trait = lunatic
+		hidden_tooltip = {
+			any_vassal = {
+				opinion = { modifier = opinion_afraid who = ROOT years = 50 }
+				character_event = { id = firelord.12 days = 7 }
+			}
+			character_event = { id = firelord.8 days = 180 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - Spirits Appeased
+	id = firelord.20
+	desc = firelordDESC.20
+	picture = GFX_evt_kemurikage_1
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.20
+		hidden_tooltip = {
+			character_event = { id = firelord.21 days = 30 }
+		}
+	}
+}
+
+character_event = { # Smoke and Shadow - END
+	id = firelord.21
+	desc = firelordDESC.21
+	picture = GFX_evt_night_fire_nation
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firelord
+		NOT = { dynasty = 7 }
+	}
+	option = {
+		name = EVTOPTfirelord.21
+		set_global_flag = hong_reclaimer
+	}
+}
