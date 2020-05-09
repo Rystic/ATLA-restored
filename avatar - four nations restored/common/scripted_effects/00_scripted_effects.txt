@@ -205,6 +205,18 @@ add_trait_honest_effect = {
 		hidden_tooltip = { character_event = { id = 38262 } } #Notify Honest
 	}
 }
+add_trait_humble_effect = {
+	if = {
+		limit = {
+			NOR = {
+				trait = humble
+				trait = proud
+			}
+		}
+		add_trait = humble
+		hidden_tooltip = { character_event = { id = 38260 } } #Notify Humble
+	}
+}
 
 add_trait_kind_effect = {
 	if = {
@@ -350,6 +362,18 @@ add_trait_slothful_effect = {
 		}
 		add_trait = slothful
 		hidden_tooltip = { character_event = { id = 38251 } } #notify slothful
+	}
+}
+
+add_trait_stressed_effect = {
+	if = {
+		limit = {
+			NOR = {
+				trait = stressed
+			}
+		}
+		add_trait = stressed
+		hidden_tooltip = { character_event = { id = 38282 } } #notify stressed
 	}
 }
 
@@ -508,6 +532,18 @@ add_trait_silently_cynical_effect = {
 			}
 		}
 		add_trait = cynical
+	}
+}
+
+add_trait_silently_content_effect = {
+	if = {
+		limit = {
+			NOR = {
+				trait = content
+				trait = ambitious
+			}
+		}
+		add_trait = content
 	}
 }
 
@@ -778,10 +814,19 @@ add_trait_silently_wroth_effect = {
 #Add new ones in alphabetical order.
 
 #Add with notification
+
+remove_trait_brave_effect = {
+	if = {
+		limit = { trait = brave }
+		remove_trait = brave
+		hidden_tooltip = { character_event = { id = 38320 } }
+	}
+}
 remove_trait_charitable_effect = {
 	if = {
 		limit = { trait = charitable }
 		remove_trait = charitable
+		hidden_tooltip = { character_event = { id = 38321 } }
 	}
 }
 
@@ -816,11 +861,34 @@ remove_trait_cruel_effect = {
 	}	
 }
 
+remove_trait_depressed_effect = {
+	if = {
+		limit = { trait = depressed }
+		remove_trait = depressed
+		hidden_tooltip = { character_event = { id = 38314 } }
+	}
+}
+
 remove_trait_diligent_effect = {
 	if = {
 		limit = { trait = diligent }
 		remove_trait = diligent
 		hidden_tooltip = { character_event = { id = 38319 } }
+	}
+}
+
+remove_trait_envious_effect = {
+	if = {
+		limit = { trait = envious }
+		remove_trait = envious
+	}
+}
+
+remove_trait_greedy_effect = {
+	if = {
+		limit = { trait = greedy }
+		remove_trait = greedy
+		hidden_tooltip = { character_event = { id = 38322 } }
 	}
 }
 
@@ -889,6 +957,11 @@ remove_trait_slothful_effect = {
 	if = {
 		limit = { trait = slothful }
 		remove_trait = slothful
+		hidden_tooltip = {
+			character_event = {
+				id = 38298 #Notify Remove Slothful
+			}
+		}
 	}
 }
 
@@ -923,6 +996,18 @@ remove_trait_zealous_effect = {
 }
 
 #Silently
+remove_trait_silently_ambitious_effect = {
+	if = {
+		limit = { trait = ambitious }
+		remove_trait = ambitious
+	}
+}
+remove_trait_silently_brave_effect = {
+	if = {
+		limit = { trait = brave }
+		remove_trait = brave
+	}
+}
 remove_trait_silently_charitable_effect = {
 	if = {
 		limit = { trait = charitable }
@@ -2099,66 +2184,50 @@ increase_depopulation_effect = {
 			40 = {
 				modifier = {
 					factor = 1.5
-					location = {
-						AND = {
-							any_province_holding = {
-								OR = {
-									holding_type = nomad
-									holding_type = tribal
-								}
+					AND = {
+						any_province_holding = {
+							OR = {
+								holding_type = nomad
+								holding_type = tribal
 							}
-							NOT = { num_of_settlements = 3 }
 						}
+						NOT = { num_of_settlements = 3 }
 					}
 				}
 				modifier = {
 					factor = 1.2
-					location = {
-						hospital_level = 1
-					}
+					hospital_level = 1
 				}
 				modifier = {
 					factor = 1.2
-					location = {
-						hospital_level = 2
-					}
+					hospital_level = 2
 				}
 				modifier = {
 					factor = 1.2
-					location = {
-						hospital_level = 3
-					}
+					hospital_level = 3
 				}
 				modifier = {
 					factor = 1.2
-					location = {
-						hospital_level = 4
-					}
+					hospital_level = 4
 				}
 				modifier = {
 					factor = 1.2
-					location = {
-						hospital_level = 5
-					}
+					hospital_level = 5
 				}
 				modifier = {
 					factor = 1.2
-					location = {
-						hospital_level = 6
-					}
+					hospital_level = 6
 				}
 			}
 			60 = {
 				modifier = {
 					factor = 0
-					location = {
-						any_province_holding = {
-							NOR = {
-								holding_type = city
-								holding_type = temple
-								holding_type = castle
-								holding_type = tribal
-							}
+					any_province_holding = {
+						NOR = {
+							holding_type = city
+							holding_type = temple
+							holding_type = castle
+							holding_type = tribal
 						}
 					}
 				}
@@ -2180,66 +2249,50 @@ increase_depopulation_effect = {
 			20 = {
 				modifier = {
 					factor = 4
-					location = {
-						AND = {
-							any_province_holding = {
-								OR = {
-									holding_type = nomad
-									holding_type = tribal
-								}
+					AND = {
+						any_province_holding = {
+							OR = {
+								holding_type = nomad
+								holding_type = tribal
 							}
-							NOT = { num_of_settlements = 3 }
 						}
+						NOT = { num_of_settlements = 3 }
 					}
 				}
 				modifier = {
 					factor = 1.4
-					location = {
 						hospital_level = 1
-					}
 				}
 				modifier = {
 					factor = 1.4
-					location = {
 						hospital_level = 2
-					}
 				}
 				modifier = {
 					factor = 1.4
-					location = {
 						hospital_level = 3
-					}
 				}
 				modifier = {
 					factor = 1.4
-					location = {
 						hospital_level = 4
-					}
 				}
 				modifier = {
 					factor = 1.4
-					location = {
 						hospital_level = 5
-					}
 				}
 				modifier = {
 					factor = 1.4
-					location = {
 						hospital_level = 6
-					}
 				}
 			}
 			80 = {
 				modifier = {
 					factor = 0
-					location = {
-						any_province_holding = {
-							NOR = {
-								holding_type = city
-								holding_type = temple
-								holding_type = castle
-								holding_type = tribal
-							}
+					any_province_holding = {
+						NOR = {
+							holding_type = city
+							holding_type = temple
+							holding_type = castle
+							holding_type = tribal
 						}
 					}
 				}
@@ -2270,66 +2323,50 @@ increase_depopulation_effect = {
 			5 = {
 				modifier = {
 					factor = 15
-					location = {
-						AND = {
-							any_province_holding = {
-								OR = {
-									holding_type = nomad
-									holding_type = tribal
-								}
+					AND = {
+						any_province_holding = {
+							OR = {
+								holding_type = nomad
+								holding_type = tribal
 							}
-							NOT = { num_of_settlements = 3 }
 						}
+						NOT = { num_of_settlements = 3 }
 					}
 				}
 				modifier = {
 					factor = 1.5
-					location = {
-						hospital_level = 1
-					}
+					hospital_level = 1
 				}
 				modifier = {
 					factor = 1.5
-					location = {
-						hospital_level = 2
-					}
+					hospital_level = 2
 				}
 				modifier = {
 					factor = 1.5
-					location = {
 						hospital_level = 3
-					}
 				}
 				modifier = {
 					factor = 1.5
-					location = {
 						hospital_level = 4
-					}
 				}
 				modifier = {
 					factor = 1.5
-					location = {
 						hospital_level = 5
-					}
 				}
 				modifier = {
 					factor = 1.5
-					location = {
 						hospital_level = 6
-					}
 				}
 			}
 			95 = {
 				modifier = {
 					factor = 0
-					location = {
-						any_province_holding = {
-							NOR = {
-								holding_type = city
-								holding_type = temple
-								holding_type = castle
-								holding_type = tribal
-							}
+					any_province_holding = {
+						NOR = {
+							holding_type = city
+							holding_type = temple
+							holding_type = castle
+							holding_type = tribal
 						}
 					}
 				}
@@ -2432,17 +2469,6 @@ jailor_mutilate_effect = {
 		}
 	}
 	
-	random_list = {
-		80 = {
-			add_trait = stressed
-		}
-		10 = {
-			add_trait = lunatic
-		}
-		10 = {
-			#no effect
-		}
-	}
 
 	add_trait = severely_injured
 	hidden_tooltip = {
@@ -2453,6 +2479,21 @@ jailor_mutilate_effect = {
 			25 = { #Get rid of severely_injured but develop infection
 				set_character_flag = pending_infection
 				character_event = { id = RIP.11000 days = 90 random = 275}
+			}
+		}
+	}
+
+	custom_tooltip = { text = might_affect_mental_health_tt }
+	hidden_effect = {
+		random_list = {
+			80 = {
+				add_trait = stressed
+			}
+			10 = {
+				add_trait = lunatic
+			}
+			10 = {
+				#no effect
 			}
 		}
 	}
@@ -2494,16 +2535,28 @@ jailor_torture_effect = {
 	
 	random_list = {
 		80 = {
+				if = {
+					limit = { trait = stressed }
+					health = -0.25
+				}
 				add_trait = stressed
 			}
 		10 = {
 			if = {
-				limit = { NOR = { trait = craven trait = berserker } }
+				limit = { trait = craven }
+				health = -0.5
+			}
+			if = {
+				limit = { NOT = { trait = craven } }
 				add_trait = craven
 			}
 		}
 		5 = {
-				add_trait = lunatic
+			if = {
+				limit = { trait = lunatic }
+				health = -1.0
+			}
+			add_trait = lunatic
 		}
 		5 = {
 			#nothing
@@ -2711,8 +2764,27 @@ leave_court_effect = {
 	}
 }
 
+courtiers_leaving_effect = {
+	hidden_effect = { #To get a banishment reason
+		reverse_opinion = {
+			modifier = opinion_leave
+			who = ROOT
+		}
+
+		banish = yes
+
+		reverse_remove_opinion = {
+			modifier = opinion_leave
+			who = ROOT
+		}
+	}
+	opinion = {
+		modifier = opinion_left_court
+		who = root
+	}
+}
+
 leave_court_and_die_effect = {
-	leave_court_effect = yes
 	death = { death_reason = death_missing }
 }
 
@@ -2933,6 +3005,12 @@ resolve_severely_injured_effect = {
 	}
 }
 
+#For when you "only" become really injured, but still want the risk of infection...
+add_severely_injured_effect = {
+	add_trait = severely_injured
+	resolve_severely_injured_effect = yes
+}
+
 leave_council_position_effect = {
 	if = {
 		limit = { has_job_title = job_chancellor }
@@ -3033,6 +3111,19 @@ increase_prosperity_effect = {
 		add_province_modifier = { name = prosperity_modifier_3 duration = -1 }
 		hidden_tooltip = { set_variable = { which = prosperity_value value = 500 } }
 		break = yes
+	}
+}
+
+decrease_prosperity_effect = {
+	if = {
+		limit = {
+			has_province_modifier = prosperity_modifier_3
+		}
+		hidden_tooltip = {
+			remove_province_modifier = prosperity_modifier_3
+			set_variable = { which = prosperity_value value = 250 }
+		}
+		add_province_modifier = { name = prosperity_modifier_2 duration = -1 }
 	}
 }
 
@@ -3242,9 +3333,10 @@ end_inaccessibility_effect = {
 					}
 				}
 				liege = {
-					save_event_target_as = liege_target
+					ROOT = {
+						force_host = PREV
+					}
 				}
-				force_host = event_target:liege_target
 			}
 		}
 	}
@@ -3636,7 +3728,7 @@ venereal_disease_effect_event_target = {
 #Tries to impregnate either event_target:sex_partner or THIS if all conditions are met
 impregnate_effect_event_target = {
 	if = {
-		limit = { is_opposite_sex = FROM }
+		limit = { is_opposite_sex = event_target:sex_partner }
 
 		#If THIS is a female which can get pregnant
 		if = {
@@ -4033,11 +4125,9 @@ add_cat_effect = {
 }
 
 remove_secret_religion_trait_effect = {
-	if = {
-		limit = { trait = secretly_imperialism }
-		remove_trait = secretly_imperialism
-	}
+	clear_secret_religion = yes
 }
+
 major_soul_corruption_effect = {
 	custom_tooltip = { 
 		text = major_soul_corruption_effect_tooltip
@@ -4137,6 +4227,87 @@ major_soul_corruption_effect = {
 				50 = { }
 			}
 		}
+		random_list = { #Risk of getting weaker
+			10 = {
+				trigger = { NOT = { trait = stressed } }
+				character_event = { id = MNM.7051 days = 32 random = 5 }
+			}
+			5 = {
+				trigger = { NOT = { trait = lunatic } }
+				character_event = { id = MNM.7052 days = 32 random = 5 }
+			}
+			5 = {
+				trigger = { NOR = { trait = stutter } }
+				character_event = { id = MNM.7053 days = 32 random = 5 }
+			}
+			5 = {
+				trigger = { NOR = { trait = clubfooted } }
+				character_event = { id = MNM.7054 days = 32 random = 5} 
+			}
+			5 = {
+				trigger = { NOR = { trait = hunchback } }
+				character_event = { id = MNM.7055 days = 32 random = 5 }
+			}
+			5 = {
+				trigger = { NOR = { trait = ugly } }
+				character_event = { id = MNM.7056 days = 32 random = 5 }
+			}
+			5 = {
+				trigger = {
+					NOR = {
+			    		trait = feeble
+			    		trait = weak
+			    		trait = strong
+			    	}
+				}
+				character_event = { id = MNM.7059 days = 32 random = 5 }
+			}
+			40 = {
+				#trigger = { 
+				#	NOR = { 
+				#		NOT = { health = 3 }
+				#		has_character_modifier = corrupting_magic_minor
+				#		has_character_modifier = corrupting_magic_major
+				#	}
+				#}
+				character_event = { id = MNM.7057 days = 32 random = 5 }
+			}
+			220 = { # High visibility (ability abuse) increases the risk of getting weaker
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 10 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 15 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 20 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 25 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 30 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 35 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 40 }
+				}
+			}
+		}
+		random = {
+			chance = 2
+			set_character_flag = has_it_coming
+			character_event = { id = MNM.7854 days = 30 random = 50 } #Demon hunters come after you...
+		}
 	}
 }
 
@@ -4144,136 +4315,262 @@ minor_soul_corruption_effect = {
 	custom_tooltip = { 
 		text = minor_soul_corruption_effect_tooltip
 	}
-	if = {
-		limit = {
-			NAND = {
-				trait = cruel
-				trait = arbitrary
-				trait = deceitful
-				trait = possessed
+	hidden_effect = {
+		if = {
+			limit = {
+				NAND = {
+					trait = cruel
+					trait = arbitrary
+					trait = deceitful
+					trait = possessed
+				}
+			}
+			random_list = {
+				10 = {
+					modifier = {
+						factor = 0
+						OR = {
+							NOT = { trait = kind }
+							trait = cruel
+							has_character_flag = corruption_remove_kind 
+						}
+					}
+					set_character_flag = corruption_remove_kind
+					character_event = { id = MNM.7050 days = 3 random = 27 }
+				}
+				5 = {
+					modifier = {
+						factor = 0
+						OR = {
+							trait = kind
+							trait = cruel
+							has_character_flag = corruption_add_cruel 
+						}
+					}
+					set_character_flag = corruption_add_cruel
+					character_event = { id = MNM.7050 days = 3 random = 27 }
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						OR = {
+							NOT = { trait = just }
+							trait = arbitrary
+							has_character_flag = corruption_remove_just
+						}
+					}
+					set_character_flag = corruption_remove_just
+					character_event = { id = MNM.7050 days = 3 random = 27 }
+				}
+				5 = {
+					modifier = {
+						factor = 0
+						OR = {
+							trait = just
+							trait = arbitrary
+							has_character_flag = corruption_add_arbitrary
+						} 
+					}
+					set_character_flag = corruption_add_arbitrary
+					character_event = { id = MNM.7050 days = 3 random = 27 }
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						OR = {
+							NOT = { trait = honest }
+							trait = deceitful
+							has_character_flag = corruption_remove_honest
+						} 
+					}
+					set_character_flag = corruption_remove_honest
+					character_event = { id = MNM.7050 days = 3 random = 27 }			
+				}
+				5 = {
+					modifier = {
+						factor = 0
+						OR = {
+							trait = honest
+							trait = deceitful
+							has_character_flag = corruption_add_deceitful
+						} 
+					}
+					set_character_flag = corruption_add_deceitful
+					character_event = { id = MNM.7050 days = 3 random = 27 }
+				}
+				5 = { 
+					modifier = {
+						factor = 0
+						trait = possessed
+						has_character_flag = corruption_add_possessed
+					}
+					set_character_flag = corruption_add_possessed
+					character_event = { id = MNM.7050 days = 3 random = 27 }
+				}
+				80 = { }
 			}
 		}
-		random_list = {
-			10 = {
-				modifier = {
-					factor = 0
-					OR = {
-						NOT = { trait = kind }
-						trait = cruel
-						has_character_flag = corruption_remove_kind 
-					}
-				}
-				set_character_flag = corruption_remove_kind
-				character_event = { id = MNM.7050 days = 3 random = 27 }
+		random_list = { #Risk of getting weaker
+			15 = {
+				trigger = { NOT = { trait = stressed } }
+				character_event = { id = MNM.7051 days = 32 random = 5 }
 			}
 			5 = {
-				modifier = {
-					factor = 0
-					OR = {
-						trait = kind
-						trait = cruel
-						has_character_flag = corruption_add_cruel 
-					}
-				}
-				set_character_flag = corruption_add_cruel
-				character_event = { id = MNM.7050 days = 3 random = 27 }
-			}
-			10 = {
-				modifier = {
-					factor = 0
-					OR = {
-						NOT = { trait = just }
-						trait = arbitrary
-						has_character_flag = corruption_remove_just
-					}
-				}
-				set_character_flag = corruption_remove_just
-				character_event = { id = MNM.7050 days = 3 random = 27 }
+				trigger = { NOT = { trait = lunatic } }
+				character_event = { id = MNM.7052 days = 32 random = 5 }
 			}
 			5 = {
-				modifier = {
-					factor = 0
-					OR = {
-						trait = just
-						trait = arbitrary
-						has_character_flag = corruption_add_arbitrary
-					} 
-				}
-				set_character_flag = corruption_add_arbitrary
-				character_event = { id = MNM.7050 days = 3 random = 27 }
-			}
-			10 = {
-				modifier = {
-					factor = 0
-					OR = {
-						NOT = { trait = honest }
-						trait = deceitful
-						has_character_flag = corruption_remove_honest
-					} 
-				}
-				set_character_flag = corruption_remove_honest
-				character_event = { id = MNM.7050 days = 3 random = 27 }			
+				trigger = { NOR = { trait = stutter } }
+				character_event = { id = MNM.7053 days = 32 random = 5 }
 			}
 			5 = {
-				modifier = {
-					factor = 0
-					OR = {
-						trait = honest
-						trait = deceitful
-						has_character_flag = corruption_add_deceitful
-					} 
-				}
-				set_character_flag = corruption_add_deceitful
-				character_event = { id = MNM.7050 days = 3 random = 27 }
+				trigger = { NOR = { trait = clubfooted } }
+				character_event = { id = MNM.7054 days = 32 random = 5 }
 			}
-			5 = { 
-				modifier = {
-					factor = 0
-					trait = possessed
-					has_character_flag = corruption_add_possessed
-				}
-				set_character_flag = corruption_add_possessed
-				character_event = { id = MNM.7050 days = 3 random = 27 }
+			5 = {
+				trigger = { NOR = { trait = hunchback } }
+				character_event = { id = MNM.7055 days = 32 random = 5 }
 			}
-			80 = { }
+			5 = {
+				trigger = { NOR = { trait = ugly } }
+				character_event = { id = MNM.7056 days = 32 random = 5 }
+			}
+			5 = {
+				trigger = {
+					NOR = {
+						trait = feeble
+						trait = weak
+						trait = strong
+					}
+				}
+				character_event = { id = MNM.7059 days = 32 random = 5 }
+			}
+			50 = {
+				#trigger = { 
+				#	NOR = { 
+				#		NOT = { health = 3 }
+				#		has_character_modifier = corrupting_magic_minor
+				#		has_character_modifier = corrupting_magic_major
+				#	}
+				#}
+				character_event = { id = MNM.7058 days = 32 random = 5 }
+			}
+			450 = {  # High visibility (ability abuse) increases the risk of getting weaker
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 10 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 15 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 20 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 25 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 30 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 35 }
+				}
+				modifier = {
+					factor = 0.9
+					check_variable = { which = visibility_value value = 40 }
+				}
+			}
 		}
 	}
 }
 
 add_society_currency_trivial_effect = {
-	change_society_currency = 10
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 10
+	}
 }
 
+add_society_currency_tiny_effect = {
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 50
+	}
+} 
+
 add_society_currency_minor_effect = {
-	change_society_currency = 100
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 100
+	}
 }
 
 add_society_currency_medium_effect = {
-	change_society_currency = 200
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 200
+	}
 }
 
 add_society_currency_major_effect = {
-	change_society_currency = 300
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 300
+	}
+}
+
+add_society_currency_large_effect = {
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 500
+	}
 }
 
 add_society_currency_massive_effect = {
-	change_society_currency = 1000
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = 1000
+	}
 }
 
 detract_society_currency_trivial_effect = {
-	change_society_currency = -15
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = -15
+	}
+}
+
+detract_society_currency_tiny_effect = {
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = -50
+	}
 }
 
 detract_society_currency_minor_effect = {
-	change_society_currency = -150
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = -150
+	}
 }
 
 detract_society_currency_medium_effect = {
-	change_society_currency = -300
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = -300
+	}
 }
 
 detract_society_currency_major_effect = {
-	change_society_currency = -500
+	if = {
+		limit = { is_in_society = yes }
+		change_society_currency = -500
+	}
 }
 
 remove_random_maimed_effect = { #remember to clear flags if using this effect :D
@@ -4555,6 +4852,13 @@ remove_random_negative_congenital_effect = {
 		}
 		10 = {
 			modifier = {
+				NOT = { trait = giant }
+				factor = 0
+			}
+			remove_trait = giant
+		}
+		10 = {
+			modifier = {
 				NOT = { trait = slow }
 				factor = 0
 			}
@@ -4583,6 +4887,58 @@ remove_random_negative_congenital_effect = {
 		}
 	}
 }
+
+remove_all_negative_congenital_traits_effect = {
+	if = {
+		limit = { trait = ugly }
+		remove_trait = ugly
+	}
+	if = {
+		limit = { trait = clubfooted }
+		remove_trait = clubfooted
+	}
+	if = {
+		limit = { trait = hunchback }
+		remove_trait = hunchback
+	}
+	if = {
+		limit = { trait = dwarf }
+		remove_trait = dwarf
+	}
+	if = {
+		limit = { trait = giant }
+		remove_trait = giant
+	}
+	if = {
+		limit = { trait = harelip }
+		remove_trait = harelip
+	}
+	if = {
+		limit = { trait = stutter }
+		remove_trait = stutter
+	}
+	if = {
+		limit = { trait = lisp }
+		remove_trait = lisp
+	}
+	if = {
+		limit = { trait = slow }
+		remove_trait = slow
+	}
+	if = {
+		limit = { trait = inbred }
+		remove_trait = inbred
+	}
+	if = {
+		limit = { trait = weak }
+		remove_trait = weak
+	}
+	if = {
+		limit = { trait = imbecile }
+		remove_trait = imbecile
+	}
+}
+
 
 remove_education_effect = {
 	remove_trait = naive_appeaser
@@ -4614,6 +4970,7 @@ remove_lifestyle_trait_effect = {
 	remove_trait = mystic
 	remove_trait = impaler
 	remove_trait = duelist
+	remove_trait = hunter
 	remove_trait = seducer
 	remove_trait = seductress
 	remove_trait = administrator
