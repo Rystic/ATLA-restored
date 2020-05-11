@@ -8776,7 +8776,6 @@ add_secret_religion_trait_trigger_is_religion_or_old_religion_flag_clear_flag_af
     	clr_character_flag = character_was_fire_imperialism
 		break = yes
     }
-    }
 }
 
 add_religion_char_flag_effect = {
@@ -11344,4 +11343,6088 @@ add_kinslayer_trait_effect = {
 	else = {
 	}
 	clear_event_target = kinslayer_target
+}
+
+set_higher_quality_of_book_flags_effect = {
+	if = {
+		limit = {
+			NOT = { has_character_flag = decent_book_potential }
+			has_character_flag = good_book_potential
+			has_character_flag = great_book_potential
+		}
+		clr_character_flag = good_book_potential
+	}
+	if = {
+		limit = {
+			NOT = { has_character_flag = decent_book_potential }
+			has_character_flag = good_book_potential
+			NOT = { has_character_flag = great_book_potential }
+		}
+		set_character_flag = great_book_potential
+	}			
+	if = {
+		limit = {
+			has_character_flag = decent_book_potential
+			has_character_flag = good_book_potential
+			has_character_flag = great_book_potential
+		}
+		clr_character_flag = decent_book_potential
+	}
+	if = {
+		limit = {
+			has_character_flag = decent_book_potential
+			has_character_flag = good_book_potential
+			NOT = { has_character_flag = great_book_potential }
+		}
+		set_character_flag = great_book_potential
+	}
+	if = {
+		limit = {
+			has_character_flag = decent_book_potential
+			NOT = { has_character_flag = good_book_potential }
+			NOT = { has_character_flag = great_book_potential }
+		}
+		set_character_flag = good_book_potential
+	}
+	#Fallback in case flags have cleared somehow...
+	if = {
+		limit = {
+			NOR = {
+				has_character_flag = decent_book_potential
+        		has_character_flag = good_book_potential
+        		has_character_flag = great_book_potential
+			}
+		}
+		set_character_flag = decent_book_potential
+	}
+}
+
+set_lower_quality_of_book_flags_effect = {
+	if = {
+		limit = {
+			has_character_flag = decent_book_potential
+			has_character_flag = good_book_potential
+			NOT = { has_character_flag = great_book_potential }
+		}
+		clr_character_flag = good_book_potential
+	}
+	if = {
+		limit = {
+			NOT = { has_character_flag = decent_book_potential }
+			has_character_flag = good_book_potential
+			NOT = { has_character_flag = great_book_potential }
+		}
+		set_character_flag = decent_book_potential
+	}
+	if = {
+		limit = {
+			has_character_flag = decent_book_potential
+			has_character_flag = good_book_potential
+			has_character_flag = great_book_potential
+		}
+		clr_character_flag = great_book_potential
+	}
+	if = {
+		limit = {
+			NOT = { has_character_flag = decent_book_potential }
+			has_character_flag = good_book_potential
+			has_character_flag = great_book_potential
+		}
+		set_character_flag = decent_book_potential
+	}
+	if = {
+		limit = {
+			NOT = { has_character_flag = decent_book_potential }
+			NOT = { has_character_flag = good_book_potential }
+			has_character_flag = great_book_potential
+		}
+		set_character_flag = good_book_potential
+	}
+
+	#Fallback in case flags have cleared somehow...
+	if = {
+		limit = {
+			NOR = {
+				has_character_flag = decent_book_potential
+        		has_character_flag = good_book_potential
+        		has_character_flag = great_book_potential
+			}
+		}
+		set_character_flag = decent_book_potential
+	}
+}
+
+send_final_book_outcome_event_effect = {
+	#character_event = { id = JD.10070 days = 5 random = 10 } #Testing values...
+	character_event = { id = JD.10070 days = 565 random = 3650 }
+}
+root_secret_religion_provinces_convert_effect = {
+	ROOT = {
+		trigger_switch = {
+			on_trigger = society_member_of
+			secret_religious_society_imperialism = {
+				PREV = {
+					any_demesne_province = {
+						limit = {
+							has_province_modifier = secret_imperialism_community
+						}
+						religion = fire_imperialism
+						remove_province_modifier = secret_imperialism_community
+					}
+				}
+			} 
+		}
+	}
+}
+troubled_pregnancy_chance_low_effect = { 
+random_list = { 
+	70 = { custom_tooltip = { text = tooltip_pregnancy_stable } }
+	30 = { custom_tooltip = { text = tooltip_pregnancy_gets_worse }
+		modifier = { 
+			factor = 0.85
+			has_character_modifier = mother_dark_rest
+		}
+		modifier = { 
+			factor = 0.95
+			has_character_modifier = mother_chatting
+		}
+		modifier = { 
+			factor = 0.85
+			has_character_modifier = mother_fertility_festival_1
+		}
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_fertility_festival_2
+		}
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_festival_blessing
+		}
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_praying_health
+		} 
+		modifier = { 
+			factor = 0.5
+			has_character_modifier = mother_resting_health
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_partying_health
+		} 
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_minor_rest
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_good_omen
+		} 
+		modifier = { 
+			factor = 1.2
+			has_character_modifier = mother_bad_omen
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_chastity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_humility
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_charity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_temperance
+		} 
+		modifier = { 
+			factor = 1.75
+			has_character_modifier = mother_exposed_to_elements
+		} 
+		modifier = { 
+			factor = 0.8
+			has_character_modifier = mother_comforted
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { age = 19 } #Too young
+		} 
+		modifier = { 
+			factor = 1.25
+			age = 27 #Too old
+		} 
+		modifier = { 
+			factor = 1.25
+			age = 30 #Too old
+		} 
+		modifier = { 
+			factor = 1.25
+			age = 35 #Too old
+		} 
+		modifier = { 
+			factor = 1.5
+			age = 40 #Too old
+		} 	
+		modifier = { 	
+			factor = 1.5
+			age = 45 #Too old
+		} 
+		modifier = { 
+			factor = 1.75
+			age = 50 #Too old
+		} 
+		modifier = { 
+			factor = 1.25
+			num_of_children = 2
+		} 
+		modifier = { 
+			factor = 1.25
+			num_of_children = 3 #Womb is worn out
+		} 
+		modifier = { 
+			factor = 1.5
+			num_of_children = 4 #Womb is worn out
+		} 
+		modifier = { 
+			factor = 2
+			num_of_children = 5 #Womb is worn out
+		} 
+		modifier = { 
+			factor = 4
+			has_character_flag = survivor_mom		#Should have stopped after last time.
+		} 
+		modifier = { 
+			factor = 1.25
+			NOR = {  
+				trait = misguided_warrior
+				trait = tough_soldier
+				trait = skilled_tactician
+				trait = brilliant_strategist
+			}
+		} 
+		modifier = { 
+			factor = 0.95
+			trait = misguided_warrior
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = tough_soldier
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = skilled_tactician
+		} 
+		modifier = { 
+			factor = 0.65
+			trait = brilliant_strategist
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = stressed
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = depressed
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = lunatic
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = possessed
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = wounded
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = maimed
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = infirm
+		} 
+		modifier = { 
+			factor = 5
+			trait = incapable #Probably going to die.
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = drunkard
+		} 
+		modifier = { 
+			factor = 1.15
+			trait = scarred
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = ill
+		} 
+		modifier = { 
+			factor = 1.65
+			trait = pneumonic
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = syphilitic
+		} 
+		modifier = { 
+			factor = 3
+			trait = leper
+		} 
+		modifier = { 
+			factor = 1.85
+			trait = has_tuberculosis
+		} 
+		modifier = { 
+			factor = 1.65
+			trait = has_typhoid_fever
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = has_typhus
+		} 
+		modifier = { 
+			factor = 5
+			trait = has_bubonic_plague
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = has_measles
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = has_small_pox
+		} 
+		modifier = { 
+			factor = 1.65
+			trait = has_aztec_disease
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = flu
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = dysentery
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = gout
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = food_poisoning
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = rabies
+		} 
+		modifier = { 
+			factor = 3
+			trait = cancer
+		} 
+		modifier = { 
+			factor = 4
+			trait = dancing_plague
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = scurvy
+		} 
+		modifier = { 
+			factor = 2
+			trait = mangled
+		} 
+		modifier = { 
+			factor = 3
+			trait = severely_injured
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = strong
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = hunchback
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = dwarf
+		} 
+		modifier = { 
+			factor = 5
+			trait = inbred
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = weak
+		} 
+		modifier = { 
+			factor = 0.5
+			trait = robust
+		} 
+		modifier = { 
+			factor = 2
+			trait = feeble
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = hedonist
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = mystic
+		} 	
+		modifier = { 	
+			factor = 0.85	
+			trait = gardener
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = duelist
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = hunter
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = falconer
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = gluttonous
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = wroth
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = slothful
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = temperate
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = blinded
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = berserker
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = lovers_pox
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { health = 1 }
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { health = 2 }
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { health = 3 }
+		} 
+		modifier = { 
+			factor = 0.75
+			health = 5
+		} 
+		character_event = { id = HFP.20500  days = 35 random = 75 } #Critical failure: troubled pregnancy begins.
+		}
+	}
+}
+
+troubled_pregnancy_chance_medium_effect = { 
+random_list = { 
+	50 = { custom_tooltip = { text = tooltip_pregnancy_stable } }
+	50 = { custom_tooltip = { text = tooltip_pregnancy_gets_worse }
+		modifier = { 
+			factor = 0.85
+			has_character_modifier = mother_dark_rest
+		}
+		modifier = { 
+			factor = 0.95
+			has_character_modifier = mother_chatting
+		}
+		modifier = { 
+			factor = 0.85
+			has_character_modifier = mother_fertility_festival_1
+		}
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_fertility_festival_2
+		}
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_festival_blessing
+		}
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_praying_health
+		} 
+		modifier = { 
+			factor = 0.5
+			has_character_modifier = mother_resting_health
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_partying_health
+		} 
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_minor_rest
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_good_omen
+		} 
+		modifier = { 
+			factor = 1.2
+			has_character_modifier = mother_bad_omen
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_chastity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_humility
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_charity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_temperance
+		} 
+		modifier = { 
+			factor = 1.75
+			has_character_modifier = mother_exposed_to_elements
+		} 
+		modifier = { 
+			factor = 0.8
+			has_character_modifier = mother_comforted
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { age = 19 } #Too young
+		} 
+		modifier = { 
+			factor = 1.25
+			age = 27 #Too old
+		} 
+		modifier = { 
+			factor = 1.25
+			age = 30 #Too old
+		} 
+		modifier = { 
+			factor = 1.25
+			age = 35 #Too old
+		} 
+		modifier = { 
+			factor = 1.5
+			age = 40 #Too old
+		} 	
+		modifier = { 	
+			factor = 1.5
+			age = 45 #Too old
+		} 
+		modifier = { 
+			factor = 1.75
+			age = 50 #Too old
+		} 
+		modifier = { 
+			factor = 1.25
+			num_of_children = 2
+		} 
+		modifier = { 
+			factor = 1.25
+			num_of_children = 3 #Womb is worn out
+		} 
+		modifier = { 
+			factor = 1.5
+			num_of_children = 4 #Womb is worn out
+		} 
+		modifier = { 
+			factor = 2
+			num_of_children = 5 #Womb is worn out
+		} 
+		modifier = { 
+			factor = 4
+			has_character_flag = survivor_mom		#Should have stopped after last time.
+		} 
+		modifier = { 
+			factor = 1.25
+			NOR = {  
+				trait = misguided_warrior
+				trait = tough_soldier
+				trait = skilled_tactician
+				trait = brilliant_strategist
+			}
+		} 
+		modifier = { 
+			factor = 0.95
+			trait = misguided_warrior
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = tough_soldier
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = skilled_tactician
+		} 
+		modifier = { 
+			factor = 0.65
+			trait = brilliant_strategist
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = stressed
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = depressed
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = lunatic
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = possessed
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = wounded
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = maimed
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = infirm
+		} 
+		modifier = { 
+			factor = 5
+			trait = incapable #Probably going to die.
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = drunkard
+		} 
+		modifier = { 
+			factor = 1.15
+			trait = scarred
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = ill
+		} 
+		modifier = { 
+			factor = 1.65
+			trait = pneumonic
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = syphilitic
+		} 
+		modifier = { 
+			factor = 3
+			trait = leper
+		} 
+		modifier = { 
+			factor = 1.85
+			trait = has_tuberculosis
+		} 
+		modifier = { 
+			factor = 1.65
+			trait = has_typhoid_fever
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = has_typhus
+		} 
+		modifier = { 
+			factor = 5
+			trait = has_bubonic_plague
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = has_measles
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = has_small_pox
+		} 
+		modifier = { 
+			factor = 1.65
+			trait = has_aztec_disease
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = flu
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = dysentery
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = gout
+		} 
+		modifier = { 
+			factor = 1.75
+			trait = food_poisoning
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = rabies
+		} 
+		modifier = { 
+			factor = 3
+			trait = cancer
+		} 
+		modifier = { 
+			factor = 4
+			trait = dancing_plague
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = scurvy
+		} 
+		modifier = { 
+			factor = 2
+			trait = mangled
+		} 
+		modifier = { 
+			factor = 3
+			trait = severely_injured
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = strong
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = hunchback
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = dwarf
+		} 
+		modifier = { 
+			factor = 5
+			trait = inbred
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = weak
+		} 
+		modifier = { 
+			factor = 0.5
+			trait = robust
+		} 
+		modifier = { 
+			factor = 2
+			trait = feeble
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = hedonist
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = mystic
+		} 	
+		modifier = { 	
+			factor = 0.85	
+			trait = gardener
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = duelist
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = hunter
+		} 
+		modifier = { 
+			factor = 0.75
+			trait = falconer
+		} 
+		modifier = { 
+			factor = 1.35
+			trait = gluttonous
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = wroth
+		} 
+		modifier = { 
+			factor = 1.45
+			trait = slothful
+		} 
+		modifier = { 
+			factor = 0.85
+			trait = temperate
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = blinded
+		} 
+		modifier = { 
+			factor = 1.5
+			trait = berserker
+		} 
+		modifier = { 
+			factor = 1.25
+			trait = lovers_pox
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { health = 1 }
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { health = 2 }
+		} 
+		modifier = { 
+			factor = 1.5
+			NOT = { health = 3 }
+		} 
+		modifier = { 
+			factor = 0.75
+			health = 5
+		} 
+		character_event = { id = HFP.20500  days = 35 random = 75 } #Critical failure: troubled pregnancy begins.
+		}
+	}
+}
+
+troubled_pregnancy_variable_easy_effect = { 
+	random_list = { 
+		60 = { 
+		modifier = { 
+			factor = 1.25
+			has_character_modifier = mother_dark_rest
+		}
+		modifier = { 
+			factor = 1.05
+			has_character_modifier = mother_chatting
+		}
+		modifier = { 
+			factor = 1.25
+			has_character_modifier = mother_fertility_festival_1
+		}
+		modifier = { 
+			factor = 1.5
+			has_character_modifier = mother_fertility_festival_2
+		}
+		modifier = { 
+			factor = 1.5
+			has_character_modifier = mother_festival_blessing
+		}
+		modifier = { 
+			factor = 0.7
+			NOT = { health = 1 }
+		}
+		modifier = { 
+			factor = 0.8
+			NOT = { health = 2 }
+		}
+		modifier = { 
+			factor = 0.9
+			NOT = { health = 3 }
+		}
+		modifier = { 
+			factor = 0.8
+			trait = wounded
+		}
+		modifier = { 
+			factor = 0.8
+			trait = maimed
+		}
+		modifier = { 
+			factor = 0.9
+			trait = cough
+		}
+		modifier = { 
+			factor = 0.8
+			trait = fever
+		}
+		modifier = { 
+			factor = 0.9
+			trait = diarrhea
+		}
+		modifier = { 
+			factor = 0.9
+			trait = vomiting
+		}
+		modifier = { 
+			factor = 0.7
+			trait = chest_pain
+		}
+		modifier = { 
+			factor = 0.8
+			trait = cramps
+		}
+		modifier = { 
+			factor = 0.9
+			trait = rash
+		}
+		modifier = { 
+			factor = 0.9
+			trait = headache
+		}
+		modifier = { 
+			factor = 0.7
+			trait = abdominal_pain
+		}
+		modifier = { 
+			factor = 0.9
+			trait = fatigue
+		}
+		modifier = { 
+			factor = 0.9
+			trait = malaise
+		}
+		modifier = { 
+			factor = 0.8
+			trait = infection
+		}
+		modifier = { 
+			factor = 1.1
+			has_character_flag = pregnancy_priest_comfort
+		}
+		modifier = { 
+			factor = 1.2
+			has_character_flag = pregnancy_shaman_comfort
+		}
+		modifier = { 
+			factor = 1.3
+			has_character_flag = pregnancy_spouse_comfort
+		}
+		modifier = { 
+			factor = 1.4
+			has_character_flag = pregnancy_healer_help
+		}
+		modifier = { 
+			factor = 0.7
+			persistent_event_target:pregnancy_mother_physician_per = { NOT = { learning = 5 } }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_mother_physician_per = { NOT = { learning = 10 } }
+		}
+		modifier = { 
+			factor = 0.9
+			persistent_event_target:pregnancy_mother_physician_per = { trait = slow }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_mother_physician_per = { trait = imbecile }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { trait = scholar }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_mother_physician_per = { trait = physician }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { trait = quick }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_mother_physician_per = { trait = genius }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 10 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 15 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 20 }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 25 }
+		}
+		modifier = { 
+			factor = 0.7
+			persistent_event_target:pregnancy_spouse_physician_per = { NOT = { learning = 5 } }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_spouse_physician_per = { NOT = { learning = 10 } }
+		}
+		modifier = { 
+			factor = 0.9
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = slow }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = imbecile }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = scholar }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = physician }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = quick }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = genius }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 10 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 15 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 20 }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 25 }
+		}
+		modifier = { 
+			factor = 0.7
+			persistent_event_target:pregnancy_regent_physician_per = { NOT = { learning = 5 } }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_regent_physician_per = { NOT = { learning = 10 } }
+		}
+		modifier = { 
+			factor = 0.9
+			persistent_event_target:pregnancy_regent_physician_per = { trait = slow }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_regent_physician_per = { trait = imbecile }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { trait = scholar }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_regent_physician_per = { trait = physician }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { trait = quick }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_regent_physician_per = { trait = genius }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 10 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 15 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 20 }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 25 }
+		}
+		change_variable =  { which = troubled_pregnancy_variable value = -2 }
+	} 
+	40 = { 
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_praying_health
+		} 
+		modifier = { 
+			factor = 0.5
+			has_character_modifier = mother_resting_health
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_partying_health
+		} 
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_minor_rest
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_good_omen
+		} 
+		modifier = { 
+			factor = 1.2
+			has_character_modifier = mother_bad_omen
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_chastity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_humility
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_charity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_temperance
+		} 
+		modifier = { 
+			factor = 1.75
+			has_character_modifier = mother_exposed_to_elements
+		} 
+		modifier = { 
+			factor = 0.8
+			has_character_modifier = mother_comforted
+		} 
+		change_variable =  { which = troubled_pregnancy_variable value = 2 }
+	}
+	}
+}
+
+troubled_pregnancy_variable_hard_effect = { 
+	random_list = { 
+		30 = { 
+		modifier = { 
+			factor = 1.25
+			has_character_modifier = mother_dark_rest
+		}
+		modifier = { 
+			factor = 1.05
+			has_character_modifier = mother_chatting
+		}
+		modifier = { 
+			factor = 1.25
+			has_character_modifier = mother_fertility_festival_1
+		}
+		modifier = { 
+			factor = 1.5
+			has_character_modifier = mother_fertility_festival_2
+		}
+		modifier = { 
+			factor = 1.5
+			has_character_modifier = mother_festival_blessing
+		}
+		modifier = { 
+			factor = 0.7
+			NOT = { health = 1 }
+		}
+		modifier = { 
+			factor = 0.8
+			NOT = { health = 2 }
+		}
+		modifier = { 
+			factor = 0.9
+			NOT = { health = 3 }
+		}
+		modifier = { 
+			factor = 0.8
+			trait = wounded
+		}
+		modifier = { 
+			factor = 0.8
+			trait = maimed
+		}
+		modifier = { 
+			factor = 0.9
+			trait = cough
+		}
+		modifier = { 
+			factor = 0.8
+			trait = fever
+		}
+		modifier = { 
+			factor = 0.9
+			trait = diarrhea
+		}
+		modifier = { 
+			factor = 0.9
+			trait = vomiting
+		}
+		modifier = { 
+			factor = 0.7
+			trait = chest_pain
+		}
+		modifier = { 
+			factor = 0.8
+			trait = cramps
+		}
+		modifier = { 
+			factor = 0.9
+			trait = rash
+		}
+		modifier = { 
+			factor = 0.9
+			trait = headache
+		}
+		modifier = { 
+			factor = 0.7
+			trait = abdominal_pain
+		}
+		modifier = { 
+			factor = 0.9
+			trait = fatigue
+		}
+		modifier = { 
+			factor = 0.9
+			trait = malaise
+		}
+		modifier = { 
+			factor = 0.8
+			trait = infection
+		}
+		modifier = { 
+			factor = 1.1
+			has_character_flag = pregnancy_priest_comfort
+		}
+		modifier = { 
+			factor = 1.2
+			has_character_flag = pregnancy_shaman_comfort
+		}
+		modifier = { 
+			factor = 1.3
+			has_character_flag = pregnancy_spouse_comfort
+		}
+		modifier = { 
+			factor = 1.4
+			has_character_flag = pregnancy_healer_help
+		}
+		modifier = { 
+			factor = 0.7
+			persistent_event_target:pregnancy_mother_physician_per = { NOT = { learning = 5 } }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_mother_physician_per = { NOT = { learning = 10 } }
+		}
+		modifier = { 
+			factor = 0.9
+			persistent_event_target:pregnancy_mother_physician_per = { trait = slow }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_mother_physician_per = { trait = imbecile }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { trait = scholar }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_mother_physician_per = { trait = physician }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { trait = quick }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_mother_physician_per = { trait = genius }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 10 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 15 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 20 }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_mother_physician_per = { learning = 25 }
+		}
+		modifier = { 
+			factor = 0.7
+			persistent_event_target:pregnancy_spouse_physician_per = { NOT = { learning = 5 } }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_spouse_physician_per = { NOT = { learning = 10 } }
+		}
+		modifier = { 
+			factor = 0.9
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = slow }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = imbecile }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = scholar }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = physician }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = quick }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_spouse_physician_per = { trait = genius }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 10 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 15 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 20 }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_spouse_physician_per = { learning = 25 }
+		}
+		modifier = { 
+			factor = 0.7
+			persistent_event_target:pregnancy_regent_physician_per = { NOT = { learning = 5 } }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_regent_physician_per = { NOT = { learning = 10 } }
+		}
+		modifier = { 
+			factor = 0.9
+			persistent_event_target:pregnancy_regent_physician_per = { trait = slow }
+		}
+		modifier = { 
+			factor = 0.8
+			persistent_event_target:pregnancy_regent_physician_per = { trait = imbecile }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { trait = scholar }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_regent_physician_per = { trait = physician }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { trait = quick }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_regent_physician_per = { trait = genius }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 10 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 15 }
+		}
+		modifier = { 
+			factor = 1.25
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 20 }
+		}
+		modifier = { 
+			factor = 1.5
+			persistent_event_target:pregnancy_regent_physician_per = { learning = 25 }
+		}
+		change_variable =  { which = troubled_pregnancy_variable value = -3 }
+	} 
+	70 = { 
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_praying_health
+		} 
+		modifier = { 
+			factor = 0.5
+			has_character_modifier = mother_resting_health
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_partying_health
+		} 
+		modifier = { 
+			factor = 0.75
+			has_character_modifier = mother_minor_rest
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_good_omen
+		} 
+		modifier = { 
+			factor = 1.2
+			has_character_modifier = mother_bad_omen
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_chastity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_humility
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_charity
+		} 
+		modifier = { 
+			factor = 0.9
+			has_character_modifier = mother_vow_temperance
+		} 
+		modifier = { 
+			factor = 1.75
+			has_character_modifier = mother_exposed_to_elements
+		} 
+		modifier = { 
+			factor = 0.8
+			has_character_modifier = mother_comforted
+		} 
+		change_variable =  { which = troubled_pregnancy_variable value = 3 }
+	}
+	} 
+}
+
+tiered_prestige_reward_effect = {
+	if = {
+		limit = {
+			AND = { 
+				is_ruler = no
+				spouse = { is_ruler = no }
+				father_even_if_dead = { is_ruler = no }
+				mother_even_if_dead = { is_ruler = no }
+			}
+		}
+		prestige = 5
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = BARON
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = BARON } 
+						mother_even_if_dead = { higher_tier_than = BARON } 
+					} 
+				}
+				AND = { 
+					is_ruler = no
+					spouse = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					father_even_if_dead = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					mother_even_if_dead = { tier = BARON } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+		}
+		prestige = 10
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+		}
+		prestige = 25
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+		}
+		prestige = 50
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		prestige = 75
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		prestige = 100
+	}
+}
+
+tiered_piety_reward_effect = {
+	if = {
+		limit = {
+			AND = { 
+				is_ruler = no
+				spouse = { is_ruler = no }
+				father_even_if_dead = { is_ruler = no }
+				mother_even_if_dead = { is_ruler = no }
+			}
+		}
+		piety = 5
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = BARON
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = BARON } 
+						mother_even_if_dead = { higher_tier_than = BARON } 
+					} 
+				}
+				AND = { 
+					is_ruler = no
+					spouse = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					father_even_if_dead = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					mother_even_if_dead = { tier = BARON } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+		}
+		piety = 10
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+		}
+		piety = 15
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+		}
+		piety = 20
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		piety = 25
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		piety = 30
+	}
+}
+
+tiered_prestige_negative_effect = {
+	if = {
+		limit = {
+			AND = { 
+				is_ruler = no
+				spouse = { is_ruler = no }
+				mother_even_if_dead = { is_ruler = no }
+				father_even_if_dead = { is_ruler = no }
+			}
+		}
+		prestige = -5
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = BARON
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = BARON } 
+						mother_even_if_dead = { higher_tier_than = BARON } 
+					} 
+				}
+				AND = { 
+					is_ruler = no
+					spouse = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					father_even_if_dead = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					mother_even_if_dead = { tier = BARON } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+		}
+		prestige = -10
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+		}
+		prestige = -25
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+		}
+		prestige = -50
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		prestige = -75
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+tiered_piety_negative_effect = {
+	if = {
+		limit = {
+			AND = { 
+				is_ruler = no
+				spouse = { is_ruler = no }
+				father_even_if_dead = { is_ruler = no }
+				mother_even_if_dead = { is_ruler = no }
+			}
+		}
+		piety = -5
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = BARON
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = BARON } 
+						mother_even_if_dead = { higher_tier_than = BARON } 
+					} 
+				}
+				AND = { 
+					is_ruler = no
+					spouse = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					father_even_if_dead = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					mother_even_if_dead = { tier = BARON } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+		}
+		piety = -10
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+		}
+		piety = -15
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+		}
+		piety = -20
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		piety = -25
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		piety = -30
+	}
+}
+
+tiered_high_piety_negative_effect = {
+	if = {
+		limit = {
+			AND = { 
+				is_ruler = no
+				spouse = { is_ruler = no }
+				father_even_if_dead = { is_ruler = no }
+				mother_even_if_dead = { is_ruler = no }
+			}
+		}
+		piety = -25
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = BARON
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = BARON } 
+						mother_even_if_dead = { higher_tier_than = BARON } 
+					} 
+				}
+				AND = { 
+					is_ruler = no
+					spouse = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					father_even_if_dead = { tier = BARON } 
+				}
+				AND = { 
+					is_ruler = no
+					mother_even_if_dead = { tier = BARON } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+		}
+		piety = -40
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = COUNT
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = COUNT } 
+						mother_even_if_dead = { higher_tier_than = COUNT } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					spouse = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					father_even_if_dead = { tier = COUNT } 
+				}
+				AND = { 
+					lower_tier_than = COUNT
+					mother_even_if_dead = { tier = COUNT } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+		}
+		piety = -70
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = DUKE
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = DUKE } 
+						mother_even_if_dead = { higher_tier_than = DUKE } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					spouse = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					father_even_if_dead = { tier = DUKE } 
+				}
+				AND = { 
+					lower_tier_than = DUKE
+					mother_even_if_dead = { tier = DUKE } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+		}
+		piety = -100
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = KING
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = KING } 
+						mother_even_if_dead = { higher_tier_than = KING } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = KING
+					spouse = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					father_even_if_dead = { tier = KING } 
+				}
+				AND = { 
+					lower_tier_than = KING
+					mother_even_if_dead = { tier = KING } 
+				}
+			}
+			NOR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		piety = -150
+	}
+	if = {
+		limit = {
+			OR = { 
+				AND = { 
+					tier = EMPEROR
+					NOR = { 
+						father_even_if_dead = { higher_tier_than = EMPEROR } 
+						mother_even_if_dead = { higher_tier_than = EMPEROR } 
+					} 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					spouse = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					father_even_if_dead = { tier = EMPEROR } 
+				}
+				AND = { 
+					lower_tier_than = EMPEROR
+					mother_even_if_dead = { tier = EMPEROR } 
+				}
+			}
+		}
+		piety = -350
+	}
+}
+#Used for gluttonous and hedonistic actions.
+gain_weight_small_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+		change_variable = { which = physique_variable value = 5 }
+		}
+	}
+} 
+gain_weight_medium_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+		change_variable = { which = physique_variable value = 10 }
+		}
+	}
+} 
+gain_weight_large_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+		change_variable = { which = physique_variable value = 15 }
+		}
+	}
+}
+
+#Used for training and balanced lifestyle.
+balance_weight_small_effect =  {
+	custom_tooltip = {
+		hidden_tooltip = {
+			#If variable is above 1, reduce it. If it's below 1 increase it.
+			if = { 
+				limit = {
+					check_variable = { which = physique_variable value = 1 }
+				}
+				change_variable = { which = physique_variable value = -2 }
+			}
+			if = { 
+				limit = {
+					NOT = { check_variable = { which = physique_variable value = -1 } }
+				}
+				change_variable = { which = physique_variable value = 2 }
+			}
+		}
+	}
+} 
+balance_weight_medium_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+			#If variable is above 1, reduce it. If it's below 1 increase it.
+			if = { 
+				limit = {
+					check_variable = { which = physique_variable value = 1 }
+				}
+				change_variable = { which = physique_variable value = -5 }
+			}
+			if = { 
+				limit = {
+					NOT = { check_variable = { which = physique_variable value = -1 } }
+				}
+				change_variable = { which = physique_variable value = 5 }
+			}
+		}
+	}
+} 
+
+balance_weight_large_effect = { #Should be used rarely.
+	custom_tooltip = {
+		hidden_tooltip = {
+			#If variable is above 1, reduce it. If it's below 1 increase it.
+			if = { 
+				limit = {
+					check_variable = { which = physique_variable value = 1 }
+				}
+				change_variable = { which = physique_variable value = -10 }
+			}
+			if = { 
+				limit = {
+					NOT = { check_variable = { which = physique_variable value = -1 } }
+				}
+				change_variable = { which = physique_variable value = 10 }
+			}
+		}
+	}
+} 
+
+#Used for seclusions, fasting, dungeon starvation, etc.
+lose_weight_small_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+		change_variable = { which = physique_variable value = -6 } #Because of the way trigger works, checks if you are below -5/-10/-15
+		}
+	}
+} 
+lose_weight_medium_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+	change_variable = { which = physique_variable value = -11 }
+		}
+	}
+} 
+lose_weight_large_effect = {
+	custom_tooltip = {
+		hidden_tooltip = {
+	change_variable = { which = physique_variable value = -16 }
+		}
+	}
+}  
+
+#Doesn't change the variable, only checks if the character has the correct trait assigned.
+weight_trait_check_effect = { 
+
+	#Debilitating effects are gained by special events, usually later in life (40s), but they can be cleared up if the character's variable goes back towards 0 again.
+	if = { 
+		limit = {
+			NOT = { check_variable = { which = physique_variable value = 30 } }
+			has_character_modifier = obese_modifier
+		}
+		remove_character_modifier = obese_modifier
+	}
+	if = { 
+		limit = {
+			check_variable = { which = physique_variable value = -30 }
+			has_character_modifier = severely_underweight_modifier
+		}
+		remove_character_modifier = severely_underweight_modifier
+	}
+
+	if = { 
+		limit = {
+			trait = is_fat
+			NOT = { check_variable = { which = physique_variable value = 15 } }
+			check_variable = { which = physique_variable value = -15 } 
+		}
+		remove_trait = is_fat
+		hidden_tooltip = { 
+			remove_weight_modifier_effect = yes
+			character_event = { id = HFP.20601 } #Notification
+		} 
+	}
+	if = { 
+		limit = {
+			trait = is_fat
+			NOT = { check_variable = { which = physique_variable value = -15 } }
+		}
+		remove_trait = is_fat
+		add_trait = is_malnourished
+		hidden_tooltip = { 
+			remove_weight_modifier_effect = yes
+			character_event = { id = HFP.20602 } #Notification
+		} 
+	}
+	if = { 
+		limit = {
+			trait = is_malnourished
+			NOT = { check_variable = { which = physique_variable value = 15 } }
+			check_variable = { which = physique_variable value = -15 } 
+		}
+		remove_trait = is_malnourished
+		hidden_tooltip = { 
+			remove_weight_modifier_effect = yes
+			character_event = { id = HFP.20603 } #Notification
+		} 
+	}
+	if = { 
+		limit = {
+			trait = is_malnourished
+			check_variable = { which = physique_variable value = 15 }
+		}
+		remove_trait = is_malnourished
+		add_trait = is_fat
+		hidden_tooltip = { 
+			remove_weight_modifier_effect = yes
+			character_event = { id = HFP.20600 } #Notification
+		} 
+	}
+	if = { 
+		limit = {
+			NOR = { 
+				trait = is_malnourished 
+				trait = is_fat
+			}
+			check_variable = { which = physique_variable value = 15 }
+		}
+		#First time try to fire a special event if character meets any of the conditions, otherwise simply notify.
+		weight_flavor_conditions_effect = yes
+		add_trait = is_fat
+		hidden_tooltip = { character_event = { id = HFP.20600 } } #Notification
+	}
+	if = { 
+		limit = {
+			NOR = { 
+				trait = is_malnourished 
+				trait = is_fat
+			}
+			NOT = { check_variable = { which = physique_variable value = -15 } }
+		}
+		#First time try to fire a special event if character meets any of the conditions, otherwise simply notify.
+		weight_flavor_conditions_effect = yes
+		add_trait = is_malnourished
+		hidden_tooltip = { character_event = { id = HFP.20602 } } #Notification
+	}
+
+}  
+apply_weight_modifier_effect = { 
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_fat_for_gluttony
+				has_character_flag = flag_fat_for_boredom
+			}
+		}
+		add_character_modifier = {
+			name = coping_glutton
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_fat_for_sloth
+				has_character_flag = flag_malnourished_for_sloth
+				has_character_flag = flag_fat_for_stress
+				has_character_flag = flag_malnourished_for_stress
+				has_character_flag = flag_fat_for_lust
+				has_character_flag = flag_fat_for_wroth
+				has_character_flag = flag_malnourished_for_craven
+			}
+		}
+		add_character_modifier = {
+			name = stress_relief
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_fat_for_depression
+				has_character_flag = flag_malnourished_for_depression
+			}
+		}
+		add_character_modifier = {
+			name = anti_depression
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_fat_for_hedonism
+				has_character_flag = flag_fat_for_carousing
+				has_character_flag = flag_fat_for_drunkard
+			}
+		}
+		add_character_modifier = {
+			name = munificent_modifier
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_fat_for_family
+				has_character_flag = flag_fat_for_content
+			}
+			is_female = yes
+		}
+		add_character_modifier = {
+			name = jolly_matron_modifier
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_fat_for_family
+				has_character_flag = flag_fat_for_content
+			}
+			is_female = no
+		}
+		add_character_modifier = {
+			name = jolly_patriarch_modifier
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			OR = {
+				has_character_flag = flag_malnourished_for_temperance
+				has_character_flag = flag_malnourished_for_boredom
+			}
+		}
+		add_character_modifier = {
+			name = extremely_temperate
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			has_character_flag = flag_malnourished_for_study
+		}
+		add_character_modifier = {
+			name = restless_study
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			has_character_flag = flag_malnourished_for_faith
+		}
+		add_character_modifier = {
+			name = restless_prayer
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			has_character_flag = flag_malnourished_for_paranoia
+		}
+		add_character_modifier = {
+			name = malnourished_paranoia
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			has_character_flag = flag_malnourished_for_diligence
+		}
+		add_character_modifier = {
+			name = tireless_worker
+			duration = 5000
+		}
+	}
+	if = { 
+		limit = {
+			has_character_flag = flag_malnourished_for_cannibal
+		}
+		add_character_modifier = {
+			name = refined_palate
+			duration = 5000
+		}
+	}
+}
+remove_weight_modifier_effect = {
+	if = { 
+		limit = { 
+			has_character_modifier = coping_glutton
+		}
+		remove_character_modifier = coping_glutton
+	}
+	if = { 
+		limit = {
+			has_character_modifier = stress_relief
+		}
+		remove_character_modifier = stress_relief
+	}
+	if = { 
+		limit = {
+			has_character_modifier = anti_depression
+		}
+		remove_character_modifier = anti_depression
+	}
+	if = { 
+		limit = {
+			has_character_modifier = munificent_modifier
+		}
+		remove_character_modifier = munificent_modifier
+	}
+	if = { 
+		limit = {
+			has_character_modifier = jolly_matron_modifier
+		}
+		remove_character_modifier = jolly_matron_modifier
+	}
+	if = { 
+		limit = {
+			has_character_modifier = jolly_patriarch_modifier
+		}
+		remove_character_modifier = jolly_patriarch_modifier
+	}
+	if = { 
+		limit = {
+			has_character_modifier = extremely_temperate
+		}
+		remove_character_modifier = extremely_temperate
+	}
+	if = { 
+		limit = {
+			has_character_modifier = restless_study
+		}
+		remove_character_modifier = restless_study
+	}
+	if = { 
+		limit = {
+			has_character_modifier = restless_prayer
+		}
+		remove_character_modifier = restless_prayer
+	}
+	if = { 
+		limit = {
+			has_character_modifier = malnourished_paranoia
+		}
+		remove_character_modifier = malnourished_paranoia
+	}
+	if = { 
+		limit = {
+			has_character_modifier = tireless_worker
+		}
+		remove_character_modifier = tireless_worker
+	}
+}
+clear_fat_flags_effect = {
+	clr_character_flag = flag_fat_for_gluttony 
+	clr_character_flag = flag_fat_for_stress
+	clr_character_flag = flag_fat_for_depression
+	clr_character_flag = flag_fat_for_sloth
+	clr_character_flag = flag_fat_for_hedonism
+	clr_character_flag = flag_fat_for_carousing
+	clr_character_flag = flag_fat_for_family 
+	clr_character_flag = flag_fat_for_content 
+	clr_character_flag = flag_fat_for_lust
+	clr_character_flag = flag_fat_for_wroth
+	clr_character_flag = flag_fat_for_drunkard
+	clr_character_flag = flag_fat_for_boredom
+}
+clear_malnourished_flags_effect = {
+	clr_character_flag = flag_malnourished_for_temperance 
+	clr_character_flag = flag_malnourished_for_stress
+	clr_character_flag = flag_malnourished_for_depression
+	clr_character_flag = flag_malnourished_for_sloth
+	clr_character_flag = flag_malnourished_for_study
+	clr_character_flag = flag_malnourished_for_faith
+	clr_character_flag = flag_malnourished_for_paranoia 
+	clr_character_flag = flag_malnourished_for_diligence
+	clr_character_flag = flag_malnourished_for_cannibal
+	clr_character_flag = flag_malnourished_for_craven
+	clr_character_flag = flag_malnourished_for_boredom
+}
+weight_flavor_conditions_effect = {
+
+	if = { #If already about to become fat and fulfilling one of the special conditions, fire the specific event to give more flavor.
+		limit = { 
+			check_variable = { which = physique_variable value = 12 }
+			NOT = { trait = is_fat }
+			NOT = { has_character_flag = flag_primed_physique }
+			#NOT = { trait = temperate }
+			NOT = { trait = incapable }
+			age = 20
+			prisoner = no
+			is_inaccessible_trigger = no
+			NOT = { #Can happen only once
+				has_fat_for_flag_trigger = yes
+			}
+			OR = { 				#Possible reasons
+				trait = gluttonous
+				trait = stressed 
+				trait = depressed
+				trait = slothful
+				trait = hedonist
+				trait = wroth
+				trait = drunkard
+				has_focus = focus_carousing 
+				AND = { #Happy mom
+					OR = { 
+						trait = kind
+						trait = content
+						has_focus = focus_family 
+						trait = patient
+					}
+					NOR = { 
+						trait = cruel 
+						trait = envious
+					}
+					is_female = yes
+					any_child = { 
+						is_alive = yes 
+						is_adult = no
+					}
+				}
+				AND = { #Content husband
+					OR = { 
+						trait = kind
+						trait = content
+						has_focus = focus_family 
+						trait = patient
+					}
+					NOR = { 
+						trait = cruel 
+						trait = envious
+					}
+					is_female = no
+					is_married = yes
+					OR = { 
+						num_of_consorts = 2
+						num_of_children = 2
+						num_of_spouses = 2
+					}
+				}
+				AND = { #Frustrated lustful survivor mom
+					has_character_flag = survivor_mom
+					trait = celibate
+					trait = lustful
+				}
+				AND = { #Frustrated eunuch
+					trait = eunuch
+					trait = lustful
+				}
+				AND = { #Generic fallback
+					NOT = { trait = temperate }
+					check_variable = { which = physique_variable value = 15 }
+				}
+			}
+		}
+		if = { 
+			limit = { NOT = { check_variable = { which = physique_variable value = 15 } } }
+			gain_weight_small_effect = yes
+		}
+		set_character_flag = flag_primed_physique
+		character_event = { id = HFP.20605 days = 10 }
+	}
+	if = { #If already about to become malnourished and fulfilling one of the special conditions, fire the specific event to give more flavor.
+		limit = { 
+			NOT = { check_variable = { which = physique_variable value = -12 } }
+			NOT = { trait = is_malnourished }
+			#NOT = { trait = gluttonous }
+			NOT = { trait = incapable }
+			NOT = { has_character_flag = flag_primed_physique }
+			age = 20
+			prisoner = no
+			is_inaccessible_trigger = no
+			NOT = { #Can happen only once
+				has_malnourished_for_flag_trigger = yes
+			}
+			OR = { 				#Possible reasons
+				trait = temperate
+				trait = stressed
+				trait = depressed
+				trait = slothful
+				trait = scholar
+				trait = cannibal_trait
+				trait = craven
+				has_focus = focus_scholarship
+				AND = { 
+					NOT = { trait = cynical }
+					trait = theologian
+				}
+				AND = { 
+					NOT = { trait = cynical }
+					has_focus = focus_theology
+				}
+				trait = paranoid
+				trait = diligent
+				AND = { #Generic fallback
+					NOT = { trait = gluttonous }
+					NOT = { check_variable = { which = physique_variable value = -15 } }
+				}
+			}
+		}
+		if = { 
+			limit = { check_variable = { which = physique_variable value = -15 } }
+			lose_weight_small_effect = yes
+		}
+		set_character_flag = flag_primed_physique
+		character_event = { id = HFP.20628 days = 10 }
+	}	
+}
+
+#Copied to facilitate use elsewhere.
+this_post_weight_gain_flavor_effect = { 
+	random_list = { 
+		25 = { }
+		5 = { 
+			trigger = { 
+				trait = stressed
+			}
+			character_event = { id = HFP.20607 days = 50 random = 50 } #Lose stressed
+		}
+		5 = { 
+			trigger = { 
+				trait = depressed
+			}
+			character_event = { id = HFP.20608 days = 50 random = 50 } #Lose depressed
+		}
+		2 = { 
+			modifier = { 
+				factor = 0.5
+				check_variable = { which = physique_variable value = 20 }
+			}
+			modifier = { 
+				factor = 0.5
+				NOT = { trait = feeble }
+			}
+			character_event = { id = HFP.20609 days = 50 random = 50 } #Gain health
+		}
+		2 = { 
+			modifier = { 
+				factor = 1.5
+				check_variable = { which = physique_variable value = 20 }
+			}
+			modifier = { 
+				factor = 1.75
+				trait = sturdy
+			}
+			character_event = { id = HFP.20610 days = 50 random = 50 } #Lose health
+		}
+		3 = { 
+			modifier = { 
+				factor = 0.5
+				trait = greedy
+			}
+			character_event = { id = HFP.20611 days = 50 random = 50 } #become charitable, vassal opinion.
+		}
+		5 = { 
+			trigger = { 
+				is_ruler = yes
+				NOR = { 
+					trait = stressed
+					trait = depressed
+					trait = wroth
+				}
+			}
+			character_event = { id = HFP.20663 days = 50 random = 50 } #Become proud.
+		}
+		5 = { 
+			trigger = { 
+				NOT = { 
+					trait = wroth
+				}
+			}
+			character_event = { id = HFP.20664 days = 50 random = 50 } #Become patient.
+		}
+		1 = { 
+			trigger = { 
+				NOR = { 
+					trait = stressed
+					trait = depressed
+					trait = wroth
+				}
+			}
+			character_event = { id = HFP.20665 days = 50 random = 50 } #Become content.
+		}
+	}
+}
+
+this_post_weight_loss_flavor_effect = { 
+	random_list = { 
+		25 = { }
+		5 = { 
+			trigger = { 
+				trait = stressed
+			}
+			character_event = { id = HFP.20607 days = 50 random = 50 } #Lose stressed
+		}
+		5 = { 
+			trigger = { 
+				trait = depressed
+			}
+			character_event = { id = HFP.20608 days = 50 random = 50 } #Lose depressed
+		}
+		2 = { 
+			modifier = { 
+				factor = 0.5
+				check_variable = { which = physique_variable value = 20 }
+			}
+			modifier = { 
+				factor = 0.5
+				NOT = { trait = feeble }
+			}
+			character_event = { id = HFP.20609 days = 50 random = 50 } #Gain health
+		}
+		2 = { 
+			modifier = { 
+				factor = 1.5
+				check_variable = { which = physique_variable value = 20 }
+			}
+			modifier = { 
+				factor = 1.75
+				trait = sturdy
+			}
+			character_event = { id = HFP.20610 days = 50 random = 50 } #Lose health
+		}
+		3 = { 
+			modifier = { 
+				factor = 0.5
+				trait = greedy
+			}
+			character_event = { id = HFP.20611 days = 50 random = 50 } #become charitable, vassal opinion.
+		}
+		5 = { 
+			trigger = { 
+				is_ruler = yes
+				NOR = { 
+					trait = stressed
+					trait = depressed
+					trait = wroth
+				}
+			}
+			character_event = { id = HFP.20663 days = 50 random = 50 } #Become proud.
+		}
+		5 = { 
+			trigger = { 
+				NOT = { 
+					trait = wroth
+				}
+			}
+			character_event = { id = HFP.20664 days = 50 random = 50 } #Become patient.
+		}
+		1 = { 
+			trigger = { 
+				NOR = { 
+					trait = stressed
+					trait = depressed
+					trait = wroth
+				}
+			}
+			character_event = { id = HFP.20665 days = 50 random = 50 } #Become content.
+		}
+	}
+}
+
+# Referenced by Alternate Start religion feature generation
+reset_religion_features_effect = {
+	set_peace_piety_gain = 0
+	set_pacifist = no
+	set_convert_other_groups = 2
+	set_convert_same_group = 2
+	set_peace_prestige_loss = 0
+	set_ai_aggression = 1
+	set_unit_modifier = {}
+	set_unit_home_modifier = {}
+	set_hard_to_convert = no
+	set_raised_vassal_opinion_loss = yes
+	set_piety_loss_for_attacking_same_religion = no
+	set_max_wives = 1
+	set_max_consorts = 0
+	set_feminist = no
+	set_heir_designation = no
+	set_short_reign_opinion_year_mult = -1000
+	set_jizya_tax = no
+	set_can_retire_to_monastery = no
+	set_can_excommunicate = no
+	set_can_grant_divorce = no
+	set_can_grant_invasion_cb = no
+	set_can_grant_claim = no
+	set_can_call_crusade = no
+	set_pc_marriage = no
+	set_bs_marriage = no
+	set_psc_marriage = yes
+	set_cousin_marriage = yes
+	set_seafaring = no
+	set_allow_looting = no
+	set_allow_rivermovement = no
+	set_autocephaly = no
+	set_pentarchy = no
+	set_divine_blood = no
+	set_uses_decadence = no
+	set_can_have_antipopes = no
+	set_priests_can_marry = no
+	set_priests_can_inherit = yes
+	set_ignores_defensive_attrition = no
+	set_defensive_attrition = no
+	clear_intermarry = no
+	set_character_modifier = {}
+	clear_intermarry = yes
+	set_allows_matrilineal_marriage = yes
+}
+
+random_antagonizer_slander_roll_effect = { 
+	random_list = { 
+		75 = { #Nothing
+			modifier = { 
+				factor = 0.75
+				FROM = { 
+					attribute_diff = { character = ROOT attribute = intrigue  value = 4 }
+				} 
+			}
+			modifier = { 
+				factor = 0.75
+				FROM = { 
+					attribute_diff = { character = ROOT attribute = intrigue  value = 6 }
+				} 
+			}
+			modifier = { 
+				factor = 0.5
+				FROM = { 
+					attribute_diff = { character = ROOT attribute = intrigue  value = 8 }
+				} 
+			}
+			modifier = { 
+				factor = 0.5
+				FROM = { 
+					attribute_diff = { character = ROOT attribute = intrigue  value = 10 }
+				} 
+			}
+		}
+		25 = { #Bonus event
+			modifier = { 
+				factor = 0.5
+				NOR = { 
+					trait = stressed
+					trait = depressed
+				} 
+				opinion = { who = FROM value = 20 } 
+			}
+			modifier = { 
+				factor = 0.1
+				FROM = { 
+					has_character_flag = flag_antagonize_slander_generic 
+				} 
+			}
+			modifier = { 
+				factor = 1.5
+				FROM = { 
+					intrigue = 15
+				} 
+			}
+			modifier = { 
+				factor = 1.5
+				FROM = { 
+					intrigue = 18
+				} 
+			}
+			modifier = { 
+				factor = 1.5
+				FROM = { 
+					intrigue = 21
+				} 
+			}
+			modifier = { 
+				factor = 1.5
+				FROM = { 
+					intrigue = 25
+				} 
+			}
+			modifier = { 
+				factor = 1.75
+				FROM = { 
+					intrigue = 30
+				} 
+			}
+			random_antagonizer_slander_effect = yes
+		}
+	}
+}
+random_antagonizer_slander_effect = { #Chance of this effect firing is tied to the Antagonizer's intrigue.
+	#Gain rival.
+	#Rival of target becomes friend.
+	#Prestige from antagonizing a higher tier ruler.
+	#Appeased's Claimant moves to court.
+	#Prestige loss.
+	#Piety loss.
+	#Sanity loss.
+	#Evil Antagonized losing depressed. 
+	#Evil Antagonized losing Stressed.
+	#Evil Antagonized gaining Diplomacy modifier (happy disposition).
+	#Evil Antagonized gaining Intrigue.
+	#Evil Antagonized gaining Deceitful.
+	#Evil Antagonized gaining Patient.
+
+
+
+
+
+	random_list = { 
+		35 = {
+			trigger = { 
+				NOT = { 
+					persistent_event_target:antagonize_target = { 
+						opinion = { 
+							who = FROM 
+							value = 10 
+						} 
+					} 
+				} 
+			}
+			modifier = { 
+				factor = 0
+				FROM = { 
+					persistent_event_target:antagonize_target = { 
+						is_rival = FROM 
+					} 
+				} 
+			}
+			modifier = { 
+				factor = 1.25
+				FROM = { 
+					persistent_event_target:antagonize_target = { 
+						NOT = { 
+							opinion = { 
+								who = FROM 
+								value = -10 
+							} 
+						} 
+					} 
+				} 
+			}
+			modifier = { 
+				factor = 1.5
+				FROM = { 
+					persistent_event_target:antagonize_target = { 
+						NOT = { 
+							opinion = { 
+								who = FROM 
+								value = -30 
+							} 
+						} 
+					} 
+				} 
+			}
+			modifier = { 
+				factor = 1.5
+				FROM = { 
+					persistent_event_target:antagonize_target = { 
+						NOT = { 
+							opinion = { 
+								who = FROM 
+								value = -50 
+							} 
+						} 
+					} 
+				} 
+			}
+			modifier = { 
+				factor = 1.75
+				FROM = { 
+					persistent_event_target:antagonize_target = { 
+						NOT = { 
+							opinion = { 
+								who = FROM 
+								value = -70 
+							} 
+						} 
+					} 
+				} 
+			}
+			FROM = { persistent_event_target:antagonize_target = { character_event = { id = HF.22030 days = 15 } } } #Antagonized gets the event.
+		}
+		25 = {
+			modifier = { 
+				factor = 0
+				NOT = { 
+					FROM = { 
+						persistent_event_target:antagonize_target = { 
+							any_realm_character = { 
+								age = 14
+								NOR = {
+									trait = incapable
+									is_rival = PREVPREV 
+								} 
+								NOT = { 
+									opinion = { 
+										who = PREV 
+										value = -20 
+									} 
+								} 
+							} 
+						} 
+					} 
+				} 
+			}
+			FROM = { 
+				persistent_event_target:antagonize_target = { 
+					random_realm_character = { 
+						limit = { 
+							age = 14
+							NOR = {
+								trait = incapable
+								is_rival = PREVPREV 
+							}
+							NOT = { 
+								opinion = { 
+									who = PREV 
+									value = -20 
+								} 
+							}
+						}
+						character_event = { id = HF.22032 days = 15 } #Third party notified.
+					} 
+				} 
+			} 
+		}
+		25 = {
+			modifier = { 
+				factor = 0
+				FROM = { 
+					persistent_event_target:antagonize_target = { 
+						lower_tier_than = FROM
+					} 
+				} 
+			}
+			modifier = { 
+				factor = 1.75
+				FROM = { 
+					lower_tier_than = KING
+					persistent_event_target:antagonize_target = { 
+						higher_tier_than = DUKE
+					} 
+				} 
+			}
+			FROM = { character_event = { id = HF.22035 days = 15 } } #Antagonizer gets the event.
+		}
+		5 = {
+			FROM = { character_event = { id = HF.22042 days = 15 } } #Antagonizer gets the event. - Prestige loss for Antagonized.
+		}
+		5 = {
+			FROM = { character_event = { id = HF.22044 days = 15 } } #Antagonizer gets the event. - Piety loss for Antagonized.
+		}
+		5 = {
+			FROM = { character_event = { id = HF.22046 days = 15 } } #Antagonizer gets the event. - Opinion loss for Antagonized.
+		}
+		1 = {
+			modifier = { 
+				factor = 0
+				persistent_event_target:antagonize_target = { 
+					NOT = { trait = depressed } 
+				} 
+			}
+			FROM = { character_event = { id =  HF.22048 days = 15 } } #Antagonizer gets the event. - Sanity loss for Depressed Antagonized.
+		}
+		25 = {
+			modifier = { 
+				factor = 0
+				NOT = { 
+					age = 14
+					is_ruler = no
+					any_claim = { holder_scope = { character = ROOT } }
+					NOR = {
+						any_spouse = { is_ruler = yes }
+						host = { character = FROM }
+						is_rival = FROM
+						trait = incapable
+						persistent_event_target:antagonize_target = { current_heir = { character = PREVPREV } }
+					}
+					NOT = { 
+						opinion = { 
+							who = ROOT
+							value = -20 
+						} 
+					}
+					opinion = { 
+						who = FROM
+						value = 10 
+					} 
+				} 
+			}
+			random_character = {
+				limit = { 
+					age = 14
+					is_ruler = no
+					any_claim = { holder_scope = { character = ROOT } }
+					NOR = {
+						any_spouse = { is_ruler = yes }
+						host = { character = FROM }
+						is_rival = FROM
+						trait = incapable
+						persistent_event_target:antagonize_target = { current_heir = { character = PREVPREV } }
+					}
+					NOT = { 
+						opinion = { 
+							who = ROOT
+							value = -20 
+						} 
+					}
+					opinion = { 
+						who = FROM
+						value = 10 
+					}  
+				}
+				character_event = { id = HF.22036 days = 15 } #Claimant notified.
+			} 
+		}
+		5 = {
+			trigger = { 
+
+				FROM = { 
+					OR = { 
+						trait = impaler
+						trait = cruel 
+						trait = arbitrary
+						trait = deceitful
+						trait = envious
+					}  
+				} 
+				FROM = { trait = depressed }
+			}
+			FROM = { character_event = { id = HF.22113 days = 15 } } #Evil Antagonized loses depressed.
+		}
+		5 = {
+			trigger = { 
+
+				FROM = { 
+					OR = { 
+						trait = impaler 
+						trait = cruel 
+						trait = arbitrary
+						trait = deceitful
+						trait = envious
+					}  
+				} 
+				FROM = { trait = stressed }
+			}
+			FROM = { character_event = { id = HF.22114 days = 15 } } #Evil Antagonized loses stressed.
+		}
+		5 = {
+			trigger = { 
+
+				FROM = { 
+					OR = { 
+						trait = impaler
+						trait = cruel 
+						trait = arbitrary
+						trait = deceitful
+						trait = envious
+					}  
+					NOR = { 
+						trait = stressed 
+						trait = depressed
+					}  
+				} 
+				FROM = { NOT = { has_character_modifier = antagonizer_good_mood } }
+			}
+			FROM = { character_event = { id = HF.22115 days = 15 } } #Evil Antagonized gains Diplomacy modifier.
+		}
+		1 = {
+			trigger = { 
+				FROM = { 
+					OR = { 
+						trait = impaler
+						trait = cruel 
+						trait = arbitrary
+						trait = deceitful
+						trait = envious
+					}  
+				} 
+			}
+			FROM = { character_event = { id = HF.22116 days = 15 } } #Evil Antagonized gains Intrigue.
+		}
+		3 = {
+			trigger = { 
+				FROM = { 
+					OR = { 
+						trait = impaler
+						trait = cruel 
+						trait = arbitrary
+						trait = envious
+					}  
+					NOT = { 
+						trait = deceitful
+					}  
+				} 
+			}
+			FROM = { character_event = { id = HF.22117 days = 15 } } #Evil Antagonized gains Deceitful/loses Honest.
+		}
+		5 = {
+			trigger = { 
+				FROM = { 
+					OR = { 
+						trait = impaler
+						trait = cruel 
+						trait = arbitrary
+						trait = deceitful
+						trait = envious
+					}  
+					NOT = { 
+						trait = patient
+					} 
+				} 
+				NOR = { 
+					trait = patient
+					diplomacy = 12
+				} 
+			}
+			FROM = { character_event = { id = HF.22118 days = 15 } } #Evil Antagonized gains Patient/loses Wroth.
+		}
+	#	5 = {
+	#		modifier = { 
+	#			factor = 0
+	#			FROM = { 
+	#				any_claim = { 
+	#					holder_scope = { 
+	#						character = ROOT
+	#					} 
+	#				} 
+	#			} 
+	#		}
+	#		modifier = { #Only against dangerous Antagonize targets.
+	#			factor = 0
+	#			persistent_event_target:antagonize_target = { 
+	#				lower_tier_than = FROM 
+	#			} 
+	#		}
+	#		modifier = { #Only against dangerous Antagonize targets.
+	#			factor = 0.25
+	#			persistent_event_target:antagonize_target = { 
+	#				prestige = 500
+	#			} 
+	#		}
+	#		modifier = { #Needs to be hated already. The Antagonizer should receive the claim only if the Antagonized is already mad at him and is a more powerful ruler.
+	#			factor = 0
+	#			persistent_event_target:antagonize_target = { 
+	#				opinion = { 
+	#					who = FROM
+	#					value = 10 
+	#				}  
+	#			} 
+	#		}
+	#		FROM = { character_event = { id = HF.22038 days = 15 } } #Antagonizer gets the claim.
+	#	}
+	}
+}
+
+select_and_save_fellow_society_member_effect = { #[Runs for ROOT]
+	### Scripted triggers involved:
+	# block_general_event_trigger	- NOTE, if you want to reuse this and allow children be selected, this blocks it
+	
+	# root_has_terrible_opinion_modifier_of_this_trigger	- To not select folks that have HATRED between them...
+	# this_has_terrible_opinion_modifier_of_root_trigger
+	
+	# root_potentially_platonically_interested_in_this_trigger	- In the best case, selects characters that have shared POSITIVE experiences...
+	# potentially_platonically_interested_in_root_trigger
+	# current_scope_and_root_make_sense_as_friendlies_trigger
+
+	random_society_member = { #Worst case scenario...
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            prisoner = no
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = { #Second worst, etc...
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            prisoner = no
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = {
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            block_general_event_trigger = no
+            root_has_terrible_opinion_modifier_of_this_trigger = no
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = {
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            block_general_event_trigger = no
+            this_has_terrible_opinion_modifier_of_root_trigger = no
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = {
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            block_general_event_trigger = no
+            root_has_terrible_opinion_modifier_of_this_trigger = no
+            this_has_terrible_opinion_modifier_of_root_trigger = no
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = {
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            block_general_event_trigger = no
+            root_potentially_platonically_interested_in_this_trigger = yes
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = {
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            block_general_event_trigger = no
+            potentially_platonically_interested_in_root_trigger = yes
+        }
+        save_event_target_as = fellow_member
+    }
+    random_society_member = { #Best case scenario...
+        limit = { 
+            same_society_as = ROOT
+            NOT = { character = ROOT }
+            block_general_event_trigger = no
+            current_scope_and_root_make_sense_as_friendlies_trigger = yes
+        }
+        save_event_target_as = fellow_member
+    }
+}
+remove_opinions_with_prison_reason_effect = {
+	#Removes the specified opinion about "who" (PREV), from current scope
+	#NOTE: If you add a new opinion with "prison_reason" to the game, add it here, too!
+	remove_opinion = { modifier = opinion_dishonorable who = PREV }
+	remove_opinion = { modifier = opinion_traitor who = PREV }
+	remove_opinion = { modifier = opinion_rebel_traitor who = PREV }
+	remove_opinion = { modifier = opinion_regicide_traitor who = PREV }
+	remove_opinion = { modifier = attempted_murder_of_spouse who = PREV }
+	remove_opinion = { modifier = attempted_murder_of_child who = PREV }
+	remove_opinion = { modifier = attempted_murder_of_parent who = PREV }
+	remove_opinion = { modifier = attempted_murder_of_sibling who = PREV }
+	remove_opinion = { modifier = attempted_murder_of_vassal who = PREV }
+	remove_opinion = { modifier = attempted_murder_of_spouse_vassal who = PREV }
+	remove_opinion = { modifier = attempted_murder who = PREV }
+	remove_opinion = { modifier = opinion_spouse_slayer who = PREV }
+	remove_opinion = { modifier = opinion_murder_attempt who = PREV }
+	remove_opinion = { modifier = opinion_killed_close_kin who = PREV }
+	remove_opinion = { modifier = opinion_killed_father who = PREV }
+	remove_opinion = { modifier = opinion_hajj_attempt_murder who = PREV }
+	remove_opinion = { modifier = opinion_fatwa_target who = PREV }
+	remove_opinion = { modifier = opinion_refused_order who = PREV }
+	remove_opinion = { modifier = opinion_castrated_me who = PREV }
+	remove_opinion = { modifier = opinion_blinded_me who = PREV }
+	remove_opinion = { modifier = opinion_castrated_family who = PREV }
+	remove_opinion = { modifier = opinion_castrated_close_kin who = PREV }
+	remove_opinion = { modifier = opinion_blinded_family who = PREV }
+	remove_opinion = { modifier = opinion_blinded_close_kin who = PREV }
+	remove_opinion = { modifier = opinion_witch who = PREV }
+	remove_opinion = { modifier = opinion_takfir who = PREV }
+	remove_opinion = { modifier = opinion_attempted_abduction who = PREV }
+	remove_opinion = { modifier = opinion_unfaithful_wife who = PREV }
+	remove_opinion = { modifier = opinion_unfaithful_husband_crime who = PREV }
+	remove_opinion = { modifier = opinion_cuckolded who = PREV }
+	remove_opinion = { modifier = opinion_killed_lover who = PREV }
+	remove_opinion = { modifier = opinion_charge_heresiarch who = PREV }
+	remove_opinion = { modifier = opinion_charge_infidel who = PREV }
+	remove_opinion = { modifier = opinion_charge_deviant who = PREV }
+	remove_opinion = { modifier = opinion_charge_illegitimate who = PREV }
+	remove_opinion = { modifier = opinion_charge_cultist who = PREV }
+	remove_opinion = { modifier = opinion_charge_dw who = PREV }
+	remove_opinion = { modifier = opinion_charge_traitor who = PREV }
+	remove_opinion = { modifier = opinion_charge_slanderer who = PREV }
+	remove_opinion = { modifier = abuse_of_office who = PREV }
+	remove_opinion = { modifier = opinion_tortured_me who = PREV }
+	remove_opinion = { modifier = opinion_tortured_family who = PREV }
+	remove_opinion = { modifier = opinion_tortured_close_kin who = PREV }
+	remove_opinion = { modifier = opinion_mutilated_me who = PREV }
+	remove_opinion = { modifier = opinion_mutilated_family who = PREV }
+	remove_opinion = { modifier = opinion_mutilated_close_kin who = PREV }
+	remove_opinion = { modifier = opinion_thief who = PREV }
+	remove_opinion = { modifier = opinion_outlawed_society who = PREV }
+	remove_opinion = { modifier = opinion_accused_apostate who = PREV }
+}
+
+
+
+randomize_ABC_desc_flag_effect = {
+	# Actually, this is not needed, but won't remove for fear of breaking something.
+	# Instead, to randomize descs, simply define (in the event), multiple descs.
+
+	# Example below:
+	# desc = text_1
+	# desc = text_2
+	# desc = text_3
+	
+	clr_ABC_desc_flag_effect = yes
+	random_list = {
+		10 = { set_character_flag = desc_A }
+		10 = { set_character_flag = desc_B }
+		10 = { set_character_flag = desc_C }
+	}
+}
+clr_ABC_desc_flag_effect = {
+	clr_character_flag = desc_A
+	clr_character_flag = desc_B
+	clr_character_flag = desc_C
+}
+
+#Find someone to reference... (event_target:my_beloved) 
+# NOTE: might be platonic, children, etc
+save_beloved_character_effect = {
+	if = {
+		limit = { #In case you have a spouse outside of your realm...
+			is_married = yes
+			any_spouse = {
+				ROOT_possibly_romantically_interested_trigger = yes
+				root_has_terrible_opinion_modifier_of_this_trigger = no
+				is_landed = yes
+			}
+		}
+		random_spouse = {
+			limit = {
+				ROOT_possibly_romantically_interested_trigger = yes
+				root_has_terrible_opinion_modifier_of_this_trigger = no
+				is_landed = yes
+			}
+			save_event_target_as = my_beloved
+		}
+	}
+	else = { #In case you do not...
+		any_courtier_or_vassal = {
+			limit = {
+				NOT = { character = event_target:enemy_commander }
+				NOT = { character = event_target:enemy_liege }
+			}
+			score_value = { #Prioritizes selecting some kind of loved person...
+                value = 1
+                beloved_target_selection_score = yes
+            }
+			#Effect:
+			save_event_target_as = my_beloved
+		}
+	}
+}
+
+child_of_destiny_journey_start_effect = {
+	if = {
+		limit = {
+			has_global_flag = cod_test_values
+		}
+		character_event = { id = HF.210 days = 1 } # The journey begins... Test Value
+	}
+	else = {
+		character_event = { id = HF.210 days = 200 random = 200 } # The journey begins...
+	}
+}
+
+child_of_destiny_journey_resume_effect = {
+	if = {
+		limit = {
+			has_global_flag = cod_test_values
+		}
+		character_event = { id = HF.210 days = 1 }  # Back to the journey tombola! Test Value
+	}
+	else = {
+		character_event = { id = HF.210 days = 365 random = 500 } # Back to the journey tombola!
+	}
+}
+#Current variable values: Scarred = 1, Very Scarred = 5, Horrifically Scarred = 10. To rebalance how quickly a character moves up from one to the other, just change the variable effects on all the following scripted_effects.
+add_scarred_tiered_effect = {
+	if = {
+		limit = { has_dlc = "Holy Fury" }
+		hidden_tooltip = { change_variable = { which = scarred_variable value = 1 } } 
+		if = {
+			limit = {
+				check_variable = { which = scarred_variable value = 1 }
+				NOT = { check_variable = { which = scarred_variable value = 5 } } 
+			}
+			if = { 
+				limit = { trait = scarred_mid } 
+				remove_trait = scarred_mid 
+			}
+			if = { 
+				limit = { trait = scarred_high } 
+				remove_trait = scarred_high 
+			}
+			add_trait = scarred
+		}
+		if = {
+			limit = {
+				check_variable = { which = scarred_variable value = 5 }
+				NOT = { check_variable = { which = scarred_variable value = 10 } } 
+			}
+			if = { 
+				limit = { trait = scarred } 
+				remove_trait = scarred
+			}
+			if = { 
+				limit = { trait = scarred_high } 
+				remove_trait = scarred_high 
+			}
+			add_trait = scarred_mid
+		}
+		if = {
+			limit = {
+				check_variable = { which = scarred_variable value = 10 }
+			}
+			if = { 
+				limit = { trait = scarred_mid } 
+				remove_trait = scarred_mid 
+			}
+			if = { 
+				limit = { trait = scarred } 
+				remove_trait = scarred 
+			}
+			if = {
+				limit = {
+					NOT = { trait = scarred_high }
+				}
+				add_trait = scarred_high
+			}
+		}
+	}
+	else_if =  { 
+		limit = { NOT = { has_dlc = "Holy Fury" } }
+		add_trait = scarred
+	}
+	hidden_tooltip = {
+		if = {
+			limit = {
+				NOR = { 
+					trait = scarred_type_1
+					trait = scarred_type_2
+					trait = scarred_type_3
+					trait = scarred_type_4
+					trait = scarred_type_5
+					trait = scarred_type_6
+					trait = scarred_type_7
+					trait = scarred_type_8
+					trait = scarred_type_9
+					trait = scarred_type_10
+				}
+			}
+			random_list = { 
+				10 = { add_trait = scarred_type_1 } 
+				10 = { add_trait = scarred_type_2 } 
+				10 = { add_trait = scarred_type_3 } 
+				10 = { add_trait = scarred_type_4 } 
+				10 = { add_trait = scarred_type_5 } 
+				10 = { add_trait = scarred_type_6 } 
+				10 = { add_trait = scarred_type_7 } 
+				10 = { add_trait = scarred_type_8 } 
+				10 = { add_trait = scarred_type_9 } 
+				10 = { add_trait = scarred_type_10 }
+			}
+		}
+	}
+}
+
+add_scarred_medium_effect = {
+	if = { 
+		limit = { has_dlc = "Holy Fury" }
+	hidden_tooltip = { set_variable = { which = scarred_variable value = 5 } }
+		if = {
+			limit = {
+				check_variable = { which = scarred_variable value = 5 }
+				NOT = { check_variable = { which = scarred_variable value = 10 } } 
+			}
+			if = { 
+				limit = { trait = scarred_high } 
+				remove_trait = scarred_high 
+			}
+			if = { 
+				limit = { trait = scarred } 
+				remove_trait = scarred
+			}
+			add_trait = scarred_mid
+		}
+	}
+	else_if =  { 
+		limit = { NOT = { has_dlc = "Holy Fury" } }
+		add_trait = scarred
+	}
+	hidden_tooltip = { 
+		if = {
+			limit = {
+				NOR = { 
+					trait = scarred_type_1
+					trait = scarred_type_2
+					trait = scarred_type_3
+					trait = scarred_type_4
+					trait = scarred_type_5
+					trait = scarred_type_6
+					trait = scarred_type_7
+					trait = scarred_type_8
+					trait = scarred_type_9
+					trait = scarred_type_10
+				}
+			}
+			random_list = { 
+				10 = { add_trait = scarred_type_1 } 
+				10 = { add_trait = scarred_type_2 } 
+				10 = { add_trait = scarred_type_3 } 
+				10 = { add_trait = scarred_type_4 } 
+				10 = { add_trait = scarred_type_5 } 
+				10 = { add_trait = scarred_type_6 } 
+				10 = { add_trait = scarred_type_7 } 
+				10 = { add_trait = scarred_type_8 } 
+				10 = { add_trait = scarred_type_9 } 
+				10 = { add_trait = scarred_type_10 }
+			}
+		}
+	}
+}
+add_scarred_high_effect = {
+	if = { 
+		limit = { has_dlc = "Holy Fury" }
+	hidden_tooltip = { set_variable = { which = scarred_variable value = 10 } } 
+		if = {
+			limit = {
+				check_variable = { which = scarred_variable value = 10 }
+			}
+			if = { 
+				limit = { trait = scarred } 
+				remove_trait = scarred
+			}
+			if = { 
+				limit = { trait = scarred_mid } 
+				remove_trait = scarred_mid
+			}
+			add_trait = scarred_high
+		}
+	}
+	else_if =  { 
+		limit = { NOT = { has_dlc = "Holy Fury" } }
+		add_trait = scarred
+	}
+	hidden_tooltip = { 
+		if = {
+			limit = {
+				NOR = { 
+					trait = scarred_type_1
+					trait = scarred_type_2
+					trait = scarred_type_3
+					trait = scarred_type_4
+					trait = scarred_type_5
+					trait = scarred_type_6
+					trait = scarred_type_7
+					trait = scarred_type_8
+					trait = scarred_type_9
+					trait = scarred_type_10
+				}
+			}
+			random_list = { 
+				10 = { add_trait = scarred_type_1 } 
+				10 = { add_trait = scarred_type_2 } 
+				10 = { add_trait = scarred_type_3 } 
+				10 = { add_trait = scarred_type_4 } 
+				10 = { add_trait = scarred_type_5 } 
+				10 = { add_trait = scarred_type_6 } 
+				10 = { add_trait = scarred_type_7 } 
+				10 = { add_trait = scarred_type_8 } 
+				10 = { add_trait = scarred_type_9 } 
+				10 = { add_trait = scarred_type_10 }
+			}
+		}
+	}
+}
+
+add_scarred_start_effect = {
+	if = { 
+		limit = { has_dlc = "Holy Fury" }
+		if = {
+			limit = {
+				trait = scarred
+			}
+			change_variable = { which = scarred_variable value = 1 }
+		}
+		if = {
+			limit = {
+				trait = scarred_mid
+			}
+			change_variable = { which = scarred_variable value = 5 }
+		}
+		if = {
+			limit = {
+				trait = scarred_high
+			}
+			change_variable = { which = scarred_variable value = 10 }
+		}
+	}
+	else_if =  { 
+		limit = { NOT = { has_dlc = "Holy Fury" } }
+		add_trait = scarred
+	}
+	hidden_tooltip = { 
+		if = {
+			limit = {
+				NOR = { 
+					trait = scarred_type_1
+					trait = scarred_type_2
+					trait = scarred_type_3
+					trait = scarred_type_4
+					trait = scarred_type_5
+					trait = scarred_type_6
+					trait = scarred_type_7
+					trait = scarred_type_8
+					trait = scarred_type_9
+					trait = scarred_type_10
+				}
+			}
+			random_list = { 
+				10 = { add_trait = scarred_type_1 } 
+				10 = { add_trait = scarred_type_2 } 
+				10 = { add_trait = scarred_type_3 } 
+				10 = { add_trait = scarred_type_4 } 
+				10 = { add_trait = scarred_type_5 } 
+				10 = { add_trait = scarred_type_6 } 
+				10 = { add_trait = scarred_type_7 } 
+				10 = { add_trait = scarred_type_8 } 
+				10 = { add_trait = scarred_type_9 } 
+				10 = { add_trait = scarred_type_10 }
+			}
+		}
+	}
+}
+
+add_blood_splatter_effect = {
+	hidden_tooltip = { 
+		if = {
+			limit = {
+				has_character_modifier = blood_splatter_3
+			}
+			remove_character_modifier = blood_splatter_3
+			add_character_modifier = { modifier = blood_splatter_3 months = 5 hidden = yes }
+		}
+		else_if = {
+			limit = {
+				OR = { 
+					has_character_modifier = blood_splatter_1
+					has_character_modifier = blood_splatter_2
+				}
+			}
+			remove_character_modifier = blood_splatter_1
+			remove_character_modifier = blood_splatter_2
+			add_character_modifier = { modifier = blood_splatter_3 months = 5 hidden = yes }
+		}
+		else_if = {
+			limit = {
+				NOR = { 
+					has_character_modifier = blood_splatter_1
+					has_character_modifier = blood_splatter_2
+					has_character_modifier = blood_splatter_3
+				}
+			}
+			random_list = { 
+				50 = { add_character_modifier = { modifier = blood_splatter_1 months = 5 hidden = yes } }
+				40 = { add_character_modifier = { modifier = blood_splatter_2 months = 5 hidden = yes } }
+				10 = { add_character_modifier = { modifier = blood_splatter_3 months = 5 hidden = yes } }
+			}
+		}
+	}
+}
+
+reset_flag_lifestyle_sway_event_effect = {
+	clr_character_flag = lifestyle_event_successful
+	clr_character_flag = lifestyle_event_unsuccessful
+	clr_character_flag = sway_hunting
+	clr_character_flag = sway_dueling
+	clr_character_flag = sway_game
+	clr_character_flag = sway_social
+	clr_character_flag = sway_scholar
+	clr_character_flag = sway_steward
+	clr_character_flag = sway_torture
+}
+
+apply_cosmopolian_on_start_effect = {
+	religion_authority = {
+		modifier = cosmopolitan_religion
+		years = 1000
+	}
+	any_playable_ruler = { 
+		limit = { NOT = { distance_from_realm = { who = ROOT value = 200 } } }
+		add_intermarry = ROOT
+		ROOT = { add_intermarry = PREV }
+	}
+	any_neighbor_independent_ruler = { 
+		add_intermarry = ROOT
+		ROOT = { add_intermarry = PREV }
+	}
+}
+apply_dogmatic_on_start_effect = {
+	religion_authority = {
+		modifier = dogmatic_religion
+		years = 1000
+	}
+	# remove_intermarry = catholic - all mod religions go here
+}
+
+spawn_debutante_effect = {
+	if = { 
+		limit = { has_religion_feature = religion_matriarchal }
+		create_character = {
+			random_traits = yes
+			dynasty = actually_culture
+			culture = ROOT
+			female = no
+			age = 17
+		}
+	}
+	if = { 
+		limit = { NOT = { has_religion_feature = religion_matriarchal } }
+		create_character = {
+			random_traits = yes
+			dynasty = actually_culture
+			culture = ROOT
+			female = yes
+			age = 17
+		}
+	}
+	new_character = {	
+		set_character_flag = debutante
+		save_event_target_as = invited_character
+	}
+}
+# Referenced by the "button_rename" button in the character view 
+rename_character_effect = {
+	prompt_name = {
+		player = FROM
+		type = RENAME_CHARACTER_MESSAGE
+	}
+}
+add_random_commander_trait_effect = {
+	random_list = {
+		1 = {
+			trigger = {
+				NOT = {
+					trait = aggressive_leader
+				}
+			}
+			add_trait = aggressive_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = narrow_flank_leader
+				}
+			}
+			add_trait = narrow_flank_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = cavalry_leader
+				}
+			}
+			add_trait = cavalry_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = defensive_leader
+				}
+			}
+			add_trait = defensive_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = desert_terrain_leader
+				}
+			}
+			add_trait = desert_terrain_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = experimenter
+				}
+			}
+			add_trait = experimenter
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = flanker
+				}
+			}
+			add_trait = flanker
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = flat_terrain_leader
+				}
+			}
+			add_trait = flat_terrain_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = heavy_infantry_leader
+				}
+			}
+			add_trait = heavy_infantry_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = holy_warrior
+				}
+			}
+			add_trait = holy_warrior
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = inspiring_leader
+				}
+			}
+			add_trait = inspiring_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = jungle_terrain_leader
+				}
+			}
+			add_trait = jungle_terrain_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = light_foot_leader
+				}
+			}
+			add_trait = light_foot_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = mountain_terrain_leader
+				}
+			}
+			add_trait = mountain_terrain_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = organizer
+				}
+			}
+			add_trait = organizer
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = rough_terrain_leader
+				}
+			}
+			add_trait = rough_terrain_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = siege_leader
+				}
+			}
+			add_trait = siege_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = trickster
+				}
+			}
+			add_trait = trickster
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = unyielding_leader
+				}
+			}
+			add_trait = unyielding_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = war_elephant_leader
+				}
+				location = {
+					region = world_india
+				}
+			}
+			add_trait = war_elephant_leader
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = winter_soldier
+				}
+			}
+			add_trait = winter_soldier
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = logistics_expert
+				}
+				culture_group = chinese_group
+			}
+			add_trait = logistics_expert
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = master_of_flame
+				}
+				culture_group = chinese_group
+			}
+			add_trait = master_of_flame
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = sapper
+				}
+				culture_group = chinese_group
+			}
+			add_trait = sapper
+		}
+		1 = {
+			trigger = {
+				NOT = {
+					trait = levy_coordinator
+				}
+				culture_group = chinese_group
+			}
+			add_trait = levy_coordinator
+		}
+	}
+}
+
+add_same_commander_trait_as_FROM = {
+	#	random_list = {
+		if = {
+			limit = {
+				NOT = {
+					trait = aggressive_leader
+				}
+				FROM = { trait = aggressive_leader }
+			}
+			add_trait = aggressive_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = narrow_flank_leader
+				}
+				FROM = { trait = narrow_flank_leader }
+			}
+			add_trait = narrow_flank_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = cavalry_leader
+				}
+				FROM = { trait = cavalry_leader }
+			}
+			add_trait = cavalry_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = defensive_leader
+				}
+				FROM = { trait = defensive_leader }
+			}
+			add_trait = defensive_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = desert_terrain_leader
+				}
+				FROM = { trait = desert_terrain_leader }
+			}
+			add_trait = desert_terrain_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = experimenter
+				}
+				FROM = { trait = experimenter }
+			}
+			add_trait = experimenter
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = flanker
+				}
+				FROM = { trait = flanker }
+			}
+			add_trait = flanker
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = flat_terrain_leader
+				}
+				FROM = { trait = flat_terrain_leader }
+			}
+			add_trait = flat_terrain_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = heavy_infantry_leader
+				}
+				FROM = { trait = heavy_infantry_leader }
+			}
+			add_trait = heavy_infantry_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = holy_warrior
+				}
+				FROM = { trait = holy_warrior }
+			}
+			add_trait = holy_warrior
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = inspiring_leader
+				}
+				FROM = { trait = inspiring_leader }
+			}
+			add_trait = inspiring_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = jungle_terrain_leader
+				}
+				FROM = { trait = jungle_terrain_leader }
+			}
+			add_trait = jungle_terrain_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = light_foot_leader
+				}
+				FROM = { trait = light_foot_leader }
+			}
+			add_trait = light_foot_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = mountain_terrain_leader
+				}
+				FROM = { trait = mountain_terrain_leader }
+			}
+			add_trait = mountain_terrain_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = organizer
+				}
+				FROM = { trait = organizer }
+			}
+			add_trait = organizer
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = rough_terrain_leader
+				}
+				FROM = { trait = rough_terrain_leader }
+			}
+			add_trait = rough_terrain_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = siege_leader
+				}
+				FROM = { trait = siege_leader }
+			}
+			add_trait = siege_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = trickster
+				}
+				FROM = { trait = trickster }
+			}
+			add_trait = trickster
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = unyielding_leader
+				}
+				FROM = { trait = unyielding_leader }
+			}
+			add_trait = unyielding_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = war_elephant_leader
+				}
+				FROM = { trait = war_elephant_leader }
+				location = {
+					region = world_india
+				}
+			}
+			add_trait = war_elephant_leader
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = winter_soldier
+				}
+				FROM = { trait = winter_soldier }
+			}
+			add_trait = winter_soldier
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = logistics_expert
+				}
+				culture_group = chinese_group
+				FROM = { trait = logistics_expert }
+			}
+			add_trait = logistics_expert
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = master_of_flame
+				}
+				culture_group = chinese_group
+				FROM = { trait = master_of_flame }
+			}
+			add_trait = master_of_flame
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = sapper
+				}
+				culture_group = chinese_group
+				FROM = { trait = sapper }
+			}
+			add_trait = sapper
+		}
+		if = {
+			limit = {
+				NOT = {
+					trait = levy_coordinator
+				}
+				culture_group = chinese_group
+				FROM = { trait = levy_coordinator }
+			}
+			add_trait = levy_coordinator
+		}
+		#10 = {
+		#	add_trait_wounded_effect = yes
+		#}
+#	}
+}
+clr_flags_introduce_heir_effect = {
+	clr_character_flag = ZE_evt_heir_1
+	clr_character_flag = ZE_evt_heir_2
+	clr_character_flag = ZE_evt_heir_2B
+	clr_character_flag = ZE_evt_heir_3
+	clr_character_flag = ZE_evt_heir_3B
+	clr_character_flag = ZE_evt_heir_4
+	clr_character_flag = ZE_evt_heir_5
+	clr_character_flag = ZE_evt_heir_6
+	clr_character_flag = ZE_evt_heir_7
+	clr_character_flag = ZE_evt_heir_8
+}
+murder_bloodline_check_effect = { 
+	change_variable = { which = bloodline_murdered_people value = 1 }
+	if = { #First check for pure Murder Bloodline.
+		limit = {
+			check_variable = { which = bloodline_murdered_people value = 30 } 
+			has_ambition = obj_forge_bloodline
+		}
+		set_character_flag = flag_about_to_murder_bloodline
+		character_event = { id = HF.24025 days = 25 random = 25 }
+	}
+	else_if = { #Then check for Murder War Hybrid.
+		limit = {
+			check_variable = { which = bloodline_murdered_people value = 20 } 
+			check_variable = { which = bloodline_won_wars value = 10 } 
+			has_ambition = obj_forge_bloodline
+		}
+		set_character_flag = flag_about_to_murder_bloodline
+		narrative_event = { id = HF.24045 days = 25 random = 25 }
+	}
+	else_if = { #Then check for Murder Peace Hybrid.
+		limit = {
+			check_variable = { which = bloodline_murdered_people value = 20 } 
+			check_variable = { which = bloodline_peaceful_years value = 15 } 
+			has_ambition = obj_forge_bloodline
+		}
+		set_character_flag = flag_about_to_murder_bloodline
+		narrative_event = { id = HF.24046 days = 25 random = 25 }
+	}
+	else_if = { #Then check for Murder Builder Hybrid.
+		limit = {
+			check_variable = { which = bloodline_murdered_people value = 20 } 
+			check_variable = { which = bloodline_built_holdings value = 15 } 
+			has_ambition = obj_forge_bloodline
+		}
+		set_character_flag = flag_about_to_murder_bloodline
+		narrative_event = { id = HF.24048 days = 25 random = 25 }
+	}
+}
+
+give_smith_artifacts_flag_okay_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_1_new
+        set_character_flag = sword_tier_1   
+            new_artifact = {
+            	set_name = artifact_name
+            	set_description = artifact_description_smith_tier_1
+            }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_1_new
+        set_character_flag = scimitar_tier_1   
+        new_artifact = {
+          	set_name = artifact_name
+           	set_description = artifact_description_smith_tier_1
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_1_new
+		set_character_flag = lance_tier_1   
+        new_artifact = {
+            set_name = artifact_name
+            set_description = artifact_description_smith_tier_1
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_1_new
+        set_character_flag = axe_tier_1   
+        new_artifact = {
+            set_name = artifact_name
+            set_description = artifact_description_smith_tier_1
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_1_new
+        set_character_flag = mace_tier_1   
+        new_artifact = {
+        	set_name = artifact_name
+        	set_description = artifact_description_smith_tier_1
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_1_new
+        set_character_flag = bow_tier_1   
+        new_artifact = {
+            set_name = artifact_name
+            set_description = artifact_description_smith_tier_1
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_1
+    }
+}
+
+give_smith_artifacts_flag_good_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_2_new
+        set_character_flag = sword_tier_2   
+            new_artifact = {
+            	set_name = artifact_name
+            	set_description = artifact_description_smith_tier_2
+            }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_2_new
+        set_character_flag = scimitar_tier_2   
+        new_artifact = {
+          	set_name = artifact_name
+           	set_description = artifact_description_smith_tier_2
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_2_new
+		set_character_flag = lance_tier_2   
+        new_artifact = {
+            set_name = artifact_name
+            set_description = artifact_description_smith_tier_2
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_2_new
+        set_character_flag = axe_tier_2   
+        new_artifact = {
+            set_name = artifact_name
+            set_description = artifact_description_smith_tier_2
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_2_new
+        set_character_flag = mace_tier_2   
+        new_artifact = {
+        	set_name = artifact_name
+        	set_description = artifact_description_smith_tier_2
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_2_new
+        set_character_flag = bow_tier_2   
+        new_artifact = {
+            set_name = artifact_name
+            set_description = artifact_description_smith_tier_2
+        }
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_2
+    }
+}
+
+give_smith_artifacts_flag_amazing_optionA_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_4_heartseeker
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_4_golden
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_4_impaler
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_4_cleaver
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_4_foe_hammer
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_4_silent_wind
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_4_guardian
+    }
+}
+
+give_smith_artifacts_flag_amazing_optionB_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_4_vengeance
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_4_fortune
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_4_trident
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_4_ravager
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_4_bone_breaker
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_4_lightning
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_4_champion
+    }
+}
+
+give_smith_artifacts_flag_amazing_optionC_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_4_fury
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_4_conquest
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_4_piercer
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_4_marauder
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_4_shatterer
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_4_eagle
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_4_warden
+    }
+}
+
+give_smith_artifacts_flag_expensive_optionA_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_3_heartseeker
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_3_golden
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_3_impaler
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_3_cleaver
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_3_foe_hammer
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_3_silent_wind
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_3_guardian
+    }
+}
+
+give_smith_artifacts_flag_expensive_optionB_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_3_vengeance
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_3_fortune
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_3_trident
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_3_ravager
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_3_bone_breaker
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_3_lightning
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_3_champion
+    }
+}
+
+give_smith_artifacts_flag_expensive_optionC_effect = {
+	if = {
+        limit = { FROM = { has_character_flag = weapon_sword } }
+        add_artifact = sword_tier_3_fury
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_scimitar } }
+        add_artifact = scimitar_tier_3_conquest
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_lance } }
+        add_artifact = lance_tier_3_piercer
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_axe } }
+        add_artifact = axe_tier_3_marauder
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_mace } }
+        add_artifact = mace_tier_3_shatterer
+    }
+    if = {
+        limit = { FROM = { has_character_flag = weapon_bow } }
+        add_artifact = bow_tier_3_eagle
+    }
+    if = {
+        limit = { FROM = { has_character_flag = armor_set } }
+        add_artifact = armor_tier_3_warden
+    }
+}
+
+give_random_character_modifier_effect = {
+	random_list = {
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = aspiring_poet }
+			}
+			modifier = {
+				factor = 2
+				learning = 12
+			}
+			add_character_modifier = {
+				name = aspiring_poet
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = aspiring_duelist }
+			}
+			modifier = {
+				factor = 2
+				martial = 12
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					duelist_skill_is_medium_group_trigger = yes
+					duelist_skill_is_high_group_trigger = yes
+				}
+			}
+			add_character_modifier = {
+				name = aspiring_duelist
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = aspiring_hunter }
+			}
+			add_character_modifier = {
+				name = aspiring_hunter
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = aspiring_falconer }
+			}
+			add_character_modifier = {
+				name = aspiring_falconer
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = learning_advice }
+			}
+			add_character_modifier = {
+				name = learning_advice
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = slept_in_church }
+			}
+			modifier = {
+				factor = 2
+				trait = drunkard
+			}
+			add_character_modifier = {
+				name = slept_in_church
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = gambler }
+			}
+			add_character_modifier = {
+				name = gambler
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = whoremaster }
+			}
+			modifier = {
+				factor = 2
+				trait = lustful
+			}
+			add_character_modifier = {
+				name = whoremaster
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = good_deeds }
+			}
+			modifier = {
+				factor = 1.5
+				is_benevolent_trigger = yes
+			}
+			modifier = {
+				factor = 1.5
+				has_pleasant_personality_trigger = yes
+			}
+			add_character_modifier = {
+				name = good_deeds
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = proving_bravery }
+			}
+			modifier = {
+				factor = 2
+				trait = brave
+			}
+			add_character_modifier = {
+				name = proving_bravery
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = suspected_coward }
+			}
+			modifier = {
+				factor = 0.5
+				trait = brave
+			}
+			add_character_modifier = {
+				name = suspected_coward
+				years = 5
+			}
+		}
+		5 = {
+			trigger = {
+				NOT = { has_character_modifier = speaking_in_tounges }
+			}
+			modifier = {
+				factor = 4
+				trait = lunatic
+			}
+			add_character_modifier = {
+				name = speaking_in_tounges
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = good_times }
+			}
+			add_character_modifier = {
+				name = good_times
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = good_hunt }
+			}
+			modifier = {
+				factor = 2
+				trait = hunter
+			}
+			add_character_modifier = {
+				name = good_hunt
+				years = 5
+			}
+		}
+		5 = {
+			trigger = {
+				NOT = { has_character_modifier = epic_hangover }
+			}
+			modifier ={
+				factor = 4
+				trait = drunkard
+			}
+			add_character_modifier = {
+				name = epic_hangover
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = weird_scholar }
+			}
+			modifier = {
+				factor = 2
+				learning = 12
+			}
+			add_character_modifier = {
+				name = weird_scholar
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = comfort_of_lover }
+			}
+			trigger = {
+				has_lover = yes
+			}
+			add_character_modifier = {
+				name = comfort_of_lover
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = sleep_deprivation }
+			}
+			add_character_modifier = {
+				name = sleep_deprivation
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = pet_cat }
+			}
+			add_character_modifier = {
+				name = pet_cat
+				years = 5
+			}
+			random_list = {
+				25 = {
+					trigger = {
+						is_female = yes
+					}
+					add_character_modifier = {
+	    				name = crazy_cat_lady
+	    				years = 5
+	    			}
+				}
+				25 = {
+					trigger = {
+						is_female = no
+					}
+					add_character_modifier = {
+	    				name = crazy_cat_lord
+	    				years = 5
+	    			}
+				}
+				50 = {}
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = invigorated }
+			}
+			add_character_modifier = {
+				name = invigorated
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = good_listener }
+			}
+			add_character_modifier = {
+				name = good_listener
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = confident }
+			}
+			add_character_modifier = {
+				name = confident
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = bad_person }
+				is_benevolent_trigger = no
+				has_pleasant_personality_trigger = no
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					is_evil_trigger = yes
+					has_unpleasant_personality_trigger = yes
+				}
+			}
+			add_character_modifier = {
+				name = bad_person
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = pet_parrot }
+			}
+			add_character_modifier = {
+				name = pet_parrot
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = pet_owl }
+			}
+			add_character_modifier = {
+				name = pet_owl
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = taking_it_easy }
+			}
+			modifier = {
+				factor = 2
+				trait = slothful
+			}
+			add_character_modifier = {
+				name = taking_it_easy
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = fell_into_the_river }
+			}
+			add_character_modifier = {
+				name = fell_into_the_river
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = green_fingers }
+			}
+			add_character_modifier = {
+				name = green_fingers
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = pet_house_dog }
+			}
+			add_character_modifier = {
+				name = pet_house_dog
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = pet_hedgehog }
+			}
+			add_character_modifier = {
+				name = pet_hedgehog
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = pet_otter }
+			}
+			add_character_modifier = {
+				name = pet_otter
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = bad_nights_sleep }
+			}
+			add_character_modifier = {
+				name = bad_nights_sleep
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = good_nights_sleep }
+			}
+			add_character_modifier = {
+				name = good_nights_sleep
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = well_spoken }
+			}
+			modifier = {
+				factor = 2
+				diplomacy = 12
+			}
+			add_character_modifier = {
+				name = well_spoken
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				NOT = { has_character_modifier = jumbling_words }
+			}
+			modifier = {
+				factor = 2
+				diplomacy < 8
+			}
+			add_character_modifier = {
+				name = jumbling_words
+				years = 5
+			}
+		}
+		100 = {
+			trigger = {
+				has_injury_trigger = no
+			}
+			apply_random_minor_injury_effect = yes
+		}
+		0.001 = {
+			#fallback
+		}
+	}
+}
+
+assign_random_nickname_effect = {
+	random_list = {
+		10 = {
+			trigger = {
+				trait = brave
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_brave
+				}
+				10 = {
+					give_nickname = nick_the_fearless
+				}
+			}
+		}
+		10 = {
+			give_nickname = nick_the_unlucky
+		}
+		10 = {
+			give_nickname = nick_the_lucky
+		}
+		5 = {
+			modifier = {
+				factor = 4
+				learning < 6
+			}
+			give_nickname = nick_the_clueless
+		}
+		10 = {
+			modifier = {
+				factor = 4
+				OR = {
+					is_evil_trigger = yes
+					has_unpleasant_personality_trigger = yes
+				}
+			}
+			give_nickname = nick_the_ill_tempered
+		}
+		10 = {
+			modifier = {
+				factor = 4
+				OR = {
+					has_pleasant_personality_trigger = yes
+					is_pious_trigger = yes
+				}
+			}
+			give_nickname = nick_the_affable
+		}
+		10 = {
+			trigger = {
+				age < 30
+			}
+			give_nickname = nick_the_youthful
+		}
+		5 = {
+			modifier = {
+				factor = 4
+				is_attractive_trigger = yes
+			}
+			give_nickname = nick_the_beguiling
+		}
+		10 = {
+			trigger = {
+				trait = lustful
+			}
+			give_nickname = nick_the_lewd
+		}
+		5 = {
+			modifier = {
+				factor = 4
+				trait = lustful
+			}
+			modifier = {
+				factor = 2
+				has_lover = yes
+			}
+			give_nickname = nick_the_unchaste
+		}
+		5 = {
+			trigger = {
+				uses_decadence = yes
+				decadence = 50
+			}
+			modifier = {
+				factor = 4
+				decadence = 70
+			}
+			give_nickname = nick_the_decadent
+		}
+		10 = {
+			trigger = {
+				has_unpleasant_personality_trigger = yes
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_shrewd
+				}
+				10 = {
+					give_nickname = nick_the_wily
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				has_pleasant_personality_trigger = yes
+			}
+			give_nickname = nick_the_jolly
+		}
+		10 = {
+			trigger ={
+				has_pleasant_personality_trigger = yes
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_gracious
+				}
+				10 = {
+					give_nickname = nick_the_kind
+				}
+				10 = {
+					give_nickname = nick_the_good
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				trait = patient
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_tenacious
+				}
+				10 = {
+					give_nickname = nick_the_mule
+				}
+			}
+		}
+		5 = {
+			modifier = {
+				factor = 4
+				has_mental_disorder_trigger = yes
+			}
+			give_nickname = nick_the_strange
+		}
+		10 = {
+			trigger = {
+				is_weak_trigger = yes
+			}
+			give_nickname = nick_the_clumsy
+		}
+		10 = {
+			trigger = {
+				is_impious_trigger = yes
+			}
+			give_nickname = nick_the_evil
+		}
+		10 = {
+			trigger = {
+				is_strong_trigger = yes
+			}
+			give_nickname = nick_the_strong
+		}
+		10 = {
+			modifier = {
+				factor = 2
+				has_pleasant_personality_trigger = yes
+			}
+			give_nickname = nick_the_merry
+		}
+		10 = {
+			modifier = {
+				factor = 2
+				has_pleasant_personality_trigger = yes
+			}
+			give_nickname = nick_the_gentle
+		}
+		10 = {
+			trigger = {
+				trait = proud
+			}
+			give_nickname = nick_the_proud
+		}
+		10 = {
+			trigger = {
+				trait = shy
+			}
+			give_nickname = nick_the_silent
+		}
+		10 = {
+			trigger = {
+				trait = chaste
+			}
+			give_nickname = nick_the_chaste
+		}
+		10 = {
+			trigger = {
+				is_attractive_trigger = yes
+				is_female = no
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_handsome
+				}
+				10 = {
+					give_nickname = nick_the_vain
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				is_attractive_trigger = yes
+				is_female = yes
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_fair
+				}
+				10 = {
+					give_nickname = nick_the_vain
+				}
+				10 = {
+					give_nickname = nick_the_flower
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				is_unattractive_trigger = yes
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_hideous
+				}
+				10 = {
+					give_nickname = nick_the_frog
+				}
+				10 = {
+					give_nickname = nick_the_repulsive
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				trait = lunatic
+			}
+			give_nickname = nick_the_mad
+		}
+		10 = {
+			trigger = {
+				trait = drunkard
+			}
+			give_nickname = nick_the_drunkard
+		}
+		10 = {
+			trigger = {
+				learning = 10
+			}
+			modifier = {
+				factor = 2
+				learning = 14
+			}
+			give_nickname = nick_the_wise
+		}
+		10 = {
+			trigger = {
+				is_pious_trigger = yes
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_pious 
+				}
+				10 = {
+					give_nickname = nick_the_blessed 
+				}
+			}
+		}
+		10 = {
+			give_nickname = nick_the_careless 
+		}
+		10 = {
+			trigger = {
+				age < 25
+			}
+			give_nickname = nick_the_young 
+		}
+		10 = {
+			trigger = {
+				age = 50
+			}
+			give_nickname = nick_the_old 
+		}
+		10 = {
+			trigger = {
+				learning = 10
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_scholar
+				}
+				10 = {
+					give_nickname = nick_the_understanding
+				} 
+				10 = {
+					give_nickname = nick_the_healer 
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				combat_rating = 10
+			}
+			give_nickname = nick_the_oakskin
+		}
+		10 = {
+			give_nickname = nick_the_jittery
+		}
+		10 = {
+			trigger = {
+				trait = slothful
+			}
+			give_nickname = nick_the_sleepy
+		}
+		10 = {
+			trigger = {
+				base_health < 3
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_butter_teeth
+				}
+				10 = {
+					give_nickname = nick_the_toothless
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				trait = craven
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_cowardly
+				}
+				10 = {
+					give_nickname = nick_the_squirmy
+				}
+			}
+		}
+		10 = {
+			trigger = {
+				trait = paranoid
+			}
+			give_nickname = nick_the_frantic 
+		}
+		10 = {
+			give_nickname = nick_the_dry_throat 
+		}
+		10 = {
+			trigger = {
+				NOR = {
+					trait = genius
+					trait = quick
+				}
+			}
+			modifier = {
+				factor = 4
+				OR = {
+					trait = imbecile
+					trait = slow
+				}
+			}
+			random_list = {
+				10 = {
+					give_nickname = nick_the_thin_minded
+				}
+				10 = {
+					give_nickname = nick_the_forgetful
+				}
+			}
+		}
+		10 = {
+			give_nickname = nick_the_messy 
+		}
+		10 = {
+			give_nickname = nick_the_feeble
+		}
+		10 = {
+			trigger = {
+				NOT = { trait = gregarious }
+			}
+			modifier = {
+				factor = 2
+				trait = shy
+			}
+			give_nickname = nick_the_recluse
+		}
+		10 = {
+			trigger = {
+				trait = wroth
+			}
+			give_nickname = nick_the_short_tempered
+		}
+		10 = {
+			give_nickname = nick_the_red_cheeks
+		}
+		10 = {
+			give_nickname = nick_the_blushing
+		}
+		10 = {
+			trigger = {
+				NOT = {
+					trait = content
+				}
+			}
+			give_nickname = nick_the_whiner
+		}
+		10 = {
+			trigger = {
+				trait = deceitful
+			}
+			give_nickname = nick_the_liar
+		}
+		10 = {
+			give_nickname = nick_the_twitchy
+		}
+	}
 }
