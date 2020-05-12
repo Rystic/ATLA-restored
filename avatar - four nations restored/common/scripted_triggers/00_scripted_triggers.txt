@@ -14,7 +14,7 @@
 #has_evil_trait_trigger				Has an evil trait.
 #is_evil_trigger					Has an evil trait and not any benevolent traits.
 #has_unpleasant_trait_trigger		Has an unpleasant personality trait. 
-#has_unpleasant_personality_trigger	Has an  upleasant personality trait and not any pleasant personality traits.
+#has_unpleasant_personality_trigger	Has an  unpleasant personality trait and not any pleasant personality traits.
 #has_impious_trait_trigger			Has an impious trait.
 #is_impious_trigger					Has a impious trait and not any piety traits.
 #has_vice_trigger					Has a vice trait.
@@ -24,12 +24,16 @@
 #is_attractive_trigger				Has a sex appeal trait and not any traits with negative sex appeal.
 #has_unattractive_trait_trigger		Has a negative sex appeal trait.
 #is_unattractive_trigger			Has a negative sex appeal trait and not any traits with sex appeal.
+#has_fair_trait_trigger				Is Fair/Groomed.
+#has_ugly_trait_trigger				Is Ugly/Uncouth.
 
 #Health/congential
 #is_smart_trigger					Has a smart trait.
 #is_dumb_trigger					Has a dumb trait.
-#is_strong_trigger					Has a strogn trait.
+#is_strong_trigger					Has a strong trait.
 #is_weak_trigger					Has a weak trait.
+#well_treated_for_disease_trigger   Has a modifier relating to a positive treatement.
+#poorly_treated_for_disease_trigger Has a modifier relating to a negative treatement.
 #character_disease_trigger			Has a disease trait.
 #has_symptom_trigger				Has a symptom trait.
 #has_injury_trigger					Has an injury trait.
@@ -38,11 +42,12 @@
 #has_medium_disability_trigger		Has a medium disability, which limits the character to some extent but they can mostly live a full life.
 #has_minor_disability_trigger		Has a minor disability, which does not limit the character in a physical sense, but is a source of ridicule and trauma.
 #has_disability_trigger				Has a severe or light disability.
-#has_mental_disorder_trigger		Has a mentral disorder trait.
+#has_mental_disorder_trigger		Has a mental disorder trait.
 #has_fertile_trait_trigger			Has a fertile trait.
 #is_fertile_trigger					Has a fertile trait and not any infertile traits.
 #has_infertile_trait_trigger		Has an infertile trait.
 #is_infertile_trigger				Has an infertile trait and not any fertile traits, OR is celibate OR is eunuch.
+#has_negative_congenital_trigger	Has a negative congenital trait
 
 #Diplomacy
 #has_education_diplomacy_trigger	Has a diplomacy education trait.
@@ -66,10 +71,17 @@
 
 #Learning
 #has_education_learning_trigger		Has a learning education trait.
-#has_lifestyle_learning_trigger		Has a learninglifestyle trait.
+#has_lifestyle_learning_trigger		Has a learning lifestyle trait.
 #child_personality_learning_trigger	Has a child trait with learning bonus.
 #is_learned_trigger					Has a scholarly trait, learning-oriented trait.
 
+#has_any_lifestyle_trait			Has any of the above lifestyle traits.
+
+#Religion
+#has_crusade_trait_trigger			Has a crusade type trait.
+#has_secret_religion_trait_trigger	Has a secret religion trait.
+
+#is_mongol_empire_leader_trigger	If the Character is a Mongol emperor or its liege is
 
 ##AGREEABLE###
 
@@ -116,6 +128,7 @@ has_pious_trait_trigger = {
 		trait = content
 		trait = on_pilgrimage
 		trait = pilgrim
+		is_ascetic_trigger = yes
 		trait = zealous
 	}
 }
@@ -179,6 +192,8 @@ has_impious_trait_trigger = {
 		trait = cynical
 		trait = hedonist
 		trait = lustful
+		trait = cannibal_trait
+		trait = impaler
 	}
 }
 
@@ -205,6 +220,7 @@ has_vice_trigger = {
 has_attractive_trait_trigger = {
 	OR = {
 		trait = fair
+		trait = groomed
 		trait = just
 		trait = brave
 		trait = gregarious
@@ -224,8 +240,10 @@ is_attractive_trigger = {
 has_unattractive_trait_trigger = {
 	OR = {
 		trait = ugly
+		trait = uncouth
 		trait = feeble
 		trait = dwarf
+		trait = giant
 		trait = clubfooted
 		trait = harelip
 		trait = hunchback
@@ -243,7 +261,6 @@ has_unattractive_trait_trigger = {
 		trait = arbitrary
 		trait = cruel
 		trait = stubborn
-		trait = eunuch
 		trait = blinded
 		trait = horse
 		trait = one_eyed
@@ -302,6 +319,27 @@ is_weak_trigger = {
 	}
 }
 
+well_treated_for_disease_trigger = {
+	OR = {
+		has_character_modifier = mystic_treatment_decent
+		has_character_modifier = symptom_treatment_1
+		has_character_modifier = symptom_treatment_2
+		has_character_modifier = symptom_treatment_3
+		has_character_modifier = symptom_treatment_4	
+		has_character_modifier = successful_treatment_1
+		has_character_modifier = successful_treatment_2
+		has_character_modifier = successful_treatment_3
+	}	
+}
+poorly_treated_for_disease_trigger = {
+	OR = {
+		has_character_modifier = mystic_treatment_poor
+		has_character_modifier = mystic_treatment_terrible
+		has_character_modifier = failed_treatment_1
+		has_character_modifier = failed_treatment_2
+	}	
+}
+
 character_disease_trigger = {
 	OR = {
 		trait = has_pentapox
@@ -325,12 +363,41 @@ character_disease_trigger = {
 		trait = rabies
 		trait = cancer
 		trait = pneumonic
+	}
+}
+
+has_disease_trigger = {
+	OR = {
+		trait = has_pentapox
+		trait = has_takuan_cough
+		trait = has_black_frost
+		trait = has_scorch_blight
+		trait = has_verminbite
+		trait = has_ashbreath
+		trait = has_tuberculosis
+		trait = has_typhoid_fever
+		trait = has_typhus
+		trait = has_bubonic_plague
+		trait = has_measles
+		trait = has_small_pox
+		trait = has_aztec_disease
+		trait = syphilitic
+		trait = flu
+		trait = dysentery
+		trait = gout
+		trait = food_poisoning
+		trait = rabies
+		trait = cancer
+		trait = pneumonic
+
 		trait = dancing_plague
 		trait = scurvy
 		trait = ill
 		trait = leper
+		trait = lovers_pox
 	}
 }
+
 
 has_symptom_trigger = {
 	OR = {
@@ -346,6 +413,25 @@ has_symptom_trigger = {
 		trait = diarrhea
 		trait = fever
 		trait = cough
+	}
+}
+
+has_minor_disease_trigger = {
+	OR = {
+		trait = malaise
+		trait = fatigue
+		trait = abdominal_pain
+		trait = headache
+		trait = rash
+		trait = cramps
+		trait = chest_pain
+		trait = vomiting
+		trait = diarrhea
+		trait = fever
+		trait = cough
+		trait = ill
+		trait = lovers_pox
+		trait = flu
 	}
 }
 
@@ -386,6 +472,7 @@ has_medium_disability_trigger = {
 		trait = clubfooted
 		trait = hunchback
 		trait = dwarf
+		trait = giant
 	}
 }
 
@@ -506,11 +593,14 @@ child_personality_diplomacy_trigger = {
 ##MARTIAL##
 
 has_education_martial_trigger = {
-	OR = {
-		trait = misguided_warrior
-		trait = tough_soldier
-		trait = skilled_tactician
-		trait = brilliant_strategist
+	custom_tooltip = {
+		text = has_martial_education_tt
+		OR = {
+			trait = misguided_warrior
+			trait = tough_soldier
+			trait = skilled_tactician
+			trait = brilliant_strategist
+		}
 	}
 }
 
@@ -626,6 +716,23 @@ is_learned_trigger = {
 }
 
 
+has_any_lifestyle_trait = {
+	OR = {
+		has_lifestyle_diplomacy_trigger = yes
+		has_lifestyle_martial_trigger = yes
+		has_lifestyle_stewardship_trigger = yes
+		has_lifestyle_intrigue_trigger = yes
+		has_lifestyle_learning_trigger = yes
+	}
+}
+
+has_secret_religion_trait_trigger = {
+	custom_tooltip = {
+		text = no_secret_religion
+		has_secret_religion = yes
+	}
+}
+
 ####MERC LEADER/COUNCIL JOB####
 
 #Used with character interaction to replace merc leader. DO NOT REMOVE
@@ -637,23 +744,11 @@ can_be_mercenary_leader_potential_trigger = {
 	NOR = { 
 		trait = incapable
 		is_inaccessible_trigger = yes
-		trait = monk
+		is_ascetic_trigger = yes
 	}
 	same_realm = FROM
 	OR = {
 		is_female = no
-		AND = {
-			religion = cathar
-			FROM = {
-				religion = cathar
-			}
-		}
-		AND = {
-			religion = messalian
-			FROM = {
-				religion = messalian
-			}
-		}
 		FROM = {
 			has_law = true_cognatic_succession
 		}
@@ -765,16 +860,19 @@ can_be_chancellor_trigger = {
 	OR = {
 		AND = {
 			OR = {
-				is_female = no
+				AND = { #Patriarchal religions can only hire males. Matriarchal religions can only hire females.
+					is_female = no 
+					NOT = { liege = { has_religion_feature = religion_matriarchal } } 
+				}
+				AND = {
+					is_female = yes 
+					OR = { 
+						liege = { has_religion_feature = religion_matriarchal } 
+						liege = { has_religion_feature = religion_equal } 
+						liege = { has_religion_feature = religion_feature_bon } 
+					} 
+				}
 				trait = horse # So we can have female glitterhoofs! :D
-				AND = {
-					religion = cathar
-					liege = { religion = cathar }
-				}
-				AND = {
-					religion = messalian
-					liege = { religion = messalian }
-				}
 				AND = {
 					liege = {
 						primary_title = {
@@ -799,7 +897,10 @@ can_be_chancellor_trigger = {
 					}
 				}
 				OR = {
-					liege = { primary_title = { has_law = status_of_women_4 } }
+					AND = { 
+						is_female = yes
+						liege = { primary_title = { has_law = status_of_women_4 } } 
+					}
 					has_game_rule = {
 						name = gender
 						value = all
@@ -816,13 +917,32 @@ can_be_chancellor_trigger = {
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				who = ROOT	
+				modifier = opinion_resigned_from_council 
+			} 
+		} 
+	}
 }
 
 can_be_marshal_trigger = {
 	OR = {
 		AND = {
 			OR = {
-				is_female = no
+				AND = { #Patriarchal religions can only hire males. Matriarchal religions can only hire females.
+					is_female = no 
+					NOT = { liege = { has_religion_feature = religion_matriarchal } } 
+				}
+				AND = {
+					is_female = yes 
+					OR = { 
+						liege = { has_religion_feature = religion_matriarchal } 
+						liege = { has_religion_feature = religion_equal } 
+						liege = { has_religion_feature = religion_feature_bon } 
+					} 
+				}
 				trait = horse # So we can have female glitterhoofs! :D
 				OR = {
 					AND = {
@@ -856,7 +976,10 @@ can_be_marshal_trigger = {
 					}
 				}
 				OR = {
-					liege = { primary_title = { has_law = status_of_women_4 } }
+					AND = { 
+						is_female = yes
+						liege = { primary_title = { has_law = status_of_women_4 } } 
+					}
 					has_game_rule = {
 						name = gender
 						value = all
@@ -878,13 +1001,32 @@ can_be_marshal_trigger = {
 	NOT = { trait = in_hiding }
 	NOT = { has_character_flag = guru }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				who = ROOT	
+				modifier = opinion_resigned_from_council 
+			} 
+		} 
+	}
 }
 
 can_be_treasurer_trigger = {
 	OR = {
 		AND = {
 			OR = {
-				is_female = no
+				AND = { #Patriarchal religions can only hire males. Matriarchal religions can only hire females.
+					is_female = no 
+					NOT = { liege = { has_religion_feature = religion_matriarchal } } 
+				}
+				AND = {
+					is_female = yes 
+					OR = { 
+						liege = { has_religion_feature = religion_matriarchal } 
+						liege = { has_religion_feature = religion_equal } 
+						liege = { has_religion_feature = religion_feature_bon } 
+					} 
+				}
 				trait = horse # So we can have female glitterhoofs! :D
 				AND = {
 					religion = cathar
@@ -918,7 +1060,10 @@ can_be_treasurer_trigger = {
 					}
 				}
 				OR = {
-					liege = { primary_title = { has_law = status_of_women_4 } }
+					AND = { 
+						is_female = yes
+						liege = { primary_title = { has_law = status_of_women_4 } } 
+					}
 					has_game_rule = {
 						name = gender
 						value = all
@@ -936,15 +1081,38 @@ can_be_treasurer_trigger = {
 	NOT = { trait = in_hiding }
 	NOT = { has_character_flag = guru }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				who = ROOT	
+				modifier = opinion_resigned_from_council 
+			} 
+		} 
+	}
 }
 
 can_be_spymaster_trigger = {
 	OR = {
 		AND = {
 			OR = {
-				is_female = no
+				AND = { #Patriarchal religions can only hire males. Matriarchal religions can only hire females.
+					is_female = no 
+					NOT = { liege = { has_religion_feature = religion_matriarchal } } 
+				}
+				AND = {
+					is_female = yes 
+					OR = { 
+						liege = { has_religion_feature = religion_matriarchal } 
+						liege = { has_religion_feature = religion_equal } 
+						liege = { has_religion_feature = religion_feature_bon } 
+					} 
+				}
 				trait = horse # So we can have female glitterhoofs! :D
 				liege = { 
+					NOR = {
+						liege = { has_religion_feature = religion_matriarchal } 
+						liege = { has_religion_feature = religion_patriarchal } 
+					}
 					OR = {
 						mother = { character = ROOT }
 						any_spouse = { character = ROOT }
@@ -954,15 +1122,31 @@ can_be_spymaster_trigger = {
 					religion_group = pagan_group
 					liege = {
 						religion_group = pagan_group
+						NOR = {
+							liege = { has_religion_feature = religion_matriarchal } 
+							liege = { has_religion_feature = religion_patriarchal } 
+						}
 					}
 				}
 				AND = {
 					religion = cathar
-					liege = { religion = cathar }
+					liege = { 
+						religion = cathar 
+						NOR = {
+							liege = { has_religion_feature = religion_matriarchal } 
+							liege = { has_religion_feature = religion_patriarchal } 
+						}
+					}
 				}
 				AND = {
 					religion = messalian
-					liege = { religion = messalian }
+					liege = { 
+						religion = messalian 
+						NOR = {
+							liege = { has_religion_feature = religion_matriarchal } 
+							liege = { has_religion_feature = religion_patriarchal } 
+						}
+					}
 				}
 				AND = {
 					liege = {
@@ -989,7 +1173,10 @@ can_be_spymaster_trigger = {
 					}
 				}
 				OR = {
-					liege = { primary_title = { has_law = status_of_women_4 } }
+					AND = { 
+						is_female = yes
+						liege = { primary_title = { has_law = status_of_women_4 } } 
+					}
 					has_game_rule = {
 						name = gender
 						value = all
@@ -1007,6 +1194,14 @@ can_be_spymaster_trigger = {
 	NOT = { trait = in_hiding }
 	NOT = { has_character_flag = guru }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				who = ROOT	
+				modifier = opinion_resigned_from_council 
+			} 
+		} 
+	}
 }
 
 can_be_spiritual_trigger = {
@@ -1015,6 +1210,14 @@ can_be_spiritual_trigger = {
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				who = ROOT	
+				modifier = opinion_resigned_from_council 
+			} 
+		} 
+	}
 
 	liege = {
 		religion = ROOT
@@ -1025,10 +1228,17 @@ can_be_spiritual_trigger = {
 			OR = {
 				is_female = no
 				religion_allows_female_temple_holders = yes
+				has_religion_feature = religion_matriarchal
+			}
+			OR = {
+				is_female = yes
+				religion_allows_male_temple_holders = yes
+				has_religion_feature = religion_patriarchal
 			}
 			OR = {
 				NOT = { religion = hindu }
 				trait = brahmin
+				is_ascetic_trigger = yes
 			}
 		}
 		has_character_flag = special_spiritual
@@ -1077,9 +1287,24 @@ can_be_councilmember_king_trigger = {
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				modifier = opinion_resigned_from_council 
+				who = ROOT
+			}
+		} 
+	}
 	AND = {
 		OR = {
-			is_female = no
+			AND = { #Patriarchal religions can only hire males. Matriarchal religions can only hire females.
+				is_female = no 
+				NOT = { liege = { has_religion_feature = religion_matriarchal } } 
+			}
+			AND = {
+				is_female = yes 
+				NOT = { liege = { has_religion_feature = religion_patriarchal } } 
+			}
 			AND = {
 				OR = {
 					religion = cathar
@@ -1088,6 +1313,7 @@ can_be_councilmember_king_trigger = {
 				liege = { religion = ROOT }
 			}
 			AND = {
+				is_female = yes
 				liege = {
 					primary_title = {
 						OR = {
@@ -1100,7 +1326,10 @@ can_be_councilmember_king_trigger = {
 				is_landed = yes
 			}
 			OR = {
-				liege = { primary_title = { has_law = status_of_women_4 } }
+				AND = { 
+					is_female = yes
+					liege = { primary_title = { has_law = status_of_women_4 } } 
+				}
 				has_game_rule = {
 					name = gender
 					value = all
@@ -1117,10 +1346,29 @@ can_be_councilmember_emperor_trigger = {
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
 	NOT = { has_character_modifier = resigned_in_anger }
+	NOT = { 
+		liege = { 
+			has_opinion_modifier = {
+				who = ROOT	
+				modifier = opinion_resigned_from_council 
+			} 
+		} 
+	}
 	OR = {
 		AND = {
 			OR = {
-				is_female = no
+				AND = { #Patriarchal religions can only hire males. Matriarchal religions can only hire females.
+					is_female = no 
+					NOT = { liege = { has_religion_feature = religion_matriarchal } } 
+				}
+				AND = {
+					is_female = yes 
+					OR = { 
+						liege = { has_religion_feature = religion_matriarchal } 
+						liege = { has_religion_feature = religion_equal } 
+						liege = { has_religion_feature = religion_feature_bon } 
+					} 
+				}
 				AND = {
 					religion = cathar
 					liege = { religion = cathar }
@@ -1130,6 +1378,7 @@ can_be_councilmember_emperor_trigger = {
 					liege = { religion = messalian }
 				}
 				AND = {
+					is_female = yes
 					liege = {
 						primary_title = {
 							OR = {
@@ -1142,7 +1391,10 @@ can_be_councilmember_emperor_trigger = {
 					is_landed = yes
 				}
 				OR = {
-					liege = { primary_title = { has_law = status_of_women_4 } }
+					AND = { 
+						is_female = yes
+						liege = { primary_title = { has_law = status_of_women_4 } } 
+					}
 					has_game_rule = {
 						name = gender
 						value = all
@@ -1153,7 +1405,6 @@ can_be_councilmember_emperor_trigger = {
 		}
 	}
 }
-
 
 ###REAPER'S DUE####
 
@@ -1176,33 +1427,35 @@ can_be_maimed_trigger = {
 	}
 }
 
-physician_bad_trigger = { #todo mental, blinded
+physician_bad_trigger = { 
 	OR = {
-		trait = lunatic
-		trait = stressed
-		trait = depressed
-		trait = possessed
-		trait = drunkard
-		trait = blinded
+		has_severe_disability_trigger = yes
+		has_mental_disorder_trigger = yes
 	}
 }
 
-physician_good_trigger = { #todo is learned
+physician_good_trigger = { 
 	OR = {
-		trait = scholar 
-		trait = healer
-		trait = erudite 
-		trait = physician
+		is_learned_trigger = yes
+		religion_group = jewish_group
 	} 
 }
 
-is_inaccessible_trigger = {
+is_inaccessible_trigger = { #Remember to write this "is_inaccessible_trigger = no" when scripting, or the tooltip will be messed up (it reads "Is NOT in Hiding, in Seclusion, or out traveling")
 	custom_tooltip = {
 		text = is_inaccessible_tooltip
 		hidden_tooltip = {
 			OR = {
 				trait = in_hiding
+				trait = on_pilgrimage
+				trait = travelling
+				trait = troubled_pregnancy
+				trait = pregnancy_finishing
+				has_character_modifier = mother_minor_rest
 				has_character_modifier = in_seclusion
+				has_character_modifier = in_meditation
+				has_character_modifier = doing_penance
+				has_character_modifier = out_traveling
 			}
 		}
 	}
@@ -1222,7 +1475,7 @@ prefers_men_trigger = {
 }
 
 root_attraction_trigger = {
-	#Returns yes when root is attracted the scoped character, based on sex
+	#Returns yes when ROOT is attracted to the scoped character, based on sex
 	OR = {
 		AND = {
 			is_female = yes
@@ -1231,6 +1484,47 @@ root_attraction_trigger = {
 		AND = {
 			is_female = no
 			ROOT = { prefers_men_trigger = yes }
+		}
+	}
+}
+
+prev_attraction_trigger = {
+	#Returns yes when PREV is attracted to the scoped character, based on sex
+	OR = {
+		AND = {
+			is_female = yes
+			PREV = { prefers_men_trigger = no }
+		}
+		AND = {
+			is_female = no
+			PREV = { prefers_men_trigger = yes }
+		}
+	}
+}
+
+attacted_to_root_trigger = {
+	#Returns yes when scoped character is attracted to ROOT, based on sex
+	OR = {
+		AND = {
+			ROOT = { is_female = yes }
+			prefers_men_trigger = no
+		}
+		AND = {
+			ROOT = { is_female = no }
+			prefers_men_trigger = yes
+		}
+	}
+}
+
+attacted_to_prev_trigger = {
+	OR = {
+		AND = {
+			PREV = { is_female = yes }
+			prefers_men_trigger = no
+		}
+		AND = {
+			PREV = { is_female = no }
+			prefers_men_trigger = yes
 		}
 	}
 }
@@ -1254,6 +1548,7 @@ is_unimportant_trigger = {
 		has_character_flag = eternal_life_mystic
 		trait = horse
 		has_character_modifier = in_seclusion
+		has_character_modifier = elder_long_life_modifier
 		immortal = yes
 		trait = avatar
 		trait = fullyrealisedavatar
@@ -1345,8 +1640,12 @@ death_murder_unknown_trigger = {
 		death_reason = death_murder_unknown_beheading
 		death_reason = death_murder_unknown_snakes
 		death_reason = death_murder_unknown_strangle
+		death_reason = death_murder_unknown_fear
+		death_reason = death_murder_unknown_lightning
+		death_reason = death_murder_unknown_combustion
+		death_reason = death_murder_unknown_crows
+		death_reason = death_murder_unknown_possessed_fall
 		death_reason = death_by_firebender
-
 	}	
 }
 
@@ -1409,12 +1708,14 @@ death_sacrificed_trigger = {
 		death_reason = death_sacrificed
 		death_reason = death_sacrificed_norse
 		death_reason = death_sacrificed_ancestors
+		death_reason = death_execution_aztec_sacrifice
 	}	
 }
 
 death_accident_trigger = {
 	OR = {
 		death_reason = death_accident
+		death_reason = death_accident_generic_beast
 		death_reason = death_accident_bear
 		death_reason = death_accident_boar
 		death_reason = death_accident_drowning
@@ -1436,14 +1737,14 @@ death_suicide_trigger = {
 	}
 }
 
+# Very usable! If poorly named
 block_general_event_trigger = {
 	OR = {	
-		trait = incapable
 		is_adult = no
+		trait = incapable
 		prisoner = yes
 		is_inaccessible_trigger = yes
-		is_alive = no
-		NOT = { always = yes }
+		hidden_trigger = { is_alive = no }
 	}
 }
 
@@ -1570,6 +1871,8 @@ is_comet_warning_year = {
 
 gender_equality_trigger = {
 	OR = {
+		has_religion_feature = religion_equal
+		has_religion_feature = religion_feature_bon
 		AND = {
 			is_landed = yes
 			primary_title = { 
