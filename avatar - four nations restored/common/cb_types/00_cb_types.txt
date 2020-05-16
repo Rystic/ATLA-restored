@@ -6455,16 +6455,6 @@ powerful_vassal_takeover_war = { # Started from faction
 		}
 	}
 
-	on_add = {
-		hidden_tooltip = { fire_haruspicy_event_effect = yes }
-		if = {
-			limit = { defender = { is_offmap_governor = offmap_china } }
-			attacker = {  
-				sound_effect = china_angered_emperor
-				detract_grace_super_huge_effect = yes 
-			}
-		}
-	}
 
 	on_success = {
 		any_attacker = {
@@ -6484,37 +6474,14 @@ powerful_vassal_takeover_war = { # Started from faction
 			limit = { has_law = succession_voting_power_0 }
 			add_law_w_cooldown = succession_voting_power_1
 		}
-		if = { 
-			limit = { #Should not be changed from Imperial Elective
-				NOT = {	has_law = succ_byzantine_elective }
-			}
+		if = {
+			limit = { has_law = succession_voting_power_0 }
 			custom_tooltip = {
 				text = overthrow_text
 				hidden_tooltip = {
 					if = {
 						limit = { 
-							OR = { 
-								title = e_hre
-								has_title_flag = alternate_hre
-							}
-							NOR = { has_law = succ_feudal_elective has_law = succ_hre_elective }
-							has_law = law_voting_power_1
-							has_law = banish_voting_power_1
-							has_law = execution_voting_power_1
-							has_law = revoke_title_voting_power_1
-							has_law = grant_title_voting_power_1
-							has_law = imprison_voting_power_1
-							has_law = war_voting_power_1						
-						}
-						add_law_w_cooldown = succ_hre_elective
-					}
-					if = {
-						limit = { 
-							NOR = { 
-								title = e_hre 
-								has_title_flag = alternate_hre
-							}
-							NOR = { has_law = succ_feudal_elective has_law = succ_hre_elective }
+							NOR = { has_law = succ_feudal_elective }
 							has_law = law_voting_power_1
 							has_law = banish_voting_power_1
 							has_law = execution_voting_power_1
@@ -6528,7 +6495,7 @@ powerful_vassal_takeover_war = { # Started from faction
 					if = {
 						limit = {
 							NOT = { has_law = succ_gavelkind }
-							NOR = { has_law = succ_feudal_elective has_law = succ_hre_elective }
+							NOR = { has_law = succ_feudal_elective}
 							NAND = {
 								has_law = succ_feudal_elective
 								has_law = law_voting_power_1
@@ -6756,20 +6723,6 @@ free_tributary_cb = {
 		}
 	}
 
-	can_use_gui = {
-		check_if_crusader_trigger = yes
-		ROOT = { #Cannot use CB if can take decision to stop paying tribute
-			conditional_tooltip = {
-				trigger = { is_decision_potential = tributary_independence_china }
-				NOT = { is_decision_allowed = tributary_independence_china }
-			}
-			conditional_tooltip = {
-				trigger = { is_decision_potential = tributary_independence_normal }
-				NOT = { is_decision_allowed = tributary_independence_normal }
-			}
-		}
-	}
-
 	is_valid = {
 		ROOT = {
 			OR = {
@@ -6795,17 +6748,6 @@ free_tributary_cb = {
 						}
 					}
 				}
-			}
-		}
-	}
-
-	on_add = {
-		hidden_tooltip = { fire_haruspicy_event_effect = yes }
-		if = {
-			limit = { defender = { is_offmap_governor = offmap_china } }
-			attacker = {  
-				sound_effect = china_angered_emperor
-				detract_grace_super_huge_effect = yes 
 			}
 		}
 	}
@@ -7033,23 +6975,6 @@ free_tributary_cb = {
 		modifier = {
 			factor = 1.5
 		}
-		modifier = { #Focus on Coronation first.
-			factor = 0.1
-			has_dlc = "Holy Fury"
-			ROOT = {
-				is_feudal = yes
-				OR = {
-					religion = catholic
-					religion = fraticelli
-				}
-				NOR = {
-					trait = crowned_by_priest
-					trait = crowned_by_bishop
-					trait = crowned_by_pope
-					trait = crowned_by_myself
-				}
-			}
-		}
 
 		modifier = {
 			factor = 4
@@ -7084,10 +7009,6 @@ cb_install_khan = {
 	attacker_can_call_allies = no
 	major_revolt = yes
 
-	can_use_gui = {
-		check_if_crusader_trigger = yes
-	}
-
 	can_use = {
 		has_dlc = "Horse Lords"
 		
@@ -7116,17 +7037,6 @@ cb_install_khan = {
 			any_demesne_title = {
 				NOT = { lower_tier_than = ROOT }
 				temporary = no
-			}
-		}
-	}
-
-	on_add = {
-		hidden_tooltip = { fire_haruspicy_event_effect = yes }
-		if = {
-			limit = { defender = { is_offmap_governor = offmap_china } }
-			attacker = {  
-				sound_effect = china_angered_emperor
-				detract_grace_super_huge_effect = yes 
 			}
 		}
 	}
