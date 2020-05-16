@@ -114,7 +114,12 @@ plot_gain_title = {
 		}
 		modifier = {
 			factor = 0.2
-			FROM = { trait = slow }
+			FROM = {
+				OR = {
+					trait = dull
+					trait = slow
+				}
+			}
 		}
 		modifier = {
 			factor = 0.2
@@ -170,7 +175,7 @@ plot_gain_title = {
 		}
 		modifier = {
 			factor = 1.5
-			FROM = { trait = quick }
+			FROM = { is_smart_trigger = yes }
 		}
 		modifier = {
 			factor = 2.0
@@ -287,7 +292,7 @@ plot_gain_vassal_title = {
 		prisoner = no
 		is_patrician = no
 		is_merchant_republic = no
-		age = 16
+		is_adult = yes
 		primary_title = {
 			higher_tier_than = COUNT
 			temporary = no
@@ -303,64 +308,28 @@ plot_gain_vassal_title = {
 		}
 	}
 	
+	target_potential = {
+		# No barony titles
+		higher_tier_than = BARON
+		is_primary_type_title = no
+		is_landless_type_title = no
+		controls_religion = no
+		is_merchant_republic = no
+		mercenary = no
+	}
+	
 	allow = {
-		hidden_tooltip = {
-			# No barony titles
-			higher_tier_than = BARON
-			is_primary_type_title = no
-			controls_religion = no
-			is_merchant_republic = no
-			mercenary = no
-			is_recent_grant = no
-			
-			OR = {
-				# Count title outside a Duke's duchy
-				AND = {
-					tier = COUNT
-					holder_scope = {
-						tier = DUKE
-						ROOT = {
-							NOT = { de_jure_liege = PREV }
-						}
-					}
-				}
-				# Duke with no count titles
-				AND = {
-					tier = DUKE
-					holder_scope = {
-						NOT = {
-							any_demesne_title = {
-								tier = COUNT
-								location = {
-									duchy = {
-										title = ROOT
-									}
-								}
-							}
-						}
-						NOT = {
-							any_vassal = {
-								any_demesne_title = {
-									tier = COUNT
-									location = {
-										duchy = {
-											title = ROOT
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-				# Count titles in ruler's primary duchy
-				AND = {
+		is_recent_grant = no
+		OR = {
+			# Count titles in ruler's primary duchy
+			custom_tooltip = {
+				text = TT_PLOT_GAIN_VASSAL_TITLE_COUNTY_IN_CAPITAL_DUCHY
+				hidden_tooltip = {
 					tier = COUNT
 					location = {
 						duchy = {
 							holder_scope = {
 								character = FROM
-							}
-							FROM = {
 								capital_scope = {
 									duchy = {
 										title = PREVPREVPREV
@@ -370,34 +339,80 @@ plot_gain_vassal_title = {
 						}
 					}
 				}
-				# Count's secondary county
-				AND = {
+			}
+			# Count's secondary county
+			custom_tooltip = {
+				text = TT_PLOT_GAIN_VASSAL_TITLE_COUNT_SECONDARY_COUNTY
+				hidden_tooltip = {
 					tier = COUNT
 					location = {
 						is_capital = no
 					}
 					holder_scope = {
-						lower_tier_than = DUKE
+						lower_real_tier_than = DUKE
 						num_of_count_titles = 2
 					}
 				}
 			}
-			holder_scope = {
-				liege_before_war = {
-					character = FROM
+			# Count title outside a Duke's duchy
+			custom_tooltip = {
+				text = TT_PLOT_GAIN_VASSAL_TITLE_DUKE_COUNTY_OUTSIDE_DUCHY
+				hidden_tooltip = {
+					tier = COUNT
+					holder_scope = {
+						tier = DUKE
+						ROOT = {
+							NOT = { de_jure_liege = PREV }
+						}
+					}
 				}
 			}
-			holder_scope = {
-				NOT = { reverse_has_truce = FROM }
+			# Duke with no count titles
+			custom_tooltip = {
+				text = TT_PLOT_GAIN_VASSAL_TITLE_DUCHY_ALL_DJ_COUNTIES_NOT_DEFACTO
+				hidden_tooltip = {
+					tier = DUKE
+					holder_scope = {
+						ROOT = {
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holder_scope = {
+										OR = {
+											character = PREVPREVPREV
+											is_liege_or_above = PREVPREVPREV
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			# Belongs to Tyrannical Bloodline
+			custom_tooltip = {
+				text = TT_PLOT_GAIN_VASSAL_TITLE_TYRANNICAL_BLOODLINE
+				hidden_tooltip = {
+					FROM = {
+						any_owned_bloodline = {
+							has_bloodline_flag = bloodline_revocation_plot 
+						}
+					}
+				}
 			}
 		}
-		
-		# Only if there is no non-aggression-pact with the vassal
-		FROM = {
-			NOT = {
-				has_non_aggression_pact_with = ROOT
+		holder_scope = {
+			custom_tooltip = { # liege_before_war lacks localisation, among other things
+				text = TT_FROM_IS_LIEGE_BEFORE_WAR
+				hidden_tooltip = {
+					liege_before_war = { # Plot will not invalidate during vassal-liege war
+						character = FROM
+					}
+				}
 			}
+			NOT = { has_non_aggression_pact_with = FROM }
+			NOT = { reverse_has_truce = FROM }
 		}
+		FROM = { in_revolt = no }
 	}
 	
 	chance = {
@@ -416,20 +431,25 @@ plot_gain_vassal_title = {
 		}
 		modifier = {
 			factor = 0.2
-			FROM = { trait = slow }
+			FROM = {
+				OR = {
+					trait = dull
+					trait = slow
+				}
+			}
 		}
 		modifier = {
 			factor = 0.2
 			FROM = { trait = kind }
 		}
-		modifier = {
-			factor = 0.0
-			FROM = {
-				ai = yes
-				family = ROOT
-				opinion = { who = ROOT value = 0 }
-			}
-		}
+		#modifier = {
+		#	factor = 0.0
+		#	FROM = {
+		#		ai = yes
+		#		family = ROOT
+		#		opinion = { who = ROOT value = 0 }
+		#	}
+		#}
 		modifier = {
 			factor = 0
 			FROM = {
@@ -492,7 +512,7 @@ plot_gain_vassal_title = {
 		}
 		modifier = {
 			factor = 1.5
-			FROM = { trait = quick }
+			FROM = { is_smart_trigger = yes }
 		}
 		modifier = {
 			factor = 2.0
@@ -582,12 +602,19 @@ plot_gain_vassal_title = {
 							num_of_count_titles = 2
 						}
 					}
+					# Bloodline
+					FROM = {
+						any_owned_bloodline = {
+							has_bloodline_flag = bloodline_revocation_plot 
+						}
+					}
 				}
 			}
 			FROM = {
 				OR = {
 					is_playable = no
 					trait = incapable
+					in_revolt = yes
 				}
 			}
 			holder_scope = {
@@ -626,7 +653,7 @@ plot_gain_vassal_title = {
 
 # Get a character killed
 plot_kill_character = {
-	type = realm_characters_plus # All characters in the same realm, plus rivals and relatives of self, parents, children and spouse
+	type = realm_characters_plus # All characters in the same realm, plus rivals and relatives of self, parents, children and spouse, and quest target
 	intrigue_plot = yes
 	murder_plot = yes
 	
@@ -709,6 +736,7 @@ plot_kill_character = {
 		NOT = { is_child_of = FROM } # Not my own children
 		is_within_diplo_range = FROM
 		NOT = { has_blood_oath_with = FROM }
+		assassination_interaction_trigger = yes
 	}
 	
 	target_potential = {
@@ -859,6 +887,9 @@ plot_kill_character = {
 					OR = {
 						trait = lunatic
 						trait = possessed
+						any_owned_bloodline = {
+							has_bloodline_flag = bloodline_murderous 
+						}
 					}
 				}
 				
@@ -866,13 +897,27 @@ plot_kill_character = {
 				any_rival = {
 					character = ROOT
 				}
+				
+				ROOT = { is_murder_quest_target_of_prev_trigger = yes }
 			}
+		}
+	}
+	
+	# ROOT = target FROM = joiner FROMFROM = plotter
+	allow_join = {
+		ROOT = {
+			NOT = { is_child_of = FROM } # Not my own children
 		}
 	}
 	
 	chance = {
 		factor = 2
-		
+
+		modifier = {
+			factor = 50
+			FROM = { has_quest = quest_the_assassins_assassination }
+			is_quest_target_of = FROM
+		}
 		modifier = {
 			factor = 0.01
 			FROM = {
@@ -920,6 +965,9 @@ plot_kill_character = {
 		modifier = {
 			factor = 0
 			their_opinion = { who = FROM value = 25 }
+			NOT = {
+				FROM = { ROOT = { is_murder_quest_target_of_prev_trigger = yes } } #MNM murder missions
+			}
 		}
 		modifier = {
 			factor = 0
@@ -929,8 +977,15 @@ plot_kill_character = {
 					FROM = { trait = envious }
 					FROM = { trait = deceitful }
 					FROM = { trait = ambitious }
+					FROM = { ROOT = { is_murder_quest_target_of_prev_trigger = yes } } #MNM murder missions
 				}
 			}		
+		}
+		modifier = {
+			factor = 0
+			ROOT = {
+				is_pilgrim = yes
+			}
 		}
 		modifier = {
 			factor = 1.5
@@ -980,7 +1035,7 @@ plot_kill_character = {
 				top_liege = { character = father }
 			}
 			FROM = {
-				religion_group = muslim
+				religion_group = outlaw_religions
 				top_liege = { character = father }
 			}
 		}
@@ -993,8 +1048,14 @@ plot_kill_character = {
 				is_landed = no
 			}
 			FROM = {
-				religion_group = muslim
+				religion_group = outlaw_religions
 				top_liege = { character = father }
+			}
+		}
+		modifier = {
+			factor = 2.0
+			any_owned_bloodline = { #Backstabbing family.
+				has_bloodline_flag = bloodline_murderous 
 			}
 		}
 	}
@@ -1050,7 +1111,8 @@ plot_kill_spouse = {
 	
 	# Target allow trigger for when players target a specific character in the GUI
 	player_allow = {
-		always = yes
+		NOT = { is_lover = FROM }
+		assassination_interaction_trigger = yes
 	}
 	
 	# Target character scope
@@ -1145,6 +1207,12 @@ plot_kill_spouse = {
 			}		
 		}
 		modifier = {
+			factor = 0
+			ROOT = {
+				is_pilgrim = yes
+			}
+		}
+		modifier = {
 			factor = 1.5
 			NOT = { their_opinion = { who = FROM value = -25 } }
 		}
@@ -1193,6 +1261,11 @@ plot_kill_spouse = {
 				}
 			}
 		}
+		modifier = {
+			factor = 50
+			FROM = { has_quest = quest_the_assassins_assassination }
+			is_quest_target_of = FROM
+		}
 	}
 	
 	success = {
@@ -1203,6 +1276,9 @@ plot_kill_spouse = {
 	}
 	abort = {
 		is_alive = no
+		FROM = {
+			trait = incapable
+		}
 	}
 	abort_effect = {
 		FROM = { clr_character_flag = murder_in_motion }
@@ -1329,7 +1405,12 @@ plot_weaken_fellow_vassal = {
 		}
 		modifier = {
 			factor = 0.2
-			FROM = { trait = slow }
+			FROM = {
+				OR = {
+					trait = dull
+					trait = slow
+				}
+			}
 		}
 		modifier = {
 			factor = 0.2
@@ -1448,7 +1529,7 @@ plot_weaken_fellow_vassal = {
 		
 		modifier = {
 			factor = 1.5
-			FROM = { trait = quick }
+			FROM = { is_smart_trigger = yes }
 		}
 		modifier = {
 			factor = 2.0
@@ -1595,7 +1676,12 @@ plot_gain_liege_title = {
 		}
 		modifier = {
 			factor = 0.2
-			FROM = { trait = slow }
+			FROM = {
+				OR = {
+					trait = dull
+					trait = slow
+				}
+			}
 		}
 		modifier = {
 			factor = 0.2
@@ -1692,7 +1778,7 @@ plot_gain_liege_title = {
 	
 		modifier = {
 			factor = 1.5
-			FROM = { trait = quick }
+			FROM = { is_smart_trigger = yes }
 		}
 		modifier = {
 			factor = 2.0
@@ -1717,6 +1803,7 @@ plot_gain_liege_title = {
 				character = FROM
 			}
 			has_holder = no
+			holder_scope = { is_playable = no }
 		}
 	}
 	abort_effect = {
@@ -1818,7 +1905,12 @@ plot_gain_fellow_vassal_title = {
 		}
 		modifier = {
 			factor = 0.2
-			FROM = { trait = slow }
+			FROM = {
+				OR = {
+					trait = dull
+					trait = slow
+				}
+			}
 		}
 		modifier = {
 			factor = 0.2
@@ -1894,7 +1986,7 @@ plot_gain_fellow_vassal_title = {
 		}
 		modifier = {
 			factor = 1.5
-			FROM = { trait = quick }
+			FROM = { is_smart_trigger = yes }
 		}
 		modifier = {
 			factor = 2.0
@@ -2017,7 +2109,12 @@ plot_seize_trade_post = {
 		}
 		modifier = {
 			factor = 0.2
-			FROM = { trait = slow }
+			FROM = {
+				OR = {
+					trait = dull
+					trait = slow
+				}
+			}
 		}
 		modifier = {
 			factor = 0.2
@@ -2107,7 +2204,7 @@ plot_seize_trade_post = {
 		}
 		modifier = {
 			factor = 1.5
-			FROM = { trait = quick }
+			FROM = { is_smart_trigger = yes }
 		}
 		modifier = {
 			factor = 2.0

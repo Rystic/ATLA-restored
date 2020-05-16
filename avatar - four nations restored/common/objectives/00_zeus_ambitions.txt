@@ -17,7 +17,7 @@ obj_become_council_member = {
 	}
 
 	allow = {
-		liege = { independent = yes }
+		#liege = { independent = yes }
 		NOT = {
 			liege = { spouse = { character = ROOT } }
 		}
@@ -34,7 +34,7 @@ obj_become_council_member = {
 			can_hold_title = job_spymaster
 			can_hold_title = job_spiritual
 		}
-		NOR = { trait = incapable trait = in_hiding }
+		NOR = { trait = incapable is_inaccessible_trigger = yes }
 	}
 	
 	chance = {
@@ -90,7 +90,7 @@ obj_become_council_member = {
 		}
 		modifier = { 
 			factor = 10
-			among_most_powerful_vassals = 5 #TODO replace this with more appropriate trigger
+			among_most_powerful_vassals = 5 
 		}
 		modifier = { 
 			factor = 5
@@ -102,17 +102,16 @@ obj_become_council_member = {
 	}
 	abort = {
 		OR = {
-			liege = { spouse = { character = ROOT } }
-			trait = in_hiding
 			independent = yes
 			trait = incapable
-			NOR = { 
+			NOR = {
 				can_hold_title = job_chancellor
 				can_hold_title = job_marshal
 				can_hold_title = job_treasurer
 				can_hold_title = job_spymaster
 				can_hold_title = job_spiritual
 			}
+			is_landed = no
 		}
 	}
 	abort_effect = {
@@ -136,10 +135,20 @@ obj_land_for_son = {
 	
 	potential = {
 		independent = no
+		is_nomadic = no
+		NOT = { 
+			has_religion_feature = religion_matriarchal
+		}
+		liege = {
+			is_nomadic = no
+			NOT = { 
+				has_religion_feature = religion_matriarchal
+			}
+		}
 	}
 
 	allow = {
-		liege = { independent = yes }
+		#liege = { independent = yes }
 		has_dlc = "Zeus"
 		prisoner = no
 		is_adult = yes
@@ -157,7 +166,7 @@ obj_land_for_son = {
 			prisoner = no
 			NOR = {
 				trait = incapable
-				trait = monk
+				is_ascetic_trigger = yes
 				trait = eunuch
 			}
 			liege = {
@@ -219,10 +228,136 @@ obj_land_for_son = {
 		}
 	}
 	abort = {
+		is_nomadic = yes
+		liege = {
+			is_nomadic = yes
+		}
 		OR = {
 			NOT = {
 				any_child = {
 					is_female = no
+					is_adult = yes
+					is_landed = no
+					is_heir = no
+				}
+			}
+			independent = yes
+			trait = incapable
+		}
+	}
+	abort_effect = {
+	}
+	effect = {
+	}
+}
+
+# Gain land for daughter
+
+obj_land_for_daughter = {
+	type = character
+	
+	potential = {
+		independent = no
+		is_nomadic = no
+		OR = { 
+			has_religion_feature = religion_matriarchal
+			has_religion_feature = religion_equal
+		}
+		liege = {
+			is_nomadic = no
+			OR = { 
+				has_religion_feature = religion_matriarchal
+				has_religion_feature = religion_equal
+			}
+		}
+	}
+
+	allow = {
+		#liege = { independent = yes }
+		has_dlc = "Zeus"
+		prisoner = no
+		is_adult = yes
+		NOR = { 
+			trait = incapable 
+			has_character_flag = land_for_daughter_successful
+		}
+		any_child = {
+			is_female = yes
+			is_landed = no
+			is_adult = yes
+			is_heir = no
+			prisoner = no
+			NOR = {
+				trait = incapable
+				is_ascetic_trigger = yes
+			}
+			liege = {
+				character = ROOT
+			}
+		}
+	}
+	
+	chance = {
+		factor = 100
+		
+		modifier = {
+			factor = 0.5
+			trait = content
+		}
+		modifier = {
+			factor = 3.0
+			trait = ambitious
+		}
+		modifier = {
+			factor = 0.5
+			trait = shy
+		}
+		modifier = {
+			factor = 1.5
+			trait = gregarious
+		}
+		modifier = {
+			factor = 2
+			trait = proud
+		}
+		modifier = {
+			factor = 0.5
+			trait = humble
+		}
+		modifier = {
+			factor = 1.25
+			from_ruler_dynasty = yes
+		}
+		modifier = {
+			factor = 1.5
+			diplomacy = 16
+		}
+		modifier = { 
+			factor = 10
+			is_councillor = yes
+		}
+		modifier = { 
+			factor = 5
+			relative_income_to_liege = 0.5
+		}
+	}
+	success = {
+		custom_tooltip = {
+			text = obj_land_for_daughter_success_tooltip
+			hidden_tooltip = {
+				has_character_flag = land_for_daughter_successful
+			}
+		}
+	}
+	abort = {
+		is_nomadic = yes
+		liege = {
+			is_nomadic = yes
+		}
+		OR = {
+			NOT = {
+				any_child = {
+					is_female = yes
 					is_adult = yes
 					is_landed = no
 					is_heir = no
@@ -273,7 +408,7 @@ obj_build_a_war_chest = {
 		}
 		NOR = { 
 			trait = incapable
-			trait = in_hiding
+			is_inaccessible_trigger = yes
 		}
 		
 	}
@@ -384,7 +519,7 @@ obj_build_a_war_chest = {
 	effect = {
 		add_character_modifier = {
 			modifier = war_taxes
-			months = 36
+			months = 60
 		}
 		add_character_modifier = {
 		   modifier = war_chest_timer
@@ -402,30 +537,53 @@ obj_groom_an_heir = {
 	potential = {
 		has_dlc = "Conclave"
 		higher_tier_than = BARON
+		holy_order = no
+		mercenary = no
 	}
 	
 	allow = {
 		is_adult = yes
 		is_ruler = yes
-		is_married = yes
+		OR = {
+			NOT = { trait = eunuch }
+			any_child = {
+				is_alive = yes
+			}
+		}
 		NOR = {
 			trait = incapable
-			trait = in_hiding
+			is_inaccessible_trigger = yes
 			any_child = {
 				is_adult = yes 
 				NOR = {
-					trait = bastard
-					trait = eunuch
-					trait = celibate
-					trait = incapable
-					trait = monk
-					trait = nun
+					custom_tooltip = {
+						text = bastard_eunuch_celibate_or_incapable_tt
+						OR = {
+							trait = bastard
+							trait = eunuch
+							trait = celibate
+							trait = incapable
+						}
+					}
+					is_ascetic_trigger = yes
 				}
 				OR = {
-					is_female = no
-					AND = {
-						is_female = yes
-						ROOT = { has_law = true_cognatic_succession }
+					custom_tooltip = { #it's a boy, and you have Agnatic
+						text = boy_agnatic_tt
+						is_female = no
+						ROOT = { has_law = agnatic_succession }
+					}
+					custom_tooltip = { #it's a girl and you have Enatic
+						text = girl_enatic_tt
+						is_female = yes	
+						ROOT = { has_law = enatic_succession }
+					}
+					custom_tooltip = {
+						text = not_enatic_or_agnatic_tt
+						NOR = {
+							ROOT = { has_law = enatic_succession }	
+							ROOT = { has_law = agnatic_succession }
+						}
 					}
 				}
 			}
@@ -442,6 +600,10 @@ obj_groom_an_heir = {
 		modifier = {
 			factor = 0
 			trait = celibate
+		}
+		modifier = {
+			factor = 0
+			is_theocracy = yes
 		}
 		modifier = {
 			factor = 10
@@ -465,15 +627,7 @@ obj_groom_an_heir = {
 		}
 		modifier = {
 			factor = 2
-			trait = genius
-		}
-		modifier = {
-			factor = 2
-			trait = quick
-		}
-		modifier = {
-			factor = 2
-			trait = quick
+			is_smart_trigger = yes
 		}
 		modifier = {
 			factor = 0.5
@@ -488,19 +642,48 @@ obj_groom_an_heir = {
 		any_child = {
 			is_adult = yes 
 			NOR = {
-				trait = bastard
-				trait = eunuch
-				trait = celibate
-				trait = incapable
-				trait = monk
-				trait = nun
+				custom_tooltip = {
+					text = bastard_eunuch_celibate_or_incapable_tt
+					OR = {
+						trait = bastard
+						trait = eunuch
+						trait = celibate
+						trait = incapable
+					}
+				}
+				is_ascetic_trigger = yes
 			}
 			OR = {
-				is_female = no
-				AND = {
-					is_female = yes
-					ROOT = { has_law = true_cognatic_succession }
+				custom_tooltip = { #it's a boy, and you have Agnatic
+					text = boy_agnatic_tt
+					is_female = no
+					ROOT = { has_law = agnatic_succession }
 				}
+				custom_tooltip = { #it's a girl and you have Enatic
+					text = girl_enatic_tt
+					is_female = yes	
+					ROOT = { has_law = enatic_succession }
+				}
+				custom_tooltip = {
+					text = not_enatic_or_agnatic_tt
+					NOR = {
+						ROOT = { has_law = enatic_succession }	
+						ROOT = { has_law = agnatic_succession }
+					}
+				}
+#				is_female = no
+#				AND = {
+#					is_female = yes
+#					ROOT = { has_law = true_cognatic_succession }
+#				}
+#				AND = {
+#					is_female = yes
+#					ROOT = { has_law = enatic_succession }
+#				}
+#				AND = {
+#					is_female = yes
+#					ROOT = { has_law = enatic_cognatic_succession }
+#				}
 			}
 		}
 	}
@@ -521,14 +704,21 @@ obj_groom_an_heir = {
 							trait = eunuch
 							trait = celibate
 							trait = incapable
-							trait = monk
-							trait = nun
+							is_ascetic_trigger = yes
 						}
 						OR = {
 							is_female = no
 							AND = {
 								is_female = yes
 								ROOT = { has_law = true_cognatic_succession }
+							}
+							AND = {
+								is_female = yes
+								ROOT = { has_law = enatic_succession }
+							}
+							AND = {
+								is_female = yes
+								ROOT = { has_law = enatic_cognatic_succession }
 							}
 						}
 					}
