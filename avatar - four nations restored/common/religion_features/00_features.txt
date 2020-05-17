@@ -33,34 +33,39 @@ religion_nature = {
 			}
 			modifier = { #Handles feature randomization in AltStart to make unreformed pagans still have "paganish" features.
 				factor = 0
+				has_game_started = no
 				OR = { 
 					religion = fire_spirituality 
 					religion = fire_nation_imperialism
+					religion_group = outlaw_religions
 				}
-				
+			}
+			modifier = { #Handles feature randomization in AltStart to make unreformed pagans still have "paganish" features.
+				factor = 0.25		#Pacifists should be rarer in general in Random World.
+				has_game_started = no
 			}
 		}
 	}
 	religion_warlike = {
 		picture = GFX_religion_feature_warlike
-			effect = {
-				custom_tooltip = { text = tooltip_religion_feature_war_levies }
-				custom_tooltip = { text = tooltip_religion_feature_crusade }
-				custom_tooltip = { text = tooltip_religion_feature_warlike }
-				custom_tooltip = { text = tooltip_religion_feature_prestige_loss }
-				hidden_tooltip = {
-					set_pacifist = no
-					set_allow_looting = yes
-					set_hard_to_convert = no
-					set_peace_piety_gain = 0
-					set_raised_vassal_opinion_loss = no
-					set_piety_loss_for_attacking_same_religion = no
-					set_peace_prestige_loss = yes
-					set_convert_other_groups = 0
-					set_convert_same_group = 1
-					set_ai_aggression = 2.0
-				}
+		effect = {
+			custom_tooltip = { text = tooltip_religion_feature_war_levies }
+			custom_tooltip = { text = tooltip_religion_feature_crusade }
+			custom_tooltip = { text = tooltip_religion_feature_warlike }
+			custom_tooltip = { text = tooltip_religion_feature_prestige_loss }
+			hidden_tooltip = {
+				set_pacifist = no
+				set_allow_looting = yes
+				set_hard_to_convert = no
+				set_peace_piety_gain = 0
+				set_raised_vassal_opinion_loss = no
+				set_piety_loss_for_attacking_same_religion = no
+				set_peace_prestige_loss = yes
+				set_convert_other_groups = 0
+				set_convert_same_group = 1
+				set_ai_aggression = 2.0
 			}
+		}
 		ai_will_do = {
 			factor = 100
 			modifier = { 	
@@ -80,7 +85,7 @@ religion_nature = {
 					}
 				}
 			modifier = {
-				factor = 0
+				factor = 0.01
 				FROM = {
 					character = yes
 					OR = { 
@@ -709,6 +714,7 @@ religion_doctrine = {
 	}
 	religion_jizya = {
 		picture = GFX_religion_feature_jizya
+		trigger = {
 		effect = {
 			custom_tooltip = { text = tooltip_religion_feature_jizya }
 			hidden_tooltip = { 
@@ -1303,6 +1309,10 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			OR = {
+				religion_group = water_religions
+				religion = piracy
+			}
 			NOR = { 
 				has_selected_religion_feature = religion_adventuring
 				has_selected_religion_feature = religion_seafaring
@@ -1333,6 +1343,7 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			religion_group = earth_religions
 			NOR = { 
 				has_selected_religion_feature = religion_relentless
 				has_selected_religion_feature = religion_harems
@@ -1377,6 +1388,10 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			OR = {
+				religion_group = air_religions
+				religion = bhanti_spirituality
+			}	
 			NOR = { 
 				has_selected_religion_feature = religion_meritocratic
 			}
@@ -1402,6 +1417,7 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			religion = the_great_swamp
 			NOR = { 
 				has_selected_religion_feature = religion_stable
 			}
@@ -1432,6 +1448,10 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			OR = {
+				religion = bhanti_spirituality
+				religion = the_eternal_flame
+			}
 			NOR = { 
 				has_selected_religion_feature = religion_stable
 			}
@@ -1462,6 +1482,10 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			OR = {
+				religion = ba_sing_se_cultural_heritage
+				religion = way_of_chin
+			}
 			NOR = { 
 				has_selected_religion_feature = religion_monastic
 				has_selected_religion_feature = religion_jizya
@@ -1495,6 +1519,10 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			OR = {
+				religion_group = fire_religions
+				religion = the_great_swamp
+			}
 			NOR = { 
 				has_selected_religion_feature = religion_harems
 				has_selected_religion_feature = religion_holy_family
@@ -1528,6 +1556,7 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			religion_group = fire_religions
 			NOR = { 
 				has_selected_religion_feature = religion_holy_family
 				has_selected_religion_feature = religion_meritocratic
@@ -1564,6 +1593,7 @@ religion_doctrine = {
 			}
 		}
 		trigger = {
+			religion = the_eternal_flame
 			NOR = { 
 				has_selected_religion_feature = religion_seafaring #Redundant
 				has_selected_religion_feature = religion_ritual_sacrifice #Redundant
@@ -2071,3 +2101,4 @@ religion_leadership = {
 			}
 		}
 	}
+}
