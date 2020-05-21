@@ -1,26 +1,3 @@
-## normal scopes(including posttitle scopes) ##
-# ROOT = receiver
-# FROM = giver
-# <no scope change> = attacker or receiver
-## title scopes ##
-# ROOT = receiver
-# FROM = giver
-# <no scope change> = thirdparty landed title	
-#
-# the following effects/triggers exists (example execution order: on_success->on_success_title->on_success_posttitle):
-# is_valid, is_valid_title, on_add, on_add_title, on_add_posttitle, on_success, on_success_title, on_success_posttitle, on_fail, on_fail_title, on_fail_posttitle, on_reverse_demand, on_reverse_demand_title, on_reverse_demand_posttitle
-#
-# Added on_attacker_leader_death, on_defender_leader_death and on_thirdparty_death, which all trigger when corresponding character dies
-# These three all have war scopes, which currently has the following scope changes: 
-# attacker, defender, thirdparty(only valid if thirdparty character is involved), thirdparty_title(only valid if thirdparty title is involved)
-#
-# ai_will_do: modifies value AI places on the CB compared to other CBs (default: 1) Note: is in title scope
-# can_use_gui: If otherwise valid, the CB is listed in the Diplo View, but you can't declare war unless 'can_use_gui' is also valid (also shows a trigger tooltip.)
-#
-
-# max_defender_occupation_score/max_attacker_occupation_score - Defines how much war score it is possible for the defender/attacker to gain by occupying provinces. Defaults to 100. Make sure the CB has ticking warscore if using this or you could end up with never-ending wars
-# hostages_block_cb	- Defaults to "yes". If set to "no", the defender having close relatives of yours imprisoned does not prevent you from declaring war
-
 ### NEW CBs 2.8
 dejure_duchy_claim = { # New1
 	name = CB_NAME_DEJURECLAIM
@@ -35,6 +12,8 @@ dejure_duchy_claim = { # New1
 
 	allowed_to_target_tributaries = no
 	
+	sort_priority = 790
+
 	can_use_gui = {
 		ROOT = {
 			show_scope_change = no
@@ -145,9 +124,11 @@ dejure_duchy_claim = { # New1
 
 	on_fail_title = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -100
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 50
 		}
 		any_defender = {
@@ -158,6 +139,7 @@ dejure_duchy_claim = { # New1
 
 	on_reverse_demand = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -200
 			transfer_scaled_wealth = {
 				to = FROM
@@ -165,6 +147,7 @@ dejure_duchy_claim = { # New1
 			}
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 100
 		}
 		any_defender = {
@@ -205,6 +188,8 @@ force_vassalization = { # New2
 	
 	defender_unoccupied_warscore = yes
 	
+	sort_priority = 830
+	
 	can_use_gui = {
 		FROM = {
 			show_scope_change = no
@@ -214,7 +199,13 @@ force_vassalization = { # New2
 				}
 				ROOT = {
 					show_scope_change = no
-					prestige = 250
+					OR = { 
+						prestige = 250
+						custom_tooltip = { 
+							text = tooltip_antagonize_vassalize_claim 
+							hidden_tooltip = { has_opinion_modifier = { who = FROM modifier = opinion_antagonize_vassalize_claim } } 
+						}
+					}
 				}
 			}
 			conditional_tooltip = {
@@ -223,7 +214,13 @@ force_vassalization = { # New2
 				}
 				ROOT = {
 					show_scope_change = no
-					prestige = 1000
+					OR = { 
+						prestige = 1000
+						custom_tooltip = { 
+							text = tooltip_antagonize_vassalize_claim 
+							hidden_tooltip = { has_opinion_modifier = { who = FROM modifier = opinion_antagonize_vassalize_claim } } 
+						}
+					}
 				}
 			}
 			conditional_tooltip = {
@@ -232,7 +229,13 @@ force_vassalization = { # New2
 				}
 				ROOT = {
 					show_scope_change = no
-					prestige = 2500
+					OR = { 
+						prestige = 2500
+						custom_tooltip = { 
+							text = tooltip_antagonize_vassalize_claim 
+							hidden_tooltip = { has_opinion_modifier = { who = FROM modifier = opinion_antagonize_vassalize_claim } } 
+						}
+					}
 				}
 			}
 		}
@@ -242,7 +245,8 @@ force_vassalization = { # New2
 		FROM = {
 			if = {
 				limit = {
-					tier = COUNT
+					tier = COUNT					
+					NOT = { reverse_has_opinion_modifier = { who = ROOT modifier = opinion_antagonize_vassalize_claim } } 
 				}
 				ROOT = {
 					prestige = -250
@@ -251,6 +255,7 @@ force_vassalization = { # New2
 			if = {
 				limit = {
 					tier = DUKE
+					NOT = { reverse_has_opinion_modifier = { who = ROOT modifier = opinion_antagonize_vassalize_claim } } 
 				}
 				ROOT = {
 					prestige = -1000
@@ -259,9 +264,18 @@ force_vassalization = { # New2
 			if = {
 				limit = {
 					tier = KING
+					NOT = { reverse_has_opinion_modifier = { who = ROOT modifier = opinion_antagonize_vassalize_claim } } 
 				}
 				ROOT = {
 					prestige = -2500
+				}
+			}
+			if = {
+				limit = {
+					reverse_has_opinion_modifier = { who = ROOT modifier = opinion_antagonize_vassalize_claim }
+				}
+				ROOT = {
+					remove_opinion = { who = ROOT modifier = opinion_antagonize_vassalize_claim }
 				}
 			}
 		}
@@ -309,6 +323,7 @@ force_vassalization = { # New2
 
 	on_success = {
 		ROOT = {
+			show_scope_change = no
 			participation_scaled_prestige = 100
 		}
 		any_attacker = {
@@ -316,6 +331,7 @@ force_vassalization = { # New2
 			hidden_tooltip = { participation_scaled_prestige = 100 }
 		}
 		FROM = {
+			show_scope_change = no
 			prestige = -100
 			set_defacto_liege = ROOT
 		}
@@ -323,6 +339,7 @@ force_vassalization = { # New2
 	
 	on_fail = {
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 50
 		}
 		any_defender = {
@@ -333,12 +350,14 @@ force_vassalization = { # New2
 
 	on_reverse_demand = {
 		ROOT = {
+			show_scope_change = no
 			transfer_scaled_wealth = {
 				to = FROM
 				value = 2.0
 			}
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 100
 		}
 		any_defender = {
@@ -380,6 +399,8 @@ great_realm_conflict = { # New3
 
 	allowed_to_target_tributaries = no
 	
+	sort_priority = 820
+
 	can_use_gui = {
 		ROOT = {
 			prestige = 3000
@@ -408,6 +429,12 @@ great_realm_conflict = { # New3
 					name = jade_dragon_cbs
 					value = off
 				}
+			}
+		}
+		FROM = {
+			relative_power = {
+				who = ROOT
+				power = 0.95
 			}
 		}
 	}
@@ -551,10 +578,12 @@ great_realm_conflict = { # New3
 
 	on_fail_title = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -1500
 			piety = -750
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 50
 		}
 		any_defender = {
@@ -565,6 +594,7 @@ great_realm_conflict = { # New3
 
 	on_reverse_demand = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -3000
 			piety = -1500
 			transfer_scaled_wealth = {
@@ -573,6 +603,7 @@ great_realm_conflict = { # New3
 			}
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 3000
 		}
 		any_defender = {
@@ -614,6 +645,8 @@ ducal_county_conquest = { # New4
 	can_ask_to_join_war = no
 
 	allowed_to_target_tributaries = no
+	
+	sort_priority = 720
 	
 	can_use_gui = {
 		ROOT = {
@@ -701,6 +734,13 @@ ducal_county_conquest = { # New4
 			holder_scope = {
 				is_liege_or_above = ROOT
 			}
+			holder_scope = {
+				ROOT = {
+					any_liege = {
+						character = PREVPREV
+					}
+				}
+			}
 		}
 	}
 
@@ -774,9 +814,11 @@ ducal_county_conquest = { # New4
 
 	on_fail_title = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -100
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 50
 		}
 		any_defender = {
@@ -787,6 +829,7 @@ ducal_county_conquest = { # New4
 
 	on_reverse_demand = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -200
 			transfer_scaled_wealth = {
 				to = FROM
@@ -794,6 +837,7 @@ ducal_county_conquest = { # New4
 			}
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 100
 		}
 		any_defender = {
@@ -843,6 +887,8 @@ hostages_cb = { # New5
 	
 	hostages_block_cb = no
 	
+	sort_priority = 100000 # When there are hostages you can usually not declare any other war, so we want this first
+	
 	can_use = {
 		ROOT = {
 			independent = yes
@@ -882,12 +928,15 @@ hostages_cb = { # New5
 	
 	on_success = {
 		ROOT = {
+			show_scope_change = no
 			prestige = 250
 		}
 		FROM = {
+			show_scope_change = no
 			prestige = -250
 		}
 		FROM = {
+			show_scope_change = no
 			save_event_target_as = character_kidnapper
 			transfer_scaled_wealth = {
 				to = ROOT
@@ -970,31 +1019,39 @@ hostages_cb = { # New5
 					years = 100
 				}
 			}
-			random_realm_character = {
-				limit = {
-					NOT = {
-						character = PREV
+			custom_tooltip = {
+				text = hostages_random_imprisonment_tt
+				hidden_effect = {
+					random_realm_character = {
+						limit = {
+							NOT = {
+								character = PREV
+							}
+							prisoner = no
+							ai = yes
+							is_close_relative = PREV
+						}
+						imprison = ROOT
 					}
-					prisoner = no
-					ai = yes
-					is_close_relative = PREV
 				}
-				imprison = ROOT
 			}
 		}
 	}
 
 	on_fail = {
-		ROOT = { 
+		ROOT = {
+			show_scope_change = no
 			prestige = -250
 		}
 		FROM = { 
+			show_scope_change = no
 			prestige = 250
 		}
 	}
 
 	on_reverse_demand = {
 		ROOT = {
+			show_scope_change = no
 			transfer_scaled_wealth = {
 				to = FROM
 				value = 3.0
@@ -1002,6 +1059,7 @@ hostages_cb = { # New5
 			prestige = -250
 		}
 		FROM = { 
+			show_scope_change = no
 			prestige = 250
 		}
 	}
@@ -1147,11 +1205,12 @@ unjust_conquest = { # New7
 	hostile_against_others = yes
 	is_permanent = yes
 	check_all_titles = yes # if permanent, setting this to true will check against all of someones titles, including vassal held titles
-	press_claim = yes
 	can_ask_to_join_war = no
 	allowed_to_target_tributaries = no
 	infamy_modifier = 2
 	
+	sort_priority = 690
+
 	can_use_gui = {
 		ROOT = {
 			show_scope_change = no
@@ -1374,6 +1433,7 @@ unjust_conquest = { # New7
 						controls_religion = no
 					}
 					rightful_religious_head_scope = {
+						show_scope_change = no
 						opinion = {
 							who = ROOT
 							modifier = opinion_declared_unjust_conquest
@@ -1508,6 +1568,32 @@ unjust_conquest = { # New7
 			NOT = { pacifist = yes }
 			is_nomadic = no # Use the 'pagan_county_conquest' CB instead
 		}
+		OR = {
+			is_shattered_world = no
+			AND = {
+				is_shattered_world = yes
+				has_alternate_start_setting = {
+					setting = shattered_cbs
+					option = on_limited
+				}
+				total_years_played = 25
+			}
+			AND = {
+				is_shattered_world = yes
+				has_alternate_start_setting = {
+					setting = shattered_cbs
+					option = on_long
+				}
+				total_years_played = 100
+			}
+			AND = {
+				is_shattered_world = yes
+				has_alternate_start_setting = {
+					setting = shattered_cbs
+					option = off
+				}
+			}
+		}
 	}
 
 	can_use_title = {
@@ -1588,10 +1674,7 @@ unjust_conquest = { # New7
 						de_facto_liege = PREV
 					}
 					holder_scope = {
-						OR = {
-							character = FROM
-							is_liege_or_above = FROM
-						}
+						is_liege_or_above = FROM
 					}
 				}
 
@@ -1602,6 +1685,7 @@ unjust_conquest = { # New7
 		add_pressed_claim = FROM
 		
 		ROOT = {
+			show_scope_change = no
 			participation_scaled_prestige = 100
 		}
 		any_attacker = {
@@ -1612,9 +1696,11 @@ unjust_conquest = { # New7
 
 	on_fail_title = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -100
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 50
 		}
 		any_defender = {
@@ -1625,6 +1711,7 @@ unjust_conquest = { # New7
 
 	on_reverse_demand = {
 		ROOT = {
+			show_scope_change = no
 			prestige = -200
 			transfer_scaled_wealth = {
 				to = FROM
@@ -1632,6 +1719,7 @@ unjust_conquest = { # New7
 			}
 		}
 		FROM = {
+			show_scope_change = no
 			participation_scaled_prestige = 100
 		}
 		any_defender = {
