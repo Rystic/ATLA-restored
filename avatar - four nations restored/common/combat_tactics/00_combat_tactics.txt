@@ -24,7 +24,30 @@ generic_skirmish_tactic = {
 
 	mean_time_to_happen = {
 		days = 3
+
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 2 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 4 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 6 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 8 } } }
+		}
 	}
+
+
 
 }
 
@@ -46,7 +69,7 @@ harass_tactic = {
 			}
 			AND = {
 				flank_has_leader = yes
-				martial = 12
+				leader = { martial = 12 }
 				NOT = { 
 					OR = {
 						light_cavalry = 0.75
@@ -120,7 +143,7 @@ disorganised_harass_tactic = {
 		}
 		OR = {
 			flank_has_leader = no
-			NOT = { martial = 12 }
+			NOT = { leader = { martial = 12 } }
 			OR = {
 				light_cavalry = 0.75
 			}
@@ -155,6 +178,26 @@ disorganised_harass_tactic = {
 					value = 0.9
 				}
 			}
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 2 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 4 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 6 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 8 } } }
 		}
 	}
 
@@ -370,7 +413,7 @@ swarm_tactic = {
 		OR = {
 			AND = {
 				flank_has_leader = yes
-				martial = 12
+				leader = { martial = 12 }
 			}
 		}
 		location = { 
@@ -572,6 +615,26 @@ prepare_tactic = {
 				martial = 16
 			}
 		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 2 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 4 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 6 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_SKIRMISH = 8 } } }
+		}
 	}
 	
 	change_phase_to = melee
@@ -706,6 +769,26 @@ wait_tactic = {
 			leader = {
 				martial = 16
 			}
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_MELEE = 2 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_MELEE = 4 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_MELEE = 6 } } }
+		}
+		modifier = {
+			factor = 0.80
+			flank_has_leader = yes
+			leader = { liege = { capital_scope = { TECH_MELEE = 8 } } }
 		}
 	}
 }
@@ -1521,6 +1604,18 @@ clever_ambush_tactic = {
 			OR = {
 				trait = trickster
 				trait = quick
+				trait = genius
+				trait = shrewd
+			}
+			NOR = {
+				any_current_enemy = { has_opinion_modifier = { who = PREV modifier = opinion_honorable_combat } }
+				AND = { 
+					OR = { 
+						is_ruler = no 
+						is_playable = no
+					}
+					liege = { any_current_enemy = { has_opinion_modifier = { who = PREV modifier = opinion_honorable_combat } } }
+				}
 			}
 		}
 		location = {
