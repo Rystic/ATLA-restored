@@ -784,13 +784,6 @@ replace_mercenary_captain_allow_trigger = {
 #Used with character interaction to swap council job. DO NOT REMOVE
 change_council_job_potential_trigger = {
 	liege = { character = FROM }
-	NOT = {
-		AND = {
-			has_job_title = job_spiritual
-			liege = { religion_group = muslim }
-			religion = FROM
-		}
-	}
 	OR = {
 		AND = {
 			OR = {
@@ -802,10 +795,6 @@ change_council_job_potential_trigger = {
 				can_be_marshal_trigger = yes
 				can_be_treasurer_trigger = yes
 				can_be_spymaster_trigger = yes
-				AND = {
-					can_be_spiritual_trigger = yes
-					ROOT = { NOT = { religion_group = muslim } }
-				}
 			}
 		}
 		AND = {
@@ -857,7 +846,6 @@ can_be_chancellor_trigger = {
 					OR = {
 						liege = { has_religion_feature = religion_matriarchal }
 						liege = { has_religion_feature = religion_equal }
-						liege = { has_religion_feature = religion_feature_bon }
 					}
 				}
 				trait = horse # So we can have female glitterhoofs! :D
@@ -928,18 +916,6 @@ can_be_marshal_trigger = {
 					OR = {
 						liege = { has_religion_feature = religion_matriarchal }
 						liege = { has_religion_feature = religion_equal }
-						liege = { has_religion_feature = religion_feature_bon }
-					}
-				}
-				trait = horse # So we can have female glitterhoofs! :D
-				OR = {
-					AND = {
-						religion = cathar
-						liege = { religion = cathar }
-					}
-					AND = {
-						religion = messalian
-						liege = { religion = messalian }
 					}
 				}
 				AND = {
@@ -973,10 +949,6 @@ can_be_marshal_trigger = {
 						value = all
 					}
 				}
-			}
-			OR = {
-				NOT = { religion = hindu }
-				trait = kshatriya
 			}
 			is_adult = yes
 		}
@@ -1012,18 +984,9 @@ can_be_treasurer_trigger = {
 					OR = {
 						liege = { has_religion_feature = religion_matriarchal }
 						liege = { has_religion_feature = religion_equal }
-						liege = { has_religion_feature = religion_feature_bon }
 					}
 				}
 				trait = horse # So we can have female glitterhoofs! :D
-				AND = {
-					religion = cathar
-					liege = { religion = cathar }
-				}
-				AND = {
-					religion = messalian
-					liege = { religion = messalian }
-				}
 				AND = {
 					liege = {
 						primary_title = {
@@ -1092,7 +1055,6 @@ can_be_spymaster_trigger = {
 					OR = {
 						liege = { has_religion_feature = religion_matriarchal }
 						liege = { has_religion_feature = religion_equal }
-						liege = { has_religion_feature = religion_feature_bon }
 					}
 				}
 				trait = horse # So we can have female glitterhoofs! :D
@@ -1104,36 +1066,6 @@ can_be_spymaster_trigger = {
 					OR = {
 						mother = { character = ROOT }
 						any_spouse = { character = ROOT }
-					}
-				}
-				AND = {
-					religion_group = pagan_group
-					liege = {
-						religion_group = pagan_group
-						NOR = {
-							liege = { has_religion_feature = religion_matriarchal }
-							liege = { has_religion_feature = religion_patriarchal }
-						}
-					}
-				}
-				AND = {
-					religion = cathar
-					liege = {
-						religion = cathar
-						NOR = {
-							liege = { has_religion_feature = religion_matriarchal }
-							liege = { has_religion_feature = religion_patriarchal }
-						}
-					}
-				}
-				AND = {
-					religion = messalian
-					liege = {
-						religion = messalian
-						NOR = {
-							liege = { has_religion_feature = religion_matriarchal }
-							liege = { has_religion_feature = religion_patriarchal }
-						}
 					}
 				}
 				AND = {
@@ -1223,11 +1155,6 @@ can_be_spiritual_trigger = {
 				religion_allows_male_temple_holders = yes
 				has_religion_feature = religion_patriarchal
 			}
-			OR = {
-				NOT = { religion = hindu }
-				trait = brahmin
-				is_ascetic_trigger = yes
-			}
 		}
 		has_character_flag = special_spiritual
 	}
@@ -1238,7 +1165,6 @@ can_be_spiritual_trigger = {
 			liege = { is_tribal = yes }
 			is_ruler = no
 		}
-		liege = { religion_group = muslim }
 		AND = {
 			clan = yes
 			liege = {
@@ -1259,8 +1185,6 @@ can_be_spiritual_trigger = {
 	}
 
 	OR = {
-		NOT = { religion_group = muslim }
-		NOT = { liege = { religion_group = muslim } }
 		trait = detached_priest
 		trait = martial_cleric
 		trait = scholarly_theologian
@@ -1292,13 +1216,6 @@ can_be_councilmember_king_trigger = {
 			AND = {
 				is_female = yes
 				NOT = { liege = { has_religion_feature = religion_patriarchal } }
-			}
-			AND = {
-				OR = {
-					religion = cathar
-					religion = messalian
-				}
-				liege = { religion = ROOT }
 			}
 			AND = {
 				is_female = yes
@@ -1354,16 +1271,7 @@ can_be_councilmember_emperor_trigger = {
 					OR = {
 						liege = { has_religion_feature = religion_matriarchal }
 						liege = { has_religion_feature = religion_equal }
-						liege = { has_religion_feature = religion_feature_bon }
 					}
-				}
-				AND = {
-					religion = cathar
-					liege = { religion = cathar }
-				}
-				AND = {
-					religion = messalian
-					liege = { religion = messalian }
 				}
 				AND = {
 					is_female = yes
@@ -1844,7 +1752,6 @@ is_comet_warning_year = {
 gender_equality_trigger = {
 	OR = {
 		has_religion_feature = religion_equal
-		has_religion_feature = religion_feature_bon
 		AND = {
 			is_landed = yes
 			primary_title = {
