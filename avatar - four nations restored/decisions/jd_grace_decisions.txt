@@ -1,1005 +1,1005 @@
-###GRACE INTERACTION DECISIONS FOR THE SPIRITS###
+##GRACE INTERACTION DECISIONS FOR THE SPIRITS###
 
-#Add the decisions in a nice order which will make sense in the menu! For example, ranked by cost/reward.
+# Add the decisions in a nice order which will make sense in the menu! For example, ranked by cost/reward.
 
 
-#PAYING TRIBUTE DECISIONS (GAIN GRACE)
-offmap_decisions = {
+# PAYING TRIBUTE DECISIONS (GAIN GRACE)
+# offmap_decisions = {
 
-	spirit_grace_send_gift = {
-		only_playable = yes
-		button_name = offmap_gifts
-		ai_check_interval = 12
+	# spirit_grace_send_gift = {
+		# only_playable = yes
+		# button_name = offmap_gifts
+		# ai_check_interval = 12
 
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			FROM = {
-				mercenary = no
-				holy_order = no
-			}
-		}
+		# from_potential = {
+			# FROM = {
+				# mercenary = no
+				# holy_order = no
+			# }
+		# }
 
-		allow = {
-			FROM = {
-				show_scope_change = no
-				scaled_wealth = { value = 2 min = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-				custom_tooltip = {
-					text = chinese_grace_send_gift_allow_tt 
-					NOT = { has_character_modifier = chinese_grace_send_gift_timer }
-				}
-			}
-		}
-		effect = {
-			FROM = {
-				sound_effect = china_grace_gain
-				hidden_effect = {
-					add_character_modifier = {
-						hidden = yes
-						name = chinese_grace_send_gift_timer
-						years = 15 #Change chinese_grace_send_gift_allow_tt if this number changes
-					}
-				}
-				scaled_wealth = { value = -2 min = -250 } #If this changes the ai chances should probably be adjusted
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = 100
-				}
-			}
-		}
+		# allow = {
+			# FROM = {
+				# show_scope_change = no
+				# scaled_wealth = { value = 2 min = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+				# custom_tooltip = {
+					# text = chinese_grace_send_gift_allow_tt 
+					# NOT = { has_character_modifier = chinese_grace_send_gift_timer }
+				# }
+			# }
+		# }
+		# effect = {
+			# FROM = {
+				# sound_effect = china_grace_gain
+				# hidden_effect = {
+					# add_character_modifier = {
+						# hidden = yes
+						# name = chinese_grace_send_gift_timer
+						# years = 15 #Change chinese_grace_send_gift_allow_tt if this number changes
+					# }
+				# }
+				# scaled_wealth = { value = -2 min = -250 } #If this changes the ai chances should probably be adjusted
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = 100
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0.1 # slow down
-			}
-			modifier = {
-				factor = 0.1
-				FROM = { NOT = { monthly_income = 11 } } #I.e. it would take more than 4 years to collect the 500 gold
-			}
-		}
-	}
-	spirit_grace_offer_artifact = {
-		only_playable = yes
-		button_name = offmap_gifts
+		# ai_will_do = {
+			# factor = 1
+			# modifier = {
+				# factor = 0.1 # slow down
+			# }
+			# modifier = {
+				# factor = 0.1
+				# FROM = { NOT = { monthly_income = 11 } } #I.e. it would take more than 4 years to collect the 500 gold
+			# }
+		# }
+	# }
+	# spirit_grace_offer_artifact = {
+		# only_playable = yes
+		# button_name = offmap_gifts
 		
-		third_party_filter = artifacts
-		ai_third_party_filter = artifacts
-		third_party = FROM
-		ai_check_interval = 60
-		show_third_party_potential = yes
+		# third_party_filter = artifacts
+		# ai_third_party_filter = artifacts
+		# third_party = FROM
+		# ai_check_interval = 60
+		# show_third_party_potential = yes
 	
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+		# }
 
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-			custom_tooltip = {
-				text = spirit_grace_send_tribute 
-				NOT = { has_character_modifier = chinese_grace_send_commander_timer }
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+			# custom_tooltip = {
+				# text = spirit_grace_send_tribute 
+				# NOT = { has_character_modifier = chinese_grace_send_commander_timer }
+			# }
+		# }
 		
-		third_party_potential = {
-			show_only_failed_conditions = yes
-			FROMFROM = {
-				show_scope_change = no
-				custom_tooltip = {
-					text = send_artifact_potential_tt
-					quality > 2
-					NOR = {
-						has_artifact_flag = curse
-						has_artifact_flag = chinese
-						has_artifact_flag = sacred
-					}
-				}
-			}
-		}
+		# third_party_potential = {
+			# show_only_failed_conditions = yes
+			# FROMFROM = {
+				# show_scope_change = no
+				# custom_tooltip = {
+					# text = send_artifact_potential_tt
+					# quality > 2
+					# NOR = {
+						# has_artifact_flag = curse
+						# has_artifact_flag = chinese
+						# has_artifact_flag = sacred
+					# }
+				# }
+			# }
+		# }
 		
-		third_party_allow = {
+		# third_party_allow = {
 			
-		}
+		# }
 		
-		third_party_score = {
-			factor = 400
+		# third_party_score = {
+			# factor = 400
 			
-			additive_modifier = {
-				value = 1500
-				FROMFROM = { 
-					quality == 4
-				}
-			}
-			additive_modifier = {
-				value = 4500
-				FROMFROM = { 
-					quality == 5
-				}
-			}
-			additive_modifier = {
-				value = -200
-				FROMFROM = {
-					quality < 4
-					has_artifact_flag = lore #Magnum Opus book
-				}
-			}
-			additive_modifier = {
-				value = -3000
-				FROMFROM = {
-					quality == 4
-					has_artifact_flag = lore #Magnum Opus book
-				}
-			}
-			additive_modifier = {
-				value = -250
-				FROMFROM = {
-					quality < 4
-					has_artifact_flag = created
-				}
-			}
-			additive_modifier = {
-				value = -3500
-				FROMFROM = {
-					quality == 4
-					has_artifact_flag = created
-				}
-			}
-			modifier = {
-				factor = 1.5
-				offmap_spirit_world = {
-					show_scope_change = no 
-					offmap_has_like = likes_wealth
-				}
-			}
-			modifier = {
-				factor = 0.5
-				offmap_spirit_world = {
-					show_scope_change = no 
-					offmap_has_dislike = likes_wealth
-				}
-			}
-			modifier = {
-				factor = 1.5
-				FROM = { 
-					show_scope_change = no
-					liked_by_offmap = {
-						type = offmap_spirit_world
-					}
-				}
-			}
-			modifier = {
-				factor = 0.5
-				FROM = {
-					show_scope_change = no 
-					disliked_by_offmap = {
-						type = offmap_spirit_world
-					}
-				}
-			}
-		}
+			# additive_modifier = {
+				# value = 1500
+				# FROMFROM = { 
+					# quality == 4
+				# }
+			# }
+			# additive_modifier = {
+				# value = 4500
+				# FROMFROM = { 
+					# quality == 5
+				# }
+			# }
+			# additive_modifier = {
+				# value = -200
+				# FROMFROM = {
+					# quality < 4
+					# has_artifact_flag = lore #Magnum Opus book
+				# }
+			# }
+			# additive_modifier = {
+				# value = -3000
+				# FROMFROM = {
+					# quality == 4
+					# has_artifact_flag = lore #Magnum Opus book
+				# }
+			# }
+			# additive_modifier = {
+				# value = -250
+				# FROMFROM = {
+					# quality < 4
+					# has_artifact_flag = created
+				# }
+			# }
+			# additive_modifier = {
+				# value = -3500
+				# FROMFROM = {
+					# quality == 4
+					# has_artifact_flag = created
+				# }
+			# }
+			# modifier = {
+				# factor = 1.5
+				# offmap_spirit_world = {
+					# show_scope_change = no 
+					# offmap_has_like = likes_wealth
+				# }
+			# }
+			# modifier = {
+				# factor = 0.5
+				# offmap_spirit_world = {
+					# show_scope_change = no 
+					# offmap_has_dislike = likes_wealth
+				# }
+			# }
+			# modifier = {
+				# factor = 1.5
+				# FROM = { 
+					# show_scope_change = no
+					# liked_by_offmap = {
+						# type = offmap_spirit_world
+					# }
+				# }
+			# }
+			# modifier = {
+				# factor = 0.5
+				# FROM = {
+					# show_scope_change = no 
+					# disliked_by_offmap = {
+						# type = offmap_spirit_world
+					# }
+				# }
+			# }
+		# }
 	
-		effect = {
-			FROM = {
-				show_scope_change = no
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = local_third_party_score
-				}
-			}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = local_third_party_score
+				# }
+			# }
 
 			# Like/Dislike effect description
-			#################################
-			if = {
-				limit = {
-					OR = {
-						FROM = {
-							liked_by_offmap = {
-								type = offmap_spirit_world
-							}
-						}
-						offmap_spirit_world = {
-							offmap_has_like = likes_wealth
-						}
-					}
-					NOR = {
-						FROM = {
-							disliked_by_offmap = {
-								type = offmap_spirit_world
-							}
-						}
-						offmap_spirit_world = {
-							offmap_has_dislike = likes_wealth
-						}
-					}
-				}
-				d_the_sages = {
-					show_scope_change = no
-					offmap_power = {
-						show_scope_change = no
-						custom_tooltip = { text = likes_tt }
-					}
-				}
-			}
+			################################
+			# if = {
+				# limit = {
+					# OR = {
+						# FROM = {
+							# liked_by_offmap = {
+								# type = offmap_spirit_world
+							# }
+						# }
+						# offmap_spirit_world = {
+							# offmap_has_like = likes_wealth
+						# }
+					# }
+					# NOR = {
+						# FROM = {
+							# disliked_by_offmap = {
+								# type = offmap_spirit_world
+							# }
+						# }
+						# offmap_spirit_world = {
+							# offmap_has_dislike = likes_wealth
+						# }
+					# }
+				# }
+				# d_the_sages = {
+					# show_scope_change = no
+					# offmap_power = {
+						# show_scope_change = no
+						# custom_tooltip = { text = likes_tt }
+					# }
+				# }
+			# }
 			
-			if = {
-				limit = {
-					OR = {
-						FROM = {
-							disliked_by_offmap = {
-								type = offmap_spirit_world
-							}
-						}
-						offmap_spirit_world = {
-							offmap_has_dislike = likes_wealth
-						}
-					}
-					NOR = {
-						FROM = {
-							liked_by_offmap = {
-								type = offmap_spirit_world
-							}
-						}
-						offmap_spirit_world = {
-							offmap_has_like = likes_wealth
-						}
-					}
-				}
-				d_the_sages = {
-					show_scope_change = no
-					offmap_power = {
-						show_scope_change = no
-						custom_tooltip = { text = dislikes_tt }
-					}
-				}
-			}
-			if = {
-				limit = {
-					OR = {
-						FROM = {
-							liked_by_offmap = {
-								type = offmap_spirit_world
-							}
-						}
-						offmap_spirit_world = {
-							offmap_has_like = likes_wealth
-						}
-					}
-					OR = {
-						FROM = {
-							disliked_by_offmap = {
-								type = offmap_spirit_world
-							}
-						}
-						offmap_spirit_world = {
-							offmap_has_dislike = likes_wealth
-						}
-					}
-				}
-				d_the_sages = {
-					show_scope_change = no
-					offmap_power = {
-						show_scope_change = no
-						custom_tooltip = { text = likes_but_dislikes_tt }
-					}
-				}
-			}
-			#################################
-			save_event_target_as = target_governor
-			FROM = {
-				sound_effect = china_grace_gain
-				save_event_target_as = target_tribute_sender
-				add_character_modifier = {
-					modifier = chinese_grace_send_commander_timer
-					hidden = yes
-					years = 20
-				}
-			}
+			# if = {
+				# limit = {
+					# OR = {
+						# FROM = {
+							# disliked_by_offmap = {
+								# type = offmap_spirit_world
+							# }
+						# }
+						# offmap_spirit_world = {
+							# offmap_has_dislike = likes_wealth
+						# }
+					# }
+					# NOR = {
+						# FROM = {
+							# liked_by_offmap = {
+								# type = offmap_spirit_world
+							# }
+						# }
+						# offmap_spirit_world = {
+							# offmap_has_like = likes_wealth
+						# }
+					# }
+				# }
+				# d_the_sages = {
+					# show_scope_change = no
+					# offmap_power = {
+						# show_scope_change = no
+						# custom_tooltip = { text = dislikes_tt }
+					# }
+				# }
+			# }
+			# if = {
+				# limit = {
+					# OR = {
+						# FROM = {
+							# liked_by_offmap = {
+								# type = offmap_spirit_world
+							# }
+						# }
+						# offmap_spirit_world = {
+							# offmap_has_like = likes_wealth
+						# }
+					# }
+					# OR = {
+						# FROM = {
+							# disliked_by_offmap = {
+								# type = offmap_spirit_world
+							# }
+						# }
+						# offmap_spirit_world = {
+							# offmap_has_dislike = likes_wealth
+						# }
+					# }
+				# }
+				# d_the_sages = {
+					# show_scope_change = no
+					# offmap_power = {
+						# show_scope_change = no
+						# custom_tooltip = { text = likes_but_dislikes_tt }
+					# }
+				# }
+			# }
+			################################
+			# save_event_target_as = target_governor
+			# FROM = {
+				# sound_effect = china_grace_gain
+				# save_event_target_as = target_tribute_sender
+				# add_character_modifier = {
+					# modifier = chinese_grace_send_commander_timer
+					# hidden = yes
+					# years = 20
+				# }
+			# }
 
-			hidden_effect = { #to reduce cluttered tooltip (effect already heavily implied...)
-				offmap_spirit_world = {
-					offmap_ruler = {
-						ROOT_FROMFROM = {
-							show_scope_change = no
-							tooltip = {
-								transfer_artifact = {
-									to = PREV
-									from = ROOT_FROM
-								}
-							}
-							hidden_effect = { unsafe_destroy_artifact = yes }
-						}
-					}
-				}
-			}
+			# hidden_effect = { #to reduce cluttered tooltip (effect already heavily implied...)
+				# offmap_spirit_world = {
+					# offmap_ruler = {
+						# ROOT_FROMFROM = {
+							# show_scope_change = no
+							# tooltip = {
+								# transfer_artifact = {
+									# to = PREV
+									# from = ROOT_FROM
+								# }
+							# }
+							# hidden_effect = { unsafe_destroy_artifact = yes }
+						# }
+					# }
+				# }
+			# }
 
-			hidden_effect = {
-				FROM = {
-					set_character_flag = jd_gifting_artifact
-				}
-				hidden_effect = { offmap_spirit_world = { governor = { character_event = { id = JD.20023 } } } }
-			}
-		}
+			# hidden_effect = {
+				# FROM = {
+					# set_character_flag = jd_gifting_artifact
+				# }
+				# hidden_effect = { offmap_spirit_world = { governor = { character_event = { id = JD.20023 } } } }
+			# }
+		# }
 	
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 	
-		ai_will_do = {
-			factor = 0.1
-			modifier = {
-				factor = 0
-				FROMFROM = {
-					quality > 3
-				}
-			}
-			modifier = {
-				factor = 0.1 # slow down
-			}
-		}
-	}
-	spirituality_raise_shrine_decision = {
-		only_playable = yes
-		button_name = offmap_gifts
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 0.1
+			# modifier = {
+				# factor = 0
+				# FROMFROM = {
+					# quality > 3
+				# }
+			# }
+			# modifier = {
+				# factor = 0.1 # slow down
+			# }
+		# }
+	# }
+	# spirituality_raise_shrine_decision = {
+		# only_playable = yes
+		# button_name = offmap_gifts
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			NOT = { has_character_flag = raised_shrine }
-			OR = {
-				religion = earth_spirituality
-				religion = fire_spirituality
-				religion = bhanti_spirituality
-				religion = nomadic_pacifism
-				religion = the_eternal_flame
-				religion = tui_and_la
-				religion = southern_spirituality
-			}
-		}
+		# from_potential = {
+			# NOT = { has_character_flag = raised_shrine }
+			# OR = {
+				# religion = earth_spirituality
+				# religion = fire_spirituality
+				# religion = bhanti_spirituality
+				# religion = nomadic_pacifism
+				# religion = the_eternal_flame
+				# religion = tui_and_la
+				# religion = southern_spirituality
+			# }
+		# }
 		
-		allow = {
-			piety = 250
-			wealth = 500
-		}
+		# allow = {
+			# piety = 250
+			# wealth = 500
+		# }
 		
-		effect = {
-			set_character_flag = raised_shrine
-			piety = -250
-			wealth = -500
-			custom_tooltip = {
-				text = spirituality_raise_shrine_decision_tooltip
-			}
-			hidden_tooltip = {
-				character_event = { id = ATLAR.750 }
-			}
-		}
+		# effect = {
+			# set_character_flag = raised_shrine
+			# piety = -250
+			# wealth = -500
+			# custom_tooltip = {
+				# text = spirituality_raise_shrine_decision_tooltip
+			# }
+			# hidden_tooltip = {
+				# character_event = { id = ATLAR.750 }
+			# }
+		# }
 		
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 		
-		ai_will_do = {
-			factor = 1
-		}
-	}
-}
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+# }
 
-#REQUESTING BOON DECISIONS (PENDING GRACE)
-offmap_decisions = {
-	spirit_grace_blessing_avatar = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+# REQUESTING BOON DECISIONS (PENDING GRACE)
+# offmap_decisions = {
+	# spirit_grace_blessing_avatar = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			OR = {
-				trait = just
-				trait = directdescendantavatar
-				trait = descendantavatar
-			}
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# OR = {
+				# trait = just
+				# trait = directdescendantavatar
+				# trait = descendantavatar
+			# }
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAA.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.751 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAA.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.751 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_hei_bei = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_hei_bei = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			religion = earth_spirituality
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# religion = earth_spirituality
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				religion = earth_spirituality
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# religion = earth_spirituality
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAB.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.752 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAB.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.752 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_generaloldiron = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_generaloldiron = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			religion = earth_spirituality
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# religion = earth_spirituality
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAC.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.753 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAC.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.753 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_paintedlady = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_paintedlady = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			religion = fire_spirituality
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# religion = fire_spirituality
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAD.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.754 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAD.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.754 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_agni = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_agni = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			religion_group = fire_religions
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# religion_group = fire_religions
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAE.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.755 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAE.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.755 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_kemurikage = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_kemurikage = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			religion = bhanti_spirituality
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# religion = bhanti_spirituality
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAF.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.756 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAF.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.756 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_motheroffaces = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_motheroffaces = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			religion = bhanti_spirituality
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# religion = bhanti_spirituality
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAG.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.757 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAG.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.757 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_tienhai = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_tienhai = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			OR = {
-				religion = earth_spirituality
-				religion = nomadic_pacifism
-			}
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# OR = {
+				# religion = earth_spirituality
+				# religion = nomadic_pacifism
+			# }
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAH.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.758 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAH.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.758 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_tui = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_tui = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			OR = { 
-				religion = tui_and_la
-				religion = southern_spirituality
-			}
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# OR = { 
+				# religion = tui_and_la
+				# religion = southern_spirituality
+			# }
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAI.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.759 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAI.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.759 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_yue = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_yue = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			has_global_flag = moon_sacrifice
-			OR = {
-				dynasty = 163
-				has_character_flag = is_sokka
-			}
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# has_global_flag = moon_sacrifice
+			# OR = {
+				# dynasty = 163
+				# has_character_flag = is_sokka
+			# }
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAJ.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.760 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAJ.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.760 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_la = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_la = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-			OR = { 
-				religion = tui_and_la
-				religion = southern_spirituality
-			}
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+			# OR = { 
+				# religion = tui_and_la
+				# religion = southern_spirituality
+			# }
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAL.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.762 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAL.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.762 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	spirit_grace_blessing_spirits = {
-		only_playable = yes
-		button_name = offmap_boons
-		ai_check_interval = 60
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+	# spirit_grace_blessing_spirits = {
+		# only_playable = yes
+		# button_name = offmap_boons
+		# ai_check_interval = 60
 		
-		potential = {
-			always = yes
-		}
+		# potential = {
+			# always = yes
+		# }
 		
-		from_potential = {
-			mercenary = no
-			holy_order = no
-			is_landed = yes
-		}
+		# from_potential = {
+			# mercenary = no
+			# holy_order = no
+			# is_landed = yes
+		# }
 		
-		allow = {
-			show_only_failed_conditions = yes
-			FROM = {
-				show_scope_change = no
-				has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
-				prisoner = no
-				NOT = { trait = incapable }
-				is_inaccessible_trigger = no
-			}
-		}
+		# allow = {
+			# show_only_failed_conditions = yes
+			# FROM = {
+				# show_scope_change = no
+				# has_offmap_currency = { offmap = offmap_spirit_world value = 250 }
+				# prisoner = no
+				# NOT = { trait = incapable }
+				# is_inaccessible_trigger = no
+			# }
+		# }
 		
-		effect = {
-			FROM = {
-				show_scope_change = no
-				sound_effect = china_grace_spend
-				custom_tooltip = { text = EVTTOOLTIPAATLARAK.750 }
-				hidden_tooltip = { character_event = { id = ATLAR.761 } }
-				add_offmap_currency = {
-					offmap = offmap_spirit_world
-					value = -250
-				}
-			}
-		}
+		# effect = {
+			# FROM = {
+				# show_scope_change = no
+				# sound_effect = china_grace_spend
+				# custom_tooltip = { text = EVTTOOLTIPAATLARAK.750 }
+				# hidden_tooltip = { character_event = { id = ATLAR.761 } }
+				# add_offmap_currency = {
+					# offmap = offmap_spirit_world
+					# value = -250
+				# }
+			# }
+		# }
 
-		revoke_allowed = {
-			always = no
-		}
+		# revoke_allowed = {
+			# always = no
+		# }
 
-		ai_will_do = {
-			factor = 1
-		}
-	}
-}
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+# }
