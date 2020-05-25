@@ -3,21 +3,26 @@ targetted_decisions = {
 	ask_to_convert = {
 		filter = realm
 		ai_target_filter = realm
-		
+
 		from_potential = {
 			is_ruler = yes
 		}
-	
+
 		potential = {
-			NOT = { religion = FROM }
+			NAND = {
+				religion = FROM
+				has_opinion_modifier = {
+					who = FROM
+					modifier = refused_decision
+				}
+			}
 			OR = {
 				host = { character = FROM }
 				liege = { character = FROM }
 			}
 			prisoner = no
-			NOT = { has_opinion_modifier = { who = FROM  modifier = refused_decision } }
 		}
-		
+
 		allow = {
 			custom_tooltip = {
 				text = can_convert_via_decision
@@ -30,207 +35,200 @@ targetted_decisions = {
 					}
 				}
 			}
-			AND = { # Reason not to convert
-				custom_tooltip = { # Will not convert to injust religion
-					text = will_not_convert_because_of_virtue
-					hidden_tooltip = {
-						OR = {
-							AND = {
-								NOT = { trait = kind }
-								NOT = { trait = charitable }
-								NOT = { trait = humble }
-								NOT = { trait = just }
-								FROM = {
-									NOT = { religion = fire_nation_imperialism }
-									NOT = { religion = nomadic_nihilism }
-									NOT = { religion = unificationism }
-									NOT = { religion = way_of_chin }
-								}
-							}
-							NOR = {
-								trait = kind
-								trait = charitable
-								trait = humble
-								trait = just
-							}
-							FROM = {
-								NOT = { religion = fire_nation_imperialism }
-								NOT = { religion = nomadic_nihilism }
-								NOT = { religion = unificationism }
-								NOT = { religion = way_of_chin }
-							}
-						}
-					}
-				}
-				custom_tooltip = { # Cultural differences
-					text = will_not_convert_because_of_culture
-					hidden_tooltip = {
-						NOT = { religion = children_of_si_wong }
-						NOT = { religion = the_eternal_flame }
-						NOT = { religion = the_great_swamp }
-					}
-				}
-				custom_tooltip = { # Zealous
-					text = will_not_convert_because_of_zeal
-					hidden_tooltip = {
-						NOT = { trait = zealous }
-					}
-				}
-				custom_tooltip = { # Does not like liege enough
-					text = will_not_convert_because_of_low_opinion
-					hidden_tooltip = {
-						opinion = { who = FROM value = 20 }
-					}
-				}
-				custom_tooltip = { # Accepted minority
-					text = will_not_convert_because_of_minority
-					hidden_tooltip = {
+			custom_tooltip = { # Will not convert to injust religion
+				text = will_not_convert_because_of_virtue
+				hidden_tooltip = {
+					OR = {
 						NOR = {
-							AND = {
-								FROM = { religion = fire_spirituality }
-								religion = bhanti_spirituality
-							}
-							AND = {
-								FROM = { religion = fire_nation_imperialism }
-								religion = bhanti_spirituality
-							}
-							AND = {
-								FROM = { religion = ba_sing_se_cultural_heritage }
-								religion = earth_spirituality
-							}
+							trait = kind
+							trait = charitable
+							trait = humble
+							trait = just
 						}
-					}
-				}
-				custom_tooltip = { # Will not surrender ideals
-					text = will_not_convert_because_of_religion
-					hidden_tooltip = {
-						AND = {
-							OR = {
-								AND = {
-									religion = nomadic_pacifism
-									NOT = { trait = kind }
-									NOT = { trait = temperate }
-									NOT = { trait = just }
-									NOT = { trait = enlightened }
-								}
-								NOT = { religion = nomadic_pacifism }
+						FROM = {
+							NOR = {
+								religion = fire_nation_imperialism
+								religion = nomadic_nihilism
+								religion = unificationism
+								religion = way_of_chin
 							}
-							OR = {
-								AND = {
-									religion = the_eternal_flame 
-									AND = {
-										NOT = { trait = kind }
-										NOT = { trait = temperate }
-										NOT = { trait = just }
-										NOT = { trait = enlightened }
-										NOT = { trait = brave }
-										NOT = { trait = content }
-									}
-								}
-								NOT = { religion = the_eternal_flame  }
-							}
-							OR = {
-								AND = {
-									religion = followers_of_kyoshi
-									AND = {
-										NOT = { trait = kyoshiwarrior }
-									}
-								}
-								NOT = { religion = followers_of_kyoshi }
-							}
-							NOT = { trait = avatar }
-							NOT = { trait = fullyrealisedavatar }
-							NOT = { trait = uninterested }
 						}
 					}
 				}
 			}
-			OR = { # Reason to convert
-				custom_tooltip = { # Likes liege
-					text = will_convert_because_likes_liege
-					hidden_tooltip = {
-						opinion = { who = FROM value = 90 }
+			custom_tooltip = { # Cultural differences
+				text = will_not_convert_because_of_culture
+				hidden_tooltip = {
+					NOR = {
+						religion = children_of_si_wong
+						religion = the_eternal_flame
+						religion = the_great_swamp
 					}
 				}
-				custom_tooltip = { # Dare not refuse
-					text = will_convert_because_cannot_refuse
-					hidden_tooltip = {
-						dynasty = none
+			}
+			custom_tooltip = { # Zealous
+				text = will_not_convert_because_of_zeal
+				hidden_tooltip = {
+					NOT = { trait = zealous }
+				}
+			}
+			custom_tooltip = { # Does not like liege enough
+				text = will_not_convert_because_of_low_opinion
+				hidden_tooltip = {
+					opinion = {
+						who = FROM
+						value = 20
 					}
 				}
-				custom_tooltip = { # Will convert because of shared Dynasty
-					text = will_convert_because_of_kin
-					hidden_tooltip = {
-						dynasty = FROM
+			}
+			custom_tooltip = { # Accepted minority
+				text = will_not_convert_because_of_minority
+				hidden_tooltip = {
+					NOR = {
+						AND = {
+							FROM = { religion = fire_spirituality }
+							religion = bhanti_spirituality
+						}
+						AND = {
+							FROM = { religion = fire_nation_imperialism }
+							religion = bhanti_spirituality
+						}
+						AND = {
+							FROM = { religion = ba_sing_se_cultural_heritage }
+							religion = earth_spirituality
+						}
 					}
 				}
-				custom_tooltip = { # Likes ideals
-					text = will_convert_because_likes_religion
-					hidden_tooltip = {
-						OR = {
-							AND = {
-								OR = {
-									FROM = { religion = fire_nation_imperialism }
-									FROM = { religion = way_of_chin }
-								}
-								OR = {
-									trait = ambitious
-									trait = deceitful
-									trait = cruel
-									trait = greedy
-									trait = envious
-									trait = wroth
-									trait = proud
-								}
-							}
-							AND = {
-								FROM = { religion = nomadic_nihilism } 
-								religion = nomadic_pacifism
-								trait = cynical
-							}
-							AND = {
-								FROM = { religion = nomadic_nihilism } 
-								religion = nomadic_pacifism
+			}
+			custom_tooltip = { # Will not surrender ideals
+				text = will_not_convert_because_of_religion
+				hidden_tooltip = {
+					OR = {
+						AND = {
+							religion = nomadic_pacifism
+							NAND = {
 								trait = kind
+								trait = temperate
+								trait = just
+								trait = enlightened
 							}
-							AND = {
-								FROM = { religion = fortune_telling }
-								trait = trusting
+						}
+						NOT = { religion = nomadic_pacifism }
+					}
+					OR = {
+						AND = {
+							religion = the_eternal_flame
+							NAND = {
+								trait = kind
+								trait = temperate
+								trait = just
+								trait = enlightened
+								trait = brave
+								trait = content
 							}
-							AND = {
-								FROM = { religion = children_of_si_wong }
-								culture = sandbender
+						}
+						NOT = { religion = the_eternal_flame  }
+					}
+					OR = {
+						AND = {
+							religion = followers_of_kyoshi
+							NOT = { trait = kyoshiwarrior }
+						}
+						NOT = { religion = followers_of_kyoshi }
+					}
+					NOR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+						trait = uninterested
+					}
+				}
+			}
+		}
+		OR = { # Reason to convert
+			custom_tooltip = { # Likes liege
+				text = will_convert_because_likes_liege
+				hidden_tooltip = {
+					opinion = { who = FROM value = 90 }
+				}
+			}
+			custom_tooltip = { # Dare not refuse
+				text = will_convert_because_cannot_refuse
+				hidden_tooltip = {
+					dynasty = none
+				}
+			}
+			custom_tooltip = { # Will convert because of shared Dynasty
+				text = will_convert_because_of_kin
+				hidden_tooltip = {
+					dynasty = FROM
+				}
+			}
+			custom_tooltip = { # Likes ideals
+				text = will_convert_because_likes_religion
+				hidden_tooltip = {
+					OR = {
+						AND = {
+							OR = {
+								FROM = { religion = fire_nation_imperialism }
+								FROM = { religion = way_of_chin }
 							}
-							AND = {
-								FROM = { religion = southern_spirituality }
-								culture = southern_water
+							OR = {
+								trait = ambitious
+								trait = deceitful
+								trait = cruel
+								trait = greedy
+								trait = envious
+								trait = wroth
+								trait = proud
 							}
-							AND = {
-								FROM = { religion = tui_and_la }
-								culture = northern_water
-							}
-							AND = {
-								FROM = { religion = nomadic_pacifism }
-								OR = {
-									trait = kind
-									trait = enlightened
-								}
+						}
+						AND = {
+							FROM = { religion = nomadic_nihilism }
+							religion = nomadic_pacifism
+							trait = cynical
+						}
+						AND = {
+							FROM = { religion = nomadic_nihilism }
+							religion = nomadic_pacifism
+							trait = kind
+						}
+						AND = {
+							FROM = { religion = fortune_telling }
+							trait = trusting
+						}
+						AND = {
+							FROM = { religion = children_of_si_wong }
+							culture = sandbender
+						}
+						AND = {
+							FROM = { religion = southern_spirituality }
+							culture = southern_water
+						}
+						AND = {
+							FROM = { religion = tui_and_la }
+							culture = northern_water
+						}
+						AND = {
+							FROM = { religion = nomadic_pacifism }
+							OR = {
+								trait = kind
+								trait = enlightened
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
 		effect = {
 			character_event = { id = ATLA.104 }
 			religion = FROM
 		}
-		
+
 		revoke_allowed = {
 			always = no
 		}
-		
+
 		ai_will_do = {
 			factor = 0.01
 			modifier = {
@@ -258,5 +256,4 @@ targetted_decisions = {
 			}
 		}
 	}
-
 }
