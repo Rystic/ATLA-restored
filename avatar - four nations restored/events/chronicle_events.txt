@@ -117,21 +117,17 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		OR = {
-			any_vassal = { ai = no }
-			any_spouse = { ai = no }
-			any_child = { ai = no }
-			any_playable_ruler = {
-				ai = no
+		any_player = {
+			OR = {
+				liege = { character = ROOT }
+				any_spouse = { character = ROOT }
+				is_child_of = ROOT
 				current_heir = {
 					character = ROOT
 				}
-			}
-			AND = {
-				controls_religion = yes
-				any_playable_ruler = {
-					ai = no
+				AND = {
 					religion = ROOT
+					ROOT = { controls_religion = yes }
 				}
 			}
 		}
@@ -176,9 +172,8 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				current_heir = {
 					character = ROOT
 				}
@@ -189,9 +184,8 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				religion_head = {
 					character = ROOT
 				}
@@ -384,9 +378,8 @@ character_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				religion = ROOT
 			}
 			chronicle = {
@@ -394,10 +387,11 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
-				religion = new_character
+				new_character = {
+					religion = PREV
+				}
 			}
 			chronicle = {
 				entry = CHRONICLE_UNFRIENDLY_CRUSADE_STARTED
@@ -416,99 +410,6 @@ character_event = {
 	}
 }
 
-# On crusade success
-	# ROOT is the target title
-	# new_character is the Enemy
-	# FROM is the taker
-character_event = {
-	id = CM.10016
-	
-	hide_window = yes
-
-	is_triggered_only = yes
-	
-	immediate = {
-		if = {
-			limit = {
-				FROM = {
-					religion_head = { is_alive = yes }
-				}
-			}
-			any_playable_ruler = {
-				limit = {
-					ai = no
-					OR = {
-						religion = FROM
-						religion = new_character
-					}
-					NOT = { character = FROM }
-				}
-				chronicle = {
-					entry = CHRONICLE_CRUSADE_WON
-					portrait = [From.RelHead.GetID]
-				}
-			}
-			FROM = {
-				if = {
-					limit = { ai = no }
-					chronicle = {
-						entry = CHRONICLE_CRUSADE_WON_AND_I_GOT_THE_TITLE
-						portrait = [From.GetID]
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				NOT = {
-					FROM = {
-						religion_head = { is_alive = yes } # Crusade ended inconclusively as the religious head no longer exist
-					}
-				}
-			}
-			any_playable_ruler = {
-				limit = {
-					ai = no
-					OR = {
-						religion = FROM
-						religion = new_character
-					}
-				}
-				chronicle = {
-					entry = CHRONICLE_CRUSADE_LOST_NO_HEAD
-				}
-			}
-		}
-	}
-}
-
-# On crusade failure
-	# ROOT is the target title
-	# new_character is the Enemy
-	# FROM is the Pope/Caliph
-character_event = {
-	id = CM.10017
-	
-	hide_window = yes
-
-	is_triggered_only = yes
-	
-	immediate = {
-		any_playable_ruler = {
-			limit = {
-				ai = no
-				OR = {
-					religion = FROM
-					religion = new_character
-				}
-			}
-			chronicle = {
-				entry = CHRONICLE_CRUSADE_LOST
-				portrait = [New.GetID]
-			}
-		}
-	}
-}
 
 
 # Creates new higher level title
@@ -521,8 +422,8 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		ai = no
 		ROOT = {
+			ai = no
 			any_demesne_title = {
 				NOT = { title = FROM }
 				FROM = {
@@ -586,9 +487,9 @@ character_event = {
 	immediate = {
 		if = {
 			limit = {
-				mother_even_if_dead = { always = yes }
-				OR = {
-					new_character = {
+				new_character = {
+					mother_even_if_dead = { always = yes }
+					OR = {
 						father_even_if_dead = {
 							PREV = {
 								mother_even_if_dead = {
@@ -596,8 +497,8 @@ character_event = {
 								}
 							}
 						}
+						NOT = { father_even_if_dead = { always = yes } }
 					}
-					NOT = { father_even_if_dead = { always = yes } }
 				}
 			}
 			FROM = {
@@ -609,9 +510,9 @@ character_event = {
 		}
 		if = {
 			limit = {
-				father_even_if_dead = { always = yes }
-				OR = {
-					new_character = {
+				new_character = {
+					father_even_if_dead = { always = yes }
+					OR = {
 						father_even_if_dead = {
 							PREV = {
 								mother_even_if_dead = {
@@ -619,8 +520,8 @@ character_event = {
 								}
 							}
 						}
+						NOT = { mother_even_if_dead = { always = yes } }
 					}
-					NOT = { mother_even_if_dead = { always = yes } }
 				}
 			}
 			FROM = {
@@ -657,22 +558,18 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		OR = {
-			ai = no
-			any_vassal = { ai = no }
-			any_spouse = { ai = no }
-			any_child = { ai = no }
-			any_playable_ruler = {
-				ai = no
+		any_player = {
+			OR = {
+				character = ROOT
+				liege = { character = ROOT }
+				any_spouse = { character = ROOT }
+				is_child_of = ROOT
 				current_heir = {
 					character = ROOT
 				}
-			}
-			AND = {
-				controls_religion = yes
-				any_playable_ruler = {
-					ai = no
+				AND = {
 					religion = ROOT
+					ROOT = { controls_religion = yes }
 				}
 			}
 		}
@@ -707,9 +604,8 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				current_heir = {
 					character = ROOT
 				}
@@ -719,9 +615,8 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				religion_head = {
 					character = ROOT
 				}
@@ -743,22 +638,18 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		OR = {
-			ai = no
-			any_vassal = { ai = no }
-			any_spouse = { ai = no }
-			any_child = { ai = no }
-			any_playable_ruler = {
-				ai = no
+		any_player = {
+			OR = {
+				character = ROOT
+				liege = { character = ROOT }
+				any_spouse = { character = ROOT }
+				is_child_of = ROOT
 				current_heir = {
 					character = ROOT
 				}
-			}
-			AND = {
-				controls_religion = yes
-				any_playable_ruler = {
-					ai = no
+				AND = {
 					religion = ROOT
+					ROOT = { controls_religion = yes }
 				}
 			}
 		}
@@ -793,9 +684,8 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				current_heir = {
 					character = ROOT
 				}
@@ -805,9 +695,8 @@ character_event = {
 				portrait = [Root.GetID]
 			}
 		}
-		any_playable_ruler = {
+		any_player = {
 			limit = {
-				ai = no
 				religion_head = {
 					character = ROOT
 				}
@@ -848,9 +737,12 @@ character_event = {
 			limit = {
 				any_vassal = { ai = no }
 			}
-			chronicle = {
-				entry = CHRONICLE_LIEGE_CONVERTED_RELIGION
-				portrait = [Root.GetID]
+			any_vassal = {
+				limit = { ai = no }
+				chronicle = {
+					entry = CHRONICLE_LIEGE_CONVERTED_RELIGION
+					portrait = [Root.GetID]
+				}
 			}
 		}
 		if = {
@@ -1146,8 +1038,7 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		any_playable_ruler = {
-			ai = no
+		any_player = {
 			FROM = { is_primary_heir = PREV }
 		}
 	}
@@ -1155,9 +1046,9 @@ character_event = {
 	immediate = {
 		if = {
 			limit = {
-				mother_even_if_dead = { always = yes }
-				OR = {
-					new_character = {
+				new_character = {
+					mother_even_if_dead = { always = yes }
+					OR = {
 						father_even_if_dead = {
 							PREV = {
 								mother_even_if_dead = {
@@ -1165,13 +1056,12 @@ character_event = {
 								}
 							}
 						}
+						NOT = { father_even_if_dead = { always = yes } }
 					}
-					NOT = { father_even_if_dead = { always = yes } }
 				}
 			}
-			any_playable_ruler = {
+			any_player = {
 				limit = {
-					ai = no
 					FROM = { is_primary_heir = PREV }
 				}
 				chronicle = {
@@ -1182,9 +1072,9 @@ character_event = {
 		}
 		if = {
 			limit = {
-				father_even_if_dead = { always = yes }
-				OR = {
-					new_character = {
+				new_character = {
+					father_even_if_dead = { always = yes }
+					OR = {
 						father_even_if_dead = {
 							PREV = {
 								mother_even_if_dead = {
@@ -1192,13 +1082,12 @@ character_event = {
 								}
 							}
 						}
+						NOT = { mother_even_if_dead = { always = yes } }
 					}
-					NOT = { mother_even_if_dead = { always = yes } }
 				}
 			}
-			any_playable_ruler = {
+			any_player = {
 				limit = {
-					ai = no
 					FROM = { is_primary_heir = PREV }
 				}
 				chronicle = {
@@ -1214,9 +1103,8 @@ character_event = {
 					NOT = { mother_even_if_dead = { always = yes } }
 				}
 			}
-			any_playable_ruler = {
+			any_player = {
 				limit = {
-					ai = no
 					FROM = { is_primary_heir = PREV }
 				}
 				chronicle = {
@@ -1237,13 +1125,64 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		ai = no
+		OR = {
+			ai = no
+			FROM = { 
+				ai = no 
+			}
+		}
 	}
 
 	immediate = {
-		chronicle = {
-			entry = CHRONICLE_DIVORCED
-			portrait = [Spouse.GetID]
+		# Chronicle entries with a religious head
+		if = {
+			limit = {
+				new_character = {
+					always = yes 
+				}
+			}
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_DIVORCED
+					portrait = [From.GetID]
+				}
+			}
+			FROM = {
+				if = {
+					limit = {
+						ai = no
+					}
+					chronicle = {
+						entry = CHRONICLE_DIVORCED
+						portrait = [From.GetID]
+					}
+				}
+			}
+			break = yes
+		}
+		 # Chronicle entries without a religious head
+		if = {
+			limit = {
+				ai = no
+			}
+			chronicle = {
+				entry = CHRONICLE_DIVORCED_NO_HEAD
+				portrait = [From.GetID]
+			}
+		}
+		FROM = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_DIVORCED_NO_HEAD
+					portrait = [From.GetID]
+				}
+			}
 		}
 	}
 }
@@ -1302,7 +1241,7 @@ character_event = {
 			}
 			chronicle = {
 				entry = CHRONICLE_INHERIT_MAJOR_TITLE
-				PICTURE = GFX_evt_throne_room
+				picture = GFX_evt_throne_room
 			}
 		}
 	}
