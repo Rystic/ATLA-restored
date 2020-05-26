@@ -8,12 +8,12 @@ province_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		disease = ashbreath
-		NOT = { has_global_flag = ash_breath_broadcasted }
+		disease = bubonic_plague
+		NOT = { has_global_flag = black_death_broadcasted }
 	}
 		
 	immediate = {
-		set_global_flag = ash_breath_broadcasted
+		set_global_flag = black_death_broadcasted
 		save_event_target_as = plague_outbreak_location
 		owner = {
 			narrative_event = { id = RIP.10001 }
@@ -25,7 +25,7 @@ province_event = {
 narrative_event = {
 	id = RIP.10001
 	title = EVTNAME_ATLA_RIP_10001
-	picture = GFX_evt_fallen_soldiers
+	picture = GFX_evt_plague_doctor
 	border = GFX_event_narrative_frame_religion
 
 	desc = EVTDESC_ATLA_RIP_10001
@@ -33,7 +33,7 @@ narrative_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		set_character_flag = ash_breath_close
+		set_character_flag = black_death_close
 		any_playable_ruler = {
 			limit = { 
 				ai = no
@@ -68,7 +68,7 @@ narrative_event = {
 narrative_event = {
 	id = RIP.10002
 	title = EVTNAME_ATLA_RIP_10001
-	picture = GFX_evt_fallen_soldiers
+	picture = GFX_evt_danse_macabre
 	border = GFX_event_narrative_frame_religion
 
 	desc = EVTDESC_ATLA_RIP_10001
@@ -78,7 +78,7 @@ narrative_event = {
 	ai = no
 
 	immediate = {
-		set_global_flag = ash_breath_broadcasted
+		set_global_flag = black_death_broadcasted
 		random_list = {
 			10 = {
 				set_character_flag = option_a
@@ -234,7 +234,7 @@ narrative_event = {
 narrative_event = {
 	id = RIP.10003
 	title = EVTNAME_ATLA_RIP_10001
-	picture = GFX_evt_fallen_soldiers
+	picture = GFX_evt_bring_out_your_dead
 	border = GFX_event_narrative_frame_religion
 
 	desc = EVTDESC_ATLA_RIP_10001
@@ -244,7 +244,7 @@ narrative_event = {
 	ai = no
 
 	immediate = {
-		set_global_flag = ash_breath_broadcasted
+		set_global_flag = black_death_broadcasted
 		random_list = {
 			10 = {
 				set_character_flag = option_a
@@ -399,7 +399,7 @@ narrative_event = {
 narrative_event = {
 	id = RIP.10004
 	title = EVTNAME_ATLA_RIP_10001
-	picture = GFX_evt_fallen_soldiers
+	picture = GFX_evt_bring_out_your_dead
 	border = GFX_event_narrative_frame_religion
 
 	desc = EVTDESC_ATLA_RIP_10001
@@ -409,7 +409,7 @@ narrative_event = {
 	ai = no
 
 	immediate = {
-		set_character_flag = ash_breath_close
+		set_character_flag = black_death_close
 	}
 	
 	option = {
@@ -426,18 +426,18 @@ province_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		disease = ashbreath
-		has_global_flag = ash_breath_broadcasted
+		disease = bubonic_plague
+		has_global_flag = black_death_broadcasted
 		any_neighbor_province = {
 			OR = {
 				owner = { 
 					ai = no
-					NOT = { has_character_flag = ash_breath_close } 
+					NOT = { has_character_flag = black_death_close } 
 				}
 				owner = { 
 					any_liege = {
 						ai = no
-						NOT = { has_character_flag = ash_breath_close } 
+						NOT = { has_character_flag = black_death_close } 
 					}
 				}
 			}
@@ -448,7 +448,7 @@ province_event = {
 		save_event_target_as = infected_province
 		any_neighbor_province = {
 			limit = {
-				owner = { NOT = { has_character_flag = ash_breath_close } }
+				owner = { NOT = { has_character_flag = black_death_close } }
 			}
 			save_event_target_as = bordering_province
 			owner = { 
@@ -463,21 +463,21 @@ province_event = {
 narrative_event = {
 	id = RIP.10006
 	title = EVTNAME_RIP_10006
-	picture = GFX_evt_fallen_soldiers
+	picture = GFX_evt_bring_out_your_dead
 	border = GFX_event_narrative_frame_religion
 	desc = EVTDESC_RIP_10006
 
 	is_triggered_only = yes
 
 	ai = no
-	has_global_flag = ash_breath_broadcasted
+	has_global_flag = black_death_broadcasted
 	
 	trigger = {
-		NOT = { has_character_flag = ash_breath_close }
+		NOT = { has_character_flag = black_death_close }
 	}
 
 	immediate = {
-		set_character_flag = ash_breath_close
+		set_character_flag = black_death_close
 		random_list = {
 			10 = {
 				set_character_flag = option_a
@@ -501,7 +501,7 @@ narrative_event = {
 							trait = kind 
 							trait = charitable 
 						}
-						NAND = {
+						AND = {
 							OR = { 
 								trait = strong 
 								trait = robust 
@@ -533,12 +533,12 @@ narrative_event = {
 				modifier = {
 					factor = 0
 					NAND = {
-							NOT = { religion_group = FROM }
-							OR = {
-								trait = zealous
-								trait = cruel
-							}
+						NOT = { religion_group = FROM }
+						OR = {
+							trait = zealous
+							trait = cruel
 						}
+					}
 				}
 			}
 			10 = {
@@ -573,6 +573,19 @@ narrative_event = {
 					NOT = { trait = paranoid }
 				}
 			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = option_a
+					has_character_flag = option_b
+					has_character_flag = option_c
+					has_character_flag = option_d
+					has_character_flag = option_e
+					has_character_flag = option_f
+				}
+			}
+			set_character_flag = option_a
 		}
 		chronicle = {
 			entry = CHRONICLE_BORDERING_PLAGUE
@@ -1310,9 +1323,11 @@ province_event = {
 			70 = { # Nothing Happens
 				modifier = {
 					factor = 3
-					OR = {
-						is_occupied = yes
-						in_siege = yes
+					any_province_holding = {
+						OR = {
+							is_occupied = yes
+							has_siege = yes
+						}
 					}
 				}
 				modifier = {
