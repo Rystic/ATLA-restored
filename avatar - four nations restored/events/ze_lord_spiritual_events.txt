@@ -38,7 +38,7 @@ character_event = {
 				trait = slothful
 				 has_character_flag = lord_spiritual_wants_to_proselytize_ze
 				has_job_action = action_inquisition
-				trait = in_hiding
+				is_inaccessible_trigger = yes
 				has_character_flag = do_not_disturb
 			}
 			prisoner = no
@@ -47,11 +47,6 @@ character_event = {
 			NOT = {
 				religion = ROOT
 				has_opinion_modifier = { who = ROOT modifier = opinion_sent_preacher }
-			}
-			religion_group = pagan_group
-			OR = {
-				NOT = { religion = aztec }
-				year = 1350
 			}
 			is_reformed_religion = no
 			controls_religion = no
@@ -90,11 +85,6 @@ character_event = {
 				NOR = {
 					religion = ROOT
 					has_opinion_modifier = { who = ROOT modifier = opinion_sent_preacher }
-				}
-				religion_group = pagan_group
-				OR = {
-					NOT = { religion = aztec }
-					year = 1350
 				}
 				is_reformed_religion = no
 				controls_religion = no
@@ -177,7 +167,7 @@ letter_event = {
 			wealth = 350
 			NOR = {
 				trait = greedy
-				trait = in_hiding
+				is_inaccessible_trigger = yes
 				has_character_flag = lord_spiritual_build_temple_ze
 			}
 			prisoner = no
@@ -245,12 +235,7 @@ character_event = {
 			location = { NOT = { religion_group = ROOT } }
 			OR = {
 				trait = cynical
-				trait = sympathy_christendom
-				trait = sympathy_islam
-				trait = sympathy_pagans
-				trait = sympathy_zoroastrianism
-				trait = sympathy_judaism
-				trait = sympathy_indian
+				# sympathy traits
 			}
 		}
 	}
@@ -275,12 +260,8 @@ character_event = {
 				save_event_target_as = ze_5020_province
 				trigger_switch = {
 					on_trigger = religion_group
-					christian 			= { PREV = { add_trait = sympathy_christendom } }
-					muslim 				= { PREV = { add_trait = sympathy_islam } }
-					pagan_group 		= { PREV = { add_trait = sympathy_pagans } }
-					zoroastrian_group 	= { PREV = { add_trait = sympathy_zoroastrianism } }
-					jewish_group 		= { PREV = { add_trait = sympathy_judaism } }
-					indian_group 		= { PREV = { add_trait = sympathy_indian } }
+					# sympathy traits
+					# christian 			= { PREV = { add_trait = sympathy_christendom } }
 				}
 			}
 		}
@@ -293,7 +274,7 @@ character_event = {
 					trait = zealous
 					is_primary_heir = ROOT
 					trait = incapable
-					trait = in_hiding
+					is_inaccessible_trigger = yes
 				}
 				prisoner = no
 			}
@@ -367,11 +348,14 @@ character_event = {
 					trait = zealous
 					is_primary_heir = ROOT
 					trait = incapable
-					trait = in_hiding
+					is_inaccessible_trigger = yes
 				}
 				prisoner = no
 			}
 			save_event_target_as = target_courtier
+		}
+		job_spiritual = {
+			save_event_target_as = target_spiritual
 		}
 	}
 
@@ -385,14 +369,14 @@ character_event = {
 		hidden_tooltip = {
 			random_list = {
 				80 = {
-					character_event = { id = ZE.5022 days = 100 }  # Convert one more...
+					repeat_event = { id = ZE.5022 days = 100 }  # Convert one more...
 				}
 				20 = {
 					character_event = { id = ZE.5027 days = 100 } # Letters discovered!
 					modifier = {
 						factor = 2
 						attribute_diff = {
-							character = job_spiritual
+							character = event_target:target_spiritual
 							attribute = intrigue
 							value = 4
 						}
@@ -400,7 +384,7 @@ character_event = {
 					modifier = {
 						factor = 2
 						attribute_diff = {
-							character = job_spiritual
+							character = event_target:target_spiritual
 							attribute = intrigue
 							value = 8
 						}
@@ -469,6 +453,10 @@ character_event = {
 
 	is_triggered_only = yes
 
+	capable_only = yes
+	only_rulers = yes
+	prisoner = no
+	
 	trigger = {
 		has_dlc = "Zeus"
 		job_spiritual = {
@@ -478,7 +466,7 @@ character_event = {
 				trait = honest
 				trait = just
 				has_character_flag = lord_spiritual_abuse_of_office
-				trait = in_hiding
+				is_inaccessible_trigger = yes
 			}
 		}
 	}
