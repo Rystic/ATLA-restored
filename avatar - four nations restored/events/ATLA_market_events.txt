@@ -1,0 +1,564 @@
+###########################################
+#                                         #
+# ATLA Market events		              #
+#                                         #
+#                                      	  #
+#                                         #
+###########################################
+
+namespace = ATLA_MARKET
+
+# Market - START
+character_event = {
+	id = ATLA_MARKET.1
+	desc = MARKETdesc.1
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Diplomacy - Find a Bargin
+		name = MARKEToptA.1
+		tooltip_info = diplomacy
+		random_list = {
+			20 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_TREASURE_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.12 }
+					}
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_CONSTRUCTION_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.9 }
+					}
+				}
+			}
+			25 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_MED_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.8 }
+					}
+				}
+			}
+			25 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_ARMS_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.3 }
+					}
+				}
+			}
+			10 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FAILURE
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.5 }
+					}
+				}
+				modifier = {
+					factor = 0
+					diplomacy = 16
+				}
+			}
+		}
+	}
+	option = { # Martial - Find a Weapon
+		name = MARKEToptB.1
+		tooltip_info = martial
+		trigger = {
+			NOT = { culture_group = air_nomad_culture }
+		}
+		random_list = {
+			10 = { # Great Weapon Smith Found
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_GRAND_SMITH
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.7 }
+					}
+				}
+				modifier = {
+					factor = 2
+					martial = 18
+				}
+			}
+			20 = { # Weapon Smith Found
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_SMITH
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.6 }
+					}
+				}
+				modifier = {
+					factor = 2
+					martial = 12
+				}
+			}
+			35 = { # Weapon Trader Found
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_WEAPON_TRADER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.2 }
+					}
+				}
+				modifier = {
+					factor = 0.1
+					has_character_flag = marketEVT_gotWeapon
+				}
+			}
+			20 = { # Arms Dealer Found
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_ARMS_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.3 }
+					}
+				}
+			}
+			20 = { # Trader Found
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_TRADER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.4 }
+					}
+				}
+				modifier = {
+					factor = 0.5
+					martial = 13
+				}
+			}
+			5 = { # Failure
+				custom_tooltip = {
+					text = ATLA_MARKET_FAILURE
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.5 }
+					}
+				}
+				modifier = {
+					factor = 0
+					martial = 16
+				}
+			}
+		}
+	}
+	option = { # Learning - Find a Treasure
+		name = MARKEToptC.1
+		tooltip_info = learning
+		random_list = {
+			20 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_ARTIFACT_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.13 }
+					}
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_TREASURE_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.12 }
+					}
+				}
+			}
+			25 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_BOOK_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.11 }
+					}
+				}
+			}
+			25 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_MED_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.8 }
+					}
+				}
+			}
+			10 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FAILURE
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.5 }
+					}
+				}
+				modifier = {
+					factor = 0
+					learning = 16
+				}
+			}
+		}
+	}
+	option = { # Stewardship - Oversee Things
+		name = MARKEToptD.1
+		tooltip_info = stewardship
+		random_list = {
+			20 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_BOOK_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.11 }
+					}
+				}
+			}
+			20 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_CONSTRUCTION_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.9 }
+					}
+				}
+			}
+			25 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_MED_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.8 }
+					}
+				}
+			}
+			25 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FOUND_GOODS_DEALER
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.10 }
+					}
+				}
+			}
+			10 = {
+				custom_tooltip = {
+					text = ATLA_MARKET_FAILURE
+					hidden_tooltip = {
+						character_event = { id = ATLA_MARKET.5 }
+					}
+				}
+				modifier = {
+					factor = 0
+					stewardship = 16
+				}
+			}
+		}
+	}
+}
+
+# Market - UNIQUE WEAPON TRADER
+character_event = {
+	id = ATLA_MARKET.2
+	desc = MARKETdesc.2
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Duel Dao 
+		name = MARKEToptA.2
+		trigger = {
+			OR = {
+				culture_group = fire_nation_culture
+				culture_group = earth_kingdom_culture
+				culture_group = outlaw_culture
+				culture_group = republic_city_culture
+			}
+		}
+		scaled_wealth = { value = -0.4 min = -100 max = -250 }
+		add_artifact = swordDuelDao
+		set_character_flag = marketEVT_gotWeapon
+	}
+	option = { # Buy Sword
+		name = MARKEToptB.2
+		trigger = {
+			OR = {
+				culture_group = fire_nation_culture
+				culture_group = republic_city_culture
+			}
+		}
+		scaled_wealth = { value = -0.3 min = -80 max = -200 }
+		add_artifact = swordFireDao
+		set_character_flag = marketEVT_gotWeapon
+	}
+	option = { # Buy Spear
+		name = MARKEToptE.2
+		trigger = {
+			culture_group = water_tribe_culture
+		}
+		scaled_wealth = { value = -0.25 min = -100 max = -200 }
+		add_artifact = spearWaterWarriorWeapon
+		set_character_flag = marketEVT_gotWeapon
+	}
+	option = { # Buy Club
+		name = MARKEToptC.2
+		trigger = {
+			culture_group = water_tribe_culture
+		}
+		scaled_wealth = { value = -0.2 min = -75 max = -175 }
+		add_artifact = clubWaterWarriorWeapon
+		set_character_flag = marketEVT_gotWeapon
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.2
+	}
+}
+
+# Market - ARMS DEALER
+character_event = {
+	id = ATLA_MARKET.3
+	desc = MARKETdesc.3
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Arms
+		name = MARKEToptA.3
+		scaled_wealth = { value = -0.2 min = -75 max = -175 }
+		capital_scope = {
+			add_province_modifier = { name = marketBoughtArms duration = 1800 }
+		}
+	}
+	option = { # Buy Nothing
+		name = MARKEToptB.3
+	}
+}
+
+# Market - WEAPON TRADER
+character_event = {
+	id = ATLA_MARKET.4
+	desc = MARKETdesc.4
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Duel Dao 
+		name = MARKEToptA.4
+		scaled_wealth = { value = -0.4 min = -100 max = -250 }
+		add_artifact = axe_tier_2
+	}
+	option = { # Buy Sword
+		name = MARKEToptB.4
+		scaled_wealth = { value = -0.3 min = -80 max = -200 }
+		add_artifact = scimitar_tier_1
+	}
+	option = { # Buy Spear
+		name = MARKEToptC.4
+		scaled_wealth = { value = -0.25 min = -100 max = -200 }
+		add_artifact = bow_tier_1
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.4
+	}
+}
+
+# Market - NOTHING
+character_event = {
+	id = ATLA_MARKET.5
+	desc = MARKETdesc.5
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Nothing
+		name = MARKEToptA.5
+	}
+}
+
+# Market - WEAPON SMITH
+character_event = {
+	id = ATLA_MARKET.6
+	desc = MARKETdesc.6
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Dagger
+		name = MARKEToptA.6
+		scaled_wealth = { value = -0.5 min = -250 max = -500 }
+		add_artifact = dagger_of_glory
+	}
+	option = { # Buy Dagger
+		name = MARKEToptB.6
+		scaled_wealth = { value = -0.4 min = -200 max = -400 }
+		add_artifact = engraved_dagger
+	}
+	option = { # Buy Axe
+		name = MARKEToptC.6
+		scaled_wealth = { value = -0.25 min = -150 max = -300 }
+		add_artifact = obsidian_axe
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.6
+	}
+}
+
+# Market - GREAT SMITH
+character_event = {
+	id = ATLA_MARKET.7
+	desc = MARKETdesc.7
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Sword
+		name = MARKEToptA.7
+		scaled_wealth = { value = -0.7 min = -275 max = -550 }
+		add_artifact = swordSpaceSword
+	}
+	option = { # Buy Mace
+		name = MARKEToptB.7
+		scaled_wealth = { value = -0.6 min = -250 max = -450 }
+		add_artifact = mace_tier_3_shatterer
+	}
+	option = { # Buy Bow
+		name = MARKEToptC.7
+		scaled_wealth = { value = -0.4 min = -200 max = -350 }
+		add_artifact = bow_tier_3_eagle
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.7
+	}
+}
+
+# Market - MED DEALER
+character_event = {
+	id = ATLA_MARKET.8
+	desc = MARKETdesc.8
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Meds
+		name = MARKEToptA.8
+		scaled_wealth = { value = -0.1 min = -50 max = -100 }
+		capital_scope = {
+			add_province_modifier = { name = marketBoughtMeds duration = 1800 }
+		}
+	}
+	option = { # Buy Nothing
+		name = MARKEToptB.8
+	}
+}
+
+# Market - CONSTRUCTION DEALER
+character_event = {
+	id = ATLA_MARKET.9
+	desc = MARKETdesc.9
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Construction Materials
+		name = MARKEToptA.9
+		scaled_wealth = { value = -0.1 min = -50 max = -100 }
+		capital_scope = {
+			add_province_modifier = { name = marketBoughtCons duration = 1800 }
+		}
+	}
+	option = { # Buy Nothing
+		name = MARKEToptB.9
+	}
+}
+
+# Market - GOODS DEALER
+character_event = {
+	id = ATLA_MARKET.10
+	desc = MARKETdesc.10
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Trade Goods
+		name = MARKEToptA.10
+		scaled_wealth = { value = -0.1 min = -25 max = -50 }
+		capital_scope = {
+			add_province_modifier = { name = marketBoughtGoods duration = 1800 }
+		}
+	}
+	option = { # Buy Nothing
+		name = MARKEToptB.10
+	}
+}
+
+# Market - BOOK TRADER
+character_event = {
+	id = ATLA_MARKET.11
+	desc = MARKETdesc.11
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Book
+		name = MARKEToptA.11
+		scaled_wealth = { value = -0.4 min = -100 max = -250 }
+		add_artifact = human_anatomy
+	}
+	option = { # Buy Book
+		name = MARKEToptB.11
+		scaled_wealth = { value = -0.3 min = -80 max = -200 }
+		add_artifact = a_soldiers_life
+	}
+	option = { # Buy Book
+		name = MARKEToptC.11
+		scaled_wealth = { value = -0.25 min = -100 max = -200 }
+		add_artifact = on_culture_architecture
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.11
+	}
+}
+
+# Market - TREASURE TRADER
+character_event = {
+	id = ATLA_MARKET.12
+	desc = MARKETdesc.12
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Crown
+		name = MARKEToptA.12
+		scaled_wealth = { value = -0.5 min = -200 max = -300 }
+		add_artifact = crown_of_pearls
+	}
+	option = { # Buy Crown
+		name = MARKEToptB.12
+		scaled_wealth = { value = -0.4 min = -150 max = -250 }
+		add_artifact = circlet_of_the_sun
+	}
+	option = { # Buy Bracelets
+		name = MARKEToptC.12
+		scaled_wealth = { value = -0.3 min = -125 max = -200 }
+		add_artifact = silver_bracelets
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.12
+	}
+}
+
+# Market - ARTIFACT TRADER
+character_event = {
+	id = ATLA_MARKET.13
+	desc = MARKETdesc.13
+	picture = GFX_evt_market
+	border = GFX_event_normal_frame_economy
+	is_triggered_only = yes
+	
+	option = { # Buy Book
+		name = MARKEToptA.13
+		scaled_wealth = { value = -0.5 min = -200 max = -300 }
+		add_artifact = keeping_government_court
+	}
+	option = { # Buy Bracelet
+		name = MARKEToptB.13
+		scaled_wealth = { value = -0.4 min = -150 max = -250 }
+		add_artifact = wristMeteoriteBracelet
+	}
+	option = { # Buy Crown
+		name = MARKEToptC.13
+		scaled_wealth = { value = -0.3 min = -125 max = -200 }
+		add_artifact = iron_crown
+	}
+	option = { # Buy Nothing
+		name = MARKEToptD.13
+	}
+}
