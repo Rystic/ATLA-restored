@@ -13,12 +13,13 @@ character_event = {
 	id = 6900
 	desc = EVTDESC6900
 	picture = GFX_evt_battle
-	
+
 	only_men = yes
-	min_age = 16	
+	min_age = 16
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
-	
+
 	trigger = {
 		in_command = yes
 		independent = no
@@ -35,9 +36,9 @@ character_event = {
 			}
 		}
 	}
-	
+
 	mean_time_to_happen = {
-		months = 2400
+		months = 1200
 		modifier = {
 			factor = 0.8
 			trait = gregarious
@@ -47,7 +48,7 @@ character_event = {
 			trait = brave
 		}
 	}
-	
+
 	immediate = {
 		liege = {
 			random_vassal = {
@@ -60,28 +61,22 @@ character_event = {
 					opinion = { who = ROOT value = -30 }
 					NOT = {	opinion = { who = ROOT value = 30 } }
 				}
-				set_character_flag = campaign_friend
+				save_event_target_as = campaign_friend_6900
 			}
 		}
 	}
-	
+
 	option = {
 		name = EVTOPTA6900
-		liege = {
-			random_vassal = {
-				limit = {
-					has_character_flag = campaign_friend
-				}
-				clr_character_flag = campaign_friend
-				
-				opinion = {
-					modifier = campaign_friend
-					who = ROOT
-					years = 10
-				}
-				hidden_tooltip = {
-					character_event = { id = 6901 days = 1 }
-				}
+		event_target:campaign_friend_6900 = {
+
+			opinion = {
+				modifier = campaign_friend
+				who = ROOT
+				years = 10
+			}
+			hidden_tooltip = {
+				character_event = { id = 6901 days = 1 }
 			}
 		}
 	}
@@ -93,16 +88,16 @@ character_event = {
 	desc = EVTDESC6901
 	picture = GFX_evt_battle
 	border = GFX_event_normal_frame_war
-	
+
 	is_triggered_only = yes
-	
+
 	option = {
 		name = EVTOPTA6901
 		reverse_opinion = {
 			modifier = campaign_friend
 			who = FROM
 			years = 10
-		}		
+		}
 	}
 }
 
@@ -112,11 +107,12 @@ character_event = {
 	desc = EVTDESC6910
 	picture = GFX_evt_battle
 
-	min_age = 16	
+	min_age = 16
 	only_men = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
-	
+
 	trigger = {
 		in_command = yes
 		in_battle = yes
@@ -137,14 +133,14 @@ character_event = {
 		}
 
 	}
-	
+
 	mean_time_to_happen = {
-		months = 2400
+		months = 1200
 		modifier = {
 			factor = 0.5
 			trait = brave
 		}
-		
+
 	}
 	immediate = {
 		liege = {
@@ -159,29 +155,25 @@ character_event = {
 					opinion = { who = ROOT value = -30 }
 					NOT = {	opinion = { who = ROOT value = 30 } }
 				}
-				set_character_flag = campaign_friend
+				save_event_target_as = campaign_friend_6910
 			}
 		}
 	}
-	
+
 	option = {
 		name = EVTOPTA6910
-		liege = {
-			random_vassal = {
+		event_target:campaign_friend_6910 = {
+			prestige = 5
+
+			add_friend = ROOT
+			if = {
 				limit = {
-					has_character_flag = campaign_friend
+					has_dlc = "Zeus"
 				}
-				clr_character_flag = campaign_friend
-				prestige = 5
-				
-				opinion = {
-					modifier = saved_on_battlefield
-					who = ROOT
-					years = 10
-				}
-				hidden_tooltip = {
-					character_event = { id = 6911 days = 1 }
-				}
+				reverse_add_favor = ROOT
+			}
+			hidden_tooltip = {
+				character_event = { id = 6911 days = 1 }
 			}
 		}
 	}
@@ -192,17 +184,21 @@ character_event = {
 	id = 6911
 	desc = EVTDESC6911
 	picture = GFX_evt_battle
-	
+
 	is_triggered_only = yes
-	
+
 	option = {
 		name = EVTOPTA6911
 		add_trait = wounded
-		reverse_opinion = {
-			modifier = saved_him_on_battlefield
-			who = FROM
-			years = 10
-		}		
+		tooltip = {
+			add_friend = FROM
+			if = {
+				limit = {
+					has_dlc = "Zeus"
+				}
+				reverse_add_favor = FROM
+			}
+		}
 	}
 }
 
@@ -215,8 +211,9 @@ character_event = {
 	only_men = yes
 	min_age = 16
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
-	
+
 	trigger = {
 		in_command = yes
 		independent = no
@@ -231,9 +228,9 @@ character_event = {
 			}
 		}
 	}
-	
+
 	mean_time_to_happen = {
-		months = 2400
+		months = 1200
 		modifier = {
 			factor = 0.8
 			trait = deceitful
@@ -242,7 +239,7 @@ character_event = {
 			factor = 0.8
 			trait = wroth
 		}
-		
+
 	}
 	immediate = {
 		liege = {
@@ -255,31 +252,23 @@ character_event = {
 					opinion = { who = ROOT value = -30 }
 					NOT = {	opinion = { who = ROOT value = 30 } }
 				}
-				set_character_flag = campaign_friend
+				save_event_target_as = campaign_friend_6920
 			}
 		}
 	}
-	
+
 	option = {
 		name = EVTOPTA6920
-		liege = {
-			random_vassal = {
-				limit = {
-					has_character_flag = campaign_friend
-				}
-				clr_character_flag = campaign_friend
-				
-				opinion = {
-					modifier = campaign_rival
-					who = ROOT
-					years = 5
-				}
-				hidden_tooltip = {
-					character_event = { id = 6921 days = 1 }
-				}
+		event_target:campaign_friend_6920 = {
+			opinion = {
+				modifier = campaign_rival
+				who = ROOT
+				years = 5
+			}
+			hidden_tooltip = {
+				character_event = { id = 6921 days = 1 }
 			}
 		}
-		
 	}
 }
 
@@ -288,15 +277,15 @@ character_event = {
 	id = 6921
 	desc = EVTDESC6921
 	picture = GFX_evt_battle
-	
+
 	is_triggered_only = yes
-	
+
 	option = {
 		name = EVTOPTA6921
 		reverse_opinion = {
 			modifier = campaign_rival
 			who = FROM
 			years = 5
-		}		
+		}
 	}
 }
