@@ -8,7 +8,7 @@
 #
 #################################################
 #
-# Written by Sara Wendel-Örtqvist, Johan Andersson & Henrik Fåhraeus
+# Written by Sara Wendel-ï¿½rtqvist, Johan Andersson & Henrik Fï¿½hraeus
 
 #Event ID 1500-1509 is reserved for Gluttonous events
 
@@ -18,19 +18,24 @@ character_event = {
 	id = 1500
 	desc = "EVTDESC1500"
 	picture = "GFX_evt_child_play"
-	
+
 	is_triggered_only = yes
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = temperate }
-		NOT = { trait = gluttonous }
+		prisoner = no
 		has_guardian = yes
+		NOR = {
+			has_character_flag = is_child_of_destiny
+			personality_traits = 5
+			trait = temperate
+			trait = gluttonous
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -58,27 +63,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -90,18 +101,20 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
 		}
 	}
-		
+
 	option = {
 		name = "EVTOPTA1500"
 		add_trait = gluttonous
+		gain_weight_medium_effect = yes
+		weight_trait_check_effect = yes
 		hidden_tooltip = {
 			guardian = {
 				character_event = {
@@ -118,18 +131,20 @@ character_event = {
 	id = 1501
 	desc = "EVTDESC1501"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = gluttonous
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1501"
 		remove_trait = gluttonous
+		lose_weight_medium_effect = yes
+		weight_trait_check_effect = yes
 	}
 }
 
@@ -141,19 +156,23 @@ character_event = {
 	id = 1510
 	desc = "EVTDESC1510"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = temperate }
-		NOT = { trait = gluttonous }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = temperate
+			trait = gluttonous
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -181,30 +200,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -214,19 +239,21 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
-		}		
+		}
 
 	}
-	
+
 	option = {
 		name = "EVTOPTA1510"
 		add_trait = temperate
+		lose_weight_medium_effect = yes
+		weight_trait_check_effect = yes
 		hidden_tooltip = {
 			guardian = {
 				character_event = {
@@ -243,18 +270,20 @@ character_event = {
 	id = 1511
 	desc = "EVTDESC1511"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = temperate
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1511"
 		remove_trait = temperate
+		gain_weight_medium_effect = yes
+		weight_trait_check_effect = yes
 	}
 }
 
@@ -266,19 +295,23 @@ character_event = {
 	id = 1520
 	desc = "EVTDESC1520"
 	picture = "GFX_evt_child_bully"
-	
+
 	is_triggered_only = yes
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = charitable }
-		NOT = { trait = greedy }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = charitable
+			trait = greedy
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -310,27 +343,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -342,15 +381,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1520"
 		add_trait = greedy
@@ -370,15 +409,15 @@ character_event = {
 	id = 1521
 	desc = "EVTDESC1521"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = greedy
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1521"
 		remove_trait = greedy
@@ -393,19 +432,23 @@ character_event = {
 	id = 1530
 	desc = "EVTDESC1530"
 	picture = "GFX_evt_child_talking"
-	
+
 	is_triggered_only = yes
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = charitable }
-		NOT = { trait = greedy }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = charitable
+			trait = greedy
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -437,27 +480,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -469,15 +518,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1530"
 		add_trait = charitable
@@ -497,15 +546,15 @@ character_event = {
 	id = 1531
 	desc = "EVTDESC1531"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = charitable
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1531"
 		remove_trait = charitable
@@ -520,19 +569,24 @@ character_event = {
 	id = 1540
 	desc = "EVTDESC1540"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	religion_group = water_religions
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = diligent }
-		NOT = { trait = slothful }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = diligent
+			trait = slothful
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -564,27 +618,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -596,15 +656,15 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1540"
 		add_trait = slothful
@@ -624,15 +684,15 @@ character_event = {
 	id = 1541
 	desc = "EVTDESC1541"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = slothful
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1541"
 		remove_trait = slothful
@@ -648,19 +708,23 @@ character_event = {
 	id = 1550
 	desc = "EVTDESC1550"
 	picture = "GFX_evt_child_reading"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = diligent }
-		NOT = { trait = slothful }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = diligent
+			trait = slothful
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -692,30 +756,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -725,15 +795,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1550"
 		add_trait = diligent
@@ -753,15 +823,15 @@ character_event = {
 	id = 1551
 	desc = "EVTDESC1551"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = diligent
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1551"
 		remove_trait = diligent
@@ -776,19 +846,23 @@ character_event = {
 	id = 1560
 	desc = "EVTDESC1560"
 	picture = "GFX_evt_child_bully"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = kind }
-		NOT = { trait = envious }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = kind
+			trait = envious
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -828,27 +902,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -860,15 +940,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1560"
 		add_trait = envious
@@ -888,15 +968,15 @@ character_event = {
 	id = 1561
 	desc = "EVTDESC1561"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = envious
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1561"
 		trigger = { is_female = yes }
@@ -917,19 +997,23 @@ character_event = {
 	id = 1570
 	desc = "EVTDESC1570"
 	picture = "GFX_evt_child_talking"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = kind }
-		NOT = { trait = envious }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = kind
+			trait = envious
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -969,27 +1053,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -1001,15 +1091,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1570"
 		add_trait = kind
@@ -1029,15 +1119,15 @@ character_event = {
 	id = 1571
 	desc = "EVTDESC1571"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = kind
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1571"
 		remove_trait = kind
@@ -1052,19 +1142,23 @@ character_event = {
 	id = 1580
 	desc = "EVTDESC1580"
 	picture = "GFX_evt_child_bully"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = wroth }
-		NOT = { trait = patient }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = wroth
+			trait = patient
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1088,30 +1182,36 @@ character_event = {
 			factor = 1.1
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.1
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
 			trait = dwarf
 			factor = 2.0
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.2
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.75
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.15
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -1121,15 +1221,15 @@ character_event = {
 			factor = 2.0
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.5
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1580"
 		add_trait = wroth
@@ -1149,15 +1249,15 @@ character_event = {
 	id = 1581
 	desc = "EVTDESC1581"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = wroth
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1581"
 		remove_trait = wroth
@@ -1172,19 +1272,23 @@ character_event = {
 	id = 1590
 	desc = "EVTDESC1590"
 	picture = "GFX_evt_child_reading"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = wroth }
-		NOT = { trait = patient }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = wroth
+			trait = patient
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1208,27 +1312,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			 has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -1240,15 +1350,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1590"
 		add_trait = patient
@@ -1268,15 +1378,15 @@ character_event = {
 	id = 1591
 	desc = "EVTDESC1591"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = patient
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1591"
 		remove_trait = patient
@@ -1291,19 +1401,23 @@ character_event = {
 	id = 1600
 	desc = "EVTDESC1600"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = proud }
-		NOT = { trait = humble }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = proud
+			trait = humble
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 
@@ -1328,27 +1442,33 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 0.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.1
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 5.0
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 5.0
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.1
 		}
 		modifier = {
@@ -1360,15 +1480,15 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.5
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1600"
 		add_trait = proud
@@ -1388,15 +1508,15 @@ character_event = {
 	id = 1601
 	desc = "EVTDESC1601"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = proud
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1601"
 		remove_trait = proud
@@ -1411,19 +1531,23 @@ character_event = {
 	id = 1610
 	desc = "EVTDESC1610"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = proud }
-		NOT = { trait = humble }
 		has_guardian = yes
-	}
-	
+		NOR = {
+			personality_traits = 5
+			trait = proud
+			trait = humble
+			has_character_flag = is_child_of_destiny
+			}
+		}
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1447,27 +1571,33 @@ character_event = {
 			factor = 2.0
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.1
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.5
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.5
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.25
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 2.0
 		}
 		modifier = {
@@ -1479,15 +1609,15 @@ character_event = {
 			factor = 0.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.01
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.5
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1610"
 		add_trait = humble
@@ -1507,15 +1637,15 @@ character_event = {
 	id = 1611
 	desc = "EVTDESC1611"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = humble
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1611"
 		remove_trait = humble
@@ -1532,19 +1662,23 @@ character_event = {
 	id = 1620
 	desc = "EVTDESC1620"
 	picture = "GFX_evt_child_bully"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = honest }
-		NOT = { trait = deceitful }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = honest
+			trait = deceitful
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1568,27 +1702,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -1600,15 +1740,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1620"
 		add_trait = deceitful
@@ -1628,15 +1768,15 @@ character_event = {
 	id = 1621
 	desc = "EVTDESC1621"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = deceitful
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1621"
 		remove_trait = deceitful
@@ -1651,19 +1791,24 @@ character_event = {
 	id = 1630
 	desc = "EVTDESC1630"
 	picture = "GFX_evt_child_reading"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = zealous }
-		NOT = { trait = cynical }
+		NOR = {
+			religion_group = air_religions
+			personality_traits = 5
+			trait = zealous
+			trait = cynical
+			has_character_flag = is_child_of_destiny
+		}
 		has_guardian = yes
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1687,27 +1832,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -1719,15 +1870,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1630"
 		add_trait = zealous
@@ -1747,42 +1898,44 @@ character_event = {
 	id = 1631
 	desc = "EVTDESC1631"
 	picture = "GFX_evt_child_reading"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = zealous
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1631"
 		remove_trait = zealous
 	}
 }
 
-#######################################################################
-
-#Event ID 1640-1649 is reserved for Honest events#
-#Honest Child
+### Zealous - air ###
 character_event = {
-	id = 1640
-	desc = "EVTDESC1640"
-	picture = "GFX_evt_child_play"
-	
+	id = 1632
+	desc = "EVTDESC1632"
+	picture = "GFX_evt_child_reading"
+
 	min_age = 6
 	max_age = 16
+	religion_group = air_religions
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = honest }
-		NOT = { trait = deceitful }
+		NOR = {
+			personality_traits = 5
+			trait = zealous
+			trait = cynical
+			has_character_flag = is_child_of_destiny
+		}
 		has_guardian = yes
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1806,27 +1959,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -1838,15 +1997,124 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
+	option = {
+		name = "EVTOPTA1630"
+		add_trait = zealous
+		hidden_tooltip = {
+			guardian = {
+				character_event = {
+					id = 2132
+					days = 3
+				}
+			}
+		}
+	}
+}
+
+#######################################################################
+
+#Event ID 1640-1649 is reserved for Honest events#
+#Honest Child
+character_event = {
+	id = 1640
+	desc = "EVTDESC1640"
+	picture = "GFX_evt_child_play"
+
+	min_age = 6
+	max_age = 16
+	lacks_dlc = "Conclave"
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = honest
+			trait = deceitful
+			has_character_flag = is_child_of_destiny
+		}
+	}
+
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			trait = clubfooted
+			factor = 1.1
+		}
+		modifier = {
+			trait = harelip
+			factor = 1.1
+		}
+		modifier = {
+			trait = hunchback
+			factor = 1.1
+		}
+		modifier = {
+			trait = lisp
+			factor = 0.9
+		}
+		modifier = {
+			trait = stutter
+			factor = 0.9
+		}
+		modifier = {
+			has_fair_trait_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			has_ugly_trait_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			trait = dwarf
+			factor = 1.05
+		}
+		modifier = {
+			trait = genius
+			factor = 10
+		}
+		modifier = {
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
+			factor = 2
+		}
+		modifier = {
+			OR = {
+				trait = slow
+				trait = dull
+			}
+			factor = 0.5
+		}
+		modifier = {
+			trait = imbecile
+			factor = 0.05
+		}
+		modifier = {
+			trait = inbred
+			factor = 0.1
+		}
+		modifier = {
+			is_strong_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			is_weak_trigger = yes
+			factor = 2.0
+		}
+	}
+
 	option = {
 		name = "EVTOPTA1640"
 		add_trait = honest
@@ -1866,15 +2134,15 @@ character_event = {
 	id = 1641
 	desc = "EVTDESC1641"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = honest
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1641"
 		remove_trait = honest
@@ -1889,19 +2157,23 @@ character_event = {
 	id = 1650
 	desc = "EVTDESC1650"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = craven }
-		NOT = { trait = brave }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = craven
+			trait = brave
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -1925,27 +2197,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -1957,15 +2235,15 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1650"
 		add_trait = craven
@@ -1985,15 +2263,15 @@ character_event = {
 	id = 1651
 	desc = "EVTDESC1651"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = craven
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1651"
 		remove_trait = craven
@@ -2008,19 +2286,23 @@ character_event = {
 	id = 1660
 	desc = "EVTDESC1660"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = craven }
-		NOT = { trait = brave }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = craven
+			trait = brave
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2044,30 +2326,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -2077,15 +2365,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1660"
 		add_trait = brave
@@ -2105,15 +2393,15 @@ character_event = {
 	id = 1661
 	desc = "EVTDESC1661"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = brave
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1661"
 		remove_trait = brave
@@ -2128,19 +2416,23 @@ character_event = {
 	id = 1670
 	desc = "EVTDESC1670"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = shy }
-		NOT = { trait = gregarious }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = shy
+			trait = gregarious
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2164,27 +2456,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -2196,15 +2494,15 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1670"
 		add_trait = shy
@@ -2224,15 +2522,15 @@ character_event = {
 	id = 1671
 	desc = "EVTDESC1671"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = shy
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1671"
 		remove_trait = shy
@@ -2247,19 +2545,23 @@ character_event = {
 	id = 1680
 	desc = "EVTDESC1680"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = shy }
-		NOT = { trait = gregarious }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = shy
+			trait = gregarious
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2283,30 +2585,36 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 0.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 2.0
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 5.0
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -2316,15 +2624,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1680"
 		add_trait = gregarious
@@ -2344,15 +2652,15 @@ character_event = {
 	id = 1681
 	desc = "EVTDESC1681"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = gregarious
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1681"
 		remove_trait = gregarious
@@ -2367,19 +2675,23 @@ character_event = {
 	id = 1690
 	desc = "EVTDESC1690"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = content }
-		NOT = { trait = ambitious }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = content
+			trait = ambitious
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2391,15 +2703,15 @@ character_event = {
 			trait = humble
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1690"
 		add_trait = ambitious
@@ -2419,15 +2731,15 @@ character_event = {
 	id = 1691
 	desc = "EVTDESC1691"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = ambitious
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1691"
 		remove_trait = ambitious
@@ -2442,19 +2754,23 @@ character_event = {
 	id = 1700
 	desc = "EVTDESC1700"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = content }
-		NOT = { trait = ambitious }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = content
+			trait = ambitious
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2466,15 +2782,15 @@ character_event = {
 			trait = humble
 		}
 			modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1700"
 		add_trait = content
@@ -2494,15 +2810,15 @@ character_event = {
 	id = 1701
 	desc = "EVTDESC1701"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = content
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1701"
 		remove_trait = content
@@ -2517,19 +2833,23 @@ character_event = {
 	id = 1710
 	desc = "EVTDESC1710"
 	picture = "GFX_evt_child_bully"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = just }
-		NOT = { trait = arbitrary }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = just
+			trait = arbitrary
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2553,27 +2873,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -2585,15 +2911,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1710"
 		add_trait = arbitrary
@@ -2613,15 +2939,15 @@ character_event = {
 	id = 1711
 	desc = "EVTDESC1711"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = arbitrary
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1711"
 		remove_trait = arbitrary
@@ -2636,19 +2962,23 @@ character_event = {
 	id = 1720
 	desc = "EVTDESC1720"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = just }
-		NOT = { trait = arbitrary }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = just
+			trait = arbitrary
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2672,27 +3002,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -2704,15 +3040,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1720"
 		add_trait = just
@@ -2732,15 +3068,15 @@ character_event = {
 	id = 1721
 	desc = "EVTDESC1721"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = just
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1721"
 		remove_trait = just
@@ -2755,19 +3091,23 @@ character_event = {
 	id = 1730
 	desc = "EVTDESC1730"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = zealous }
-		NOT = { trait = cynical }
+		NOR = {
+			religion_group = air_religions
+			personality_traits = 5
+			trait = zealous
+			trait = cynical
+			has_character_flag = is_child_of_destiny
+		}
 		has_guardian = yes
 	}
-	
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2791,27 +3131,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -2823,15 +3169,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1730"
 		add_trait = cynical
@@ -2851,15 +3197,142 @@ character_event = {
 	id = 1731
 	desc = "EVTDESC1731"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = cynical
 		}
 	}
-	
+
+	option = {
+		name = "EVTOPTA1731"
+		remove_trait = cynical
+	}
+}
+
+### Cynical Child - Muslim ###
+character_event = {
+	id = 1732
+	desc = "EVTDESC1732"
+	picture = "GFX_evt_child_play"
+
+	min_age = 6
+	max_age = 16
+	religion_group = muslim
+	lacks_dlc = "Conclave"
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = zealous
+			trait = cynical
+			has_character_flag = is_child_of_destiny
+		}
+	}
+
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			trait = clubfooted
+			factor = 1.1
+		}
+		modifier = {
+			trait = harelip
+			factor = 1.1
+		}
+		modifier = {
+			trait = hunchback
+			factor = 1.1
+		}
+		modifier = {
+			trait = lisp
+			factor = 0.9
+		}
+		modifier = {
+			trait = stutter
+			factor = 0.9
+		}
+		modifier = {
+			has_fair_trait_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			has_ugly_trait_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			trait = dwarf
+			factor = 1.05
+		}
+		modifier = {
+			trait = genius
+			factor = 10
+		}
+		modifier = {
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
+			factor = 2
+		}
+		modifier = {
+			OR = {
+				trait = slow
+				trait = dull
+			}
+			factor = 0.5
+		}
+		modifier = {
+			trait = imbecile
+			factor = 0.05
+		}
+		modifier = {
+			trait = inbred
+			factor = 0.1
+		}
+		modifier = {
+			is_strong_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			is_weak_trigger = yes
+			factor = 2.0
+		}
+	}
+
+	option = {
+		name = "EVTOPTA1730"
+		add_trait = cynical
+		hidden_tooltip = {
+			guardian = {
+				character_event = {
+					id = 2230
+					days = 3
+				}
+			}
+		}
+	}
+}
+
+# Discouraged
+character_event = {
+	id = 1733
+	desc = "EVTDESC1733"
+	picture = "GFX_evt_guardian"
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_tooltip = {
+			add_trait = cynical
+		}
+	}
+
 	option = {
 		name = "EVTOPTA1731"
 		remove_trait = cynical
@@ -2875,19 +3348,23 @@ character_event = {
 	id = 1965
 	desc = "EVTDESC1965"
 	picture = "GFX_evt_child_bully"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { personality_traits = 5 }
-		NOT = { trait = kind }
-		NOT = { trait = cruel }
 		has_guardian = yes
+		NOR = {
+			personality_traits = 5
+			trait = kind
+			trait = cruel
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -2911,30 +3388,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -2944,23 +3427,19 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1965"
 		add_trait = cruel
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		hidden_tooltip = {
 			guardian = {
 				character_event = {
@@ -2977,15 +3456,15 @@ character_event = {
 	id = 1966
 	desc = "EVTDESC1966"
 	picture = "GFX_evt_guardian"
-	
+
 	is_triggered_only = yes
-	
+
 	immediate = {
 		hidden_tooltip = {
 			add_trait = cruel
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1966"
 		remove_trait = cruel
@@ -2999,41 +3478,40 @@ character_event = {
 	id = 1980
 	desc = "EVTDESC1980"
 	picture = GFX_evt_brothel
-	
+
 	min_age = 13
 	max_age = 17
 	only_men = yes
-	
+	only_capable = yes
+	is_married = no
+
 	trigger = {
-		is_married = no
 		has_guardian = yes
-		NOT = {
+		NOR = {
+			trait = zealous
 			trait = homosexual
-		}
-		NOT = {
 			trait = chaste
-		}
-		NOT = {
 			trait = celibate
+			has_character_flag = is_child_of_destiny
 		}
 	}
 
 	mean_time_to_happen = {
 		months = 960
-		
-		
+
+
 		modifier = {
 			factor = 0.75
 			martial = 10
-			trait = fair
+			has_fair_trait_trigger = yes
 		}
-		
+
 		modifier = {
 			factor = 0.75
 			trait = shy
 			learning = 10
 		}
-		
+
 		modifier = {
 			factor = 0.75
 			trait = trusting
@@ -3042,9 +3520,9 @@ character_event = {
 				not = { age = 18 }
 				trait = homosexual
 				reverse_opinion = { who = ROOT value = 25 }
-			}		
-		} 
-		
+			}
+		}
+
 		modifier = {
 			factor = 0.9
 			OR = {
@@ -3056,9 +3534,9 @@ character_event = {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	option = {
 		name = "EVTOPTA1980"
 		add_trait = homosexual
@@ -3070,27 +3548,31 @@ character_event = {
 	id = 1985
 	desc = "EVTDESC1985"
 	picture = GFX_evt_brothel
-	
+
 	min_age = 13
 	max_age = 17
 	only_men = yes
-	
+	only_capable = yes
+	is_married = no
+
 	trigger = {
-		is_married = no
 		has_guardian = yes
 		num_traits = 4
 		trait = homosexual
+		NOR = {
+			religion_group = air_religions
+			has_character_flag = is_child_of_destiny
+		}
 	}
 
 	mean_time_to_happen = {
 		months = 480
-		
 		modifier = {
-			factor = 0.9
-			trait = chaste
+			factor = 0.1
+			trait = zealous
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1985"
 		piety = -50
@@ -3101,45 +3583,79 @@ character_event = {
 	}
 }
 
+### Remove Homosexual - air_religions ###
+character_event = {
+	id = 1986
+	desc = "EVTDESC1986"
+	picture = GFX_evt_brothel
+	min_age = 13
+	max_age = 17
+	only_capable = yes
+	is_married = no
+	trigger = {
+		has_guardian = yes
+		num_traits = 4
+		trait = homosexual
+		religion_group = air_religions
+		NOT = { has_character_flag = is_child_of_destiny }
+	}
+
+	mean_time_to_happen = {
+		months = 480
+
+		modifier = {
+			factor = 0.1
+			trait = zealous
+		}
+	}
+
+	option = {
+		name = "EVTOPTA1986"
+		piety = -50
+	}
+	option = {
+		name = "EVTOPTB1986"
+		remove_trait = homosexual
+	}
+}
 
 ### Female Homosexual ###
 character_event = {
 	id = 1990
 	desc = "EVTDESC1990"
 	picture = GFX_evt_garden
-	
+
 	min_age = 12
 	max_age = 17
 	only_women = yes
-	
+	only_capable = yes
+	is_married = no
+
 	trigger = {
-		is_married = no
 		has_guardian = yes
-		NOT = {
+		NOR = {
+			trait = zealous
 			trait = homosexual
-		}
-		NOT = {
 			trait = chaste
-		}
-		NOT = {
 			trait = celibate
-		}		
+			has_character_flag = is_child_of_destiny
+		}
 	}
 
 	mean_time_to_happen = {
 		months = 960
-		
+
 		modifier = {
 			factor = 2
-			trait = chaste
+			trait = zealous
 		}
-		
+
 		modifier = {
 			factor = 0.5
 			trait = lustful
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1980"
 		add_trait = homosexual
@@ -3151,26 +3667,31 @@ character_event = {
 	id = 1995
 	desc = "EVTDESC1995"
 	picture = GFX_evt_garden
-	
+
 	min_age = 12
 	max_age = 17
 	only_women = yes
-	
+	only_capable = yes
+	is_married = no
+
 	trigger = {
-		is_married = no
 		has_guardian = yes
 		num_traits = 4
 		trait = homosexual
+		NOR = {
+			religion_group = air_religions
+			has_character_flag = is_child_of_destiny
+		}
 	}
 
 	mean_time_to_happen = {
 		months = 480
 		modifier = {
-			factor = 0.9
-			trait = chaste
+			factor = 0.1
+			trait = zealous
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1985"
 		piety = -50
@@ -3181,39 +3702,6 @@ character_event = {
 	}
 }
 
-#Nobody believes me! - removed, no text and no event that triggers this
-#character_event = {
-#	id = 30013
-#	desc = "EVTDESC30013"
-#	picture = GFX_evt_child_bully
-#
-#	is_triggered_only = yes
-#	
-#	option = {
-#		name = "EVTOPTA30013"
-#		prestige = -50
-#	}
-#}
-	
-#Spouse is kicked out and the heir takes over - removed, no text and no event that triggers this
-#character_event = {
-#	id = 30014
-#	desc = "EVTDESC30014"
-#	picture = GFX_evt_scandal
-#
-#	is_triggered_only = yes
-#	
-#	option = {
-#		name = "EVTOPTA30014"
-#		banish = yes
-#	}
-#
-#	option = {
-#		name = "EVTOPTB30014"
-#		prestige = -1000
-#	}
-#}
-
 #################################
 # More flavor events
 #################################
@@ -3223,12 +3711,13 @@ character_event = {
 	id = 1900
 	desc = "EVTDESC1900"
 	picture = "GFX_evt_child_play"
-	
+
 	max_age = 5
 	prisoner = no
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		NOT = { trait = stutter }
 		father = {
@@ -3243,7 +3732,7 @@ character_event = {
 		}
 		NOT = { personality_traits = 5 }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3263,27 +3752,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -3295,16 +3790,16 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
-		}		
-	
+		}
+
 	}
-	
+
 	option = {
 		name = "EVTOPTA1900"
 		hidden_tooltip = {
@@ -3323,12 +3818,13 @@ character_event = {
 	id = 1901
 	desc = "EVTDESC1901"
 	picture = "GFX_evt_child_play"
-	
+
 	max_age = 6
 	prisoner = no
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		NOT = { trait = trusting }
 		father = {
@@ -3342,9 +3838,9 @@ character_event = {
 			}
 		}
 		NOT = { personality_traits = 5 }
-	
+
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3368,27 +3864,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -3400,15 +3902,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1901"
 		hidden_tooltip = {
@@ -3427,12 +3929,13 @@ character_event = {
 	id = 1902
 	desc = "EVTDESC1902"
 	picture = "GFX_evt_child_play"
-	
+
 	max_age = 6
 	prisoner = no
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		NOT = { trait = trusting }
 		father = {
@@ -3447,7 +3950,7 @@ character_event = {
 		}
 		NOT = { personality_traits = 5 }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3471,27 +3974,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -3503,15 +4012,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1902"
 		hidden_tooltip = {
@@ -3530,12 +4039,13 @@ character_event = {
 	id = 1903
 	desc = "EVTDESC1903"
 	picture = "GFX_evt_child_play"
-	
+
 	max_age = 6
 	prisoner = no
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		NOT = { trait = wroth }
 		father = {
@@ -3550,7 +4060,7 @@ character_event = {
 		}
 		NOT = { personality_traits = 5 }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3574,30 +4084,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -3607,15 +4123,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1903"
 		hidden_tooltip = {
@@ -3634,12 +4150,13 @@ character_event = {
 	id = 1904
 	desc = "EVTDESC1904"
 	picture = "GFX_evt_child_play"
-	
+
 	max_age = 6
 	prisoner = no
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		NOT = { trait = greedy }
 		father = {
@@ -3654,7 +4171,7 @@ character_event = {
 		}
 		NOT = { personality_traits = 5 }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3678,27 +4195,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -3710,15 +4233,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1904"
 		hidden_tooltip = {
@@ -3737,15 +4260,15 @@ character_event = {
 	id = 1905
 	desc = "EVTDESC1905"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
 	prisoner = no
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { is_abroad = yes }
 		father = {
 			is_alive = yes
 			employer = {
@@ -3757,10 +4280,13 @@ character_event = {
 			}
 		}
 		mother_even_if_dead = { is_alive = no }
-		NOT = { trait = bastard }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			is_abroad = yes
+			trait = bastard
+			personality_traits = 5
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 
@@ -3785,27 +4311,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -3817,15 +4349,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1905"
 		hidden_tooltip = {
@@ -3844,18 +4376,22 @@ character_event = {
 	id = 1906
 	desc = "EVTDESC1906"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
-		NOT = { trait = gregarious }
+		NOR = {
+			trait = gregarious
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 		has_guardian = yes
-		NOT = { personality_traits = 5 }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3879,27 +4415,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -3911,15 +4453,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
-		}		
+		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1906"
 		hidden_tooltip = {
@@ -3938,17 +4480,22 @@ character_event = {
 	id = 1907
 	desc = "EVTDESC1907"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { personality_traits = 5 }
+		NOR = {
+			personality_traits = 5
+			religion_group = air_religions
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -3972,30 +4519,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -4005,15 +4558,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1907"
 		hidden_tooltip = {
@@ -4032,23 +4585,28 @@ character_event = {
 	id = 1908
 	desc = "EVTDESC1908"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	religion_group = fire_religions
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { trait = zealous }
-		NOT = { trait = cynical }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			trait = zealous
+			trait = cynical
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 	}
-	
+
 	option = {
 		name = "EVTOPTA1908"
 		hidden_tooltip = {
@@ -4067,18 +4625,22 @@ character_event = {
 	id = 1909
 	desc = "EVTDESC1909"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { trait = craven }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			trait = craven
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4102,30 +4664,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -4135,15 +4703,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1909"
 		hidden_tooltip = {
@@ -4162,19 +4730,23 @@ character_event = {
 	id = 1910
 	desc = "EVTDESC1910"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { trait = zealous }
-		NOT = { trait = cynical }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			trait = zealous
+			trait = cynical
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4198,27 +4770,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4230,15 +4808,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1910"
 		guardian = {
@@ -4256,18 +4834,22 @@ character_event = {
 	id = 1911
 	desc = "EVTDESC1911"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { is_ruler = yes }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			is_ruler = yes
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4291,27 +4873,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4323,15 +4911,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1911"
 		hidden_tooltip = {
@@ -4350,18 +4938,22 @@ character_event = {
 	id = 1912
 	desc = "EVTDESC1912"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 11
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { is_ruler = yes }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			is_ruler = yes
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4385,27 +4977,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4417,15 +5015,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1912"
 		hidden_tooltip = {
@@ -4444,19 +5042,23 @@ character_event = {
 	id = 1913
 	desc = "EVTDESC1913"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { trait = lustful }
-		NOT = { trait = chaste }
-		NOT = { personality_traits = 5 }
+		NOR = {
+			trait = lustful
+			trait = chaste
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4464,7 +5066,7 @@ character_event = {
 			trait = gregarious
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1913"
 		hidden_tooltip = {
@@ -4479,41 +5081,34 @@ character_event = {
 }
 
 # If we're Catholic and our enemies are Catholic, why are we fighting?
-character_event = { 
+character_event = {
 	id = 1914
 	desc = "EVTDESC1914"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	religion_group = fire_religions
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { trait = cynical }
 		guardian = {
+			religion_group = fire_religions
 			OR = {
-				religion_group = ROOT
-			}
-			OR = {
-				any_current_enemy = { OR = {
-					religion_group = ROOT
-					}
-				}
-				any_liege = {
-					any_current_enemy = {
-						OR = {
-							religion_group = ROOT
-						}
-					} 
-				} 
+				any_current_enemy = { religion = fire_religions }
+				any_liege = { any_current_enemy = { religion = fire_religions } }
 			}
 		}
-		NOT = { personality_traits = 5 }
-		
+		NOR = {
+			trait = cynical
+			personality_traits = 5
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4537,27 +5132,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4569,15 +5170,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1914"
 		hidden_tooltip = {
@@ -4591,24 +5192,30 @@ character_event = {
 	}
 }
 
-
-# Why did you let off that peasant accused from poaching?
+### Why is the church so rich when the peasants are starving and poor? ###
 character_event = {
-	id = 1916
-	desc = "EVTDESC1916"
+	id = 1915
+	desc = "EVTDESC1915"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	religion_group = fire_religions
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = {	guardian = { trait = cruel } }
-		NOT = {	guardian = { trait = arbitrary } }
+		NOR = {
+			trait = zealous
+			trait = cynical
+			trait = charitable
+			trait = greedy
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4632,27 +5239,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4664,15 +5277,119 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
+	option = {
+		name = "EVTOPTA1915"
+		hidden_tooltip = {
+			guardian = {
+				character_event = {
+					id = 38215
+					days = 3
+				}
+			}
+		}
+	}
+}
+
+# Why did you let off that peasant accused from poaching?
+character_event = {
+	id = 1916
+	desc = "EVTDESC1916"
+	picture = "GFX_evt_child_play"
+
+	min_age = 11
+	max_age = 16
+	lacks_dlc = "Conclave"
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_guardian = yes
+		NOR = {
+			guardian = { trait = cruel }
+			guardian = { trait = arbitrary }
+			has_character_flag = is_child_of_destiny
+		}
+	}
+
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			trait = clubfooted
+			factor = 1.1
+		}
+		modifier = {
+			trait = harelip
+			factor = 1.1
+		}
+		modifier = {
+			trait = hunchback
+			factor = 1.1
+		}
+		modifier = {
+			trait = lisp
+			factor = 0.9
+		}
+		modifier = {
+			trait = stutter
+			factor = 0.9
+		}
+		modifier = {
+			has_fair_trait_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			has_ugly_trait_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			trait = dwarf
+			factor = 1.05
+		}
+		modifier = {
+			trait = genius
+			factor = 10
+		}
+		modifier = {
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
+			factor = 2
+		}
+		modifier = {
+			OR = {
+				trait = slow
+				trait = dull
+			}
+			factor = 0.5
+		}
+		modifier = {
+			trait = imbecile
+			factor = 0.05
+		}
+		modifier = {
+			trait = inbred
+			factor = 0.1
+		}
+		modifier = {
+			is_strong_trigger = yes
+			factor = 1.05
+		}
+		modifier = {
+			is_weak_trigger = yes
+			factor = 2.0
+		}
+	}
+
 	option = {
 		name = "EVTOPTA1916"
 		hidden_tooltip = {
@@ -4691,17 +5408,19 @@ character_event = {
 	id = 1917
 	desc = "EVTDESC1917"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		NOT = {	trait = kind }
+		NOT = { has_character_flag = is_child_of_destiny }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4725,27 +5444,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4757,16 +5482,16 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
-		}		
+		}
 
 	}
-	
+
 	option = {
 		name = "EVTOPTA1917"
 		hidden_tooltip = {
@@ -4785,18 +5510,20 @@ character_event = {
 	id = 1918
 	desc = "EVTDESC1918"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		learning = 4
 		NOT = { trait = diligent }
+		NOT = { has_character_flag = is_child_of_destiny }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4820,27 +5547,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -4852,15 +5585,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1918"
 		hidden_tooltip = {
@@ -4879,22 +5612,25 @@ character_event = {
 	id = 1919
 	desc = "EVTDESC1919"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = { trait = avatar }
-		NOT = { has_character_flag = avatar_revealed }
-		NOT = { trait = lustful }
-		NOT = { trait = chaste }
-		NOT = { trait = temperate }
-		NOT = { trait = gluttonous }
+		NOR = {
+			religion_group = water_religions
+			trait = lustful
+			trait = chaste
+			trait = temperate
+			trait = gluttonous
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -4918,30 +5654,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -4951,15 +5693,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1919"
 		hidden_tooltip = {
@@ -4978,22 +5720,29 @@ character_event = {
 	id = 1920
 	desc = "EVTDESC1920"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		
-		NOT = { trait = cynical }
-		NOT = { trait = craven }
-		NOT = { trait = brave }
-		NOT = { trait = just }
-		NOT = { trait = arbitrary }
+		OR = {
+			religion_group = fire_religions
+			religion_group = air_religions
+		}
+		NOR = {
+			trait = cynical
+			trait = craven
+			trait = brave
+			trait = just
+			trait = arbitrary
+			has_character_flag = is_child_of_destiny
+		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5017,27 +5766,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -5049,15 +5804,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1920"
 		hidden_tooltip = {
@@ -5076,29 +5831,25 @@ character_event = {
 	id = 1921
 	desc = "EVTDESC1921"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
 	only_women = yes
+	lacks_dlc = "Conclave"
 
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = {
+		NOR = {
 			trait = brave
-		}
-		NOT = {
 			trait = humble
-		}
-		NOT = {
 			trait = just
-		}
-		NOT = {
 			trait = wounded
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5122,30 +5873,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -5155,15 +5912,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
-		}	
+		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1921"
 		guardian = {
@@ -5181,19 +5938,22 @@ character_event = {
 	id = 1922
 	desc = "EVTDESC1922"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		learning = 5
-		NOT = {
+		NOR = {
 			martial = 3
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5217,27 +5977,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -5249,15 +6015,15 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
-		}	
+		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1922"
 		guardian = {
@@ -5275,27 +6041,24 @@ character_event = {
 	id = 1923
 	desc = "EVTDESC1923"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = {
+		NOR = {
 			trait = craven
-		}
-		NOT = {
 			trait = deceitful
-		}
-		NOT = {
 			trait = cruel
-		}
-		NOT = {
 			trait = wroth
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5319,30 +6082,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -5352,16 +6121,16 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
-		}		
-	
+		}
+
 	}
-	
+
 	option = {
 		name = "EVTOPTA1923"
 		guardian = {
@@ -5379,31 +6148,26 @@ character_event = {
 	id = 1924
 	desc = "EVTDESC1924"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		learning = 6
-		NOT = {
+		NOR = {
 			martial = 5
-		}
-		NOT = {
 			trait = shy
-		}
-		NOT = {
 			trait = gregarious
-		}
-		NOT = {
 			trait = humble
-		}
-		NOT = {
 			trait = proud
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5427,27 +6191,33 @@ character_event = {
 			factor = 0.9
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 10
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -5459,15 +6229,15 @@ character_event = {
 			factor = 0.1
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 2.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1924"
 		guardian = {
@@ -5485,37 +6255,34 @@ character_event = {
 	id = 1925
 	desc = "EVTDESC1925"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 10
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		trait = ugly
+		has_ugly_trait_trigger = yes
 		guardian = {
 			any_courtier = {
 				trait = fair
 			}
 		}
-		NOT = {
+		NOR = {
 			trait = envious
-		}
-		NOT = {
 			trait = ambitious
-		}
-		NOT = {
 			trait = arbitrary
-		}
-		NOT = {
 			trait = content
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 	}
-	
+
 	option = {
 		name = "EVTOPTA1925"
 		guardian = {
@@ -5533,31 +6300,25 @@ character_event = {
 	id = 1926
 	desc = "EVTDESC1926"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 10
 	max_age = 16
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		NOT = {
 			trait = proud
-		}
-		NOT = {
 			trait = gregarious
-		}
-		NOT = {
 			trait = shy
-		}
-		NOT = {
-			trait = gregarious
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 	}
-	
+
 	option = {
 		name = "EVTOPTA1926"
 		guardian = {
@@ -5575,35 +6336,33 @@ character_event = {
 	id = 1927
 	desc = "EVTDESC1927"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		OR = {
 			AND = {
 				stewardship = 3
 				age = 6
-				NOT = { age = 11 }
 			}
 			AND = {
 				stewardship = 6
 				age = 11
 			}
 		}
-		NOT = {
+		NOR = {
 			trait = greedy
-		}
-		NOT = {
 			trait = charitable
-		}
-		NOT = {
 			trait = zealous
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5627,27 +6386,33 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.5
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.05
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.75
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.2
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.5
 		}
 		modifier = {
@@ -5659,15 +6424,15 @@ character_event = {
 			factor = 0.25
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 1.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 1.25
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1927"
 		guardian = {
@@ -5685,11 +6450,13 @@ character_event = {
 	id = 1928
 	desc = "EVTDESC1928"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		OR = {
@@ -5702,14 +6469,13 @@ character_event = {
 				age = 11
 			}
 		}
-		NOT = {
+		NOR = {
 			trait = honest
-		}
-		NOT = {
 			trait = deceitful
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5733,30 +6499,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -5766,15 +6538,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
-		}	
+		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1928"
 		guardian = {
@@ -5792,17 +6564,19 @@ character_event = {
 	id = 1929
 	desc = "EVTDESC1929"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
 	only_men = yes
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		OR = {
 			AND = {
-				martial = 3 
+				martial = 3
 				age = 6
 			}
 			AND = {
@@ -5810,17 +6584,14 @@ character_event = {
 				age = 11
 			}
 		}
-		NOT = {
+		NOR = {
 			trait = craven
-		}
-		NOT = {
 			trait = proud
-		}
-		NOT = {
 			trait = diligent
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5844,30 +6615,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -5877,15 +6654,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
-		}	
+		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1929"
 		guardian = {
@@ -5903,35 +6680,30 @@ character_event = {
 	id = 1930
 	desc = "EVTDESC1930"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		OR = {
 			trait = kind
-			trait = gregarious 
+			trait = gregarious
 			trait = trusting
 		}
-		NOT = {
+		NOR = {
 			trait = chaste
-		}
-		NOT = {
 			trait = lustful
-		}
-		NOT = {
 			trait = deceitful
-		}
-		NOT = {
 			trait = zealous
-		}
-		NOT = {
 			trait = paranoid
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -5955,30 +6727,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -5988,15 +6766,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
-		}	
+		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1930"
 		guardian = {
@@ -6014,29 +6792,25 @@ character_event = {
 	id = 1931
 	desc = "EVTDESC1931"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
 	only_men = yes
-	
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = {
+		NOR = {
 			trait = brave
-		}
-		NOT = {
 			trait = craven
-		}
-		NOT = {
 			trait = gluttonous
-		}
-		NOT = {
 			trait = temperate
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -6060,27 +6834,33 @@ character_event = {
 			factor = 1.05
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.95
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.10
 		}
 		modifier = {
 			trait = dwarf
 			factor = 1.2
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 0.95
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 0.95
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 1.2
 		}
 		modifier = {
@@ -6092,15 +6872,15 @@ character_event = {
 			factor = 1.5
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 0.05
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 5.0
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1931"
 		guardian = {
@@ -6118,33 +6898,26 @@ character_event = {
 	id = 1932
 	desc = "EVTDESC1932"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
-		NOT = {
+		can_be_maimed_trigger = yes
+		NOR = {
 			trait = brave
-		}
-		NOT = {
 			trait = honest
-		}
-		NOT = {
 			trait = deceitful
-		}
-		NOT = {
 			trait = craven
-		}
-		NOT = {
-			trait = maimed
-		}
-		NOT = {
 			trait = wounded
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -6168,30 +6941,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -6201,15 +6980,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1932"
 		guardian = {
@@ -6227,20 +7006,22 @@ character_event = {
 	id = 1933
 	desc = "EVTDESC1933"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		trait = ill
+		NOT = { has_character_flag = is_child_of_destiny }
+		NOT = { has_dlc = "Reapers" }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 	}
-	
+
 	option = {
 		name = "EVTOPTA1933"
 		guardian = {
@@ -6258,20 +7039,21 @@ character_event = {
 	id = 1934
 	desc = "EVTDESC1934"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 11
 	max_age = 16
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		trait = homosexual
+		NOT = { has_character_flag = is_child_of_destiny }
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 	}
-	
+
 	option = {
 		name = "EVTOPTA1934"
 		guardian = {
@@ -6289,11 +7071,13 @@ character_event = {
 	id = 1935
 	desc = "EVTDESC1935"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
+
 	is_triggered_only = yes
-	
+
 	trigger = {
 		has_guardian = yes
 		OR = {
@@ -6306,14 +7090,13 @@ character_event = {
 				intrigue = 6
 			}
 		}
-		NOT = {
+		NOR = {
 			trait = honest
-		}
-		NOT = {
 			trait = deceitful
+			has_character_flag = is_child_of_destiny
 		}
 	}
-	
+
 	weight_multiplier = {
 		days = 1
 		modifier = {
@@ -6337,30 +7120,36 @@ character_event = {
 			factor = 0.95
 		}
 		modifier = {
-			trait = fair
+			has_fair_trait_trigger = yes
 			factor = 0.8
 		}
 		modifier = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 			factor = 1.25
 		}
 		modifier = {
 			trait = dwarf
 			factor = 0.9
-		}		
+		}
 		modifier = {
 			trait = genius
 			factor = 1.05
 		}
 		modifier = {
-			trait = quick
+			OR = {
+				trait = quick
+				trait = shrewd
+			}
 			factor = 1.05
-		}	
+		}
 		modifier = {
-			trait = slow
+			OR = {
+				trait = slow
+				trait = dull
+			}
 			factor = 0.95
 		}
-		
+
 		modifier = {
 			trait = imbecile
 			factor = 0.5
@@ -6370,15 +7159,15 @@ character_event = {
 			factor = 0.05
 		}
 		modifier = {
-			trait = strong
+			is_strong_trigger = yes
 			factor = 5.0
 		}
 		modifier = {
-			trait = weak
+			is_weak_trigger = yes
 			factor = 0.05
 		}
 	}
-	
+
 	option = {
 		name = "EVTOPTA1935"
 		guardian = {
@@ -6396,12 +7185,13 @@ character_event = {
 	id = 1991
 	desc = "EVTDESC1991"
 	picture = "GFX_evt_child_play"
-	
+
 	min_age = 6
 	max_age = 16
 	prisoner = no
 	capable_only = yes
-	
+	lacks_dlc = "Conclave"
+
 	trigger = {
 		has_guardian = no
 		independent = no
@@ -6415,7 +7205,7 @@ character_event = {
 	mean_time_to_happen = {
 		months = 16
 	}
-	
+
 	option = {
 		name = "EVTOPTA1991"
 		if = {
@@ -6440,5 +7230,5 @@ character_event = {
 				}
 			}
 		}
-	}	
+	}
 }
