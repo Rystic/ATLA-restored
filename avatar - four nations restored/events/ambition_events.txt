@@ -23,7 +23,10 @@ character_event = {
 	
 	hide_from = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	only_men = yes
+	is_married = yes
 	
 	trigger = {
 		OR = {
@@ -38,11 +41,7 @@ character_event = {
 		NOT = { has_character_flag = street_ruffians }
 		NOT = { has_character_flag = warrior_mentor }
 		NOT = { has_character_flag = toy_army_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -179,7 +178,11 @@ character_event = {
 	
 	hide_from = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -193,11 +196,7 @@ character_event = {
 		NOT = { has_character_flag = street_ruffians }
 		NOT = { has_character_flag = warrior_mentor }
 		NOT = { has_character_flag = street_ruffians_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -280,7 +279,11 @@ character_event = {
 	
 	hide_from = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -294,11 +297,7 @@ character_event = {
 		NOT = { has_character_flag = street_ruffians }
 		NOT = { has_character_flag = warrior_mentor }
 		NOT = { has_character_flag = warrior_mentor_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -316,17 +315,16 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	
 	hide_from = yes
+	only_rulers = yes
+	has_character_flag = warrior_mentor_search
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
 			has_ambition = obj_improve_martial
 			has_focus = focus_war
 		}
-		has_character_flag = warrior_mentor_search
-	}
-	
-	mean_time_to_happen = {
-		months = 60
 	}
 	
 	option = {
@@ -429,9 +427,10 @@ character_event = {
 		change_martial = 2
 		if = {
 			limit = {
-				trait = weak
+				is_weak_trigger = yes
 			}
 			remove_trait = weak
+			remove_trait = feeble
 		}
 		clr_character_flag = warrior_mentor
 	}
@@ -445,7 +444,11 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -460,10 +463,6 @@ character_event = {
 		NOT = { has_character_flag = warrior_mentor }
 	}
 	
-	mean_time_to_happen = {
-		months = 280
-	}
-	
 	option = {
 		name = EVTOPTA94016
 		change_martial = 1
@@ -476,9 +475,12 @@ character_event = {
 	desc = EVTDESC94017
 	picture = GFX_evt_joust
 	border = GFX_event_normal_frame_war
-	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -491,10 +493,6 @@ character_event = {
 		NOT = { has_character_flag = toy_army }
 		NOT = { has_character_flag = street_ruffians }
 		NOT = { has_character_flag = warrior_mentor }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -511,31 +509,102 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
 			AND = {
 				has_focus = focus_war
 				NOT = { martial = 8 }
+				NOT = { has_character_flag = toy_army }
+				NOT = { has_character_flag = street_ruffians }
+				NOT = { has_character_flag = warrior_mentor }
+				NOT = { has_character_modifier = student_of_strategy }
+				NOT = { has_character_modifier = adept_of_strategy }
+				NOT = { trait = strategist }
+			}
+			AND = {
+				has_focus = focus_war
+				NOT = { lifestyle_traits = 1 }
+				NOT = { has_character_modifier = student_of_strategy }
+				NOT = { has_character_modifier = adept_of_strategy }
 			}
 			has_ambition = obj_improve_martial
+			capital_scope = {
+				NOT = { empire = { title = e_earth_kingdom } }
+			}
 		}
-		NOT = { has_character_flag = toy_army }
-		NOT = { has_character_flag = street_ruffians }
-		NOT = { has_character_flag = warrior_mentor }
-		capital_scope = {
-			NOT = { empire = { title = e_earth_kingdom } }
-		}
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
 		name = EVTOPTA94018
 		change_martial = 1
+	}
+	
+	option = {
+		name = EVTOPTC_94018     # Study further
+		trigger = {
+			has_focus = focus_war
+		}
+		add_character_modifier = {
+			modifier = student_of_strategy
+			duration = -1
+		}
+		custom_tooltip = { text = studying_strategy_tooltip }
+		hidden_tooltip = { character_event = { id = 94019 days = 300 random = 900 } }
+	}
+}
+
+# Further studies in strategy
+character_event = {
+	id = 94019
+	desc = EVTDESC_94019
+	picture = GFX_evt_library
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_94019
+		trigger = {
+			has_focus = focus_war
+			NOT = { lifestyle_traits = 1 }
+			has_character_modifier = adept_of_strategy
+		}
+		remove_character_modifier = adept_of_strategy
+		add_trait = strategist
+	}
+	option = {
+		name = EVTOPTA_94019
+		trigger = {
+			has_character_modifier = student_of_strategy
+		}
+		remove_character_modifier = student_of_strategy
+		add_character_modifier = {
+			modifier = adept_of_strategy
+			duration = -1
+		}
+	}
+	option = {
+		name = EVTOPTB_94019
+		trigger = {
+			has_character_modifier = adept_of_strategy
+		}
+		prestige = 25
+	}
+	option = {
+		name = EVTOPTC_94019
+		trigger = {
+			trait = strategist
+		}
+		add_character_modifier = { 
+			modifier = strategic_innovation
+			duration = 1095
+		}
 	}
 }
 
@@ -553,7 +622,11 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -568,12 +641,9 @@ character_event = {
 		NOT = { has_character_flag = the_garden }
 		NOT = { has_character_flag = the_survey }
 		NOT = { has_character_flag = the_inn_taken }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
-	mean_time_to_happen = {
-		months = 280
-	}
 	
 	option = {
 		name = EVTOPTA94050
@@ -921,7 +991,11 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -935,11 +1009,7 @@ character_event = {
 		NOT = { has_character_flag = the_garden }
 		NOT = { has_character_flag = the_survey }
 		NOT = { has_character_flag = the_garden_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -985,7 +1055,11 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -999,10 +1073,6 @@ character_event = {
 		NOT = { has_character_flag = the_garden }
 		NOT = { has_character_flag = the_survey }
 		NOT = { has_character_flag = the_survey_taken }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -1042,7 +1112,11 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1055,10 +1129,6 @@ character_event = {
 		NOT = { has_character_flag = the_inn }
 		NOT = { has_character_flag = the_garden }
 		NOT = { has_character_flag = the_survey }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -1075,7 +1145,11 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1090,9 +1164,6 @@ character_event = {
 		NOT = { has_character_flag = the_survey }
 	}
 	
-	mean_time_to_happen = {
-		months = 280
-	}
 	
 	option = {
 		name = EVTOPTA94073
@@ -1108,7 +1179,11 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1121,12 +1196,9 @@ character_event = {
 		NOT = { has_character_flag = the_inn }
 		NOT = { has_character_flag = the_garden }
 		NOT = { has_character_flag = the_survey }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
-	mean_time_to_happen = {
-		months = 280
-	}
 	
 	option = {
 		name = EVTOPTA94074
@@ -1148,7 +1220,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		NOT = {
@@ -1165,12 +1241,9 @@ character_event = {
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
 		NOT = { has_character_flag = flying_machine_taken }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
-	mean_time_to_happen = {
-		months = 280
-	}
 	
 	option = {
 		name = EVTOPTA94080
@@ -1415,7 +1488,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1429,6 +1506,12 @@ character_event = {
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
 		NOT = { has_character_flag = ancient_tome_taken }
+		NOT = {
+			has_alternate_start_parameter = {
+				key = religion_names
+				value = random
+			}
+		}
 	}
 	
 	mean_time_to_happen = {
@@ -1474,7 +1557,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		year = 1010
@@ -1489,10 +1576,12 @@ character_event = {
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
 		NOT = { has_character_flag = ancient_tome_taken }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = {
+			has_alternate_start_parameter = {
+				key = religion_names
+				value = random
+			}
+		}
 	}
 	
 	option = {
@@ -1534,7 +1623,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1548,11 +1641,7 @@ character_event = {
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
 		NOT = { has_character_flag = hermit_visit_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -1648,7 +1737,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1661,10 +1754,6 @@ character_event = {
 		NOT = { has_character_flag = flying_machine }
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -1681,7 +1770,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1694,10 +1787,6 @@ character_event = {
 		NOT = { has_character_flag = flying_machine }
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -1714,7 +1803,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1727,10 +1820,6 @@ character_event = {
 		NOT = { has_character_flag = flying_machine }
 		NOT = { has_character_flag = ancient_tome }
 		NOT = { has_character_flag = hermit_visit }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -1753,7 +1842,11 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -1767,11 +1860,7 @@ character_event = {
 		NOT = { has_character_flag = the_mirror }
 		NOT = { has_character_flag = the_suicide }
 		NOT = { has_character_flag = the_feud_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -2002,7 +2091,11 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2016,10 +2109,6 @@ character_event = {
 		NOT = { has_character_flag = the_mirror }
 		NOT = { has_character_flag = the_suicide }
 		NOT = { has_character_flag = the_mirror_taken }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -2038,7 +2127,11 @@ character_event = {
 	
 	hide_from = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		has_character_flag = the_mirror
@@ -2052,10 +2145,6 @@ character_event = {
 		months = 60
 	}
 	
-	option = {
-		name = EVTOPTA94126
-		change_diplomacy = 2
-	}
 }
 
 ### The Suicide
@@ -2068,7 +2157,10 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2082,11 +2174,7 @@ character_event = {
 		NOT = { has_character_flag = the_mirror }
 		NOT = { has_character_flag = the_suicide }
 		NOT = { has_character_flag = the_suicide_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -2243,7 +2331,11 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2256,11 +2348,7 @@ character_event = {
 		NOT = { has_character_flag = the_feud }
 		NOT = { has_character_flag = the_mirror }
 		NOT = { has_character_flag = the_suicide }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -2277,7 +2365,11 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2290,10 +2382,6 @@ character_event = {
 		NOT = { has_character_flag = the_feud }
 		NOT = { has_character_flag = the_mirror }
 		NOT = { has_character_flag = the_suicide }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -2310,7 +2398,11 @@ character_event = {
 	border = GFX_event_normal_frame_diplomacy
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2323,10 +2415,6 @@ character_event = {
 		NOT = { has_character_flag = the_feud }
 		NOT = { has_character_flag = the_mirror }
 		NOT = { has_character_flag = the_suicide }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -2349,7 +2437,11 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2363,11 +2455,7 @@ character_event = {
 		NOT = { has_character_flag = gossip }
 		NOT = { has_character_flag = old_spymaster }
 		NOT = { has_character_flag = the_necklace_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = { # Do it
@@ -2739,7 +2827,11 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2753,11 +2845,7 @@ character_event = {
 		NOT = { has_character_flag = gossip }
 		NOT = { has_character_flag = old_spymaster }
 		NOT = { has_character_flag = gossip_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -2799,7 +2887,11 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2813,11 +2905,7 @@ character_event = {
 		NOT = { has_character_flag = gossip }
 		NOT = { has_character_flag = old_spymaster }
 		NOT = { has_character_flag = old_spymaster_taken }
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -2891,7 +2979,11 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2904,10 +2996,6 @@ character_event = {
 		NOT = { has_character_flag = the_necklace }
 		NOT = { has_character_flag = gossip }
 		NOT = { has_character_flag = old_spymaster }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -2924,7 +3012,11 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2937,10 +3029,6 @@ character_event = {
 		NOT = { has_character_flag = the_necklace }
 		NOT = { has_character_flag = gossip }
 		NOT = { has_character_flag = old_spymaster }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
@@ -2957,7 +3045,11 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		OR = {
@@ -2970,10 +3062,6 @@ character_event = {
 		NOT = { has_character_flag = the_necklace }
 		NOT = { has_character_flag = gossip }
 		NOT = { has_character_flag = old_spymaster }
-	}
-	
-	mean_time_to_happen = {
-		months = 280
 	}
 	
 	option = {
