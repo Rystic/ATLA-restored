@@ -20,16 +20,17 @@ character_event = {
 	only_men = yes
 	only_rulers = yes
 	capable_only = yes
+	is_married = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		is_married = no
 		NOR = {
 			trait = airbender
 			trait = chaste
 			trait = celibate
 			trait = homosexual
+			trait = eunuch
 			has_lover = yes
 		}
 		fertility = 0.6
@@ -85,18 +86,20 @@ character_event = {
 	desc = "EVTDESC76005"
 	picture = GFX_evt_pregnancy
 	
-	only_rulers = yes
+	only_playable = yes
 	capable_only = yes
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		any_child = {
+			is_councillor = no
 			is_female = yes
 			is_alive = yes
 			age = 16
+			NOT = { age = 45 }
 			is_married = no
-			fertility = 0.6
+			fertility = 0.4
 			NOT = {
 				trait = chaste
 			}
@@ -112,23 +115,14 @@ character_event = {
 		}
 	}
 	
-	weight_multiplier = {
-		days = 1
-	}
-	
-	option = {
-		name = "EVTOPTA76005"
-		character_event = {
-			id = 76006
-			tooltip = "EVTTOOLTIP76006"
-		}
-	}
-	option = {
-		name = "EVTOPTB76005"
+	immediate = {
 		random_child = {
 			limit = {
 				is_female = yes
+				is_councillor = no
+				is_alive = yes
 				age = 16
+				NOT = { age = 45 }
 				is_married = no
 				fertility = 0.4
 				NOT = {
@@ -141,6 +135,25 @@ character_event = {
 					trait = homosexual
 				}
 			}
+			save_event_target_as = daughter_with_bastard
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+	}
+	
+	option = {
+		name = "EVTOPTA76005"
+		character_event = {
+			id = 76006
+			tooltip = "EVTTOOLTIP76006"
+		}
+	}
+
+	option = {
+		name = "EVTOPTB76005"
+		event_target:daughter_with_bastard = {
 			create_character = {
 				age = 0
 				trait = bastard
@@ -154,49 +167,51 @@ character_event = {
 				years = 5
 			}
 		}
-		prestige = -5
-		add_trait = kind
+		prestige = -100
+
+		if = {
+			limit = { NOT = { trait = kind } }
+			random = {
+				chance = 25
+				add_trait = kind
+				hidden_tooltip = {
+					character_event = {
+						id = 38268 #Notify Kind
+					}
+				}
+			}
+		}
 	}
 	option = {
 		name = "EVTOPTC76005"
-		random_child = {
-			limit = {
-				is_female = yes
-				age = 16
-				is_married = no
-				fertility = 0.4
-				NOT = {
-					trait = chaste
-				}
-				NOT = {
-					trait = celibate
-				}
-				NOT = {
-					trait = homosexual
-				}
-			}
+		event_target:daughter_with_bastard = {
+
 			opinion = {
 				modifier = opinion_betrayed
 				who = ROOT
-				years = 5
+				years = 20
 			}
 			if = {
 				limit = {
 					NOT = {
 						trait = airbender
 					}
+					NOT = { trait = chaste }
 				}
 				add_trait = chaste
 			}
 			health = -1
 		}
-		random = {
-			chance = 25
-			
-			add_trait = cruel
-			hidden_tooltip = {
-				character_event = {
-					id = 38259 #Notify Cruel
+
+		if = {
+			limit = { NOT = { trait = cruel } }
+			random = {
+				chance = 25
+				add_trait = cruel
+				hidden_tooltip = {
+					character_event = {
+						id = 38259 #Notify Cruel
+					}
 				}
 			}
 		}
@@ -217,13 +232,8 @@ character_event = {
 		add_trait = deceitful
 		random = {
 			chance = 10
-			
-			add_trait = kinslayer
-			hidden_tooltip = {
-				character_event = {
-					id = 38287 #Notify Kinslayer
-				}
-			}
+			event_target:daughter_with_bastard = { save_event_target_as = kinslayer_target }
+			add_kinslayer_trait_effect = yes
 		}
 	}
 	option = {
@@ -279,38 +289,21 @@ character_event = {
 	option = {
 		name = "EVTOPTB76007"
 		change_intrigue = 1
-		FROM = {
-			random_child = {
-				limit = {
-					is_councillor = no
-					is_female = yes
-					age = 16
-					is_abroad = no
-					is_married = no
-					fertility = 0.6
-					NOT = {
-						trait = chaste
-					}
-					NOT = {
-						trait = celibate
-					}
-					NOT = {
-						trait = homosexual
-					}
-				}
-				create_character = {
-					age = 0
-					trait = bastard
-				}
-				new_character = {
-					set_mother = PREV
-				}
-				opinion = {
-					modifier = opinion_saved_me_and_child
-					who = ROOT
-					years = 5
-				}
+		event_target:daughter_with_bastard = {
+			create_character = {
+				age = 0
+				trait = bastard
 			}
+			new_character = {
+				set_mother = PREV
+			}
+			opinion = {
+				modifier = opinion_saved_me_and_child
+				who = ROOT
+				years = 5
+			}
+		}
+		FROM = {
 			character_event = {
 				id = 76009
 				tooltip = "EVTTOOLTIP76009"
@@ -324,6 +317,7 @@ character_event = {
 	id = 76008
 	desc = "EVTDESC76008"
 	picture = GFX_evt_spymaster
+	border = GFX_event_normal_frame_intrigue
 	
 	is_triggered_only = yes
 	
@@ -341,24 +335,7 @@ character_event = {
 	}
 	option = {
 		name = "EVTOPTC76008"
-		random_child = {
-			limit = {
-				is_councillor = no
-				is_female = yes
-				age = 16
-				is_abroad = no
-				is_married = no
-				fertility = 0.6
-				NOT = {
-					trait = chaste
-				}
-				NOT = {
-					trait = celibate
-				}
-				NOT = {
-					trait = homosexual
-				}
-			}
+		event_target:daughter_with_bastard = {
 			create_character = {
 				age = 0
 				trait = bastard
@@ -442,7 +419,7 @@ character_event = {
 				
 				clr_character_flag = ruler_wants_me_dead
 				death = {
-					death_reason = death_execution
+					death_reason = death_murder_fall
 					killer = ROOT
 				}
 			}
@@ -461,9 +438,9 @@ character_event = {
 	picture = GFX_evt_son_asking_father
 	
 	is_triggered_only = yes
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		any_child = {
 			trait = bastard
@@ -690,12 +667,12 @@ character_event = {
 	min_age = 16
 	only_women = yes
 	is_triggered_only = yes
+	is_married = no
 	
 	trigger = {
 		NOT = {
 			has_character_flag = raising_bastard
 		}
-		is_married = no
 		father = {
 			is_alive = yes
 			is_ruler = yes
@@ -885,6 +862,8 @@ character_event = {
 	
 	is_triggered_only = yes
 	
+	min_age = 16
+	
 	trigger = {
 		trait = bastard
 		NOT = {
@@ -917,6 +896,7 @@ character_event = {
 	
 	min_age = 6
 	max_age = 16
+	lacks_dlc = "Conclave"
 	
 	is_triggered_only = yes
 	
@@ -1074,6 +1054,7 @@ character_event = {
 	picture = GFX_evt_guardian
 	
 	min_age = 11
+	lacks_dlc = "Conclave"
 	
 	is_triggered_only = yes
 	
