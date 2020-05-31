@@ -11,8 +11,8 @@
 #If in the red  => increase revolt risk in a province.
 province_event = {
 	id = 68000
-	desc = "EVTDESC68000"
-	picture = "GFX_evt_bandits"
+	desc = EVTDESC68000
+	picture = GFX_evt_bandits
 	
 	notification = yes
 	
@@ -119,14 +119,14 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68000"
+		name = EVTOPTA68000
 	}
 }
 
 province_event = {
 	id = 68001
-	desc = "EVTDESC68001"
-	picture = "GFX_evt_council"
+	desc = EVTDESC68001
+	picture = GFX_evt_council
 	
 	notification = yes
 	
@@ -157,7 +157,7 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68001"
+		name = EVTOPTA68001
 		trigger = {
 			owner = {
 				trait = airbender
@@ -165,7 +165,7 @@ province_event = {
 		}
 	}
 	option = {
-		name = "EVTOPTB68001"
+		name = EVTOPTB68001
 		trigger = {
 			owner = {
 				trait = waterbender
@@ -173,7 +173,7 @@ province_event = {
 		}
 	}
 	option = {
-		name = "EVTOPTA88283"
+		name = EVTOPTA88283
 		trigger = {
 			owner = {
 				NOT = { trait = airbender }
@@ -186,8 +186,8 @@ province_event = {
 # Establishment of thieves_guild in a province, if budget in the red
 province_event = {
 	id = 68010
-	desc = "EVTDESC68010"
-	picture = "GFX_evt_bandits"
+	desc = EVTDESC68010
+	picture = GFX_evt_bandits
 	
 	notification = yes
 	
@@ -286,16 +286,16 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68010"
+		name = EVTOPTA68010
 	}
 }
 
 # Destruction of thieves_guild in a province
 province_event = {
 	id = 68011
-	desc = "EVTDESC68011"
+	desc = EVTDESC68011
 	
-	picture = "GFX_evt_burning_house"
+	picture = GFX_evt_burning_house
 	
 	notification = yes
 	
@@ -326,13 +326,120 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68011"
+		name = EVTOPTA68011
 	}
 }
 
 # Establishment of smugglers_ring in a province, if red budget
 province_event = {
 	id = 68020
+	desc = EVTDESC68020
+	
+	notification = yes
+	
+	trigger = {
+		NOT = { owner = { wealth = 0 } }
+		NOT = { has_province_modifier = smugglers_ring }
+	}
+	
+	picture = GFX_evt_bandits
+	
+	mean_time_to_happen = {
+		months = 240
+		
+		#lower if really bad demesne efficiency
+		modifier = {
+			factor = 0.9
+			NOT = { owner = { wealth = -50 } }
+		}
+		modifier = {
+			factor = 0.7
+			NOT = { owner = { wealth = -100 } }
+		}
+		modifier = {
+			factor = 0.5
+			NOT = { owner = { wealth = -200 } }
+		}
+		modifier = {
+			factor = 0.3
+			NOT = { owner = { wealth = -300 } }
+		}
+		modifier = {
+			factor = 0.1
+			NOT = { owner = { wealth = -500 } }
+		}
+		modifier = {
+			factor = 0.7
+			NOT = { owner = { realm_diplomacy = 15 } }
+		}
+		modifier = {
+			factor = 0.7
+			NOT = { owner = { realm_diplomacy = 10 } }
+		}
+		modifier = {
+			factor = 0.7
+			NOT = { owner = { realm_diplomacy = 5 } }
+		}
+		
+		modifier = {
+			factor = 1.5
+			owner = { realm_diplomacy = 20 }
+		}
+		modifier = {
+			factor = 2.0
+			owner = { realm_diplomacy = 25 }
+		}
+
+		#traits affect this
+		modifier = {
+			factor = 1.5
+			owner = { trait = ambitious }
+		}		
+		modifier = {
+			factor = 5.0
+			owner = { trait = just }
+		}		
+		modifier = {
+			factor = 0.5
+			owner = { trait = arbitrary }
+		}
+		modifier = {
+			factor = 0.7
+			owner = { trait = greedy }
+		}
+		modifier = {
+			factor = 0.7
+			owner = { trait = cruel }
+		}		
+		modifier = {
+			factor = 0.1
+			owner = { trait = slothful }
+		}
+		modifier = {
+			factor = 0.2
+			owner = { trait = incapable }
+		}
+		modifier = {
+			factor = 0.1
+			owner = { trait = infirm }
+		}
+	}
+	
+	immediate = {
+		add_province_modifier = {
+			name = smugglers_ring
+			duration = -1
+		}
+	}
+
+	option = {
+		name = EVTOPTA68020
+	}
+}
+
+# Destruction of smugglers_ring in a province
+province_event = {
+	id = 68021
 	desc = {
 		text = EVTDESC68021
 		trigger = {
@@ -468,114 +575,7 @@ province_event = {
 	
 	notification = yes
 	
-	trigger = {
-		NOT = { owner = { wealth = 0 } }
-		NOT = { has_province_modifier = smugglers_ring }
-	}
-	
-	picture = "GFX_evt_bandits"
-	
-	mean_time_to_happen = {
-		months = 240
-		
-		#lower if really bad demesne efficiency
-		modifier = {
-			factor = 0.9
-			NOT = { owner = { wealth = -50 } }
-		}
-		modifier = {
-			factor = 0.7
-			NOT = { owner = { wealth = -100 } }
-		}
-		modifier = {
-			factor = 0.5
-			NOT = { owner = { wealth = -200 } }
-		}
-		modifier = {
-			factor = 0.3
-			NOT = { owner = { wealth = -300 } }
-		}
-		modifier = {
-			factor = 0.1
-			NOT = { owner = { wealth = -500 } }
-		}
-		modifier = {
-			factor = 0.7
-			NOT = { owner = { realm_diplomacy = 15 } }
-		}
-		modifier = {
-			factor = 0.7
-			NOT = { owner = { realm_diplomacy = 10 } }
-		}
-		modifier = {
-			factor = 0.7
-			NOT = { owner = { realm_diplomacy = 5 } }
-		}
-		
-		modifier = {
-			factor = 1.5
-			owner = { realm_diplomacy = 20 }
-		}
-		modifier = {
-			factor = 2.0
-			owner = { realm_diplomacy = 25 }
-		}
-
-		#traits affect this
-		modifier = {
-			factor = 1.5
-			owner = { trait = ambitious }
-		}		
-		modifier = {
-			factor = 5.0
-			owner = { trait = just }
-		}		
-		modifier = {
-			factor = 0.5
-			owner = { trait = arbitrary }
-		}
-		modifier = {
-			factor = 0.7
-			owner = { trait = greedy }
-		}
-		modifier = {
-			factor = 0.7
-			owner = { trait = cruel }
-		}		
-		modifier = {
-			factor = 0.1
-			owner = { trait = slothful }
-		}
-		modifier = {
-			factor = 0.2
-			owner = { trait = incapable }
-		}
-		modifier = {
-			factor = 0.1
-			owner = { trait = infirm }
-		}
-	}
-	
-	immediate = {
-		add_province_modifier = {
-			name = smugglers_ring
-			duration = -1
-		}
-	}
-
-	option = {
-		name = "EVTOPTA68020"
-	}
-}
-
-# Destruction of smugglers_ring in a province
-province_event = {
-	id = 68021
-	desc = "EVTDESC68021"
-	
-	notification = yes
-	
-	picture = "GFX_evt_burning_house"
+	picture = GFX_evt_burning_house
 	
 	trigger = {
 		owner = { wealth = 0 }
@@ -592,11 +592,10 @@ province_event = {
 			factor = 0.75
 			owner = { realm_intrigue = 20 }
 		}
-	
 		modifier = {
 			factor = 0.75
 			owner = { trait = just }
-		}		
+		}	
 		modifier = {
 			factor = 2
 			OR = {
@@ -631,7 +630,7 @@ province_event = {
 					}
 				}
 			}
-		}			
+		}		
 	}
 	
 	immediate = {
@@ -682,18 +681,18 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68021"
+		name = EVTOPTA68021
 	}
 }
 
 #Establishment of highway_robber_band in a province, if red budget
 province_event = {
 	id = 68030
-	desc = "EVTDESC68030"
+	desc = EVTDESC68030
 	
 	notification = yes
 	
-	picture = "GFX_evt_bandits"
+	picture = GFX_evt_bandits
 	
 	trigger = {
 		NOT = { owner = { wealth = 0 } }
@@ -788,7 +787,7 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68030"
+		name = EVTOPTA68030
 	}
 }
 
@@ -885,8 +884,7 @@ province_event = {
 			}
 		}
 	}
-	
-	picture = "GFX_evt_burning_house"
+	picture = GFX_evt_burning_house
 	
 	notification = yes
 	
@@ -905,11 +903,10 @@ province_event = {
 			factor = 0.75
 			owner = { realm_intrigue = 20 }
 		}
-	
 		modifier = {
 			factor = 0.75
 			owner = { trait = just }
-		}	
+		}
 		modifier = {
 			factor = 2
 			OR = {
@@ -944,7 +941,7 @@ province_event = {
 					}
 				}
 			}
-		}		
+		}
 	}
 	
 	immediate = {
@@ -992,6 +989,6 @@ province_event = {
 	}
 
 	option = {
-		name = "EVTOPTA68031"
+		name = EVTOPTA68031
 	}
 }

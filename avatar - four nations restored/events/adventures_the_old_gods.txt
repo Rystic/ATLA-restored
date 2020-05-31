@@ -33,6 +33,8 @@ character_event = {
 
 		OR = {
 			is_female = no
+			liege = { has_law = status_of_women_4 }
+			liege = { has_law = true_cognatic_succession }
 			NOT = { culture = northern_water }
 			has_game_rule = {
 				name = gender
@@ -61,6 +63,12 @@ character_event = {
 						capital_holding = {
 							de_jure_liege_or_above = PREVPREV
 						}
+					}
+				}
+				ROOT = {
+					NOR = {
+						obedient = PREV
+						non_interference = PREV
 					}
 				}
 			}
@@ -132,7 +140,7 @@ character_event = {
 			trait = kind
 		}
 		modifier = {
-			factor = 50
+			factor = 0.5
 			has_game_rule = {
 				name = adventurers
 				value = rare
@@ -213,7 +221,7 @@ character_event = {
 character_event = {
 	id = TOG.1201
 	desc = EVTDESC_TOG_1201
-	picture = GFX_evt_battlefield
+	picture = GFX_evt_crusaders
 	border = GFX_event_normal_frame_war
 	
 	is_triggered_only = yes
@@ -249,6 +257,12 @@ character_event = {
 		any_claim = {
 			has_holder = yes
 			holder_scope = {
+				NOT = {
+					defending_against_claimant = {
+						character = ROOT
+						title = PREV
+					}
+				}
 				independent = yes # Only do this vs independent rulers
 				NAND = {
 					government = nomadic_government
@@ -276,6 +290,12 @@ character_event = {
 						capital_holding = {
 							de_jure_liege_or_above = PREVPREV
 						}
+					}
+				}
+				ROOT = {
+					NOR = {
+						obedient = PREV
+						non_interference = PREV
 					}
 				}
 			}
@@ -312,6 +332,7 @@ character_event = {
 						tier = DUKE
 						landless = yes
 						temporary = yes
+						adventurer = yes
 						culture = ROOT
 						name = "CLAIMANT_ADVENTURE"
 						holder = ROOT
@@ -661,7 +682,7 @@ character_event = {
 #			log = "TOG.1202: [Root.GetBestName] starts claim adventure for [This.GetName]"
 			
 			holder_scope = {
-				reverse_war = {
+				reverse_unsafe_war = {
 					target = ROOT
 					casus_belli = claim
 					thirdparty_title = PREV
@@ -682,7 +703,7 @@ character_event = {
 character_event = {
 	id = TOG.1203
 	desc = EVTDESC_TOG_1203
-	picture = GFX_evt_battlefield
+	picture = GFX_evt_crusaders
 	border = GFX_event_normal_frame_war
 	
 	is_triggered_only = yes
@@ -710,7 +731,7 @@ character_event = {
 character_event = {
 	id = TOG.1204
 	desc = EVTDESC_TOG_1204
-	picture = GFX_evt_battlefield
+	picture = GFX_evt_crusaders
 	border = GFX_event_normal_frame_war
 	
 	show_from_from = yes
@@ -748,6 +769,8 @@ character_event = {
 
 		OR = {
 			is_female = no
+			liege = { has_law = status_of_women_4 }
+			liege = { has_law = true_cognatic_succession }
 			has_game_rule = {
 				name = gender
 				value = all
@@ -792,6 +815,12 @@ character_event = {
 				OR = {
 					tier = KING
 					holder_scope = { tier = PREV }
+				}
+				ROOT = {
+					NOR = {
+						obedient = PREV
+						non_interference = PREV
+					}
 				}
 			}
 		}
@@ -897,7 +926,7 @@ character_event = {
 			}
 		}
 		modifier = {
-			factor = 50
+			factor = 0.5
 			has_game_rule = {
 				name = adventurers
 				value = rare
@@ -909,7 +938,6 @@ character_event = {
 		random_independent_ruler = {
 			limit = {
 				NOT = { culture = ROOT }
-				culture_group = ROOT
 				is_landed = yes
 				independent = yes
 				NOT = { is_vassal_or_below = ROOT }
@@ -927,8 +955,13 @@ character_event = {
 						any_neighbor_province = {
 							owner = {
 								same_realm = ROOT
-							}
 						}
+					}
+				}
+				ROOT = {
+					NOR = {
+						obedient = PREV
+						non_interference = PREV
 					}
 				}
 			}
@@ -990,7 +1023,7 @@ character_event = {
 character_event = {
 	id = TOG.1211
 	desc = EVTDESC_TOG_1211
-	picture = GFX_evt_battlefield
+	picture = GFX_evt_crusaders
 	border = GFX_event_normal_frame_war
 	
 	is_triggered_only = yes
@@ -1049,6 +1082,12 @@ character_event = {
 					}
 				}
 			}
+			ROOT = {
+				NOR = {
+					obedient = PREV
+					non_interference = PREV
+				}
+			}
 			reverse_has_opinion_modifier = {
 				who = ROOT
 				modifier = opinion_duchy_adventure_target
@@ -1087,6 +1126,12 @@ character_event = {
 								}
 							}
 						}
+						ROOT = {
+							NOR = {
+								obedient = PREV
+								non_interference = PREV
+							}
+						}
 						reverse_has_opinion_modifier = {
 							who = ROOT
 							modifier = opinion_duchy_adventure_target
@@ -1112,6 +1157,7 @@ character_event = {
 								tier = DUKE
 								landless = yes
 								temporary = yes
+								adventurer = yes
 								culture = ROOT
 								name = "CLAIMANT_ADVENTURE"
 								holder = ROOT
@@ -1150,7 +1196,7 @@ character_event = {
 								match_max = 10000
 								attrition = 0.25
 							}
-							war = {
+							unsafe_war = {
 								target = PREVPREV
 								casus_belli = duchy_adventure
 								thirdparty_title = PREV
@@ -1210,7 +1256,7 @@ character_event = {
 character_event = {
 	id = TOG.1213
 	desc = EVTDESC_TOG_1213
-	picture = GFX_evt_battlefield
+	picture = GFX_evt_crusaders
 	border = GFX_event_normal_frame_war
 	
 	is_triggered_only = yes
@@ -1238,7 +1284,7 @@ character_event = {
 character_event = {
 	id = TOG.1214
 	desc = EVTDESC_TOG_1214
-	picture = GFX_evt_battlefield
+	picture = GFX_evt_crusaders
 	border = GFX_event_normal_frame_war
 	
 	show_from_from = yes
