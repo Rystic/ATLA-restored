@@ -28,6 +28,8 @@ character_event = {
 	only_men = yes
 	is_married = yes
 	
+	is_triggered_only = yes
+	
 	trigger = {
 		OR = {
 			AND = {
@@ -36,7 +38,6 @@ character_event = {
 			}
 			has_ambition = obj_improve_martial
 		}
-		is_married = yes
 		NOT = { has_character_flag = toy_army }
 		NOT = { has_character_flag = street_ruffians }
 		NOT = { has_character_flag = warrior_mentor }
@@ -62,18 +63,19 @@ character_event = {
 	
 	hide_from = yes
 	prisoner = no
+	only_rulers = yes
+	only_capable = yes
+	min_age = 16
+	has_character_flag = toy_army_prepare
+	
+	is_triggered_only = yes
 	
 	trigger = {
-		has_character_flag = toy_army_prepare
 		OR = {
 			has_ambition = obj_improve_martial
 			has_focus = focus_war
 		}
-		NOT = { trait = in_hiding }
-	}
-	
-	mean_time_to_happen = {
-		months = 60
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	option = {
@@ -211,11 +213,7 @@ character_event = {
 				character_event = { id = 94006 tooltip = EVTTOOLTIP94006 }
 			}
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 	}
 	option = {
 		name = EVTOPTB94005
@@ -501,12 +499,15 @@ character_event = {
 	}
 }
 
-### Alexander the Great
+### Alexander/Ashoka the Great
 character_event = {
 	id = 94018
-	desc = EVTDESC94018
 	picture = GFX_evt_library
 	border = GFX_event_normal_frame_war
+
+	desc = {
+		text = EVTDESC94018
+	}
 	
 	capable_only = yes
 	only_rulers = yes
@@ -534,9 +535,6 @@ character_event = {
 				NOT = { has_character_modifier = adept_of_strategy }
 			}
 			has_ambition = obj_improve_martial
-			capital_scope = {
-				NOT = { empire = { title = e_earth_kingdom } }
-			}
 		}
 	}
 	
@@ -562,9 +560,12 @@ character_event = {
 # Further studies in strategy
 character_event = {
 	id = 94019
-	desc = EVTDESC_94019
 	picture = GFX_evt_library
 	border = GFX_event_normal_frame_war
+
+	desc = {
+		text = EVTDESC_94019
+	}
 	
 	is_triggered_only = yes
 	
@@ -643,7 +644,6 @@ character_event = {
 		NOT = { has_character_flag = the_inn_taken }
 		NOT = { is_inaccessible_trigger = yes }
 	}
-	
 	
 	option = {
 		name = EVTOPTA94050
@@ -1164,7 +1164,6 @@ character_event = {
 		NOT = { has_character_flag = the_survey }
 	}
 	
-	
 	option = {
 		name = EVTOPTA94073
 		change_stewardship = 1
@@ -1198,7 +1197,6 @@ character_event = {
 		NOT = { has_character_flag = the_survey }
 		NOT = { is_inaccessible_trigger = yes }
 	}
-	
 	
 	option = {
 		name = EVTOPTA94074
@@ -1243,7 +1241,6 @@ character_event = {
 		NOT = { has_character_flag = flying_machine_taken }
 		NOT = { is_inaccessible_trigger = yes }
 	}
-	
 	
 	option = {
 		name = EVTOPTA94080
@@ -1514,10 +1511,6 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 280
-	}
-	
 	option = {
 		name = EVTOPTA94098
 		character_event = { id = 94099 days = 6 tooltip = EVTTOOLTIP94099 }
@@ -1642,6 +1635,8 @@ character_event = {
 		NOT = { has_character_flag = hermit_visit }
 		NOT = { has_character_flag = hermit_visit_taken }
 		NOT = { is_inaccessible_trigger = yes }
+		NOT = { has_character_flag = do_not_disturb }
+		in_command = no
 	}
 	
 	option = {
@@ -2000,11 +1995,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA94116
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		character_event = { id = 94117 tooltip = EVTTOOLTIP94112 }
 	}
 	option = {
@@ -2129,22 +2120,21 @@ character_event = {
 	capable_only = yes
 	only_rulers = yes
 	prisoner = no
-	min_age = 16
+	has_character_flag = the_mirror
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		has_character_flag = the_mirror
 		OR = {
 			has_ambition = obj_improve_diplomacy
 			has_focus = focus_carousing
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 60
+	option = {
+		name = EVTOPTA94126
+		change_diplomacy = 2
 	}
-	
 }
 
 ### The Suicide
