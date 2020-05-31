@@ -2,22 +2,24 @@
 # COUNCILLOR ACTIONS
 ##########################################
 # attribute = [diplomacy/stewardship/intrigue/martial/learning] - Character attribute is multiplied with the modifiers
-# trigger = Province scope trigger to determine if the action is meaningful in a province (the player character is FROM)
+# trigger = Province scope trigger to determine if the action is meaningful in a province (the player character is FROM, the councillor is in 'new_character')
 # Events that can trigger off this action. This info is only used by the GUI.
 # All modifiers (like 'local_build_time_modifier') are multiplied by the attribute
 
+# display_on_map = {
+#	tooltip = JOB_PROSELYTIZE_DIFFERENT_RELIGION  # Key of the loc to add to the tooltip
+#	trigger = {                                   # Trigger for when this should happen. Same scopes as the allow/potential for the job action itself
+#		NOT = { religion = FROM }
+#	}
+#	color = { 255 0 0 }                           # What color to use on the map
+# }
+
+ 
 # Chancellor
 action_improve_relations = {
 	attribute = diplomacy
 	
 	potential = {
-		FROM = {
-			job_chancellor = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -40,13 +42,6 @@ action_fabricate_claims = {
 	attribute = diplomacy
 	
 	potential = {
-		FROM = {
-			job_chancellor = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -68,13 +63,6 @@ action_sow_dissent = {
 	attribute = diplomacy
 	
 	potential = {
-		FROM = {
-			job_chancellor = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -93,13 +81,6 @@ action_statecraft = {
 
 	potential = {
 		has_dlc = Mystics
-		FROM = {
-			job_chancellor = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	liege_modifier = statecraft_liege_mod
@@ -116,13 +97,6 @@ action_squeeze_peasants = {
 	potential = {
 		FROM = {
 			is_tribal = no
-		}
-		FROM = {
-			job_treasurer = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
 		}
 	}
 
@@ -144,13 +118,6 @@ action_settle_tribe = {
 		FROM = {
 			is_tribal = yes
 		}
-		FROM = {
-			job_treasurer = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -158,6 +125,16 @@ action_settle_tribe = {
 			character = FROM
 		}
 		NOT = { culture = FROM }
+		OR = {
+			NOT = { 
+				has_game_rule = {
+					name = culture_conversion
+					value = restricted
+				}
+			}
+			any_neighbor_province = { culture = FROM } 
+			any_neighbor_province = { port = yes } 
+		}
 	}
 	
 	events = { 925 20206 }
@@ -167,13 +144,6 @@ action_oversee_construction = {
 	attribute = stewardship
 	
 	potential = {
-		FROM = {
-			job_treasurer = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -193,13 +163,6 @@ action_advance_eco_tech = {
 	potential = {
 		FROM = {
 			is_tribal = no
-		}
-		FROM = {
-			job_treasurer = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
 		}
 	}
 
@@ -222,13 +185,6 @@ action_build_legend = {
 		FROM = {
 			is_tribal = yes
 		}
-		FROM = {
-			job_treasurer = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -247,13 +203,6 @@ action_administer_realm = {
 
 	potential = {
 		has_dlc = Mystics
-		FROM = {
-			job_treasurer = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	offmap = yes
@@ -267,13 +216,6 @@ action_uncover_plots = {
 	
 	potential = {
 		NOT = { has_dlc = Mystics }
-		FROM = {
-			job_spymaster = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -295,13 +237,6 @@ action_uncover_plots_offmap = {
 	
 	potential = {
 		has_dlc = Mystics
-		FROM = {
-			job_spymaster = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	offmap = yes
@@ -315,13 +250,6 @@ action_study_technology = {
 	attribute = intrigue
 	
 	potential = {
-		FROM = {
-			job_spymaster = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -343,13 +271,6 @@ action_organize_spies = {
 		NOT = {
 			has_dlc = "Mystics"
 		}
-		FROM = {
-			job_spymaster = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -369,13 +290,6 @@ action_organize_spies_mystics = {
 	
 	potential = {
 		has_dlc = "Mystics"
-		FROM = {
-			job_spymaster = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -395,13 +309,6 @@ action_sabotage_province = {
 
 	potential = {
 		has_dlc = Mystics
-		FROM = {
-			job_spymaster = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -426,13 +333,6 @@ action_advance_mil_tech = {
 		FROM = {
 			is_tribal = no
 		}
-		FROM = {
-			job_marshal = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -454,13 +354,6 @@ action_organize_raid = {
 		FROM = {
 			is_tribal = yes
 		}
-		FROM = {
-			job_marshal = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -479,13 +372,6 @@ action_train_troops = {
 		FROM = {
 			is_nomadic = no
 		}
-		FROM = {
-			job_marshal = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -500,44 +386,10 @@ action_train_troops = {
 	events = { 941 942 }
 }
 
-action_train_troops_nomadic = {
-	attribute = martial
-	
-	potential = {
-		FROM = {
-			is_nomadic = yes
-		}
-		FROM = {
-			job_marshal = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
-	}
-
-	trigger = {
-		FROM = {
-			is_capital = ROOT
-		}
-	}
-	
-	manpower_growth = 0.015
-	
-	events = { }
-}
-
 action_assist_arrest = {
 	attribute = martial
 	
 	potential = {
-		FROM = {
-			job_marshal = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -560,13 +412,6 @@ action_organize_army = {
 
 	potential = {
 		has_dlc = Mystics
-		FROM = {
-			job_marshal = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	offmap = yes
@@ -651,15 +496,6 @@ action_improve_rel_relations = {
 	attribute = learning
 	
 	potential = {
-		FROM = {
-			FROM = {
-				job_spiritual = {
-					NOT = {
-						has_character_modifier = in_seclusion
-					}
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -685,13 +521,6 @@ action_advance_cul_tech = {
 		FROM = {
 			is_tribal = no
 		}
-		FROM = {
-			job_spiritual = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
@@ -716,13 +545,6 @@ action_build_zeal = {
 		FROM = {
 			is_tribal = yes
 		}
-		FROM = {
-			job_spiritual = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 
 	trigger = {
@@ -741,13 +563,6 @@ action_charity = {
 	attribute = learning
 	
 	potential = {
-		FROM = {
-			job_spiritual = {
-				NOT = {
-					has_character_modifier = in_seclusion
-				}
-			}
-		}
 	}
 	
 	trigger = {
