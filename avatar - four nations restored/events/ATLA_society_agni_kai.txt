@@ -127,18 +127,16 @@ society_quest_event = {
 
 #ACTION: Donating to charity
 
-#Leader Ping for charity
+#Leader Ping for charity, clears flag after 360 days.
+#This event prooved to be unncessary, instead of timing the cool down with the flag "donate_to_charity_cooldown"
+#I decided to time it based on weather the person has the modifier "recently_donated_to_charity", if they don't have the modifier
+#then they can donate again
 character_event = {
 	id = MNSAK.3006
-	is_triggered_only = yes
 	hide_window = yes
-
+	is_triggered_only = yes #is triggered 360 days after donating to charity
 	immediate = {
-		FROM = {
-			letter_event = {
-				id = MNSAK.3007
-			}
-		}
+		clr_character_flag = donate_to_charity_cooldown
 	}
 }
 
@@ -156,7 +154,7 @@ letter_event = {
 	option = {
 		name = EVTOPT_MNM_4014
 			
-		wealth = -100
+		#wealth = -100 #this is taken care of in the decision
 		if = {
 			limit = { NOT = { has_quest = quest_monastic_order_donate_to_charity } }
 			add_society_currency_minor_effect = yes
@@ -169,26 +167,6 @@ letter_event = {
 			hidden_effect = { monastic_order_purity_effect = yes }
 			add_society_currency_medium_effect = yes
 		}
-
-		add_character_modifier = {
-			modifier = recently_donated_to_charity
-			days = 360
-		}
-		if = {
-			limit = { NOT = { trait = greedy } }
-			random = {
-				chance = 30
-				add_trait = charitable
-			}
-		}
-		if = {
-			limit = { trait = greedy }
-			random = {
-				chance = 40
-				remove_trait = greedy
-			}
-		}
-		clr_character_flag = donate_to_charity_cooldown
 	}
 }
 
