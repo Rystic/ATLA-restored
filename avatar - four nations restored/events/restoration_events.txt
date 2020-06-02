@@ -1234,6 +1234,7 @@ character_event = { # Secure the Palace - Dai Li Defeated
 	option = {
 		name = EVTOPTAr.53
 		clr_global_flag = restoration_ambition
+		clr_global_flag = civil_war_no_dai_li_for_you
 		character_event = { id = ATLAE.245 }
 		custom_tooltip = {
 			text = EARTHKINGDOM_AUTHORITY_MAJOR_BOOST
@@ -1260,6 +1261,7 @@ character_event = { # Secure the Palace - Dai Li Victory
 		clr_global_flag = restoration_ambition_3
 		clr_global_flag = restoration_ambition_4
 		clr_global_flag = restoration_ambition_5
+		clr_global_flag = civil_war_no_dai_li_for_you
 		custom_tooltip = {
 			text = EARTHKINGDOM_AUTHORITY_MAJOR_LOSS
 			hidden_tooltip = {
@@ -1277,20 +1279,26 @@ narrative_event = { # Secure the Palace - Earth King Restored To Power
 	picture = "GFX_evt_ba_sing_sa"
 	border = GFX_event_narrative_frame_war
 	
-	option = {
-		name = EVTOPTAr.55
-		set_global_flag = earthking_in_power
-		remove_trait = earthkingpuppet
-		add_trait = earthking
-		set_global_flag = restoration_ambition_6
-		clr_global_flag = restoration_ambition
-		activate_title = { title = d_dai_li status = no }
-		d_dai_li = {
-			holder_scope = {
-				death = { death_reason = death_execution_hanging killer = ROOT }
-			}
+	option = {  #(Typical) This dumpster fire of event need to be reminded two times that indeed it need to destroy and deactivate title
+        name = EVTOPTAr.55
+        set_global_flag = earthking_in_power
+        remove_trait = earthkingpuppet
+        add_trait = earthking
+        set_global_flag = restoration_ambition_6
+        clr_global_flag = restoration_ambition
+		set_global_flag = dai_li_disbanded 
+		d_dai_li = { destroy_landed_title = THIS }
+        activate_title = { title = d_dai_li status = no }
+        d_dai_li = {
+           holder_scope = {
+                death = { death_reason = death_execution_hanging killer = ROOT }
+            }
+        }
+        hidden_tooltip = {
+		d_dai_li = { destroy_landed_title = THIS }
+        activate_title = { title = d_dai_li status = no }
 		}
-	}
+    }
 	
 	option = {
 		name = EVTOPTAr.60

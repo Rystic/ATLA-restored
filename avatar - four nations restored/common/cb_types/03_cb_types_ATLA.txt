@@ -1234,17 +1234,25 @@ earth_kingdom_reconquest = {
 		ROOT = {
 				custom_tooltip = {
 					text = EARTHKINGDOM_AUTHORITY_SPEND_CB
-					hidden_tooltip = {
-						check_variable = { which = global_royalAuthority value = 75 }
 					}
-				}
+				hidden_tooltip = {
+					check_variable = { which = global_royalAuthority value = 75 }
 			}
 		}
-
+	}
 	can_use = {
 		ROOT = {
-			NOT = { same_realm = FROM }
-			has_landed_title = e_earth_kingdom
+			AND = { #Only will show up when you have 75 RA
+				OR = {
+					has_law = ek_unity_1
+					has_law = ek_unity_2
+					has_law = ek_unity_3
+					NOT = {has_global_flag = whispers_of_rebellion_early}
+					}	
+				NOT = { same_realm = FROM }
+				has_landed_title = e_earth_kingdom
+				check_variable = { which = global_royalAuthority value = 75 }
+			}
 		}
 		FROM = {
 			religion_group = earth_religions
@@ -1321,6 +1329,7 @@ earth_kingdom_reconquest = {
 	on_fail = {
 		ROOT = { piety = -50 }
 		ROOT = { prestige = -100 }
+		
 	}
 
 	on_reverse_demand = {
@@ -1364,18 +1373,13 @@ earth_kingdom_reconquest = {
 		factor = 1
 		modifier = {
 			factor = 2
-			has_global_flag = whispers_of_rebellion_early
-		}
-		modifier = {
-			factor = 0.1
-			NOT = { has_global_flag = whispers_of_rebellion_early }
 			NOT = { check_variable = { which = global_royalAuthority value = 100 } }
 		}
 	}
 }
 
 earth_kingdom_reconquest_disunion = {
-	name = CB_EARTH_RECONQUEST #DISUNION Add LOC pls. Typical
+	name = CB_EARTH_RECONQUEST #DISUNION Add LOC pls. - Typical
 	war_name = WAR_NAME_EARTH_RECONQUEST
 	sprite = 8
 	truce_days = 360
@@ -1384,29 +1388,37 @@ earth_kingdom_reconquest_disunion = {
 	allow_distant = yes
 
 	can_use_gui = {
-		ROOT = {
-				OR = {
-					custom_tooltip = {
-						text = EARTHKINGDOM_RECONQUEST_FREE_USE_LAW
-						hidden_tooltip = {
-							has_law = ek_unity_0
-										}
-						}				
-					custom_tooltip = {
-						text = EARTHKINGDOM_RECONQUEST_FREE_USE
-						hidden_tooltip = {
-							has_global_flag = whispers_of_rebellion_early
-						}
+		ROOT = { #yes i neeeded to do that to both of CB so they wont show up to random lords
+				AND = {
+					has_landed_title = e_earth_kingdom
+					OR = {
+						custom_tooltip = {
+							text = EARTHKINGDOM_RECONQUEST_FREE_USE_LAW
+							hidden_tooltip = {
+								has_law = ek_unity_0
+								}
+							}				
+						custom_tooltip = {
+							text = EARTHKINGDOM_RECONQUEST_FREE_USE
+							hidden_tooltip = {
+								has_global_flag = whispers_of_rebellion_early
+							}
+						}	
 					}
 				}
 			}
 		}
-	}
 
 	can_use = {
 		ROOT = {
+			AND = {
+				OR = {
+					has_law = ek_unity_0
+					has_global_flag = whispers_of_rebellion_early
+					}	
 			NOT = { same_realm = FROM }
 			has_landed_title = e_earth_kingdom
+			}
 		}
 		FROM = {
 			religion_group = earth_religions
