@@ -477,10 +477,10 @@ succession_laws = {
 	}
 
 	succ_feudal_elective = {
-		oldest_child_opinion = -30
-		child_opinion = -10
+		oldest_child_opinion = -15
+		child_opinion = -5
 		dynasty_opinion = -5
-		vassal_opinion = 20
+		vassal_opinion = 10
 		potential = {
 			holder_scope = {
 				OR = {
@@ -493,7 +493,6 @@ succession_laws = {
 				}
 				is_merchant_republic = no
 				is_patrician = no
-
 				OR = {
 					independent = yes
 					NOT = {
@@ -510,14 +509,24 @@ succession_laws = {
 			}
 			is_primary_type_title = no
 			NOT = { tier = baron }
-			holder_scope = { is_feudal = yes }
+		}
+		allow = {
+			custom_tooltip = {
+				text = not_forced_tt
+				hidden_tooltip = {
+					holder_scope = { NOT = { has_character_flag = liege_forced_succ_law } }
+				}
+			}
 		}
 		effect = {
-			succession = feudal_elective
+			succession = {
+				base_type = feudal_elective
+				voting_rules = feudal_elective
+			}
 		}
 		revoke_allowed = {
 			always = no
-		}
+		}			
 	}
 
 	succ_tanistry = {
