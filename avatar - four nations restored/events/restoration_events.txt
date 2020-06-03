@@ -1079,10 +1079,10 @@ character_event = { # Secure the Palace - START CIVIL WAR
 	desc = "EVTDESCRES.41"
 	is_triggered_only = yes
 	picture = "GFX_evt_ba_sing_sa"
-	
 	option = {
 		name = EVTOPTAr.51
 		set_global_flag = restoration_ambition_5
+		
 		character_event = { id = ATLAE.242 }
 		hidden_tooltip = {
 			any_realm_province = {
@@ -1230,7 +1230,6 @@ character_event = { # Secure the Palace - Dai Li Defeated
 	desc = "EVTDESCRES.43"
 	is_triggered_only = yes
 	picture = "GFX_evt_earth_kingdom_army"
-	
 	option = {
 		name = EVTOPTAr.53
 		clr_global_flag = restoration_ambition
@@ -1260,6 +1259,7 @@ character_event = { # Secure the Palace - Dai Li Victory
 		clr_global_flag = restoration_ambition_3
 		clr_global_flag = restoration_ambition_4
 		clr_global_flag = restoration_ambition_5
+		clr_global_flag = civil_war_no_dai_li_for_you
 		custom_tooltip = {
 			text = EARTHKINGDOM_AUTHORITY_MAJOR_LOSS
 			hidden_tooltip = {
@@ -1276,21 +1276,28 @@ narrative_event = { # Secure the Palace - Earth King Restored To Power
 	is_triggered_only = yes
 	picture = "GFX_evt_ba_sing_sa"
 	border = GFX_event_narrative_frame_war
+	clr_global_flag = civil_war_no_dai_li_for_you
 	
-	option = {
-		name = EVTOPTAr.55
-		set_global_flag = earthking_in_power
-		remove_trait = earthkingpuppet
-		add_trait = earthking
-		set_global_flag = restoration_ambition_6
-		clr_global_flag = restoration_ambition
-		activate_title = { title = d_dai_li status = no }
-		d_dai_li = {
-			holder_scope = {
-				death = { death_reason = death_execution_hanging killer = ROOT }
-			}
+	option = {  #(Typical) This dumpster fire of event need to be reminded two times that indeed it need to destroy and deactivate title
+        name = EVTOPTAr.55
+        set_global_flag = earthking_in_power
+        remove_trait = earthkingpuppet
+        add_trait = earthking
+        set_global_flag = restoration_ambition_6
+        clr_global_flag = restoration_ambition
+		set_global_flag = dai_li_disbanded 
+		d_dai_li = { destroy_landed_title = THIS }
+        activate_title = { title = d_dai_li status = no }
+        d_dai_li = {
+           holder_scope = {
+                death = { death_reason = death_execution_hanging killer = ROOT }
+            }
+        }
+        hidden_tooltip = {
+		d_dai_li = { destroy_landed_title = THIS }
+        activate_title = { title = d_dai_li status = no }
 		}
-	}
+    }
 	
 	option = {
 		name = EVTOPTAr.60
@@ -1299,6 +1306,7 @@ narrative_event = { # Secure the Palace - Earth King Restored To Power
 		add_trait = earthking
 		set_global_flag = restoration_ambition_6
 		clr_global_flag = restoration_ambition
+		clr_global_flag = civil_war_no_dai_li_for_you
 		d_dai_li = {
 			holder_scope = {
 				death = { death_reason = death_execution_hanging killer = ROOT }
