@@ -26,7 +26,6 @@ replace_path="history/offmap_powers"
 replace_path="history/characters"
 replace_path="history/wars"
 replace_path="history/technology"
-replace_path="localisation"
 replace_path="music"
 user_dir="Avatar - Four Nations Restored"
 tags={mod fantasy overhaul avatar}
