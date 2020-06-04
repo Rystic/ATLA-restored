@@ -393,8 +393,7 @@ character_event = {
 		}
 		NOR = { 
 			has_character_flag = fertility_treatment
-			trait = monk
-			trait = nun
+			is_ascetic_trigger = yes
 			trait = celibate
 			trait = eunuch
 			num_of_children = 1
@@ -505,8 +504,7 @@ character_event = {
 				modifier = {
 					factor = 0
 					OR = {
-						trait = monk
-						trait = nun
+						is_ascetic_trigger = yes
 						trait = celibate
 						trait = eunuch
 						trait = chaste
@@ -896,6 +894,7 @@ character_event = {
 			limit = {
 				prisoner = no
 				NOT = { trait = incapable }
+				NOT = { is_senior_consort_party = yes }
 			}
 			hidden_tooltip = {
 				if = {
@@ -1520,28 +1519,24 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		host = {
-			any_courtier_or_vassal = {
-				liege = { character = PREVPREV }
-				has_minor_title = title_court_physician
-				NOT = { has_character_flag = physician_wants_to_research }
-			}
+		any_courtier_or_vassal = {
+			liege = { character = ROOT }
+			has_minor_title = title_court_physician
+			NOT = { has_character_flag = physician_wants_to_research }
 		}
 	}
 
 
 	immediate = { 
-		host = {
-			random_courtier_or_vassal = {
-				limit = {
-					liege = { character = PREVPREV }
-					has_minor_title = title_court_physician
-					NOT = { has_character_flag = physician_wants_to_research }
-				}
-
-				save_event_target_as = physician
-				set_character_flag = physician_wants_to_research 
+		random_courtier_or_vassal = {
+			limit = {
+				liege = { character = ROOT }
+				has_minor_title = title_court_physician
+				NOT = { has_character_flag = physician_wants_to_research }
 			}
+
+			save_event_target_as = physician
+			set_character_flag = physician_wants_to_research 
 		}
 	}
 
@@ -1629,7 +1624,7 @@ character_event = {
 					}
 
 					FROM = { character_event = { id = RIP.4032 days = 400 } } 
-					character_event = { id = RIP.4033 days = 400 } 
+					character_event = { id = RIP.4033 days = 401 } 
 				}
 				#Writes a good book
 				35 = { 
@@ -1657,14 +1652,14 @@ character_event = {
 					set_character_flag = physician_good_book
 
 					FROM = { character_event = { id = RIP.4032 days = 400 } } 
-					character_event = { id = RIP.4033 days = 400 } 
+					character_event = { id = RIP.4033 days = 401 } 
 				}
 				#Writes a meh book
 				35 = {
 					set_character_flag = physician_meh_book
 
 					FROM = { character_event = { id = RIP.4032 days = 400 } } 
-					character_event = { id = RIP.4033 days = 400 } 
+					character_event = { id = RIP.4033 days = 401 } 
 				}
 				#Writes a laughable book
 				15 = {
@@ -1700,7 +1695,7 @@ character_event = {
 					set_character_flag = physician_bad_book
 
 					FROM = { character_event = { id = RIP.4032 days = 400 } } 
-					character_event = { id = RIP.4033 days = 400 } 
+					character_event = { id = RIP.4033 days = 401 } 
 				}
 			}
 		}
@@ -1743,9 +1738,64 @@ character_event = {
 		text = EVTDESC_RIP_4032_BAD
 		picture = GFX_evt_experiments_failed
 	}
+
+	trigger = {
+		FROM = {
+			is_alive = yes
+			prisoner = no
+			OR = {
+				has_character_flag = physician_great_book_1
+				has_character_flag = physician_great_book_2
+				has_character_flag = physician_great_book_3
+				has_character_flag = physician_good_book
+				has_character_flag = physician_meh_book
+				has_character_flag = physician_bad_book
+			}
+		}
+	}
 	
 	is_triggered_only = yes
 
+	#Good book outcome 
+	option = {
+		trigger = { FROM = { has_character_flag = physician_good_book } }
+
+		name = EVTOPTB_RIP_4032
+
+		tooltip = { FROM = { change_learning = 1 } }
+	}
+
+	#Meh book outcome
+	option = {
+		trigger = { FROM = { has_character_flag = physician_meh_book } }
+
+		name = EVTOPTC_RIP_4032
+	}
+
+	#Bad outcome
+	option = {
+		trigger = { FROM = { has_character_flag = physician_bad_book } }
+
+		name = EVTOPTD_RIP_4032
+		custom_tooltip = { text = EVTOPTD_RIP_4032_TOOLTIP }
+
+		prestige = -50
+
+		tooltip = {
+			FROM = {
+				if = {
+					limit = { is_dumb_trigger = no }
+					add_trait = dull
+				}
+			}
+		}
+
+		opinion = {
+			who = FROM
+			modifier = opinion_disappointed
+			years = 5
+		}
+	}
 	#Great book outcome
 	option = {
 		trigger = {
@@ -1777,47 +1827,6 @@ character_event = {
 		opinion = {
 			who = FROM
 			modifier = opinion_impressed
-			years = 5
-		}
-	}
-
-	#Good book outcome 
-	option = {
-		trigger = { FROM = { has_character_flag = physician_good_book } }
-
-		name = EVTOPTB_RIP_4032
-
-		tooltip = { FROM = { change_learning = 1 } }
-	}
-
-	#Meh book outcome
-	option = {
-		trigger = { FROM = { has_character_flag = physician_meh_book } }
-
-		name = EVTOPTC_RIP_4032
-	}
-
-	#Meh bad outcome
-	option = {
-		trigger = { FROM = { has_character_flag = physician_bad_book } }
-
-		name = EVTOPTD_RIP_4032
-		custom_tooltip = { text = EVTOPTD_RIP_4032_TOOLTIP }
-
-		prestige = -50
-
-		tooltip = {
-			FROM = {
-				if = {
-					limit = { is_dumb_trigger = no }
-					add_trait = dull
-				}
-			}
-		}
-
-		opinion = {
-			who = FROM
-			modifier = opinion_disappointed
 			years = 5
 		}
 	}
@@ -1969,58 +1978,54 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		host = {
-			any_courtier_or_vassal = {
-				liege = { character = PREVPREV }
-				has_minor_title = title_court_physician
-			}
+		any_courtier_or_vassal = {
+			liege = { character = ROOT }
+			has_minor_title = title_court_physician
 		}
 	}
 
 	option = {
-		host = {
-			random_courtier_or_vassal = {
-				limit = {
-					liege = { character = PREVPREV }
-					has_minor_title = title_court_physician
-				}
+		random_courtier_or_vassal = {
+			limit = {
+				liege = { character = ROOT }
+				has_minor_title = title_court_physician
+			}
 
-				random_list = {
+			random_list = {
 
-					#Nothing happens
-					20 = { }
-					#Receives training
-					10 = {
-						modifier = { 
-							factor = 1.8
-							NOT = { learning = 6 }
-						}
-						modifier = { 
-							factor = 1.6
-							NOT = { learning = 8 }
-						}
-						modifier = {
-							factor = 1.5
-							NOT = { learning = 10 }
-						}
-						modifier = {
-							factor = 1.4
-							NOT = { learning = 12 }
-						}
-						modifier = {
-							factor = 1.2
-							NOT = { learning = 14 }
-						}
-						modifier = {
-							factor = 1.2
-							NOT = { learning = 16 }
-						}
-						modifier = {
-							factor = 0
-							trait = physician
-						}
-						ROOT = { character_event = { id = RIP.4041 } }
+				#Nothing happens
+				20 = { }
+				#Receives training
+				10 = {
+					modifier = { 
+						factor = 1.8
+						NOT = { learning = 6 }
 					}
+					modifier = { 
+						factor = 1.6
+						NOT = { learning = 8 }
+					}
+					modifier = {
+						factor = 1.5
+						NOT = { learning = 10 }
+					}
+					modifier = {
+						factor = 1.4
+						NOT = { learning = 12 }
+					}
+					modifier = {
+						factor = 1.2
+						NOT = { learning = 14 }
+					}
+					modifier = {
+						factor = 1.2
+						NOT = { learning = 16 }
+					}
+					modifier = {
+						factor = 0
+						trait = physician
+					}
+					ROOT = { character_event = { id = RIP.4041 } }
 				}
 			}
 		}
@@ -2058,14 +2063,12 @@ character_event = {
 	}
 
 	immediate = {
-		host = {
-			random_courtier_or_vassal = {
-				limit = {
-					liege = { character = PREVPREV }
-					has_minor_title = title_court_physician
-				}
-				save_event_target_as = physician
+		random_courtier_or_vassal = {
+			limit = {
+				liege = { character = ROOT }
+				has_minor_title = title_court_physician
 			}
+			save_event_target_as = physician
 		}
 
 		random_list = {
@@ -2095,7 +2098,7 @@ character_event = {
 			}
 			modifier = {
 				factor = 1.5
-				character_disease_trigger = yes
+				has_disease_trigger = yes
 			}
 			modifier = { 
 				factor = 0
@@ -2674,6 +2677,7 @@ character_event = {
 		}
 		
 		event_target:missionary_physician_target = {
+			show_scope_change = no
 			opinion = {
 				modifier = opinion_loyal_servant
 				who = ROOT
@@ -2682,8 +2686,11 @@ character_event = {
 			give_minor_title = title_court_physician
 		}
 		
-		hidden_tooltip = {
-			character_event = { id = RIP.4101 days = 30 random = 30 }
+		if = {
+			limit = { controls_religion = no }
+			hidden_tooltip = {
+				character_event = { id = RIP.4101 days = 30 random = 30 }
+			}
 		}
 		
 	}
@@ -2701,12 +2708,14 @@ character_event = {
 		
 		wealth = 50
 		event_target:missionary_physician_target = {
+			show_scope_change = no
 			death = {
 				death_reason = death_execution_burning
 				killer = ROOT
 			}
 		}
 		event_target:origin_realm_of_missionary_physician_target = {
+			show_scope_change = no
 			opinion = {
 				modifier = opinion_dishonorable_scum
 				who = ROOT
@@ -2729,6 +2738,7 @@ character_event = {
 		event_target:missionary_physician_target = {
 			NOT = { religion_group = ROOT }
 		}
+		controls_religion = no
 	}
 	
 	option = {
@@ -2759,7 +2769,7 @@ character_event = {
 		name = EVTOPTB_RIP_4101
 		
 		ai_chance = {
-			factor = 10
+			factor = 5
 			modifier = {
 				factor = 3
 				trait = cynical
@@ -2776,27 +2786,6 @@ character_event = {
 				factor = 0.75
 				NOT = {
 					year = 900
-				}
-			}
-			modifier = {
-				factor = 0.5
-				OR = {
-					culture_group = baltic
-					culture_group = finno_ugric  # The most stubborn pagans
-				}
-			}
-			modifier = {
-				factor = 0.5
-				culture_group = east_slavic # Like alcohol
-				event_target:missionary_physician_target = {
-					religion_group = muslim
-				}
-			}
-			modifier = {
-				factor = 0.5
-				culture_group = north_germanic # Vikings do like their alcohol
-				event_target:missionary_physician_target = {
-					religion_group = muslim
 				}
 			}
 			modifier = {
@@ -2827,20 +2816,27 @@ character_event = {
 		religion = event_target:missionary_physician_target
 		prestige = -500
 		piety = 250
-		any_courtier = {
-			limit = { 
-				is_close_relative = ROOT
-				NOT = { trait = zealous }
+		hidden_tooltip = {
+			any_courtier = {
+				limit = { 
+					is_close_relative = ROOT
+					NOT = { trait = zealous }
+					NOT = { has_character_flag = ai_flag_refuse_conversion }
+					NOT = { trait = stubborn }
+				}
+				religion = event_target:missionary_physician_target
 			}
-			religion = event_target:missionary_physician_target
-		}
-		any_spouse = {
-			limit = { 
-				is_consort = no
-				NOT = { trait = zealous }
+			any_spouse = {
+				limit = { 
+					is_consort = no
+					NOT = { trait = zealous }
+					NOT = { has_character_flag = ai_flag_refuse_conversion }
+					NOT = { trait = stubborn }
+				}
+				religion = event_target:missionary_physician_target
 			}
-			religion = event_target:missionary_physician_target
 		}
+		custom_tooltip = { text = EVTOPTB_RIP_4101_TT }
 	}
 	
 	option = {
@@ -2967,7 +2963,7 @@ character_event = {
 		job_treasurer = {
 			save_event_target_as = councillor_target
 		}
-		any_demesne_province = {
+		random_demesne_province = {
 			limit = {
 				NOT = {
 					has_province_modifier = new_roads
@@ -3014,6 +3010,7 @@ character_event = {
 		prestige = 25
 		
 		event_target:prosperity_target = {
+			show_scope_change = no
 			add_province_modifier = {
 				name = new_roads
 				duration = 730
@@ -3122,7 +3119,7 @@ character_event = {
 		job_spiritual = {
 			save_event_target_as = councillor_target
 		}
-		any_demesne_province = {
+		random_demesne_province = {
 			limit = {
 				NOT = {
 					has_province_modifier = new_shrines
@@ -3169,6 +3166,7 @@ character_event = {
 		piety = 25
 		
 		event_target:prosperity_target = {
+			show_scope_change = no
 			add_province_modifier = {
 				name = new_shrines
 				duration = 730
@@ -3277,7 +3275,7 @@ character_event = {
 		job_marshal = {
 			save_event_target_as = councillor_target
 		}
-		any_demesne_province = {
+		random_demesne_province = {
 			limit = {
 				NOT = {
 					has_province_modifier = peasants_protected
@@ -3324,6 +3322,7 @@ character_event = {
 		prestige = 25
 		
 		event_target:prosperity_target = {
+			show_scope_change = no
 			add_province_modifier = {
 				name = peasants_protected
 				duration = 730
@@ -3432,7 +3431,7 @@ character_event = {
 		job_spymaster = {
 			save_event_target_as = councillor_target
 		}
-		any_demesne_province = {
+		random_demesne_province = {
 			limit = {
 				NOT = {
 					has_province_modifier = messenger_stations
@@ -3479,6 +3478,7 @@ character_event = {
 		prestige = 25
 		
 		event_target:prosperity_target = {
+			show_scope_change = no
 			add_province_modifier = {
 				name = messenger_stations
 				duration = 730
@@ -3587,7 +3587,7 @@ character_event = {
 		job_chancellor = {
 			save_event_target_as = councillor_target
 		}
-		any_demesne_province = {
+		random_demesne_province = {
 			limit = {
 				NOT = {
 					has_province_modifier = harvest_festivals
@@ -3634,6 +3634,7 @@ character_event = {
 		prestige = 25
 		
 		event_target:prosperity_target = {
+			show_scope_change = no
 			add_province_modifier = {
 				name = harvest_festivals
 				duration = 730
@@ -3726,7 +3727,7 @@ character_event = {
 	}
 	
 	immediate = {
-		any_demesne_province = {
+		random_demesne_province = {
 			limit = {
 				NOT = {
 					has_province_modifier = inspired_peasantry
@@ -3773,6 +3774,7 @@ character_event = {
 		prestige = 25
 		
 		event_target:prosperity_target = {
+			show_scope_change = no
 			add_province_modifier = {
 				name = inspired_peasantry
 				duration = 730
@@ -3925,7 +3927,7 @@ character_event = { # Execution nicknames
 							NOR = {
 								NOT = { piety = -50 }
 								trait = possessed
-								trait = kinslayer
+								is_any_kinslayer_trigger = yes
 							}
 						}
 					}
@@ -3970,11 +3972,23 @@ character_event = {
 
 	trigger = {
 		OR = {
-			num_of_lovers = 1
-			num_of_friends = 1
-			num_of_rivals = 1
+			any_lover = {
+				is_alive = yes
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+			}
+			any_friend = {
+				is_alive = yes
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+			}
+			any_rival = {
+				is_alive = yes
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+			}
 		}
-
+		NOR = {
+			death_no_trace_trigger = yes
+			death_in_china_trigger = yes
+		}
 	}
 
 	option = {
@@ -3983,30 +3997,53 @@ character_event = {
 		spouse = { save_event_target_as = rip_widow }
 
 		random_child = { 
-			limit = { is_adult = yes }
+			limit = {
+				is_adult = yes
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+			}
 			save_event_target_as = rip_child
 		}
 
 		#Lover event
 		random_lover = {
-			limit = { block_general_event_trigger = no NOT = { has_character_modifier = grief_timer } }
+			limit = {
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+				NOT = { has_character_modifier = grief_timer }
+			}
 			character_event = { id = RIP.29001 days = 20 } 
 		}
 
 		#Friend event
 		random_friend = {
-			limit = { block_general_event_trigger = no NOT = { has_character_modifier = grief_timer } }
+			limit = {
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+				NOT = { has_character_modifier = grief_timer }
+			}
 			save_event_target_as = rip_friend_1
 
 			ROOT = { 
 				random_friend = {
-					limit = { NOT = { character = event_target:rip_friend_1 } block_general_event_trigger = no }
+					limit = { 
+						NOT = { is_inaccessible_or_incapable_trigger = yes }
+						NOR = {
+							is_rival = event_target:rip_friend_1
+							character = event_target:rip_friend_1
+							is_friend = event_target:rip_friend_1
+							is_lover = event_target:rip_friend_1
+							is_close_relative = event_target:rip_friend_1
+						}
+					}
 					save_event_target_as = rip_friend_2
 				}
 			}
 
 			random_list = {
-				75 = { character_event = { id = RIP.29005 days = 30 } }
+				75 = { 
+					trigger = {
+						NOT = { event_target:rip_dead = { killer = { character = event_target:rip_friend_1 } } } #Prevent crocodile tears.
+					}
+					character_event = { id = RIP.29005 days = 30 } 
+				}
 				25 = { 
 					modifier = {
 						factor = 0
@@ -4018,8 +4055,7 @@ character_event = {
 										character = event_target:rip_friend_1 
 										is_rival = event_target:rip_friend_1 
 										is_friend = event_target:rip_friend_1  
-										is_lover = event_target:rip_friend_1  
-										character = event_target:rip_friend_1 
+										is_lover = event_target:rip_friend_1
 									} 
 								} 
 							} 
@@ -4032,25 +4068,62 @@ character_event = {
 
 		#Rival event
 		random_rival = {
-			limit = { block_general_event_trigger = no NOT = { has_character_modifier = grief_timer } }
+			limit = {
+				NOT = { is_inaccessible_or_incapable_trigger = yes }
+				NOT = { has_character_modifier = grief_timer }
+			}
 			save_event_target_as = rip_enemy_1
 
-			any_courtier = {
-				limit = { block_general_event_trigger = no ai = yes }
-				save_event_target_as = rip_new_enemy
+			liege = {
+				any_courtier = {
+					limit = { 
+						NOT = { is_inaccessible_or_incapable_trigger = yes }
+						NOR = {
+							is_rival = event_target:rip_enemy_1
+							character = event_target:rip_enemy_1
+							is_friend = event_target:rip_enemy_1
+							is_lover = event_target:rip_enemy_1
+						}
+					}
+					save_event_target_as = rip_new_enemy
+				}
 			}
 
 			ROOT = { 
 				random_rival = {
-					limit = { NOT = { character = event_target:rip_enemy_1 } block_general_event_trigger = no }
+					limit = { 
+						NOT = { is_inaccessible_or_incapable_trigger = yes }
+						NOR = {
+							is_rival = event_target:rip_enemy_1
+							character = event_target:rip_enemy_1
+							is_friend = event_target:rip_enemy_1
+							is_lover = event_target:rip_enemy_1
+						}
+					}
 					save_event_target_as = rip_enemy_2
 				}
 				random_child = {
-					limit = { block_general_event_trigger = no ai = yes }
+					limit = { 
+						NOT = { is_inaccessible_or_incapable_trigger = yes }
+						NOR = {
+							is_rival = event_target:rip_enemy_1
+							character = event_target:rip_enemy_1
+							is_friend = event_target:rip_enemy_1
+							is_lover = event_target:rip_enemy_1
+						}
+					}
 					save_event_target_as = rip_new_enemy
 				}
 				random_friend = {
-					limit = { block_general_event_trigger = no }
+					limit = { 
+						NOT = { is_inaccessible_or_incapable_trigger = yes }
+						NOR = {
+							is_rival = event_target:rip_enemy_1
+							character = event_target:rip_enemy_1
+							is_friend = event_target:rip_enemy_1
+							is_lover = event_target:rip_enemy_1
+						}
+					}
 					save_event_target_as = rip_new_enemy
 				}
 			}
