@@ -4468,7 +4468,9 @@ character_event = {
 	option = {
 		name = EVTOPTD_RIP_29005
 		custom_tooltip = { text = EVTOPTD_RIP_29005_TOOLTIP }
-		trigger = { num_of_friends = 1 }
+		trigger = { 
+			any_friend = { is_alive = yes } 
+		}
 		any_friend = { remove_friend = ROOT } 
 
 		ai_chance = { factor = 5 }
@@ -4640,28 +4642,30 @@ character_event = {
 		}
 
 		hidden_tooltip = {
-		random_list = {
-			#Fail
-			40 = { 
-				modifier = {
-					factor = 0
-					OR = {
-						NOT = { event_target:rip_widow = { always = yes } }
-						NOT = { event_target:rip_child = { always = yes } }
-						event_target:rip_widow = { character = ROOT }
-						event_target:rip_child = { character = ROOT }
+			random_list = {
+				#Fail
+				40 = {
+					modifier = {
+						factor = 0
+						OR = {
+							NOT = { event_target:rip_widow = { always = yes } }
+							NOT = { event_target:rip_child = { always = yes } }
+							event_target:rip_widow = { character = ROOT }
+							event_target:rip_child = { character = ROOT }
+						}
+					}
+
+					if = {
+						limit = { event_target:rip_widow = { NOT = { character = ROOT } } }
+						event_target:rip_widow = { character_event = { id = RIP.29011 days = 7 } }
+						break = yes
+					}
+					if = {
+					limit = { event_target:rip_child = { NOT = { character = ROOT } } }
+					event_target:rip_child = { character_event = { id = RIP.29011 days = 7 } }
 					}
 				}
-
-				if = { 
-					limit = { event_target:rip_widow = { always = yes } }
-					event_target:rip_widow = { character_event = { id = RIP.29011 days = 7 } }
-					break = yes
-				}
-
-				event_target:rip_child = { character_event = { id = RIP.29011 days = 7 } }
-			}
-			#Success			
+				#Success
 				60 = {
 					modifier = {
 						factor = 1.2
@@ -4694,7 +4698,7 @@ character_event = {
 
 	#Enemy of my enemy
 	option = {
-		trigger = { event_target:rip_enemy_2 = { always = yes } }
+		trigger = { event_target:rip_enemy_2 = { is_alive = yes } }
 		name = EVTOPTB_RIP_29010
 		custom_tooltip = { text = EVTOPTB_RIP_29010_TOOLTIP }
 
@@ -4705,7 +4709,7 @@ character_event = {
 
 	#Get a new enemy
 	option = {
-		trigger = { event_target:rip_new_enemy = { always = yes } }
+		trigger = { event_target:rip_new_enemy = { is_alive = yes } }
 		name = EVTOPTC_RIP_29010
 		custom_tooltip = { text = EVTOPTC_RIP_29010_TOOLTIP }
 
@@ -4718,7 +4722,7 @@ character_event = {
 	option = {
 		trigger = {
 			OR = {
-				num_of_rivals = 1
+				any_rival = { is_alive = yes }
 				trait = cruel
 				trait = envious
 				NOT = { trait = kind }
@@ -4937,10 +4941,13 @@ character_event = {
 
 	option = {
 		name = EVTOPTA_RIP_29013
+		custom_tooltip = { text = EVTOPTA_RIP_29013_TT }
 
-		add_character_modifier = {
-			name = skull_trophy
-			duration = -1
+		hidden_effect = {
+			add_artifact = rival_skull
+			new_artifact = {
+				set_original_owner = event_target:rip_dead
+			}
 		}
 
 		hidden_tooltip = {
@@ -4955,10 +4962,12 @@ character_event = {
 	id = RIP.29014
 	border = GFX_event_normal_frame_intrigue
 	desc = EVTDSC_RIP_29014
+	show_from_from_from = yes
 	picture = GFX_evt_bloody_tools
 
 	is_triggered_only = yes
-	hide_from = yes
+
+	trigger = { NOT = { character = FROM } }
 
 	option = {
 		name = EVTOPTA_RIP_29014
@@ -5042,11 +5051,8 @@ character_event = {
 		name = EVTOPTA_RIP_29016
 		remove_trait = depressed
 
-		add_character_modifier = {
-			name = pet_cat
-			duration = -1
-		}
-		hidden_tooltip = { character_event = { id = 77802 days = 5000 random = 1000 } } # Cat dies
+		add_cat_effect = yes
+
 	}
 	option = {
 		name = EVTOPTB_RIP_29016
@@ -5133,13 +5139,13 @@ character_event = {
 				limit = { any_child = { ai = no } }
 
 				random_child = {
-					limit = { ai = no NOR = { is_rival = ROOT is_friend = ROOT is_lover = ROOT } }
+					limit = { ai = no NOR = { is_rival = ROOT is_friend = ROOT is_lover = ROOT character = ROOT } }
 					save_event_target_as = rip_heir
 				}
 				break = yes
 			}
 			if = {
-				limit = { any_child = { is_heir = yes } NOR = { is_rival = ROOT is_friend = ROOT is_lover = ROOT } }
+				limit = { any_child = { is_heir = yes } NOR = { is_rival = ROOT is_friend = ROOT is_lover = ROOT character = ROOT } }
 
 				random_child = {
 					limit = { is_heir = yes }
@@ -5148,7 +5154,7 @@ character_event = {
 				break = yes
 			}
 			random_child = {
-				limit = { age = 12 NOR = { is_rival = ROOT is_friend = ROOT is_lover = ROOT } }
+				limit = { age = 12 NOR = { is_rival = ROOT is_friend = ROOT is_lover = ROOT character = ROOT } }
 				save_event_target_as = rip_heir
 			}
 		}
@@ -5189,7 +5195,7 @@ character_event = {
 
 			#Root must be motivated
 			OR = { 
-				event_target:rip_heir = { trait = fair }
+				event_target:rip_heir = { has_fair_trait_trigger = yes }
 				trait = lustful 
 				trait = seducer 
 				trait = seductress 
@@ -5206,8 +5212,8 @@ character_event = {
 				trait = celibate
 			} 
 		}
-		name = EVTOPTB_RIP_29020
-		custom_tooltip = { text = EVTOPTB_RIP_29020_TOOLTIP }
+		name = EVTOPTC_RIP_29020
+		custom_tooltip = { text = EVTOPTC_RIP_29020_TOOLTIP }
 		hidden_tooltip = { event_target:rip_heir = { character_event = { id = RIP.29024 days = 7 } } }
 
 		event_target:rip_heir = {
@@ -5231,7 +5237,6 @@ character_event = {
 	option = {
 		name = EVTOPTB_RIP_29020
 		custom_tooltip = { text = EVTOPTB_RIP_29020_TOOLTIP }
-		ai_chance = { factor = 1 }
 
 		if = {
 			limit = { NOR = { trait = shy trait = gregarious } }
@@ -5410,8 +5415,7 @@ character_event = {
 				OR = {
 					trait = shy
 					trait = chaste
-					trait = nun
-					trait = monk
+					is_ascetic_trigger = yes
 					is_married = yes
 				}
 			}
@@ -5486,7 +5490,7 @@ character_event = {
 				modifier = {
 					factor = 0
 					OR = {
-						num_of_lovers = 1
+						any_lover = { is_alive = yes }
 						has_character_modifier = golden_mask
 					}
 				}
@@ -6903,6 +6907,10 @@ character_event = {
 
 	is_triggered_only = yes
 
+	trigger = {
+		has_character_modifier = phantom_pain
+	}
+
 	option = {
 		name = EVTOPTA_RIP_29501
 
@@ -6936,6 +6944,10 @@ character_event = {
 	picture = GFX_evt_prospering_province
 
 	is_triggered_only = yes
+
+	trigger = {
+		has_character_modifier = phantom_pain
+	}
 
 	option = {
 		name = EVTOPTA_RIP_29502
@@ -7001,9 +7013,9 @@ character_event = {
 
 	trigger = {
 		OR = {
-			num_of_children = 1
-			num_of_lovers = 1
-			num_of_spouses = 1
+			any_child = { is_alive = yes }
+			any_lover = { is_alive = yes }
+			any_spouse = { is_alive = yes }
 		}
 		OR = {
 			trait = severely_injured
@@ -7306,8 +7318,8 @@ character_event = {
 		}
 		if = {
 			limit = { has_character_flag = make_friend }
-			add_lover = FROM
-			clr_character_flag = make_lover
+			add_friend = FROM
+			clr_character_flag = make_friend
 		}
 		
 		reverse_opinion = {
@@ -7712,9 +7724,14 @@ character_event = {
 
 	is_triggered_only = yes
 
-	ai = no
-
 	trigger = {
+		OR = {
+			ai = no
+			has_game_rule = {
+				name = supernatural_events
+				value = unrestricted
+			}
+		}
 		death_reason = death_natural
 		NOT = {
 			has_game_rule = {
@@ -7723,6 +7740,7 @@ character_event = {
 			}
 		}
 		current_heir = {
+			is_child_of = ROOT
 			NOR = { 
 				trait = reincarnation
 				trait = incapable
@@ -7773,11 +7791,26 @@ character_event = {
 			}
 		}
 	}
+	
+	option = {
+	
+	}
 }
 
 character_event = {
 	id = RIP.29801
-	desc = EVTDESC_RIP_29801
+	desc = {
+		trigger = {
+			event_target:reincarnation_target = { is_female = no }
+		}
+		text = EVTDESC_RIP_29801
+	}
+	desc = {
+		trigger = {
+			event_target:reincarnation_target = { is_female = yes }
+		}
+		text = EVTDESC_RIP_29801_B
+	}
 	picture = GFX_evt_into_the_dungeon
 
 	ai = no
@@ -7796,9 +7829,8 @@ character_event = {
 	}
 
 	immediate = {
-		event_target:reincarnation_target = {
-			ROOT = { set_reincarnation = PREV }
-		}
+			ROOT = { set_reincarnation = event_target:reincarnation_target }
+
 	}
 
 	is_triggered_only = yes
@@ -8364,6 +8396,7 @@ letter_event = {
 			any_war = {
 				limit = {
 					defender = { character = event_target:target_defender }
+					attacker = { character = FROM }
 				}
 				end_war = whitepeace
 			}
@@ -8427,6 +8460,7 @@ letter_event = {
 			any_war = {
 				limit = {
 					defender = { character = event_target:target_defender }
+					attacker = { character = FROM }
 				}
 				end_war = whitepeace
 			}
@@ -8554,6 +8588,7 @@ letter_event = {
 			any_war = {
 				limit = {
 					defender = { character = event_target:target_defender }
+					attacker = { character = FROM }
 				}
 				end_war = whitepeace
 			}
@@ -8623,6 +8658,7 @@ letter_event = {
 		any_war = {
 			limit = {
 				defender = { character = event_target:target_defender }
+				attacker = { character = ROOT }
 			}
 			end_war = whitepeace
 		}
@@ -8918,6 +8954,7 @@ letter_event = {
 			any_war = {
 				limit = {
 					attacker = { character = event_target:target_attacker }
+					defender = { character = FROM }
 				}
 				end_war = success
 			}
@@ -8979,6 +9016,7 @@ letter_event = {
 			any_war = {
 				limit = {
 					attacker = { character = event_target:target_attacker }
+					defender = { character = FROM }
 				}
 				end_war = success
 			}
@@ -9104,6 +9142,7 @@ letter_event = {
 			any_war = {
 				limit = {
 					attacker = { character = event_target:target_attacker }
+					defender = { character = FROM }
 				}
 				end_war = success
 			}
@@ -9171,6 +9210,7 @@ letter_event = {
 		any_war = {
 			limit = {
 				attacker = { character = event_target:target_attacker }
+				defender = { character = FROM }
 			}
 			end_war = success
 		}
@@ -9749,3 +9789,843 @@ letter_event = {
 		}
 	}
 }
+
+###SUICIDE EVENT CHAIN###
+
+#Suicide, from commit_suicide_immortal and commit_suicide
+character_event = {
+	id = RIP.30200
+	picture = GFX_evt_depopulated_town
+	border = GFX_event_normal_frame_intrigue
+
+	hide_from = yes
+
+	desc = {
+		trigger = { immortal = yes }
+		text = EVTDESC_RIP_30200_A
+	}
+	desc = {
+		trigger = {
+			immortal = no
+			NOR = {
+				any_child = { is_alive = yes }
+				any_lover = { is_alive = yes }
+				any_friend = { is_alive = yes }
+			}
+		}
+		text = EVTDESC_RIP_30200_B
+	}
+	desc = {
+		trigger = {
+			immortal = no
+			OR = {
+				any_child = { is_alive = yes }
+				any_lover = { is_alive = yes }
+				any_friend = { is_alive = yes }
+			}
+		}
+		text = EVTDESC_RIP_30200_C
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		character_event = { id = RIP.30201 days = 365 } #Cleanup
+
+		random_rival = {
+			limit = { block_general_event_trigger = no }
+			save_event_target_as = suicide_duel_target
+			
+		}
+	}
+
+	#Challenge rival to duel
+	option = {
+		trigger = { 
+			event_target:suicide_duel_target = { always = yes }
+		}
+		name = EVTOPTA_RIP_30200
+		custom_tooltip = { text = EVTOPTA_RIP_30200_TOOLTIP }
+
+		event_target:suicide_duel_target = { hidden_tooltip = { letter_event = { id = RIP.30202 days = 1 } } }
+
+	}
+
+	#Drink poison
+	option = {
+		name = EVTOPTB_RIP_30200
+
+		hidden_tooltip = {
+			random_list = {
+				50 = {
+					set_character_flag = suicide_success
+					modifier = {
+						factor = 2
+						intrigue = 15
+					}
+					modifier = {
+						factor = 10
+						immortal = no
+					}
+				}
+				50 = {
+					modifier = {
+						factor = 1.3
+						health = 7
+					}
+					modifier = {
+						factor = 1.3
+						health = 8
+					}
+					modifier = {
+						factor = 1.3
+						health = 9
+					}
+					modifier = {
+						factor = 1.3
+						health = 10
+					}
+					modifier = {
+						factor = 2
+						NOT = { intrigue = 10 }
+					}
+					set_character_flag = suicide_fail
+				}
+			}
+			character_event = { id = RIP.30207 days = 14 }
+		}
+	}
+
+	#Hang yourself
+	option = {
+   		name = EVTOPTC_RIP_30200
+
+   		hidden_tooltip = {
+			random_list = {
+				30 = {
+					modifier = {
+						factor = 10
+						immortal = no
+					}	
+					set_character_flag = suicide_success
+				}
+				70 = {
+					modifier = {
+						factor = 0
+						NOT = {
+							any_courtier = {
+								block_general_event_trigger = no 
+								ai = yes
+							}
+						}
+					}
+					set_character_flag = suicide_fail
+				}
+			}
+			character_event = { id = RIP.30208 days = 14 }
+		}
+	}
+
+	#Throw yourself off a cliff
+	option = {
+		name = EVTOPTD_RIP_30200
+
+		hidden_tooltip = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 2
+						is_weak_trigger = yes
+					}
+					modifier = {
+						factor = 10
+						immortal = no
+					}
+					set_character_flag = suicide_success
+				}
+				50 = {
+
+					modifier = {
+						factor = 1.3
+						health = 7
+					}
+					modifier = {
+						factor = 1.3
+						health = 8
+					}
+					modifier = {
+						factor = 1.3
+						health = 9
+					}
+					modifier = {
+						factor = 1.3
+						health = 10
+					}
+					modifier = {
+						factor = 2
+						is_strong_trigger = yes
+					}
+					set_character_flag = suicide_fail
+				}
+			}
+			character_event = { id = RIP.30209 days = 14 }
+		}
+	}
+}
+
+#Cleanup-event
+character_event = {
+	id = RIP.30201
+	hide_window = yes
+	is_triggered_only = yes
+
+	option = {
+		clr_character_flag = suicide_fail
+		clr_character_flag = suicide_success
+		clr_character_flag = lost_suicide_duel
+		clr_character_flag = incapable_suicide_duel
+		clr_character_flag = won_suicide_duel
+		clr_character_flag = attempting_suicide
+	}
+}
+
+#Rival recieves challenge
+letter_event = {
+	id = RIP.30202
+	desc = EVTDESC_RIP_30202
+	border = GFX_event_letter_frame_war
+
+	is_triggered_only = yes
+
+	#Yes
+	option = {
+		name = EVTOPTA_RIP_30202
+
+		FROM = { letter_event = { id = RIP.30203 days = 14 } }
+
+		ai_chance =  { 
+			factor = 100 
+
+			modifier = {
+				factor = 0.01
+				trait = craven
+			}
+		}
+	}
+
+	#No
+	option = {
+		name = EVTOPTB_RIP_30202
+
+		FROM = { letter_event = { id = RIP.30204 days = 14 } }
+
+		add_character_modifier = {
+			name = wol_refused_duel
+			years = 10
+		}
+
+		ai_chance =  { factor = 2 }
+	}
+}
+
+#Recieve accept
+letter_event = {
+	id = RIP.30203
+	desc = EVTDESC_RIP_30203
+	border = GFX_event_letter_frame_war
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_RIP_30203
+
+		hidden_tooltip = { 
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 2
+						immortal = no
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 10 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 20 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 30 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 40 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 50 }
+					}
+
+					set_character_flag = lost_suicide_duel
+				}
+				20 = {
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 10 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 20 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 30 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 40 }
+					}
+					modifier = {
+						factor = 1.5
+						FROM = { combat_rating = 50 }
+					}
+					set_character_flag = incapable_suicide_duel
+				}
+				30 = {
+					modifier = {
+						factor = 1.5
+						FROM = { NOT = { combat_rating = 0 } }
+					}
+					set_character_flag = won_suicide_duel
+				}
+			}
+
+			character_event = { id = RIP.30205 days = 14 } 
+		}
+	}
+}
+
+#Recieve decline
+letter_event = {
+	id = RIP.30204
+	desc = EVTDESC_RIP_30204
+	border = GFX_event_letter_frame_war
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_RIP_30204
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+	}
+}
+
+#Duel outcome
+character_event = {
+	id = RIP.30205
+	picture = GFX_evt_melee
+	border = GFX_event_normal_frame_war
+
+	desc = {
+		trigger = { has_character_flag = lost_suicide_duel }
+		text = EVTDESC_RIP_30205_LOST
+	}
+	desc = {
+		trigger = { has_character_flag = won_suicide_duel }
+		text = EVTDESC_RIP_30205_WON
+	}
+	desc = {
+		trigger = { has_character_flag = incapable_suicide_duel }
+		text = EVTDESC_RIP_30205_INCAPABLE
+	}
+
+	is_triggered_only = yes
+
+	#You died in the duel
+	option = {
+		trigger = { has_character_flag = lost_suicide_duel }
+		name = EVTOPTA_RIP_30205
+
+		prestige = -100
+
+		death = {
+			death_reason = death_duel
+			killer = event_target:suicide_duel_target
+		}
+
+		event_target:suicide_duel_target = {
+			tooltip = { prestige = 100 }
+			hidden_tooltip = { character_event = { id = RIP.30206 } }
+		}
+	}
+
+	#Rival didn't kill you
+	option = {
+		trigger = { has_character_flag = won_suicide_duel }
+		name = EVTOPTB_RIP_30205
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+
+		add_trait_wounded_effect = yes
+		hidden_tooltip = { event_target:suicide_duel_target = { character_event = { id = RIP.30206 } } }
+	}
+
+	#Rival didn't kill you but you kill them
+	option = {
+		trigger = { 
+			has_character_flag = won_suicide_duel 
+			event_target:suicide_duel_target = { ai = yes }
+			NOT = { trait = kind }
+		}
+		name = EVTOPTC_RIP_30205
+
+		prestige = 100
+
+		add_trait_wounded_effect = yes
+
+		random = {
+			chance = 50
+			add_trait_wroth_effect = yes
+		}
+
+		event_target:suicide_duel_target = { 
+			prestige = -100
+			
+			death = {
+				death_reason = death_duel
+				killer = ROOT
+			}
+		}
+	}
+
+	#You become incapable in the duel
+	option = {
+		trigger = { has_character_flag = incapable_suicide_duel }
+		name = EVTOPTD_RIP_30205
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+
+		prestige = -100
+
+		event_target:suicide_duel_target = {
+			tooltip = { prestige = 100 }
+			hidden_tooltip = { character_event = { id = RIP.30206 } }
+		}
+
+		add_trait = incapable
+	}
+}
+
+#Rival outcome 
+character_event = {
+	id = RIP.30206
+	picture = GFX_evt_melee
+	border = GFX_event_normal_frame_war
+
+	desc = {
+		trigger = { 
+			OR = {
+				FROM = { has_character_flag = lost_suicide_duel }
+				FROM = { has_character_flag = incapable_suicide_duel }
+			}
+		}
+		text = EVTDESC_RIP_30206_WON
+	}
+	desc = {
+		trigger = { FROM = { has_character_flag = won_suicide_duel } }
+		text = EVTDESC_RIP_30206_LOST
+	}
+	
+	is_triggered_only = yes
+
+	option = {
+		trigger = { FROM = { has_character_flag = lost_suicide_duel } }
+		name = EVTOPTA_RIP_30206
+
+		prestige = 100
+
+		FROM = {
+			tooltip = {
+				prestige = -100
+				death = {
+					death_reason = death_duel
+					killer = ROOT
+				}
+			}
+		}
+	}
+
+	option = {
+		trigger = { FROM = { has_character_flag = incapable_suicide_duel } }
+		name = EVTOPTB_RIP_30206
+
+		prestige = 100
+
+		FROM = {
+			tooltip = {
+				prestige = -100
+				add_trait = incapable
+			}
+		}
+	}
+
+	option = {
+		trigger = { FROM = { has_character_flag = won_suicide_duel } }
+		name = EVTOPTC_RIP_30206
+	}
+}
+
+
+
+#Suicide attempt through poison
+character_event = {
+	id = RIP.30207
+	picture = GFX_evt_performing_experiments
+	border = GFX_event_normal_frame_intrigue
+
+	hide_from = yes
+
+	desc = {
+		trigger = { has_character_flag = suicide_success }
+		text = EVTDESC_RIP_30207_SUCCESS
+		picture = GFX_evt_performing_experiments
+	}
+	desc = {
+		trigger = { has_character_flag = suicide_fail }
+		text = EVTDESC_RIP_30207_FAIL
+		picture = GFX_evt_experiments_failed
+	}
+
+	is_triggered_only = yes
+
+	option = {
+		trigger = { has_character_flag = suicide_success }
+		name = EVTOPTA_RIP_30207
+
+		prestige = -200
+		add_character_modifier = {
+			modifier = suicide
+			duration = -1
+		}
+		death = { death_reason = death_suicide_poison }
+	}
+	option = {
+		trigger = { has_character_flag = suicide_fail }
+		name = EVTOPTB_RIP_30207
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+		give_food_poisoning_effect = yes
+	}
+}
+
+#Suicide attempt through hanging
+character_event = {
+	id = RIP.30208
+	picture = GFX_evt_scandal
+	border = GFX_event_normal_frame_intrigue
+
+	hide_from = yes
+
+	desc = {
+		trigger = { has_character_flag = suicide_success }
+		text = EVTDESC_RIP_30208_SUCCESS
+	}
+	desc = {
+		trigger = { has_character_flag = suicide_fail }
+		text = EVTDESC_RIP_30208_FAIL
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_courtier = {
+			limit = { 
+				block_general_event_trigger = no 
+				ai = yes
+			}
+			save_event_target_as = found_hanger
+		}
+	}
+
+	option = {
+		trigger = { has_character_flag = suicide_success }
+		name = EVTOPTA_RIP_30207
+
+		prestige = -200
+		add_character_modifier = {
+			modifier = suicide
+			duration = -1
+		}
+
+		death = { death_reason = death_suicide_hanging }
+	}
+	option = {
+		trigger = { has_character_flag = suicide_fail }
+		name = EVTOPTB_RIP_30207
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+		
+		prestige = -100
+
+		opinion = {
+			who = event_target:found_hanger
+			modifier = opinion_distressing_encounter
+			years = 5
+		}
+		reverse_opinion = {
+			who = event_target:found_hanger
+			modifier = opinion_distressing_encounter
+			years = 5
+		}
+	}
+}
+
+#Suicide attempt through fall
+character_event = {
+	id = RIP.30209
+	picture = GFX_evt_prospering_province
+	border = GFX_event_normal_frame_intrigue
+
+	hide_from = yes
+
+	desc = {
+		trigger = { has_character_flag = suicide_success }
+		text = EVTDESC_RIP_30209_SUCCESS
+	}
+	desc = {
+		trigger = { has_character_flag = suicide_fail }
+		text = EVTDESC_RIP_30209_FAIL
+	}
+
+	is_triggered_only = yes
+
+	option = {
+		trigger = { has_character_flag = suicide_success }
+		name = EVTOPTA_RIP_30207
+
+		prestige = -200
+		add_character_modifier = {
+			modifier = suicide
+			duration = -1
+		}
+
+		death = { death_reason = death_suicide_fall }
+	}
+	option = {
+		trigger = { has_character_flag = suicide_fail }
+		name = EVTOPTD_RIP_30205
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+		
+		prestige = -100
+
+		add_trait = incapable
+	}
+}
+
+
+#Incapable suicide help request
+character_event = {
+	id = RIP.30210
+	picture = GFX_evt_doctor_tending_to_sick
+	border = GFX_event_normal_frame_intrigue
+
+	desc = {
+		trigger = { event_target:suicide_assistant = { always = yes } }
+		text = EVTDESC_RIP_30210_A
+	}
+	desc = {
+		trigger = { NOT = { event_target:suicide_assistant = { always = yes } } }
+		text = EVTDESC_RIP_30210_B
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_friend = {
+			limit = { 
+				block_general_event_trigger = no 
+				NOT = { has_character_flag = refused_assisted_suicide }
+			}
+			save_event_target_as = suicide_assistant
+		}
+		if = {
+			limit = { NOT = { event_target:suicide_assistant = { always = yes } } }
+			random_lover = {
+				limit = { 
+					block_general_event_trigger = no 
+					NOT = { has_character_flag = refused_assisted_suicide }
+				}
+				save_event_target_as = suicide_assistant
+			}
+		}
+		if = {
+			limit = { NOT = { event_target:suicide_assistant = { always = yes } } }
+			host = {
+				random_courtier = {
+					limit = { 
+						has_minor_title = title_court_physician 
+						NOT = { has_character_flag = refused_assisted_suicide }
+					}
+					save_event_target_as = suicide_assistant
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { event_target:suicide_assistant = { always = yes } } }
+			random_child = {
+				limit = { 
+					block_general_event_trigger = no 
+					NOT = { has_character_flag = refused_assisted_suicide }
+				}
+				save_event_target_as = suicide_assistant
+			}
+		}
+	}
+
+	option = {
+		trigger = { event_target:suicide_assistant = { always = yes } }
+		name = EVTOPTA_RIP_30210
+
+		hidden_tooltip = { event_target:suicide_assistant = { character_event = { id = RIP.30211 days = 5 } } }
+	}
+
+	option = {
+		trigger = { NOT = { event_target:suicide_assistant = { always = yes } } }
+		name = EVTOPTB_RIP_30210
+
+		hidden_tooltip = {
+			set_character_flag = suicide_success
+			character_event = { id = RIP.30212 days = 5 } 
+		}
+	}
+}
+
+#Suicide request response
+character_event = {
+	id = RIP.30211
+	picture = GFX_evt_doctor_tending_to_sick
+	desc = EVTDESC_RIP_30211
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	#Yes
+	option = {
+		name = EVTOPTA_RIP_30211
+
+		FROM = {
+			tooltip = {
+				death = {
+					death_reason = death_murder_unknown_strangle
+					killer = ROOT
+				}
+			}
+			hidden_tooltip = { 
+				set_character_flag = suicide_success
+				character_event = { id = RIP.30212 } 
+			}
+		}
+
+		ai_chance = {
+			factor = 33
+
+			modifier = {
+				factor = 2
+				is_benevolent_trigger = yes
+			}
+			modifier = {
+				factor = 2
+				trait = brave
+			}
+			modifier = {
+				factor = 4
+				trait = ambitious
+				FROM = {
+					current_heir = {
+						character = ROOT
+					}
+				}
+			}
+		}
+	}
+
+	#No
+	option = {
+		name = EVTOPTB_RIP_30211
+
+		opinion = {
+			who = FROM
+			modifier = opinion_distressing_encounter
+			years = 5
+		}
+		reverse_opinion = {
+			who = FROM
+			modifier = opinion_distressing_encounter
+			years = 5
+		}
+
+		set_character_flag = refused_assisted_suicide
+
+		FROM = { 
+			hidden_tooltip = { 
+				set_character_flag = suicide_fail 
+				character_event = { id = RIP.30212 } 
+			}
+		}
+
+		ai_chance = {
+			factor = 67
+
+			modifier = {
+				factor = 2
+				is_evil_trigger = yes
+			}
+			modifier = {
+				factor = 2
+				trait = craven
+			}
+		}
+	}
+}
+	
+
+#Incapable suicide request outcome
+character_event = {
+	id = RIP.30212
+	picture = GFX_evt_doctor_tending_to_sick
+	border = GFX_event_normal_frame_intrigue
+
+	desc = {
+		trigger = { 
+			has_character_flag = suicide_success 
+			NOT = { FROM = { character = ROOT } }
+		}
+		text = EVTDESC_RIP_30212_SUCCESS_A
+	}
+	desc = {
+		trigger = { 
+			has_character_flag = suicide_success 
+			FROM = { character = ROOT } 
+		}
+		text = EVTDESC_RIP_30212_SUCCESS_B
+	}
+	desc = {
+		trigger = { has_character_flag = suicide_fail }
+		text = EVTDESC_RIP_30212_FAIL
+	}
+
+	is_triggered_only = yes
+
+	option = {
+		trigger = { has_character_flag = suicide_success }
+		name = EVTOPTA_RIP_30207
+
+		death = {
+			death_reason = death_murder_unknown_strangle
+			killer = FROM
+		}
+	}
+
+	option = {
+		trigger = { has_character_flag = suicide_fail }
+		name = EVTOPTB_RIP_30212
+		custom_tooltip = { text = EVTOPTA_RIP_30204_TOOLTIP }
+	}
+}
+
