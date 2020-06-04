@@ -1,0 +1,37 @@
+###########################################
+#                                         #
+# M&M MISC Events                         #
+#                                         #
+# ID MNM.10000 - 10001     	              #
+#                                         #
+###########################################
+
+namespace = MNM
+
+# I don't know what all we want to do with societies, and all the stuff being in other files 
+# than this, but included the secret religion part so at least that can work for now.
+# societies are a mess - tsf4
+
+character_event = { #Save game conversion of secret_traits to secret religions
+	id = MNM.10025
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	ai = no
+	only_playable = yes
+	
+	trigger = {
+		is_multiplayer_host_character = yes
+		is_save_game = yes
+	}
+	
+	immediate = {
+		any_character = {
+			trigger_switch = {
+				on_trigger = trait
+				secretly_fire_nation_imperialism = { set_secret_religion = fire_nation_imperialism remove_trait = secretly_fire_nation_imperialism }
+			}
+		}
+	}
+}
