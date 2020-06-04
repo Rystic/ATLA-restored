@@ -10,4 +10,4 @@ https://github.com/Stormersh/Avatar-Disabled-Portraits
 Allows users to use default CK2 portraits for generic characters
 
 ## Discord
-https://discord.gg/SF3xzKT
+https://discord.gg/99yCJ46
