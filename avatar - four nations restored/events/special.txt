@@ -113,14 +113,14 @@ narrative_event = { #gives blind earthbender seismicsense
 	trigger = {
 		trait = blind
 		trait = earthbender
-		NOT = { age = 45 } #makes an old earthbender unable to learn it
+		NOR = { age > 45 
+			trait = seismicsense } #makes an old earthbender unable to learn it
 		OR = {
 			trait = competent_bender
 			trait = powerful_bender
 			trait = master_bender
 			trait = legendary_bender
 		}
-		NOT = { trait = seismicsense }
 	}
 	
 	option = {
@@ -140,11 +140,12 @@ narrative_event = { #firelord randomly learns lightningbending - possibly from a
 	picture = GFX_evt_child_reading_muslim
 	
 	trigger = {
-		trait = firelord
+		trait = firebender
 		OR = {
 			trait = powerful_bender
 			trait = master_bender
 			trait = legendary_bender
+			trait = firelord
 		}
 		NOT = { trait = lightningbender }
 	}
@@ -352,7 +353,10 @@ narrative_event = { #character discovers metalbending
 		days = 1
 		modifier = {
 			factor = 0.0001
-			NOT = { trait = seismicsense }
+			NOR = { 
+			trait = seismicsense 
+			trait = seismicsense_nonblind 
+			}
 		}
 		modifier = {
 			factor = 0.0001
@@ -361,6 +365,10 @@ narrative_event = { #character discovers metalbending
 		modifier = {
 			factor = 100
 			trait = seismicsense
+		}
+		modifier = {
+			factor = 100
+			trait = seismicsense_nonblind 
 		}
 	}
 	option = {
