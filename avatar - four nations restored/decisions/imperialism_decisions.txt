@@ -1,5 +1,6 @@
 decisions = {
 
+
 	### Record of Flags
 	# imperial_ambition = Is the Firelord currently doing something?
 	# imperial_ambition_0 = Firelord has started the Focus Trees.
@@ -32,10 +33,16 @@ decisions = {
 		ai_check_interval = 12
 		potential = {
 			NOT = { has_global_flag = imperial_ambition_0 }
-			year = 730
+			year <= 810
 			is_ruler = yes
 			prisoner = no
-			trait = firelord
+			has_landed_title = e_fire_nation
+			NOR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = e_air_nomads
+				has_landed_title = e_water_tribes
+				}
+			trait = firelord	
 			hidden_tooltip = {
 				has_game_rule = {
 					name = campaign_events
@@ -45,6 +52,40 @@ decisions = {
 		}
 		allow = {
 			prisoner = no
+			OR = {	
+				AND = { #you need to control most of main island
+					completely_controls = d_capital_province
+					completely_controls = d_maizuru
+					completely_controls = d_nanbuamu
+					completely_controls = d_sandu
+					completely_controls = d_ember
+					completely_controls = d_shimane
+					completely_controls = d_nabari
+					completely_controls = d_tenri
+					completely_controls = d_yamazoe
+					completely_controls = d_inako
+					completely_controls = d_hono_island
+				}
+				#realm_size >= 100 
+				AND = { #Or controls those 2 tiles 
+					k_western_fire_nation = { #Kingdom of Xi'Huo
+						owner = {
+								OR = {
+									is_liege_or_above = ROOT
+									de_facto_liege = ROOT
+								}
+							}
+						}
+						k_fire_nation = { #Kingdom of Dong'huo
+							owner = {
+								OR = {
+									is_liege_or_above = ROOT
+									de_facto_liege = ROOT
+								}
+							}
+						}
+					}
+			}
 		}
 		effect = {
 			hidden_tooltip = {
@@ -71,6 +112,7 @@ decisions = {
 			has_global_flag = imperial_ambition_4
 			is_ruler = yes
 			prisoner = no
+			year <= 810
 			trait = firelord
 		}
 		allow = {
@@ -113,6 +155,7 @@ decisions = {
 			has_global_flag = imperial_ambition_0
 			is_ruler = yes
 			prisoner = no
+			year <= 810
 			trait = firelord
 		}
 		allow = {
@@ -156,6 +199,7 @@ decisions = {
 			#year = 780
 			is_ruler = yes
 			prisoner = no
+			year <= 810
 			trait = firelord
 		}
 		allow = {
@@ -196,21 +240,19 @@ decisions = {
 			NOT = { has_global_flag = imperial_ambition }
 			NOT = { has_global_flag = imperial_ambition_6 }
 			has_global_flag = imperial_ambition_0
-			#year = 780
 			is_ruler = yes
 			prisoner = no
+			year <= 810
 			trait = firelord
 		}
 		allow = {
 			prisoner = no
-			hidden_tooltip = {
-				OR = {
-					AND = {
-						custom_tooltip = {
-							treasury = 200
-						}
-						ai = no
-					}
+			OR = {
+				treasury = 200	
+				hidden_tooltip = {
+					ai = no
+				}	
+				hidden_tooltip = {
 					ai = yes
 				}
 			}
@@ -238,9 +280,9 @@ decisions = {
 			NOT = { has_global_flag = imperial_ambition }
 			NOT = { has_global_flag = imperial_ambition_13 }
 			has_global_flag = imperial_ambition_5
-			#year = 780
 			is_ruler = yes
 			prisoner = no
+			year <= 810
 			trait = firelord
 		}
 		allow = {
@@ -281,8 +323,8 @@ decisions = {
 			NOT = { has_global_flag = imperial_ambition }
 			NOT = { has_global_flag = imperial_ambition_14 }
 			has_global_flag = imperial_ambition_6
-			#year = 780
 			is_ruler = yes
+			year <= 810
 			prisoner = no
 			trait = firelord
 		}
@@ -491,7 +533,7 @@ decisions = {
 			NOT = { has_global_flag = imperial_ambition }
 			NOT = { has_global_flag = imperial_ambition_18 }
 			has_global_flag = imperial_ambition_13
-			#year = 780
+			year <= 810
 			is_ruler = yes
 			prisoner = no
 			trait = firelord
