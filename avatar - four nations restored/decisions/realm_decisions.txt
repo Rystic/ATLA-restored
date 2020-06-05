@@ -305,6 +305,11 @@ decisions = {
 		potential = {
 			is_playable = yes
 			is_tribal = yes
+			NOR = {
+				culture_group = earth_kingdom_culture
+				culture_group = outlaw
+				culture_group = fire_nation_culture
+			}
 			independent = yes
 		}
 		allow = {
@@ -399,6 +404,213 @@ decisions = {
 			factor = 1
 		}
 	}
+	convert_to_earth_feudalism_indep  = {
+		only_independent = yes
+		is_high_prio = yes
+		
+		potential = {
+			is_playable = yes
+			is_tribal = yes
+			OR = {
+				culture_group = earth_kingdom_culture
+				culture_group = outlaw
+			}
+			independent = yes
+		}
+		allow = {
+			war = no
+			primary_title = { has_law = tribal_organization_4 }
+			capital_holding = {
+				OR = {
+					AND = {
+						holding_type = tribal
+						has_building = tb_hillfort_4
+					}
+					holding_type = castle
+				}
+			}
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = feudal_government_earth_kingdom
+			
+			if = {
+				limit = {
+					higher_tier_than = king
+				}
+				primary_title = {
+					add_law = feudal_administration
+				}
+			}
+			
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = castle
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding  ={
+								type = temple
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	convert_to_fire_feudal_indep  = {
+		only_independent = yes
+		is_high_prio = yes
+		
+		potential = {
+			is_playable = yes
+			is_tribal = yes
+			culture_group = fire_nation_culture
+			independent = yes
+		}
+		allow = {
+			war = no
+			primary_title = { has_law = tribal_organization_4 }
+			capital_holding = {
+				OR = {
+					AND = {
+						holding_type = tribal
+						has_building = tb_hillfort_4
+					}
+					holding_type = castle
+				}
+			}
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = fire_feudal_government
+			
+			if = {
+				limit = {
+					higher_tier_than = king
+				}
+				primary_title = {
+					add_law = feudal_administration
+				}
+			}
+			
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = castle
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding  ={
+								type = temple
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	
 	convert_to_feudalism_vassal = {
 		only_rulers = yes
@@ -407,6 +619,11 @@ decisions = {
 		potential = {
 			is_ruler = yes
 			is_tribal = yes
+			NOR = {
+				culture_group = earth_kingdom_culture
+				culture_group = outlaw
+				culture_group = fire_nation_culture
+			}
 			independent = no
 		}
 		allow = {
@@ -523,4 +740,245 @@ decisions = {
 		}
 	}
 	
+	convert_to_earth_feudalism_vassal = {
+		only_rulers = yes
+		is_high_prio = yes
+		
+		potential = {
+			is_ruler = yes
+			is_tribal = yes
+			OR = {
+				culture_group = earth_kingdom_culture
+				culture_group = outlaw
+			}
+			independent = no
+		}
+		allow = {
+			war = no
+			liege = {
+					is_feudal = yes
+			}
+			capital_holding = {
+				OR = {
+					AND = {
+						holding_type = tribal
+						has_building = tb_hillfort_4
+					}
+					holding_type = castle
+				}
+			}
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = feudal_government_earth_kingdom
+			
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = castle
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = temple
+							}
+						}
+					}
+				}
+				
+				liege = {
+					character_event = { id = 55100 } # Notify Liege
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.001
+				liege = {
+					NOT = { religion_group = ROOT }
+				}
+			}
+			modifier = {
+				factor = 0.01
+				liege = {
+					NOT = { culture_group = ROOT }
+				}
+			}
+			
+			modifier = {
+				factor = 0.1
+				liege = {
+					religion_group = ROOT
+					NOT = { religion = ROOT }
+				}
+			}
+		}
+	}
+	convert_to_fire_feudal_vassal = {
+		only_rulers = yes
+		is_high_prio = yes
+		
+		potential = {
+			is_ruler = yes
+			is_tribal = yes
+			culture_group = fire_nation_culture
+			independent = no
+		}
+		allow = {
+			war = no
+			liege = {
+					is_feudal = yes
+			}
+			capital_holding = {
+				OR = {
+					AND = {
+						holding_type = tribal
+						has_building = tb_hillfort_4
+					}
+					holding_type = castle
+				}
+			}
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					ai = no
+				}
+				chronicle = {
+					entry = CHRONICLE_ADOPTED_FEUDALISM
+					picture = GFX_evt_castle_construction
+				}
+			}
+			set_government_type = fire_feudal_government
+			
+			hidden_tooltip = {
+				any_demesne_title = {
+					limit = {
+						tier = baron
+						holding_type = tribal
+					}
+					convert_to = castle
+					refill_holding_levy = yes
+					
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = city
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = city
+							}
+						}
+					}
+					if = {
+						limit = {
+							dejure_liege_title = {
+								holder = ROOT
+								location = {
+									num_of_empty_holdings = 2
+								}
+								NOT = {
+									any_direct_de_jure_vassal_title = {
+										holding_type = temple
+									}
+								}
+							}
+						}
+						location = {
+							build_holding = {
+								type = temple
+							}
+						}
+					}
+				}
+				
+				liege = {
+					character_event = { id = 55100 } # Notify Liege
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.001
+				liege = {
+					NOT = { religion_group = ROOT }
+				}
+			}
+			modifier = {
+				factor = 0.01
+				liege = {
+					NOT = { culture_group = ROOT }
+				}
+			}
+			
+			modifier = {
+				factor = 0.1
+				liege = {
+					religion_group = ROOT
+					NOT = { religion = ROOT }
+				}
+			}
+		}
+	}
 }

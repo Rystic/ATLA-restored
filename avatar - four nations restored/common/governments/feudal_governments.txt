@@ -17,13 +17,9 @@ feudal_governments = {
 			#feudal_government_military
 		}
 		potential = {
-			OR = {
-				culture_group = fire_nation_culture
-				AND = {
-					culture_group = water_tribe_culture
-					is_feudal = yes
-				}
-			}
+			culture_group = water_tribe_culture
+			is_feudal = yes
+			is_patrician = no
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
 			is_patrician = no
@@ -92,6 +88,56 @@ feudal_governments = {
 		court_size_modifier = 15
 	}
 	
+	fire_feudal_government = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = { 
+			CASTLE 
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			#feudal_government_city
+			feudal_government_temple
+			feudal_government_earth_kingdom
+			#feudal_government_military
+		}
+		frame_suffix = _fire
+		potential = {
+				AND = {
+				culture_group = fire_nation_culture
+				is_patrician = no
+				is_tribal = no
+				}
+			NOT = { culture_group = earth_kingdom_culture }
+			NOT = {	religion_group = air_religions }
+			NOT = { culture_group = water_tribe_culture }
+			#is_patrician = no
+		}
+		
+		color = { 250 0 0 }
+		
+		dukes_called_kings = no
+		barons_need_dynasty = yes
+		gives_religion_opinion_penalties = yes
+		can_grant_kingdoms_and_empires_to_other_government = yes
+		can_build_tribal = no
+		vassal_limit = 10
+
+		capital_move_delay = 600
+
+		## Modifiers
+		court_size_modifier = 10
+		free_revoke_on_governments_culture_and_religion = {
+			theocracy_government 
+			desert_tribal_government 
+			water_tribe_government
+			feudal_government_earth_kingdom
+			tribal_government
+		}	
+	}
 	feudal_government_temple = {
 		preferred_holdings = { TEMPLE }
 		allowed_holdings = { 
@@ -107,6 +153,7 @@ feudal_governments = {
 			#feudal_government_city
 			#feudal_government_military
 		}
+		frame_suffix = "_DT"
 		potential = {
 			NOT = {	religion_group = air_religions }
 			NOT = { religion_group = fire_religions }
