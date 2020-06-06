@@ -1,0 +1,358 @@
+###########################################
+#                                         #
+# M&M Monastic Orders Events              #
+#                                         #
+# ID MNM.4000-MNM.4999		              #
+#                                         #
+###########################################
+
+namespace = MNM
+
+###MISC###
+
+#Soul purity effect
+
+character_event = {
+	id = MNM.4400
+	picture = GFX_evt_religious_exultation
+	border = GFX_event_normal_frame_religion
+
+	desc = {
+		trigger = { has_character_flag = purity_remove_cynical }
+		text = EVTDESC_4400_REMOVE_CYNICAL
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_gluttonous }
+		text = EVTDESC_4400_REMOVE_GLUTTONOUS
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_greedy }
+		text = EVTDESC_4400_REMOVE_GREEDY
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_slothful }
+		text = EVTDESC_4400_REMOVE_SLOTHFUL
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_envious }
+		text = EVTDESC_4400_REMOVE_ENVIOUS
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_wroth }
+		text = EVTDESC_4400_REMOVE_WROTH
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_proud }
+		text = EVTDESC_4400_REMOVE_PROUD
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_deceitful }
+		text = EVTDESC_4400_REMOVE_DECEITFUL
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_cruel }
+		text = EVTDESC_4400_REMOVE_CRUEL
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_lustful }
+		text = EVTDESC_4400_REMOVE_LUSTFUL
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_humble }
+		text = EVTDESC_4400_ADD_HUMBLE
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_charitable }
+		text = EVTDESC_4400_ADD_CHARITABLE
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_chaste }
+		text = EVTDESC_4400_ADD_CHASTE
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_kind }
+		text = EVTDESC_4400_ADD_KIND
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_temperate }
+		text = EVTDESC_4400_ADD_TEMPERATE
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_honest }
+		text = EVTDESC_4400_ADD_HONEST
+	}
+	desc = {
+		trigger = { has_character_flag = purity_remove_ambitious }
+		text = EVTDESC_4400_REMOVE_AMBITIOUS
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_content }
+		text = EVTDESC_4400_ADD_CONTENT
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_patient }
+		text = EVTDESC_4400_ADD_PATIENT
+	}
+	desc = {
+		trigger = { has_character_flag = purity_add_diligent }
+		text = EVTDESC_4400_ADD_DILIGENT
+	}
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_monastic_member_trigger = yes
+		OR = {
+			trait = cynical
+			trait = gluttonous
+			trait = greedy
+			trait = slothful
+			trait = envious
+			trait = wroth
+			trait = proud
+			trait = deceitful
+			trait = cruel
+			trait = lustful
+			trait = ambitious
+			NOT = { trait = humble }
+			NOT = { trait = charitable }
+			NOT = { trait = kind }
+			NOT = { trait = temperate }
+			NOT = { trait = honest }
+			NOT = { trait = chaste }
+			NOT = { trait = patient }
+			NOT = { trait = diligent }
+			NOT = { trait = content }
+		}
+	}
+
+	immediate = {
+		#FIRST STAGE
+		#Removes cynic, gluttonous, greedy, slothful, lustful, envious, wrath, pride, deceitful, 
+		#Adds humble, charitable
+		if = {
+			limit = {
+				OR = {
+					trait = cynical
+					trait = gluttonous
+					trait = greedy
+					trait = slothful
+					trait = envious
+					trait = wroth
+					trait = proud
+					trait = deceitful
+					trait = cruel
+					trait = lustful
+					NOT = { trait = humble }
+					NOT = { trait = charitable }
+				}
+			}
+			random_list = {
+				15 = {
+					modifier = { factor = 0 NOT = { trait = cynical } }
+					set_character_flag = purity_remove_cynical
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = gluttonous } }
+					set_character_flag = purity_remove_gluttonous
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = greedy } }
+					set_character_flag = purity_remove_greedy
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = slothful } }
+					set_character_flag = purity_remove_slothful
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = envious } }
+					set_character_flag = purity_remove_envious
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = wroth } }
+					set_character_flag = purity_remove_wroth
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = proud } }
+					set_character_flag = purity_remove_proud
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = deceitful } }
+					set_character_flag = purity_remove_deceitful
+				}
+				10 = {
+					modifier = { factor = 0 NOT = { trait = cruel } }
+					set_character_flag = purity_remove_cruel
+				}
+				10 = {
+					modifier = { 
+						factor = 0
+						NOT = { trait = lustful }
+					}
+					set_character_flag = purity_remove_lustful
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						OR = {
+							trait = humble
+							trait = proud
+						}
+					}
+					set_character_flag = purity_add_humble
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						OR = {
+							trait = charitable
+							trait = greedy
+						}
+					}
+					set_character_flag = purity_add_charitable
+				}
+			}
+		}
+	
+		#SECOND STAGE
+		#Add traits chaste, kind, temperate, honest
+		if = {
+			limit = {
+				NOR = {
+					trait = cynical
+					trait = gluttonous
+					trait = slothful
+					trait = envious
+					trait = wroth
+					trait = deceitful
+					trait = cruel
+					trait = lustful
+				}
+				trait = charitable
+				trait = humble
+				NAND = {
+					trait = chaste
+					trait = kind
+					trait = temperate
+					trait = honest
+				}
+			}
+			random_list = {
+				10 = {
+					modifier = {
+						factor = 0
+						trait = chaste
+					}
+					set_character_flag = purity_add_chaste
+				}
+				10 = {
+					modifier = { factor = 0 trait = kind }
+					set_character_flag = purity_add_kind
+				}
+				10 = {
+					modifier = { factor = 0 trait = temperate }
+					set_character_flag = purity_add_temperate
+				}
+				10 = {
+					modifier = { factor = 0 trait = honest }
+					set_character_flag = purity_add_honest
+				}
+			}
+		}
+		#THIRD STAGE
+		#Removes ambitious
+		#Adds patient, diligent, content
+		if = {
+			limit = {
+				NOR = {
+					trait = cynical
+					trait = slothful
+					trait = wroth
+					trait = cruel
+				}
+				trait = charitable
+				trait = humble
+				trait = chaste
+				trait = kind
+				trait = temperate
+				trait = honest
+			}
+
+			random_list = {
+				10 = {
+					modifier = { factor = 0 NOT = { trait = ambitious } }
+					set_character_flag = purity_remove_ambitious
+				}
+				10 = {
+					modifier = {
+						factor =  0
+						OR = {
+							trait = ambitious
+							trait = content
+						}
+					}
+					set_character_flag = purity_add_content
+				}
+				10 = {
+					modifier = { factor = 0 trait = patient }
+					set_character_flag = purity_add_patient
+				}
+				10 = {
+					modifier = { factor = 0 trait = diligent }
+					set_character_flag = purity_add_diligent
+				}
+			}
+		}
+	}
+
+	option = {
+		name = {
+			text = EVTOPTA_MNM_4400_GOD
+		}
+
+		trigger_switch = {
+			on_trigger = has_character_flag
+			purity_remove_cynical		= { remove_trait = cynical }
+			purity_remove_gluttonous	= { remove_trait = gluttonous }
+			purity_remove_greedy		= { remove_trait = greedy }
+			purity_remove_slothful		= { remove_trait = slothful }
+			purity_remove_envious		= { remove_trait = envious }
+			purity_remove_wroth			= { remove_trait = wroth }
+			purity_remove_proud			= { remove_trait = proud }
+			purity_remove_deceitful     = { remove_trait = deceitful }
+			purity_remove_cruel			= { remove_trait = cruel }
+			purity_remove_lustful		= { remove_trait = lustful }
+			purity_add_humble			= { add_trait = humble }
+			purity_add_charitable		= { add_trait = charitable }
+			purity_add_chaste			= { add_trait = chaste }
+			purity_add_kind				= { add_trait = kind }
+			purity_add_temperate		= { add_trait = temperate }
+			purity_add_honest			= { add_trait = honest }
+			purity_remove_ambitious		= { remove_trait = ambitious }
+			purity_add_content			= { add_trait = content }
+			purity_add_patient			= { add_trait = patient }
+			purity_add_diligent			= { add_trait = diligent }
+		}
+
+		clr_character_flag = purity_remove_cynical
+		clr_character_flag = purity_remove_gluttonous
+		clr_character_flag = purity_remove_greedy
+		clr_character_flag = purity_remove_slothful
+		clr_character_flag = purity_remove_envious
+		clr_character_flag = purity_remove_wroth
+		clr_character_flag = purity_remove_proud
+		clr_character_flag = purity_remove_deceitful
+		clr_character_flag = purity_remove_cruel
+		clr_character_flag = purity_remove_lustful
+		clr_character_flag = purity_add_humble
+		clr_character_flag = purity_add_charitable
+		clr_character_flag = purity_add_chaste
+		clr_character_flag = purity_add_kind
+		clr_character_flag = purity_add_temperate
+		clr_character_flag = purity_add_honest
+		clr_character_flag = purity_remove_ambitious
+		clr_character_flag = purity_add_content
+		clr_character_flag = purity_add_patient
+		clr_character_flag = purity_add_diligent
+	}
+}
