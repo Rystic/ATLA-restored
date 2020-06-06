@@ -566,6 +566,13 @@ succession_laws = {
 			}
 			is_primary_type_title = no
 			NOT = { tier = baron }
+			OR = {
+				AND = {
+					tier = baron
+					is_feudal = yes
+				}
+				holder_scope = { is_feudal = yes }
+			}
 		}
 		allow = {
 			OR = {
@@ -710,15 +717,14 @@ succession_laws = {
 	}
 
 	succ_turkish_succession = {
-		oldest_child_opinion = -10
-#		child_opinion = 30
-#		dynasty_opinion = 10
+		oldest_child_opinion = -5
+		#child_opinion = 30
+		#dynasty_opinion = 10
 		potential = {
 			holder_scope = {
-				is_feudal = no
+				is_theocracy = no
 				is_republic = no
 				is_merchant_republic = no
-				is_theocracy = no
 				is_nomadic = no
 			}
 			OR = {
@@ -745,6 +751,10 @@ succession_laws = {
 					}
 					is_primary_type_title = no
 				}
+			}
+			NAND = { 
+				has_law = succession_voting_power_1
+				has_law = succ_feudal_elective 
 			}
 		}
 		effect = {
@@ -829,6 +839,10 @@ succession_laws = {
 					}
 				}
 			}
+			NAND = { 
+				has_law = succession_voting_power_1
+				has_law = succ_feudal_elective 
+			}
 		}
 
 		effect = {
@@ -852,7 +866,15 @@ succession_laws = {
 
 	succ_patrician_elective = {
 		potential = {
-			is_primary_holder_title = yes
+			OR = {
+				is_primary_holder_title = yes
+				holder_scope = {
+					in_revolt = yes
+					succ_law_title = {
+						title = PREVPREV
+					}
+				}
+			}
 			holder_scope = {
 				is_merchant_republic = yes
 			}
@@ -867,7 +889,6 @@ succession_laws = {
 
 	succ_nomad_succession = {
 		potential = {
-			has_dlc = "Horse Lords"
 			holder_scope = {
 				is_nomadic = yes
 			}
@@ -884,37 +905,59 @@ succession_laws = {
 gender_laws = {
 	cognatic_succession = {
 		potential = {
-			OR = {
-				AND = {
-					has_dlc = "Zeus"
-					has_game_rule = {
-						name = gender
-						value = all
-					}
-					is_patrician = no
+			holder_scope = {
+				NOT = { has_religion_feature = religion_matriarchal }
+				NOT = { has_religion_feature = religion_equal }
+				OR = {
+					NOT = { tier = baron }
+					is_theocracy = yes
+					is_republic = yes
 				}
-				holder_scope = {
-					OR = {
-						AND = {
-							is_merchant_republic = no
+				OR = {
+					independent = yes
+					NOT = {
+						any_liege = {
+							holy_order = yes
+						}
+					}
+					is_merchant_republic = yes
+				}
+				OR = {
+					AND = {
+						NOT = { religion_group = air_religions }
+						has_horde_culture = no
+						#is_tribal = no
+						is_nomadic = no
+						is_merchant_republic = no
+						is_patrician = no
+					}
+					AND = {
+						has_dlc = "Zeus"
+						OR = {
+							ROOT = { holder_scope = { primary_title = { has_law = status_of_women_3 } } }
+							ROOT = { holder_scope = { primary_title = { has_law = status_of_women_4 } } }
+							has_game_rule = {
+								name = gender
+								value = all
+							}
+						}
+						OR = {
 							is_patrician = no
+							liege = {
+								primary_title = {
+									OR = {
+										has_law = true_cognatic_succession
+										has_law = cognatic_succession
+									}
+								}
+							}
 						}
 					}
 				}
 			}
-			NOT = {
-				holder_scope = {
-					OR = {
-						culture = eastern_air_nomad
-						culture = western_air_nomad
-						culture = northern_air_nomad
-						culture = southern_air_nomad
-					}
-				}
-			}
-
+			
 			is_landless_type_title = no
-
+			
 			OR = {
 				AND = {
 					tier = baron
@@ -926,52 +969,20 @@ gender_laws = {
 					is_republic = no
 				}
 			}
-
+			
 			is_primary_type_title = no
 		}
-		allow = {
-			OR = {
-				has_game_rule = {
-					name = gender
-					value = all
-				}
-				ROOT = {
-					holder_scope = {
-						OR = {
-							culture_group = air_nomad_culture
-							culture_group = republic_city_culture
-							culture_group = fire_nation_culture
-						}
-					}
-				}
-				AND = {
-					ROOT = {
-						holder_scope = {
-							primary_title = { has_law = status_of_women_1 }
-							OR = {
-								culture_group = outlaw_culture
-								culture_group = earth_kingdom_culture
-							}
-						}
-					}
-				}
-				AND = {
-					ROOT = {
-						holder_scope = {
-							primary_title = { has_law = status_of_women_3 }
-							culture_group = water_tribe_culture
-						}
-					}
-				}
-			}
-		}
+		
 		effect = {
 			gender_succ = cognatic
-			set_allows_matrilineal_marriage = yes
+			law_set_allow_matrilineal_marriage = yes
 		}
-		default = yes
 		revoke_allowed = {
 			always = no
+		}			
+		default = yes
+		default_selection = {
+			factor = 10
 		}
 	}
 	agnatic_succession = {
