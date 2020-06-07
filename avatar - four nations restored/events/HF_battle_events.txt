@@ -1,0 +1,28 @@
+########################################
+###### New battle events 2018 ##########
+##### Written by Milla Isaksson ########
+########################################
+
+namespace = HFP
+
+# Hidden event to give commanders (who do not have it already) the commander bonus
+character_event = {
+    id = HFP.11051
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+    	has_minor_title = title_commander
+    	NOT = { has_character_modifier = hidden_commander_bonus }
+    }
+
+    immediate = {
+    	hidden_effect = { # Because this cannot be added in the passive effects, for some code reason
+			add_character_modifier = {
+	        	name = hidden_commander_bonus
+	        	duration = -1
+	        	hidden = yes
+	        }
+		}
+    }
+}
