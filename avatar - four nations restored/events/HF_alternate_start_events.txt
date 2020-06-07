@@ -1,0 +1,544 @@
+namespace=HF
+
+character_event = { # Spawn Great Conquerors in Shattered Worlds
+	id = HF.1
+
+	hide_window = yes
+	is_triggered_only = yes
+	
+	only_playable = yes
+
+	trigger = {
+		is_shattered_world = yes
+		is_save_game = no
+		NOT = {
+			has_alternate_start_setting = {
+				setting = shattered_conquerors
+				option = off
+			}
+		}
+		NOT = {
+			has_global_flag = conquerors_setup
+		}
+	}
+
+	immediate = {
+		set_global_flag = conquerors_setup
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_conquerors
+					option = on_few
+				}
+			}
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+		}
+		else_if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_conquerors
+					option = on_normal
+				}
+			}
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+		}
+		else_if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_conquerors
+					option = on_many
+				}
+			}
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+			shattered_conqueror_spawn_effect = yes
+		}
+	}
+}
+
+character_event = { # Succession Laws in shattered worlds
+	id = HF.2
+
+	hide_window = yes
+	is_triggered_only = yes
+	
+	only_playable = yes
+
+	trigger = {
+		is_shattered_world = yes
+		is_save_game = no
+		NOT = {
+			has_alternate_start_setting = {
+				setting = shattered_succession
+				option = default_laws
+			}
+		}
+		NOT = {
+			has_global_flag = succession_setup
+		}
+	}
+
+	immediate = {
+		set_global_flag = succession_setup
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_primogeniture
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = primogeniture
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = primogeniture
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_gavelkind
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = gavelkind
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = gavelkind
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_elective_gavelkind
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = {
+						base_type = elective_gavelkind
+						voting_rules = elective_gavelkind
+					}
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = {
+						base_type = elective_gavelkind
+						voting_rules = elective_gavelkind
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_elective
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = {
+						base_type = feudal_elective
+						voting_rules = feudal_elective
+					}
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = {
+						base_type = feudal_elective
+						voting_rules = feudal_elective
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_seniority
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = seniority
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = seniority
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_ultimogeniture
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = ultimogeniture
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = ultimogeniture
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_alternate_start_setting = {
+					setting = shattered_succession
+					option = all_tanistry
+				}
+			}
+			if = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = {
+						base_type = tanistry
+						voting_rules = tanistry
+					}
+				}
+			}
+			any_playable_ruler = {
+				limit = {
+					is_landed = yes
+					OR = {
+						is_feudal = yes
+						is_tribal = yes
+					}
+				}
+				any_demesne_title = {
+					succession = {
+						base_type = tanistry
+						voting_rules = tanistry
+					}
+				}
+			}
+		}
+	}
+}
+
+# Activate GHW's and holy orders when running randomized rel names - removed
+
+character_event = { # Alternate Start general maintenance
+	id = HF.5
+
+	hide_window = yes
+	is_triggered_only = yes
+	
+	only_playable = yes
+
+	trigger = {
+		is_alternate_start = yes
+		is_save_game = no
+		NOT = {
+			has_global_flag = general_maintenance_performed
+		}
+	}
+
+	immediate = {
+		set_global_flag = general_maintenance_performed
+		
+		any_independent_ruler = { # Being stranded on an island isn't fun regardless of setting
+			any_realm_province = {
+				limit = {
+					port = yes
+				}
+				if = {
+					limit = {
+						NOT = {
+							TECH_NAVAL = 1
+						}
+					}
+					change_tech = {
+						technology = TECH_NAVAL
+						value = 1
+					}
+				}
+				any_province_holding = {
+					if = {
+						limit = {
+							holding_type = castle
+							NOT = { has_building = ca_shipyard_1 }
+						}
+						add_building = ca_shipyard_1
+					}
+					if = {
+						limit = {
+							holding_type = city
+							NOT = { has_building = ct_shipyard_1 }
+						}
+						add_building = ct_shipyard_1
+					}
+					if = {
+						limit = {
+							holding_type = city
+							NOT = { has_building = ct_shipyard_1 }
+						}
+						add_building = ct_shipyard_1
+					}
+					if = {
+						limit = {
+							holding_type = temple
+							NOT = { has_building = tp_shipyard_1 }
+						}
+						add_building = tp_shipyard_1
+					}
+					if = {
+						limit = {
+							holding_type = tribal
+							NOT = { has_building = tb_shipyard_1 }
+						}
+						add_building = tb_shipyard_1
+					}
+					if = {
+						limit = {
+							holding_type = nomad
+							NOT = { has_building = no_harbor_1 }
+						}
+						add_building = no_harbor_1
+					}
+					if = {
+						limit = {
+							holding_type = nomad
+							NOT = { has_building = no_fishing_village_1 }
+						}
+						add_building = no_fishing_village_1
+					}
+				}
+			}
+		}
+		any_playable_ruler = { # Chance for Agnatic-Cognatic
+			limit = {
+				is_landed = yes
+				is_republic = no
+				NOT = { has_religion_feature = religion_patriarchal }
+				has_law = agnatic_succession
+				any_demesne_title = {
+					is_law_potential = cognatic_succession
+				}
+				NOT = {
+					has_game_rule = {
+						name = gender
+						value = all
+					} 
+				}
+			}
+			if = { # If female with no male kids, 100% chance
+				limit = {
+					is_female = yes
+					NOT = {
+						any_child = {
+							is_female = no
+						}
+					}
+				}
+				any_demesne_title = {
+					limit = {
+						is_law_potential = cognatic_succession
+					}
+					add_law = {
+						law = cognatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = { # If female with male kids, slightly lower chance
+							is_female = yes
+							any_child = {
+								is_female = no
+							}
+						}
+						AND = { # Or if male with only female kids
+							is_female = no
+							NOT = {
+								any_child = {
+									is_female = no
+								}
+							}
+						}
+					}
+				}
+				random = {
+					chance = 90
+					any_demesne_title = {
+						limit = {
+							is_law_potential = cognatic_succession
+						}
+						add_law = {
+							law = cognatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				}
+			}
+			else_if = { # Otherwise slightly higher chance for females
+				limit = {
+					is_female = yes
+				}
+				random = {
+					chance = 70
+					any_demesne_title = {
+						limit = {
+							is_law_potential = cognatic_succession
+						}
+						add_law = {
+							law = cognatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				}
+			}
+			else = { # Else around 50%
+				random = {
+					chance = 50
+					any_demesne_title = {
+						limit = {
+							is_law_potential = cognatic_succession
+						}
+						add_law = {
+							law = cognatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				}
+			}
+			recalc_succession = yes
+		}
+	}
+}
+
+# A hooded mystic visits your private chambers and tells you signs foreboded by your stars - removed

@@ -1,0 +1,403 @@
+# Written by Flavio
+
+namespace = HF
+namespace = HFP
+
+#On Conversion event to clear up gender laws when needed.
+character_event = {
+	id = HF.23034
+	hide_window = yes
+	
+	trigger = {
+		ROOT = {
+			OR = { 
+				has_religion_feature = religion_patriarchal
+				has_religion_feature = religion_equal
+				has_religion_feature = religion_matriarchal
+			}
+		}
+	}
+	is_triggered_only = yes
+	
+	immediate = { 
+		if = {
+			limit = { 
+				ROOT = { 
+					has_religion_feature = religion_matriarchal 
+					NOR = {  
+						#is_merchant_republic = yes
+						is_republic = yes
+					}
+				}
+			}
+			ROOT = { 
+				any_demesne_title = { 
+					add_law = {
+						law = enatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = status_of_women_4
+						cooldown = no
+						opinion_effect = no
+					}
+					if = { 
+						limit = { 
+							ROOT = { 
+								OR = { 
+									is_feudal = yes 
+									is_tribal = yes
+									is_nomadic = yes
+								}
+							}
+						}
+						add_law = {
+							law = succ_turkish_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				} 
+				recalc_succession = yes
+			} 
+		}
+		if = {
+			limit = { 
+				ROOT = { has_religion_feature = religion_patriarchal }
+			}
+			ROOT = { 
+				any_demesne_title = { 
+					add_law = {
+						law = agnatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = status_of_women_0
+						cooldown = no
+						opinion_effect = no
+					}
+					if = { 
+						limit = { 
+							ROOT = { 
+								OR = { 
+									is_feudal = yes 
+									is_tribal = yes
+									is_nomadic = yes
+								}
+							}
+						}
+						add_law = {
+							law = succ_turkish_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				} 
+				recalc_succession = yes
+			} 
+		}
+		if = {
+			limit = { 
+				ROOT = {
+					has_religion_feature = religion_equal 
+					NOR = {  
+						#is_merchant_republic = yes
+						is_republic = yes
+					}
+				}
+			}
+			ROOT = { 
+				any_demesne_title = { 
+					add_law = {
+						law = true_cognatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = status_of_women_4
+						cooldown = no
+						opinion_effect = no
+					}
+				} 
+				recalc_succession = yes
+			} 
+		}
+		ROOT = {
+			if = {
+				limit = { 
+					FROM = {
+						NOR = { 
+							has_religion_feature = religion_equal 
+							has_religion_feature = religion_patriarchal
+							has_religion_feature = religion_matriarchal
+						}
+					}
+					ROOT = { has_religion_feature = religion_matriarchal }
+				}
+				any_close_relative = { 
+					limit = { is_female = no }
+					opinion = { 
+						who = ROOT 
+						modifier = bad_succ_law_change
+						years = 100
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = yes }
+					opinion = { 
+						who = ROOT 
+						modifier = good_succ_law_change
+						years = 100
+					}
+				}
+			}
+			if = {
+				limit = { 
+					FROM = {
+						NOR = { 
+							has_religion_feature = religion_equal 
+							has_religion_feature = religion_matriarchal
+							has_religion_feature = religion_patriarchal
+						}
+					}
+					ROOT = { has_religion_feature = religion_patriarchal }
+				}
+				any_close_relative = { 
+					limit = { is_female = yes }
+					opinion = { 
+						who = ROOT 
+						modifier = bad_succ_law_change
+						years = 100
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = no }
+					opinion = { 
+						who = ROOT 
+						modifier = good_succ_law_change
+						years = 100
+					}
+				}
+			}
+			if = {
+				limit = { 
+					FROM = { has_religion_feature = religion_patriarchal }
+					ROOT = { 
+						OR = { 
+							has_religion_feature = religion_equal 
+							has_religion_feature = religion_matriarchal
+						}
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = no }
+					opinion = { 
+						who = ROOT 
+						modifier = bad_succ_law_change
+						years = 100
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = yes }
+					opinion = { 
+						who = ROOT 
+						modifier = good_succ_law_change
+						years = 100
+					}
+				}
+			}
+			if = {
+				limit = { 
+					FROM = { has_religion_feature = religion_matriarchal }
+					ROOT = { 
+						OR = { 
+							has_religion_feature = religion_equal 
+							has_religion_feature = religion_patriarchal
+						}
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = yes }
+					opinion = { 
+						who = ROOT 
+						modifier = bad_succ_law_change
+						years = 100
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = no }
+					opinion = { 
+						who = ROOT 
+						modifier = good_succ_law_change
+						years = 100
+					}
+				}
+			}
+			if = {
+				limit = { 
+					FROM = { 
+						has_religion_feature = religion_equal 
+					}
+					ROOT = { 
+						has_religion_feature = religion_patriarchal
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = yes }
+					opinion = { 
+						who = ROOT 
+						modifier = bad_succ_law_change
+						years = 100
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = no }
+					opinion = { 
+						who = ROOT 
+						modifier = good_succ_law_change
+						years = 100
+					}
+				}
+			}
+			if = {
+				limit = { 
+					FROM = { 
+						has_religion_feature = religion_equal 
+					}
+					ROOT = { 
+						has_religion_feature = religion_matriarchal
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = no }
+					opinion = { 
+						who = ROOT 
+						modifier = bad_succ_law_change
+						years = 100
+					}
+				}
+				any_close_relative = { 
+					limit = { is_female = yes }
+					opinion = { 
+						who = ROOT 
+						modifier = good_succ_law_change
+						years = 100
+					}
+				}
+			}
+		}
+	}
+}
+
+#On Random Start cleanup for Status of Women.
+character_event = {
+	id = HF.23035
+	hide_window = yes
+	
+	trigger = { 
+		is_save_game = no
+
+		OR = { 
+			has_religion_feature = religion_patriarchal
+			has_religion_feature = religion_equal
+			has_religion_feature = religion_matriarchal
+		}
+	}
+	is_triggered_only = yes
+	
+	immediate = { 
+		if = {
+			limit = { 
+				ROOT = { has_religion_feature = religion_matriarchal }
+			}
+			ROOT = { 
+				any_demesne_title = { 
+					add_law = {
+						law = status_of_women_4
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = enatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					if = { 
+						limit = { 
+							ROOT = { 
+								OR = { 
+									is_feudal = yes 
+									is_tribal = yes
+									is_nomadic = yes
+								}
+							}
+						}
+						add_law = {
+							law = succ_turkish_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				} 
+			} 
+		}
+		if = {
+			limit = { 
+				ROOT = { has_religion_feature = religion_patriarchal }
+			}
+			ROOT = { 
+				any_demesne_title = { 
+					add_law = {
+						law = status_of_women_0
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = cognatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					if = { 
+						limit = { 
+							ROOT = { 
+								OR = { 
+									is_feudal = yes 
+									is_tribal = yes
+									is_nomadic = yes
+								}
+							}
+						}
+						add_law = {
+							law = succ_turkish_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				}
+			} 
+		}
+		if = {
+			limit = { 
+				ROOT = {
+					has_religion_feature = religion_equal 
+				}
+			}
+			ROOT = { 
+				any_demesne_title = { 
+					add_law = {
+						law = status_of_women_4
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = true_cognatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+				} 
+			} 
+		}
+	}
+}

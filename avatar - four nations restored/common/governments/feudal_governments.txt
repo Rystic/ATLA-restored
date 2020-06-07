@@ -114,7 +114,13 @@ feudal_governments = {
 				culture_group = fire_nation_culture
 				is_patrician = no
 				is_tribal = no
-				NOT = { e_fire_nation = { has_law = ze_administration_laws_2 } }
+				is_theocracy = no
+				NOR = {
+						e_fire_nation = { has_law = ze_fire_administration_laws_2 } 
+						primary_title = { has_law = ze_fire_administration_laws_2 }
+						primary_title = { has_law = fire_imperial_administration }
+						e_fire_nation = { has_law = fire_imperial_administration }
+				}
 				NOT = { culture = sun_warrior }
 				}
 			NOT = { culture_group = earth_kingdom_culture }
@@ -167,7 +173,10 @@ feudal_governments = {
 		}
 		frame_suffix = "_DT"
 		potential = {
+			OR = {
 			culture = sun_warrior
+			culture = sandbender
+			}
 			NOT = {	religion_group = air_religions }
 			NOR = { culture = fire_nation
 					culture = fire_islander}
@@ -259,7 +268,7 @@ feudal_governments = {
 		court_size_modifier = 10
 	}
 	fire_imperial_government = {
-		preferred_holdings = { CASTLE TEMPLE }
+		preferred_holdings = { CASTLE }
 		allowed_holdings = {
 			CASTLE
 			FORT
@@ -281,25 +290,33 @@ feudal_governments = {
 		potential = {
 			OR = { 
 				AND = { 
+					NOT = { culture = sun_warrior }
 					is_save_game = no
 					has_game_started = no
 					culture_group = fire_nation_culture
 					religion_group = fire_religions
-					NOT = { culture = sun_warrior }
+					is_theocracy = no
+					is_tribal = no
+					is_patrician = no
 					
 				}
 				AND = {
 					culture_group = fire_nation_culture
 					religion_group = fire_religions
+					NOT = { culture = sun_warrior }
 					OR = {
-						primary_title = {
-							has_law = ze_administration_laws_2 
-						}
-						e_fire_nation = { has_law = ze_administration_laws_2 }
-						NOT = { culture = sun_warrior }
+						primary_title = { has_law = ze_fire_administration_laws_2 }
+						e_fire_nation = { has_law = ze_fire_administration_laws_2 }
+						e_fire_nation = { has_law = fire_imperial_administration }
+						primary_title = { has_law = fire_imperial_administration }
+						is_theocracy = no
+						is_tribal = no
+						is_patrician = no
 					}	
 				}
 			}
+			is_theocracy = no
+			is_tribal = no
 			is_patrician = no
 			#NOT = { is_government_potential = undead_government }
 		}
@@ -320,9 +337,9 @@ feudal_governments = {
 			vassal_opinion = 25
 		}
 		capital_move_delay = 200
-		global_revolt_risk = - 2
-		global_tax_modifier = 15
-		religion_flex = -80
+		# global_revolt_risk = - 2
+		# global_tax_modifier = 15
+		# religion_flex = -80
 		
 		can_usurp_kingdoms_and_empires = no
 		can_imprison_without_reason = no
