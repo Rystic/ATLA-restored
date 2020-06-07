@@ -17,11 +17,14 @@ feudal_governments = {
 			#feudal_government_military
 		}
 		potential = {
-			culture_group = water_tribe_culture
+			OR = {
+				culture_group = water_tribe_culture
+			}
 			is_feudal = yes
 			is_patrician = no
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
+			NOT = { culture = sun_warrior }
 			is_patrician = no
 			#is_feudal = yes #(Typical) But why???
 		}
@@ -112,6 +115,7 @@ feudal_governments = {
 				is_patrician = no
 				is_tribal = no
 				NOT = { e_fire_nation = { has_law = ze_administration_laws_2 } }
+				NOT = { culture = sun_warrior }
 				}
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
@@ -163,8 +167,10 @@ feudal_governments = {
 		}
 		frame_suffix = "_DT"
 		potential = {
+			culture = sun_warrior
 			NOT = {	religion_group = air_religions }
-			NOT = { religion_group = fire_religions }
+			NOR = { culture = fire_nation
+					culture = fire_islander}
 			higher_real_tier_than = baron
 			is_patrician = no
 			NOT = { is_government_potential = water_tribe_government }
@@ -249,18 +255,8 @@ feudal_governments = {
 		can_grant_kingdoms_and_empires_to_other_government = yes
 		capital_move_delay = 600
 
-		character_modifier = {
-			martial = 4 # A firebender doesn't forget
-			stewardship = 2
-			combat_rating = 10 # ...but it helps when fighting!
-		vassal_opinion = 10
-		}
 		## Modifiers
 		court_size_modifier = 10
-		#below need to be added to character modifier if applies, commenting out til then
-		# global_revolt_risk = - 2
-		# global_tax_modifier = 15
-		# religion_flex = -80
 	}
 	fire_imperial_government = {
 		preferred_holdings = { CASTLE TEMPLE }
@@ -289,6 +285,7 @@ feudal_governments = {
 					has_game_started = no
 					culture_group = fire_nation_culture
 					religion_group = fire_religions
+					NOT = { culture = sun_warrior }
 					
 				}
 				AND = {
@@ -299,6 +296,7 @@ feudal_governments = {
 							has_law = ze_administration_laws_2 
 						}
 						e_fire_nation = { has_law = ze_administration_laws_2 }
+						NOT = { culture = sun_warrior }
 					}	
 				}
 			}
@@ -315,7 +313,16 @@ feudal_governments = {
 		ignore_in_vassal_limit_calculation = {
 			tribal_government
 		}
+		character_modifier = {
+			martial = 4 # A firebender doesn't forget
+			stewardship = 2
+			combat_rating = 10 # ...but it helps when fighting!
+			vassal_opinion = 25
+		}
 		capital_move_delay = 200
+		global_revolt_risk = - 2
+		global_tax_modifier = 15
+		religion_flex = -80
 		
 		can_usurp_kingdoms_and_empires = no
 		can_imprison_without_reason = no
