@@ -1,0 +1,2576 @@
+namespace = earthking
+
+character_event = {
+	id = earthking.1
+	is_triggered_only = yes
+	hide_window = yes
+	only_rulers = yes
+	
+	trigger = {
+		primary_title = {
+			title = e_earth_kingdom
+		}
+		NOR = {
+			trait = earthkingpuppet
+			trait = earthking
+		}
+	}
+	option = {
+		name = EVTOPTearthking.1
+		if = {
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -100 } }
+			}
+			 set_variable = { which = global_royalAuthority value = 50 }
+		}
+		if = {
+			limit = {
+				has_dynasty_flag = ek_opinion_boost
+			}
+			add_character_modifier = { name = ek_good_authority duration = -1 }
+		}
+		if = {
+			limit = {
+				has_dynasty_flag = ek_tyranny
+			}
+			add_character_modifier = { name = ek_tyranny duration = -1 }
+			remove_character_modifier = ek_good_authority
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = earthking_in_power }
+			}
+			add_trait = earthkingpuppet
+			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
+			clr_global_flag = restoration_ambition_delay
+			subtract_variable = { which = global_royalAuthority value = 30 }
+		}
+		
+		if = { # Calculate Royal Court Power
+			limit = {
+				has_global_flag = earthking_in_power
+			}
+			add_trait = earthking
+			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
+			subtract_variable = { which = global_royalAuthority value = 15 }
+			if = {
+				limit = {
+					NOT = { age = 12 }
+					is_title_active = d_dai_li
+				}
+				character_event = { id = earthking.3 }
+			}
+		}
+		character_event = { id = ATLAE.211 }
+	}
+}
+
+character_event = {
+	id = earthking.2
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		OR = {
+			trait = earthkingpuppet
+			trait = earthking
+		}
+		NOT = {
+			AND = {
+				OR = {
+					primary_title = {
+						title = e_earth_kingdom
+					}
+					primary_title = {
+						title = k_ba_sing_se
+					}
+				}
+				independent = yes
+			}
+		}
+	}
+	option = {
+		remove_trait = earthkingpuppet
+		remove_trait = earthking
+		remove_character_modifier = supporting_the_earth_kingdom
+	}
+}
+
+character_event = { # Dai Li retake control
+	id = earthking.3
+	desc = "EVTDESCEK.3"
+	is_triggered_only = yes
+	picture = "GFX_evt_dai_li_3"
+	hide_window = no
+	
+	option = {
+		name = EVTOPTEK.3
+		clr_global_flag = earthking_in_power
+		clr_global_flag = restoration_ambition
+		clr_global_flag = restoration_ambition_0
+		clr_global_flag = restoration_ambition_1
+		clr_global_flag = restoration_ambition_2
+		clr_global_flag = restoration_ambition_3
+		clr_global_flag = restoration_ambition_4
+		clr_global_flag = restoration_ambition_5
+		remove_trait = earthking
+		add_trait = earthkingpuppet
+		regent = {
+			remove_title = title_regent
+		}
+		d_dai_li = {
+			holder_scope = {
+				give_minor_title = title_appointed_regent
+				give_job_title = job_spymaster
+				set_defacto_liege = ROOT
+			}
+		}
+	}
+}
+
+# Noble complains of Banditry
+character_event = {
+	id = earthking.4
+	picture = GFX_evt_landscape_3
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.4
+
+	only_rulers = yes
+	capable_only = yes
+	prisoner = no
+	only_independent = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		mercenary = no
+		is_tributary = yes
+		NOT = { 
+			trait = in_hiding
+		}
+		any_allied_character = {
+			OR = {
+				trait = earthkingpuppet
+				trait = earthking
+			}
+		}
+	}
+
+	immediate = {
+		ROOT = { capital_scope = { save_event_target_as = capital } }
+		if = {
+			limit = {
+				any_allied_character = {
+					OR = {
+						trait = earthkingpuppet
+						trait = earthking
+					}
+				}
+			}
+			random_allied_character = {
+				limit = {
+					OR = {
+						trait = earthkingpuppet
+						trait = earthking
+					}
+				}
+				save_event_target_as = target_ruler
+				capital_scope = { save_event_target_as = target_ruler_capital }
+			}
+		}
+	}
+	#write a formal complaint to King
+	option = {
+		name = EVTOPTA_EK_4
+		ai_chance = { 
+			factor = 90
+		}
+		custom_tooltip = {
+			text = EVTOPTA_EK_4_TOOLTIP
+			hidden_tooltip = {
+				event_target:target_ruler = {
+					character_event = { id = earthking.5 days = 3 }
+				}
+			}
+		}
+		prestige = 50
+	}
+	# Ignore it
+	option = {
+		name = EVTOPTB_EK_4
+		ai_chance = { 
+			factor = 10
+		}
+		custom_tooltip = {
+			text = EVTOPTB_EK_4_TOOLTIP
+			hidden_tooltip = {
+				any_courtier = {
+					opinion = {
+						modifier = opinion_disappointed
+						who = ROOT
+						months = 24
+					}
+				}
+			}
+		}
+		scaled_wealth = -0.15
+	}
+	# We will take care of it ourselves
+	option = {
+		trigger = {
+			intrigue = 15
+		}
+		name = EVTOPTC_EK_4
+		custom_tooltip = {
+			text = EVTOPTC_EK_4_TOOLTIP
+		}
+		prestige = 50
+		tooltip_info = intrigue
+	}
+}
+
+# Complaint from Provinces
+character_event = {
+	id = earthking.5
+	picture = GFX_evt_landscape_3
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.5
+
+	is_triggered_only = yes
+
+	# Explain and avoid
+	option = {
+		trigger = {
+			diplomacy = 15
+		}
+		name = EVTOPTA_EK_5
+		ai_chance = {
+			factor = 70
+		}
+		custom_tooltip = {
+			text = EVTOPTA_EK_5_TOOLTIP
+			hidden_tooltip = {
+				FROM = { letter_event = { id = earthking.6 days = 3 } }
+			}
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+		prestige = 100
+		tooltip_info = diplomacy
+	}
+
+	# Take blame and send help
+	option = {
+		name = EVTOPTB_EK_5
+		ai_chance = {
+			factor = 20
+		}
+		custom_tooltip = {
+			text = EVTOPTB_EK_5_TOOLTIP
+			hidden_tooltip = {
+				FROM = { letter_event = { id = earthking.7 days = 3 } }
+			}
+		}
+		 
+		scaled_wealth = { value = -0.1 max = -100 }
+	}
+
+	# answer rudely
+	option = {
+		name = EVTOPTC_EK_5
+		ai_chance = {
+			factor = 10
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_5_TOOLTIP
+			hidden_tooltip = {
+				FROM = { letter_event = { id = earthking.8 days = 3 } }
+			}
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+		prestige = 50
+	}
+}
+
+# Earth King arranges solution
+letter_event = {
+	id = earthking.6
+	desc = EVTDESCEK.6
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = 50
+		name = EVTOPT_EK_6
+		opinion = {
+			modifier = opinion_improved_relations
+			who = FROM
+			years = 3
+		}
+	}
+}
+
+# Earth King sends help
+letter_event = {
+	id = earthking.7
+	desc = EVTDESCEK.7
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = 50
+		name = EVTOPT_EK_7
+		opinion = {
+			modifier = opinion_improved_relations
+			who = FROM
+			years = 2
+		}
+	}
+}
+
+# Earth King refuses to help
+letter_event = {
+	id = earthking.8
+	desc = EVTDESCEK.8
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = -100
+		name = EVTOPT_EK_8
+		opinion = {
+			modifier = opinion_bitter
+			who = FROM
+			years = 4
+		}
+	}
+}
+
+character_event = { # Royal Authority System - Check Authority
+	id = earthking.9
+	hide_window = yes
+	is_triggered_only = yes
+	only_playable = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+	}
+	
+	option = {
+		if = { # Destruction of the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -100 } }
+			}
+			character_event = { id = earthking.46 }
+		}
+		if = { # Ba Sing Se surrounds leave Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -90 } }
+				NOT = { has_global_flag = ek_basingse_left }
+			}
+			character_event = { id = earthking.39 }
+			set_global_flag = ek_basingse_left
+		}
+		if = { # Dongfang leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -80 } }
+				NOT = { has_global_flag = ek_dongfang_left }
+			}
+			character_event = { id = earthking.37 }
+			set_global_flag = ek_dongfang_left
+		}
+		if = { # Gaolan leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -70 } }
+				NOT = { has_global_flag = ek_central_left }
+			}
+			character_event = { id = earthking.35 }
+			set_global_flag = ek_central_left
+		}
+		if = { # Gaoling and Old Mapaku leave the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -60 } }
+				NOT = { has_global_flag = ek_gaoling_left }
+			}
+			character_event = { id = earthking.33 }
+			set_global_flag = ek_gaoling_left
+		}
+		if = { # Omashu and the Hu-Xin Provinces leave the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -50 } }
+				NOT = { has_global_flag = ek_omashu_left }
+			}
+			character_event = { id = earthking.31 }
+			set_global_flag = ek_omashu_left
+		}
+		if = { # Eastern Coast leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -40 } }
+				NOT = { has_global_flag = ek_east_coast_left }
+			}
+			character_event = { id = earthking.29 }
+			set_global_flag = ek_east_coast_left
+		}
+		if = { # Southern Coast and Northern EK leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -30 } }
+				NOT = { has_global_flag = ek_south_shore_left }
+			}
+			character_event = { id = earthking.27 }
+			set_global_flag = ek_south_shore_left
+		}
+		if = { # Western Shore leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -20 } }
+				NOT = { has_global_flag = ek_west_shore_left }
+			}
+			character_event = { id = earthking.25 }
+			set_global_flag = ek_west_shore_left
+		}
+		if = { # Earth Islands leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = -10 } }
+				NOT = { has_global_flag = ek_islands_left }
+			}
+			character_event = { id = earthking.16 }
+			set_global_flag = ek_islands_left
+		}
+		if = { # Earth Kingdom Army Decay
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 1 } }
+				NOT = { has_global_flag = royal_authority_army_low_decay }
+			}
+			character_event = { id = earthking.43 }
+			set_dynasty_flag = royal_authority_army_low_decay
+		}
+		if = { # Unity - Inner Provinces Rejoin EK
+			limit = {
+				check_variable = { which = global_royalAuthority value = 5 }
+				OR = {
+					has_global_flag = ek_gaoling_left
+					has_global_flag = ek_central_left
+					has_global_flag = ek_dongfang_left
+					has_global_flag = ek_basingse_left
+				}
+			}
+			character_event = { id = earthking.50 }
+		}
+		if = { # Northern Ranges leaves the Earth Kingdom
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 10 } }
+				NOT = { has_global_flag = ek_north_range_left }
+			}
+			character_event = { id = earthking.12 }
+			set_global_flag = ek_north_range_left
+		}
+		if = { # Earth Kingdom Army Decay - Remove
+			limit = {
+				check_variable = { which = global_royalAuthority value = 15 }
+				has_dynasty_flag = royal_authority_army_low_decay
+			}
+			character_event = { id = earthking.44 }
+			clr_dynasty_flag = royal_authority_army_low_decay
+		}
+		if = {  # Si Wong Leaves
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 20 } }
+				NOT = { has_global_flag = ek_si_wong_left }
+			}
+			character_event = { id = earthking.10 }
+			set_global_flag = ek_si_wong_left
+		}
+		if = { # Unity - Middle Provinces Rejoin EK
+			limit = {
+				check_variable = { which = global_royalAuthority value = 30 }
+				OR = {
+					has_global_flag = ek_west_shore_left
+					has_global_flag = ek_south_shore_left
+					has_global_flag = ek_east_coast_left
+					has_global_flag = ek_omashu_left
+				}
+			}
+			character_event = { id = earthking.49 }
+		}
+		if = { # Unity - Outer Provinces Rejoin EK
+			limit = {
+				check_variable = { which = global_royalAuthority value = 40 }
+				OR = {
+					has_global_flag = ek_si_wong_left
+					has_global_flag = ek_north_range_left
+					has_global_flag = ek_islands_left
+				}
+			}
+			character_event = { id = earthking.48 }
+		}
+		if = { # Royal Respect - Opinion Modifier Boost - Remove
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 40 } }
+				has_dynasty_flag = ek_opinion_boost
+			}
+			remove_character_modifier = ek_good_authority
+			clr_dynasty_flag = ek_opinion_boost
+		}
+		if = { # Royal Respect - Opinion Modifier Boost
+			limit = {
+				check_variable = { which = global_royalAuthority value = 50 }
+				NOT = { has_dynasty_flag = ek_opinion_boost }
+			}
+			add_character_modifier = { name = ek_good_authority duration = -1 }
+			set_dynasty_flag = ek_opinion_boost
+		}
+		if = { # Puppet King Authority Cap
+			limit = {
+				check_variable = { which = global_royalAuthority value = 75 }
+				trait = earthkingpuppet
+			}
+			set_variable = { which = global_royalAuthority value = 75 }
+			if = {
+				limit = {
+					NOT = { has_dynasty_flag = warned_of_puppet_authority_cap }
+				}
+				character_event = { id = earthking.14 }
+				set_dynasty_flag = warned_of_puppet_authority_cap
+			}
+		}
+		if = { # Earth Kingdom Overextension - Remove
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 125 } }
+				has_dynasty_flag = royal_authority_overextension
+			}
+			character_event = { id = earthking.51 }
+			clr_dynasty_flag = royal_authority_overextension
+		}
+		if = { # Earth Kingdom Overextension
+			limit = {
+				check_variable = { which = global_royalAuthority value = 150 }
+				NOT = { has_dynasty_flag = royal_authority_overextension }
+			}
+			character_event = { id = earthking.45 }
+			set_dynasty_flag = royal_authority_overextension
+		}
+		if = { # Royal Army Decay - Remove
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 155 } }
+				has_dynasty_flag = royal_authority_army_decay
+			}
+			character_event = { id = earthking.41 }
+			clr_dynasty_flag = royal_authority_army_decay
+		}
+		if = { # Royal Army Decay
+			limit = {
+				check_variable = { which = global_royalAuthority value = 165 }
+				NOT = { has_dynasty_flag = royal_authority_army_decay }
+			}
+			character_event = { id = earthking.15 }
+			set_dynasty_flag = royal_authority_army_decay
+		}
+		if = { # Tyranny - Remove
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 170 } }
+				has_dynasty_flag = royal_authority_tyranny
+			}
+			add_character_modifier = { name = ek_opinion_boost duration = -1 }
+			character_event = { id = earthking.53 }
+			set_dynasty_flag = royal_authority_tyranny
+		}
+		if = { # Tyranny
+			limit = {
+				check_variable = { which = global_royalAuthority value = 180 }
+				NOT = { has_dynasty_flag = royal_authority_tyranny }
+			}
+			remove_character_modifier = ek_opinion_boost
+			character_event = { id = earthking.52 }
+			set_dynasty_flag = royal_authority_tyranny
+		}
+		if = { # Authority Cap
+			limit = {
+				check_variable = { which = global_royalAuthority value = 201 }
+			}
+			set_variable = { which = global_royalAuthority value = 200 }
+		}
+	}
+}
+
+# Earth Kingdom - Si Wong Leaves
+character_event = {
+	id = earthking.10
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.10
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_si_wong
+						region = world_si_wong_fringe
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_10
+		custom_tooltip = {
+			text = EVTOPTC_EK_10_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.11 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Si Wong Leaves - World
+character_event = {
+	id = earthking.11
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.11
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_11
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_si_wong
+					region = world_si_wong_fringe
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_11
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_si_wong
+					region = world_si_wong_fringe
+				}
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Northern Ranges Leaves
+character_event = {
+	id = earthking.12
+	picture = GFX_evt_cliff_face
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.12
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_northern_ranges 
+						region = world_the_swamp 
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_12
+		custom_tooltip = {
+			text = EVTOPTC_EK_12_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.11 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Northern Ranges leave - World
+character_event = {
+	id = earthking.13
+	picture = GFX_evt_cliff_face
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.13
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_13
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_northern_ranges 
+					region = world_the_swamp 
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_13
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_northern_ranges 
+					region = world_the_swamp 
+				}
+			}
+		}
+	}
+}
+
+# Puppet King Authority Cap
+character_event = {
+	id = earthking.14
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.14
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_14
+		custom_tooltip = {
+			text = EVTOPTC_EK_14_TOOLTIP
+		}
+	}
+}
+
+# Army Decay - Lazy
+character_event = {
+	id = earthking.15
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.15
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_15
+		custom_tooltip = {
+			text = EVTOPTC_EK_15_TOOLTIP
+		}
+		add_character_modifier = { name = royal_army_decay_overgrowth duration = -1 }
+	}
+}
+
+# Earth Kingdom - Earth Islands Leaves
+character_event = {
+	id = earthking.16
+	picture = GFX_evt_kyoshi_island
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.16
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					region = world_earth_islands
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_16
+		custom_tooltip = {
+			text = EVTOPTC_EK_16_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.11 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Earth Islands leave - World
+character_event = {
+	id = earthking.17
+	picture = GFX_evt_kyoshi_island
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.17
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_17
+		trigger = {
+			capital_scope = {
+				region = world_earth_islands
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_17
+		trigger = {
+			capital_scope = {
+				NOT = { region = world_earth_islands }
+			}
+		}
+	}
+}
+
+# Noble complains of Raiders
+character_event = {
+	id = earthking.18
+	picture = GFX_evt_chin_army
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.18
+
+	only_rulers = yes
+	capable_only = yes
+	prisoner = no
+	only_independent = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		mercenary = no
+		is_tributary = yes
+		NOT = { has_character_flag = complained_about_raiders }
+		NOT = { 
+			trait = in_hiding
+		}
+		any_allied_character = {
+			OR = {
+				trait = earthkingpuppet
+				trait = earthking
+			}
+		}
+	}
+
+	immediate = {
+		set_character_flag = complained_about_raiders
+		ROOT = { capital_scope = { save_event_target_as = capital } }
+		if = {
+			limit = {
+				any_allied_character = {
+					OR = {
+						trait = earthkingpuppet
+						trait = earthking
+					}
+				}
+			}
+			random_allied_character = {
+				limit = {
+					OR = {
+						trait = earthkingpuppet
+						trait = earthking
+					}
+				}
+				save_event_target_as = target_ruler
+				capital_scope = { save_event_target_as = target_ruler_capital }
+			}
+		}
+	}
+	#write a formal complaint to King
+	option = {
+		name = EVTOPTA_EK_4
+		ai_chance = { 
+			factor = 90
+		}
+		custom_tooltip = {
+			text = EVTOPTA_EK_4_TOOLTIP
+			hidden_tooltip = {
+				event_target:target_ruler = {
+					character_event = { id = earthking.20 days = 3 }
+				}
+			}
+		}
+		prestige = 50
+	}
+	# Ignore it
+	option = {
+		name = EVTOPTB_EK_4
+		ai_chance = { 
+			factor = 10
+		}
+		custom_tooltip = {
+			text = EVTOPTB_EK_4_TOOLTIP
+			hidden_tooltip = {
+				any_courtier = {
+					opinion = {
+						modifier = opinion_disappointed
+						who = ROOT
+						months = 24
+					}
+				}
+			}
+		}
+	}
+}
+
+character_event = { # Raider > Province Owner
+	id = earthking.19
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		FROM = {
+			holder_scope = {
+				character_event = { id = earthking.18 days = 3 }
+			}
+		}
+	}
+}
+
+# Noble complains of Raiders- Earth King
+character_event = {
+	id = earthking.20
+	picture = GFX_evt_chin_army
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.20
+
+	is_triggered_only = yes
+
+	# Fine the Raider
+	option = {
+		trigger = {
+			FROMFROM = {
+				is_tributary = yes
+				any_allied_character = {
+					OR = {
+						trait = earthkingpuppet
+						trait = earthking
+					}
+				}
+			}
+		}
+		name = EVTOPTA_EK_20
+		ai_chance = {
+			factor = 70
+		}
+		custom_tooltip = {
+			text = EVTOPTA_EK_20_TOOLTIP
+			hidden_tooltip = {
+				FROM = { letter_event = { id = earthking.21 days = 3 } }
+			}
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_BOOST
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = 1 }
+			}
+		}
+		FROMFROM = {
+			transfer_scaled_wealth = { to = FROM value = 0.1 }
+		}
+		prestige = 100
+		tooltip_info = diplomacy
+	}
+
+	# Promise Aid
+	option = {
+		name = EVTOPTB_EK_20
+		ai_chance = {
+			factor = 20
+		}
+		custom_tooltip = {
+			text = EVTOPTB_EK_20_TOOLTIP
+			hidden_tooltip = {
+				FROM = { letter_event = { id = earthking.22 days = 3 } }
+			}
+		}
+		 
+		ROOT = {
+			transfer_scaled_wealth = { to = FROM value = 0.05 }
+		}
+	}
+
+	# Refuse to interfere
+	option = {
+		name = EVTOPTC_EK_20
+		ai_chance = {
+			factor = 10
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_20_TOOLTIP
+			hidden_tooltip = {
+				FROM = { letter_event = { id = earthking.23 days = 3 } }
+			}
+		}
+		custom_tooltip = {
+			text = EARTHKINGDOM_AUTHORITY_MINOR_LOSS
+			hidden_tooltip = {
+				change_variable = { which = global_royalAuthority value = -1 }
+			}
+		}
+		prestige = 50
+	}
+}
+
+# Earth King fines Raider - Victim
+letter_event = {
+	id = earthking.21
+	desc = EVTDESCEK.21
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = 50
+		name = EVTOPT_EK_21
+		opinion = {
+			modifier = opinion_improved_relations
+			who = FROM
+			years = 3
+		}
+	}
+}
+
+# Earth King fines Raider - Raider
+letter_event = {
+	id = earthking.22
+	desc = EVTDESCEK.22
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = -50
+		name = EVTOPT_EK_22
+		opinion = {
+			modifier = opinion_bitter
+			who = FROM
+			years = 3
+		}
+	}
+}
+
+# Earth King sends help
+letter_event = {
+	id = earthking.23
+	desc = EVTDESCEK.23
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = 50
+		name = EVTOPT_EK_23
+		opinion = {
+			modifier = opinion_improved_relations
+			who = FROM
+			years = 2
+		}
+	}
+}
+
+# Earth King refuses to help
+letter_event = {
+	id = earthking.24
+	desc = EVTDESCEK.24
+
+	is_triggered_only = yes
+
+	#OK
+	option = {
+		prestige = -100
+		name = EVTOPT_EK_22
+		opinion = {
+			modifier = opinion_bitter
+			who = FROM
+			years = 4
+		}
+	}
+}
+
+# Earth Kingdom - Western Shore Leaves
+character_event = {
+	id = earthking.25
+	picture = GFX_evt_earth_cliff_village
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.25
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					region = world_western_shore
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_25
+		custom_tooltip = {
+			text = EVTOPTC_EK_25_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.26 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Western Shore - World
+character_event = {
+	id = earthking.26
+	picture = GFX_evt_earth_cliff_village
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.26
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_26
+		trigger = {
+			capital_scope = {
+				region = world_western_shore
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_26
+		trigger = {
+			capital_scope = {
+				NOT = { region = world_western_shore }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				region = world_western_shore
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Southern Coast Leaves
+character_event = {
+	id = earthking.27
+	picture = GFX_evt_earth_kingdom_port
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.27
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_southern_coast
+						region = world_xiong_lin_territory
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_27
+		custom_tooltip = {
+			text = EVTOPTC_EK_27_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.28 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Southern Coast - World
+character_event = {
+	id = earthking.28
+	picture = GFX_evt_earth_kingdom_port
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.28
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_southern_coast
+					region = world_xiong_lin_territory
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_southern_coast
+					region = world_xiong_lin_territory
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_southern_coast
+					region = world_xiong_lin_territory
+				}
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Eastern Coast Leaves
+character_event = {
+	id = earthking.29
+	picture = GFX_evt_ruined_town
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.29
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					region = world_eastern_coast
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_29
+		custom_tooltip = {
+			text = EVTOPTC_EK_29_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.30 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Eastern Coast - World
+character_event = {
+	id = earthking.30
+	picture = GFX_evt_ruined_town
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.30
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				region = world_eastern_coast
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOT = { region = world_eastern_coast }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				region = world_eastern_coast
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Omashu Leaves
+character_event = {
+	id = earthking.31
+	picture = GFX_evt_omashu
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.31
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_omashu_plains
+						region = world_hu_xin_provinces
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_31
+		custom_tooltip = {
+			text = EVTOPTC_EK_31_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.32 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Omashu - World
+character_event = {
+	id = earthking.32
+	picture = GFX_evt_omashu
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.32
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_omashu_plains
+					region = world_hu_xin_provinces
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_omashu_plains
+					region = world_hu_xin_provinces
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_omashu_plains
+					region = world_hu_xin_provinces
+				}
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Gaoling Leaves
+character_event = {
+	id = earthking.33
+	picture = GFX_evt_earth_city
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.33
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_old_makapu
+						region = world_southern_valley
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_33
+		custom_tooltip = {
+			text = EVTOPTC_EK_33_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.34 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Gaoling - World
+character_event = {
+	id = earthking.34
+	picture = GFX_evt_earth_city
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.34
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_old_makapu
+					region = world_southern_valley
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_old_makapu
+					region = world_southern_valley
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_old_makapu
+					region = world_southern_valley
+				}
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Gaolan Leaves
+character_event = {
+	id = earthking.35
+	picture = GFX_evt_earth_kingdom_fort_1
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.35
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_central_desert
+						region = world_western_plains
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_35
+		custom_tooltip = {
+			text = EVTOPTC_EK_35_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.36 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Gaolan - World
+character_event = {
+	id = earthking.36
+	picture = GFX_evt_earth_kingdom_fort_1
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.36
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_central_desert
+					region = world_western_plains
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_central_desert
+					region = world_western_plains
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_central_desert
+					region = world_western_plains
+				}
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Earth Kingdom - Dongfang Leaves
+character_event = {
+	id = earthking.37
+	picture = GFX_evt_night_earthkingdom
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.37
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					region = world_dongfang_peninsular
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_37
+		custom_tooltip = {
+			text = EVTOPTC_EK_37_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.38 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Dongfang - World
+character_event = {
+	id = earthking.38
+	picture = GFX_evt_night_earthkingdom
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.38
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				region = world_dongfang_peninsular
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOT = { region = world_dongfang_peninsular }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				region = world_dongfang_peninsular
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+# Earth Kingdom - Ba Leaves
+character_event = {
+	id = earthking.39
+	picture = GFX_evt_ba_sing_sa_2
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.39
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_allied_character = {
+			limit = {
+				pays_tribute_to = ROOT
+				capital_scope = {
+					OR = {
+						region = world_northern_plains
+						region = world_southern_plains
+					}
+				}
+			}
+			remove_tributary = ROOT
+		}
+	}
+		
+	option = {
+		name = EVTOPTA_EK_39
+		custom_tooltip = {
+			text = EVTOPTC_EK_39_TOOLTIP
+			hidden_tooltip = {
+				any_playable_ruler = {
+					character_event = { id = earthking.40 }
+				}
+			}
+		}
+		prestige = -100
+	}
+}
+
+# Earth Kingdom - Ba - World
+character_event = {
+	id = earthking.40
+	picture = GFX_evt_ba_sing_sa_2
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.40
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_northern_plains
+					region = world_southern_plains
+				}
+			}
+		}
+		prestige = 50
+	}
+	
+	option = {
+		name = EVTOPTB_EK_28
+		trigger = {
+			capital_scope = {
+				NOR = {
+					region = world_northern_plains
+					region = world_southern_plains
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_28
+		trigger = {
+			capital_scope = {
+				OR = {
+					region = world_northern_plains
+					region = world_southern_plains
+				}
+			}
+		}
+		FROM = {
+			make_tributary = {						
+				who = ROOT							
+				percentage = 0.10					
+				tributary_type = earth_kingdom_territory_tributary
+			}
+		}
+	}
+}
+
+# Army Decay - Lazy - Remove
+character_event = {
+	id = earthking.41
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.41
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_41
+		custom_tooltip = {
+			text = EVTOPTC_EK_41_TOOLTIP
+		}
+		remove_character_modifier = royal_army_decay_overgrowth
+	}
+}
+
+# Earth Monarchism - Restored
+character_event = {
+	id = earthking.42
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.42
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_42
+		custom_tooltip = {
+			text = EVTOPTC_EK_42_TOOLTIP
+			hidden_tooltip = {
+				any_realm_province = {
+					limit = {
+						religion = ba_sing_se_cultural_heritage
+					}
+					religion = earth_monarchism
+				}
+				any_realm_character = {
+					limit = {
+						religion = ba_sing_se_cultural_heritage
+					}
+					religion = earth_monarchism
+					any_realm_character = {
+						limit = {
+							religion = ba_sing_se_cultural_heritage
+						}
+						religion = earth_monarchism
+					}
+				}
+			}
+		}
+	}
+}
+
+# Army Decay - Low Morale
+character_event = {
+	id = earthking.43
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.43
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_43
+		custom_tooltip = {
+			text = EVTOPTC_EK_43_TOOLTIP
+		}
+		add_character_modifier = { name = royal_army_decay_collapse duration = -1 }
+	}
+}
+
+# Army Decay - Low Morale - Remove
+character_event = {
+	id = earthking.44
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.44
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_44
+		custom_tooltip = {
+			text = EVTOPTC_EK_41_TOOLTIP
+		}
+		remove_character_modifier = royal_army_decay_collapse
+	}
+}
+
+# Earth Kingdom Overextension
+character_event = {
+	id = earthking.45
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.45
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_45
+		custom_tooltip = {
+			text = EVTOPTC_EK_45_TOOLTIP
+		}
+		add_character_modifier = { name = supporting_the_earth_kingdom_overextended duration = -1 }
+		remove_character_modifier = supporting_the_earth_kingdom
+	}
+}
+
+# Fall of the Earth Kingdom
+narrative_event = {
+	id = earthking.46
+	picture = GFX_evt_earth_kingdom_burning
+	title = EVTNAMEEK.46
+	desc = EVTDESCEK.46
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = EVTOPTA_EK_46
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_46_TOOLTIP
+		}
+		hidden_tooltip = {
+			e_earth_kingdom = { destroy_landed_title = THIS }
+			if = {
+				limit = {
+					k_ba_sing_se = {
+						has_holder = no
+					}
+				}
+				k_ba_sing_se = {
+					grant_title = ROOT
+				}
+		}
+			destroy_landed_title = e_earth_kingdom
+			remove_trait = earthkingpuppet
+			remove_trait = earthking
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_EK_46
+		trigger = {
+			NOT = { has_landed_title = e_earth_kingdom }
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_46_TOOLTIP
+		}
+	}
+}
+
+character_event = {
+	id = earthking.47
+	is_triggered_only = yes
+	hide_window = yes
+	only_rulers = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+	}
+	
+	option = {
+		current_heir = {
+			set_variable = { which = global_royalAuthority which = ROOT }
+		}
+	}
+}
+
+# Earth Kingdom - Outer Provinces Rejoin
+character_event = {
+	id = earthking.48
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.48
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_independent_ruler = {
+			limit = {
+				is_tributary = no
+				capital_scope = {
+					OR = {
+						region = world_si_wong
+						region = si_wong_fringe
+						region = world_earth_islands
+						region = world_northern_ranges 
+						region = world_the_swamp 
+					}
+				}
+			}
+			e_earth_kingdom = {
+				owner = {
+					make_tributary = {						
+						who = ROOT							
+						percentage = 0.10					
+						tributary_type = earth_kingdom_territory_tributary
+					}
+				}
+			}
+		}
+		clr_global_flag = ek_si_wong_left
+		clr_global_flag = ek_north_range_left
+		clr_global_flag = ek_islands_left
+	}
+		
+	option = {
+		name = EVTOPTA_EK_48
+		custom_tooltip = {
+			text = EVTOPTC_EK_48_TOOLTIP
+		}
+		prestige = 100
+	}
+}
+
+# Earth Kingdom - Middle Provinces Rejoin
+character_event = {
+	id = earthking.49
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.49
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_independent_ruler = {
+			limit = {
+				is_tributary = no
+				capital_scope = {
+					OR = {
+						region = world_western_shore
+						region = world_southern_coast
+						region = world_xiong_lin_territory
+						region = world_eastern_coast
+						region = world_omashu_plains 
+						region = world_hu_xin_provinces 
+					}
+				}
+			}
+			e_earth_kingdom = {
+				owner = {
+					make_tributary = {						
+						who = ROOT							
+						percentage = 0.10					
+						tributary_type = earth_kingdom_territory_tributary
+					}
+				}
+			}
+		}
+		clr_global_flag = ek_west_shore_left
+		clr_global_flag = ek_south_shore_left
+		clr_global_flag = ek_east_coast_left
+		clr_global_flag = ek_omashu_left
+	}
+		
+	option = {
+		name = EVTOPTA_EK_49
+		custom_tooltip = {
+			text = EVTOPTC_EK_48_TOOLTIP
+		}
+		prestige = 100
+	}
+}
+
+# Earth Kingdom - Inner Provinces Rejoin
+character_event = {
+	id = earthking.50
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.50
+
+	is_triggered_only = yes
+	
+	immediate = {
+		any_independent_ruler = {
+			limit = {
+				is_tributary = no
+				capital_scope = {
+					OR = {
+						region = world_old_makapu
+						region = world_southern_valley
+						region = world_western_plains
+						region = world_central_desert
+						region = world_northern_plains
+						region = world_dongfang_peninsular 
+						region = world_southern_plains 
+					}
+				}
+			}
+			e_earth_kingdom = {
+				owner = {
+					make_tributary = {						
+						who = ROOT							
+						percentage = 0.10					
+						tributary_type = earth_kingdom_territory_tributary
+					}
+				}
+			}
+		}
+		clr_global_flag = ek_gaoling_left
+		clr_global_flag = ek_central_left
+		clr_global_flag = ek_dongfang_left
+		clr_global_flag = ek_basingse_left
+	}
+		
+	option = {
+		name = EVTOPTA_EK_50
+		custom_tooltip = {
+			text = EVTOPTC_EK_48_TOOLTIP
+		}
+		prestige = 100
+	}
+}
+
+# Earth Kingdom Overextension - Remove
+character_event = {
+	id = earthking.51
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.51
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_51
+		custom_tooltip = {
+			text = EVTOPTC_EK_51_TOOLTIP
+		}
+		add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
+		remove_character_modifier = supporting_the_earth_kingdom_overextended
+	}
+}
+
+# Earth Kingdom Tyranny
+character_event = {
+	id = earthking.52
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.52
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_52
+		custom_tooltip = {
+			text = EVTOPTC_EK_52_TOOLTIP
+		}
+		add_character_modifier = { name = ek_tyranny duration = -1 }
+	}
+}
+
+# Earth Kingdom Tyranny - Remove
+character_event = {
+	id = earthking.53
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.53
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_53
+		custom_tooltip = {
+			text = EVTOPTC_EK_53_TOOLTIP
+		}
+		remove_character_modifier = ek_tyranny
+	}
+}
+
+# Earth Kingdom - Royal Authority - Five Yearly Checkup
+character_event = {
+	id = earthking.56
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = {
+		trigger = { 
+			has_regent = no 
+			NOT = { check_variable = { which = global_royalAuthority value = 100 } }
+		}
+		text = EVTDESCEK.56
+	}
+	desc = {
+		trigger = { 
+			has_regent = yes
+		}
+		text = EVTDESCEKA.56
+	}
+	desc = {
+		trigger = { 
+			has_regent = no 
+			check_variable = { which = global_royalAuthority value = 100 }
+		}
+		text = EVTDESCEKB.56
+	}
+	is_triggered_only = yes
+	
+	trigger = {
+		primary_title = {
+			title = e_earth_kingdom
+		}
+	}
+	
+	immediate = {
+		set_variable = { which = old_authority which = global_royalAuthority }
+		set_variable = { which = global_num_of_ek_tributaries value = 0 }
+		ROOT = {
+			any_tributary = {
+				change_variable = { which = global_num_of_ek_tributaries value = 1 }
+			}
+		}
+		divide_variable = { which = global_num_of_ek_tributaries value = 20 }
+		export_to_variable = { which = num_of_ek_realm value = num_of_vassals }
+		divide_variable = { which = num_of_ek_realm value = 25 }
+		change_variable = { which = global_royalAuthority which = global_num_of_ek_tributaries }
+		change_variable = { which = global_royalAuthority which = num_of_ek_realm }
+		if = { # Authority Cap - Regency
+			limit = {
+				has_regent = yes
+				check_variable = { which = global_royalAuthority value = 75 }
+			}
+			set_variable = { which = global_royalAuthority value = 75 }
+		}
+		if = { # Authority Cap
+			limit = {
+				check_variable = { which = global_royalAuthority value = 100 }
+			}
+			set_variable = { which = global_royalAuthority value = 100 }
+		}
+		set_variable = { which = authority_gain which = global_royalAuthority }
+		subtract_variable = { which = authority_gain which = old_authority }
+	}
+	
+	option = {
+		name = EVTOPTA_EK_56
+		custom_tooltip = {
+			text = RA_GAIN_FIVE_YEAR
+		}
+	}
+}
+
+# Earth Kingdom - Royal Authority - Relation Boost
+character_event = {
+	id = earthking.57
+	desc = EVTDESCEK.57
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_57
+		prestige = 100
+		wealth = 50
+	}
+}
+
+# Earth Kingdom - Royal Authority - Annexed
+character_event = {
+	id = earthking.58
+	desc = EVTDESCEK.58
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_58
+		opinion = { modifier = opinion_ra_annexed who = FROMFROM years = 10 }
+	}
+}
+
+# Earth Kingdom - Royal Authority - Converted
+character_event = {
+	id = earthking.59
+	desc = EVTDESCEK.59
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_EK_59
+		religion = earth_monarchism
+		opinion = { modifier = opinion_ra_converted who = FROMFROM years = 10 }
+	}
+}
+
+narrative_event = { # Disbandment of the Earth Kingdom
+	id = earthking.60
+	picture = GFX_evt_ba_sing_sa
+	title = EVTNAMEEK.60
+	desc = EVTDESCEK.60
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+	
+	immediate = {
+		if = {
+			limit = { has_landed_title = e_earth_kingdom }
+			subtract_variable = { which = global_royalAuthority value = 100 }
+			any_independent_ruler = {
+				limit = {
+					pays_tribute_to = e_earth_kingdom
+				}
+				remove_tributary = FROM
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA_EK_60
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_60_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_EK_60
+		trigger = {
+			pays_tribute_to = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_60B_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_60
+		trigger = {
+			NOT = { pays_tribute_to = e_earth_kingdom }
+			NOT = { has_landed_title = e_earth_kingdom }
+		}
+	}
+}
+
+character_event = { # Law Change - Event Server
+	id = earthking.61
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+	}
+	
+	option = {
+		if = {
+			limit = {
+				e_earth_kingdom = {
+					has_law = ek_unity_0
+					NOT = { has_title_flag = ek_ra_set_unity_0 }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = ek_ra_set_unity_0
+				clr_title_flag = ek_ra_set_unity_1
+				clr_title_flag = ek_ra_set_unity_2
+				clr_title_flag = ek_ra_set_unity_3
+				holder_scope = {
+					narrative_event = { id = earthking.60 }
+					break = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				e_earth_kingdom = {
+					has_law = ek_unity_1
+					NOT = { has_title_flag = ek_ra_set_unity_1 }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = ek_ra_set_unity_1
+				clr_title_flag = ek_ra_set_unity_0
+				clr_title_flag = ek_ra_set_unity_2
+				clr_title_flag = ek_ra_set_unity_3
+				holder_scope = {
+					narrative_event = { id = earthking.62 }
+					break = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				e_earth_kingdom = {
+					has_law = ek_unity_2
+					NOT = { has_title_flag = ek_ra_set_unity_2 }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = ek_ra_set_unity_2
+				clr_title_flag = ek_ra_set_unity_0
+				clr_title_flag = ek_ra_set_unity_1
+				clr_title_flag = ek_ra_set_unity_3
+				holder_scope = {
+					narrative_event = { id = earthking.63 }
+					break = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				e_earth_kingdom = {
+					has_law = ek_unity_3
+					NOT = { has_title_flag = ek_ra_set_unity_3 }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = ek_ra_set_unity_3
+				clr_title_flag = ek_ra_set_unity_0
+				clr_title_flag = ek_ra_set_unity_1
+				clr_title_flag = ek_ra_set_unity_2
+				holder_scope = {
+					narrative_event = { id = earthking.64 }
+					break = yes
+				}
+			}
+		}
+	}
+}
+
+narrative_event = { # Territories Law
+	id = earthking.62
+	picture = GFX_evt_ba_sing_sa
+	title = EVTNAMEEK.62
+	desc = EVTDESCEK.62
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+	
+	immediate = {
+		if = {
+			limit = { has_landed_title = e_earth_kingdom }
+			subtract_variable = { which = global_royalAuthority value = 100 }
+			any_independent_ruler = {
+				limit = {
+					pays_tribute_to = e_earth_kingdom
+				}
+				remove_tributary = FROM
+				FROM = {
+					make_tributary = {						
+						who = PREV							
+						percentage = 0.10					
+						tributary_type = earth_kingdom_territory_tributary
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA_EK_62
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_62_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_EK_62
+		trigger = {
+			pays_tribute_to = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_62B_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_62
+		trigger = {
+			NOT = { pays_tribute_to = e_earth_kingdom }
+			NOT = { has_landed_title = e_earth_kingdom }
+		}
+	}
+}
+
+narrative_event = { # States Law
+	id = earthking.63
+	picture = GFX_evt_ba_sing_sa
+	title = EVTNAMEEK.63
+	desc = EVTDESCEK.63
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+	
+	immediate = {
+		if = {
+			limit = { has_landed_title = e_earth_kingdom }
+			subtract_variable = { which = global_royalAuthority value = 100 }
+			any_independent_ruler = {
+				limit = {
+					pays_tribute_to = e_earth_kingdom
+				}
+				remove_tributary = FROM
+				FROM = {
+					make_tributary = {						
+						who = PREV							
+						percentage = 0.12
+						tributary_type = earth_kingdom_state_tributary
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA_EK_63
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_63_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_EK_63
+		trigger = {
+			pays_tribute_to = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_63B_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_63
+		trigger = {
+			NOT = { pays_tribute_to = e_earth_kingdom }
+			NOT = { has_landed_title = e_earth_kingdom }
+		}
+	}
+}
+
+narrative_event = { # Monarch Law
+	id = earthking.64
+	picture = GFX_evt_ba_sing_sa
+	title = EVTNAMEEK.64
+	desc = EVTDESCEK.64
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+	
+	immediate = {
+		if = {
+			limit = { has_landed_title = e_earth_kingdom }
+			subtract_variable = { which = global_royalAuthority value = 100 }
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_EK_64
+		trigger = {
+			has_landed_title = e_earth_kingdom
+		}
+		custom_tooltip = {
+			text = EVTOPTC_EK_64_TOOLTIP
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_EK_64
+		trigger = {
+			pays_tribute_to = e_earth_kingdom
+		}
+	}
+	
+	option = {
+		name = EVTOPTC_EK_64
+		trigger = {
+			NOT = { pays_tribute_to = e_earth_kingdom }
+			NOT = { has_landed_title = e_earth_kingdom }
+		}
+	}
+}
