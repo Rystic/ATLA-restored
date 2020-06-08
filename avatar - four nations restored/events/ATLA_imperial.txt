@@ -11,104 +11,64 @@ narrative_event = {
 	trigger = {
 		e_fire_nation = { has_law = ze_fire_administration_laws_2 }
 		NOT = { has_global_flag = fire_imperial_founded }
-		NOT = { culture = sun_warrior }
 	}
-	immediate = {
-		any_playable_ruler = {
-				limit = {
-						NOT = {culture = fire_nation }
-						NOT = {culture = fire_islander }
-					}
-			narrative_event = { id = avimperial.1 days = 1 }
-		}
-	}
-	option = { # fire nation
-		name = EVTOPAVIMP.2
-		trigger = {
-			culture_group = fire_nation_culture
-			NOT = { culture = sun_warrior } 
-		}
-		any_playable_ruler = {
-				limit = { 
-						AND = {
-							culture_group = fire_nation_culture
-							OR = {
-								AND = {
-										top_liege = { has_law = ze_fire_administration_laws_2 }
-									}
-									top_liege = { has_landed_title = e_fire_nation }
-								}
-							has_landed_title = e_fire_nation	
-							}
-							NOT = { culture = sun_warrior } 
-							is_tribal = no
-							is_theocracy = no
-							is_patrician = no
-						}
-					}
-				set_government_type = fire_imperial_government
-		}
-	}
-}
-narrative_event = {
-	id = avimperial.2 #Fire Imperial formation
-	is_triggered_only = yes
-	hide_window = no
-	only_rulers = yes
-	
-	trigger = {
-		e_fire_nation = { has_law = fire_imperial_administration }
-		NOT = { has_global_flag = fire_imperial_founded }
-		NOT = { culture = sun_warrior }
-	}
-	immediate = {
-				limit = {
-						NOT = {culture = fire_nation }
-						NOT = {culture = fire_islander }
-					}
-	}
-	option = { # fire nation
-		name = EVTOPAVIMP.2
-		trigger = {
-			culture_group = fire_nation_culture
-			NOT = { culture = sun_warrior } 
-		}
-		any_playable_ruler = {
-				limit = { 
-						AND = {
-							culture_group = fire_nation_culture
-							OR = {
-								AND = {
-									top_liege = { has_law = fire_imperial_administration }
-									top_liege = { has_landed_title = e_fire_nation }
-								}
-							has_landed_title = e_fire_nation	
-							}
-							NOT = { culture = sun_warrior } 
-							is_tribal = no
-							is_theocracy = no
-							is_patrician = no
-						}
-					}
-			set_government_type = fire_imperial_government
-		}
-	}
-}
-narrative_event = {
-	id = avimperial.1 #Fire Imperial formation world
-	is_triggered_only = yes
-	hide_window = no
-	only_rulers = yes	
-	
-	trigger = {
-			#NOT = { culture_group = fire_nation_culture }
-			NOT = { has_global_flag = fire_imperial_founded } 
-	}
-	
 	immediate = {
 		set_global_flag = fire_imperial_founded
 	}
+	option = { # fire nation
+		name = EVTOPAVIMP.2
+		trigger = {
+			culture_group = fire_nation_culture
+			NOT = { culture = sun_warrior } 
+			NOR = {
+				has_landed_title = e_fire_nation
+				primary_title = { has_law = ze_fire_administration_laws_2 }
+			}
+		}
+		any_playable_ruler = {
+			limit = { 
+				AND = {
+					culture_group = fire_nation_culture
+					OR = {
+						AND = {
+							top_liege = { has_law = ze_fire_administration_laws_2 }
+						}
+						top_liege = { has_landed_title = e_fire_nation }
+					}	
+					NOT = { culture = sun_warrior } 
+					is_tribal = no
+					is_theocracy = no
+					is_patrician = no
+				}
+			}	
+		}
+		set_government_type = fire_imperial_government
+	}
+	option = {
+		name = EVTOPAVIMP.5
+		trigger = {
+			culture_group = fire_nation_culture
+			NOT = { culture = sun_warrior } 
+			OR = {
+				has_landed_title = e_fire_nation
+				primary_title = { has_law = ze_fire_administration_laws_2 }
+			}
+		}
+	any_playable_ruler = {
+		limit = { 	
+			OR = {
+				has_landed_title = e_fire_nation
+				primary_title = { has_law = ze_fire_administration_laws_2 }
+				}
+			NOT = { culture = sun_warrior } 
+			is_tribal = no
+			is_theocracy = no
+			is_patrician = no
+			}
+		}
+		set_government_type = fire_imperial_government		
 	
+	}
 	option = { #Sun Bois
 	name = EVTOPAVIMP.5
 		trigger = {
@@ -135,3 +95,93 @@ narrative_event = {
 		}
 	}
 }
+narrative_event = {
+	id = avimperial.2 #Fire Imperial formation
+	is_triggered_only = yes
+	hide_window = no
+	only_rulers = yes
+	
+	trigger = {
+		e_fire_nation = { has_law = fire_imperial_administration }
+		NOT = { has_global_flag = fire_imperial_founded }
+		NOT = { culture = sun_warrior }
+	}
+	immediate = {
+		set_global_flag = fire_imperial_founded			
+	}
+	option = { # fire nation
+		name = EVTOPAVIMP.2
+		trigger = {
+			culture_group = fire_nation_culture
+			NOT = { culture = sun_warrior } 
+			NOR = {
+				has_landed_title = e_fire_nation
+				primary_title = { has_law = fire_imperial_administration  }
+			}
+		}
+		any_playable_ruler = {
+				limit = { 
+						AND = {
+							culture_group = fire_nation_culture
+							OR = {
+								AND = {
+									top_liege = { has_law = fire_imperial_administration }
+									top_liege = { has_landed_title = e_fire_nation }
+								}
+								top_liege = { has_law = fire_imperial_administration }
+							}
+							NOT = { culture = sun_warrior } 
+							is_tribal = no
+							is_theocracy = no
+							is_patrician = no
+						}
+					}
+			set_government_type = fire_imperial_government
+		}
+	}
+	option = {
+		name = EVTOPAVIMP.5
+	any_playable_ruler = {
+		limit = { 	
+			OR = {
+				has_landed_title = e_fire_nation
+				primary_title = { has_law = fire_imperial_administration  }
+				}
+			NOT = { culture = sun_warrior } 
+			is_tribal = no
+			is_theocracy = no
+			is_patrician = no
+			}
+		}
+		set_government_type = fire_imperial_government		
+	
+	}
+	option = { #Sun Bois
+	name = EVTOPAVIMP.5
+		trigger = {
+			culture = sun_warrior
+			}
+	}
+	
+	option = { # earth kingdom 
+		name = EVTOPAVIMP.3
+		trigger = {
+			OR = {
+				culture_group = earth_kingdom_culture
+				culture_group = outlaw_culture
+			}
+		}
+	}
+	
+	option = { # World
+		name = EVTOPAVIMP.4
+		trigger = {
+			NOT = { culture_group = earth_kingdom_culture }
+			NOT = { culture_group = outlaw_culture }
+			NOT = { culture_group = fire_nation_culture }
+		}
+	}
+}
+
+
+
