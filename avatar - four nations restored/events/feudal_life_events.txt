@@ -26,16 +26,16 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
+		tier = count
 		in_command = no
 		OR = {
 			trait = greedy
 			trait = midas_touched
 			trait = gluttonous
 		}
-		tier = count
 	}
 	
 	weight_multiplier = {
@@ -61,6 +61,9 @@ character_event = {
 	
 	option = { #Ignore
 		name = EVTOPTA4000
+		trigger = { 
+			NOT = { trait = just }
+		}
 		add_trait = just
 	}
 	
@@ -69,9 +72,6 @@ character_event = {
 		tooltip_info = just
 		trigger = {
 			trait = just
-			NOT = {
-				trait = wroth
-			}
 		}
 		add_character_modifier = {
 			name = the_judger
@@ -99,9 +99,9 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		tier = count
 		NOT = {
@@ -158,7 +158,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA4085
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				war = no
 				prisoner = no
@@ -169,6 +169,10 @@ character_event = {
 					trait = craven
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_relieved
 				who = ROOT
@@ -179,7 +183,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4085
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				OR = {
 					trait = diligent
@@ -187,6 +191,10 @@ character_event = {
 					trait = brave
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_delighted
 				who = ROOT
@@ -217,13 +225,17 @@ character_event = {
 		trigger = {
 			trait = diligent
 		}
-		random_courtier = {
+		any_courtier = {
 			limit = {
 				OR = {
 					has_job_title = job_marshal
 					has_job_title = job_spymaster
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = diligent_pos
 				who = ROOT
@@ -247,9 +259,9 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		tier = count
 		NOT = {
@@ -277,7 +289,7 @@ character_event = {
 				religion_group = water_religions
 			}
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	weight_multiplier = {
@@ -311,11 +323,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4036 #Ordeal by water
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = modifier_witch
 			duration = 90
@@ -324,11 +332,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTC4036 #Torture
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = tortured_witch
 			duration = 90
@@ -356,14 +360,15 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		tier = count
 	
-		NOT = {
+		NOR = {
 			has_character_modifier = the_cruel
+			has_character_flag = in_seclusion
 		}
 		any_courtier = {
 			OR = {
@@ -375,10 +380,7 @@ character_event = {
 				martial = 12
 				intrigue = 12
 			}
-			OR = {
-				trait = quick
-				trait = genius
-			}
+			is_smart_trigger = yes
 		}
 	}
 	
@@ -410,11 +412,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4035 #Cut off hands
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = the_cruel
 			duration = 180
@@ -423,11 +421,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTC4035 #Kill!
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = kill_lawbreakers
 			duration = 180
@@ -455,9 +449,9 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		tier = count
 
@@ -527,11 +521,7 @@ character_event = {
 				trait = wroth
 			}
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		prestige = 15
 		any_courtier = {
 			limit = {
@@ -563,11 +553,7 @@ character_event = {
 				trait = cruel
 			}
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_trait = cruel
 	}
 	
@@ -596,13 +582,14 @@ character_event = {
 	border = GFX_event_normal_frame_intrigue
 	is_triggered_only = yes
 	
+	only_playable = yes
 	min_age = 20
 	max_age = 60
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		OR = {
 			tier = count
@@ -631,7 +618,7 @@ character_event = {
 				same_realm = ROOT
 				OR = {
 					trait = trusting
-					trait = slow
+					is_dumb_trigger = yes
 					NOT = {
 						trait = paranoid
 					}
@@ -659,7 +646,7 @@ character_event = {
 	option = {
 		name = EVTOPTA4045
 		location = {
-			random_province_lord = {
+			any_province_lord = {
 				limit = {
 					prisoner = no
 					treasury = 50
@@ -678,7 +665,7 @@ character_event = {
 					same_realm = ROOT
 					OR = {
 						trait = trusting
-						trait = slow
+						is_dumb_trigger = yes
 						NOT = {
 							trait = paranoid
 						}
@@ -687,6 +674,10 @@ character_event = {
 						}
 					}
 				}
+				score_value = { #Prioritizes selecting an interesting courtier...
+		            value = 10
+            		interesting_courtier_selection_score = yes
+		        }
 				character_event = {
 					id = 4046
 					tooltip = EVTTOOLTIP4046
@@ -775,9 +766,9 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		OR = {
 			tier = duke
@@ -788,8 +779,7 @@ character_event = {
 		}
 		job_spymaster = {
 			OR = {
-				trait = quick
-				trait = genius
+				is_smart_trigger = yes
 				trait = deceitful
 			}
 			OR = {
@@ -827,11 +817,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4050 #Behead him!
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = the_ruthless
 			duration = 180
@@ -859,20 +845,16 @@ character_event = {
 		trigger = {
 			OR = {
 				trait = diligent
-				trait = strong
+				is_strong_trigger = yes
 			}
 			NOT = {
-				trait = weak
+				is_weak_trigger = yes
 			}
 			NOT = {
 				trait = arbitrary
 			}
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = the_strong
 			duration = 180
@@ -885,11 +867,7 @@ character_event = {
 		trigger = {
 			trait = wroth
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		add_character_modifier = {
 			name = the_cruel
 			duration = 180
@@ -911,9 +889,9 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		tier = count
 		any_vassal = {
@@ -1001,17 +979,18 @@ character_event = {
 	
 	is_triggered_only = yes
 
+	only_playable = yes
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
-		is_ruler = yes
 		tier = count
-		NOT = {
+		NOR = {
 			has_character_modifier = the_merciful
+			has_character_modifier = in_seclusion
 		}
 		OR = {
 			NOT = {
@@ -1068,6 +1047,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4020 #Ask someone to do something about it!
+		custom_tooltip = { text = EVTTOOLTIP4021 }
 		ai_chance = { factor = 80 }
 			any_courtier = {	
 				limit = {
@@ -1084,7 +1064,6 @@ character_event = {
 			character_event = {
 				id = 4021
 				days = 10
-				tooltip = EVTTOOLTIP4021
 			}
 		}
 	}
@@ -1179,11 +1158,7 @@ character_event = {
 				trait = just
 			}
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		FROM = {
 			set_character_flag = dead_poachers
 			character_event = {
@@ -1203,11 +1178,7 @@ character_event = {
 				trait = arbitrary
 			}
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		FROM = {
 			set_character_flag = ears_off
 			character_event = {
@@ -1258,11 +1229,7 @@ character_event = {
 		trigger = {
 			has_character_flag = ears_off
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		clr_character_flag = ears_off
 		FROM = {
 			character_event = {
@@ -1302,11 +1269,7 @@ character_event = {
 		trigger = {
 			has_character_flag = dead_poachers
 		}
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		clr_character_flag = dead_poachers
 		FROM = {
 			character_event = {
@@ -1371,16 +1334,16 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		treasury = 100
 		is_ruler = no
 		OR = {
 			trait = trusting
 			trait = charitable
-			trait = slow
+			is_dumb_trigger = yes
 		}
 		host = {
 			age = 20
@@ -1391,14 +1354,14 @@ character_event = {
 			NOT = {
 				trait = incapable
 			}
-		}
-		
-		any_demesne_province = {
-			OR = {
-				has_province_modifier = highway_robber_band
-				has_province_modifier = thieves_guild
+			any_demesne_province = {
+				OR = {
+					has_province_modifier = highway_robber_band
+					has_province_modifier = thieves_guild
+				}
 			}
 		}
+		
 	}
 	
 	weight_multiplier = {
@@ -1471,11 +1434,7 @@ character_event = {
 			trait = arbitrary
 		}
 		ai_chance = { factor = 20 }
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		FROM = {
 			set_character_flag = heads_up
 			character_event = {
@@ -1493,11 +1452,7 @@ character_event = {
 			trait = wroth
 		}
 		ai_chance = { factor = 30 }
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		FROM = {
 			set_character_flag = hands_off
 			character_event = {
@@ -1553,11 +1508,7 @@ character_event = {
 			has_character_flag = hands_off
 		}
 		ai_chance = { factor = 30 }
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		clr_character_flag = hands_off
 		FROM = {
 			character_event = {
@@ -1573,11 +1524,7 @@ character_event = {
 			has_character_flag = hands_off
 		}
 		ai_chance = { factor = 70 }
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		clr_character_flag = hands_off
 		FROM = {
 			character_event = {
@@ -1672,9 +1619,10 @@ character_event = {
 	capable_only = yes
 	prisoner = no
 	is_triggered_only = yes
+	war = no
+	is_married = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		is_ruler = no
 		host = {
@@ -1702,7 +1650,6 @@ character_event = {
 				has_character_modifier = the_judger
 			}				
 		}
-		is_married = yes
 		spouse = {
 			trait = lustful
 			is_abroad = no
@@ -1715,7 +1662,7 @@ character_event = {
 					tier = duke
 				}
 			}
-			NOT = {
+			NOR = {
 				tier = king
 				tier = emperor
 			}
@@ -1725,6 +1672,7 @@ character_event = {
 				has_opinion_modifier = { who = ROOT modifier = opinion_cuckolded }
 				has_opinion_modifier = { who = ROOT modifier = opinion_unfaithful_wife }
 				has_opinion_modifier = { who = ROOT modifier = opinion_unfaithful_husband }
+				has_opinion_modifier = { who = ROOT modifier = opinion_unfaithful_husband_crime }
 				NOT = { opinion = { who = ROOT value = 30 } }
 			}
 		}
@@ -1828,6 +1776,7 @@ character_event = {
 		}
 		FROM = {
 			spouse = {
+				imprison = ROOT
 				opinion = {
 					modifier = insulted
 					who = ROOT
@@ -1848,10 +1797,10 @@ character_event = {
 		trigger = {
 			trait = arbitrary
 			NOT = {
-				trait = slow
+				trait = dull
 			}
 		}
-		add_trait = slow
+		add_trait = dull
 	}
 	
 	option = {
@@ -1950,11 +1899,10 @@ character_event = {
 	min_age = 20
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
-		NOT = { trait = airbender }
 		OR = {
 			trait = falconer
 			trait = hunter
@@ -2001,7 +1949,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4060
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				war = no
 				prisoner = no
@@ -2014,6 +1962,10 @@ character_event = {
 					}
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = brave_pos
 				who = ROOT
@@ -2024,7 +1976,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTC4060
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				OR = {
 					trait = falconer
@@ -2035,6 +1987,10 @@ character_event = {
 				}
 				age = 16
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_oblivious
 				who = ROOT
@@ -2061,9 +2017,10 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
+	friends = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		any_friend = {
 			age = 20
@@ -2076,7 +2033,7 @@ character_event = {
 			}
 			reverse_opinion = { who = ROOT value = 25 }
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	weight_multiplier = {
@@ -2102,7 +2059,7 @@ character_event = {
 	}
 	
 	immediate = {
-		random_friend = {
+		any_friend = {
 			limit = {
 				age = 20
 				prisoner = no
@@ -2114,16 +2071,17 @@ character_event = {
 				}
 				reverse_opinion = { who = ROOT value = 25 }
 			}
-			set_character_flag = invitation_pending
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
+			save_event_target_as = invitation_pending
 		}
 	}
 	
 	option = {
 		name = EVTOPTA4110
-		random_vassal = {
-			limit = {
-				has_character_flag = invitation_pending
-			}
+		event_target:invitation_pending = {
 			character_event = {
 				id = 4111
 				days = 3
@@ -2135,10 +2093,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4110
-		random_vassal = {
-			limit = {
-				has_character_flag = invitation_pending
-			}
+		event_target:invitation_pending = {
 			random = {
 				chance = 70
 				character_event = {
@@ -2356,57 +2311,48 @@ character_event = {
 	only_playable = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
-		NOT = {
+		NOR = {
 			tier = king
 			tier = emperor
-		}
-		NOT = {
-			trait = shy
-		}
-		NOT = {
 			trait = depressed
-		}
-		NOT = {
 			trait = stressed
-		}
-		NOT = {
 			has_character_modifier = big_spender
 		}
 		treasury = 30
 		any_vassal = {
+			higher_tier_than = BARON
 			OR = {
 				trait = greedy
 				trait = gregarious
-				treasury = 50
 			}
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	weight_multiplier = {
 		days = 1
 		
 		modifier = {
-			factor = 5
+			factor = 2.5
 			trait = gregarious
 		}
 
 		modifier = {
-			factor = 2.5
+			factor = 1.5
 			trait = charitable
 		}
 	}
 	
 	option = {
 		name = EVTOPTA4115
-		treasury = -10
+		scaled_wealth = -0.1
 		add_character_modifier = {
 			name = big_spender
-			duration = 180
+			years = 5
 		}		
 	}
 	
@@ -2415,31 +2361,37 @@ character_event = {
 		tooltip_info = greedy
 		trigger = {
 			trait = greedy
-			NOT = {
+			NOR = {
 				trait = cynical
+				trait = zealous
 			}
 		}
+		prestige = 50
 		add_trait = cynical
 	}
 	
 	option = {
 		name = EVTOPTD4115
-		#tooltip_info = 
 		trigger = {
 			OR = {
 				trait = arbitrary
 				trait = greedy
-				NOT = {
-					trait = shy
-				}
+			}
+			NOT = {
+				trait = shy
 			}
 		}
-		random_list = {
-			50 = {
-				add_trait = shy
-			}
-			50 = {
-				prestige = 10
+		add_character_modifier = {
+			name = bargainer
+			years = 5
+		}
+		random = {
+			chance = 30
+			add_trait = shy
+			hidden_tooltip = {
+				character_event = {
+					id = 38263 #Notify Shy
+				}
 			}
 		}
 	}
@@ -2447,40 +2399,54 @@ character_event = {
 	option = {
 		name = EVTOPTE4115
 		trigger = {
-			NOT = {
+			NOR = {
 				trait = greedy
-			}
-			NOT = {
 				trait = arbitrary
-			}
-			NOT = {
 				trait = kind
 			}
 		}
+		add_trait = kind
+		prestige = 50
 		random_list = {
-			50 = {
-				add_trait = kind
-			}
-			50 = {
+			50 = {}
+			30 = {
 				add_trait = stressed
+				hidden_tooltip = {
+					character_event = {
+						id = 38282 #Notify Stressed
+					}
+				}
+			}
+			20 = {
+				add_trait = drunkard
+				hidden_tooltip = {
+					character_event = {
+						id = 38286 #Notify Drunkard
+					}
+				}
 			}
 		}
 	}
 	
 	option = {
 		name = EVTOPTF4115
-		random_vassal = {
+		prestige = 50
+		any_vassal = {
 			limit = {
+				higher_tier_than = BARON
 				OR = {
 					trait = greedy
 					trait = gregarious
-					treasury = 50
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_irritated
 				who = ROOT
-				years = 1
+				years = 5
 			}
 		}
 	}
@@ -2499,9 +2465,9 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		num_of_rivals = 1
 		NOT = {
@@ -2525,7 +2491,7 @@ character_event = {
 				trait = greedy
 			}
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	weight_multiplier = {
@@ -2599,9 +2565,9 @@ character_event = {
 	only_playable = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		NOT = {
 			tier = king
@@ -2621,7 +2587,7 @@ character_event = {
 				}
 			}
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	weight_multiplier = {
@@ -2658,7 +2624,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4135
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				at_location = ROOT
 				age = 50
@@ -2671,6 +2637,10 @@ character_event = {
 					}
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_pitiful
 				who = ROOT
@@ -2682,6 +2652,8 @@ character_event = {
 	option = {
 		name = EVTOPTC4135
 		add_trait = gluttonous
+		gain_weight_small_effect = yes
+		weight_trait_check_effect = yes
 	}
 }
 
@@ -2700,9 +2672,9 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		NOT = {
 			has_character_modifier = the_cynical
@@ -2747,7 +2719,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB4145
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				NOT = {
 					family = ROOT
@@ -2759,6 +2731,10 @@ character_event = {
 					trait = charitable
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			set_character_flag = liege_wroth
 			character_event = {
 				id = 4146
@@ -2782,7 +2758,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTD4145
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				NOT = {
 					family = ROOT
@@ -2794,6 +2770,10 @@ character_event = {
 					trait = charitable
 				}
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			set_character_flag = liege_gregarious
 			character_event = {
 				id = 4146
@@ -2918,20 +2898,14 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
-		father = {
+		father_even_if_dead = {
 			is_alive = no
 		}
-		OR = {
-			trait = quick
-			trait = genius
-			NOT = {
-				trait = slow
-			}
-		}
+		is_dumb_trigger = no
 		NOT = {
 			trait = kind
 			has_character_modifier = the_suspicious
@@ -2997,13 +2971,20 @@ character_event = {
 	
 	option = {
 		name = EVTOPTE4150
+		ai_chance = {
+			factor = 0
+		}
 		create_character = {
-			learning = 8
 			random_traits = yes
 			dynasty = random
 			age = 65
 			female = no
-			has_nickname = nick_the_clueless
+			attributes = {
+				learning = 8
+			}
+		}
+		new_character = {
+			give_nickname = nick_the_clueless
 		}
 	}
 	
@@ -3035,9 +3016,9 @@ character_event = {
 	only_playable = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		NOT = {
 			has_character_modifier = the_sullen
@@ -3045,6 +3026,7 @@ character_event = {
 		any_vassal = {
 			learning = 15
 		}
+		NOT = { has_character_modifier = in_seclusion }
 	}
 	
 	weight_multiplier = {
@@ -3114,10 +3096,24 @@ character_event = {
 	
 	option = {
 		name = EVTOPTE4155
-		random_vassal = {
+		trigger = {
+			trait = gregarious
+			any_vassal = {
+				learning = 15
+				NOT = { trait = incapable }
+				prisoner = no
+			}
+		}
+		any_vassal = {
 			limit = {
 				learning = 15
+				NOT = { trait = incapable }
+				prisoner = no
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = gregarious_pos
 				who = ROOT
@@ -3154,9 +3150,9 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	trigger = {
-		war = no
 		in_command = no
 		OR = {
 			trait = lunatic
@@ -3171,7 +3167,7 @@ character_event = {
 			trait = ambitious
 			trait = wroth
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	weight_multiplier = {
@@ -3189,7 +3185,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA4175
-		add_trait = maimed
+		add_maimed_trait_effect = yes
 	}
 	
 	option = {
@@ -3200,10 +3196,14 @@ character_event = {
 			add_trait = wounded
 			hidden_tooltip = { character_event = { id = 38280 } }
 		}
-		random_vassal = {
+		any_vassal = {
 			limit = {
 				trait = diligent
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			reverse_opinion = {
 				modifier = opinion_my_saviour
 				who = ROOT
@@ -3220,11 +3220,15 @@ character_event = {
 			add_trait = wounded
 			hidden_tooltip = { character_event = { id = 38280 } }
 		}
-		random_courtier = {
+		any_courtier = {
 			limit = {
 				trait = ambitious
 				trait = wroth
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+        		interesting_courtier_selection_score = yes
+	        }
 			reverse_opinion = {
 				modifier = opinion_fool_courtier
 				who = ROOT
