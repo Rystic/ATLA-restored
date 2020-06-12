@@ -1,1 +1,130 @@
-# blanked for Avatar
+######## Personal combat rating values... #Reusable
+is_the_worst_duelist_trigger = {
+	NOT = { combat_rating = 0 }
+}
+is_terrible_duelist_trigger = {
+	combat_rating = 0
+	NOT = { combat_rating = 15 }
+}
+is_bad_duelist_trigger = {
+	combat_rating = 15
+	NOT = { combat_rating = 30 }
+}
+is_ok_duelist_trigger = {
+	combat_rating = 30
+	NOT = { combat_rating = 45 }
+}
+is_decent_duelist_trigger = {
+	combat_rating = 45
+	NOT = { combat_rating = 60 }
+}
+is_good_duelist_trigger = {
+	combat_rating = 60
+	NOT = { combat_rating = 75 }
+}
+is_great_duelist_trigger = {
+	combat_rating = 75
+	NOT = { combat_rating = 90 }
+}
+is_fantastic_duelist_trigger = {
+	combat_rating = 90
+	NOT = { combat_rating = 105 }
+}
+is_the_best_duelist_trigger = {
+	combat_rating = 105
+}
+
+# Combat rating checks - grouped.. #Reusable
+duelist_skill_is_low_group_trigger = {
+	OR = {
+		is_the_worst_duelist_trigger = yes
+		is_terrible_duelist_trigger = yes
+		is_bad_duelist_trigger = yes
+	}	
+}
+duelist_skill_is_medium_group_trigger = {
+	OR = {
+		is_ok_duelist_trigger = yes
+		is_decent_duelist_trigger = yes
+		is_good_duelist_trigger = yes
+	}
+}
+duelist_skill_is_high_group_trigger = {
+	OR = {
+		is_great_duelist_trigger = yes
+		is_fantastic_duelist_trigger = yes
+		is_the_best_duelist_trigger = yes
+	}
+}
+
+######## Combat rating compared to other target... #Reusable
+is_the_worst_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value < -90 } #Checks that you're worse than -90 below Prev in skill
+}
+is_terrible_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= -90 } #Checks that you're between -90 to -41 below Prev in skill
+	combat_rating_diff = { who = PREV value < -40 }
+}
+is_bad_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= -40 } #Checks that you're between -40 to -16 below Prev in skill
+	combat_rating_diff = { who = PREV value < -15 }	
+}
+is_ok_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= -15 } #Checks that you're -15 below or up to -6 below than Prev
+	combat_rating_diff = { who = PREV value < -5 }
+}
+is_decent_dueler_compared_to_prev_trigger = { #Should check if even...
+	combat_rating_diff = { who = PREV value >= -5 } #Checks that you're -5 below or up to 4 above Prev in skill
+	combat_rating_diff = { who = PREV value < 5 }
+}
+is_good_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= 5 } #Checks that you're between 5 to 14 above Prev in skill
+	combat_rating_diff = { who = PREV value < 15 }
+}
+is_great_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= 15 } #Checks that you're between 15 to 39 above Prev in skill
+	combat_rating_diff = { who = PREV value < 40 }
+}
+is_fantastic_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= 40 } #Checks that you're between 40 to 89 above Prev in skill
+	combat_rating_diff = { who = PREV value < 90 }
+}
+is_the_best_dueler_compared_to_prev_trigger = {
+	combat_rating_diff = { who = PREV value >= 90 } #Checks that you're more than 90 above Prev in skill
+}
+
+# Combat rating compared to other target - grouped... #Reusable
+duelist_skill_compared_to_prev_low_group_trigger = {
+	custom_tooltip = {
+		text = this_is_worse_than_prev_tt
+		hidden_trigger = {
+			OR = {
+				is_the_worst_dueler_compared_to_prev_trigger = yes
+				is_terrible_dueler_compared_to_prev_trigger = yes
+				is_bad_dueler_compared_to_prev_trigger = yes
+				is_ok_dueler_compared_to_prev_trigger = yes
+			}
+		}
+	}	
+}
+duelist_skill_compared_to_prev_medium_group_trigger = {
+	custom_tooltip = {
+		text = evenly_matched_tt
+		hidden_trigger = {
+			is_decent_dueler_compared_to_prev_trigger = yes
+		}
+	}
+}
+duelist_skill_compared_to_prev_high_group_trigger = {
+custom_tooltip = {
+		text = this_is_better_than_prev_tt
+		hidden_trigger = {
+			OR = {
+				is_good_dueler_compared_to_prev_trigger = yes
+				is_great_dueler_compared_to_prev_trigger = yes
+				is_fantastic_dueler_compared_to_prev_trigger = yes
+				is_the_best_dueler_compared_to_prev_trigger = yes
+			}
+		}
+	}
+}
