@@ -17,17 +17,18 @@ character_event = {
 	desc = EVTDESC65000
 	picture = GFX_evt_crusaders
 	
-	only_men = yes
+#	only_men = yes
 	capable_only = yes
 	prisoner = no
+	min_age = 16
+	war = yes
 	
 	is_triggered_only = yes
 
 	trigger = {
-		war = yes
-		in_command = yes
 		trait = stressed
-		NOT = {
+		in_command = yes
+		NOR = {
 			has_character_modifier = stressed_commander
 			has_character_modifier = misplaced_food
 		}
@@ -58,12 +59,12 @@ character_event = {
 	
 	only_men = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		is_ruler = yes
 		trait = stressed
 		diplomacy = 2
 		NOT = {
@@ -125,12 +126,12 @@ character_event = {
 	
 	only_men = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		is_ruler = yes
 		trait = stressed
 		in_command = no
 		martial = 2
@@ -193,12 +194,12 @@ character_event = {
 	
 	only_men = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		is_ruler = yes
 		trait = stressed
 		intrigue = 2
 		NOT = {
@@ -260,12 +261,12 @@ character_event = {
 	
 	only_men = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		is_ruler = yes
 		trait = stressed
 		stewardship = 2
 		NOT = {
@@ -327,12 +328,12 @@ character_event = {
 	
 	only_men = yes
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		is_ruler = yes
 		trait = stressed
 		learning = 2
 		NOT = {
@@ -448,7 +449,7 @@ character_event = {
 		trigger = {
 			is_married = yes
 		}
-		spouse = {
+		random_spouse = {
 			character_event = {
 				id = 65012
 				tooltip = EVTTOOLTIPA65012
@@ -483,6 +484,8 @@ character_event = {
 		random_courtier = {
 			limit = {
 				is_councillor = yes
+				prisoner = no
+				NOT = { trait = incapable }
 			}
 			character_event = {
 				id = 65012
@@ -500,6 +503,8 @@ character_event = {
 		random_courtier = {
 			limit = {
 				is_councillor = no
+				prisoner = no
+				NOT = { trait = incapable }
 			}
 			character_event = {
 				id = 65012
@@ -547,14 +552,14 @@ character_event = {
 			guardian = {
 				character = ROOT
 			}
-			trait = weak
+			is_weak_trigger = yes
 			age = 9
 			NOT = {
 				age = 16
 			}
+			can_be_maimed_trigger = yes
 			NOT = {
 				trait = brave
-				trait = maimed
 			}
 		}
 	}
@@ -565,24 +570,20 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA65020 #Try to beat some sense in the child
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_child = {
 			limit = {
 				guardian = {
 					character = ROOT
 				}
-				trait = weak
+				is_weak_trigger = yes
 				age = 9
 				NOT = {
 					age = 15
 				}
+				can_be_maimed_trigger = yes
 				NOT = {
 					trait = brave
-					trait = maimed
 				}
 			}
 			opinion = {
@@ -592,32 +593,27 @@ character_event = {
 			}
 			random = {
 				chance = 50
-				add_trait = maimed
-				hidden_tooltip = { character_event = { id = 38281 } }
+				add_maimed_trait_effect = yes
 				
 			}
 		}
 	}
 	option = {
 		name = EVTOPTB65020 #Put the child out with the wolves
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_child = {
 			limit = {
 				guardian = {
 					character = ROOT
 				}
-				trait = weak
+				is_weak_trigger = yes
 				age = 9
 				NOT = {
 					age = 15
 				}
+				can_be_maimed_trigger = yes
 				NOT = {
 					trait = brave
-					trait = maimed
 				}
 			}
 			opinion = {
@@ -670,11 +666,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA65021 #Reduce food rations
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_courtier = {
 			limit = {
 				prisoner = yes
@@ -685,17 +677,26 @@ character_event = {
 			random = {
 				chance = 25
 				
-				add_trait = ill
+				if = {
+					limit = {
+						NOT = {
+							has_dlc = "Reapers"
+						}
+					}
+					add_trait = ill
+				}
+				if = {
+					limit = {
+						has_dlc = "Reapers"
+					}
+					add_symptom_effect = yes
+				}
 			}
 		}
 	}
 	option = {
 		name = EVTOPTB65021 #Release some rats in cell
-		if = {
-			limit = { trait = airbender}
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_courtier = {
 			limit = {
 				prisoner = yes
@@ -728,15 +729,15 @@ character_event = {
 		trait = cruel
 		in_command = no
 		any_courtier = {
+			prisoner = no
 			NOT = {
 				trait = wounded
 			}
 		}
 		any_courtier = {
+			prisoner = no
 			age = 20
-			NOT = {
-				trait = maimed
-			}
+			can_be_maimed_trigger = yes
 		}
 	}
 	
@@ -746,14 +747,12 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA65022 #Aim low
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_courtier = {
 			limit = {
+				prisoner = no
 				NOT = {
+					trait = incapable
 					trait = wounded
 				}
 			}
@@ -768,26 +767,25 @@ character_event = {
 	}
 	option = {
 		name = EVTOPTB65022 #Aim high
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_courtier = {
 			limit = {
 				age = 20
+				prisoner = no
+				can_be_maimed_trigger = yes
 				NOT = {
-					trait = maimed
+					trait = incapable
 				}
 			}
 			random_list = {
 				50 = {
 					death = {
-						death_reason = death_accident
+						death_reason = death_murder_unknown_arrow
+						killer = ROOT
 					}
 				}
 				50 = {
-					add_trait = maimed
+					add_maimed_trait_effect = yes
 					hidden_tooltip = { character_event = { id = 38281 } }
 			
 					opinion = {
@@ -831,6 +829,8 @@ character_event = {
 		random_courtier = {
 			limit = {
 				trait = craven
+				prisoner = no
+				NOT = { trait = incapable }
 				age = 20
 			}
 			random = {
@@ -855,7 +855,9 @@ character_event = {
 		random_courtier = {
 			limit = {
 				trait = craven
+				prisoner = no
 				age = 20
+				NOT = { trait = incapable }
 			}
 			random = {
 				chance = 50
@@ -873,6 +875,56 @@ character_event = {
 
 ### ZEALOUS EVENTS ###
 
+#Depressed, Zealous Character
+character_event = {
+	id = 65030
+	desc = EVTDESC65030 #God should not make us feel this...
+	picture = GFX_evt_bad_news
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		in_command = no
+		trait = depressed
+		trait = zealous
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65030 #Pray harder
+		random_list = {
+			50 = {
+				remove_trait = depressed
+			}
+			25 = {
+				add_trait = stressed
+				hidden_tooltip = {
+					character_event = {
+						id = 38282 #Notify stressed
+					}
+				}
+			}
+			25 = {
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB65030 #Doubt self
+		piety = -5
+		random = {
+			chance = 25
+			
+			remove_trait = zealous
+		}
+	}
+}
+
 #Ill, Zealous Character
 character_event = {
 	id = 65031
@@ -886,7 +938,7 @@ character_event = {
 	
 	trigger = {
 		in_command = no
-		trait = ill
+		is_ill = yes
 		trait = zealous
 	}
 	
@@ -930,6 +982,383 @@ character_event = {
 	}
 }
 
+#Pneumonic, Ill, Zealous Character
+character_event = {
+	id = 65032
+	desc = EVTDESC65032
+	picture = GFX_evt_illness
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		in_command = no
+		OR = {
+			trait = ill
+			trait = pneumonic
+		}
+		trait = zealous
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65032 #Give to the poor for my sins
+		scaled_wealth = -1.0
+		random = {
+			chance = 10
+			if = {
+				limit = {
+					trait = pneumonic
+				}
+				remove_trait = pneumonic
+				clear_disease_level_effect = yes
+			}
+			if = {
+				limit = {
+					trait = ill 
+				}
+				remove_trait = ill
+			}
+			hidden_tooltip = {
+				character_event = {
+					id = 38283 #Notify remove ill
+				}
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB65032 #Prayers are enough
+		random = {
+			chance = 10
+			
+			death = {
+				death_reason = death_trait
+			}
+		}
+	}
+}
+
+#Leper, Zealous Character
+character_event = {
+	id = 65033
+	desc = EVTDESC65033
+	picture = GFX_evt_illness
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = {
+			has_game_rule = {
+				name = supernatural_events
+				value = off
+			}
+		}
+		in_command = no
+		trait = leper
+		trait = zealous
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65033 
+		scaled_wealth = -1.0
+		remove_trait = leper
+	}
+}
+
+### Sinful Character ###
+character_event = {
+	id = 65034
+	desc = EVTDESC65034 #We feel so guilty...
+	picture = GFX_evt_bad_news
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		in_command = no
+		NOT = { trait = incapable }
+		OR = {
+			trait = lustful
+			trait = gluttonous
+			trait = greedy
+			trait = slothful
+			trait = envious
+			trait = wroth
+			trait = proud
+		}
+		trait = zealous
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65034 #Prayer and fasting
+		add_character_modifier = {
+			name = one_year_fasting
+			duration = 365
+		}
+	}
+	option = {
+		name = EVTOPTB65034 #Pay church etc
+		scaled_wealth = -0.5
+	}
+}
+
+#Scholar wrote a small religious tract
+character_event = {
+	id = 65035
+	desc = EVTDESC65035
+	picture = GFX_evt_bishop
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { trait = incapable }
+		in_command = no
+		trait = scholar
+		trait = zealous
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65035 #Send to the Church
+		trigger = {
+			is_ruler = yes
+		}
+		add_character_modifier = {
+			name = religious_tract
+			duration = 3650
+		}
+	}
+	option = {
+		name = EVTOPTB65035 #Vassal give liege
+		trigger = {
+			liege = {
+				age = 1
+				NOT = {
+					character = ROOT
+				}
+			}
+		}
+		piety = 10
+		liege = {
+			opinion = {
+				modifier = opinion_religious_tract
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+	option = {
+		name = EVTOPTC65035 #Courtier give host
+		trigger = {
+			host = {
+				age = 1
+				NOT = {
+					character = ROOT
+				}
+			}
+		}
+		piety = 10
+		host = {
+			opinion = {
+				modifier = opinion_religious_tract
+				who = ROOT
+				years = 10
+			}
+		}
+	}
+}
+
+#Lack of sin
+character_event = {
+	id = 65036
+	desc = EVTDESC65036
+	picture = GFX_evt_bishop
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		in_command = no
+		NOR = {
+			trait = lustful
+			trait = gluttonous
+			trait = slothful
+			trait = greedy
+			trait = envious
+			trait = wroth
+			trait = proud
+			trait = incapable
+		}
+		OR = {
+			trait = chaste
+			trait = temperate
+			trait = charitable
+			trait = diligent
+			trait = kind
+			trait = patient
+			trait = humble
+		}
+		trait = zealous
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65036 #Proclaim lack of sin publicly
+		prestige = 5
+		random_courtier = {
+			limit = {
+				prisoner = no
+				NOT = { trait = incapable }
+				OR = {
+					trait = lustful
+					trait = gluttonous
+					trait = slothful
+					trait = greedy
+					trait = envious
+					trait = wroth
+					trait = chaste
+					trait = proud
+				}
+			}
+			opinion = {
+				modifier = opinion_bragger
+				who = ROOT
+				years = 5
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB65036 #Thank the Lord in private
+		piety = 1
+		add_trait = humble
+	}
+}
+
+#Someone is Celibate
+character_event = {
+	id = 65037
+	desc = EVTDESC65037
+	picture = GFX_evt_bishop
+	
+	min_age = 16
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		in_command = no
+		NOT = {
+			trait = celibate
+			trait = lustful
+			trait = hedonist
+		}
+		trait = zealous
+		OR = {
+			any_courtier = {
+				trait = celibate
+				prisoner = no
+			}
+			any_vassal = {
+				trait = celibate
+				prisoner = no
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		factor = 1
+	}
+	
+	option = {
+		name = EVTOPTA65037 #ask him/her for advice...
+		trigger = {
+			any_courtier = {
+				trait = celibate
+				prisoner = no
+			}
+		}
+		random_courtier = {
+			limit = {
+				trait = celibate
+				prisoner = no
+				NOT = { trait = incapable }
+			}
+			opinion = {
+				modifier = opinion_flattered
+				who = ROOT
+				years = 5
+			}
+		}
+		random = {
+			chance = 50
+			
+			add_trait = celibate
+		}
+	}
+	option = {
+		name = EVTOPTB65037 #try to emulate him/her
+		trigger = {
+			any_vassal = {
+				trait = celibate
+				prisoner = no
+			}
+		}
+		random_vassal = {
+			limit = {
+				trait = celibate
+				prisoner = no
+			}
+			opinion = {
+				modifier = opinion_flattered
+				who = ROOT
+				years = 5
+			}
+		}
+		random = {
+			chance = 50
+			
+			add_trait = celibate
+		}
+	}
+	option = {
+		name = EVTOPTC65037
+		random = {
+			chance = 25
+			
+			add_trait = celibate
+		}
+	}
+}
+
 ######################################################
 ### DRUNKARD EVENTS 
 ######################################################
@@ -943,13 +1372,12 @@ character_event = {
 	min_age = 16
 	capable_only = yes
 	prisoner = no
+	war = no
 	
 	is_triggered_only = yes
 
 	trigger = {
 		NOT = { trait = drunkard }
-		war = no
-		age = 16
 		in_command = no
 		OR = {
 			trait = gluttonous
@@ -974,7 +1402,20 @@ character_event = {
 		name = EVTOPTB65040
 		if = {
 			limit = { trait = gluttonous }
-			add_trait = ill
+			if = {
+				limit = {
+					NOT = {
+						has_dlc = "Reapers"
+					}
+				}
+				add_trait = ill
+			}
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				add_symptom_effect = yes
+			}
 		}
 		if = {
 			limit = { NOT = { trait = gluttonous } }
@@ -1063,6 +1504,7 @@ character_event = {
 	picture = GFX_evt_drunk
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
@@ -1070,7 +1512,6 @@ character_event = {
 	trigger = {
 		trait = drunkard
 		in_command = no
-		is_ruler = yes
 	}
 	
 	weight_multiplier = {
@@ -1145,13 +1586,13 @@ character_event = {
 	
 	capable_only = yes
 	prisoner = no
+	is_married = yes
 	
 	is_triggered_only = yes
 
 	trigger = {
 		trait = drunkard
 		in_command = no
-		is_married = yes
 		spouse = {
 			is_abroad = no
 			prisoner = no
@@ -1206,10 +1647,6 @@ character_event = {
 	
 	is_triggered_only = yes
 	
-	weight_multiplier = {
-		factor = 1
-	}
-	
 	option = {
 		name = EVTOPTA65046
 		remove_trait = drunkard
@@ -1223,10 +1660,6 @@ character_event = {
 	picture = GFX_evt_drunk
 	
 	is_triggered_only = yes
-	
-	weight_multiplier = {
-		factor = 1
-	}
 	
 	option = {
 		name = EVTOPTA65047
@@ -1250,6 +1683,7 @@ character_event = {
 	picture = GFX_evt_crusaders
 	
 	capable_only = yes
+	only_rulers = yes
 	prisoner = no
 	
 	is_triggered_only = yes
@@ -1257,7 +1691,6 @@ character_event = {
 	trigger = {
 		trait = drunkard
 		in_command = yes
-		is_ruler = yes
 		in_battle = no
 		in_siege = no
 		NOT = { has_character_modifier = drunk_commander }
@@ -1362,7 +1795,6 @@ character_event = {
 	option = {
 		name = EVTOPTC65049	#God cures me!
 		trigger = {
-			NOT = { trait = airbender }
 		}
 		piety = 5
 		change_learning = 1
@@ -1407,6 +1839,14 @@ character_event = {
 		health = -1
 		fertility = -0.05
 	}
+	option = {
+		name = EVTOPTB65050	#ask priests for advice.
+		trigger = {
+		}
+		piety = 5
+		health = -0.5
+		prestige = -10
+	}
 }
 
 #Whine or wine?
@@ -1425,6 +1865,7 @@ character_event = {
 		in_command = no
 		NOT = { health = 3 }
 		NOT = { trait = incapable }
+		immortal = no
 	}
 	
 	weight_multiplier = {
@@ -1447,13 +1888,13 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = yes
 	
 	is_triggered_only = yes
 
 	trigger = {
-		war = yes
 		in_command = yes
-		trait = ill
+		is_ill = yes
 	}
 	
 	weight_multiplier = {
@@ -1492,7 +1933,7 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		trait = ill
+		is_ill = yes
 		OR = {
 			trait = lustful
 			trait = gluttonous
@@ -1566,7 +2007,7 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		trait = ill
+		is_ill = yes
 		has_guardian = yes
 	}
 	
@@ -1877,12 +2318,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = dwarf
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -1951,11 +2392,11 @@ character_event = {
 	prisoner = no
 	only_rulers = yes
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = dwarf
 		NOT = {
@@ -2005,13 +2446,13 @@ character_event = {
 	only_men = yes
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
-		trait = strong
+		is_strong_trigger = yes
 		NOT = {
 			trait = dwarf
 		}
@@ -2060,6 +2501,7 @@ character_event = {
 				age = 12
 				NOT = {
 					age = 60
+					trait = incapable
 				}
 				trait = dwarf
 			}
@@ -2115,11 +2557,11 @@ character_event = {
 	
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = clubfooted
 		NOT = {
@@ -2147,12 +2589,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = clubfooted
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -2222,11 +2664,11 @@ character_event = {
 	only_men = yes
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = clubfooted
 		OR = {
@@ -2282,12 +2724,7 @@ character_event = {
 				}
 			}
 			10 = {
-				add_trait = maimed
-				hidden_tooltip = {
-					character_event = {
-						id = 38281 #Notify Maimed
-					}
-				}
+				add_maimed_trait_effect = yes
 			}
 		}
 	}
@@ -2347,13 +2784,13 @@ character_event = {
 	only_women = yes
 	prisoner = no
 	capable_only = yes
+	war = no
+	is_married = no
 	
 	is_triggered_only = yes
 
 	trigger = {
-		war = no
 		in_command = no
-		is_married = no
 		is_betrothed = no
 		trait = clubfooted
 		NOT = {
@@ -2361,7 +2798,7 @@ character_event = {
 		}
 		has_ambition = no
 		NOT = {
-			trait = ugly
+			has_ugly_trait_trigger = yes
 		}
 		fertility = 0.6
 	}
@@ -2432,12 +2869,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = harelip
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -2506,11 +2943,11 @@ character_event = {
 	only_rulers = yes
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = harelip
 		NOT = {
@@ -2596,10 +3033,13 @@ character_event = {
 				}
 			}
 			30 = {
-				add_trait = craven
-				hidden_tooltip = {
-					character_event = {
-						id = 38257 #Notify Craven
+				if = {
+					limit = { NOT = { trait = berserker } }
+					add_trait = craven
+					hidden_tooltip = {
+						character_event = {
+							id = 38257 #Notify Craven
+						}
 					}
 				}
 			}
@@ -2619,12 +3059,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = hunchback
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -2694,14 +3134,15 @@ character_event = {
 	only_men = yes
 	only_rulers = yes
 	capable_only = yes
+	ai = no
+	war = no
+	is_married = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = hunchback
-		is_married = no
 		tier = count
 		OR = {
 			piety = 100
@@ -2902,6 +3343,8 @@ character_event = {
 		random_courtier = {
 			limit = {
 				is_female = yes
+				prisoner = no
+				NOT = { trait = incapable }
 				has_character_flag = hope_everlasting
 			}
 			opinion = {
@@ -2932,11 +3375,11 @@ character_event = {
 	min_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = hunchback
 		NOT = {
@@ -3052,12 +3495,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = lisp
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -3126,11 +3569,11 @@ character_event = {
 	only_rulers = yes
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = lisp
 		NOT = {
@@ -3216,10 +3659,13 @@ character_event = {
 				}
 			}
 			30 = {
-				add_trait = craven
-				hidden_tooltip = {
-					character_event = {
-						id = 38257 #Notify Craven
+				if = {
+					limit = { NOT = { trait = berserker } }
+					add_trait = craven
+					hidden_tooltip = {
+						character_event = {
+							id = 38257 #Notify Craven
+						}
 					}
 				}
 			}
@@ -3237,11 +3683,11 @@ character_event = {
 	
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = lisp
 		NOT = {
@@ -3335,12 +3781,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = stutter
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -3408,11 +3854,11 @@ character_event = {
 	
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = stutter
 		NOT = {
@@ -3505,11 +3951,11 @@ character_event = {
 	only_rulers = yes
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		war = no
 		in_command = no
 		trait = stutter
 		NOT = {
@@ -3604,10 +4050,13 @@ character_event = {
 				}
 			}
 			30 = {
-				add_trait = craven
-				hidden_tooltip = {
-					character_event = {
-						id = 38257 #Notify Craven
+				if = {
+					limit = { NOT = { trait = berserker } }
+					add_trait = craven
+					hidden_tooltip = {
+						character_event = {
+							id = 38257 #Notify Craven
+						}
 					}
 				}
 			}
@@ -3627,12 +4076,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = inbred
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -3704,12 +4153,12 @@ character_event = {
 	max_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = imbecile
-		war = no
 		in_command = no
 		any_courtier = {
 			age = 6
@@ -3773,12 +4222,12 @@ character_event = {
 	max_age = 60
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = imbecile
-		war = no
 		in_command = no
 	}
 
@@ -3807,12 +4256,12 @@ character_event = {
 	max_age = 60
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = imbecile
-		war = no
 		in_command = no
 	}
 	
@@ -3863,12 +4312,12 @@ character_event = {
 	capable_only = yes
 	only_rulers = yes
 	only_men = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = imbecile
-		war = no
 		in_command = no
 	}
 	
@@ -3879,6 +4328,10 @@ character_event = {
 	option = {
 		name = EVTOPTA65126
 		random_courtier = {
+			limit = {
+				prisoner = no
+				NOT = { trait = incapable }
+			}
 			opinion = {
 				modifier = opinion_shocked
 				who = ROOT
@@ -3900,12 +4353,12 @@ character_event = {
 	max_age = 80
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		trait = ugly
-		war = no
+		has_ugly_trait_trigger = yes
 		in_command = no
 	}
 	
@@ -3963,12 +4416,12 @@ character_event = {
 	prisoner = no
 	capable_only = yes
 	only_men = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		trait = ugly
-		war = no
+		has_ugly_trait_trigger = yes
 		in_command = no
 	}
 	
@@ -4018,12 +4471,12 @@ character_event = {
 	prisoner = no
 	capable_only = yes
 	only_women = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		trait = ugly
-		war = no
+		has_ugly_trait_trigger = yes
 		in_command = no
 	}
 	
@@ -4073,12 +4526,12 @@ character_event = {
 	max_age = 20
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		trait = ugly
-		war = no
+		has_ugly_trait_trigger = yes
 		in_command = no
 	}
 	
@@ -4090,11 +4543,26 @@ character_event = {
 		name = EVTOPTA65145 #No longer ugly.
 		random_list = {
 			80 = {
-				remove_trait = ugly
+				if = { 
+					limit = { trait = ugly }
+					remove_trait = ugly 
+				}
+				if = { 
+					limit = { trait = uncouth }
+					remove_trait = uncouth 
+				}
 			}
 			20 = {
-				add_trait = fair
-				remove_trait = ugly
+				if = { 
+					limit = { trait = ugly }
+					remove_trait = ugly 
+					add_trait = fair
+				}
+				if = { 
+					limit = { trait = uncouth }
+					remove_trait = uncouth 
+					add_trait = groomed
+				}
 				hidden_tooltip = {
 					character_event = {
 						id = 38301 #Notify Fair
@@ -4130,12 +4598,12 @@ character_event = {
 	min_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = gluttonous
-		war = no
 		in_command = no
 	}
 	
@@ -4165,6 +4633,8 @@ character_event = {
 			}
 			25 = {
 				remove_trait = gluttonous
+		lose_weight_small_effect = yes
+		weight_trait_check_effect = yes
 				hidden_tooltip = {
 					character_event = {
 						id = 65151 #Notify Remove Gluttonous
@@ -4179,6 +4649,8 @@ character_event = {
 			has_ambition = obj_buddhist_temperance_food
 		}
 		remove_trait = gluttonous
+		lose_weight_small_effect = yes
+		weight_trait_check_effect = yes
 		hidden_tooltip = {
 			character_event = {
 				id = 65151 #Notify Remove Gluttonous
@@ -4211,12 +4683,12 @@ character_event = {
 	min_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
 		trait = gluttonous
-		war = no
 		in_command = no
 	}
 	
@@ -4246,6 +4718,8 @@ character_event = {
 			}
 			20 = {
 				remove_trait = gluttonous
+		lose_weight_small_effect = yes
+		weight_trait_check_effect = yes
 				hidden_tooltip = {
 					character_event = {
 						id = 65151 #Notify Remove Gluttonous
@@ -4260,6 +4734,8 @@ character_event = {
 			has_ambition = obj_buddhist_temperance_food
 		}
 		remove_trait = gluttonous
+		lose_weight_small_effect = yes
+		weight_trait_check_effect = yes
 		hidden_tooltip = {
 			character_event = {
 				id = 65151 #Notify Remove Gluttonous
@@ -4285,13 +4761,13 @@ character_event = {
 	min_age = 16
 	prisoner = no
 	capable_only = yes
+	war = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		trait = slow
+		is_dumb_trigger = yes
 		trait = trusting
-		war = no
 		in_command = no
 	}
 	
