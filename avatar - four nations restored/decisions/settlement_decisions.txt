@@ -11,10 +11,264 @@
 #	
 
 settlement_decisions = {
-	
-	make_primary = {
+
+	convert_tribal_to_castle = {
+		only_playable = yes
 		filter = owned
 		ai_target_filter = owned
+		is_high_prio = yes
+		ai_check_interval = 12
+		
+		from_potential = {
+			is_playable = yes
+			is_feudal = yes
+			higher_tier_than = BARON
+		}
+		
+		potential = {
+			holding_type = tribal
+			holder_scope = {
+				character = FROM
+			}
+		}
+		allow = {
+			location = {
+				religion = FROM
+			}
+			has_building = tb_hillfort_4
+		}
+		effect = {
+			convert_to = CASTLE
+			refill_holding_levy = yes
+			
+			hidden_tooltip = {
+				if = {
+					limit = {
+						is_capital = yes
+						dejure_liege_title = {
+							location = {
+								num_of_empty_holdings = 2
+							}
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holding_type = city
+								}
+							}
+						}
+					}
+					location = {
+						build_holding = {
+							type = city
+						}
+					}
+				}
+				
+				if = {
+					limit = {
+						is_capital = yes
+						dejure_liege_title = {
+							location = {
+								num_of_empty_holdings = 2
+							}
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holding_type = temple
+								}
+							}
+						}
+					}
+					location = {
+						build_holding = {
+							type = temple
+						}
+					}
+				}
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	convert_tribal_to_city = {
+		only_playable = yes
+		filter = owned
+		ai_target_filter = owned
+		is_high_prio = yes
+		ai_check_interval = 12
+		
+		from_potential = {
+			is_playable = yes
+			is_republic = yes
+			higher_tier_than = BARON
+		}
+		
+		potential = {
+			holding_type = tribal
+			holder_scope = {
+				character = FROM
+			}
+		}
+		allow = {
+			location = {
+				religion = FROM
+			}
+			has_building = tb_market_town_4
+		}
+		effect = {
+			convert_to = CITY
+			refill_holding_levy = yes
+			
+			hidden_tooltip = {
+				if = {
+					limit = {
+						is_capital = yes
+						dejure_liege_title = {
+							location = {
+								num_of_empty_holdings = 2
+							}
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holding_type = castle
+								}
+							}
+						}
+					}
+					location = {
+						build_holding = {
+							type = castle
+						}
+					}
+				}
+				
+				if = {
+					limit = {
+						is_capital = yes
+						dejure_liege_title = {
+							location = {
+								num_of_empty_holdings = 2
+							}
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holding_type = temple
+								}
+							}
+						}
+					}
+					location = {
+						build_holding = {
+							type = temple
+						}
+					}
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1 # On average ca 1 year before taken
+		}
+	}
+	
+	convert_tribal_to_temple = {
+		only_playable = yes
+		filter = owned
+		ai_target_filter = owned
+		is_high_prio = yes
+		ai_check_interval = 12
+		
+		from_potential = {
+			is_playable = yes
+			is_theocracy = yes
+			higher_tier_than = BARON
+		}
+		
+		potential = {
+			holding_type = tribal
+			holder_scope = {
+				character = FROM
+			}
+		}
+		allow = {
+			location = {
+				religion = FROM
+			}
+			has_building = tb_hillfort_4
+		}
+		effect = {
+			convert_to = temple
+			refill_holding_levy = yes
+			
+			hidden_tooltip = {
+				if = {
+					limit = {
+						is_capital = yes
+						dejure_liege_title = {
+							location = {
+								num_of_empty_holdings = 2
+							}
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holding_type = castle
+								}
+							}
+						}
+					}
+					location = {
+						build_holding = {
+							type = castle
+						}
+					}
+				}
+				
+				if = {
+					limit = {
+						is_capital = yes
+						dejure_liege_title = {
+							location = {
+								num_of_empty_holdings = 2
+							}
+							NOT = {
+								any_direct_de_jure_vassal_title = {
+									holding_type = city
+								}
+							}
+						}
+					}
+					location = {
+						build_holding = {
+							type = city
+						}
+					}
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1 # On average ca 1 year before taken
+			modifier = {
+				factor = 0.1 # Modified down to ca 10 year average.
+			}
+		}
+	}
+	
+	make_primary = {
+		only_playable = yes
+		filter = owned
+		ai_target_filter = owned
+		ai_check_interval = 3
+		
+		from_potential = {
+			is_playable = yes
+		}
 		
 		potential = {
 			is_capital = no
@@ -33,9 +287,6 @@ settlement_decisions = {
 					AND = {
 						is_merchant_republic = no
 						is_nomadic = no
-					}
-					capital_scope = {
-						NOT = { province = PREVPREV }
 					}
 				}
 			}
@@ -75,10 +326,12 @@ settlement_decisions = {
 	}
 	
 	revoke_primary = {
+		only_playable = yes
 		filter = owned
 		ai_target_filter = owned
 		
 		from_potential = {
+			is_playable = yes
 			is_nomadic = yes
 			has_dlc = "Horse Lords"
 		}
