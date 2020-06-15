@@ -210,11 +210,52 @@ title_commander = {
 		prisoner = no
 		NOT = { trait = incapable }
 		NOT = { is_inaccessible_trigger = yes }
-		NOT = { trait = incapable }
 		NOT = { trait = avatar }
 		NOT = { trait = fullyrealisedavatar }
-		NOT = { trait = in_hiding }
 		NOT = { has_character_flag = guru }
+		NOT = { has_character_modifier = refusing_to_lead }
+		OR = { 
+			higher_real_tier_than = BARON #...Or potential commander is vassal...
+			NOT = { #...Or there are no valid vassal candidates that can be commanders.
+				custom_tooltip = { 
+					text = tooltip_byzantine_empire_can_appoint_commanders
+					liege = { 
+						any_vassal = { 
+							higher_real_tier_than = BARON
+							NOT = { 
+								primary_title = { temporary = yes } 
+							}
+							OR = {
+								AND = {
+									OR = {
+										male_can_hold_minor_title_trigger = yes
+										female_can_hold_minor_commander_title_trigger = yes
+									}
+									is_adult = yes
+								}
+								has_character_flag = special_marshal
+							}
+							
+							prisoner = no
+							NOT = { trait = incapable }
+							NOT = { is_inaccessible_trigger = yes }
+							NOT = { trait = avatar }
+							NOT = { trait = fullyrealisedavatar }
+							NOT = { has_character_flag = guru }
+							NOT = { has_character_modifier = refusing_to_lead }
+							NOR = {
+								has_job_title = job_chancellor
+								has_job_title = job_marshal
+								has_job_title = job_treasurer
+								has_job_title = job_spymaster
+								has_job_title = job_spiritual
+								has_minor_title = title_commander
+							}
+						} 
+					} 
+				} 
+			}
+		}
 	}
 	
 	gain_effect = {
@@ -363,9 +404,16 @@ title_seneschal = {
 	is_unique = yes
 	
 	allowed_to_hold = {
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
 		is_adult = yes
-		is_female = no
+		OR = { 
+			male_can_hold_minor_title_trigger = yes
+			female_can_hold_minor_title_trigger = yes
+		}
 		NOT = { has_character_flag = guru }
+		NOT = { trait = incapable }
 	}
 	
 	allowed_to_grant = {
@@ -404,8 +452,15 @@ title_state_inquisitor = {
 	is_unique = yes
 	
 	allowed_to_hold = {
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
 		is_adult = yes
-		is_female = no
+		OR = { 
+			male_can_hold_minor_title_trigger = yes
+			female_can_hold_minor_title_trigger = yes
+		}
+		NOT = { trait = incapable } 
 	}
 
 	allowed_to_grant = {
@@ -432,8 +487,15 @@ title_high_admiral = {
 	is_unique = yes
 	
 	allowed_to_hold = {
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
 		is_adult = yes
-		is_female = no
+		OR = { 
+			male_can_hold_minor_title_trigger = yes
+			female_can_hold_minor_commander_title_trigger = yes
+		}
+		NOT = { trait = incapable } 
 	}
 	
 	allowed_to_grant = {
@@ -460,8 +522,15 @@ title_high_judge = {
 	is_unique = yes
 	
 	allowed_to_hold = {
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
 		is_adult = yes
-		is_female = no
+		OR = { 
+			male_can_hold_minor_title_trigger = yes
+			female_can_hold_minor_title_trigger = yes
+		}
+		NOT = { trait = incapable } 
 	}
 
 	allowed_to_grant = {
@@ -491,12 +560,15 @@ title_patrician_heir = {
 	monthly_prestige = 0.20
 	
 	allowed_to_hold = {
+		OR = { 
+			male_can_hold_minor_title_trigger = yes
+			female_can_hold_minor_title_trigger = yes
+		}
 		is_landed = no
 		dynasty = FROM
-		NOT = { trait = incapable }
 		NOT = { trait = bastard }
 		NOT = { trait = eunuch }
-		NOT = { trait = celibate }
+		is_theocracy = no
 	}
 
 	allowed_to_grant = {
@@ -521,6 +593,9 @@ title_guru = {
 	revoke_allowed = no
 	
 	allowed_to_hold = {
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
 		OR = {
 			has_character_flag = guru
 			has_character_flag = fake_guru
@@ -571,6 +646,7 @@ title_avatar = {
 }
 
 title_councilmember_king = {
+	is_high_prio = yes
 	dignity = 0.050
 	grant_limit = 1
 	opinion_effect = 10
@@ -585,59 +661,64 @@ title_councilmember_king = {
 	}
 	
 	allowed_to_hold = {
-		OR = {
-			AND = {
-				is_female = no
-				NOT = { culture = western_air_nomad }
-				NOT = { culture = eastern_air_nomad }
-			}
-			AND = {
-				is_female = yes
-				NOT = { culture = northern_water }
-				NOT = { culture = northern_air_nomad }
-				NOT = { culture = southern_air_nomad }
-				OR = {
-					culture = western_air_nomad
-					culture = eastern_air_nomad
-					trait = kyoshiwarrior
-					OR = {
-						liege = {
-							OR = {
-								is_female = yes
-								primary_title = {
-									OR = {
-										has_law = status_of_women_2
-										has_law = status_of_women_3
-										has_law = status_of_women_4
-									}
-								}
-							}
-						}
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
+		can_be_councilmember_king_trigger = yes
+	}
+	revoke_trigger = {
+		FROM = {
+			primary_title = {
+				NOT = { 
+					AND = {
+						has_law = succession_voting_power_1
+						ROOT = { is_powerful_vassal = yes }
 					}
 				}
-			}		
+			}
 		}
-	
-		prisoner = no
-		is_adult = yes
-		NOT = { trait = incapable }
-		NOT = { trait = avatar }
-		NOT = { trait = fullyrealisedavatar }
 	}
 	
 	gain_effect = {
 	}
 	lose_effect = {
-		opinion = { who = FROM modifier = opinion_fired_from_council }
-		opinion = { who = FROM modifier = opinion_recently_fired }
+		if = {
+			limit = {
+				FROM = {
+					NOT = {
+						has_character_flag = swapping_councillors
+					}
+				}
+			}
+			opinion = { who = FROM modifier = opinion_fired_from_council }
+			opinion = { who = FROM modifier = opinion_recently_fired }
+		}
 	}
+
 	retire_effect = {
+		if = {
+			limit = {
+				NOT = {
+					age = 65
+				}
+				health = 3
+				NOT = {
+					is_sick_or_injured_trigger = yes
+				}
+				can_be_councilmember_king_trigger = yes
+			}
+			
+			FROM = { 
+				opinion = { who = ROOT modifier = opinion_resigned_from_council }
+			}
+		}
 	}
 
 	message = yes
 }
 
 title_councilmember_emperor = {
+	is_high_prio = yes
 	dignity = 0.060
 	grant_limit = 1
 	opinion_effect = 10
@@ -652,53 +733,58 @@ title_councilmember_emperor = {
 	}
 	
 	allowed_to_hold = {
-		OR = {
-			AND = {
-				is_female = no
-				NOT = { culture = western_air_nomad }
-				NOT = { culture = eastern_air_nomad }
-			}
-			AND = {
-				is_female = yes
-				NOT = { culture = northern_water }
-				NOT = { culture = northern_air_nomad }
-				NOT = { culture = southern_air_nomad }
-				OR = {
-					culture = western_air_nomad
-					culture = eastern_air_nomad
-					trait = kyoshiwarrior
-					OR = {
-						liege = {
-							OR = {
-								is_female = yes
-								primary_title = {
-									OR = {
-										has_law = status_of_women_2
-										has_law = status_of_women_3
-										has_law = status_of_women_4
-									}
-								}
-							}
-						}
+		NOT = { 
+			primary_title = { temporary = yes } 
+		}
+		can_be_councilmember_emperor_trigger = yes
+	}
+
+	revoke_trigger = {
+		FROM = {
+			primary_title = {
+				NOT = { 
+					AND = {
+						has_law = succession_voting_power_1
+						ROOT = { is_powerful_vassal = yes }
 					}
 				}
-			}		
+			}
 		}
-	
-		prisoner = no
-		is_adult = yes
-		NOT = { trait = incapable }
-		NOT = { trait = avatar }
-		NOT = { trait = fullyrealisedavatar }
 	}
 	
 	gain_effect = {
 	}
 	lose_effect = {
-		opinion = { who = FROM modifier = opinion_fired_from_council }
-		opinion = { who = FROM modifier = opinion_recently_fired }
+		if = {
+			limit = {
+				FROM = {
+					NOT = {
+						has_character_flag = swapping_councillors
+					}
+				}
+			}
+			opinion = { who = FROM modifier = opinion_fired_from_council }
+			opinion = { who = FROM modifier = opinion_recently_fired }
+		}
 	}
+
 	retire_effect = {
+		if = {
+			limit = {
+				NOT = {
+					age = 65
+				}
+				health = 3
+				NOT = {
+					is_sick_or_injured_trigger = yes
+				}
+				can_be_councilmember_king_trigger = yes
+			}
+			
+			FROM = { 
+				opinion = { who = ROOT modifier = opinion_resigned_from_council }
+			}
+		}
 	}
 
 	message = yes
@@ -711,7 +797,7 @@ title_court_physician = {
     dignity = 5
    	realm_in_name = yes
 	grant_limit = 1
-	opinion_effect = 15
+	opinion_effect = 10
 	monthly_salary = 0.2
 	monthly_prestige = 0.5
 	
@@ -726,13 +812,15 @@ title_court_physician = {
 	allowed_to_hold = {
 		custom_tooltip = {
 			text = court_physician_tooltip_1
+			NOT = {
+				primary_title = { temporary = yes } 
+			}
+		}
+		custom_tooltip = {
+			text = court_physician_tooltip_2
 			OR = {
-				primary_title = { temporary = no }
-				NOT = {
-					primary_title = {
-						always = yes
-					}
-				}
+				male_can_hold_minor_title_trigger = yes
+				female_can_hold_minor_title_trigger = yes
 			}
 		}
 		OR = {
@@ -761,6 +849,10 @@ title_court_physician = {
 	}
 
 	revoke_trigger = {
+		custom_tooltip = {
+			text = revoke_court_physician_being_treated_tt
+			NOT = { FROM = { has_character_flag = being_treated } }
+		}
 	}
 	
 	gain_effect = {
