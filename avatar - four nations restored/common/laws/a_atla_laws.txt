@@ -17,6 +17,10 @@ law_groups = {
 		law_type = realm
 		allowed_for_councillors = no
 	}
+	pirate_laws = {
+		law_type = realm
+		allowed_for_councillors = no
+	}
 }
 
 laws = {
@@ -652,4 +656,76 @@ laws = {
 		feudal_opinion = -10
 	}
 	
+	slavery_outlawed = {
+		group = pirate_laws
+		default = yes
+
+		allow = {
+
+		}
+		
+		potential = {
+			holder_scope = {
+				government = lawless_piracy
+			}
+		}
+		
+		pass_effect = {
+			log = "slavery_outlawed pass ([This.GetFullBaseName])"
+		}
+
+		effect = {
+			log = "slavery_outlawed ([This.GetFullBaseName])"
+
+			if = {
+				limit = { has_law = slavery_legal }
+
+				custom_tooltip = { text = slavery_outlawed }
+			}
+			
+			hidden_effect = {
+				revoke_law = slavery_legal
+			}
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	slavery_legal = {
+		group = pirate_laws
+		allow = {
+			custom_tooltip = {
+				text = law_needs_slavery
+				has_global_flag = slavery_instated
+			}
+		}
+		
+		potential = {
+			holder_scope = {
+				government = lawless_piracy
+			}
+		}
+		
+		pass_effect = {
+			log = "slavery_legal pass ([This.GetFullBaseName])"
+		}
+
+		effect = {
+			log = "slavery_legal ([This.GetFullBaseName])"
+			
+			hidden_effect = {
+				revoke_law = slavery_outlawed
+			}
+		}
+		
+		global_revolt_risk = 0.05
+		build_cost_modifier = -0.25
+		build_time_modifier = -0.25
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}	
 }
