@@ -1,5 +1,44 @@
 feudal_governments = {
 
+	lawless_piracy = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = {
+			CASTLE
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+
+		}
+		frame_suffix = "_republic"
+		title_prefix = "city_"
+		potential = {
+			OR = {
+				religion = piracy
+				culture = pirate
+			}
+		}
+		
+		color = { 20 20 20 }
+		
+		can_imprison_without_reason = yes
+		can_revoke_without_reason = yes
+		can_build_tribal = no
+		allow_looting = yes
+		capital_move_delay = 12
+
+		character_modifier = {
+			stewardship = -2		
+		}
+
+		demesne_size = -1
+		vassal_limit = 0
+		court_size_modifier = 5
+	}
+
 	feudal_government = {
 		preferred_holdings = { CASTLE }
 		allowed_holdings = { 
@@ -17,15 +56,21 @@ feudal_governments = {
 			#feudal_government_military
 		}
 		potential = {
+			OR = {
+				culture_group = water_tribe_culture
+			}
+			is_feudal = yes
+			is_patrician = no
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
+			NOT = { culture = sun_warrior }
 			is_patrician = no
-			is_feudal = yes
+			#is_feudal = yes #(Typical) But why???
 		}
 		
 		color = { 91 133 207 }
 		
-		dukes_called_kings = yes
+		dukes_called_kings = no
 		barons_need_dynasty = yes
 		can_grant_kingdoms_and_empires_to_other_government = yes
 		can_build_tribal = no
@@ -53,9 +98,17 @@ feudal_governments = {
 			feudal_government
 			#feudal_government_military
 		}
+		frame_suffix = _earth
 		potential = {
-			culture_group = earth_kingdom_culture
+			OR = {
+				culture_group = earth_kingdom_culture
+				AND = {
+				culture_group = outlaw_culture
+				is_feudal = yes
+				}
+			}
 			NOT = {	religion_group = air_religions }
+			NOT = {	religion = piracy }
 			NOT = { is_government_potential = water_tribe_government }
 			is_patrician = no
 		}
@@ -78,12 +131,78 @@ feudal_governments = {
 		court_size_modifier = 15
 	}
 	
+	fire_feudal_government = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = { 
+			CASTLE 
+			FORT
+			HOSPITAL
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			#feudal_government_city
+			feudal_government_temple
+			feudal_government_earth_kingdom
+			#feudal_government_military
+		}
+		frame_suffix = _fire
+		potential = {
+				AND = {
+				religion_group = fire_religions
+				culture_group = fire_nation_culture
+				is_patrician = no
+				is_tribal = no
+				is_theocracy = no
+				NOR = {
+						e_fire_nation = { has_law = ze_fire_administration_laws_2 } 
+						primary_title = { has_law = ze_fire_administration_laws_2 }
+						primary_title = { has_law = fire_imperial_administration }
+						e_fire_nation = { has_law = fire_imperial_administration }
+				}
+				NOT = { culture = sun_warrior }
+				}
+			NOT = { culture_group = earth_kingdom_culture }
+			NOT = {	religion_group = air_religions }
+			NOT = { culture_group = water_tribe_culture }
+			#is_patrician = no
+		}
+		
+		color = { 250 0 0 }
+		
+		dukes_called_kings = no
+		barons_need_dynasty = yes
+		gives_religion_opinion_penalties = yes
+		can_grant_kingdoms_and_empires_to_other_government = yes
+		can_build_tribal = no
+		vassal_limit = 10
+
+		capital_move_delay = 600
+		
+		character_modifier = {
+			martial = 2 # A firebender doesn't forget
+			combat_rating = 10 # ...but it helps when fighting!
+			vassal_opinion = 10
+		}
+
+		## Modifiers
+		court_size_modifier = 10
+		free_revoke_on_governments_culture_and_religion = {
+			theocracy_government 
+			desert_tribal_government 
+			water_tribe_government
+			feudal_government_earth_kingdom
+			tribal_government
+		}	
+	}
 	feudal_government_temple = {
 		preferred_holdings = { TEMPLE }
 		allowed_holdings = { 
 			TEMPLE 
 			FORT
 			HOSPITAL
+			CASTLE
 		}
 		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
 			TRIBAL
@@ -93,8 +212,15 @@ feudal_governments = {
 			#feudal_government_city
 			#feudal_government_military
 		}
+		frame_suffix = "_DT"
 		potential = {
+			OR = {
+			culture = sun_warrior
+			culture = sandbender
+			}
 			NOT = {	religion_group = air_religions }
+			NOR = { culture = fire_nation
+					culture = fire_islander}
 			higher_real_tier_than = baron
 			is_patrician = no
 			NOT = { is_government_potential = water_tribe_government }
@@ -181,5 +307,86 @@ feudal_governments = {
 
 		## Modifiers
 		court_size_modifier = 10
+	}
+	fire_imperial_government = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = {
+			CASTLE
+			FORT
+			HOSPITAL
+			TEMPLE
+		}
+		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
+			TRIBAL
+		}
+		accepts_liege_governments = { # Gets the wrong religion modifier instead
+			feudal_government
+			republic_government
+			merchant_republic_government
+		}
+		free_revoke_on_governments_religion = { # Tribal vassals of other religions can have their titles revoked for free
+			tribal_government
+		}
+		frame_suffix = "_fire_imperial"
+		potential = {
+			OR = { 
+				AND = { 
+					NOT = { culture = sun_warrior }
+					is_save_game = no
+					has_game_started = no
+					culture_group = fire_nation_culture
+					religion_group = fire_religions
+					is_theocracy = no
+					is_tribal = no
+					is_patrician = no
+					
+				}
+				AND = {
+					culture_group = fire_nation_culture
+					religion_group = fire_religions
+					NOT = { culture = sun_warrior }
+					OR = {
+						primary_title = { has_law = ze_fire_administration_laws_2 }
+						e_fire_nation = { has_law = ze_fire_administration_laws_2 }
+						e_fire_nation = { has_law = fire_imperial_administration }
+						primary_title = { has_law = fire_imperial_administration }
+						is_theocracy = no
+						is_tribal = no
+						is_patrician = no
+					}	
+				}
+			}
+			is_theocracy = no
+			is_tribal = no
+			is_patrician = no
+		}
+		
+		color = { 150 0 0 }
+
+		barons_need_dynasty = yes
+
+		can_build_tribal = no
+		
+		ignore_in_vassal_limit_calculation = {
+			tribal_government
+		}
+		character_modifier = {
+			martial = 4 # A firebender doesn't forget
+			stewardship = 2
+			combat_rating = 10 # ...but it helps when fighting!
+			vassal_opinion = 25
+		}
+		capital_move_delay = 200
+		# global_revolt_risk = - 2
+		# global_tax_modifier = 15
+		# religion_flex = -80
+		
+		can_usurp_kingdoms_and_empires = no
+		can_imprison_without_reason = no
+		can_create_empires = no
+		vassal_government_opinion_penalties = no
+		can_grant_kingdoms_and_empires_to_other_government_group = yes
+		can_be_granted_kingdoms_and_empires_by_other_government = no
+		free_retract_vassalage = yes
 	}
 }

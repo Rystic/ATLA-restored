@@ -4,14 +4,14 @@
 #
 ###########################################
 
-society_decisions = {
-
+# General
+society_decisions = { # Society decisions are only evaluated by members of societies	
 	request_to_rank_up_within_society = {
 		only_playable = yes
 
 		hide_in_decisions_list = yes # This is shown in the Society View
 		
-		ai_check_interval = 12
+		ai_check_interval = 24
 		
 		potential = {
 			hidden_tooltip = {
@@ -53,6 +53,13 @@ society_decisions = {
 					society_currency >= 2000 # rank 3
 				}
 			}
+			trigger_if = {
+				limit = { has_character_flag = rank_up_blocked }
+				custom_tooltip = {
+					text = rank_up_blocked_tt
+					NOT = { has_character_flag = rank_up_blocked }
+				}
+			}			
 			custom_tooltip = {
 				text = request_to_rank_up_within_society_cynical_tt
 				OR = {
@@ -80,6 +87,7 @@ society_decisions = {
 							trait = slothful
 							trait = envious
 							trait = wroth
+							trait = cruel
 							trait = proud
 						}
 					}
@@ -699,7 +707,7 @@ society_decisions = {
 	}
 
 	monastic_order_meditation = {
-		ai_check_interval = 12
+		ai_check_interval = 24
 		
 		potential = {
 			society_member_of = monastic_order_elder_council
@@ -713,6 +721,14 @@ society_decisions = {
 				OR = {
 					NOT = { has_character_flag = holy_seclusion_timer }
 					had_character_flag = { flag = holy_seclusion_timer days = 1000 }
+				}
+			}
+			custom_tooltip = {
+				text = in_meditation_cooldown_tt
+				hidden_trigger = {
+					NOT = {
+						has_character_modifier = in_meditation
+					}
 				}
 			}
 		}
@@ -730,7 +746,7 @@ society_decisions = {
 		}
 		
 		ai_will_do = {
-			factor = 0.1
+			factor = 1
 
 			modifier = {
 				factor = 0.01
@@ -751,7 +767,7 @@ society_decisions = {
 	}
 	
 	monastic_order_rejoin_world = {
-		ai_check_interval = 12
+		ai_check_interval = 24
 
 		potential = {
 			OR = {
@@ -2783,6 +2799,63 @@ targeted_decisions = {
 			modifier = {
 				factor = 0.1
 			}
+		}
+	}
+	hhn_teach_healing = {
+		ai_check_interval = 12
+		filter = realm
+		ai_target_filter = home_court
+		is_in_society = yes
+		
+		potential = {
+			NOT = { trait = incapable }
+			is_in_society = yes
+			trait = waterbender
+			NOT = {
+				OR = {
+					trait = healer
+					trait = master_healer
+				}
+			}
+		}
+		
+		from_potential = {
+			society_rank >= 1
+			society_member_of = healing_hut_north
+			is_adult = yes
+			OR = { 
+				trait = healer
+				trait = master_healer
+			}
+			NOT = { trait = incapable }
+		}
+		
+		allow = {
+			FROM = {
+				has_society_currency_major_trigger = yes	###requires 150SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+			in_command = no
+		}
+		
+		effect = {
+			FROM = {
+				detract_society_currency_major_effect = yes	###lose 150SocCur
+			}
+			ROOT = {
+				add_trait = healer
+				#hidden_tooltip = {
+				#	character_event = { id = MNSAK.5064 } 
+				#}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
 		}
 	}
 	

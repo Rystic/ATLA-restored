@@ -14,26 +14,51 @@
 character_event = {
 	id = 37000
 	desc = EVTDESC37000
-	picture = GFX_evt_son_asking_father
+	picture = { 
+		trigger = { 
+			has_religion_feature = religion_matriarchal
+		} 
+		picture = GFX_evt_daughter_asking_mother
+	}
+	picture = { 
+		trigger = { 
+			NOT = { 
+				has_religion_feature = religion_matriarchal
+			} 
+		} 
+		picture = GFX_evt_son_asking_father
+	}
 	
 	min_age = 16
-	only_men = yes
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Zeus"
 	
 	trigger = {
 		has_ambition = obj_wants_landed_title
 		independent = no
 		liege = {
+			OR = { 
+				AND = { 
+					ROOT = { is_female = yes }
+					has_religion_feature = religion_matriarchal 
+				} 
+				AND = { 
+					ROOT = { is_female = no }
+					NOT = { has_religion_feature = religion_matriarchal }
+				}
+			}
+			OR = {
+				war = no
+				ai = yes
+			}
 			is_close_relative = ROOT
 			any_demesne_title = {
 				can_be_given_away = yes
-				AND = {
-					tier = count
-					is_feudal = yes
-					location = {
-						is_capital = no
-					}						
+				tier = count
+				is_feudal = yes
+				location = {
+					is_capital = no
 				}
 			}
 		}
@@ -46,7 +71,7 @@ character_event = {
 	}
 	
 	mean_time_to_happen = {
-		months = 12
+		months = 9
 		
 		modifier = {
 			factor = 0.5
@@ -76,7 +101,20 @@ character_event = {
 character_event = {
 	id = 37001
 	desc = EVTDESC37001
-	picture = GFX_evt_son_asking_father
+	picture = { 
+		trigger = { 
+			has_religion_feature = religion_matriarchal
+		} 
+		picture = GFX_evt_daughter_asking_mother
+	}
+	picture = { 
+		trigger = { 
+			NOT = { 
+				has_religion_feature = religion_matriarchal
+			} 
+		} 
+		picture = GFX_evt_son_asking_father
+	}
 	
 	is_triggered_only = yes
 	
@@ -122,7 +160,6 @@ character_event = {
 		name = EVTOPTD37001 # Diplomatically refuse
 		tooltip_info = diplomacy
 		trigger = {
-			NOT = { trait = airbender }
 			diplomacy = 8
 		}
 		FROM = { character_event = { id = 37003 tooltip = EVTTOOLTIP37003 } }
@@ -133,7 +170,20 @@ character_event = {
 character_event = {
 	id = 37002
 	desc = EVTDESC37002
-	picture = GFX_evt_son_asking_father
+	picture = { 
+		trigger = { 
+			has_religion_feature = religion_matriarchal
+		} 
+		picture = GFX_evt_daughter_asking_mother
+	}
+	picture = { 
+		trigger = { 
+			NOT = { 
+				has_religion_feature = religion_matriarchal
+			} 
+		} 
+		picture = GFX_evt_son_asking_father
+	}
 	
 	is_triggered_only = yes
 	
@@ -249,16 +299,6 @@ character_event = {
 				trait = ambitious
 			}
 			modifier = {
-				factor = 5.0
-				OR = {
-					religion_group = earth_religions
-					religion_group = fire_religions
-					religion_group = modern_religions
-					religion_group = outlaw_religions
-					religion_group = water_religions
-				}
-			}
-			modifier = {
 				factor = 0.25
 				trait = slothful
 			}
@@ -282,7 +322,20 @@ character_event = {
 character_event = {
 	id = 37005
 	desc = EVTDESC37005
-	picture = GFX_evt_son_asking_father
+	picture = { 
+		trigger = { 
+			has_religion_feature = religion_matriarchal
+		} 
+		picture = GFX_evt_daughter_asking_mother
+	}
+	picture = { 
+		trigger = { 
+			NOT = { 
+				has_religion_feature = religion_matriarchal
+			} 
+		} 
+		picture = GFX_evt_son_asking_father
+	}
 	
 	is_triggered_only = yes
 	
@@ -296,12 +349,10 @@ character_event = {
 		liege = {
 			any_demesne_title = {
 				can_be_given_away = yes
-				AND = {
-					tier = count
-					is_feudal = yes
-					location = {
-						is_capital = no
-					}				
+				tier = count
+				is_feudal = yes
+				location = {
+					is_capital = no
 				}
 			}
 		}
@@ -317,7 +368,20 @@ character_event = {
 character_event = {
 	id = 37006
 	desc = EVTDESC37006
-	picture = GFX_evt_son_asking_father
+	picture = { 
+		trigger = { 
+			has_religion_feature = religion_matriarchal
+		} 
+		picture = GFX_evt_daughter_asking_mother
+	}
+	picture = { 
+		trigger = { 
+			NOT = { 
+				has_religion_feature = religion_matriarchal
+			} 
+		} 
+		picture = GFX_evt_son_asking_father
+	}
 	
 	is_triggered_only = yes
 	
@@ -332,12 +396,10 @@ character_event = {
 		random_demesne_title = {
 			limit = {
 				can_be_given_away = yes
-				AND = {
-					tier = count
-					is_feudal = yes
-					location = {
-						is_capital = no
-					}
+				tier = count
+				is_feudal = yes
+				location = {
+					is_capital = no
 				}
 			}
 			grant_title = FROM
@@ -407,17 +469,6 @@ character_event = {
 				trait = ambitious
 			}
 			modifier = {
-				factor = 5.0
-				OR = {
-					religion_group = earth_religions
-					religion_group = fire_religions
-					religion_group = modern_religions
-					religion_group = outlaw_religions
-					religion_group = water_religions
-					religion_group = air_religions
-				}
-			}
-			modifier = {
 				factor = 0.25
 				trait = slothful
 			}
@@ -473,8 +524,7 @@ character_event = {
 		}
 	}
 	
-	option = {
-		name = EVTOPTA37010
+	immediate = {
 		liege = {
 			capital_scope = {
 				random_independent_ruler = {
@@ -567,9 +617,7 @@ character_event = {
 		}
 	}
 	
-	option = {
-		name = OK
-		
+	immediate = {
 		liege = {
 			capital_scope = {
 				ROOT = {
@@ -819,37 +867,75 @@ character_event = {
 		}
 		
 		# Create some decent commander characters
-		create_random_soldier = {
-			random_traits = yes
-			dynasty = none
-			religion = ROOT
-			culture = ROOT
-			female = no
-			age = 30
+		if = {
+			limit = { NOT = { has_religion_feature = religion_matriarchal } }
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = no
+				age = 30
+			}
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = no
+				age = 25
+			}
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = no
+				age = 33
+			}
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = no
+				age = 29
+			}
 		}
-		create_random_soldier = {
-			random_traits = yes
-			dynasty = none
-			religion = ROOT
-			culture = ROOT
-			female = no
-			age = 25
-		}
-		create_random_soldier = {
-			random_traits = yes
-			dynasty = none
-			religion = ROOT
-			culture = ROOT
-			female = no
-			age = 33
-		}
-		create_random_soldier = {
-			random_traits = yes
-			dynasty = none
-			religion = ROOT
-			culture = ROOT
-			female = no
-			age = 29
+		if = {
+			limit = { has_religion_feature = religion_matriarchal }
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = yes
+				age = 30
+			}
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = yes
+				age = 25
+			}
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = yes
+				age = 33
+			}
+			create_random_soldier = {
+				random_traits = yes
+				dynasty = none
+				religion = ROOT
+				culture = ROOT
+				female = yes
+				age = 29
+			}
 		}
 		
 		# Create a fleet, just to be sure
@@ -875,9 +961,7 @@ character_event = {
 						tier = EMPEROR
 						is_primary_holder_title = no
 					}
-					ROOT = {
-						add_claim = PREV
-					}
+					add_claim = ROOT
 					holder_scope = {
 						reverse_war = {
 							target = ROOT
@@ -899,9 +983,7 @@ character_event = {
 						tier = KING
 						is_primary_holder_title = no
 					}
-					ROOT = {
-						add_claim = PREV
-					}
+					add_claim = ROOT
 					holder_scope = {
 						reverse_war = {
 							target = ROOT
@@ -918,9 +1000,7 @@ character_event = {
 					NOT = { war_with = ROOT }
 				}
 				primary_title = {
-					ROOT = {
-						add_claim = PREV
-					}
+					add_claim = ROOT
 					holder_scope = {
 						reverse_war = {
 							target = ROOT
@@ -934,7 +1014,7 @@ character_event = {
 	}
 }
 
-# IDs to 37049 reserved for more events concerning this ambition
+# IDs to 37048 reserved for more events concerning this ambition
 
 
 
@@ -943,72 +1023,67 @@ character_event = {
 ##############################################################
 
 # First event of the series
+
 character_event = {
-	id = 37050
-	desc = EVTDESC37050
-	picture = GFX_evt_marriage
+	id = 37049
 	
-	min_age = 16
+	hide_window = yes
+	
+	ai = no
 	capable_only = yes
 	prisoner = no
+	war = no
+	lacks_dlc = "Zeus"
 	
 	trigger = {
-		is_ruler = no
-		NOT = {
-			trait = bastard
-		}
-		has_ambition = obj_get_married
-		NOT = {
-			has_minor_title = title_regent
-		}
-		is_betrothed = no
-		NOT = {
-			any_consort = {
-				always = yes
-			}
-		}
-		
-		liege = {
-			OR = {
-				religion_group = earth_religions
-				religion_group = fire_religions
-				religion_group = modern_religions
-				religion_group = outlaw_religions
-				religion_group = water_religions
-				religion_group = air_religions
-			}
-			is_close_relative = ROOT
-		}
-		
-		NOT = { has_character_flag = flag_denied_marriage }
-		NOT = { has_character_flag = flag_promised_marriage }
 	}
 	
 	mean_time_to_happen = {
 		months = 24
-		
-		modifier = {
-			factor = 0.25
-			is_female = yes
-			trait = lustful
-		}
-		modifier = {
-			factor = 0.5
-			trait = ambitious
-		}
-		modifier = {
-			factor = 2.0
-			trait = slothful
-		}
-		modifier = {
-			factor = 5.0
-			trait = content
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_ruler = no
+				has_ambition = obj_get_married
+				is_marriage_adult = yes
+				NOT = { age = 40 }
+				prisoner = no
+				is_betrothed = no
+				is_consort = no
+				is_married = no
+				
+				NOT = { trait = incapable }
+				NOT = {
+					trait = bastard
+				}
+				liege = {
+					character = ROOT
+				}
+				is_close_relative = ROOT
+				
+				NOT = {
+					has_minor_title = title_regent
+				}
+				
+				NOT = { has_character_flag = flag_denied_marriage }
+				NOT = { has_character_flag = flag_promised_marriage }
+			}
+			character_event = { id = 37050 }
 		}
 	}
+}
+
+character_event = {
+	id = 37050
+
+	hide_window = yes
+
+	is_triggered_only = yes
 	
-	option = {
-		name = EVTOPTA37050 # Ask liege
-		liege = { character_event = { id = 37051 days = 3 tooltip = EVTTOOLTIP37051 } }
+	immediate = {
+		liege = { character_event = { id = 37051 days = 3 } }
 	}
 	
 }
@@ -1080,11 +1155,12 @@ character_event = {
 	min_age = 16
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Zeus"
+	is_married = no
 	
 	trigger = {
 		is_ruler = no
 		is_betrothed = no
-		is_married = no
 		NOT = {
 			trait = bastard
 		}
@@ -1105,6 +1181,12 @@ character_event = {
 			factor = 0.25
 			is_female = yes
 			trait = lustful
+		}
+		modifier = {
+			factor = 0.25
+			is_female = no
+			trait = lustful
+			has_religion_feature = religion_matriarchal
 		}
 		modifier = {
 			factor = 0.5
@@ -1140,25 +1222,48 @@ character_event = {
 			FROM = {
 				is_married = no
 			}
-			any_courtier = {
-				OR = {
+			OR = {
+				AND = {
 					is_female = no
-					NOT = { age = 45 }
+					any_courtier = {
+						FROM = { is_female = no }
+						NOT = { age = 40 }
+						can_marry = FROM
+					}
 				}
-				can_marry = FROM
+				AND = {
+					FROM = { is_female = yes }
+					any_courtier = {
+						is_female = no
+						NOT = { age = 40 }
+						can_marry = FROM
+					}
+				}
 			}
 		}
 		remove_character_modifier = promised_a_marriage
 		clr_character_flag = flag_promised_marriage
-		random_courtier = {
-			limit = {
-				OR = {
-					is_female = no
-					NOT = { age = 45 }
+		if = { 
+			limit = { FROM = { is_female = no } }
+			random_courtier = {
+				limit = {
+					is_female = yes
+					NOT = { age = 40 }
+					can_marry = FROM
 				}
-				can_marry = FROM
+				add_spouse = FROM
 			}
-			add_spouse = FROM
+		}
+		if = { 
+			limit = { FROM = { is_female = yes } }
+			random_courtier = {
+				limit = {
+					is_female = no
+					NOT = { age = 40 }
+					can_marry = FROM
+				}
+				add_spouse = FROM
+			}
 		}
 	}
 	
@@ -1219,23 +1324,47 @@ character_event = {
 # Male relative who was denied decides to marry in secret
 character_event = {
 	id = 37056
-	desc = EVTDESC37056
+	desc = {
+		trigger = {
+			is_female = no
+		}
+		text = EVTDESC37056
+	}
+	desc = {
+		trigger = {
+			is_female = yes
+		}
+		text = EVTDESC37056_B
+	}
 	picture = GFX_evt_marriage
 	
 	min_age = 16
-	only_men = yes
 	capable_only = yes
 	prisoner = no
+	has_character_flag = flag_denied_marriage
+	lacks_dlc = "Zeus"
 	
 	trigger = {
 		is_ruler = no
 		is_betrothed = no
 		has_ambition = obj_get_married
-		has_character_flag = flag_denied_marriage
-		any_courtier = {
-			is_female = yes
-			NOT = { age = 40 }
-			can_marry = ROOT
+		OR = {
+			AND = {
+				is_female = no
+				any_courtier = {
+					is_female = yes
+					NOT = { age = 40 }
+					can_marry = ROOT
+				}
+			}
+			AND = {
+				is_female = yes
+				any_courtier = {
+					is_female = no
+					NOT = { age = 40 }
+					can_marry = ROOT
+				}
+			}
 		}
 	}
 	
@@ -1262,13 +1391,27 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA37056 # I'm getting married right now
-		random_courtier = {
-			limit = {
-				is_female = yes
-				NOT = { age = 40 }
-				can_marry = ROOT
+		if = { 
+			limit = { is_female = no }
+			random_courtier = {
+				limit = {
+					is_female = yes
+					NOT = { age = 40 }
+					can_marry = ROOT
+				}
+				add_spouse = ROOT
 			}
-			add_spouse = ROOT
+		}
+		if = { 
+			limit = { is_female = yes }
+			random_courtier = {
+				limit = {
+					is_female = no
+					NOT = { age = 40 }
+					can_marry = ROOT
+				}
+				add_spouse = ROOT
+			}
 		}
 		liege = { character_event = { id = 37057 tooltip = EVTTOOLTIP37057 } }
 	}
@@ -1277,7 +1420,18 @@ character_event = {
 # The liege is informed of the secret marriage
 character_event = {
 	id = 37057
-	desc = EVTDESC37057
+	desc = {
+		trigger = {
+			is_female = no
+		}
+		text = EVTDESC37057
+	}
+	desc = {
+		trigger = {
+			is_female = yes
+		}
+		text = EVTDESC37057_B
+	}
 	picture = GFX_evt_marriage
 	
 	is_triggered_only = yes
@@ -1317,3 +1471,193 @@ character_event = {
 }
 
 # IDs to 37149 reserved for more events concerning this ambition
+
+#Common interest with spouse
+character_event = {
+	id = 37250
+	hide_window = yes
+
+	min_age = 16
+	only_capable = yes
+	is_married = yes
+
+	trigger = {
+		NOT = { trait = blinded }
+		any_spouse = {
+			has_prev_education_trigger = yes
+			opinion = { who = ROOT value = 20 }
+			is_inaccessible_or_incapable_trigger = no
+		}
+		NOT = { has_character_flag = spouse_offered_help }
+	}
+	
+	is_triggered_only = yes
+
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 2
+			has_focus = focus_family
+		}
+		modifier = {
+			factor = 1.5
+			has_pleasant_personality_trigger = yes
+		}
+		modifier = {
+			factor = 0.75
+			has_unpleasant_personality_trigger = yes
+		}
+		modifier = {
+			factor = 0.5
+			num_of_lovers = 1
+		}
+	}
+
+	immediate = {
+		set_character_flag = spouse_offered_help
+		random_spouse = {
+			limit = { 
+				has_prev_education_trigger = yes
+				opinion = { who = ROOT value = 20 }
+			}
+
+			character_event = { id = 37251 }
+		}
+	}
+}
+
+character_event = {
+	id = 37251
+	hide_window = yes
+	
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { character_event = { id = 37252 days = 1 } } #First event
+	}	
+}
+
+#Want help?
+character_event = {
+	id = 37252
+	desc = EVTDESC_37252
+	picture = GFX_evt_courtiers_talking
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	#Yes
+	option = {
+		name = EVTOPTA_37252
+		custom_tooltip = { text = EVTOPTA_37252_TOOLTIP }
+		hidden_tooltip = { FROM = { character_event = { id = 37254 } } }
+	}
+
+	#No
+	option = {
+		name = EVTOPTB_37252
+		custom_tooltip = { text = EVTOPTB_37252_TOOLTIP }
+
+		random = {
+			chance = 30
+			add_trait_proud_effect = yes
+		}
+
+		reverse_opinion = {
+			who = FROM
+			modifier = opinion_ungrateful
+			years = 5
+		}
+	}
+}
+
+
+character_event = {
+    id = 37254
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = { FROM = { character_event = { id = 37253 days = 7 } } }
+}
+
+character_event = {
+	id = 37253
+	desc = EVTDESC_37253
+	picture = GFX_evt_courtiers_talking
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+
+	#Bonding over common interests and getting work done
+	option = {
+		name = EVTOPTA_37253
+		custom_tooltip = { text = EVTOPTA_37253_TOOLTIP }
+
+		opinion = {
+			who = FROM
+			modifier = common_interests_opinion
+			years = 10
+		}
+
+		reverse_opinion = {
+			who = FROM
+			modifier = common_interests_opinion
+			years = 10
+		}
+
+		if = {
+			limit = { has_education_martial_trigger = yes }
+			military_techpoints = 50
+		}
+		if = {
+			limit = { has_education_stewardship_trigger = yes }
+			economy_techpoints = 50
+		}
+		if = {
+			limit = { 
+				OR = {
+					has_education_diplomacy_trigger = yes 
+					has_education_learning_trigger = yes
+				}
+			}
+			culture_techpoints = 50
+		}
+		if = {
+			limit = { has_education_intrigue_trigger = yes }
+			military_techpoints = 15
+			culture_techpoints = 15
+			economy_techpoints = 15
+		}
+	}
+
+	#Let's go to bed
+	option = {
+		trigger = { NOT = { is_lover = FROM } }
+		name = EVTOPTB_37253
+		custom_tooltip = { text = EVTOPTB_37253_TOOLTIP }
+
+		add_lover = FROM
+	}
+}
+
+#Get married ambition success is a ruler
+character_event = {
+	id = 37255
+	hide_window = yes
+	is_triggered_only = yes
+	only_rulers = yes
+
+	trigger = {
+		FROM = { has_ambition = obj_get_married }
+	}
+
+	immediate = {
+		FROM = {
+			opinion = {
+				who = FROM
+				modifier = opinion_fulfilled_marriage_wish
+				years = 5
+			}
+		}
+	}
+}

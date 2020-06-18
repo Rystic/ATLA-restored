@@ -1,11 +1,78 @@
 targetted_decisions = {
+	force_instate_slavery = {
 
+		from_potential = {
+			is_ruler = yes
+			government = lawless_piracy
+		}
+		
+		potential = {
+			ai = yes
+			religion = FROM
+			tier = COUNT
+			is_tributary = { 
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				piety = 250
+			}
+			OR = {
+				ROOT = {
+					capital_scope = {
+						NOT = { religion = FROM }
+					}
+				}
+				ROOT = {
+					NOT = { has_law = slavery_legal }
+				}
+			}
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					FROM = {
+						has_global_flag = slavery_instated
+						has_law = slavery_legal
+					}
+				}
+			}
+		}
+		
+		effect = {
+			FROM = {
+				piety = -250
+			}
+			custom_tooltip = {
+				text = force_instate_name
+				hidden_tooltip = {
+					add_law = slavery_legal
+					revoke_law = slavery_outlawed
+				}
+			}
+			capital_scope = {
+				religion = FROM
+			}
+			religion_authority = {
+				modifier = forced_instate_slavery
+				years = 20
+			}
+		}
+		
+		ai_will_do = {
+			factor = 10
+		}
+	}
 	ask_to_convert = {
 		filter = realm
 		ai_target_filter = realm
 
 		from_potential = {
 			is_ruler = yes
+			NOT = { government = lawless_piracy }
 		}
 
 		potential = {
@@ -105,7 +172,7 @@ targetted_decisions = {
 				hidden_tooltip = {
 					OR = {
 						AND = {
-							religion = nomadic_pacifism
+							religion = air_spirituality
 							NAND = {
 								trait = kind
 								trait = temperate
@@ -113,7 +180,7 @@ targetted_decisions = {
 								trait = enlightened
 							}
 						}
-						NOT = { religion = nomadic_pacifism }
+						NOT = { religion = air_spirituality }
 					}
 					OR = {
 						AND = {
@@ -184,12 +251,12 @@ targetted_decisions = {
 						}
 						AND = {
 							FROM = { religion = nomadic_nihilism }
-							religion = nomadic_pacifism
+							religion = air_spirituality
 							trait = cynical
 						}
 						AND = {
 							FROM = { religion = nomadic_nihilism }
-							religion = nomadic_pacifism
+							religion = air_spirituality
 							trait = kind
 						}
 						AND = {
@@ -209,7 +276,7 @@ targetted_decisions = {
 							culture = northern_water
 						}
 						AND = {
-							FROM = { religion = nomadic_pacifism }
+							FROM = { religion = air_spirituality }
 							OR = {
 								trait = kind
 								trait = enlightened
@@ -254,6 +321,102 @@ targetted_decisions = {
 					trait = fullyrealisedavatar
 				}
 			}
+		}
+	}
+
+	convert_to_spouse_religion= {
+		only_playable = yes
+		filter = home_court
+		ai_target_filter = home_court
+		ai_check_interval = 60
+	
+		from_potential = {
+			ai = no
+			is_playable = yes
+			controls_religion = no
+		}
+		
+		potential = {
+			NOT = { religion = FROM }
+			OR = {
+				spouse = {
+					character = FROM
+				}
+				consort = {
+					character = FROM
+				}
+			}
+			OR = {
+				religion_group = earth_religions
+				religion_group = water_religions
+				religion_group = fire_religions
+				religion_group = air_religions
+			}
+			is_alive = yes
+		}
+		
+		allow = {
+			FROM = { NOT = { trait = zealous } }
+		}
+		
+		effect = {
+			FROM = {
+				prestige = -500
+				religion_authority = {
+					modifier = ruler_converted_from
+				}
+			
+				religion = ROOT
+				abdicate_holy_order_if_religion_changes_effect = yes
+				
+				if = {
+					limit = {
+						ROOT = {
+							trait = pagan_branch_1
+						}
+					}
+					add_trait = pagan_branch_1
+				}
+				if = {
+					limit = {
+						ROOT = {
+							trait = pagan_branch_2
+						}
+					}
+					add_trait = pagan_branch_2
+				}
+				if = {
+					limit = {
+						ROOT = {
+							trait = pagan_branch_3
+						}
+					}
+					add_trait = pagan_branch_3
+				}
+				if = {
+					limit = {
+						ROOT = {
+							trait = pagan_branch_4
+						}
+					}
+					add_trait = pagan_branch_4
+				}
+				
+				hidden_tooltip = {
+					religion_authority = {
+						modifier = ruler_converted_to
+					}
+				}
+				piety = 200
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
 		}
 	}
 }

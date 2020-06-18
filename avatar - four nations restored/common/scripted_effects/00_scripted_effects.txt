@@ -4798,6 +4798,68 @@ remove_lifestyle_trait_effect = {
 	remove_trait = gamer
 }
 
+monastic_order_purity_effect = {
+	if = {
+		limit = {
+			is_monastic_member_trigger = yes
+			OR = {
+				trait = cynical
+				trait = gluttonous
+				trait = greedy
+				trait = slothful
+				trait = envious
+				trait = wroth
+				trait = proud
+				trait = deceitful
+				trait = cruel
+				trait = lustful
+				trait = ambitious
+				NOT = { trait = humble }
+				NOT = { trait = charitable }
+				NOT = { trait = kind }
+				NOT = { trait = temperate }
+				NOT = { trait = honest }
+				trait = chaste
+				NOT = { trait = patient }
+				NOT = { trait = diligent }
+				NOT = { trait = content }
+			}
+		}
+
+		random = {
+			chance = 20
+			modifier = {
+				factor = 1.3
+				society_rank == 2
+			}
+			modifier = {
+				factor = 1.5
+				society_rank == 3
+			}
+			modifier = {
+				factor = 1.7
+				society_rank == 4
+			}
+			modifier = {
+				factor = 1.1
+				piety = 100
+			}
+			modifier = {
+				factor = 1.3
+				piety = 300
+			}
+			modifier = {
+				factor = 1.5
+				piety = 500
+			}
+			modifier = {
+				factor = 2
+				piety = 1000
+			}
+			character_event = { id = MNM.4400 days = 10 random = 10 }
+		}
+	}
+}
 clr_artifact_flagsmodifiers_effect = {
 	event_target:relic_ruler = { 
 		if = {
@@ -8663,51 +8725,51 @@ increase_visibility_effect = {
 	}
 }
 
-# increase_visibility_minor_effect = {
-	# custom_tooltip = { text = debug_vis }
-	# hidden_effect = {
-		# change_variable = { which = visibility_value value = 2 } 
-		# if = {
-			# limit = {
-				# check_variable = { which = visibility_value value = 15 }
-				# NOR = {
-					# has_character_modifier = under_suspicion
-					# has_character_modifier = highly_suspect
-				# }
-			# }
-			# add_character_modifier = {
-				# name = under_suspicion
-				# duration = -1
-			# }
-			# character_event = { id = MNSAK.4567 days = 1 }
-		# }
-		# if = {
-			# limit = {
-				# check_variable = { which = visibility_value value = 25 }
-				# NOT = {
-					# has_character_modifier = highly_suspect
-				# }
-			# }
-			# remove_character_modifier = under_suspicion
-			# add_character_modifier = {
-				# name = highly_suspect duration = -1 
-			# }
-			# character_event = { id = MNSAK.4568 days = 1 }
-			# liege = {
-				# set_character_flag = secret_societies_interference
-				# character_event = { id = MNSAK.4566 days = 1095 random = 1095 }
-			# }
-		# }
-		# if = { # Too visible? You auto-reveal yourself if you are independent
-			# limit = {
-				# independent = yes
-				# is_ruler = yes
-				# check_variable = { which = visibility_value value = 40 }
-				# NOT = {
-					# has_character_flag = self_reveal
-				# }
-			# }
-			# set_character_flag = self_reveal
+increase_visibility_minor_effect = {
+	custom_tooltip = { text = debug_vis }
+	hidden_effect = {
+		change_variable = { which = visibility_value value = 2 } 
+		if = {
+			limit = {
+				check_variable = { which = visibility_value value = 15 }
+				NOR = {
+					has_character_modifier = under_suspicion
+					has_character_modifier = highly_suspect
+				}
+			}
+			add_character_modifier = {
+				name = under_suspicion
+				duration = -1
+			}
+			character_event = { id = MNSAK.4567 days = 1 }
+		}
+		if = {
+			limit = {
+				check_variable = { which = visibility_value value = 25 }
+				NOT = {
+					has_character_modifier = highly_suspect
+				}
+			}
+			remove_character_modifier = under_suspicion
+			add_character_modifier = {
+				name = highly_suspect duration = -1 
+			}
+			character_event = { id = MNSAK.4568 days = 1 }
+			liege = {
+				set_character_flag = secret_societies_interference
+				character_event = { id = MNSAK.4566 days = 1095 random = 1095 }
+			}
+		}
+		if = { # Too visible? You auto-reveal yourself if you are independent
+			limit = {
+				independent = yes
+				is_ruler = yes
+				check_variable = { which = visibility_value value = 40 }
+				NOT = {
+					has_character_flag = self_reveal
+				}
+			}
+			set_character_flag = self_reveal
 			# if = {
 				# limit = {
 					# is_devil_worshiper_trigger = yes
@@ -8726,9 +8788,9 @@ increase_visibility_effect = {
 					# duration = -1
 				# }
 			# }
-		# }
-	# }
-# }
+		}
+	}
+}
 
 decrease_visibility_effect = {
 	hidden_effect = {
@@ -10064,22 +10126,22 @@ add_western_zodiac_trait_effect = {
 	}
 }
 
-# flip_secret_religious_community_provinces = {
-	# trigger_switch = {
-		# on_trigger = society_member_of
-		# secret_religious_society_fire_nation_imperialism = {
-			# ROOT = {
-				# any_demesne_province = {
-					# limit = {
-						# has_province_modifier = secret_fire_nation_imperialism_community
-					# }
-					# religion = fire_nation_imperialism
-					# remove_province_modifier = secret_fire_nation_imperialism_community
-				# }
-			# }
-		# }
-	# }
-# }
+flip_secret_religious_community_provinces = {
+	trigger_switch = {
+		on_trigger = society_member_of
+		secret_religious_society_fire_nation_imperialism = {
+			ROOT = {
+				any_demesne_province = {
+					limit = {
+						has_province_modifier = secret_fire_nation_imperialism_community
+					}
+					religion = fire_nation_imperialism
+					remove_province_modifier = secret_fire_nation_imperialism_community
+				}
+			}
+		}
+	}
+}
 
 clean_up_after_leaving_society_effect = {
 	hidden_effect = {
@@ -11273,24 +11335,24 @@ send_final_book_outcome_event_effect = {
 	#character_event = { id = JD.10070 days = 5 random = 10 } #Testing values...
 	character_event = { id = JD.10070 days = 565 random = 3650 }
 }
-# root_secret_religion_provinces_convert_effect = {
-	# ROOT = {
-		# trigger_switch = {
-			# on_trigger = society_member_of
-			# secret_religious_society_fire_nation_imperialism = {
-				# PREV = {
-					# any_demesne_province = {
-						# limit = {
-							# has_province_modifier = secret_fire_nation_imperialism_community
-						# }
-						# religion = fire_nation_imperialism
-						# remove_province_modifier = secret_fire_nation_imperialism_community
-					# }
-				# }
-			# } 
-		# }
-	# }
-# }
+root_secret_religion_provinces_convert_effect = {
+	ROOT = {
+		trigger_switch = {
+			on_trigger = society_member_of
+			secret_religious_society_fire_nation_imperialism = {
+				PREV = {
+					any_demesne_province = {
+						limit = {
+							has_province_modifier = secret_fire_nation_imperialism_community
+						}
+						religion = fire_nation_imperialism
+						remove_province_modifier = secret_fire_nation_imperialism_community
+					}
+				}
+			}
+		}
+	}
+}
 troubled_pregnancy_chance_low_effect = { 
 random_list = { 
 	70 = { custom_tooltip = { text = tooltip_pregnancy_stable } }
@@ -16090,6 +16152,328 @@ murder_bloodline_check_effect = {
 	}
 }
 
+give_goldsmith_artifacts_flag_okay_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = the_lily_crown
+        add_artifact = noble_scepter
+        add_artifact = engraved_sword
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = engraved_dagger
+        add_artifact = silver_bracelets
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = engraved_dagger
+        add_artifact = collar_of_pearls
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_twilight
+        add_artifact = silver_staff
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = iron_crown
+        add_artifact = engraved_sword
+	}
+	else = {
+	    add_artifact = engraved_crown
+        add_artifact = ceremonial_axe
+	}
+}
+
+give_goldsmith_artifacts_flag_good_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = crown_of_pearls
+        add_artifact = ruby_scepter
+        add_artifact = golden_sword
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = bejeweled_dagger
+        add_artifact = golden_bracelets
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = bejeweled_dagger
+        add_artifact = necklace_of_radiance
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_the_heavens
+        add_artifact = golden_staff
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = crown_of_the_sea
+        add_artifact = golden_sword
+	}
+	else = {
+	    add_artifact = amber_crown
+        add_artifact = obsidian_axe
+	}
+}
+
+give_goldsmith_artifacts_flag_expensive_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = crown_of_majesty
+	    add_artifact = emerald_scepter
+	    add_artifact = sword_of_heroes
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = dagger_of_glory
+	    add_artifact = ruby_bracelets
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = dagger_of_glory
+	    add_artifact = celestial_necklace
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_the_heavens
+	    add_artifact = staff_of_majesty
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = crown_of_crows
+	    add_artifact = sword_of_heroes
+	}
+	else = {
+	    add_artifact = heros_crown
+	    add_artifact = axe_of_the_ancestors
+	}
+}
+
+give_goldsmith_artifacts_flag_amazing_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = crown_of_majesty_2
+	    add_artifact = emerald_scepter_2
+	    add_artifact = sword_of_heroes_2
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = dagger_of_glory_2
+	    add_artifact = ruby_bracelets_2
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = dagger_of_glory_2
+	    add_artifact = celestial_necklace_2
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_the_heavens_2
+	    add_artifact = staff_of_majesty_2
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = crown_of_crows_2
+	    add_artifact = sword_of_heroes_2
+	}
+	else = {
+	    add_artifact = heros_crown_2
+	    add_artifact = axe_of_the_ancestors_2
+	}
+}
+
+
+give_weaponsmith_artifacts_flag_okay_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = the_lily_crown
+        add_artifact = noble_scepter
+        add_artifact = engraved_sword
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = engraved_dagger
+        add_artifact = silver_bracelets
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = engraved_dagger
+        add_artifact = collar_of_pearls
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_twilight
+        add_artifact = silver_staff
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = iron_crown
+        add_artifact = engraved_sword
+	}
+	else = {
+	    add_artifact = engraved_crown
+        add_artifact = ceremonial_axe
+	}
+}
+
+give_weaponsmith_artifacts_flag_good_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = crown_of_pearls
+        add_artifact = ruby_scepter
+        add_artifact = golden_sword
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = bejeweled_dagger
+        add_artifact = golden_bracelets
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = bejeweled_dagger
+        add_artifact = necklace_of_radiance
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_the_heavens
+        add_artifact = golden_staff
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = crown_of_the_sea
+        add_artifact = golden_sword
+	}
+	else = {
+	    add_artifact = amber_crown
+        add_artifact = obsidian_axe
+	}
+}
+
+give_weaponsmith_artifacts_flag_expensive_effect = {
+	if = {
+	    limit = { 
+	    	OR = {
+	    		religion_group = earth_religions
+	    		religion_group = fire_religions
+			}
+		}
+	    add_artifact = crown_of_majesty
+	    add_artifact = emerald_scepter
+	    add_artifact = sword_of_heroes
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = modern_religions
+	    }
+	    add_artifact = dagger_of_glory
+	    add_artifact = ruby_bracelets
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = water_religions
+	    }
+	    add_artifact = dagger_of_glory
+	    add_artifact = celestial_necklace
+	}
+	else_if = {
+	    limit = { 
+	        religion_group = air_religions
+		}
+	    add_artifact = circlet_of_the_heavens
+	    add_artifact = staff_of_majesty
+	}
+	else_if = {
+	    limit = {
+	       religion_group = outlaw_religions
+	    }
+	    add_artifact = crown_of_crows
+	    add_artifact = sword_of_heroes
+	}
+	else = {
+	    add_artifact = heros_crown
+	    add_artifact = axe_of_the_ancestors
+	}
+}
 give_smith_artifacts_flag_okay_effect = {
 	if = {
         limit = { FROM = { has_character_flag = weapon_sword } }

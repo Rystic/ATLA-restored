@@ -52,6 +52,10 @@ character_event = {
 						has_character_modifier = expelled_jewish
 						religion_group = jewish_group
 						any_realm_province = { religion_group = jewish_group }
+						has_alternate_start_parameter = {
+							key = religion_names
+							value = random
+						}
 					}
 				}
 				set_character_flag = epidemic_blame_game
@@ -433,11 +437,7 @@ character_event = {
 				has_character_flag = cat_name_3
 			}
 		}
-		add_character_modifier = {
-			name = pet_cat
-			duration = -1
-		}
-		hidden_tooltip = { character_event = { id = 77802 days = 3000 random = 2000 } } # Cat dies
+		add_cat_effect = yes
 	}
 
 	#don't keep cat
@@ -726,6 +726,10 @@ character_event = { #head of religion chimes in. could be player.
 					trait = sympathy_judaism
 				}
 			}
+			modifier = {
+				factor = 2
+				is_virtous = yes
+			}
 		}			
 	}
 
@@ -743,6 +747,10 @@ character_event = { #head of religion chimes in. could be player.
 		}
 		ai_chance = {
 			factor = 50
+			modifier = {
+				factor = 2
+				is_wicked = yes
+			}
 		}
 	}
 }
@@ -921,7 +929,7 @@ character_event = { #if you keep jews, stuff happens
 	}
 
 	desc = {
-		picture = GFX_end_of_days
+		picture = GFX_evt_end_of_days
 		text = RIP.13403.d1
 		trigger = { has_character_flag = pogrom_target_selected }
 	}
@@ -1228,6 +1236,8 @@ character_event = {
 			if = {
 				limit = {
 					any_courtier = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						is_rival = ROOT
 						prisoner = no
 						NOT = { has_character_flag = bg_accused_witch }
@@ -1235,6 +1245,8 @@ character_event = {
 				}
 				random_courtier = {
 					limit = { 
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						is_rival = ROOT
 						prisoner = no
 						NOT = { has_character_flag = bg_accused_witch }
@@ -1255,6 +1267,8 @@ character_event = {
 			if = {
 				limit = {
 					any_courtier = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						OR = {
 							trait = possessed
 							trait = lunatic
@@ -1265,6 +1279,8 @@ character_event = {
 				}
 				random_courtier = {
 					limit = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						OR = {
 							trait = possessed
 							trait = lunatic
@@ -1284,6 +1300,8 @@ character_event = {
 			if = {
 				limit = { 
 					any_courtier = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						OR = {
 							NOT = { religion = FROM }
 							trait = mystic
@@ -1294,6 +1312,8 @@ character_event = {
 				}
 				random_courtier = {
 					limit = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						OR = {
 							NOT = { religion = FROM }
 							trait = mystic
@@ -1312,6 +1332,8 @@ character_event = {
 			if = {
 				limit = {
 					any_courtier = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						is_wicked = yes
 						prisoner = no
 						is_adult = yes
@@ -1320,6 +1342,8 @@ character_event = {
 				} 
 				random_courtier = {
 					limit = { 
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						is_wicked = yes 
 						prisoner = no
 						is_adult = yes
@@ -1336,6 +1360,8 @@ character_event = {
 			if = {
 				limit = {
 					any_courtier = {
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						is_adult = yes 
 						prisoner = no
 						NOT = { has_character_flag = bg_accused_witch }
@@ -1344,6 +1370,8 @@ character_event = {
 
 				random_courtier = { 
 					limit = { 
+						NOT = { character = PREV }
+						NOT = { is_liege_or_above = ROOT }
 						is_adult = yes 
 						prisoner = no
 						NOT = { has_character_flag = bg_accused_witch }
@@ -1510,7 +1538,7 @@ character_event = {
 				limit = { OWNER = { character = ROOT } }
 				add_province_modifier = {
 					name = peasant_pleased_witch_hunt
-					duration = 30
+					duration = 60
 				}
 			}
 		}
@@ -1749,7 +1777,6 @@ character_event = {
 #Random character might get to point out someone
 character_event = {
 	id = RIP.13220
-	desc = EVTDSC_RIP_13220
 	border = GFX_event_normal_frame_religion
 	picture = GFX_evt_throne_room
 
@@ -1865,7 +1892,10 @@ character_event = {
 	option = {
 		name = EVTOPTC_RIP_13230
 		any_courtier = {
-			limit = { has_character_flag = bg_imprisoned_as_witch }
+			limit = {
+				has_character_flag = bg_imprisoned_as_witch 
+				prisoner = yes
+			}
 			prisoner = no
 			opinion = {
 				modifier = opinion_grateful

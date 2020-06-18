@@ -1,0 +1,1142 @@
+namespace = special
+
+#for the sub-skills of bending
+
+#Special bending types
+##Healing
+narrative_event = {
+	id = special.1
+	desc = EVTDESCspecial.1
+	title = EVTTITLEspecial.1
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes #given on adulthood
+	
+	trigger = {
+		trait = waterbender
+		NOT = { trait = healer }
+	}
+	option = {
+		name = EVTOPTAspecial.1
+		add_trait = healer
+	}
+}
+
+character_event = {
+	id = special.100
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		trait = waterbender
+	}
+	option = {
+		if = {
+			limit = {
+				is_female = no
+			}
+			random = {
+				chance = 25
+				narrative_event = { id = special.1 }
+			}
+			break = yes
+		}
+		random = {
+			chance = 50
+			narrative_event = { id = special.1 }
+		}
+	}
+}
+
+##Sandbending
+narrative_event = {
+	id = special.2
+	desc = EVTDESCspecial.2
+	title = EVTTITLEspecial.2
+	picture = GFX_evt_child_reading_muslim
+	is_triggered_only = yes #gives sandbender trait on adulthood
+	
+	trigger = {
+		trait = earthbender
+		culture = sandbender
+		NOT = { trait = sandbender }
+	}
+	option = {
+		name = EVTOPTAspecial.2
+		add_trait = sandbender
+	}
+}
+
+#Spreadable special bending
+##seismicsense
+character_event = { #gives the blind trait to a newborn child
+	id = special.3
+	is_triggered_only = yes #is given on birth
+	hide_window = yes #doesn't show up and doesn't need localisation
+	immediate = {
+		add_trait = blind
+	}
+	option = {
+		if = {
+			limit = {
+				mother = {
+					ai = no
+				}
+			}
+			mother = {
+				narrative_event = { id = special.4 }
+			}
+			break = yes
+		}
+		father = {
+			narrative_event = { id = special.4 }
+		}
+	}
+}
+
+narrative_event = { #parent gets notified about child being blind
+	id = special.4
+	is_triggered_only = yes
+	desc = EVTDESCspecial.4
+	title = EVTTITLEspecial.4
+	picture = GFX_evt_child_reading
+	
+	option = {
+		name = EVTOPTspecial.4
+	}
+}
+narrative_event = { #gives blind earthbender seismicsense
+	id = special.5
+	is_triggered_only = yes
+	desc = EVTDESCspecial.5
+	title = EVTTITLEspecial.5
+	picture = GFX_evt_child_reading_muslim
+	
+	trigger = {
+		trait = blind
+		trait = earthbender
+		NOR = { age > 45 
+			trait = seismicsense } #makes an old earthbender unable to learn it
+		OR = {
+			trait = competent_bender
+			trait = powerful_bender
+			trait = master_bender
+			trait = legendary_bender
+		}
+	}
+	
+	option = {
+		name = EVTOPTspecial.5
+		add_trait = seismicsense
+		hidden_tooltip = {
+		}
+	}
+}
+#spreading seismicsense by teaching friends is handled in another file
+
+##lightningbending
+narrative_event = { #firelord randomly learns lightningbending - possibly from ancestor or nature?
+	id = special.6
+	desc = EVTDESCspecial.6
+	title = EVTTITLEspecial.6
+	picture = GFX_evt_child_reading_muslim
+	
+	trigger = {
+		trait = firebender
+		OR = {
+			trait = powerful_bender
+			trait = master_bender
+			trait = legendary_bender
+			trait = firelord
+		}
+		NOT = { trait = lightningbender }
+	}
+	mean_time_to_happen = {
+		years = 10
+		modifier = {
+			factor = 2
+			trait = master_bender
+		}
+		modifier = {
+			factor = 3
+			trait = powerful_bender
+		}
+		modifier = {
+			factor = 2
+			trait = legendary_bender
+		}
+	}
+	option = {
+		name = EVTOPTAspecial.6
+		add_trait = lightningbender
+	}
+}
+narrative_event = { #Firelord decided to spread lightningbending
+	id = special.7
+	desc = EVTDESCspecial.7
+	title = TITLEspecial.7
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTspecial.7
+	}
+}
+
+narrative_event = { #learns lightningbending through official schools funded by firelord
+	id = special.8
+	desc = EVTDESCspecial.8
+	title = TITLEspecial.8
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { trait = lightningbender }
+	}
+	
+	option = {
+		name = EVTOPTspecial.8
+		add_trait = lightningbender
+	}
+}
+
+character_event = { #set to fire on childhood
+	id = special.9
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		trait = firebender
+		has_global_flag = mass_lightning
+		OR = {
+			trait = competent_bender
+			trait = powerful_bender
+			trait = master_bender
+			trait = legendary_bender
+		}
+		NOT = { trait = lightningbender}
+	}
+	option = {
+		random_list = {
+			95 = { }
+			5 = {
+				narrative_event = { id = special.8 }
+			}
+		}
+	}
+}
+
+narrative_event = { #lightningbending training success
+	id = special.10
+	desc = EVTDESCspecial.10
+	title = EVTTITLEspecial.10
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.10
+		add_trait = lightningbender
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.14 } }
+		}
+	}
+}
+
+narrative_event = { #lightningbending training goes wrong
+	id = special.11
+	desc = EVTDESCspecial.11
+	title = EVTTITLEspecial.11
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.11
+		add_trait = wounded
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.15 } }
+		}
+	}
+}
+
+narrative_event = { #lightningbending - nothing happens
+	id = special.12
+	desc = EVTDESCspecial.12
+	title = EVTTITLEspecial.12
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.12
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.16 } }
+		}
+	}
+}
+
+narrative_event = { #lightningbending - will I learn?
+	id = special.13
+	desc = EVTDESCspecial.13
+	title = EVTTITLEspecial.13
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = { #yes
+		name = EVTOPTAspecial.13
+		hidden_tooltip = {
+			random_list = {
+				25 = { #succes
+					narrative_event = { id = special.10 months = 2 }
+				}
+				5 = { #training goes wrong
+					narrative_event = { id = special.11 months = 2 }
+				}
+				70 = { #nothing happens
+					narrative_event = { id = special.12 months = 2}
+				}
+			}
+		}
+	}
+	option = { #no
+		name = EVTOPTBspecial.13
+	}
+}
+
+character_event = { #training goes right
+	id = special.14
+	desc = EVTDESCspecial.14
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.14
+		reverse_opinion = { who = FROM modifier = opinion_mentor }
+	}
+}
+
+character_event = { #training goes wrong
+	id = special.15
+	desc = EVTDESCspecial.15
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.15
+	}
+}
+character_event = { #training - nothing happens
+	id = special.16
+	desc = EVTDESCspecial.16
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.16
+	}
+}
+
+#discoverable bending
+##metalbending
+narrative_event = { #character discovers metalbending
+	id = special.17
+	desc = EVTDESCspecial.17
+	title = EVTTITLEspecial.17
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = earthbender
+		OR = {
+			trait = master_bender
+			trait = legendary_bender
+		}
+		NOT = { trait = metalbender }
+	}
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 0.0001
+			NOR = { 
+			trait = seismicsense 
+			trait = seismicsense_nonblind 
+			}
+		}
+		modifier = {
+			factor = 0.0001
+			NOT = { trait = legendary_bender }
+		}
+		modifier = {
+			factor = 100
+			trait = seismicsense
+		}
+		modifier = {
+			factor = 100
+			trait = seismicsense_nonblind 
+		}
+	}
+	option = {
+		name = EVTOPTAspecial.17
+		add_trait = metalbender
+		hidden_tooltip = {
+			character_event = { id = special.18 }
+		}
+	}
+}
+
+character_event = { #metalbending has been discovered
+	id = special.18
+	desc = EVTDESCspecial.18
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	major = yes
+	
+	option = {
+		name = EVTOPTAspecial.18
+	}
+}
+narrative_event = { #metalbending training success
+	id = special.19
+	desc = EVTDESCspecial.19
+	title = EVTTITLEspecial.19
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.19
+		add_trait = metalbender
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.23 } }
+		}
+	}
+}
+
+narrative_event = { #metalbending training goes wrong
+	id = special.20
+	desc = EVTDESCspecial.20
+	title = EVTTITLEspecial.20
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.20
+		add_trait = wounded
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.24 } }
+		}
+	}
+}
+
+narrative_event = { #metalbending - nothing happens
+	id = special.21
+	desc = EVTDESCspecial.21
+	title = EVTTITLEspecial.21
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.21
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.25 } }
+		}
+	}
+}
+
+narrative_event = { #metalbending - will I learn?
+	id = special.22
+	desc = EVTDESCspecial.22
+	title = EVTTITLEspecial.22
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = { #yes
+		name = EVTOPTAspecial.22
+		hidden_tooltip = {
+			random_list = {
+				25 = { #succes
+					narrative_event = { id = special.19 months = 2 }
+				}
+				5 = { #training goes wrong
+					narrative_event = { id = special.20 months = 2 }
+				}
+				70 = { #nothing happens
+					narrative_event = { id = special.21 months = 2}
+				}
+			}
+		}
+	}
+	option = { #no
+		name = EVTOPTBspecial.22
+	}
+}
+
+character_event = { #training goes right
+	id = special.23
+	desc = EVTDESCspecial.23
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.23
+		reverse_opinion = { who = FROM modifier = opinion_mentor }
+	}
+}
+
+character_event = { #training goes wrong
+	id = special.24
+	desc = EVTDESCspecial.24
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.24
+	}
+}
+character_event = { #training - nothing happens
+	id = special.25
+	desc = EVTDESCspecial.25
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.25
+	}
+}
+
+##bloodbending
+
+#discover bloodbending - prison
+character_event = {
+	id = special.26
+	desc = EVTDESCspecial.26
+	is_triggered_only = yes #on_action trigger
+	min_age = 16
+	prisoner = yes
+	capable_only = yes
+	
+	trigger = {
+		trait = waterbender
+		NOT = { has_character_flag = stopped_bloodbending }
+		OR = {
+			trait = master_bender
+			trait = legendary_bender
+		}
+		NOT = { trait = bloodbender }
+	}
+	option = { #will start to train on small animals
+		name = EVTOPTAspecial.26
+		add_trait = wroth
+		custom_tooltip = {
+			text = TOOLTIPAspecial.26
+			hidden_tooltip = {
+				character_event = { id = special.27 days = 14 }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTBspecial.26
+		add_trait = content
+		custom_tooltip = {
+			text = TOOLTIPBspecial.26
+		}
+	}
+}
+
+character_event = {
+	id = special.27
+	desc = EVTDESCspecial.27 #after several attempts on rodents, some of which ended badly, i've gained some control over it.
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				prisoner = no
+			}
+			character_event = { id = special.30 } #for killing the chain if released from prison
+		}
+	}
+	option = {
+		name = EVTOPTAspecial.27 #I can't stop now
+		custom_tooltip = {
+			text = TOOLTIPAspecial.27 #You continue to practice on small rodents
+			hidden_tooltip = {
+				add_trait = cruel
+				character_event = { id = special.28 days = 14 }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTBspecial.27 #it's too cruel
+		add_trait = kind
+		piety = 50
+	}
+}
+
+character_event = {
+	id = special.28
+	desc = EVTDESCspecial.28 #I now control rodents and at the next full moon I will try my escape!
+	is_triggered_only = yes
+	
+	option = { #try to escape
+		name = EVTOPTAspecial.28
+		trigger = {
+			prisoner = yes
+		}
+		custom_tooltip = {
+			text = TOOLTIPAspecial.28
+			hidden_tooltip = {
+				narrative_event = { id = special.29 }
+			}
+		}
+	}
+	option = { #I can't hurt the guards
+		name = EVTOPTBspecial.28
+		trigger = {
+			prisoner = yes
+		}
+		add_trait = kind
+		piety = 25
+	}
+	option = {
+		name = EVTOPTCspecial.28
+		trigger = {
+			prisoner = no
+		}
+	}
+}
+
+narrative_event = {
+	id = special.29
+	desc = EVTDESCspecial.29 #after taking down the first guards, now is the time to decide how to escape
+	title = EVTTITLEspecial.29
+	is_triggered_only = yes
+	
+	option = { #search for the prison warden
+		name = EVTOPTAspecial.29
+		add_trait = bloodbender
+		random_list = {
+			60 = { #You find the wardens office!
+				custom_tooltip = {
+					text = EVTTOOLTIPAspecial.29
+				}
+				hidden_tooltip = {
+					host = {
+						random_courtier = {
+							limit = {
+								at_location = ROOT
+							}
+							character_event = { id = special.30 }
+						}
+					}
+				}
+			}
+			40 = { #In the search for the wardens office, reinforcements arrives and subdues you
+				custom_tooltip = {
+					text = EVTTOOLTIPBspecial.29
+				}
+				hidden_tooltip = {
+					host = {
+						character_event = { id = special.32 }
+					}
+				}
+			}
+		}
+	}
+	option = { #Search for an escape route
+		name = EVTOPTBspecial.29
+		add_trait = bloodbender
+		random_list = {
+			80 = { #Escape and get back home
+				custom_tooltip = {
+					text = EVTTOOLTIPCspecial.29
+				}
+				hidden_tooltip = {
+					host = {
+						character_event = { id = special.33 }
+					}
+					character_event = { id = special.34}
+				}
+			}
+			20 = { #Despite searching for several hours, I've found no exit and has been subdued by the guards
+				custom_tooltip = { 
+					text = EVTTOOLTIPDspecial.29
+				}
+				hidden_tooltip = {
+					host = {
+						character_event = { id = special.32 }
+					}
+				}
+			}
+		}
+	}
+}
+character_event = { #courtier is killeed
+	id = special.30
+	is_triggered_only = yes
+	desc = EVTDESCspecial.30
+	
+	option = {
+		name = EVTOPTspecial.30
+		liege = {
+			character_event = { id = special.35 }
+		}
+		FROM = { character_event = { id = special.31 } }
+		death = { death_reason = death_execution killer = FROM }
+		#add relations penalties
+	}
+}
+character_event = { # bloodbender is notified about escape
+	id = special.31
+	is_triggered_only = yes
+	desc = EVTDESCspecial.31
+	
+	option = {
+		name = EVTOPTspecial.31
+		imprison = no
+		add_trait = impaler
+	}
+}
+
+character_event = {
+	id = special.32
+	is_triggered_only = yes
+	desc = EVTDESCspecial.32
+	
+	option = { #to the oubliette
+		name = EVTOPTspecial.32
+		FROMFROM = {
+			add_character_modifier = {
+				modifier = the_oubliette
+				duration = -1
+			}
+		}
+	}
+}
+
+character_event = { #bloodbender escapes
+	id = special.33
+	is_triggered_only = yes
+	desc = EVTDESCspecial.33
+	
+	option = {
+		name = EVTOPTspecial.33
+		add_trait = paranoid
+		hidden_tooltip = {
+			narrative_event = { id = special.37 }
+		}
+	}
+}
+
+character_event = {
+	id = special.34
+	is_triggered_only = yes
+	desc = EVTDESCspecial.34
+	hide_window = yes
+	
+	option = {
+		name = EVTOPTspecial.34
+		imprison = no
+	}
+}
+
+
+character_event = {
+	id = special.35
+	desc = EVTDESCspecial.35
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTspecial.35
+		add_trait = paranoid
+	}
+}
+
+narrative_event = {
+	id = special.36
+	desc = EVTDESCspecial.36
+	title = EVTTITLEspecial.36
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			trait = master_bender
+			trait = legendary_bender
+		}
+		trait = waterbender
+		trait = impaler
+		OR = {
+			trait = cruel
+			trait = wroth
+		}
+	}
+	option = {
+		ai_chance = {
+			factor = 90
+		}
+		name = EVTOPTAspecial.36
+		add_trait = bloodbender
+		add_trait = cruel
+		hidden_tooltip = {
+			any_playable_ruler = {
+				limit = {
+					ai = no
+				}
+				narrative_event = { id = special.37 }
+			}
+		}
+	}
+	option = {
+		ai_chance = {
+			factor = 10
+		}
+		name = EVTOPTBspecial.36
+		piety = 100
+	}
+}
+
+narrative_event = { #bloodbending is revealed
+	id = special.37
+	title = EVTTITLEspecial.37
+	desc = EVTDESCspecial.37
+	show_from_from = yes
+	is_triggered_only = yes
+	major = yes
+	
+	option = {
+		name = EVTOPTspecial.37
+	}
+}
+
+narrative_event = { #bloodbending training success
+	id = special.38
+	desc = EVTDESCspecial.38
+	title = EVTTITLEspecial.38
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.38
+		add_trait = bloodbender
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.42 } }
+		}
+	}
+}
+
+narrative_event = { #bloodbending training goes wrong
+	id = special.39
+	desc = EVTDESCspecial.39
+	title = EVTTITLEspecial.39
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.39
+		add_trait = wounded
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.43 } }
+		}
+	}
+}
+
+narrative_event = { #bloodbending - nothing happens
+	id = special.40
+	desc = EVTDESCspecial.40
+	title = EVTTITLEspecial.40
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.40
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.44 } }
+		}
+	}
+}
+
+narrative_event = { #bloodbending - will I learn?
+	id = special.41
+	desc = EVTDESCspecial.41
+	title = EVTTITLEspecial.41
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = { #yes
+		name = EVTOPTAspecial.41
+		hidden_tooltip = {
+			random_list = {
+				25 = { #succes
+					narrative_event = { id = special.38 }
+				}
+				5 = { #training goes wrong
+					narrative_event = { id = special.39 }
+				}
+				70 = { #nothing happens
+					narrative_event = { id = special.40 }
+				}
+			}
+		}
+	}
+	option = { #no
+		name = EVTOPTBspecial.41
+	}
+}
+
+character_event = { #training goes right
+	id = special.42
+	desc = EVTDESCspecial.42
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.42
+		reverse_opinion = { who = FROM modifier = opinion_mentor }
+	}
+}
+
+character_event = { #training goes wrong
+	id = special.43
+	desc = EVTDESCspecial.43
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.43
+	}
+}
+character_event = { #training - nothing happens
+	id = special.44
+	desc = EVTDESCspecial.44
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.44
+	}
+}
+
+character_event = { #Stops a bloddbender from being a bloddbender
+	id = special.45
+	desc = EVTDESCspecial.45
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTspecial.45
+		remove_trait = bloodbender
+		piety = 100
+		add_trait = kind
+		set_character_flag = stopped_bloodbending
+	}
+}
+
+
+##flight
+
+narrative_event = { #learning flight - Needs to be expanded by more events
+	id = special.46
+	desc = EVTDESCspecial.46
+	title = EVTTITLEspecial.46
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = airbender
+		OR = {
+			trait = legendary_bender
+			trait = master_bender
+		}
+		OR = {
+			piety = 300
+			AND = {
+				trait = kind
+				trait = humble
+				trait = patient
+				trait = chaste
+			}
+		}
+		NOT = { trait = levitation }
+	}
+	option = {
+		name = EVTOPTspecial.46
+		add_trait = levitation
+	}
+}
+
+##combustionbending
+narrative_event = {
+	id = special.47
+	desc = EVTDESCspecial.47
+	title = EVTTITLEspecial.47
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = firebender
+		OR = {
+			trait = legendary_bender
+			trait = master_bender
+		}
+		NOT = { trait = combustionbender }
+	}
+	option = {
+		name = EVTDESCspecial.47
+		add_trait = combustionbender
+	}
+}
+
+narrative_event = { #combustionbending training success
+	id = special.48
+	desc = EVTDESCspecial.48
+	title = EVTTITLEspecial.48
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.48
+		add_trait = combustionbender
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.52 } }
+		}
+	}
+}
+
+narrative_event = { #combustionbending training goes wrong
+	id = special.49
+	desc = EVTDESCspecial.49
+	title = EVTTITLEspecial.49
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.49
+		add_trait = wounded
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.53 } }
+		}
+	}
+}
+
+narrative_event = { #combustionbending - nothing happens
+	id = special.50
+	desc = EVTDESCspecial.50
+	title = EVTTITLEspecial.50
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.50
+		hidden_tooltip = {
+			FROMFROM = { character_event = { id = special.54 } }
+		}
+	}
+}
+
+narrative_event = { #combustionbending - will I learn?
+	id = special.51
+	desc = EVTDESCspecial.51
+	title = EVTTITLEspecial.51
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = { #yes
+		name = EVTOPTAspecial.51
+		hidden_tooltip = {
+			random_list = {
+				25 = { #succes
+					narrative_event = { id = special.48 }
+				}
+				5 = { #training goes wrong
+					narrative_event = { id = special.49 }
+				}
+				70 = { #nothing happens
+					narrative_event = { id = special.50 }
+				}
+			}
+		}
+	}
+	option = { #no
+		name = EVTOPTBspecial.51
+	}
+}
+
+character_event = { #training goes right
+	id = special.52
+	desc = EVTDESCspecial.52
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.52
+		reverse_opinion = { who = FROM modifier = opinion_mentor }
+	}
+}
+
+character_event = { #training goes wrong
+	id = special.53
+	desc = EVTDESCspecial.53
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.53
+	}
+}
+character_event = { #training - nothing happens
+	id = special.54
+	desc = EVTDESCspecial.54
+	picture = GFX_evt_child_reading
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTAspecial.54
+	}
+}
+
+##lavabending
+
+narrative_event = {
+	id = special.55
+	desc = EVTDESCspecial.55
+	title = EVTTITLEspecial.55
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = earthbender
+		OR = {
+			trait = master_bender
+			trait = legendary_bender
+		}
+	}
+	option = {
+		name = EVTOPTspecial.55
+		add_trait = lavabender
+	}
+}
+
+##voidbending
+narrative_event = {
+	id = special.56
+	desc = EVTDESCspecial.56
+	title = EVTTITLEspecial.56
+	is_triggered_only = yes
+	
+	trigger = {
+		trait = airbender
+		OR = {
+			trait = master_bender
+			trait = legendary_bender
+		}
+		AND = {
+			trait = cruel
+			trait = ambitious
+			trait = wroth
+		}
+		NOT = { trait = voidbender }
+	}
+	option = {
+		name = EVTOPTspecial.56
+		add_trait = voidbender
+	}
+}
+
+
+#spiritualismbased bending
+
+
+
+##spiritual projection

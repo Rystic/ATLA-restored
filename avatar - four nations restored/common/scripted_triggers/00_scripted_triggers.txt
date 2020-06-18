@@ -126,7 +126,6 @@ has_pious_trait_trigger = {
 		trait = chaste
 		trait = humble
 		trait = content
-		trait = on_pilgrimage
 		trait = pilgrim
 		is_ascetic_trigger = yes
 		trait = zealous
@@ -848,7 +847,6 @@ can_be_chancellor_trigger = {
 						liege = { has_religion_feature = religion_equal }
 					}
 				}
-				trait = horse # So we can have female glitterhoofs! :D
 				AND = {
 					liege = {
 						primary_title = {
@@ -892,6 +890,8 @@ can_be_chancellor_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
 		liege = {
@@ -959,6 +959,8 @@ can_be_marshal_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_flag = guru }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
@@ -986,7 +988,6 @@ can_be_treasurer_trigger = {
 						liege = { has_religion_feature = religion_equal }
 					}
 				}
-				trait = horse # So we can have female glitterhoofs! :D
 				AND = {
 					liege = {
 						primary_title = {
@@ -1030,6 +1031,8 @@ can_be_treasurer_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_flag = guru }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
@@ -1057,7 +1060,6 @@ can_be_spymaster_trigger = {
 						liege = { has_religion_feature = religion_equal }
 					}
 				}
-				trait = horse # So we can have female glitterhoofs! :D
 				liege = {
 					NOR = {
 						liege = { has_religion_feature = religion_matriarchal }
@@ -1112,6 +1114,8 @@ can_be_spymaster_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_flag = guru }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
@@ -1129,6 +1133,8 @@ can_be_spiritual_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
 		liege = {
@@ -1198,6 +1204,8 @@ can_be_councilmember_king_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
 		liege = {
@@ -1250,6 +1258,8 @@ can_be_councilmember_emperor_trigger = {
 	prisoner = no
 	NOT = { trait = incapable }
 	NOT = { trait = in_hiding }
+	NOT = { trait = avatar }
+	NOT = { trait = fullyrealisedavatar }
 	NOT = { has_character_modifier = resigned_in_anger }
 	NOT = {
 		liege = {
@@ -1972,6 +1982,21 @@ relative_in_law_of_root_trigger = {
 		#any_spouse = { father_even_if_dead = { any_child = { any_spouse = { character = ROOT } } } }
 	}
 }
+
+is_murder_quest_target_of_prev_trigger = {
+	PREVPREV = {
+		# has_quest = quest_the_assassins_assassination
+		quest_target = { character = PREVPREV }
+	}
+}
+
+is_murder_quest_target_of_root_trigger = {
+	ROOT = {
+		# has_quest = quest_the_assassins_assassination
+		quest_target = { character = PREVPREV }
+	}
+}
+
 interesting_face_trigger = {
 	OR = {
 		trait = fair
@@ -2095,6 +2120,10 @@ has_negative_congenital_trigger = {
 }
 
 
+is_monastic_member_trigger = {
+	society_member_of = brotherhood_of_agni_kai
+}
+
 is_ascetic_trigger = {
 	custom_tooltip = {
 		text = is_ascetic_tooltip
@@ -2204,120 +2233,8 @@ has_my_liege_secret_religion_truly_trigger = {
 is_in_prevs_interesting_society_trigger = {
 	OR = {
 		AND = {
-			society_member_of = secret_religious_society_earth_spirituality
-			PREV = { interested_in_society = secret_religious_society_earth_spirituality }
-		}
-		AND = {
-			society_member_of = secret_religious_society_ba_sing_se_cultural_heritage
-			PREV = { interested_in_society = secret_religious_society_ba_sing_se_cultural_heritage }
-		}
-		AND = {
-			society_member_of = secret_religious_society_omashuan_ethics
-			PREV = { interested_in_society = secret_religious_society_omashuan_ethics }
-		}
-		AND = {
-			society_member_of = secret_religious_society_path_of_jin_wei
-			PREV = { interested_in_society = secret_religious_society_path_of_jin_wei }
-		}
-		AND = {
-			society_member_of = secret_religious_society_path_of_wei_jin
-			PREV = { interested_in_society = secret_religious_society_path_of_wei_jin }
-		}
-		AND = {
-			society_member_of = secret_religious_society_the_great_serpent
-			PREV = { interested_in_society = secret_religious_society_the_great_serpent }
-		}
-		AND = {
-			society_member_of = secret_religious_society_the_divided
-			PREV = { interested_in_society = secret_religious_society_the_divided }
-		}
-		AND = {
-			society_member_of = secret_religious_society_fortune_telling
-			PREV = { interested_in_society = secret_religious_society_fortune_telling }
-		}
-		AND = {
-			society_member_of = secret_religious_society_unificationism
-			PREV = { interested_in_society = secret_religious_society_unificationism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_way_of_chin
-			PREV = { interested_in_society = secret_religious_society_way_of_chin }
-		}
-		AND = {
-			society_member_of = secret_religious_society_followers_of_kyoshi
-			PREV = { interested_in_society = secret_religious_society_followers_of_kyoshi }
-		}
-		AND = {
-			society_member_of = secret_religious_society_earth_monarchism
-			PREV = { interested_in_society = secret_religious_society_earth_monarchism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_children_of_si_wong
-			PREV = { interested_in_society = secret_religious_society_children_of_si_wong }
-		}
-		AND = {
-			society_member_of = secret_religious_society_fire_spirituality
-			PREV = { interested_in_society = secret_religious_society_fire_spirituality }
-		}
-		AND = {
 			society_member_of = secret_religious_society_fire_nation_imperialism
 			PREV = { interested_in_society = secret_religious_society_fire_nation_imperialism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_bhanti_spirituality
-			PREV = { interested_in_society = secret_religious_society_bhanti_spirituality }
-		}
-		AND = {
-			society_member_of = secret_religious_society_the_eternal_flame
-			PREV = { interested_in_society = secret_religious_society_the_eternal_flame }
-		}
-		AND = {
-			society_member_of = secret_religious_society_nomadic_pacifism
-			PREV = { interested_in_society = secret_religious_society_nomadic_pacifism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_nomadic_nihilism
-			PREV = { interested_in_society = secret_religious_society_nomadic_nihilism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_air_acolytism
-			PREV = { interested_in_society = secret_religious_society_air_acolytism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_neo-nomadism
-			PREV = { interested_in_society = secret_religious_society_neo-nomadism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_southern_spirituality
-			PREV = { interested_in_society = secret_religious_society_southern_spirituality }
-		}
-		AND = {
-			society_member_of = secret_religious_society_the_great_swamp
-			PREV = { interested_in_society = secret_religious_society_the_great_swamp }
-		}
-		AND = {
-			society_member_of = secret_religious_society_tui_and_la
-			PREV = { interested_in_society = secret_religious_society_tui_and_la }
-		}
-		AND = {
-			society_member_of = secret_religious_society_witchcraft
-			PREV = { interested_in_society = secret_religious_society_witchcraft }
-		}
-		AND = {
-			society_member_of = secret_religious_society_vaatuism
-			PREV = { interested_in_society = secret_religious_society_vaatuism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_modernism
-			PREV = { interested_in_society = secret_religious_society_modernism }
-		}
-		AND = {
-			society_member_of = secret_religious_society_piracy
-			PREV = { interested_in_society = secret_religious_society_piracy }
-		}
-		AND = {
-			society_member_of = secret_religious_society_barbarism
-			PREV = { interested_in_society = secret_religious_society_barbarism }
 		}
 	}
 }
@@ -2457,6 +2374,202 @@ possibly_romantically_interested_in_each_other_trigger = {
 	ROOT_possibly_romantically_interested_trigger = yes
 }
 
+have_duplicate_goldsmith_artifacts_flag_okay_trigger = {
+	OR = {
+		AND = {
+		    OR = {
+		       	religion_group = earth_religions 
+		       	religion_group = fire_religions
+			}
+			AND = 
+			{
+		       	has_artifact = the_lily_crown
+       			has_artifact = noble_scepter
+        		has_artifact = engraved_sword
+		  	}
+		}
+		AND = {
+	        religion_group = modern_religions
+	        AND = {
+		        has_artifact = engraved_dagger
+        		has_artifact = silver_bracelets
+		    }
+		}
+        AND = {
+	        religion_group = water_religions
+        	AND = {
+        		has_artifact = engraved_dagger
+        		has_artifact = collar_of_pearls
+        	}
+        }
+        AND = {
+	        religion_group = air_religions
+			AND = {
+			    has_artifact = circlet_of_twilight
+        		has_artifact = silver_staff
+        	}
+        }
+       	AND = {
+	        religion_group = outlaw_religions
+		    AND = {
+		        has_artifact = iron_crown
+      		    has_artifact = engraved_sword
+        	}
+        }
+        AND = {
+        	has_artifact = engraved_crown
+        	has_artifact = ceremonial_axe
+       	}
+    }
+}
+
+have_duplicate_goldsmith_artifacts_flag_good_trigger = {
+	OR = {
+		AND = {
+		    OR = {
+		       	religion_group = earth_religions 
+		       	religion_group = fire_religions
+			}
+			AND = 
+			{
+		       	has_artifact = crown_of_pearls
+        		has_artifact = ruby_scepter
+        		has_artifact = golden_sword
+		  	}
+		}
+		AND = {
+	        religion_group = modern_religions
+	        AND = {
+		        has_artifact = bejeweled_dagger
+        		has_artifact = golden_bracelets
+		    }
+		}
+        AND = {
+	        religion_group = water_religions
+        	AND = {
+        		has_artifact = bejeweled_dagger
+        		has_artifact = necklace_of_radiance
+        	}
+        }
+        AND = {
+	        religion_group = air_religions
+			AND = {
+			    has_artifact = circlet_of_the_heavens
+        		has_artifact = golden_staff
+        	}
+        }
+       	AND = {
+	        religion_group = outlaw_religions
+		    AND = {
+		        has_artifact = crown_of_the_sea
+        		has_artifact = golden_sword
+        	}
+        }
+        AND = {
+        	has_artifact = amber_crown
+        	has_artifact = obsidian_axe
+       	}
+    }
+}
+
+have_duplicate_goldsmith_artifacts_flag_expensive_trigger = {
+	OR = {
+		AND = {
+		    OR = {
+		       	religion_group = earth_religions 
+		       	religion_group = fire_religions
+			}
+			AND = 
+			{
+		       	has_artifact = crown_of_majesty
+		     	has_artifact = emerald_scepter
+		    	has_artifact = sword_of_heroes
+		  	}
+		}
+		AND = {
+	        religion_group = modern_religions
+	        AND = {
+		        has_artifact = dagger_of_glory
+		        has_artifact = ruby_bracelets
+		    }
+		}
+        AND = {
+	        religion_group = water_religions
+        	AND = {
+        		has_artifact = dagger_of_glory
+        		has_artifact = celestial_necklace
+        	}
+        }
+        AND = {
+	        religion_group = air_religions
+			AND = {
+			    has_artifact = circlet_of_the_heavens
+			    has_artifact = staff_of_majesty
+        	}
+        }
+       	AND = {
+	        religion_group = outlaw_religions
+		    AND = {
+		        has_artifact = crown_of_crows
+		        has_artifact = sword_of_heroes
+        	}
+        }
+        AND = {
+        	has_artifact = heros_crown
+        	has_artifact = axe_of_the_ancestors
+       	}
+    }
+}
+
+have_duplicate_goldsmith_artifacts_flag_amazing_trigger = {
+	OR = {
+		AND = {
+		    OR = {
+		       	religion_group = earth_religions 
+		       	religion_group = fire_religions
+			}
+			AND = 
+			{
+		       	has_artifact = crown_of_majesty_2
+		     	has_artifact = emerald_scepter_2
+		    	has_artifact = sword_of_heroes_2
+		  	}
+		}
+		AND = {
+	        religion_group = modern_religions
+	        AND = {
+		        has_artifact = dagger_of_glory_2
+		        has_artifact = ruby_bracelets_2
+		    }
+		}
+        AND = {
+	        religion_group = water_religions
+        	AND = {
+        		has_artifact = dagger_of_glory_2
+        		has_artifact = celestial_necklace_2
+        	}
+        }
+        AND = {
+	        religion_group = air_religions
+			AND = {
+			    has_artifact = circlet_of_the_heavens_2
+			    has_artifact = staff_of_majesty_2
+        	}
+        }
+       	AND = {
+	        religion_group = outlaw_religions
+		    AND = {
+		        has_artifact = crown_of_crows_2
+		        has_artifact = sword_of_heroes_2
+        	}
+        }
+        AND = {
+        	has_artifact = heros_crown_2
+        	has_artifact = axe_of_the_ancestors_2
+       	}
+    }
+}
+
 have_all_armorsmith_artifacts_all_flags_trigger = {
 	has_artifact = armor_tier_4_guardian
 	has_artifact = armor_tier_4_champion
@@ -2466,6 +2579,35 @@ have_all_armorsmith_artifacts_all_flags_trigger = {
 	has_artifact = armor_tier_3_warden
 	has_artifact = armor_tier_2
 	has_artifact = armor_tier_1
+}
+
+have_all_weaponsmith_artifacts_all_flags_trigger = {
+	trigger_if = {
+		limit = {
+			NOR = { 
+				religion = children_of_si_wong
+				has_dharmic_religion_trigger = yes 
+			}
+		}
+		have_all_weaponsmith_swords_all_flags_trigger = yes
+	}
+	trigger_if = {
+		limit = {
+			OR = { 
+				religion = children_of_si_wong
+				has_dharmic_religion_trigger = yes 
+			}
+		}
+		have_all_weaponsmith_scimitar_all_flags_trigger = yes
+	}
+	trigger_if = {
+		limit = { is_nomadic = yes }
+		have_all_weaponsmith_bow_all_flags_trigger = yes
+	}
+
+	have_all_weaponsmith_lance_all_flags_trigger = yes
+	have_all_weaponsmith_axe_all_flags_trigger = yes
+	have_all_weaponsmith_mace_all_flags_trigger = yes
 }
 
 have_all_weaponsmith_mace_all_flags_trigger = {
@@ -2841,7 +2983,6 @@ can_be_asked_to_leave_court_trigger = {
 			text = is_inaccessible_tt
 			OR = {
 				trait = in_hiding
-				trait = on_pilgrimage
 				trait = travelling
 				trait = troubled_pregnancy
 				trait = pregnancy_finishing
@@ -3546,7 +3687,7 @@ likes_earth_heritage = {
 }
 likes_air_spirituality = {
 	OR = {
-		religion = nomadic_pacifism
+		religion = air_spirituality
 		religion = air_acolytism
 		religion = neo-nomadism
 	}
@@ -3733,6 +3874,60 @@ will_add_kinslayer = {
 			}
 			is_lowborn = no
 			dynasty = event_target:kinslayer_target
+		}
+	}
+}
+
+# Hardcoded trigger for the Assassinate interaction. Used for triggering whether it can be used at all
+# Root - The person being assassinated
+# From - The person doing the assassination
+assassination_interaction_trigger = {
+	conditional_tooltip = {
+		trigger = {
+			multiplayer = yes
+		}
+		custom_tooltip = {
+			text = MP_GAME_RULE_ALLOWED
+			OR = {
+				ai = yes
+				NOT = {
+					has_game_rule = {
+						name = multiplayer_assassinations
+						value = no_players
+					}
+				}
+			}
+			OR = {
+				NOT = {
+					has_game_rule = {
+						name = multiplayer_assassinations
+						value = no_players_or_relatives
+					}
+				}
+				AND = {
+					ai = yes
+					NOT = {
+						any_close_relative = {
+							ai = no
+							NOT = { character = FROM }
+						}
+					}
+					NOT = {
+						any_spouse = {
+							ai = no
+							NOT = { character = FROM }
+						}
+					}
+					NOT = {
+						liege = {
+							ai = no
+							dynasty = ROOT
+							NOT = { character = FROM }
+						}
+						is_heir = yes
+					}
+				}
+			}
 		}
 	}
 }
