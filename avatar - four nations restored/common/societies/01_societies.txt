@@ -1,0 +1,246 @@
+healing_hut_north = { # The Healing Hut
+	primary_attribute = learning
+	opinion_to_other_members = +5
+	opinion_per_rank_above = +10
+	sound = monastic_orders_interface
+	society_ranks_gfx = monk_ranks
+	non_interference = {
+		always = yes
+	}
+	
+	active = {
+		always = yes
+	}
+	indestructible = yes
+	
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = healing_hut_north
+					rank = 1
+				}
+			}
+		}
+		age = 10
+		custom_tooltip = {
+			text = hhn_religion_req
+			hidden_tooltip = {
+				OR = {
+					religion = tui_and_la
+					religion = tui_and_la_reformed
+				}
+			}
+		}
+		trait = waterbender
+		NAND = {
+			is_female = yes
+			NOT = { has_law = status_of_women_4 }
+		}
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+		}
+	}
+	show_society = {
+		always = yes
+	}
+	potential = {
+		religion_group = water_religions
+	}
+	
+	society_rank = { # Novice
+		level = 1
+		limit = 100 
+		startup_limit = 10
+		modifier = {
+			monthly_character_piety = 0.05
+		}
+		decisions = {
+			hhn_teach_healing
+		}
+	}
+	
+	society_rank = { # Healer
+		level = 2
+		limit = 50
+		startup_limit = 6
+		modifier = { 
+			monthly_character_piety = 0.1
+			health = 0.25
+		}
+		decisions = {
+			bak_physical_training
+			bak_recruit_member
+		}
+	}
+	
+	society_rank = { # Mentor/Teacher
+		level = 3
+		limit = 5 
+		startup_limit = 3
+		modifier = {
+			monthly_character_piety = 0.2
+			health = 0.5
+			build_cost_temple_modifier = -0.1
+		}
+		decisions = {
+			bak_learn_bending
+			bak_instruct_others
+		}
+	}
+
+	society_rank = { # Eminence
+		level = 4
+		limit = 1
+		startup_limit = 1
+		modifier = { 
+			monthly_character_piety = 0.5
+			health = 1.0
+			build_cost_temple_modifier = -0.2 
+		}
+		decisions = {
+			bak_learn_new_bending
+		}
+	}
+	
+	monthly_currency_gain = {
+		name = currency_name_healing_hut_north
+    	
+    	per_attribute = {
+    		name = learning
+    		value = 1
+    	}
+		has_trait = {
+			trait = legendary_bender
+			value = 5
+		}
+		has_trait = {
+			trait = master_bender
+			value = 3
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		has_trait = {
+			trait = incompetent_bender
+			value = 1
+		}
+		has_trait = {
+			trait = negative_jing
+			value = 1
+		}
+		has_trait = {
+			trait = kind
+			value = 1
+		}
+		has_trait = {
+			trait = temperate
+			value = 1
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		has_trait = {
+		trait = patient
+		value = 1
+		}
+		has_trait = {
+		trait = honest
+		value = 1
+		}
+		has_trait = {
+		trait = diligent
+		value = 1
+		}
+		has_trait = {
+			trait = healer
+			value = 3
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+	
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+	
+	member_score = {
+		value = 10
+		modifier = {
+			trait = legendary_bender
+			factor = 5
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.3
+		}
+    	modifier = {
+			trait = competent_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.3
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.3
+		}
+		modifier = {
+			trait = healer
+			factor = 3
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = kind
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = negative_jing
+			factor = 1.1
+		}
+		modifier = {
+			trait = incompetent_bender
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			religion = tui_and_la
+			age = 10
+			is_female = yes
+			trait = waterbender
+			is_in_society = no
+		}
+	}
+}
