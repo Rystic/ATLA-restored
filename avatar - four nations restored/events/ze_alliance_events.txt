@@ -30,10 +30,10 @@ character_event = {
 		}
 		controls_religion = no
 		holy_order = no
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 		any_independent_ruler = {
 			NOR = { 
-				trait = in_hiding
+				is_inaccessible_trigger = yes
 				trait = incapable
 				has_non_aggression_pact_with = ROOT
 				war_with = ROOT
@@ -51,7 +51,7 @@ character_event = {
 			spouse = {
 				NOR = { 
 					trait = incapable
-					trait = in_hiding
+					is_inaccessible_trigger = yes
 					prisoner = yes
 				}
 			}
@@ -63,7 +63,7 @@ character_event = {
 		random_independent_ruler = {
 			limit = {
 				NOR = { 
-					trait = in_hiding
+					is_inaccessible_trigger = yes
 					trait = incapable
 					has_non_aggression_pact_with = ROOT
 					war_with = ROOT
@@ -82,7 +82,7 @@ character_event = {
 				spouse = {
 					NOR = { 
 						trait = incapable
-						trait = in_hiding
+						is_inaccessible_trigger = yes
 						prisoner = yes
 					}
 				}
@@ -97,6 +97,7 @@ character_event = {
 		ai_chance = { 
 			factor = 90
 		}
+		show_portrait = event_target:target_ruler
 		custom_tooltip = {
 			text = EVTOPTA_ZE_8000_TOOLTIP
 			hidden_tooltip = {
@@ -211,8 +212,9 @@ character_event = {
 
 	trigger = {
 		mercenary = no
+		is_tributary = no
 		NOT = { 
-			trait = in_hiding
+			is_inaccessible_trigger = yes
 		}
 		OR = {
 			any_non_aggression_pact_character = {
@@ -422,7 +424,12 @@ letter_event = {
 		custom_tooltip = {
 			text = EVTOPTA_ZE_8013_TOOLTIP
 			hidden_tooltip = {
-				break_alliance = FROM
+				if = {
+					limit = {
+						is_allied_with = FROM
+					}
+					break_alliance = FROM
+				}
 				remove_opinion = { modifier = in_non_aggression_pact who = FROM }
 				FROM = { letter_event = { id = ZE.8015 days = 3 } }
 				opinion = {
@@ -435,7 +442,7 @@ letter_event = {
 	}
 	#leave it
 	option = {
-		name = EVTOPTB_ZE_8012
+		name = EVTOPTC_ZE_8012
 		ai_chance = {
 			factor = 30
 		}
@@ -455,8 +462,6 @@ letter_event = {
 	desc = EVTDESC_ZE_8013
 
 	is_triggered_only = yes
-
-	#TODO check if alliance or non aggression pact and break either
 	option = {
 		name = EVTOPTA_ZE_8013
 		ai_chance = {
@@ -465,7 +470,12 @@ letter_event = {
 		custom_tooltip = {
 			text = EVTOPTA_ZE_8013_TOOLTIP
 			hidden_tooltip = {
-				break_alliance = FROM
+				if = {
+					limit = {
+						is_allied_with = FROM
+					}
+					break_alliance = FROM
+				}
 				remove_opinion = { modifier = in_non_aggression_pact who = FROM }
 				opinion = {
 					modifier = broken_non_aggression_pact
@@ -517,7 +527,12 @@ letter_event = {
 		name = EVTOPTA_ZE_8015
 		custom_tooltip = {
 			text = EVTOPTA_ZE_8013_TOOLTIP
-			break_alliance = FROM
+			if = {
+				limit = {
+					is_allied_with = FROM
+				}
+				break_alliance = FROM
+			}
 			remove_opinion = { modifier = in_non_aggression_pact who = FROM }
 			opinion = {
 				modifier = broken_non_aggression_pact
