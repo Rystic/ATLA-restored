@@ -24,10 +24,10 @@ character_event = {
 	only_playable = yes
 	only_capable = yes
 	prisoner = no
+	has_dlc = "Zeus"
+	war = yes
 	
 	trigger = {
-		has_dlc = "Zeus"
-		war = yes
 		OR = {
 			is_primary_war_attacker = yes
 			is_primary_war_defender = yes
@@ -41,6 +41,19 @@ character_event = {
 							character = ROOT
 							any_liege = {
 								character = ROOT
+							}
+						}
+					}
+				}
+				AND = {
+					ROOT = {
+						is_tributary = yes
+						suzerain = {
+							OR = {
+								character = PREV
+								any_liege = {
+									character = PREV
+								}
 							}
 						}
 					}
@@ -137,7 +150,14 @@ character_event = {
 				modifier = ally_inactive_in_war
 				years = 5
 			}
-			ROOT = { break_alliance = PREV }
+			ROOT = {
+				if = {
+					limit = {
+						is_allied_with = PREV
+					}
+					break_alliance = PREV
+				}
+			}
 			custom_tooltip = { text = ze_9000_letter_sent }
 			hidden_tooltip = { letter_event = { id = ZE.9001 } }
 		}
@@ -184,11 +204,11 @@ character_event = {
 	only_independent = yes
 	only_capable = yes
 	prisoner = no
+	war = no
+	has_dlc = "Zeus"
 	
 	trigger = {
-		has_dlc = "Zeus"
 		is_tributary = no
-		war = no
 		any_realm_province = {
 			port = yes
 		}
