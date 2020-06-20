@@ -1,0 +1,282 @@
+targetted_decisions = {
+	force_instate_slavery = {
+
+		from_potential = {
+			is_ruler = yes
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		
+		potential = {
+			ai = yes
+			religion = FROM
+			tier = COUNT
+			is_tributary = { 
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 250
+			}
+			OR = {
+				ROOT = {
+					capital_scope = {
+						NOT = { religion = FROM }
+					}
+				}
+				custom_tooltip = {
+					text = doesnt_have_slavery
+					hidden_tooltip = {
+						ROOT = {
+							NOT = { has_law = slavery_legal }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					FROM = {
+						has_global_flag = slavery_instated
+						has_law = slavery_legal
+					}
+				}
+			}
+		}
+		effect = {
+			FROM = {
+				prestige = -250
+			}
+			custom_tooltip = {
+				text = force_instate_name
+				hidden_tooltip = {
+					add_law = slavery_legal
+					revoke_law = slavery_outlawed
+				}
+			}
+			capital_scope = {
+				religion = FROM
+			}
+			religion_authority = {
+				modifier = forced_instate_slavery
+				years = 20
+			}
+		}
+
+		ai_will_do = {
+			factor = 100
+		}
+	}
+		
+	absorb_pirate_governor = {
+
+		from_potential = {
+			is_ruler = yes
+			government = pirate_cartel
+		}
+		
+		potential = {
+			ai = yes
+			tier = COUNT
+			is_tributary = {
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 500
+				government = pirate_cartel
+			}
+		}
+		
+		effect = {
+			FROM = {
+				prestige = -500
+			}
+			
+			set_defacto_liege = FROM
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	# create_bacchants = {
+		# only_playable = yes
+		# is_high_prio = yes
+		# ai_check_interval = 120 #check only once every 120 months.
+		
+		# potential = {
+			# NOT = {
+				# has_alternate_start_parameter = { key = religion_names value = random }
+			# }
+			# OR = {
+				# has_global_flag = hellenic_reformation
+				# has_global_flag = flag_started_roman_renaissance #Required cultural basis in order for them to take root.
+			# }
+			# has_dlc = "Mystics"
+			# has_bacchants_prerequisites = yes
+			# NOT = { 
+				# the_bacchants = {
+					# society_has_members = yes								
+				# }
+			# }
+			# NOT = { 
+				# has_global_flag = flag_restored_bacchants
+			# }
+			# NOT = {
+				# has_game_rule = {
+					# name = devil_worshipers
+					# value = none
+				# }
+			# }
+		# }
+		
+		# allow = {
+			# is_in_society = no
+			# NOR = { 
+				# trait = incapable
+				# trait = zealous 
+			# }
+			# is_inaccessible_trigger = no
+		# }
+		
+		# effect = {
+			# piety = -800
+			# custom_tooltip = { text = create_bacchants_tooltip }
+			# hidden_tooltip = {
+				# set_global_flag = flag_restored_bacchants
+				# join_society = the_bacchants
+				# set_society_grandmaster = yes # Set character as Grand Master
+				# add_society_currency_massive_effect = yes
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = no
+						# age = 16
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = no
+						# age = 18
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = yes
+						# age = 18
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = no
+						# age = 20
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = no
+						# age = 25
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = no
+						# age = 26
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = no
+						# age = 28
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = yes
+						# age = 16
+					# }
+					# new_character = { join_society = the_bacchants }
+					# create_character = {
+						# random_traits = yes
+						# dynasty = random
+						# religion = ROOT
+						# culture = ROOT
+						# female = yes
+						# age = 17
+					# }
+					# new_character = { join_society = the_bacchants }
+				# any_vassal = {
+					# limit = {
+						# ai = yes
+						# can_join_society = the_bacchants
+						# is_within_diplo_range = ROOT
+					# }
+					# random = { chance = 35 join_society = the_bacchants }
+				# }
+				# any_independent_ruler = {
+					# limit = {
+						# ai = yes
+						# can_join_society = the_bacchants
+						# is_within_diplo_range = ROOT
+					# }
+					# random = { chance = 35 join_society = the_bacchants }
+				# }
+				# any_player = {
+					# limit = {
+						# OR = {
+							# religion = hellenic_pagan_reformed
+							# religion = hellenic_pagan
+							# culture = roman
+							# is_within_diplo_range = ROOT
+						# }
+					# }
+					# narrative_event = { id = HF.23122 }
+				# }
+			# }
+		# }
+		
+		# revoke_allowed = {
+			# always = no
+		# }
+		
+		# ai_will_do = {
+			# factor = 1
+		# }
+	# }
+
+}
