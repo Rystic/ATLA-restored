@@ -327,21 +327,14 @@ cb_pirate_tributary = {
 	
 	can_use = {
 		ROOT = {
-			mercenary = no
-		}
-		OR = {
-			AND = {
-				ROOT = {
-					OR = {
-						government = lawless_piracy
-						government = pirate_cartel
-					}
-					NOT = { same_realm = FROM }
-				}
-				FROM = {
-					NOT = { religion = ROOT }
-				}
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
 			}
+			NOT = { same_realm = FROM }
+		}
+		FROM = {
+			NOT = { religion = ROOT }
 		}
 	}
 
@@ -367,17 +360,12 @@ cb_pirate_tributary = {
 				}
 			}
 		}
-		
 		OR = {
-			AND = {
-				OR = {
-					ROOT = { government = lawless_piracy }
-					ROOT = { government = pirate_cartel }
-				}
-				location = {
-					port = yes
-				}
-			}
+			ROOT = { government = lawless_piracy }
+			ROOT = { government = pirate_cartel }
+		}
+		location = {
+			port = yes
 		}
 	}
 
@@ -416,16 +404,30 @@ cb_pirate_tributary = {
 
 	on_success_title = { #winning the war
 
-		FROM = {
-			transfer_scaled_wealth = {
-				to = ROOT
-				value = 1
+		if = {
+			limit = {
+				has_global_flag = black_market_established
+			}
+			FROM = {
+				transfer_scaled_wealth = {
+					to = ROOT
+					value = 2
+				}
+			}
+
+		}
+		else = {
+			FROM = {
+				transfer_scaled_wealth = {
+					to = ROOT
+					value = 1
+				}
 			}
 		}
 		
 		if = {
 			limit = {
-				government = lawless_piracy
+				ROOT = { government = lawless_piracy }
 			}
 			custom_tooltip = {
 				text = religious_liberation_cb_succ_tip
@@ -447,6 +449,8 @@ cb_pirate_tributary = {
 			}
 		}
 		
+		ROOT = { set_character_flag = plunder_victory }
+		
 		hidden_tooltip = {
 			create_character = {
 				religion = ROOT
@@ -457,7 +461,6 @@ cb_pirate_tributary = {
 				age = 20
 				health = 7
 				fertility = 0.7
-				culture = pirate
 				attributes = {
 					martial = 15
 					diplomacy = 10
@@ -482,7 +485,7 @@ cb_pirate_tributary = {
 					limit = {
 						OR = {
 							government = lawless_piracy
-							NOT = { tier = DUKE }
+							NOT = { higher_tier_than = COUNT }
 						}
 					}
 					make_tributary = { who = event_target:new_ruler tributary_type = pirate_tributary }
@@ -774,6 +777,8 @@ cb_slave_colony = {
 				value = 1
 			}
 		}
+		
+		ROOT = { set_character_flag = slave_colony_victory }
 
 		custom_tooltip = {
 			text = religious_liberation_cb_succ_tip
@@ -790,7 +795,6 @@ cb_slave_colony = {
 				age = 20
 				health = 7
 				fertility = 0.7
-				culture = pirate
 				attributes = {
 					martial = 15
 					diplomacy = 10
