@@ -125,63 +125,205 @@ targetted_decisions = {
 			host = { character = FROM }
 			prisoner = yes
 		}
-		
+
 		effect = {
-			hidden_tooltip = {
-				ROOT = {
-					if = {
-						limit = {
-							is_female = yes
+		
+				hidden_tooltip = {
+					# Initial Slave Value -- How accepting is society of slavery? Either -2, 0, or 1.
+					FROM = { 
+						set_variable = { which = slave_value value = 8 } 
+						if = {
+							limit = {
+								NOT = { has_global_flag = slavery_instated }
+							}
+							change_variable = { which = slave_value value = -2 }
+						}
+						else = {
+							if = {
+								limit = {
+									government = pirate_cartel
+								}
+								change_variable = { which = slave_value value = 1 }
+							}			
+						}
+					}
+				
+					#Are they useful as a bender?
+					ROOT = {
+						if = {
+							limit = {
+								has_trait = powerful_bender
+							}
+							FROM = { change_variable = { which = slave_value value = 1 } }
 						}
 						if = {
 							limit = {
-								NOT = { age = 45 }
-								NOT = { has_trait = ugly }
-								NOT = { has_trait = disfigured }
+								has_trait = master_bender
 							}
+							FROM = { change_variable = { which = slave_value value = 3 } }
+						}
+						if = {
+							limit = {
+								has_trait = legendary_bender
+							}
+							FROM = { change_variable = { which = slave_value value = 6 } }
+						}
+					}
+					
+					#Do they have a prestigious title?
+					ROOT = {
+						if = {
+							limit = {
+								tier = count
+							}
+							FROM = { change_variable = { which = slave_value value = 1 } }
+						}
+						if = {
+							limit = {
+								tier = duke
+							}
+							FROM = { change_variable = { which = slave_value value = 2 } }
+						}
+						if = {
+							limit = {
+								tier = king
+							}
+							FROM = { change_variable = { which = slave_value value = 4 } }
+						}
+						if = {
+							limit = {
+								tier = emperor
+							}
+							FROM = { change_variable = { which = slave_value value = 8 } }
+						}
+					}
+						
+					#Male
+					ROOT = {
+						if = {
+							limit = {
+								is_female = no
+							}
+							FROM = { change_variable = { which = slave_value value = 2 } } #Base 2 worth.
 							if = {
 								limit = {
-									NOT = { age = 12 }
+									age = 50
 								}
-								wealth = 65
-							}
+								FROM = { change_variable = { which = slave_value value = -2 } } #Old people less useful as slaves
+							} 
 							else = {
-								wealth = 25
+								if = {
+									limit = {
+										has_trait = eunuch
+									}
+									FROM = { change_variable = { which = slave_value value = 5 } } #Eunuchs are valuable slaves
+								}
+								if = {
+									limit = {
+										has_trait = strong
+									}
+									FROM = { change_variable = { which = slave_value value = 3 } } #Strong slaves are preferred
+								}
 							}
 						}
-						else = {
+					}
+					
+					#Female
+					ROOT = {
+						if = {
+							limit = {
+								is_female = yes
+							}
+							FROM = { change_variable = { which = slave_value value = 3 } } #Base 3 worth.
 							if = {
 								limit = {
 									OR = {
-										has_trait = dwarf
+										age = 45
+										has_trait = ugly
+										has_trait = disfigured
 									}
 								}
-								wealth = 20
-							}
-						} 
-						else = {
-							wealth = 12
-						}
-					}
-					else = {
-						if = {
-							limit = {
-								OR = {
-									has_trait = eunuch
-									has_trait = dwarf
-									has_trait = giant
+								FROM = { change_variable = { which = slave_value value = -5 } } #Old people less useful as slaves
+							} 
+							else = {
+								if = {
+									limit = {
+										age = 12
+										NOT = { age = 20 }
+									}
+									FROM = { change_variable = { which = slave_value value = 3 } } #Young girls are preferred
+									if = {
+										limit = {
+											has_trait = lustful
+										}
+										FROM = { change_variable = { which = slave_value value = 2 } } #Lustful girls are preferred
+									}
+								}
+								else = {
+									if = {
+										limit = {
+											has_trait = lustful
+										}
+										FROM = { change_variable = { which = slave_value value = 1 } } #Lustful girls are preferred
+									}
 								}
 							}
-							wealth = 200
+						}
+					}				
+				
+					#What's the slave worth?
+					if = {
+						limit = {
+							check_variable = { which = slave_value value > 1}
+						}
+						FROM = { wealth = 3 }
+					}
+					else = {
+						FROM = {
+							if = {
+								limit = {
+									check_variable = { which = slave_value value > 10 }
+								}
+								religion_authority = {
+									modifier = exceptional_slave
+									years = 20
+								}
+								add_society_currency_major_effect = yes
+							}
+							else = {
+								if = {
+									limit = {
+										check_variable = { which = slave_value value >= 6 }
+									}
+									religion_authority = {
+										modifier = good_slave
+										years = 20
+									}
+									add_society_currency_minor_effect = yes
+								}
+							}
+							multiply_variable = { which = slave_value which = slave_value  }
+							wealth = slave_value
 						}
 					}
+					
+					death = {
+						death_reason = death_slavery
+					}
 				}
-				wealth = 25
-				death = {
-					death_reason = death_slavery
-				}
+				
+				if = { limit = { check_variable = {which = slave_value value = 0} } custom_tooltip = { text = slave_value_0 } }
+				if = { limit = { check_variable = {which = slave_value value = 1} } custom_tooltip = { text = slave_value_1 } }
+				if = { limit = { check_variable = {which = slave_value value = 2} } custom_tooltip = { text = slave_value_2 } }
+				if = { limit = { check_variable = {which = slave_value value = 3} } custom_tooltip = { text = slave_value_3 } }
+				if = { limit = { check_variable = {which = slave_value value = 4} } custom_tooltip = { text = slave_value_4 } }
+				if = { limit = { check_variable = {which = slave_value value = 5} } custom_tooltip = { text = slave_value_5 } }
+				if = { limit = { check_variable = {which = slave_value value = 6} } custom_tooltip = { text = slave_value_6 } }
+				if = { limit = { check_variable = {which = slave_value value = 7} } custom_tooltip = { text = slave_value_7 } }
+				if = { limit = { check_variable = {which = slave_value value = 8} } custom_tooltip = { text = slave_value_8 } }
+				if = { limit = { check_variable = {which = slave_value value = 9} } custom_tooltip = { text = slave_value_9 } }
+				if = { limit = { check_variable = {which = slave_value value = 10} } custom_tooltip = { text = slave_value_10 } }
 			}
-		}
 		
 		ai_will_do = {
 			factor = 100
