@@ -390,26 +390,29 @@ targetted_decisions = {
 		is_in_society = yes
 
 		potential = {
-			trait = has_tuberculosis
-			trait = has_typhoid_fever
-			trait = has_typhus
-			trait = has_bubonic_plague
-			trait = has_measles
-			trait = has_small_pox
-			trait = has_aztec_disease
-			trait = syphilitic
-			trait = flu
-			trait = dysentery
-			trait = gout
-			trait = food_poisoning
-			trait = rabies
-			trait = cancer
-			trait = pneumonic
-			trait = dancing_plague
-			trait = scurvy
-			trait = ill
-			trait = leper
-			trait = lovers_pox
+			OR = {
+				trait = has_tuberculosis
+				trait = has_typhoid_fever
+				trait = has_typhus
+				trait = has_bubonic_plague
+				trait = has_measles
+				trait = has_small_pox
+				trait = has_aztec_disease
+				trait = syphilitic
+				trait = flu
+				trait = dysentery
+				trait = gout
+				trait = food_poisoning
+				trait = rabies
+				trait = cancer
+				trait = pneumonic
+				trait = dancing_plague
+				trait = scurvy
+				trait = ill
+				trait = leper
+				trait = lovers_pox
+				trait = sickly
+			}
 		}
 		
 		from_potential = {
@@ -453,16 +456,72 @@ targetted_decisions = {
 					if = { limit = { trait = has_measles } remove_trait = has_measles set_character_flag = immune_measles}
 					if = { limit = { trait = has_small_pox } remove_trait = has_small_pox set_character_flag = immune_smallpox }
 					if = { limit = { trait = has_aztec_disease } remove_trait = has_aztec_disease set_character_flag = immune_aztec_disease }
-					if = { limit = { trait = stressed } remove_trait = stressed }
-					if = { limit = { trait = depressed } remove_trait = depressed }
-					if = { limit = { trait = lunatic } remove_trait = lunatic }
-					if = { limit = { trait = possessed } remove_trait = possessed }
-					if = { limit = { trait = drunkard } remove_trait = drunkard }
 					if = { limit = { trait = dancing_plague } remove_trait = dancing_plague }
 					if = { limit = { trait = scurvy } remove_trait = scurvy }
 					if = { limit = { trait = ill } remove_trait = ill }
 					if = { limit = { trait = leper } remove_trait = leper }
 					if = { limit = { trait = lovers_pox } remove_trait = lovers_pox }
+					remove_treatment_modifiers_effect = yes
+					clear_disease_level_effect = yes
+					remove_disease_flags_effect = yes
+					set_character_flag = seen_the_light_of_modern_medicine
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 100
+		}
+		
+	}
+	
+		hhn_treat_mental_illness = {
+		ai_check_interval = 12
+		filter = realm
+		is_in_society = yes
+
+		potential = {
+			OR = {
+				trait = stressed
+				trait = depressed
+				trait = lunatic
+				trait = possessed
+				trait = drunkard
+				trait = cactus_addict
+			}
+		}
+		
+		from_potential = {
+			society_rank >= 2
+			society_member_of = healing_hut_north
+		}
+
+		allow = {
+			FROM = {
+				has_society_currency_medium_trigger = yes	###requires 300Cur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+
+		revoke_allowed = {
+			always = no
+		}
+		effect = {
+			FROM = {
+				detract_society_currency_medium_effect = yes	###lose 300SocCur
+			}
+			ROOT = {
+				hidden_tooltip = {
+					if = { limit = { trait = stressed } remove_trait = stressed }
+					if = { limit = { trait = depressed } remove_trait = depressed }
+					if = { limit = { trait = lunatic } remove_trait = lunatic }
+					if = { limit = { trait = possessed } remove_trait = possessed }
+					if = { limit = { trait = drunkard } remove_trait = drunkard }
+					if = { limit = { trait = cactus_addict } remove_trait = cactus_addict }
 					remove_treatment_modifiers_effect = yes
 					clear_disease_level_effect = yes
 					remove_disease_flags_effect = yes
