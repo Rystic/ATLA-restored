@@ -1,0 +1,406 @@
+targetted_decisions = {
+	force_instate_slavery = {
+
+		from_potential = {
+			is_ruler = yes
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		
+		potential = {
+			ai = yes
+			religion = FROM
+			tier = COUNT
+			is_tributary = { 
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 250
+			}
+			OR = {
+				ROOT = {
+					capital_scope = {
+						NOT = { religion = FROM }
+					}
+				}
+				custom_tooltip = {
+					text = doesnt_have_slavery
+					hidden_tooltip = {
+						ROOT = {
+							NOT = { has_law = slavery_legal }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					FROM = {
+						has_global_flag = slavery_instated
+						has_law = slavery_legal
+					}
+				}
+			}
+		}
+		effect = {
+			FROM = {
+				prestige = -250
+			}
+			custom_tooltip = {
+				text = force_instate_name
+				hidden_tooltip = {
+					add_law = slavery_legal
+					revoke_law = slavery_outlawed
+				}
+			}
+			capital_scope = {
+				religion = FROM
+			}
+			religion_authority = {
+				modifier = forced_instate_slavery
+				years = 20
+			}
+		}
+
+		ai_will_do = {
+			factor = 100
+		}
+	}
+		
+	absorb_pirate_governor = {
+
+		from_potential = {
+			is_ruler = yes
+			government = pirate_cartel
+		}
+		
+		potential = {
+			ai = yes
+			tier = COUNT
+			is_tributary = {
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 500
+				government = pirate_cartel
+			}
+		}
+		
+		effect = {
+			FROM = {
+				prestige = -500
+			}
+			
+			set_defacto_liege = FROM
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	decision_sell_prisoner = {
+
+		from_potential = {
+			society_member_of = the_black_market
+			is_playable = yes
+			is_adult = yes
+			prisoner = no
+			NOT = { trait = incapable }
+		}
+
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+		}
+		
+		effect = {
+			hidden_tooltip = {
+				ROOT = {
+					if = {
+						limit = {
+							is_female = yes
+						}
+						if = {
+							limit = {
+								NOT = { age = 45 }
+								NOT = { has_trait = ugly }
+								NOT = { has_trait = disfigured }
+							}
+							if = {
+								limit = {
+									NOT = { age = 12 }
+								}
+								wealth = 65
+							}
+							else = {
+								wealth = 25
+							}
+						}
+						else = {
+							if = {
+								limit = {
+									OR = {
+										has_trait = dwarf
+									}
+								}
+								wealth = 20
+							}
+						} 
+						else = {
+							wealth = 12
+						}
+					}
+					else = {
+						if = {
+							limit = {
+								OR = {
+									has_trait = eunuch
+									has_trait = dwarf
+									has_trait = giant
+								}
+							}
+							wealth = 200
+						}
+					}
+				}
+				wealth = 25
+				death = {
+					death_reason = death_slavery
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	decision_abduct = {
+		filter = all
+		ai_target_filter = realm
+		
+		only_playable = yes
+		ai = no
+		
+		from_potential = {
+			society_member_of = the_black_market
+			NOT = { trait = incapable }
+			prisoner = no
+			NOT = { has_any_opinion_modifier = opinion_abducting }
+		}
+		
+		potential = {
+			ai = yes
+			NOT = { character = FROM }
+			is_patrician = no
+			OR = {
+				lower_tier_than = DUKE
+				is_landed = no
+			}
+			OR = {
+				father_even_if_dead = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				NOT = {
+					father = {
+						always = yes
+					}
+				}
+			}
+			OR = {
+				mother_even_if_dead = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				NOT = {
+					mother = {
+						always = yes
+					}
+				}
+			}
+			OR = {
+				spouse = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				is_married = no
+			}
+		}
+		
+		allow = {
+			in_revolt = no
+			NOT = { war_with = FROM }
+			NOT = { same_society_as = FROM }
+			prisoner = no
+			OR = {
+				AND = {
+					is_landed = no
+					FROM = {
+						has_society_currency_tiny_trigger = yes
+					}
+				}
+				AND = {
+					is_landed = yes
+					NOT = {
+						higher_tier_than = BARON
+					}
+					FROM = {
+						has_society_currency_minor_trigger = yes
+					}
+				}
+				AND = {
+					higher_tier_than = BARON
+					FROM = {
+						has_society_currency_medium_trigger = yes
+					}
+				}
+			}
+			is_within_diplo_range = FROM
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						is_ruler = yes
+					}
+				}
+				FROM = {
+					detract_society_currency_tiny_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					is_ruler = yes
+					lower_tier_than = COUNT
+				}
+				FROM = {
+					detract_society_currency_minor_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					higher_tier_than = BARON
+				}
+				FROM = {
+					detract_society_currency_medium_effect = yes
+				}
+			}
+			hidden_tooltip = {
+				FROM = {
+					any_opinion_modifier_target = {
+						limit = {
+							reverse_has_opinion_modifier = {
+								who = PREV
+								modifier = opinion_abducting
+							}
+						}
+						reverse_remove_opinion = {
+							who = PREV
+							modifier = opinion_abducting
+						}
+					}
+					opinion = {
+						who = ROOT
+						modifier = opinion_abducting
+						months = 12000
+					}
+					character_event = { id = PRT.20070 days = 1 }
+				}
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0 		# 1 = 100% chance every month (for each allowed target!)
+		}
+	}
+	
+	stop_abduct_decision = {
+		filter = self
+		ai_target_filter = self
+		ai = no
+	
+		potential = {
+			society_member_of = the_black_market
+			has_any_opinion_modifier = opinion_abducting
+		}
+		
+		effect = {
+			random_opinion_modifier_target = {
+				limit = {
+					ROOT = {
+						has_opinion_modifier = {
+							who = PREV
+							modifier = opinion_abducting
+						}
+					}
+				}
+				save_event_target_as = target_abduction
+				ROOT = { character_event = { id = PRT.20100 tooltip = stop_abduct_decision_tt } }
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	stop_abduct_decision_target = {
+		filter = all
+		ai_target_filter = realm
+		ai = no
+	
+		from_potential = {
+			society_member_of = the_black_market
+			has_any_opinion_modifier = opinion_abducting
+		}
+		
+		potential = {
+			FROM = {
+				has_opinion_modifier = {
+					who = ROOT
+					modifier = opinion_abducting
+				}
+			}
+		}
+		
+		effect = {
+			save_event_target_as = target_abduction
+			hidden_tooltip = {
+				FROM = { character_event = { id = PRT.20100 } }
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
