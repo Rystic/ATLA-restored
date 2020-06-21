@@ -69,7 +69,6 @@ found_healing_hut_north_decision = {
 					female = yes
 					trait = waterbender
 					trait = competent_bender
-					trait = healer
 					age = 20
 				}
 				new_character = { join_society = healing_hut_north }
@@ -128,7 +127,6 @@ found_healing_hut_north_decision = {
 					female = yes
 					trait = waterbender
 					trait = incompetent_bender
-					trait = healer
 					age = 21
 				}
 				new_character = { join_society = healing_hut_north }
@@ -183,6 +181,7 @@ targetted_decisions = {
 			NOT = { trait = incapable }
 			is_in_society = yes
 			trait = waterbender
+			is_adult = yes
 			OR = {
 				trait = healer
 				trait = master_healer
@@ -192,11 +191,9 @@ targetted_decisions = {
 		from_potential = {
 			society_rank >= 1
 			society_member_of = healing_hut_north
-			NOT= {
-				OR = { 
-					trait = healer
-					trait = master_healer
-				}
+			NOR= {
+				trait = healer
+				trait = master_healer
 			}
 			NOT = { trait = incapable }
 		}
@@ -217,11 +214,28 @@ targetted_decisions = {
 			FROM = {
 				add_trait = healer
 				detract_society_currency_tiny_effect = yes	###lose 50SocCur
+				if = {
+					limit = {
+						trait = competent_bender
+					}
+					remove_trait = competent_bender 
+					add_trait = powerful_bender
+				}
+				if = {
+					limit = {
+						trait = incompetent_bender
+					}
+					remove_trait = incompetent_bender 
+					add_trait = competent_bender
+				}
+				hidden_tooltip = {
+					character_event = { id = MNHHN.5065 } 
+				}
 			}
 		}
 		
 		ai_will_do = {
-			factor = 1000
+			factor = 100
 		}
 	}
 	
@@ -232,7 +246,6 @@ targetted_decisions = {
 		potential = {
 			NOT = { trait = incapable }
 			is_in_society = yes
-			is_adult = no
 			trait = waterbender
 			NOR = { 
 				trait = healer
@@ -269,6 +282,9 @@ targetted_decisions = {
 		effect = {
 			FROM = {
 				detract_society_currency_tiny_effect = yes	###lose 50SocCur
+				hidden_tooltip = {
+					character_event = { id = MNHHN.5064 } 
+				}
 			}
 			ROOT = {
 				add_trait = healer
@@ -286,14 +302,14 @@ targetted_decisions = {
 					remove_trait = incompetent_bender 
 					add_trait = competent_bender
 				}
-				hidden_tooltip = {
-					character_event = { id = MNSAK.5064 } 
-				}
+				#hidden_tooltip = {
+				#	character_event = { id = MNHHN.5064 } 
+				#}
 			}
 		}
 		
 		ai_will_do = {
-			factor = 1000
+			factor = 100
 		}
 	}
 }
