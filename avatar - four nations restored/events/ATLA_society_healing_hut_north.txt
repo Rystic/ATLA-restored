@@ -10,7 +10,7 @@ character_event = {
 	trigger = {
 		has_character_flag = has_sent_request_to_rank_up
 	}
-	
+
 	is_triggered_only = yes
 
 	immediate = {
@@ -34,7 +34,7 @@ character_event = {
 # Grandmaster gets the rank-up request
 character_event = {
 	id = MNHHN.3001
-	
+
 	hide_window = yes
 
 	is_triggered_only = yes
@@ -54,7 +54,7 @@ letter_event = {
 		society_rank < 4
 		has_character_flag = has_sent_request_to_rank_up
 	}
-	
+
 	is_triggered_only = yes
 
 	#Yes
@@ -79,7 +79,7 @@ letter_event = {
 		society_rank < 4
 		has_character_flag = has_sent_request_to_rank_up
 	}
-	
+
 	is_triggered_only = yes
 
 	#Yes
@@ -91,123 +91,6 @@ letter_event = {
 			society_rank_up = 1
 		}
 		clr_character_flag = has_sent_request_to_rank_up
-	}
-}
-
-# Force join AI characters to societies
-character_event = {
-	id = MNHHN.3050
-	hide_window = yes
-	
-	only_rulers = yes
-	
-	immediate = {
-		if = {
-			limit = {
-				ai = yes
-				prisoner = no
-				NOT = { trait = incapable }
-				is_in_society = yes
-				society_rank < 3
-				society_can_rank_up = yes
-			}
-			random_list = {
-				75 = {}
-				25 = {
-					society_rank_up = 1					
-				}
-			}
-		}
-		if = {
-			limit = {
-				ai = yes
-				prisoner = no
-				NOT = { trait = incapable }
-				is_adult = yes
-				is_in_society = no
-				controls_religion = no
-				block_general_event_trigger = no
-			}
-			character_event = { id = MNHHN.3051 }
-		}
-		any_courtier = {
-			limit = {
-				ai = yes
-				prisoner = no
-				NOT = { trait = incapable }
-				is_in_society = yes
-				society_rank < 3
-				society_can_rank_up = yes
-			}
-			random_list = {
-				95 = {}
-				5 = {
-					society_rank_up = 1					
-				}
-			}
-		}
-		any_courtier = {
-			limit = {
-				ai = yes
-				prisoner = no
-				NOT = { trait = incapable }
-				is_in_society = no
-				controls_religion = no
-				block_general_event_trigger = no
-			}
-			character_event = { id = MNHHN.3051 }
-		}
-	}
-}
-
-character_event = {
-	id = MNHHN.3051
-	hide_window = yes
-	
-	is_triggered_only = yes
-	
-	immediate = {
-		random_list = {
-			95 = {}
-			5 = {
-				trigger = {
-					can_join_society = healing_hut_north
-				}
-				modifier = {
-					factor = 3
-					OR = {
-						trait = waterbender
-						trait = kind
-						trait = diligent
-						trait = temperate
-						trait = charitable
-						trait = patient
-						learning = 12
-					}
-				}
-				modifier = {
-					factor = 2
-					healing_hut_north = { num_of_society_members < 15 }
-				}
-				modifier = {
-					factor = 2
-					healing_hut_north = { num_of_society_members < 10 }
-				}
-				join_society = healing_hut_north
-				if = {
-					limit = {
-						NOT = {
-							society = {
-								any_society_member = {
-									is_society_grandmaster = yes
-								}
-							}
-						}
-					}
-					set_society_grandmaster = yes
-				}
-			}
-		}
 	}
 }
 
@@ -241,13 +124,13 @@ letter_event = {
     border = GFX_event_letter_frame_religion
 
     is_triggered_only = yes
-	
-	immediate = { 
+
+	immediate = {
 		set_character_flag = society_join_block
 		FROM = { character_event = { id = MNHHN.4453 } }
 	}
-	
-    option = { 
+
+    option = {
         name = EVTOPTA_MNM_44511
 		join_society = healing_hut_north
 		clr_character_flag = society_join_block
@@ -259,10 +142,10 @@ narrative_event = {
 	id = MNHHN.4454
 	title = MNHHN_4454_TITLE
 	desc = EVTDESC_MNM_4454
-	
+
 	is_triggered_only = yes
-	
-	option = { 
+
+	option = {
 		name = found_healing_hut_north
 		add_trait = healer
 		add_trait = master_bender
@@ -362,10 +245,10 @@ letter_event = {
     desc = EVTDESC_MNHHN_5061
     border = GFX_event_letter_frame_religion
     is_triggered_only = yes
-	
+
 	immediate = { set_character_flag = society_join_block }
-	
-    option = { 
+
+    option = {
         name = EVTOPTA_MNHHN_5061
 		join_society = healing_hut_north
 		clr_character_flag = society_join_block
@@ -390,10 +273,10 @@ letter_event = { # POS REPLY
     desc = EVTDESC_MNHHN_5062
     border = GFX_event_letter_frame_religion
     is_triggered_only = yes
-	
+
 	immediate = { set_character_flag = society_join_block }
-	
-    option = { 
+
+    option = {
         name = EVTOPTA_MNHHN_5062
 		hidden_tooltip = {
 			if = {
@@ -409,10 +292,10 @@ letter_event = { # NEG REPLY
     desc = EVTDESC_MNHHN_5063
     border = GFX_event_letter_frame_religion
     is_triggered_only = yes
-	
+
 	immediate = { set_character_flag = society_join_block }
-	
-    option = { 
+
+    option = {
         name = EVTOPTA_MNHHN_5063
     }
 }
@@ -424,7 +307,7 @@ character_event = {
 	picture = GFX_evt_spirit_oasis
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
-	
+
 	option = { # End Training
 		name = EVTOPTA_MNHHN_5064
 	}
@@ -437,7 +320,7 @@ character_event = {
 	picture = GFX_evt_spirit_oasis
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
-	
+
 	option = { # End Training
 		name = EVTOPTA_MNHHN_5065
 	}
@@ -450,7 +333,7 @@ character_event = {
 	picture = GFX_evt_spirit_oasis
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
-	
+
 	option = { # End Training
 		name = EVTOPTA_MNHHN_6000
 	}
@@ -463,7 +346,7 @@ character_event = {
 	picture = GFX_evt_spirit_oasis
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
-	
+
 	option = { # End Training
 		name = EVTOPTA_MNHHN_6001
 	}
