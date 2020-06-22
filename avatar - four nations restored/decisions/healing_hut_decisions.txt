@@ -238,7 +238,7 @@ targetted_decisions = {
 		}
 		
 		ai_will_do = {
-			factor = 250
+			factor = 750
 		}
 	}
 	
@@ -312,7 +312,7 @@ targetted_decisions = {
 		}
 		
 		ai_will_do = {
-			factor = 500
+			factor = 1000
 		}
 	}
 	
@@ -413,6 +413,7 @@ targetted_decisions = {
 		from_potential = {
 			society_rank >= 2
 			society_member_of = healing_hut_north
+			trait = healer
 		}
 
 		allow = {
@@ -488,8 +489,9 @@ targetted_decisions = {
 		}
 		
 		from_potential = {
-			society_rank >= 2
+			society_rank >= 3
 			society_member_of = healing_hut_north
+			trait = healer
 		}
 
 		allow = {
@@ -528,6 +530,51 @@ targetted_decisions = {
 		
 		ai_will_do = {
 			factor = 100
+		}
+		
+	}
+	
+	hhh_spiritual_healing = {
+		ai_check_interval = 12
+		filter = realm
+		is_in_society = yes
+		
+		potential = {
+			OR = {
+				religion = tui_and_la
+				religion = tui_and_la_reformed
+			}
+			NOT = character_flag = received_spirit_healing
+		}
+		from_potential = {
+			society_rank = 4
+			society_member_of = healing_hut_north
+			trait = healer
+		}
+		allow = {
+			FROM = {
+				has_society_currency_huge_trigger_trigger = yes	###requires 2000SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		effect = {
+			FROM = {
+				detract_society_currency_huge_effect = yes	###lose 2000SocCur
+			}
+			ROOT = {
+				hidden_tooltip = {
+					set_character_flag = received_spirit_healing
+					add_trait = spirit_healed
+				}
+			}
 		}
 		
 	}
