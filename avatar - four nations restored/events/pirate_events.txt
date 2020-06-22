@@ -1,0 +1,601 @@
+namespace = PRT
+
+# Abduction Start
+character_event = {
+	id = PRT.20070
+	desc = EVTDESC_MNM_20070
+	picture = GFX_evt_shady_meeting
+	border = GFX_event_normal_frame_intrigue
+	
+	capable_only = yes
+	prisoner = no
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			save_event_target_as = target_abduction
+		}
+		save_event_target_as = target_kidnapper
+	}
+	
+	option = {
+		name = EXCELLENT
+		character_event = { id = PRT.20080 days = 20 random = 20 tooltip = EVTTOOLTIP_MNM_20080 }
+	}
+}
+
+# Hidden 'outcome tombola' event for the "Abduct" decision
+character_event = {
+	id = PRT.20080
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					prisoner = yes # I have become imprisoned
+					trait = incapable # I have become incapable
+					NOT = { society_member_of = the_black_market }
+				}
+			}
+			character_event = { id = PRT.20100 } # Clear out any flags, etc
+			break = yes # Stop execution here
+		}
+		
+		if = {
+			limit = {
+				FROMFROM = {
+					is_alive = no
+				}
+			}
+			
+			character_event = { id = PRT.20101 }
+			break = yes
+		}
+		
+		if = {
+			limit = {
+				FROMFROM = {
+					prisoner = yes
+				}
+			}
+			character_event = { id = PRT.20102 }
+			break = yes
+		}
+		
+		if = {
+			limit = {
+				FROMFROM = {
+					same_society_as = ROOT
+				}
+			}
+			character_event = { id = PRT.20104 }
+			break = yes
+		}
+		
+		if = {
+			limit = {
+				NOT = {
+					has_opinion_modifier = {
+						who = FROMFROM
+						modifier = opinion_abducting
+					}
+				}
+			}
+			break = yes # I have stopped spying on this character
+		}
+		
+		repeat_event = { id = PRT.20080 days = 30 random = 30 } # Fire again with no scope changes
+		
+		if = {
+			limit = {
+				FROMFROM = {
+					OR = {
+						is_inaccessible_trigger = yes
+						trait = on_pilgrimage
+					}
+				}
+			}
+			break = yes
+		}
+		
+		random_list = {
+			10000 = { # No luck yet
+				modifier = {
+					factor = 0.75
+					has_character_modifier = wol_schemer_1
+				}
+				modifier = {
+					factor = 0.5
+					has_character_modifier = wol_schemer_2
+				}
+				modifier = {
+					factor = 0.2
+					trait = schemer
+				}
+				modifier = {
+					factor = 0.5
+					FROMFROM = { trait = trusting }
+				}
+				modifier = {
+					factor = 1.5
+					FROMFROM = { has_character_modifier = wol_schemer_1 }
+				}
+				modifier = {
+					factor = 3.0
+					FROMFROM = { has_character_modifier = wol_schemer_2 }
+				}
+				modifier = {
+					factor = 5.0
+					FROMFROM = { trait = schemer }
+				}
+				modifier = {
+					factor = 3.0
+					FROMFROM = { trait = paranoid }
+				}
+				modifier = {
+					factor = 1.5
+					FROMFROM = { tier = BARON }
+				}
+				modifier = {
+					factor = 2.0
+					FROMFROM = { tier = COUNT }
+				}
+				modifier = {
+					factor = 3 #Makes sure it's very hard to abduct the same person twice
+					FROMFROM = {
+						OR = {
+							has_opinion_modifier = {
+								who = ROOT
+								modifier = opinion_attempted_abduction
+							}
+							has_opinion_modifier = {
+								who = ROOT
+								modifier = opinion_abducted
+							}
+						}
+					}
+				}
+				modifier = {
+					factor = 0.25
+					FROMFROM = {
+						is_ruler = no
+						liege = { character = ROOT }
+					}
+				}
+				random = {
+					chance = 25
+					character_event = { id = PRT.20103 } # Time to give up?
+				}
+			}
+			10000 = { # Success!
+				character_event = { id = PRT.20081 }
+			}
+		}
+	}
+}
+
+# Chance to abduct the target!
+character_event = {
+	id = PRT.20081
+	picture = GFX_evt_bandits
+	border = GFX_event_normal_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	desc = {
+		text = EVTDESC_MNM_20081 
+		trigger = {
+			FROMFROMFROM = {
+				age = 14
+			}
+		}
+	}
+	
+	desc = {
+		text = EVTDESC_MNM_20081_CHILD
+		picture = GFX_evt_child_play
+		trigger = {
+			FROMFROMFROM = {
+				NOT = { age = 14 }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTA_MNM_20081
+		ai_chance = {
+			factor = 100
+		}
+		increase_visibility_effect = yes
+		FROMFROMFROM = {
+			character_event = { id = PRT.20082 days = 3 tooltip = EVTTOOLTIP_MNM_20081 }
+		}
+	}
+	option = {
+		name = EVTOPTB_MNM_20081
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+
+# Target gets abducted... or not.
+character_event = {
+	id = PRT.20082
+	picture = GFX_evt_bandits
+	border = GFX_event_normal_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	desc = {
+		text = EVTDESC_WOL_2121
+		picture = GFX_evt_child_play
+		trigger = {
+			age = 14
+		}
+	}
+	
+	desc = {
+		text = EVTDESC_MNM_20082_CHILD
+		picture = GFX_evt_children_talking
+		trigger = {
+			NOT = { age = 14 }
+			age = 4
+		}
+	}
+	
+	desc = {
+		text = EVTDESC_MNM_20082_BABY
+		picture = GFX_evt_children_talking
+		trigger = {
+			NOT = { age = 4 }
+		}
+	}
+	
+	immediate = {
+		random = {
+			chance = 75
+			modifier = {
+				factor = 0.1 #Makes sure it's very hard to abduct the same person twice
+				OR = {
+					has_opinion_modifier = {
+						who = FROM
+						modifier = opinion_attempted_abduction
+					}
+					has_opinion_modifier = {
+						who = FROM
+						modifier = opinion_abducted
+					}
+				}
+			}
+			modifier = {
+				factor = 0.1
+				age = 14
+				OR = {
+					has_character_modifier = seduced_loyal_bodyguard
+					has_character_modifier = seduced_loyal_spy_maid
+				}
+			}
+			modifier = {
+				factor = 2.0
+				trait = trusting
+			}
+			
+			set_character_flag = abduction_success
+		}
+	}
+	
+	option = {
+		name = {
+			text = EVTOPT_WOL_2121_CAUGHT
+			trigger = {
+				age = 14
+			}
+		}
+		name = {
+			text = EVTOPT_MNM_20082_CHILD_CAUGHT
+			trigger = {
+				NOT = { age = 14 }
+				age = 4
+			}
+		}
+		name = {
+			text = EVTOPT_MNM_20082_BABY_CAUGHT
+			trigger = {
+				NOT = { age = 4 }
+			}
+		}
+		
+		trigger = { has_character_flag = abduction_success }
+		
+		imprison = FROM
+
+		opinion = {
+			who = FROM
+			modifier = opinion_abducted
+			years = 50
+		}
+		
+		hidden_effect = {
+			FROM = {
+				character_event = { id = PRT.20083 }
+			}
+		}
+		
+		clr_character_flag = abduction_success
+	}
+	
+	option = {
+		name = {
+			text = EVTOPT_WOL_2121
+			trigger = {
+				age = 14
+			}
+		}
+		name = {
+			text = EVTOPT_MNM_20082_CHILD
+			trigger = {
+				NOT = { age = 14 }
+				age = 4
+			}
+		}
+		name = {
+			text = EVTOPT_MNM_20082_BABY
+			trigger = {
+				NOT = { age = 4 }
+			}
+		}
+		
+		trigger = { NOT = { has_character_flag = abduction_success } }
+		
+		if = {
+			limit = {
+				is_incapable = no
+				age = 4
+				OR = {
+					trait = paranoid
+					random = 50
+				}
+			}
+			custom_tooltip = {
+				text = EVTTOOLTIP_MNM_20082_PERP
+			}
+			opinion = {
+				who = FROM
+				modifier = opinion_attempted_abduction
+				years = 10
+			}
+		}
+		
+		hidden_effect = {
+			FROM = {
+				character_event = { id = PRT.20084 }
+			}
+		}
+	}
+}
+
+# Target gets abducted!
+character_event = {
+	id = PRT.20083
+	picture = GFX_evt_into_the_dungeon
+	border = GFX_event_normal_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	desc = EVTDESC_MNM_20083
+	
+	immediate = {
+		character_event = { id = PRT.20100 }
+	}
+	
+	option = {
+		name = EXCELLENT
+
+		tooltip = {
+			reverse_opinion = {
+				who = FROM
+				modifier = opinion_abducted
+				years = 50
+			}
+		}
+	}
+}
+
+# Abduction fails
+character_event = {
+	id = PRT.20084
+	picture = GFX_evt_bandits
+	border = GFX_event_normal_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	desc = EVTDESC_MNM_20084
+	
+	option = {
+		name = EVTOPTA_PRT_20084
+
+		tooltip = {
+			reverse_opinion = {
+				who = FROM
+				modifier = opinion_attempted_abduction
+				years = 10
+			}
+		}
+	}
+}
+
+# End of "Abduction" events to clear out flags, etc
+character_event = {
+	id = PRT.20100
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		remove_opinion = {
+			who = event_target:target_abduction
+			modifier = opinion_abducting
+		}
+		
+		clear_delayed_event = { id = PRT.20080 }
+	}
+}
+
+# My target has died!
+character_event = {
+	id = PRT.20101
+	
+	desc = EVTDESC_MNM_20101
+	picture = GFX_evt_death
+	border = GFX_event_normal_frame_intrigue
+	
+	show_from_from_from = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		character_event = { id = PRT.20100 }
+	}
+	
+	option = {
+		name = EVTOPTA_MNM_20101
+	}
+}
+
+# My target has been imprisoned!
+character_event = {
+	id = PRT.20102
+	
+	desc = EVTDESC_MNM_20102
+	picture = GFX_evt_into_the_dungeon
+	border = GFX_event_normal_frame_intrigue
+	
+	show_from_from_from = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		character_event = { id = PRT.20100 }
+	}
+	
+	option = {
+		name = EVTOPTA_MNM_20102
+	}
+}
+
+# My efforts are not bearing fruit. Give up?
+character_event = {
+	id = PRT.20103
+	
+	desc = EVTDESC_MNM_20103
+	picture = GFX_evt_eavesdropping
+	border = GFX_event_normal_frame_intrigue
+	
+	show_from_from_from = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_WOL_2065 # Give up
+		ai_chance = {
+			factor = 10
+		}
+		character_event = { id = PRT.20100 }
+	}
+	
+	option = {
+		name = EVTOPTB_MNM_20103 # Keep at it
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
+# My target has joined my Society
+character_event = {
+	id = PRT.20104
+	
+	desc = EVTDESC_MNM_20104
+	picture = GFX_evt_shadowy_cabal
+	border = GFX_event_normal_frame_intrigue
+	
+	show_from_from_from = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		character_event = { id = PRT.20100 }
+	}
+	
+	option = {
+		name = EVTOPTA_MNM_20101
+	}
+}
+
+narrative_event = { 
+	id =  PRT.20180
+	picture = "GFX_evt_fallen_soldiers"
+	title = SLAVE_REINSTATE_TITLE
+	desc = event_slavery_instated_pirate
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+
+	option = { # Pirates
+		name = EVTOPTTLAA.4006
+		trigger = {
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		ai_chance = { 
+			factor = 100
+		}
+	}
+}
+
+narrative_event = { 
+	id = PRT.20181
+	picture = "GFX_evt_fallen_soldiers"
+	title = SLAVE_REINSTATE_TITLE
+	desc = event_slavery_instated_not_pirate
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+
+	option = { 
+		name = EVTOPTTLAA.4006
+		ai_chance = { 
+			factor = 100
+		}
+	}
+}
+
+narrative_event = { 
+	id = PRT.20280
+	picture = "GFX_evt_merchent_port"
+	title = BLACK_MARKET_ESTABLISHED_TITLE
+	desc = event_black_market_established
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = BLACK_MARKET_OPTION
+		trigger = {
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		ai_chance = { 
+			factor = 100
+		}
+	}
+}
