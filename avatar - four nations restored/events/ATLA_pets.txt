@@ -451,12 +451,13 @@ narrative_event = { # Dealer finds pet
 character_event = { # Pet Owner Dies & heir holds onto the pet for a bit
     id = pets.5
     is_triggered_only = yes
-    desc = EVTDESCpets.5
     hide_window = yes
 
     option = {
         trigger = {
-            has_artifact_flag = pet
+            any_artifact = {
+                has_artifact_flag = pet
+            }
         }
         current_heir = {
             character_event = { id=pets.6 days=100 random=200 }
@@ -464,7 +465,11 @@ character_event = { # Pet Owner Dies & heir holds onto the pet for a bit
     }
     option = {
         trigger = {
-            NOT = { has_artifact_flag = pet }
+            NOT = {
+                any_artifact = {
+                    has_artifact_flag = pet
+                }
+            }
         }
     }
 }
