@@ -1,0 +1,118 @@
+# Force join AI characters to societies
+namespace = AMSE
+
+character_event = {
+	id = AMSE.1
+	hide_window = yes
+	is_triggered_only = yes
+	only_rulers = yes
+
+	immediate = {
+		if = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = yes
+				society_rank < 3
+				society_can_rank_up = yes
+			}
+			random_list = {
+				75 = {}
+				25 = {
+					society_rank_up = 1
+				}
+			}
+		}
+		if = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_adult = yes
+				is_in_society = no
+				controls_religion = no
+				block_general_event_trigger = no
+			}
+			character_event = { id = MNHHN.3051 }
+		}
+		any_courtier = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = yes
+				society_rank < 3
+				society_can_rank_up = yes
+			}
+			random_list = {
+				95 = {}
+				5 = {
+					society_rank_up = 1
+				}
+			}
+		}
+		any_courtier = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = no
+				controls_religion = no
+				block_general_event_trigger = no
+			}
+			character_event = { id = AMSE.2 }
+		}
+	}
+}
+
+character_event = {
+	id = AMSE.2
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_list = {
+			95 = {}
+			5 = {
+				trigger = {
+					can_join_society = healing_hut_north
+				}
+				modifier = {
+					factor = 3
+					OR = {
+						trait = waterbender
+						trait = kind
+						trait = diligent
+						trait = temperate
+						trait = charitable
+						trait = patient
+						learning = 12
+					}
+				}
+				modifier = {
+					factor = 2
+					healing_hut_north = { num_of_society_members < 15 }
+				}
+				modifier = {
+					factor = 2
+					healing_hut_north = { num_of_society_members < 10 }
+				}
+				join_society = healing_hut_north
+				if = {
+					limit = {
+						NOT = {
+							society = {
+								any_society_member = {
+									is_society_grandmaster = yes
+								}
+							}
+						}
+					}
+					set_society_grandmaster = yes
+				}
+			}
+		}
+	}
+}
