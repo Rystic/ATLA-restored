@@ -894,18 +894,18 @@ character_event = { # Avatar Event Handler
 					50 = {
 						# Stays
 					}
-					25 = { # Leaves
-						ROOT = {
-							random_child = {
-								limit = {
-									de_facto_liege = ROOT
-									age = 18
-								}
-								character_event = { id = avatar.191 }
-							}
-						}
-					}
-					25 = { # Leaves and marries
+					# 25 = { # Leaves (event is commented out, hence commented this out)
+						# ROOT = {
+							# random_child = {
+								# limit = {
+									# de_facto_liege = ROOT
+									# age = 18
+								# }
+								# character_event = { id = avatar.191 }
+							# }
+						# }
+					# }
+					50 = { # Leaves and marries (should be 25 once above is re-added)
 						ROOT = {
 							random_child = {
 								limit = {
@@ -1221,10 +1221,10 @@ character_event = { # Earth Kingdom settings
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-	is_save_game = no
 
 	trigger = {
 		always = yes
+		is_save_game = no
 		# OR = {
 			# has_game_rule = {
 				# name = earth_kingdom_status
@@ -1242,47 +1242,20 @@ character_event = { # Earth Kingdom settings
 	}
 
 	option = {
-		if = {
+		if = {	#assign province tributes
 			limit = {
-				NOT = { year = 603 }
-				is_title_active = e_earth_kingdom
-			}
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					mercenary = no
-					holy_order = no
-					temporary = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOT = { religion = way_of_chin }
-					capital_scope = {
-							region = world_earth_islands
-					}
-				}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				e_earth_kingdom = {
-					owner = {
-						make_tributary = {
-							who = ROOT
-							percentage = 0.10
-							tributary_type = earth_kingdom_territory_tributary
-						}
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
+				NOT = { year < 603 }
 				year = 600
-				NOT = { year = 640 }
 				#is_title_active = e_earth_kingdom
 			}
 			if = {
 				limit = {
 					culture_group = earth_kingdom_culture
+					NOR = { 
+						culture = sandbender
+						culture = southern_earth
+						culture = barbarians	
+					}
 					mercenary = no
 					holy_order = no
 					temporary = no
@@ -1290,14 +1263,14 @@ character_event = { # Earth Kingdom settings
 					NOT = { has_landed_title = d_avatar }
 					NOT = { religion = way_of_chin }
 					capital_scope = {
-						OR = {
-							region = world_northern_plains
-							region = world_earth_islands
-							region = world_omashu_plains
-							region = world_western_plains
-							region = world_central_desert
-							region = world_southern_valley
-						}
+							OR = {
+								region = world_north_west_kingdom
+								region = world_north_east_earth_kingdom
+								region = world_central_desert
+								region = world_western_earth_kingdom
+								region = world_eastern_coast
+							}
+							
 					}
 				}
 				suzerain = {
@@ -1307,26 +1280,77 @@ character_event = { # Earth Kingdom settings
 					owner = {
 						make_tributary = {
 							who = ROOT
-							percentage = 0.10
+							percentage = 0.16
+							tributary_type = earth_kingdom_province_tributary
+						}
+					}
+				}
+			}
+		}
+		if = { #assign Territories Tributes
+			limit = {
+				NOT = { year < 630}
+				year = 600
+				#is_title_active = e_earth_kingdom
+			}
+			if = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					NOT = { culture = eastern_earth }
+					mercenary = no
+					holy_order = no
+					temporary = no
+					rebel = no
+					NOT = { has_landed_title = d_avatar }
+					NOT = { religion = way_of_chin }
+					capital_scope = {
+							OR = {
+								region = world_southern_earth_kingdom
+								region = world_earth_islands
+								region = world_eastern_coast
+								region = world_si_wong_fringe
+							}
+						}
+					}
+				suzerain = {
+					remove_tributary = PREV
+				}
+				e_earth_kingdom = {
+					owner = {
+						make_tributary = {
+							who = ROOT
+							percentage = 0.12
 							tributary_type = earth_kingdom_territory_tributary
 						}
 					}
 				}
 			}
 		}
-		if = {
+		if = { # Assign Outpost tributes
 			limit = {
-				year = 640
+				NOT = { year < 603 }
+				year = 600
+				#is_title_active = e_earth_kingdom
 			}
 			if = {
 				limit = {
-					culture_group = earth_kingdom_culture
+					OR = {
+						culture = barbarians
+						culture = sandbender
+					}
 					mercenary = no
 					holy_order = no
 					temporary = no
 					rebel = no
 					NOT = { has_landed_title = d_avatar }
 				}
+				capital_scope = {
+					OR = {
+						region = world_si_wong
+						region = world_western_earth_kingdom
+						region = world_north_east_earth_kingdom
+					}
+				}		
 				suzerain = {
 					remove_tributary = PREV
 				}
@@ -1334,8 +1358,8 @@ character_event = { # Earth Kingdom settings
 					owner = {
 						make_tributary = {
 							who = ROOT
-							percentage = 0.10
-							tributary_type = earth_kingdom_territory_tributary
+							percentage = 0.1
+							tributary_type = earth_kingdom_outpost_tributary
 						}
 					}
 				}
@@ -1551,10 +1575,10 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-	is_save_game = no
 
 	trigger = {
 		always = yes
+		is_save_game = no
 		# OR = {
 			# has_game_rule = {
 				# name = earth_kingdom_status
@@ -1587,10 +1611,10 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-	is_save_game = no
 
 	trigger = {
 		always = yes
+		is_save_game = no
 		# OR = {
 			# has_game_rule = {
 				# name = earth_kingdom_status

@@ -67,6 +67,15 @@ targetted_decisions = {
 				modifier = forced_instate_slavery
 				years = 20
 			}
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random_list = {
+					75 = {}
+					25 = { FROM = { character_event = {id = 20400 } } }
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -104,6 +113,16 @@ targetted_decisions = {
 			}
 			
 			set_defacto_liege = FROM
+			
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random_list = {
+					75 = {}
+					25 = { FROM = { character_event = {id = 20400 } } }
+				}
+			}
 		}
 		
 		ai_will_do = {
@@ -127,11 +146,10 @@ targetted_decisions = {
 		}
 
 		effect = {
-		
 				hidden_tooltip = {
 					# Initial Slave Value -- How accepting is society of slavery? Either -2, 0, or 1.
 					FROM = { 
-						set_variable = { which = slave_value value = 8 } 
+						set_variable = { which = slave_value value = 0 } 
 						if = {
 							limit = {
 								NOT = { has_global_flag = slavery_instated }
@@ -145,6 +163,28 @@ targetted_decisions = {
 								}
 								change_variable = { which = slave_value value = 1 }
 							}			
+						}
+					}
+
+					# High society influence?
+					FROM = {
+						if = {
+							limit = {
+								society_influence > 20
+							}
+							change_variable = { which = slave_value value = 1 }
+						}
+						if = {
+							limit = {
+								society_influence > 50
+							}
+							change_variable = { which = slave_value value = 1 }
+						}
+						if = {
+							limit = {
+								society_influence > 80
+							}
+							change_variable = { which = slave_value value = 1 }
 						}
 					}
 				
@@ -274,7 +314,7 @@ targetted_decisions = {
 					#What's the slave worth?
 					if = {
 						limit = {
-							check_variable = { which = slave_value value <= 1}
+							check_variable = { which = slave_value value >= 1}
 						}
 						FROM = { wealth = 3 }
 					}
@@ -282,13 +322,17 @@ targetted_decisions = {
 						FROM = {
 							if = {
 								limit = {
-									check_variable = { which = slave_value value > 10 }
+									check_variable = { which = slave_value value > 12 }
 								}
 								religion_authority = {
 									modifier = exceptional_slave
 									years = 20
 								}
 								add_society_currency_major_effect = yes
+								add_society_modifier = 	{
+									modifier = sold_an_exceptional_slave
+									years = 20
+								}
 							}
 							else = {
 								if = {
@@ -300,8 +344,19 @@ targetted_decisions = {
 										years = 20
 									}
 									add_society_currency_minor_effect = yes
+									add_society_modifier = 	{
+										modifier = sold_a_good_slave
+										years = 20
+									}
+								}
+								else = {
+									add_society_modifier = 	{
+										modifier = sold_a_decent_slave
+										years = 20
+									}	
 								}
 							}
+
 							multiply_variable = { which = slave_value which = slave_value  }
 							wealth = slave_value
 						}
@@ -309,6 +364,15 @@ targetted_decisions = {
 					
 					death = {
 						death_reason = death_slavery
+					}
+				}
+				if = {
+					limit = {
+						FROM = { NOT = { trait = pirate_trait} }
+					}
+					random_list = {
+						75 = {}
+						25 = { FROM = { character_event = {id = 20400 } } }
 					}
 				}
 			}
@@ -533,4 +597,84 @@ targetted_decisions = {
 			factor = 0
 		}
 	}
+}
+
+title_decisions = {
+	settle_pirates_decision = {
+		only_playable = yes
+		ai_check_interval = 3
+		
+		from_potential = {
+			is_ruler = yes
+			society_member_of = the_black_market
+			society_rank == 4
+		}
+		
+		potential = {
+			tier = COUNT
+			location = { NOT = { culture = FROM } }
+			holder_scope = {
+				OR = {
+					is_liege_or_above = FROM
+					character = FROM
+					is_tributary = { 
+						type = pirate_tributary 
+						suzerain = FROM
+					}
+				}
+			}
+		}
+		
+		allow = {
+			FROM = {
+				society_currency >= 1000
+			}
+			location = {
+				NOT = { culture = FROM }
+			}
+		}
+		
+		effect = {
+			FROM = {
+				change_society_currency = -1000
+				religion_authority = {
+					modifier = settle_pirates_ma
+					years = 20
+				}
+			}
+
+			location = {
+				culture = FROM
+				add_province_modifier = {
+					name = peasant_unrest
+					years = 2
+				}
+				random_list = {
+				}
+			}
+			hidden_tooltip = {
+				if = { # Notify county owner
+					limit = {
+						holder_scope = { NOT = { character = FROM } }
+					}
+					holder_scope = { character_event = { id = HF.23125 } }
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				FROM = { NOT = { trait = pirate_trait} }
+			}
+			random_list = {
+				75 = {}
+				25 = { FROM = { character_event = {id = 20400 } } }
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+
 }

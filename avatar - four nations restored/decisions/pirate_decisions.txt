@@ -36,6 +36,10 @@ decisions = {
 				text = can_establish_slave_colony
 			}
 		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
 	}
 
 	reinstate_slavery = {
@@ -64,8 +68,25 @@ decisions = {
 			wealth = -500
 			prestige = 1000
 			set_global_flag = slavery_instated
-			# narrative_event = { id = PRT.20180}
-			# narrative_event = { id = PRT.20181}
+			any_player = {
+				limit = {
+					OR = {
+						government = lawless_piracy
+						government = pirate_cartel
+					}
+				}
+				narrative_event = { id = PRT.20180}
+			}
+			any_player = {
+				limit = {
+					NOR = {
+						government = lawless_piracy
+						government = pirate_cartel
+					}
+				}
+				narrative_event = { id = PRT.20181}
+			}
+			
 			custom_tooltip = {
 				text = reinstate_decision_desc
 			}
@@ -81,6 +102,9 @@ decisions = {
 			religion_authority = {
 				modifier = reinstated_slavery
 			}
+		}
+		ai_will_do = {
+			factor = 1000
 		}
 	}
 	
@@ -223,12 +247,70 @@ decisions = {
 							government = pirate_cartel
 						}
 					}
-					# narrative_event = { id = HF.23122 }
+					narrative_event = { id = PRT.20280 }
 				}
 			}
 		}	
 		religion_authority = {
 			modifier = black_market_established
+		}
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	charter_fleet = {
+		is_high_prio = yes
+		potential = {
+			holder_scope = {
+				OR = {
+					government = lawless_piracy
+					government = pirate_cartel
+				}
+			}
+			society_member_of = the_black_market
+			NOT = { has_character_flag = chartered_fleet }
+		}
+		
+		allow = {
+			has_society_currency_massive_trigger = yes	###lose 2000SocCur
+		}
+		
+		effect = {
+			detract_society_currency_massive_effect = yes	###lose 2000SocCur
+			set_character_flag = chartered_fleet
+			if = {
+				limit = {
+					society_influence < 30
+				}
+				narrative_event = { id =  PRT.20300 }
+			}
+			else = {
+				if = {
+					limit = {
+						society_influence >= 30
+						society_influence < 60
+					}
+					narrative_event = { id =  PRT.20301 }
+				}
+				else = {
+					narrative_event = { id =  PRT.20302 }
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				NOT = { trait = pirate_trait}
+			}
+			random_list = {
+				75 = {}
+				25 = { character_event = {id = 40200 } }
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
 		}
 	}
 }
