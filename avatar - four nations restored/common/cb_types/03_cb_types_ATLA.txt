@@ -425,36 +425,16 @@ cb_pirate_tributary = {
 			}
 		}
 		
-		if = {
-			limit = {
-				ROOT = { government = lawless_piracy }
-			}
-			custom_tooltip = {
-				text = religious_liberation_cb_succ_tip
-			}
-		}
-		else = {
-			if = {
-				limit = {
-					has_global_flag = black_market_established
-				}
-				custom_tooltip = {
-					text = pirate_cartel_takeover_culture
-				}
-			}
-			else = {
-				custom_tooltip = {
-					text = pirate_cartel_takeover
-				}
-			}
+		custom_tooltip = {
+			text = religious_liberation_cb_succ_tip
 		}
 		
-		ROOT = { set_character_flag = plunder_victory }
+		ROOT = {character_event = { id = pirate.1 } }
 		
 		hidden_tooltip = {
 			create_character = {
 				religion = ROOT
-				culture = THIS
+				culture = ROOT
 				dynasty = random
 				random_traits = yes
 				female = no
@@ -471,7 +451,7 @@ cb_pirate_tributary = {
 			new_character = {
 				remove_trait = content
 				add_trait = ambitious
-				add_trait = pirate
+				add_trait = pirate_trait
 				wealth = 500
 				prestige = 500
 				piety = 500
@@ -481,30 +461,10 @@ cb_pirate_tributary = {
 			usurp_title_plus_barony_if_unlanded = { target = event_target:new_ruler type = invasion }
 
 			ROOT = {
-				if = {
-					limit = {
-						OR = {
-							government = lawless_piracy
-							NOT = { higher_tier_than = COUNT }
-						}
-					}
-					make_tributary = { who = event_target:new_ruler tributary_type = pirate_tributary }
-					event_target:new_ruler = { set_defacto_liege = event_target:new_ruler }
-				}
-				else = {
-					event_target:new_ruler = { 
-						set_defacto_liege = ROOT
-						if = {
-							limit = {
-								has_global_flag = black_market_established
-							}
-							any_demesne_province = {
-								culture = ROOT
-							}
-						}
-					}
-				}
+				make_tributary = { who = event_target:new_ruler tributary_type = pirate_tributary }
+				event_target:new_ruler = { set_defacto_liege = event_target:new_ruler }
 			}
+		}
 			
 			any_de_jure_vassal_title = {
 				limit = {
@@ -806,7 +766,7 @@ cb_slave_colony = {
 				remove_trait = content
 				add_trait = ambitious
 				add_trait = cruel
-				add_trait = pirate
+				add_trait = pirate_trait
 				wealth = 500
 				prestige = 500
 				piety = 500

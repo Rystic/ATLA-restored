@@ -2086,7 +2086,7 @@ has_society_currency_major_trigger = {
 	society_currency >= 500
 }
 
-has_society_currency_major_trigger = {
+has_society_currency_large_trigger = {
 	society_currency >= 750
 }
 
@@ -2322,10 +2322,10 @@ ok_sr_induction_mission_target_trigger = {
 	NOT = { trait = incapable }
 	is_inaccessible_trigger = no
 	NOT = { has_character_modifier = secret_religion_sympathy_timer }
-	OR = {
+	#OR = {
 		religion_group = { target_type = secret target = ROOT }
-		has_sympathy_for_true_religion_of_root_trigger = yes
-	}
+		#has_sympathy_for_true_religion_of_root_trigger = yes
+	#}
 }
 
 ok_sr_sympathy_mission_target_trigger = {
@@ -2334,7 +2334,7 @@ ok_sr_sympathy_mission_target_trigger = {
 		NOT = { secret_religion = { target_type = public target = PREV } }
 	}
 	ROOT = { PREV = { is_openly_of_prevs_secret_religion_trigger = no } }
-	ROOT = { PREV = { has_sympathy_for_true_religion_of_prev_trigger = no } }
+	#ROOT = { PREV = { has_sympathy_for_true_religion_of_prev_trigger = no } }
 	prisoner = no
 	is_adult = yes
 	NOT = { trait = incapable }
@@ -2708,19 +2708,15 @@ have_all_armorsmith_artifacts_all_flags_trigger = {
 have_all_weaponsmith_artifacts_all_flags_trigger = {
 	trigger_if = {
 		limit = {
-			NOR = { 
+			NOT = { 
 				religion = children_of_si_wong
-				has_dharmic_religion_trigger = yes 
 			}
 		}
 		have_all_weaponsmith_swords_all_flags_trigger = yes
 	}
 	trigger_if = {
 		limit = {
-			OR = { 
-				religion = children_of_si_wong
-				has_dharmic_religion_trigger = yes 
-			}
+			religion = children_of_si_wong
 		}
 		have_all_weaponsmith_scimitar_all_flags_trigger = yes
 	}
@@ -4670,7 +4666,7 @@ this_is_spiritual_culture_trigger = { #Not really about culture - Used in AI vot
 }
 this_is_sea_raider_trigger = {
 	OR = {
-		trait = pirate
+		trait = pirate_trait
 		trait = viking
 		trait = ravager
 		trait = seaking
