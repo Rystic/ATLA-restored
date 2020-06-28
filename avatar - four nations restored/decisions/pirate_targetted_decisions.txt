@@ -13,9 +13,12 @@ targetted_decisions = {
 			ai = yes
 			religion = FROM
 			tier = COUNT
-			is_tributary = { 
-				type = pirate_tributary 
-				suzerain = FROM
+			OR = {
+				is_tributary = { 
+					type = pirate_tributary 
+					suzerain = FROM
+				}
+				de_facto_liege = FROM
 			}
 			NOT = { character = FROM }
 		}
@@ -73,13 +76,13 @@ targetted_decisions = {
 				}
 				random_list = {
 					75 = {}
-					25 = { FROM = { character_event = {id = 20400 } } }
+					25 = { FROM = { character_event = {id = PRT.20400 } } }
 				}
 			}
 		}
 
 		ai_will_do = {
-			factor = 100
+			factor = 1000
 		}
 	}
 		
@@ -113,6 +116,7 @@ targetted_decisions = {
 			}
 			
 			set_defacto_liege = FROM
+			set_government_type = pirate_cartel
 			
 			if = {
 				limit = {
@@ -120,7 +124,7 @@ targetted_decisions = {
 				}
 				random_list = {
 					75 = {}
-					25 = { FROM = { character_event = {id = 20400 } } }
+					25 = { FROM = { character_event = {id = PRT.20400 } } }
 				}
 			}
 		}
@@ -134,6 +138,7 @@ targetted_decisions = {
 
 		from_potential = {
 			society_member_of = the_black_market
+			society_rank > 1
 			is_playable = yes
 			is_adult = yes
 			prisoner = no
@@ -146,6 +151,9 @@ targetted_decisions = {
 		}
 
 		effect = {
+				custom_tooltip = {
+					text = decision_sell_prisoner_desc
+				}
 				hidden_tooltip = {
 					# Initial Slave Value -- How accepting is society of slavery? Either -2, 0, or 1.
 					FROM = { 
@@ -365,20 +373,19 @@ targetted_decisions = {
 					death = {
 						death_reason = death_slavery
 					}
-				}
-				if = {
-					limit = {
-						FROM = { NOT = { trait = pirate_trait} }
-					}
-					random_list = {
-						75 = {}
-						25 = { FROM = { character_event = {id = 20400 } } }
+					if = {
+						limit = {
+							FROM = { NOT = { trait = pirate_trait} }
+						}
+						random_list = {
+							75 = {}
+							25 = { FROM = { character_event = {id = PRT.20400 } } }
+						}
 					}
 				}
 			}
-		
 		ai_will_do = {
-			factor = 100
+			factor = 1000
 		}
 	}
 	
@@ -668,7 +675,7 @@ title_decisions = {
 			}
 			random_list = {
 				75 = {}
-				25 = { FROM = { character_event = {id = 20400 } } }
+				25 = { FROM = { character_event = {id = PRT.20400 } } }
 			}
 		}
 		
