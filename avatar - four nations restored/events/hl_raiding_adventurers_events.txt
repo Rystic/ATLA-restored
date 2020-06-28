@@ -13,10 +13,6 @@ namespace = HL
 # An ambitious character with no inheritance begins to plan an adventure for a foreign title
 character_event = {
 	id = HL.100
-	desc = OK
-	picture = GFX_evt_crusaders
-	border = GFX_event_normal_frame_war
-	
 	hide_window = yes # Only fires for unplayable landless characters
 	
 	min_age = 16
@@ -27,16 +23,56 @@ character_event = {
 	
 	trigger = {
 		has_dlc = "Horse Lords"
+		
+		NOT = {
+			has_game_rule = {
+				name = adventurers
+				value = none
+			}
+		}
+		
 		is_ruler = no
 		NOT = { year = 930 }
 		is_allowed_to_loot = yes
 		NOT = { trait = content }
 		NOT = { trait = craven }
+		NOT = { trait = decadent }
+		OR = {
+			AND = {
+				trait = ambitious
+				martial = 15
+				diplomacy = 12
+				health = 4
+				NOR = {
+					trait = craven
+					trait = content
+					trait = decadent
+					any_child = {
+						OR = {
+							is_heir = yes
+							is_landed = yes
+						}
+					}
+					NAND = {
+						uses_decadence = yes
+						num_of_dynasty_members = 3
+						biggest_realm_size_relative = {
+							NOT = { character = ROOT }
+							realm_size = 5
+						}
+					}
+				}
+				is_heir = no
+				is_allowed_to_loot = yes
+			}
+		}
+		
 		NOT = { # Somewhat clunky way of checking that the character does not stand to inherit any titles
 			any_heir_title = {
 				always = yes
 			}
 		}
+		
 		NOT = { # Handled by event TOG.1200
 			any_claim = {
 				has_holder = yes
@@ -84,7 +120,7 @@ character_event = {
 	}
 	
 	mean_time_to_happen = {
-		years = 40
+		years = 30
 		modifier = {
 			factor = 0.5
 			religion = piracy
@@ -111,7 +147,7 @@ character_event = {
 		}
 		modifier = {
 			factor = 0.75
-			combat_rating = 3
+			combat_rating = 30
 		}
 		modifier = {
 			factor = 0.75
@@ -139,20 +175,23 @@ character_event = {
 				ai = no
 			}
 		}
+		modifier = {
+			factor = 50
+			has_game_rule = {
+				name = adventurers
+				value = rare
+			}
+		}
+#		modifier = {
+#			factor = 3.0
+#			top_liege = {
+#				tier = emperor
+#			}
+#		}
 	}
 	
 	immediate = {
-		if = {
-			limit = { trait = in_hiding	}
-			remove_trait = in_hiding
-			add_character_modifier = {
-				name = went_out_of_hiding_timer
-				duration = 180
-				hidden = yes
-			}
-			clr_character_flag = do_not_disturb
-			hidden_tooltip = { character_event = { id = CM.6400 } } # Notify plotters and family
-		}
+		end_inaccessibility_effect = yes #removes in hiding or in_seclusion
 		add_trait = adventurer
 		liege = {
 			primary_title = {
@@ -173,11 +212,12 @@ character_event = {
 						landless = yes
 						adventurer = yes
 						culture = ROOT
-						name = "RAIDER_CLAIMANT_ADVENTURE"
+						name = "CLAIMANT_ADVENTURE"
 						holder = ROOT
-						base_title = PREV
+						base_title = THIS
 					}
 					set_character_flag = raiding_adventurer
+					change_variable = { which = global_raiding_adventurer_spawn_by_courtier_MTTH value = 1 }
 					character_event = { id = HL.102 } #create troops vikings
 					create_random_soldier = {
 						random_traits = yes
