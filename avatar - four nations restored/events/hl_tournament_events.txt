@@ -53,29 +53,17 @@ letter_event = {
 	border = GFX_event_letter_frame_war
 	
 	is_triggered_only = yes
+
+	trigger = { NOT = { is_inaccessible_trigger = yes } }
 	
 	option = {
 		name = EVTOPTA_HL_7001 # Accept invitation
 		ai_chance = {
 			factor = 2
-			modifier  = {
-				factor = 0.1
-				trait = in_hiding
-			}
 		}
 		set_character_flag = do_not_disturb
 		set_character_flag = attending_nomad_wargames
 		hidden_tooltip = { character_event = { id = HL.7099 days = 60 } } # Safety clearing of all flags and modifiers
-		if = {
-			limit = { trait = in_hiding	}
-			remove_trait = in_hiding
-			add_character_modifier = {
-				name = went_out_of_hiding_timer
-				duration = 180
-				hidden = yes
-			}
-			hidden_tooltip = { character_event = { id = CM.6400 } } # Notify plotters and family
-		}
 	}
 	option = {
 		name = EVTOPTB_RoI_1001 # Refuse invitation
@@ -85,7 +73,7 @@ letter_event = {
 				factor = 0
 				is_nomadic = yes
 				opinion = { who = FROM value = 25 }
-				NOT = { trait = in_hiding }
+				NOT = { is_inaccessible_trigger = yes }
 			}
 			modifier = {
 				factor = 0
@@ -94,7 +82,7 @@ letter_event = {
 			modifier  = {
 				factor = 3
 				is_nomadic = no
-				NOT = { combat_rating = 1 }
+				NOT = { combat_rating = 10 }
 			}
 		}
 		reverse_opinion = {
@@ -180,7 +168,31 @@ character_event = {
 		random_realm_character = {
 			limit = {
 				has_character_flag = attending_nomad_wargames
-				combat_rating = 13
+				combat_rating = 130
+			}
+			character_event = { id = HL.7055 } # Winner
+			break = yes
+		}
+		random_realm_character = {
+			limit = {
+				has_character_flag = attending_nomad_wargames
+				combat_rating = 100
+			}
+			character_event = { id = HL.7055 } # Winner
+			break = yes
+		}
+		random_realm_character = {
+			limit = {
+				has_character_flag = attending_nomad_wargames
+				combat_rating = 70
+			}
+			character_event = { id = HL.7055 } # Winner
+			break = yes
+		}
+		random_realm_character = {
+			limit = {
+				has_character_flag = attending_nomad_wargames
+				combat_rating = 40
 			}
 			character_event = { id = HL.7055 } # Winner
 			break = yes
@@ -196,7 +208,7 @@ character_event = {
 		random_realm_character = {
 			limit = {
 				has_character_flag = attending_nomad_wargames
-				combat_rating = 7
+				combat_rating = -20
 			}
 			character_event = { id = HL.7055 } # Winner
 			break = yes
@@ -204,31 +216,7 @@ character_event = {
 		random_realm_character = {
 			limit = {
 				has_character_flag = attending_nomad_wargames
-				combat_rating = 4
-			}
-			character_event = { id = HL.7055 } # Winner
-			break = yes
-		}
-		random_realm_character = {
-			limit = {
-				has_character_flag = attending_nomad_wargames
-				combat_rating = 1
-			}
-			character_event = { id = HL.7055 } # Winner
-			break = yes
-		}
-		random_realm_character = {
-			limit = {
-				has_character_flag = attending_nomad_wargames
-				combat_rating = -2
-			}
-			character_event = { id = HL.7055 } # Winner
-			break = yes
-		}
-		random_realm_character = {
-			limit = {
-				has_character_flag = attending_nomad_wargames
-				combat_rating = -5
+				combat_rating = -50
 			}
 			character_event = { id = HL.7055 } # Winner
 			break = yes
