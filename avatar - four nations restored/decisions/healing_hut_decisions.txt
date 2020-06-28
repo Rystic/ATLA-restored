@@ -4,18 +4,17 @@ found_healing_hut_north_decision = {
 		ai_check_interval = 12
 		is_high_prio = yes
 		
-		potential = {
-			holder_scope = {
-			trait = waterbender
-				OR = {
-					religion = tui_and_la
-					religion = tui_and_la_reformed
-				}
+		potential = {				
+			OR = {
+				religion = tui_and_la
+				religion = tui_and_la_reformed
 			}
 			NOT = { has_global_flag = healing_hut_north_founded }
 		}
 
 		allow = {
+			is_female = yes
+			trait = waterbender
 			learning  = 10
 		}
 
@@ -165,7 +164,7 @@ found_healing_hut_north_decision = {
 		}
 
 		ai_will_do = {
-			factor = 10
+			factor = 1000
 		}
 	}
 }
@@ -317,67 +316,64 @@ targetted_decisions = {
 		}
 	}
 	
-		hhn_recruit_member = {
-			ai_check_interval = 12
-			filter = realm
-			ai_target_filter = home_court
-			is_in_society = yes
+	hhn_recruit_member = {
+		ai_check_interval = 12
+		filter = realm
+		ai_target_filter = home_court
+		is_in_society = yes
 			
-			potential = {
-				NOT = { trait = incapable }
-				is_in_society = no
-				age = 10
-				trait = waterbender
-				OR = {
-					religion = tui_and_la
-					religion = tui_and_la_reformed
-				}
-				NAND = {
-					is_female = no
-					NOT = { has_law = status_of_women_4 }
-				}
+		potential = {
+			NOT = { trait = incapable }
+			is_in_society = no
+			age = 10
+			trait = waterbender
+			OR = {
+				religion = tui_and_la
+				religion = tui_and_la_reformed
 			}
-			
-			from_potential = {
-				society_rank >= 2
-				society_member_of = healing_hut_north
-				is_adult = yes
-				trait = healer
-				NOT = { trait = incapable }
+			NAND = {
+				is_female = no
+				NOT = { has_law = status_of_women_4 }
 			}
-			
-			allow = {
-				FROM = {
-					has_society_currency_medium_trigger = yes	###requires 300SocCur
-					is_inaccessible_trigger = no
-					prisoner = no
-					in_command = no
-				}
+		}
+		
+		from_potential = {
+			society_rank >= 2
+			society_member_of = healing_hut_north
+			is_adult = yes
+			trait = healer
+			NOT = { trait = incapable }
+		}
+		
+		allow = {
+			FROM = {
+				has_society_currency_medium_trigger = yes	###requires 300SocCur
 				is_inaccessible_trigger = no
 				prisoner = no
+				in_command = no
 			}
-			
-			revoke_allowed = {
-				always = no
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		effect = {
+			FROM = {
+				detract_society_currency_medium_effect = yes	###lose 300SocCur
 			}
-			
-			effect = {
-				FROM = {
-					detract_society_currency_medium_effect = yes	###lose 300SocCur
-				}
-				ROOT = {
-					hidden_tooltip = {
-						letter_event = { id = MNHHN.5061 } 
-					}
-				}
-			}
-			
-			ai_will_do = {
-				factor = 10
-				modifier = {
-					factor = 0.1
+			ROOT = {
+				hidden_tooltip = {
+					letter_event = { id = MNHHN.5061 } 
 				}
 			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
 	}
 	
 	hhn_treat_disease = {
@@ -468,12 +464,12 @@ targetted_decisions = {
 		}
 		
 		ai_will_do = {
-			factor = 100
+			factor = 1000
 		}
 		
 	}
 	
-		hhn_treat_mental_illness = {
+	hhn_treat_mental_illness = {
 		ai_check_interval = 12
 		filter = realm
 		is_in_society = yes

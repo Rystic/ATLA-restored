@@ -6,25 +6,35 @@ decisions = {
 		is_high_prio = yes
 		only_independent = yes
 		potential = {
-			government = pirate_cartel
+			NOT = { has_global_flag = fifth_nation_restored }
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		
+		allow = {
 			primary_title = {
 				tier = KING
 			}
 			is_in_society = the_black_market
-		}
-		allow = {
 			has_law = slavery_legal
 			society_rank = {
 				society = the_black_market
 				rank == 4
 			}
 			religion_authority = 0.6
-			OR = {
-				has_character_flag = sung_pirate_shanty
-				ai = yes
-			}
+			# OR = {
+				# has_character_flag = sung_pirate_shanty
+				# ai = yes
+			# }
+			piety = 4000
 		}
+		
 		effect = {
+			piety = -4000
+			narrative_event = { id = PRT.20000 }
+			set_global_flag = fifth_nation_restored
 			create_title = {
 				tier = EMPEROR
 				landless = no
@@ -36,6 +46,10 @@ decisions = {
 				ruler = e_fifth_nation_ruler
 				ruler_female = e_fifth_nation_ruler_female
 			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
 		}
 	}
 
