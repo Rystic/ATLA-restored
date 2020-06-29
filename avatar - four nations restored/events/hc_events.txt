@@ -1,0 +1,189 @@
+##														 ##
+# Made for Avatar Four Nations Restored by TypicalCrusader#
+##														 ##
+
+namespace = HC
+
+character_event = {
+	id = HC.0
+	desc = EVTDESCHC
+	picture = GFX_CHIN
+	
+	is_triggered_only = yes
+	ai = no 
+	
+	trigger = {
+		trait = hc
+	}
+	
+	option = {
+		name = EVTOPTHC1b
+		set_character_flag = site1
+		hidden_tooltip = { character_event = { id = HC.1 } }
+	}
+	
+	option = {
+		name = EVTOPTHC1a
+		custom_tooltip = {
+			text = HC1
+			hidden_tooltip = { character_event = { id = HC.3 days = 30 } }
+		}
+	}
+}
+
+character_event = {
+	id = HC.1
+	desc = EVTDESCHC
+	picture = GFX_CHIN
+	
+	is_triggered_only = yes
+	ai = no 
+	
+	trigger = {
+		trait = hc
+	}
+	
+	option = { #beifong
+		name = EVTOPTHC3
+		trigger = { 
+			year <= 836
+			has_character_flag = site1
+		}	
+		dynasty = 1
+		any_child = { dynasty = 1 }
+			create_bloodline = {
+				type = beifong
+			}
+			clr_character_flag = site1
+			remove_trait = HC
+			character_event = { id = HC.4 }	
+	}
+	
+	option = { #sato
+		name = EVTOPTHC4
+		trigger = { 
+			has_character_flag = site1
+			year < 1000
+		}	
+		dynasty = 1
+		any_child = { dynasty = 1 }
+		clr_character_flag = site1
+		remove_trait = HC
+		character_event = { id = HC.4 }	
+	}
+	
+	option = { #han
+		name = EVTOPTHC5
+		trigger = {
+			has_character_flag = site1
+			year = 818
+		}	
+		dynasty = 536
+		any_child = { dynasty = 536 }
+		clr_character_flag = site1
+		remove_trait = HC
+		character_event = { id = HC.4 }	
+	}
+	
+	option = {
+		name = site2
+		trigger = {
+			has_character_flag = site1
+		}
+		clr_character_flag = site1
+		set_character_flag = site2
+		character_event = { id = HC.1 }
+	}
+	
+	option = { #Yangchen
+		name = EVTOPTHC6
+		trigger = { 
+			has_character_flag = site2
+		}	
+		dynasty = 1159
+		any_child = { dynasty = 1159 }
+		random_bloodline = {
+			limit = { has_bloodline_flag = bloodline_yangchen }
+			add_bloodline_member = PREV
+		}
+		clr_character_flag = site1
+		remove_trait = HC
+		character_event = { id = HC.4 }	
+	}
+	
+	option = { #Kuruk
+		name = EVTOPTHC7
+		trigger = { 
+			has_character_flag = site2
+		}	
+		dynasty = 87
+		any_child = { dynasty = 87 }
+		random_bloodline = {
+			limit = { has_bloodline_flag = bloodline_kuruk }
+			add_bloodline_member = PREV
+		}
+		clr_character_flag = site2
+		remove_trait = HC
+		character_event = { id = HC.4 }	
+	}
+	
+	option = { #Chin
+		name = EVTOPTHC8
+		trigger = { 
+			has_character_flag = site2
+			year = 676
+		}	
+		dynasty = 336
+		any_child = { dynasty = 336 }
+		random_bloodline = {
+			limit = { has_bloodline_flag = bloodline_chin }
+			add_bloodline_member = PREV
+		}
+		clr_character_flag = site2
+		remove_trait = HC
+		character_event = { id = HC.4 }
+	}
+	
+	option = {
+		name = EVTOPTHC9
+		trigger = {
+			has_character_flag = site2
+		}
+		clr_character_flag = site2
+		set_character_flag = site1
+		character_event = { id = HC.1 }
+	}
+}
+
+character_event = {
+	id = HC.3
+	
+	is_triggered_only = yes
+	ai = no
+	
+	trigger = {
+		trait = hc
+	}
+	
+	immediate = {
+		remove_trait = hc
+	}
+}
+
+character_event = {
+	id = HC.4
+	
+	is_triggered_only = yes
+	hide_window = yes
+	ai = no
+	
+	immediate = {
+		if = {
+			limit = { 
+				is_patrician = yes
+			}
+			family_palace = { destroy_settlement = THIS }
+			create_family_palace = yes
+		}
+	}
+}
