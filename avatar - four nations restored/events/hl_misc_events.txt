@@ -15,13 +15,22 @@ narrative_event = {
 	title = EVTNAMEHL1
 	desc = EVTDESCHL1
 	
-	picture = GFX_evt_council
+	picture = GFX_evt_steppe_mercenaries
 	border = GFX_event_narrative_frame_diplomacy
 	
 	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_character_flag = show_HL_1_only_once }
+	}
+
+	immediate = {
+		set_character_flag = show_HL_1_only_once
+	}
 	
 	option = {
 		name = EVTOPTA62911
+		clr_character_flag = show_HL_1_only_once
 	}
 }
 
@@ -42,7 +51,7 @@ narrative_event = {
 }
 
 character_event = {
-	id = HL.3
+	id = 44482
 
 	hide_window = yes
 
@@ -59,6 +68,12 @@ character_event = {
 	immediate = {
 		ROOT = {
 			religion_authority = { modifier = temple_built years = 20 }
+			if = {
+				limit = {
+					has_ambition = obj_strengthen_religion
+				}
+				change_variable = { which = strengthen_religion value = 1 }
+			}
 		}
 	}
 }
@@ -150,26 +165,26 @@ character_event = {
 	}
 }
 
-# Feud started between two clans ( Bounce event )
-character_event = {
-	id = HL.7
-
-	hide_window = yes
-
-	only_playable = yes
-
-	is_triggered_only = yes
-
-	trigger = {
-		has_dlc = "Horse Lords"
-	}
-
-	immediate = {
-		FROMFROM = {
-			character_event = { id = HL.6 }
-		}
-	}
-}
+## Feud started between two clans ( Bounce event )
+#character_event = {
+#	id = HL.7
+#
+#	hide_window = yes
+#
+#	only_playable = yes
+#
+#	is_triggered_only = yes
+#
+#	trigger = {
+#		has_dlc = "Horse Lords"
+#	}
+#
+#	immediate = {
+#		FROM = {
+#			character_event = { id = HL.6 }
+#		}
+#	}
+#}
 
 # Feud started between two clans because of raid and pillaging
 character_event = {
@@ -184,7 +199,6 @@ character_event = {
 	trigger = {
 		has_dlc = "Horse Lords"
 		is_nomadic = yes
-		is_ruler = yes
 		FROM = {
 			owner = {
 				is_nomadic = yes
@@ -202,8 +216,8 @@ character_event = {
 					clan_title = {
 						create_feud = PREVPREVPREV
 					}
-					character_event = { id = HL.6 }
-					character_event = { id = HL.7 }
+#					character_event = { id = HL.6 } # Already notified by on_feud_started
+#					character_event = { id = HL.7 }
 				}
 			}
 		}
