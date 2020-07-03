@@ -13,8 +13,8 @@ feudal_governments = {
 		accepts_liege_governments = { # Gets the wrong religion modifier instead
 			pirate_cartel
 		}
-		frame_suffix = "_republic"
-		title_prefix = "city_"
+		frame_suffix = "_lawless_piracy"
+		title_prefix = "haven_"
 		potential = {
 			OR = {
 				religion = piracy
@@ -54,7 +54,7 @@ feudal_governments = {
 		accepts_liege_governments = { # Gets the wrong religion modifier instead
 
 		}
-		frame_suffix = "_cartel"
+		frame_suffix = "_lawless_piracy"
 		title_prefix = "haven_"
 		potential = {
 			OR = {
@@ -105,6 +105,7 @@ feudal_governments = {
 				culture_group = water_tribe_culture
 			}
 			is_feudal = yes
+			NOT = { is_government_potential = order_government }
 			is_patrician = no
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
@@ -156,6 +157,7 @@ feudal_governments = {
 			NOT = {	religion_group = air_religions }
 			NOT = {	religion = piracy }
 			NOT = { is_government_potential = water_tribe_government }
+			NOT = { is_government_potential = order_government }
 			is_patrician = no
 		}
 		
@@ -168,7 +170,6 @@ feudal_governments = {
 		vassal_government_opinion_penalties = no
 		can_grant_kingdoms_and_empires_to_other_government_group = yes
 		can_build_tribal = no
-		uses_decadence = yes
 		vassal_limit = 15
 
 		capital_move_delay = 600
@@ -212,6 +213,7 @@ feudal_governments = {
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
 			NOT = { culture_group = water_tribe_culture }
+			NOT = { is_government_potential = order_government }
 			#is_patrician = no
 		}
 		
@@ -270,6 +272,7 @@ feudal_governments = {
 			higher_real_tier_than = baron
 			is_patrician = no
 			NOT = { is_government_potential = water_tribe_government }
+			NOT = { is_government_potential = order_government }
 		}
 		
 		color = { 246 255 179 }
@@ -310,6 +313,7 @@ feudal_governments = {
 				}
 			}
 			NOT = { is_government_potential = merchant_republic_government }
+			NOT = { is_government_potential = order_government }
 		}
 		
 		color = { 220 138 135 }
@@ -340,6 +344,7 @@ feudal_governments = {
 		}
 		potential = {
 			religion_group = air_religions
+			NOT = { is_government_potential = order_government }
 			is_patrician = no
 		}
 		
@@ -433,6 +438,91 @@ feudal_governments = {
 		vassal_government_opinion_penalties = no
 		can_grant_kingdoms_and_empires_to_other_government_group = yes
 		can_be_granted_kingdoms_and_empires_by_other_government = no
+		free_retract_vassalage = yes
+	}
+	
+	order_government = {
+		preferred_holdings = { CASTLE }
+		allowed_holdings = {
+			CASTLE
+			TEMPLE
+			TRIBAL
+			FORT
+			HOSPITAL
+		}
+		accepts_liege_governments = {
+			feudal_government
+			feudal_government_earth_kingdom
+			fire_feudal_government
+			fire_imperial_government
+			feudal_government_air_nomad
+			feudal_government_city
+			feudal_government_temple
+			theocracy_government
+		}
+		free_revoke_on_governments = {
+			order_government
+		}
+		free_revoke_on_tiers = {
+			BARON
+		}
+
+		forced_contract = {
+			order_government
+		}
+
+		frame_suffix = "_order"
+		title_prefix = "order_"
+
+		potential = {
+			OR = {
+				holy_order = yes
+				AND = {
+					any_liege = {
+						holy_order = yes
+						religion = ROOT
+					}
+					ai = yes
+					NAND = { 
+						is_government_potential = merchant_republic_government 
+						OR = {
+							tier = DUKE
+							is_patrician = yes
+						}
+						any_demesne_province = {
+							any_province_holding = {
+								OR = {
+									AND = {
+										tier = BARON
+										holding_type = family_palace
+									}
+									AND = {
+										NOT = {
+											tier = BARON
+										}
+										holding_type = city
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		color = { 169 169 169 }
+
+		have_gender_laws = no
+		can_create_kingdoms = no
+		can_create_empires = no
+		can_imprison_without_reason = no
+		can_revoke_without_reason = no
+		dukes_called_kings = yes
+		barons_need_dynasty = yes
+		can_usurp_kingdoms_and_empires = no
+		can_grant_kingdoms_and_empires_to_other_government = no
+		can_be_granted_kingdoms_and_empires_by_other_government = no
+		can_inherit = no
 		free_retract_vassalage = yes
 	}
 }

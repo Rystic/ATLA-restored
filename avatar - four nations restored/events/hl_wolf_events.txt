@@ -24,15 +24,33 @@ character_event = {
 	
 	trigger = {
 		has_dlc = "Horse Lords"
+		NOT = {
+			has_game_rule = {
+				name = supernatural_events
+				value = off
+			}
+		}
 		NOT = { trait = airbender }
 		culture = southern_water
 		OR = {
 			father = {
-				ai = no
+				OR = {
+					ai = no
+					has_game_rule = {
+						name = supernatural_events
+						value = unrestricted
+					}
+				}
 				NOT = { num_of_children = 2 }
 			}
 			mother = {
-				ai = no
+				OR = {
+					ai = no
+					has_game_rule = {
+						name = supernatural_events
+						value = unrestricted
+					}
+				}
 				NOT = { num_of_children = 2 }
 			}
 		}
@@ -65,10 +83,16 @@ narrative_event = {
 
 	is_triggered_only = yes
 	
-	ai = no
 	capable_only = yes	
 	
 	trigger = {
+		OR = {
+			ai = no
+			has_game_rule = {
+				name = supernatural_events
+				value = unrestricted
+			}
+		}
 		FROM = { is_alive = yes }
 		NOT = { trait = sickly }
 	}
@@ -115,12 +139,18 @@ narrative_event = {
 
 	is_triggered_only = yes
 	
-	ai = no
 	capable_only = yes
 	only_playable = yes
 	
 	trigger = {
 		has_dlc = "Horse Lords"
+		OR = {
+			ai = no
+			has_game_rule = {
+				name = supernatural_events
+				value = unrestricted
+			}
+		}
 		is_adult = yes
 		NOT = { num_of_children = 1 }
 		NOT = { trait = airbender }
@@ -181,7 +211,13 @@ narrative_event = {
 		NOT = { age = 10 }
 		NOT = {	any_sibling = { is_older_than = ROOT } }
 		OR = {
-			ai = no
+			OR = {
+				ai = no
+				has_game_rule = {
+					name = supernatural_events
+					value = unrestricted
+				}
+			}
 			father = { ai = no }
 			mother = { ai = no }
 		}
@@ -279,7 +315,13 @@ narrative_event = {
 	trigger = {
 		age = 13
 		OR = {
-			ai = no
+			OR = {
+				ai = no
+				has_game_rule = {
+					name = supernatural_events
+					value = unrestricted
+				}
+			}
 			father = { ai = no }
 			mother = { ai = no }
 		}
@@ -299,6 +341,11 @@ narrative_event = {
 			random = {
 				chance = 30
 				add_trait = proud
+				hidden_tooltip = {
+					character_event = {
+						id = 38261 #Notify Proud
+					}
+				}
 			}
 		}
 	}
@@ -317,6 +364,11 @@ narrative_event = {
 			random = {
 				chance = 30
 				add_trait = deceitful
+				hidden_tooltip = {
+					character_event = {
+						id = 38255 #Notify Deceitful
+					}
+				}
 			}
 		}
 		if = {
@@ -324,6 +376,11 @@ narrative_event = {
 			random = {
 				chance = 30
 				add_trait = wroth
+				hidden_tooltip = {
+					character_event = {
+						id = 38254 #Notify Wroth
+					}
+				}
 			}
 		}
 		mother = {
@@ -346,6 +403,11 @@ narrative_event = {
 			random = {
 				chance = 30
 				add_trait = envious
+				hidden_tooltip = {
+					character_event = {
+						id = 38271 #Notify Envious
+					}
+				}
 			}
 		}
 		if = {
@@ -353,6 +415,11 @@ narrative_event = {
 			random = {
 				chance = 30
 				add_trait = paranoid
+				hidden_tooltip = {
+					character_event = {
+						id = 38275 #Notify Paranoid
+					}
+				}
 			}
 		}
 	}
@@ -370,7 +437,7 @@ narrative_event = {
 # Parents hear wolf rumors
 narrative_event = {
 	id = HL.1031
-	title = EVTTITLE_HL_1030
+	title = EVTTITLE_HL_1031
 	desc = EVTDESC_HL_1031
 	picture = GFX_evt_whispers
 	border = GFX_event_narrative_frame_war
@@ -519,13 +586,19 @@ narrative_event = {
 
 	is_triggered_only = yes
 
-	ai = no
 	capable_only = yes
 	prisoner = no
 	min_age = 18
 	has_character_flag = wolf_blood_first_generation
 	
 	trigger = {
+		OR = {
+			ai = no
+			has_game_rule = {
+				name = supernatural_events
+				value = unrestricted
+			}
+		}
 		in_command = no
 		NOT = { has_character_flag = do_not_disturb }
 		NOT = { has_character_flag = call_of_the_wolves }
@@ -693,6 +766,13 @@ narrative_event = {
 			random = {
 				chance = 30
 				add_trait = temperate
+			lose_weight_small_effect = yes
+			weight_trait_check_effect = yes
+				hidden_tooltip = {
+					character_event = {
+						id = 38276 #Notify Temperate
+					}
+				}
 			}
 		}
 		hidden_tooltip = {
@@ -766,11 +846,15 @@ narrative_event = {
 					NOT = { trait = incapable }
 				}
 			}
-			random_lover = {
+			any_lover = {
 				limit = {
 					at_location = ROOT
 					NOT = { trait = incapable }
 				}
+				score_value = { #Prioritizes selecting an interesting courtier...
+		            value = 10
+		            interesting_courtier_selection_score = yes
+		        }
 				save_event_target_as = wolf_worried_homecoming
 			}
 			set_character_flag = wolf_homecoming_worried_character
@@ -785,11 +869,16 @@ narrative_event = {
 					NOT = { trait = incapable }
 				}
 			}
-			random_consort = {
+			any_consort = {
 				limit = {
+					NOT = { character = ROOT }
 					at_location = ROOT
 					NOT = { trait = incapable }
 				}
+				score_value = { #Prioritizes selecting an interesting courtier...
+		            value = 10
+		            interesting_courtier_selection_score = yes
+		        }
 				save_event_target_as = wolf_worried_homecoming
 			}
 			set_character_flag = wolf_homecoming_worried_character
@@ -800,7 +889,7 @@ narrative_event = {
 		name = EVTOPTA_HL_1250
 		prestige = 20
 		if = {
-			limit = { has_character_flag = wolf_homecoming_character }
+			limit = { has_character_flag = wolf_homecoming_worried_character }
 			event_target:wolf_worried_homecoming = {
 				opinion = {
 					who = ROOT
@@ -809,14 +898,14 @@ narrative_event = {
 				}
 			}
 		}
-		clr_character_flag = wolf_homecoming_character
+		clr_character_flag = wolf_homecoming_worried_character
 		clr_character_flag = do_not_disturb
 	}
 	option = {
 		name = EVTOPTB_HL_1250
 		prestige = 50
 		if = {
-			limit = { has_character_flag = wolf_homecoming_character }
+			limit = { has_character_flag = wolf_homecoming_worried_character }
 			event_target:wolf_worried_homecoming = {
 				opinion = {
 					who = ROOT
@@ -825,13 +914,13 @@ narrative_event = {
 				}
 			}
 		}
-		clr_character_flag = wolf_homecoming_character
+		clr_character_flag = wolf_homecoming_worried_character
 		clr_character_flag = do_not_disturb
 	}
 	option = {
 		name = EVTOPTC_HL_1250
 		trigger = {
-			has_character_flag = wolf_homecoming_character
+			has_character_flag = wolf_homecoming_worried_character
 		}
 		event_target:wolf_worried_homecoming = {
 			opinion = {
@@ -840,7 +929,7 @@ narrative_event = {
 				years = 3
 			}
 		}
-		clr_character_flag = wolf_homecoming_character
+		clr_character_flag = wolf_homecoming_worried_character
 		clr_character_flag = do_not_disturb
 	}
 }
@@ -862,13 +951,25 @@ narrative_event = {
 
 	is_triggered_only = yes
 
-	ai = no
 	capable_only = yes
 	prisoner = no
 	min_age = 18
 	
 	trigger = {
 		has_dlc = "Horse Lords"
+		OR = {
+			ai = no
+			has_game_rule = {
+				name = supernatural_events
+				value = unrestricted
+			}
+		}
+		NOT = {
+			has_game_rule = {
+				name = supernatural_events
+				value = off
+			}
+		}
 		trait = possessed
 		NOT = { has_character_modifier = lycanthropy }
 		NOT = { has_character_flag = do_not_disturb }
@@ -922,12 +1023,18 @@ character_event = {
 
 	is_triggered_only = yes
 
-	ai = no
 	capable_only = yes
 	prisoner = no
 	min_age = 18
 	
 	trigger = {
+		OR = {
+			ai = no
+			has_game_rule = {
+				name = supernatural_events
+				value = unrestricted
+			}
+		}
 		trait = possessed
 		has_character_modifier = lycanthropy
 		NOT = { has_character_flag = do_not_disturb }
@@ -1087,26 +1194,37 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = {
-		name = EVTOPTA_HL_1430
-		hidden_tooltip = { character_event = { id = HL.1490 days = 4 } }
-		set_character_flag = werewolf_killed_something
-		location = {
-			random_neighbor_province = {
-				owner = {
-					random_courtier = {
-						limit = {
-							ai = yes
-							at_location = PREV
-						}
-						death = {
-							death_reason = death_murder_unknown
-							killer = ROOT
+	immediate = {
+		hidden_tooltip = {
+			set_character_flag = werewolf_killed_something
+			location = {
+				random_neighbor_province = {
+					owner = {
+						random_courtier = {
+							limit = {
+								ai = yes
+								at_location = PREV
+								is_ruler = no
+							}
+							save_event_target_as = werewolf_prey
 						}
 					}
 				}
 			}
 		}
+	}
+
+	option = {
+		name = EVTOPTA_HL_1430
+
+		event_target:werewolf_prey = {
+			death = {
+				death_reason = death_murder_unknown
+				killer = ROOT
+			}
+		}
+
+		hidden_tooltip = { character_event = { id = HL.1490 days = 4 } }
 	}
 }
 
@@ -1149,6 +1267,11 @@ character_event = {
 			random = {
 				chance = 20
 				add_trait = infirm
+				hidden_tooltip = {
+					character_event = {
+						id = 38284 #Notify Infirm
+					}
+				}
 			}
 		}
 		if = {
@@ -1161,10 +1284,23 @@ character_event = {
 		if = {
 			limit = {
 				has_character_flag = werewolf_swims_river_sleeps_outside
-				NOT = { trait = ill }
+				is_ill = no
 				NOT = { trait = pneumonic }
 			}
-			add_trait = ill
+			if = {
+				limit = {
+					NOT = {
+						has_dlc = "Reapers"
+					}
+				}
+				add_trait = ill
+			}
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				add_symptom_effect = yes
+			}
 		}
 		if = {
 			limit = { has_character_flag = werewolf_killed_something }
@@ -1204,6 +1340,7 @@ character_event = {
 			trait = lunatic
 		}
 		NOT = { has_character_modifier = cannibal }
+		NOT = { trait = cannibal_trait }
 		NOT = { has_character_flag = wolf_resisted_cannibalism }
 	}
 	
@@ -1216,7 +1353,10 @@ character_event = {
 		}
 		modifier = {
 			factor = 4
-			has_character_modifier = cannibal
+			OR = {
+				has_character_modifier = cannibal
+				trait = cannibal_trait
+			}
 		}
 		modifier = {
 			factor = 1.5
@@ -1262,9 +1402,14 @@ character_event = {
 				killer = ROOT
 			}
 		}
-		add_character_modifier = {
-			name = cannibal
-			duration = -1
+		if = {
+			limit = {
+				NOR = {
+					trait = cannibal_trait
+					has_character_modifier = cannibal
+				}
+			}
+			add_trait = cannibal_trait
 		}
 	}
 	option = {
@@ -1332,12 +1477,16 @@ character_event = {
 	}
 	
 	immediate = {
-		random_courtier = {
+		any_courtier = {
 			limit = {
 				at_location = ROOT
 				is_adult = yes
 				NOT = { trait = incapable }
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
 			save_event_target_as = wolf_hunting_instinct_at_court_courtier
 		}
 	}
@@ -1457,7 +1606,7 @@ character_event = {
 
 	trigger = {
 		has_character_modifier = wolf_blood
-		NOT = { trait = strong }
+		is_strong_trigger = no
 	}
 	
 	weight_multiplier = {
@@ -1471,7 +1620,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_HL_1540
-		add_trait = strong
+		add_trait = robust
 	}
 }
 
@@ -1488,10 +1637,8 @@ character_event = {
 
 	trigger = {
 		has_character_modifier = wolf_blood
-		NOT = { trait = quick }
-		NOT = { trait = genius }
-		NOT = { trait = slow }
-		NOT = { trait = imbecile }
+		is_smart_trigger = no
+		is_dumb_trigger = no
 		NOT = { trait = inbred }
 	}
 	
@@ -1506,7 +1653,7 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_HL_1550
-		add_trait = quick
+		add_trait = shrewd
 	}
 }
 
@@ -1765,22 +1912,30 @@ character_event = {
 	trigger = {
 		has_character_modifier = wolf_blood
 		has_character_flag = wolf_blood_inherited
-		NOT = { trait = ugly }
+		NOT = { trait = uncouth }
 	}
 	
 	option = {
 		name = EVTOPTA_HL_1620
 		trigger = {
-			NOT = { trait = fair }
+			NOT = { has_fair_trait_trigger = yes }
 		}
-		add_trait = ugly
+		add_trait = uncouth
 	}
 	option = {
 		name = EVTOPTB_HL_1620 # No longer fair I am!
 		trigger = {
-			trait = fair
+			has_fair_trait_trigger = yes
 		}
-		add_trait = ugly
+		if = { 
+			limit = { trait = fair }
+			remove_trait = fair
+		}
+		if = { 
+			limit = { trait = groomed }
+			remove_trait = groomed
+		}
+		add_trait = uncouth
 	}
 }
 
@@ -1915,6 +2070,12 @@ character_event = {
 			}
 			mother_even_if_dead = { has_character_modifier = wolf_blood }
 		}
+		NOT = {
+			has_game_rule = {
+				name = supernatural_events
+				value = off
+			}
+		}
 	}
 	
 	immediate = {
@@ -1938,6 +2099,10 @@ character_event = {
 					OR = {
 						father_even_if_dead = { ai = no }
 						mother_even_if_dead = { ai = no }
+						father_even_if_dead = { father_even_if_dead = { ai = no } }
+						father_even_if_dead = { mother_even_if_dead = { ai = no } }
+						mother_even_if_dead = { father_even_if_dead = { ai = no } }
+						mother_even_if_dead = { mother_even_if_dead = { ai = no } }
 					}
 				}
 				modifier = {
