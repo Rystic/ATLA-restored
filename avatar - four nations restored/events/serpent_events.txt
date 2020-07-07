@@ -1,0 +1,324 @@
+namespace = SRP
+
+character_event = {
+	id = SRP.1000
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+	}
+	
+	immediate = {
+	
+		remove_character_modifier = weak_serpent_leader
+		remove_character_modifier = strong_serpent_leader
+	
+		set_variable = { which = local_prestige_low_threshold value = 50 }
+		set_variable = { which = local_prestige_high_threshold value = 250 }
+		trigger_switch = {
+			on_trigger = tier
+			COUNT = { set_variable = { which = local_prestige_low_threshold value = 50 } set_variable = { which = local_prestige_high_threshold value = 250 } }
+			DUKE = { set_variable = { which = local_prestige_low_threshold value = 100 } set_variable = { which = local_prestige_high_threshold value = 500 } }
+			KING = { set_variable = { which = local_prestige_low_threshold value = 250 } set_variable = { which = local_prestige_high_threshold value = 1250 } }
+			EMPEROR = { set_variable = { which = local_prestige_low_threshold value = 500 } set_variable = { which = local_prestige_high_threshold value = 2500 } }
+		}
+		
+		trigger_switch = {
+			on_trigger = trait
+			brave = { set_variable = { which = local_prestige_low_threshold value = 50 } set_variable = { which = local_prestige_high_threshold value = 250 } }
+			craven = { set_variable = { which = local_prestige_low_threshold value = 500 } set_variable = { which = local_prestige_high_threshold value = 2500 } }
+		}
+		
+		if = {
+			if = {
+				limit = {
+					prestige > local_prestige_low_threshold
+				}
+				if = {
+					limit = {
+						prestige > local_prestige_high_threshold
+					}
+					add_character_modifier = {
+						name = strong_serpent_leader
+						years = 2
+					}
+				}
+			}
+			else = {
+				add_character_modifier = {
+					name = weak_serpent_leader
+					years = 2
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.2000
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+		c_north_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+		
+		c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+		c_south_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+			}
+			location = {
+				remove_province_modifier = stirring_serpent
+				remove_province_modifier = angry_serpent
+				add_province_modifier = { name = pleased_serpent duration = -1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.2001
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		OR = {
+			AND = {
+				c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_north_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+				c_south_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }
+			}
+			AND = {
+				c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_south_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+				c_north_serpent = { holder_scope = { NOT = {religion = the_great_serpent } } }
+			}
+			AND = {
+				c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+				NAND = {
+					c_north_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+					c_south_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+			}
+			location = {
+				remove_province_modifier = pleased_serpent
+				remove_province_modifier = angry_serpent
+				add_province_modifier = { name = stirring_serpent duration = -1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.2002
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		OR = {
+			AND = {
+				c_north_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }
+				c_south_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }
+			}
+			AND = {
+				c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_north_serpent = { holder_scope = { NOT = { has_character_modifier = strong_serpent_leader } } }
+				c_south_serpent = { holder_scope = { NOT = {religion = the_great_serpent } } }		
+			}
+			AND = {
+				c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_south_serpent = { holder_scope = { NOT = { has_character_modifier = strong_serpent_leader } } }
+				c_north_serpent = { holder_scope = { NOT = {religion = the_great_serpent } } }		
+			}
+		}
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+			}
+			location = {
+				remove_province_modifier = pleased_serpent
+				remove_province_modifier = stirring_serpent
+				add_province_modifier = { name = angry_serpent duration = -1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.3000
+	picture = GFX_evt_great_serpent
+	border = GFX_event_normal_frame_religion
+	title=SERPENT_SCHOLAR_TITLE
+	desc=event_serpent_scholar_desc
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		learning = 12
+		is_ruler = yes
+	}
+	
+	option = {
+		add_trait = serpent_scholar
+		name = SERPENT_SCHOLAR_OPTION
+		custom_tooltip = {
+			text = serpent_scholar_add_waterbenders
+		}
+		hidden_tooltip = {
+			random_list = {
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = tui_and_la
+						culture = northern_water
+						female = yes
+						trait = waterbender
+						trait = incompetent_bender
+						trait = lustful
+						age = 16
+					}
+				}
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = southern_spirituality
+						culture = southern_water
+						female = no
+						trait = waterbender
+						trait = competent_bender
+						trait = lustful
+						age = 16
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = southern_spirituality
+						culture = southern_water
+						female = yes
+						trait = waterbender
+						trait = incompetent_bender
+						age = 20
+					}
+				}
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = tui_and_la
+						culture = northern_water
+						female = no
+						trait = waterbender
+						trait = competent_bender
+						age = 20
+					}
+				}
+			}
+		}
+		ai_chance = { 
+			factor = 1
+		}
+	}
+}
