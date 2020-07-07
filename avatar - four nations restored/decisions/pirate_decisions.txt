@@ -6,28 +6,40 @@ decisions = {
 		is_high_prio = yes
 		only_independent = yes
 		potential = {
-			NOT = { has_global_flag = fifth_nation_restored }
 			OR = {
 				government = lawless_piracy
 				government = pirate_cartel
 			}
+			e_fifth_nation = {
+				has_holder = no
+			}
+			NOT = { has_global_flag = fifth_nation_restored }
 		}
 		
 		allow = {
 			primary_title = {
 				tier = KING
 			}
-			is_in_society = the_black_market
-			has_law = slavery_legal
-			society_rank = {
-				society = the_black_market
-				rank == 4
+			hidden_tooltip = {
+				is_in_society = the_black_market
 			}
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					has_law = slavery_legal
+				}
+			}
+			custom_tooltip = {
+				text = needs_max_black_market_rank
+				hidden_tooltip = {
+					society_rank = {
+						society = the_black_market
+						rank == 4
+					}
+				}
+			}
+
 			religion_authority = 0.6
-			# OR = {
-				# has_character_flag = sung_pirate_shanty
-				# ai = yes
-			# }
 			piety = 4000
 		}
 		
@@ -41,10 +53,19 @@ decisions = {
 				temporary = no
 				name = e_fifth_nation
 				holder = ROOT
-				base_title = THIS
+				base_title = e_fifth_nation
 				copy_title_laws = yes
 				ruler = e_fifth_nation_ruler
 				ruler_female = e_fifth_nation_ruler_female
+
+			}
+			new_title = {
+				set_coa = e_fifth_nation
+				color = { 170 0 0 }
+				color2 = { 255 255 20 }
+			}
+			religion_authority = {
+				modifier = fifth_nation_restored_MA
 			}
 		}
 		
@@ -324,10 +345,11 @@ decisions = {
 					narrative_event = { id = PRT.20280 }
 				}
 			}
+			religion_authority = {
+				modifier = black_market_established
+			}
 		}
-		religion_authority = {
-			modifier = black_market_established
-		}
+
 		ai_will_do = {
 			factor = 1000
 		}

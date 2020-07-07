@@ -17,3 +17,119 @@ decisions = {
         }
     }
 }
+
+targetted_decisions = {
+	house_customiser_target = {	
+		ai_target_filter = none
+		filter = all
+		ai = no
+		diplomacy_icon = GFX_make_noble
+		
+		from_potential = {
+			ai = no
+			is_ruler = yes
+			trait = house_customizer
+		}
+		potential = {
+			NOT = { dynasty = FROM }
+			NOT = { dynasty = 0 }
+			NOT = { trait = dragon }
+		}
+		allow = {
+			FROM = { NOT = { is_nomadic = yes } }
+			OR = {
+				FROM = { is_patrician = no }
+				NOR = {
+					is_patrician = yes
+					any_dynasty_member = { is_patrician = yes is_alive = yes }
+				}
+			}
+			# OR = {
+				# FROM = { is_nomadic = no }
+				# NOR = {
+					# is_nomadic = yes
+					# any_dynasty_member = { is_nomadic = yes is_alive = yes }
+				# }
+			# }
+			# OR = {
+				# AND = {
+					# is_older_than = FROM
+					# age_diff = { who = FROM years = 13 }
+					# OR = {
+						# is_female = no
+						# is_married_matrilineally = yes
+					# }
+					# OR = {
+						# is_female = yes
+						# is_married_matrilineally = no
+						# is_married = no
+					# }
+				# }
+				# father_even_if_dead = {
+					# OR = {
+						# AND = {
+							# FROM = { NOT = { age_diff = { who = ROOT years = 20 } } }
+							# dynasty = PREV
+							# is_older_than = FROM
+						# }	
+						# father_even_if_dead = {
+							# OR = {
+								# AND = {
+									# FROM = { age_diff = { who = ROOT years = 15 } }
+									# dynasty = PREV
+									# is_older_than = FROM
+								# }	
+								# father_even_if_dead = {
+									# FROM = { age_diff = { who = ROOT years = 30 } }
+									# dynasty = PREV
+									# is_older_than = FROM
+								# }
+							# }	
+						# }
+						# mother_even_if_dead = {
+							# FROM = { age_diff = { who = ROOT years = 15 } }
+							# dynasty = PREV
+							# is_older_than = FROM
+						# }
+					# }	
+				# }
+				# mother_even_if_dead = {
+					# OR = {
+						# AND = {
+							# FROM = { NOT = { age_diff = { who = ROOT years = 20 } } }
+							# dynasty = PREV
+							# is_older_than = FROM
+						# }	
+						# father_even_if_dead = {
+							# FROM = { age_diff = { who = ROOT years = 15 } }
+							# dynasty = PREV
+							# is_older_than = FROM
+						# }
+						# mother_even_if_dead = {
+							# FROM = { age_diff = { who = ROOT years = 15 } }
+							# dynasty = PREV
+							# is_older_than = FROM
+						# }
+					# }	
+				# }
+			# }
+		}
+		effect = {
+			FROM = {
+				dynasty = ROOT
+				any_child = { dynasty = ROOT }
+				character_event = { id = customizer_houses.3 tooltip = TOOLTIPcustomizer_houses.3 }
+				hidden_tooltip = { remove_trait = house_customizer }
+				recalc_succession = yes
+				chronicle = {
+					entry = CHRONICLE_HOUSE_CUSTOMISER
+					portrait = [This.GetID]
+				}	
+			}	
+			recalc_succession = yes			
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
