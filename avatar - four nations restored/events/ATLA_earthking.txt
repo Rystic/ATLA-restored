@@ -46,7 +46,7 @@ character_event = {
 			subtract_variable = { which = global_royalAuthority value = 30 }
 		}
 		
-		if = { # Calculate Royal Court Power (aka RA)
+		if = { # Calculate Royal Court Power
 			limit = {
 				has_global_flag = earthking_in_power
 			}
@@ -544,17 +544,61 @@ character_event = { # Royal Authority System - Check Authority
 				set_dynasty_flag = warned_of_puppet_authority_cap
 			}
 		}
-		if = { # Authority Cap +
+		if = { # Earth Kingdom Overextension - Remove
 			limit = {
-				check_variable = { which = global_royalAuthority value = 101 }
+				NOT = { check_variable = { which = global_royalAuthority value = 125 } }
+				has_dynasty_flag = royal_authority_overextension
 			}
-			set_variable = { which = global_royalAuthority value = 100 }
+			character_event = { id = earthking.51 }
+			clr_dynasty_flag = royal_authority_overextension
 		}
-		if = { # Authority Cap -
+		if = { # Earth Kingdom Overextension
 			limit = {
-				check_variable = { which = global_royalAuthority value = -101 }
+				check_variable = { which = global_royalAuthority value = 150 }
+				NOT = { has_dynasty_flag = royal_authority_overextension }
 			}
-			set_variable = { which = global_royalAuthority value = -100 }
+			character_event = { id = earthking.45 }
+			set_dynasty_flag = royal_authority_overextension
+		}
+		if = { # Royal Army Decay - Remove
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 155 } }
+				has_dynasty_flag = royal_authority_army_decay
+			}
+			character_event = { id = earthking.41 }
+			clr_dynasty_flag = royal_authority_army_decay
+		}
+		if = { # Royal Army Decay
+			limit = {
+				check_variable = { which = global_royalAuthority value = 165 }
+				NOT = { has_dynasty_flag = royal_authority_army_decay }
+			}
+			character_event = { id = earthking.15 }
+			set_dynasty_flag = royal_authority_army_decay
+		}
+		if = { # Tyranny - Remove
+			limit = {
+				NOT = { check_variable = { which = global_royalAuthority value = 170 } }
+				has_dynasty_flag = royal_authority_tyranny
+			}
+			add_character_modifier = { name = ek_opinion_boost duration = -1 }
+			character_event = { id = earthking.53 }
+			set_dynasty_flag = royal_authority_tyranny
+		}
+		if = { # Tyranny
+			limit = {
+				check_variable = { which = global_royalAuthority value = 180 }
+				NOT = { has_dynasty_flag = royal_authority_tyranny }
+			}
+			remove_character_modifier = ek_opinion_boost
+			character_event = { id = earthking.52 }
+			set_dynasty_flag = royal_authority_tyranny
+		}
+		if = { # Authority Cap
+			limit = {
+				check_variable = { which = global_royalAuthority value = 201 }
+			}
+			set_variable = { which = global_royalAuthority value = 200 }
 		}
 	}
 }
@@ -2070,6 +2114,58 @@ character_event = {
 	}
 }
 
+# Earth Kingdom Overextension - Remove
+character_event = {
+	id = earthking.51
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.51
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_51
+		custom_tooltip = {
+			text = EVTOPTC_EK_51_TOOLTIP
+		}
+		add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
+		remove_character_modifier = supporting_the_earth_kingdom_overextended
+	}
+}
+
+# Earth Kingdom Tyranny
+character_event = {
+	id = earthking.52
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.52
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_52
+		custom_tooltip = {
+			text = EVTOPTC_EK_52_TOOLTIP
+		}
+		add_character_modifier = { name = ek_tyranny duration = -1 }
+	}
+}
+
+# Earth Kingdom Tyranny - Remove
+character_event = {
+	id = earthking.53
+	picture = GFX_evt_ba_sing_sa
+	border = GFX_event_normal_frame_diplomacy
+	desc = EVTDESCEK.53
+	is_triggered_only = yes
+		
+	option = {
+		name = EVTOPTA_EK_53
+		custom_tooltip = {
+			text = EVTOPTC_EK_53_TOOLTIP
+		}
+		remove_character_modifier = ek_tyranny
+	}
+}
+
 # Earth Kingdom - Royal Authority - Five Yearly Checkup
 character_event = {
 	id = earthking.56
@@ -2106,107 +2202,9 @@ character_event = {
 	immediate = {
 		set_variable = { which = old_authority which = global_royalAuthority }
 		set_variable = { which = global_num_of_ek_tributaries value = 0 }
-		set_variable = { which = laws_ra_gain value = 0 }
-		set_variable = { which = bloodline_ra_gain = 0 }
 		ROOT = {
 			any_tributary = {
 				change_variable = { which = global_num_of_ek_tributaries value = 1 }
-			}
-			if = {
-				limit = {
-					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_houting
-					}
-				}
-				set_variable = { which = bloodline_ra_gain value = 1 }
-			}
-		}
-		e_earth_kingdom = {
-			holder_scope = {
-				if = {
-					limit = {
-						has_law = ze_admin_anarchy
-					}
-					change_variable = { which = laws_ra_gain value = -3 }
-				}
-				if = {
-					limit = {
-						has_law = ze_admin_territories
-					}
-					change_variable = { which = laws_ra_gain value = -1 }
-				}
-				if = {
-					limit = {
-						has_law = ze_admin_province
-					}
-					change_variable = { which = laws_ra_gain value = -0.5 }
-				}
-				if = {
-					limit = {
-						has_law = ze_admin_slight_central
-					}
-					change_variable = { which = laws_ra_gain value = 1 }
-				}
-				if = {
-					limit = {
-						has_law = ze_admin_central
-					}
-					change_variable = { which = laws_ra_gain value = 2 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_outposts
-					}
-					change_variable = { which = laws_ra_gain value = 1 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_1
-					}
-					change_variable = { which = laws_ra_gain value = 1.5 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_2
-					}
-					change_variable = { which = laws_ra_gain value = 2 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_3
-					}
-					change_variable = { which = laws_ra_gain value = 2.5 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_1
-					}
-					change_variable = { which = laws_ra_gain value = -3 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_2
-					}
-					change_variable = { which = laws_ra_gain value = -2 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_3
-					}
-					change_variable = { which = laws_ra_gain value = -1 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_5
-					}
-					change_variable = { which = laws_ra_gain value = 1 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_6
-					}
-					change_variable = { which = laws_ra_gain value = 1.5 }
-				}				
 			}
 		}
 		divide_variable = { which = global_num_of_ek_tributaries value = 20 }
@@ -2214,8 +2212,6 @@ character_event = {
 		divide_variable = { which = num_of_ek_realm value = 25 }
 		change_variable = { which = global_royalAuthority which = global_num_of_ek_tributaries }
 		change_variable = { which = global_royalAuthority which = num_of_ek_realm }
-		change_variable = { which = global_royalAuthority which = bloodline_ra_gain }
-		change_variable = { which = global_royalAuthority which = laws_ra_gain }		
 		if = { # Authority Cap - Regency
 			limit = {
 				has_regent = yes
@@ -2225,7 +2221,7 @@ character_event = {
 		}
 		if = { # Authority Cap
 			limit = {
-				check_variable = { which = global_royalAuthority value = 100}
+				check_variable = { which = global_royalAuthority value = 100 }
 			}
 			set_variable = { which = global_royalAuthority value = 100 }
 		}
@@ -2235,40 +2231,9 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_EK_56
-			#if = {
-				#limit = {
-				#	check_variable = { which = laws_ra_gain value => 0 }
-				#	check_variable = { which = global_num_of_ek_tributaries value => 0 }
-				#	}
-				custom_tooltip = {
-					text = RA_GAIN_FIVE_YEAR
-				}
-			#}
-			#if = {
-			#	limit = {
-			#		check_variable = { which = laws_ra_gain value < 0 }
-			#		}
-			#	custom_tooltip = {
-			#		text = RA_GAIN_FIVE_YEAR_MIN_LAW
-			#	}
-			#}
-			#if = {
-			#	limit = {
-			#		check_variable = { which = global_num_of_ek_tributaries value < 0 }
-			#		}
-			#	custom_tooltip = {
-			#		text = RA_GAIN_FIVE_YEAR_MIN_TRIB
-			#	}
-			#}
-			#if = {
-			#	limit = {
-			#		check_variable = { which = laws_ra_gain value < 0 }
-			#		check_variable = { which = global_num_of_ek_tributaries value < 0 }
-			#		}
-			#	custom_tooltip = {
-			#		text = RA_GAIN_FIVE_YEAR_MIN_LAW_TRIB
-			#	}
-			#}
+		custom_tooltip = {
+			text = RA_GAIN_FIVE_YEAR
+		}
 	}
 }
 
@@ -2398,31 +2363,11 @@ character_event = { # Law Change - Event Server
 		if = {
 			limit = {
 				e_earth_kingdom = {
-					has_law = ek_unity_outposts
-					NOT = { has_title_flag = ek_ra_set_unity_outposts }
-				}
-			}
-			e_earth_kingdom = {
-				set_title_flag = ek_ra_set_unity_outposts
-				clr_title_flag = ek_ra_set_unity_0
-				clr_title_flag = ek_ra_set_unity_1
-				clr_title_flag = ek_ra_set_unity_2
-				clr_title_flag = ek_ra_set_unity_3
-				holder_scope = {
-					narrative_event = { id = earthking.65 }
-					break = yes
-				}
-			}
-		}
-		if = {
-			limit = {
-				e_earth_kingdom = {
 					has_law = ek_unity_1
 					NOT = { has_title_flag = ek_ra_set_unity_1 }
 				}
 			}
 			e_earth_kingdom = {
-				clr_title_flag = ek_ra_set_unity_outposts
 				set_title_flag = ek_ra_set_unity_1
 				clr_title_flag = ek_ra_set_unity_0
 				clr_title_flag = ek_ra_set_unity_2
@@ -2441,7 +2386,6 @@ character_event = { # Law Change - Event Server
 				}
 			}
 			e_earth_kingdom = {
-				clr_title_flag = ek_ra_set_unity_outposts
 				set_title_flag = ek_ra_set_unity_2
 				clr_title_flag = ek_ra_set_unity_0
 				clr_title_flag = ek_ra_set_unity_1
@@ -2460,7 +2404,6 @@ character_event = { # Law Change - Event Server
 				}
 			}
 			e_earth_kingdom = {
-				clr_title_flag = ek_ra_set_unity_outposts
 				set_title_flag = ek_ra_set_unity_3
 				clr_title_flag = ek_ra_set_unity_0
 				clr_title_flag = ek_ra_set_unity_1
@@ -2787,7 +2730,6 @@ narrative_event = { # Monarch Law
 		}
 	}
 	
-	
 	option = {
 		name = EVTOPTC_EK_64
 		trigger = {
@@ -2796,133 +2738,3 @@ narrative_event = { # Monarch Law
 		}
 	}
 }
-
-narrative_event = { # Outposts Law
-	id = earthking.65
-	picture = GFX_evt_ba_sing_sa
-	title = EVTNAMEEK.64
-	desc = EVTDESCEK.64
-	border = GFX_event_narrative_frame_war
-	is_triggered_only = yes
-	major = yes
-	
-	immediate = {
-		if = {
-			limit = { has_landed_title = e_earth_kingdom }
-			subtract_variable = { which = global_royalAuthority value = 30 }
-			any_independent_ruler = {
-				limit = {
-					OR = {
-						culture_group = earth_kingdom_culture
-						pays_tribute_to = e_earth_kingdom
-					}
-				}
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					NOR = { 
-						culture = sandbender
-						culture = southern_earth	
-					}
-					mercenary = no
-					holy_order = no
-					temporary = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOT = { religion = way_of_chin }
-					capital_scope = {
-							OR = {
-								region = world_north_west_kingdom
-								region = world_north_east_earth_kingdom
-								region = world_eastern_coast
-							}
-							
-					}
-				}
-				FROM = {
-					make_tributary = {						
-						who = PREV
-							percentage = 0.10
-							tributary_type = earth_kingdom_outpost_tributary
-						}
-					}
-				}
-			}
-		}
-	}
-	
-		option = {
-		name = EVTOPTA_EK_62
-		trigger = {
-			has_landed_title = e_earth_kingdom
-		}
-		custom_tooltip = {
-			text = EVTOPTC_EK_62_TOOLTIP
-		}
-	}
-	
-	option = {
-		name = EVTOPTB_EK_62
-		trigger = {
-			pays_tribute_to = e_earth_kingdom
-		}
-		custom_tooltip = {
-			text = EVTOPTC_EK_62B_TOOLTIP
-		}
-	}
-	
-	option = {
-		name = EVTOPTC_EK_62
-		trigger = {
-			NOT = { pays_tribute_to = e_earth_kingdom }
-			NOT = { has_landed_title = e_earth_kingdom }
-		}
-	}
-}
-
-narrative_event = {
-	id = earthking.66
-	picture = GFX_evt_ba_sing_sa
-	title = EVTNAMEEK.64
-	desc = EVTDESCEK.64
-	border = GFX_event_narrative_frame_war
-	is_triggered_only = yes
-	major = yes
-	
-	immediate = {
-		ROOT = {
-			any_tributary = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					#de_jure_liege = e_earth_kingdom
-				}
-			set_defacto_liege = e_earth_kingdom
-			}
-		}
-	}
-	
-	option = {
-		name = EVTOPTC_EK_66a
-		trigger = {
-			culture_group = earth_kingdom_culture
-			NOT = { has_landed_title = e_earth_kingdom }
-		}	
-	}
-	option = {
-		name = EVTOPTC_EK_66b
-		trigger = {
-			culture_group = earth_kingdom_culture
-			has_landed_title = e_earth_kingdom
-		}
-	}
-	option = {
-		name = EVTOPTC_EK_66c
-		trigger = {
-			NOT = { culture_group = earth_kingdom_culture }
-			NOT = { has_landed_title = e_earth_kingdom }
-		}		
-	}
-}
-	
-
-	

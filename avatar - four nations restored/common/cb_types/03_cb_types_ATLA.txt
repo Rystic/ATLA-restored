@@ -398,10 +398,6 @@ cb_pirate_tributary = {
 		}
 	}
 
-	# on_add = {
-		# hidden_tooltip = { fire_haruspicy_event_effect = yes }
-	# }
-
 	on_success_title = { #winning the war
 
 		if = {
@@ -524,7 +520,7 @@ cb_pirate_tributary = {
 			ROOT = {
 				show_scope_change = no
 				religion_authority = {
-					modifier = lost_county_conquest
+					modifier = failed_plundered_a_county
 				}
 			}
 		}
@@ -634,7 +630,7 @@ cb_pirate_tributary = {
 cb_slave_colony = {
 	name = CB_SLAVE_COLONY
 	war_name = SLAVE_COLONY
-	sprite = 12
+	sprite = 25
 	truce_days = 1825
 	hostile_against_others = yes
 	is_permanent = yes
@@ -647,9 +643,10 @@ cb_slave_colony = {
 	sort_priority = 3000
 	
 	can_use = {
+		has_global_flag = fifth_nation_restored
 		ROOT = {
 			mercenary = no
-			tier = DUKE
+			higher_tier_than = DUKE
 		}
 		OR = {
 			AND = {
@@ -664,34 +661,12 @@ cb_slave_colony = {
 	}
 
 	can_use_title = {
-		tier = count
-		OR = {
-			FROM = {
-				has_landed_title = PREV
-			}
-			holder_scope = {
-				is_liege_or_above = FROM
-				NOT = { same_realm = ROOT }
-			}
-		}
-
-		NOT = {
-			OR = {
-				ROOT = {
-					has_landed_title = PREV
-				}
-				holder_scope = {
-					is_liege_or_above = ROOT
-				}
-			}
-		}
+		tier = duke
 		
 		AND = {
 			ROOT = { has_law = slavery_legal }
 			ROOT = { government = pirate_cartel }
-			location = {
-				port = yes
-			}
+			ROOT = { higher_tier_than = DUKE }
 		}
 	}
 
@@ -778,6 +753,7 @@ cb_slave_colony = {
 
 				make_tributary = { who = event_target:new_ruler tributary_type = slave_colony_tributary }
 				event_target:new_ruler = { set_defacto_liege = event_target:new_ruler }
+				event_target:new_ruler = { set_government_type = pirate_cartel }
 			}
 
 			
@@ -841,7 +817,7 @@ cb_slave_colony = {
 			ROOT = {
 				show_scope_change = no
 				religion_authority = {
-					modifier = lost_county_conquest
+					modifier = failed_established_slave_colony
 				}
 			}
 		}
@@ -2400,20 +2376,21 @@ earth_kingdom_reconquest = {
 				text = EARTHKINGDOM_AUTHORITY_SPEND_CB
 			}
 			hidden_tooltip = {
-				check_variable = { which = global_royalAuthority value = 15 }
+				check_variable = { which = global_royalAuthority value = 75 }
 			}
 		}
 	}
 	can_use = {
 		ROOT = { #Only will show up when you have 75 RA
 			OR = {
-				has_law = ek_unity_outposts
 				has_law = ek_unity_1
+				has_law = ek_unity_2
+				has_law = ek_unity_3
 				NOT = { has_global_flag = whispers_of_rebellion_early }
 			}
 			NOT = { same_realm = FROM }
 			has_landed_title = e_earth_kingdom
-			check_variable = { which = global_royalAuthority value = 15 }
+			check_variable = { which = global_royalAuthority value = 75 }
 		}
 		FROM = {
 			religion_group = earth_religions
@@ -2458,18 +2435,7 @@ earth_kingdom_reconquest = {
 			text = EARTHKINGDOM_AUTHORITY_COST_CB
 		}
 		hidden_tooltip = {
-			if = {
-				e_earth_kingdom = {
-					has_law = ek_unity_outposts
-				}
-				ROOT = { subtract_variable = { which = global_royalAuthority value = 15 } }
-			}
-			if = {
-				e_earth_kingdom = {
-					has_law = ek_unity_1
-				}
-				ROOT = { subtract_variable = { which = global_royalAuthority value = 25 } }
-			}
+		ROOT = { subtract_variable = { which = global_royalAuthority value = 25 } }
 		}
 	}
 
@@ -2567,8 +2533,8 @@ earth_kingdom_reconquest_disunion = {
 					text = EARTHKINGDOM_RECONQUEST_FREE_USE_LAW
 					hidden_tooltip = {
 						has_law = ek_unity_0
-						}
 					}
+				}
 				custom_tooltip = {
 					text = EARTHKINGDOM_RECONQUEST_FREE_USE
 					hidden_tooltip = {
@@ -2596,144 +2562,6 @@ earth_kingdom_reconquest_disunion = {
 
 	can_use_title = {
 		de_jure_liege_or_above = e_earth_kingdom
-		any_direct_de_jure_vassal_title = {
-			any_direct_de_jure_vassal_title = {
-				OR = {
-					holder_scope = {
-						OR = {
-							character = ROOT
-							is_liege_or_above = ROOT
-						}
-					}
-					location = {
-						any_neighbor_province = {
-							owner = {
-								OR = {
-									character = ROOT
-									is_liege_or_above = ROOT
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	is_valid = {
-		ROOT = {
-			NOT = { same_realm = FROM }
-		}
-	}
-
-	on_success = {
-		any_attacker = {
-			limit = { character = ROOT }
-			participation_scaled_piety = 100
-			participation_scaled_prestige = 50
-		}
-		any_attacker = {
-			limit = { NOT = { character = ROOT } }
-			hidden_tooltip = {
-				participation_scaled_piety = 100
-				participation_scaled_prestige = 50
-			}
-		}
-		FROM = { piety = -100 }
-		FROM = { prestige = -50 }
-	}
-
-	on_success_title = {
-		hidden_tooltip = {
-			ROOT = {
-				vassalize_or_take_under_title = { title = PREV enemy = FROM }
-			}
-		}
-	}
-
-	on_fail = {
-		ROOT = { piety = -50 }
-		ROOT = { prestige = -100 }
-	}
-
-	on_reverse_demand = {
-		ROOT = {
-			transfer_scaled_wealth = {
-				to = FROM
-				value = 4.0
-			}
-		}
-		any_defender = {
-			limit = { character = FROM }
-			participation_scaled_piety = 200
-			participation_scaled_prestige = 100
-		}
-		any_defender = {
-			limit = { NOT = { character = FROM } }
-			hidden_tooltip = {
-				participation_scaled_piety = 200
-				participation_scaled_prestige = 100
-			}
-		}
-	}
-
-	attacker_ai_victory_worth = {
-		factor = -1 # always accept
-	}
-
-	attacker_ai_defeat_worth = {
-		factor = 100
-	}
-
-	defender_ai_victory_worth = {
-		factor = -1 # always accept
-	}
-
-	defender_ai_defeat_worth = {
-		factor = 100
-	}
-
-	ai_will_do = {
-		factor = 1
-		modifier = {
-			factor = 2
-			has_global_flag = whispers_of_rebellion_early
-		}
-		modifier = {
-			factor = 0.1
-			NOT = { has_global_flag = whispers_of_rebellion_early }
-			NOT = { check_variable = { which = global_royalAuthority value = 100 } }
-		}
-	}
-}
-
-earth_empire_reconquest = {
-	name = CB_EARTH_E_RECONQUEST_DISUNION
-	war_name = WAR_NAME_EARTH_RECONQUEST_E
-	sprite = 8
-	truce_days = 360
-	is_permanent = yes
-	check_de_jure_tier = KING
-	allow_distant = yes
-
-	can_use_gui = {
-		ROOT = { #yes i neeeded to do that to both of CB so they wont show up to random lords
-			has_landed_title = e_earth_empire
-		}
-	}
-
-	can_use = {
-		ROOT = {
-			has_landed_title = e_earth_empire
-		}
-		FROM = {
-			religion_group = earth_religions
-			independent = yes
-		}
-	}
-
-	can_use_title = {
-		de_jure_liege_or_above = e_earth_empire
 		any_direct_de_jure_vassal_title = {
 			any_direct_de_jure_vassal_title = {
 				OR = {
