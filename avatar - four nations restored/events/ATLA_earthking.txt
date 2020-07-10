@@ -2107,21 +2107,81 @@ character_event = {
 		set_variable = { which = old_authority which = global_royalAuthority }
 		set_variable = { which = global_num_of_ek_tributaries value = 0 }
 		set_variable = { which = laws_ra_gain value = 0 }
-		set_variable = { which = bloodline_ra_gain = 0 }
+		set_variable = { which = bloodline_ra_gain value = 0 }
+		set_variable = { which = traits_ra_gain value = 0 }
+		set_variable = { which = religion_ra_gain value = 0 }
 		ROOT = {
-			any_tributary = {
+			any_tributary = { # Tributaries gain
 				change_variable = { which = global_num_of_ek_tributaries value = 1 }
 			}
-			if = {
+			if = { # Bloodline Gain 
 				limit = {
 					any_owned_bloodline = {
 						has_bloodline_flag = bloodline_houting
 					}
 				}
-				set_variable = { which = bloodline_ra_gain value = 1 }
+				change_variable = { which = bloodline_ra_gain value = 1 }
+			}
+			if = { 
+				limit = {
+					any_owned_bloodline = {
+						has_bloodline_flag = bloodline_hao
+					}
+				}
+				change_variable = { which = bloodline_ra_gain value = 1 }
+			}
+			if = { 
+				limit = {
+					any_owned_bloodline = {
+						has_bloodline_flag = bloodline_ting
+					}
+				}
+				change_variable = { which = bloodline_ra_gain value = 1 }
+			}
+			if = {
+				limit = {
+					has_positive_ra_gain_trait_0.5 = yes
+				}
+				change_variable = { which = traits_ra_gain value = 0.5 }
+			}
+			if = {
+				limit = {
+					has_positive_ra_gain_trait_1 = yes
+				}
+				change_variable = { which = traits_ra_gain value = 1 }
+			}
+			if = {
+				limit = {
+					has_positive_ra_gain_trait_1.5 = yes
+				}
+				change_variable = { which = traits_ra_gain value = 1.5 }
+			}
+			if = {
+				limit = {
+					has_positive_ra_gain_trait_2 = yes
+				}
+				change_variable = { which = traits_ra_gain value = 2 }
+			}
+			if = {
+				limit = {
+					has_negative_ra_gain_trait_0.5 = yes
+				}
+				change_variable = { which = traits_ra_gain value = -0.5 }
+			}
+			if = {
+				limit = {
+					has_negative_ra_gain_trait_1 = yes
+				}
+				change_variable = { which = traits_ra_gain value = -1 }
+			}
+			if = {
+				limit = {
+					has_negative_ra_gain_trait_2 = yes
+				}
+				change_variable = { which = traits_ra_gain value = -2 }
 			}
 		}
-		e_earth_kingdom = {
+		e_earth_kingdom = { # Laws gain
 			holder_scope = {
 				if = {
 					limit = {
@@ -2212,10 +2272,13 @@ character_event = {
 		divide_variable = { which = global_num_of_ek_tributaries value = 20 }
 		export_to_variable = { which = num_of_ek_realm value = num_of_vassals }
 		divide_variable = { which = num_of_ek_realm value = 25 }
+		#divide_variable = { which = religion_ra_gain value = 10 }
 		change_variable = { which = global_royalAuthority which = global_num_of_ek_tributaries }
 		change_variable = { which = global_royalAuthority which = num_of_ek_realm }
 		change_variable = { which = global_royalAuthority which = bloodline_ra_gain }
-		change_variable = { which = global_royalAuthority which = laws_ra_gain }		
+		change_variable = { which = global_royalAuthority which = laws_ra_gain }
+		change_variable = { which = global_royalAuthority which = traits_ra_gain }	
+		change_variable = { which = global_royalAuthority which = religion_ra_gain }			
 		if = { # Authority Cap - Regency
 			limit = {
 				has_regent = yes
