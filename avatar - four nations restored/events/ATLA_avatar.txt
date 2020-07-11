@@ -3,9 +3,9 @@ namespace = avatar
 character_event = { #water
 	id = avatar.167
 	is_triggered_only = yes
-	
+
 	option = {
-		name = EVTDESCAavatar.165 
+		name = EVTDESCAavatar.165
 		trigger = {
 			any_independent_ruler = {
 				trait = waterbender
@@ -151,7 +151,7 @@ character_event = { #water
 character_event = { #earth
 	id = avatar.168
 	is_triggered_only = yes
-	
+
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -243,7 +243,7 @@ character_event = { #earth
 	option = {
 		name = EVTDESCCavatar.165
 		trigger = {
-			NAND = { 
+			NAND = {
 				any_independent_ruler = {
 					trait = earthbender
 					is_adult = yes
@@ -255,7 +255,7 @@ character_event = { #earth
 					}
 				}
 			}
-			NAND = { 
+			NAND = {
 				any_independent_ruler = {
 					any_realm_character = {
 						trait = earthbender
@@ -301,11 +301,11 @@ character_event = { #Avatar packs up and leaves
 	desc = EVTDESCbending.151
 	is_triggered_only = yes
 	picture = "GFX_evt_family_scene"
-	
+
 	immediate = {
 		set_character_flag = avatar_journey
 	}
-	
+
 	option = {
 		name = EVTOPTAbending.151
 		hidden_tooltip = { #goes to find master next in cycle
@@ -372,7 +372,7 @@ character_event = { # Master is asked to take avatar under his wing
 		}
 		text = EVTDESCbendingD.152
 	}
-	
+
 	option = { #I will teach
 		name = EVTOPTAbending.152
 		ai_chance = {
@@ -424,7 +424,7 @@ character_event = { #liege is informed of the avatars arrival
 	desc = EVTDESCbending.153
 	is_triggered_only = yes
 	picture = "GFX_evt_family_scene"
-	
+
 	option = { #avatar is banished
 		name = EVTOPTAbending.153
 		ai_chance = { factor = 1}
@@ -460,7 +460,7 @@ character_event = { #avatar is banished
 	desc = EVTDESCbending.154
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = { #the search for a new master begins
 		hidden_tooltip = {
 			if = {
@@ -480,7 +480,7 @@ character_event = { # Avatar Training
 	desc = EVTDESCbending.155
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 		random_list = {
 			15 = { # Good Progress
@@ -515,7 +515,7 @@ character_event = { # Avatar Training
 			}
 		}
 	}
-	
+
 }
 
 character_event = { #avatar training - progress
@@ -523,7 +523,7 @@ character_event = { #avatar training - progress
 	desc = EVTDESCbending.156
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 		hidden_tooltip = {
 			random_list = {
@@ -701,7 +701,7 @@ character_event = { #avatar training - regress
 	desc = EVTDESCbending.157
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 		hidden_tooltip = {
 			random_list = {
@@ -879,7 +879,7 @@ character_event = { #avatar training - complete
 	desc = EVTDESCbending.158
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	immediate = {
 		clear_event_target = avatar_master
 	}
@@ -971,7 +971,7 @@ character_event = { #next master is searched for - fires for avatar
 	desc = EVTDESCbending.159
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = { #search in the earth kingdoms
 		trigger = {
 			OR = {
@@ -1007,7 +1007,7 @@ character_event = { #next master is searched for - fires for avatar
 			}
 		}
 		character_event = { id = avatar.166} #air
-		
+
 	}
 	option = {
 		trigger = { #search in water tribes
@@ -1052,7 +1052,7 @@ character_event = { #all training is completed
 	desc = EVTDESCbending.160
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 		hidden_tooltip = {
 			if = {
@@ -1085,7 +1085,7 @@ character_event = {
 	desc = EVTDESCbending.161
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 		name = EVTOPTbending.161
 	}
@@ -1097,7 +1097,7 @@ character_event = { #fire
 	desc = EVTDESCbending.165
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -1247,7 +1247,7 @@ character_event = { #air
 	desc = EVTDESCbending.165
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	option = {
 	name = EVTDESCAavatar.165
 		trigger = {
@@ -1409,20 +1409,27 @@ character_event = { #avatar gains animal guide
 	desc = EVTDESCavatar.167
 	is_triggered_only = yes
 	picture = GFX_evt_family
-	
+
 	trigger = {
 		NOT = { has_character_flag = avatar_guide }
 	}
-	
+
 	option = { #Avatar finds Animal Guide (TO BE EXPANDED)
 		name = EVTDESCBavatar.168
 		hidden_tooltip = {
 			set_character_flag = avatar_guide
 			if = {
-				limit = { culture_group = fire_nation_culture }
+				limit = {
+					culture_group = fire_nation_culture
+					NOT = {
+						any_artifact = {
+							has_artifact_flag = pet
+						}
+					}
+				}
 				random_list = {
 					5 = {
-						add_trait = dragon
+						add_artifact = petDragon
 						modifier = {
 							factor = 100
 							has_character_flag = is_roku
@@ -1449,7 +1456,7 @@ character_event = { #avatar gains animal guide
 						}
 					}
 					5 = {
-						add_trait = fireferret
+						add_artifact = petFireFerret
 						modifier = {
 							factor = 3
 							trait = kind
@@ -1464,7 +1471,7 @@ character_event = { #avatar gains animal guide
 						}
 					}
 					5 = {
-						add_trait = eelhound 
+						add_artifact = petEelHound
 						modifier = {
 							factor = 3
 							trait = proud
@@ -1476,10 +1483,10 @@ character_event = { #avatar gains animal guide
 						modifier = {
 							factor = 3
 							trait = cruel
-						} 
+						}
 					}
 					5 = {
-						add_trait = cat 
+						add_artifact = petCat
 						modifier = {
 							factor = 3
 							trait = content
@@ -1492,17 +1499,24 @@ character_event = { #avatar gains animal guide
 				}
 			}
 			if = {
-				limit = { culture_group = air_nomad_culture }
+				limit = {
+					culture_group = air_nomad_culture
+					NOT = {
+						any_artifact = {
+							has_artifact_flag = pet
+						}
+					}
+				}
 				random_list = {
 				10 = {
-					add_trait = skybison
+					add_artifact = petSkybison
 					modifier = {
 						factor = 2
 						trait = patient
 					}
 				}
 				5 = {
-					add_trait = wingedlemur
+					add_artifact = petWingedLemur
 					modifier = {
 						factor = 3
 						trait = kind
@@ -1511,24 +1525,31 @@ character_event = { #avatar gains animal guide
 				}
 			}
 			if = {
-				limit = { culture_group = water_tribe_culture }
+				limit = {
+					culture_group = water_tribe_culture
+					NOT = {
+						any_artifact = {
+							has_artifact_flag = pet
+						}
+					}
+				}
 				random_list = {
 				10 = {
-					add_trait = arcticcamel
+					add_artifact = petArcticCamel
 					modifier = {
 						factor = 2
 						trait = humble
 					}
 				}
 				10 = {
-					add_trait = buffaloyak
+					add_artifact = petBuffaloYak
 					modifier = {
 						factor = 2
 						trait = content
 					}
 				}
 				1 = {
-					add_trait = polarbeardog
+					add_artifact = petPolarBearDog
 					modifier = {
 						factor = 2
 						trait = proud
@@ -1537,24 +1558,31 @@ character_event = { #avatar gains animal guide
 				}
 			}
 			if = {
-				limit = { culture_group = earth_kingdom_culture }
+				limit = {
+					culture_group = earth_kingdom_culture
+					NOT = {
+						any_artifact = {
+							has_artifact_flag = pet
+						}
+					}
+				}
 				random_list = {
 				5 = {
-					add_trait = ostrichhorse
+					add_artifact = petOstrichHorse
 					modifier = {
 						factor = 2
 						trait = patient
 					}
 				}
 				5 = {
-					add_trait = rhinocerosbeetle
+					add_artifact = petGiantRhinocerosBeetle
 					modifier = {
 						factor = 2
 						trait = sandbender
 					}
 				}
 				5 = {
-					add_trait = eelhound 
+					add_artifact = petGiantRhinocerosBeetle
 					modifier = {
 						factor = 2
 						trait = proud
@@ -1566,24 +1594,24 @@ character_event = { #avatar gains animal guide
 					modifier = {
 						factor = 2
 						trait = cruel
-					} 
+					}
 				}
 				1 = {
-					add_trait = goatgorilla
+					add_artifact = petGoatGorilla
 					modifier = {
 						factor = 2
 						trait = genius
 					}
 				}
 				5 = {
-					add_trait = dog
+					add_artifact = petDog
 					modifier = {
 						factor = 2
 						trait = humble
 					}
 				}
 				5 = {
-					add_trait = cat
+					add_artifact = petCat
 					modifier = {
 						factor = 2
 						trait = temperate
@@ -1623,7 +1651,7 @@ character_event = { # AVATAR TRAINING: Good Progress
 		}
 		text = EVTDESCavatarD.171
 	}
-	
+
 	option = {
 		name = EVTOPTbending.171
 		add_trait = diligent
@@ -1666,7 +1694,7 @@ character_event = { # AVATAR TRAINING: Progress
 		}
 		text = EVTDESCavatarD.172
 	}
-	
+
 	option = {
 		name = EVTOPTbending.172
 		add_trait = patient
@@ -1704,14 +1732,14 @@ character_event = { # AVATAR TRAINING: Arguement
 		}
 		text = EVTDESCavatarD.173
 	}
-	
+
 	option = {
 		name = EVTOPTAbending.173
 		hidden_tooltip = {
 			FROM = { character_event = { id = avatar.177 days = 60 random = 90 } }
 		}
 	}
-	
+
 	option = {
 		name = EVTOPTBbending.173
 		hidden_tooltip = {
@@ -1748,7 +1776,7 @@ character_event = { # AVATAR TRAINING: Incident
 		}
 		text = EVTDESCavatarD.174
 	}
-	
+
 	option = {
 		name = EVTOPTAbending.174
 		wealth = -50
@@ -1757,7 +1785,7 @@ character_event = { # AVATAR TRAINING: Incident
 			FROM = { character_event = { id = avatar.177 days = 60 random = 90 } }
 		}
 	}
-	
+
 	option = {
 		name = EVTOPTBbending.174
 		wealth = -50
@@ -1796,12 +1824,12 @@ character_event = { # AVATAR TRAINING: Complete - POS
 		}
 		text = EVTDESCavatarD.175
 	}
-	
+
 	option = {
 		name = EVTOPTbending.175
 		if = {
 			limit = {
-				trait = earthbender	
+				trait = earthbender
 			}
 			FROM = { add_trait = avatar_earthbender }
 		}
@@ -1828,7 +1856,7 @@ character_event = { # AVATAR TRAINING: Complete - POS
 			FROM = { character_event = { id = avatar.158 days = 3 random = 7 } }
 		}
 	}
-	
+
 }
 
 character_event = { # AVATAR TRAINING: Complete - NEG
@@ -1859,12 +1887,12 @@ character_event = { # AVATAR TRAINING: Complete - NEG
 		}
 		text = EVTDESCavatarD.176
 	}
-	
+
 	option = {
 		name = EVTOPTbending.176
 		if = {
 			limit = {
-				trait = earthbender	
+				trait = earthbender
 			}
 			FROM = { add_trait = avatar_earthbender }
 		}
@@ -1890,14 +1918,14 @@ character_event = { # AVATAR TRAINING: Complete - NEG
 			FROM = { character_event = { id = avatar.158 days = 3 random = 7 } }
 		}
 	}
-	
+
 }
 
 character_event = {
 	id = avatar.177
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	option = {
 		FROM = { character_event = { id = avatar.175 days = 60 random = 90 } }
 	}
@@ -1907,7 +1935,7 @@ character_event = {
 	id = avatar.178
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	option = {
 		FROM = { character_event = { id = avatar.176 days = 60 random = 90 } }
 	}
@@ -1918,10 +1946,10 @@ character_event = { # Avatar is asked for help
 	desc = EVTDESCavatar.179
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
-	
+
 	option = { # Refuse
 		name = EVTDESCavatarA.179
-		FROM = { 
+		FROM = {
 			character_event = { id = avatar.181 days = 6 random = 21 }
 			opinion = { modifier = avatar_refused_aid who = ROOT years = 5 }
 		}
@@ -1929,7 +1957,7 @@ character_event = { # Avatar is asked for help
 			factor = 0
 		}
 	}
-	
+
 	option = { # Accept
 		name = EVTDESCavatarB.179
 		random_list = {
@@ -1994,11 +2022,11 @@ character_event = { # Avatar offers solution : Acceptable
 	desc = EVTDESCavatar.180
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
-	
+
 	option = { # Refuse
 		name = EVTDESCavatarA.180
 		opinion = { modifier = avatar_refused_aid who = FROM years = 5 }
-		FROM = { opinion = { modifier = opinion_refused_council who = ROOT years = 5 } } 
+		FROM = { opinion = { modifier = opinion_refused_council who = ROOT years = 5 } }
 		hidden_tooltip = {
 			any_vassal = {
 				limit = {
@@ -2011,7 +2039,7 @@ character_event = { # Avatar offers solution : Acceptable
 		}
 		clr_character_flag = avatar_aid
 	}
-	
+
 	option = { # Accept
 		name = EVTDESCavatarB.180
 		any_realm_province = {
@@ -2032,7 +2060,7 @@ character_event = { # Avatar refuses to intervene
 	desc = EVTDESCavatar.181
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
-	
+
 	option = { # Refuse
 		name = EVTOPTavatar.181
 	}
@@ -2043,7 +2071,7 @@ character_event = { # Avatar offers solution : Preferble
 	desc = EVTDESCavatar.182
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
-	
+
 	option = { # Accept
 		name = EVTOPTCavatar.182
 		any_realm_province = {
@@ -2057,7 +2085,7 @@ character_event = { # Avatar offers solution : Preferble
 		}
 		clr_character_flag = avatar_aid
 	}
-	
+
 }
 
 character_event = { # Avatar offers solution : Forced
@@ -2065,7 +2093,7 @@ character_event = { # Avatar offers solution : Forced
 	desc = EVTDESCavatar.183
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
-	
+
 	option = { # Refuse
 		name = EVTOPTCavatar.183
 		any_realm_province = {
@@ -2080,7 +2108,7 @@ character_event = { # Avatar offers solution : Forced
 		}
 		clr_character_flag = avatar_aid
 	}
-	
+
 }
 
 character_event = { # Avatar joins the Hundred Year War - ROOT
@@ -2088,7 +2116,7 @@ character_event = { # Avatar joins the Hundred Year War - ROOT
 	desc = EVTDESCavatar.184
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # Go To War
 		name = EVTOPTCavatar.184
 		set_global_flag = avatar_at_war
@@ -2099,7 +2127,7 @@ character_event = { # Avatar joins the Hundred Year War - ROOT
 			character_event = { id = avatar.185 }
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar joins the Hundred Year War - WORLD
@@ -2124,21 +2152,21 @@ character_event = { # Avatar joins the Hundred Year War - WORLD
 	}
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # POS
 		name = EVTOPTCavatarA.185
 		trigger = {
 			NOT = { religion = fire_nation_imperialism }
 		}
 	}
-	
+
 	option = { # NEG
 		name = EVTOPTCavatarB.185
 		trigger = {
 			religion = fire_nation_imperialism
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar takes action
@@ -2146,8 +2174,8 @@ character_event = { # Avatar takes action
 	desc = EVTDESCavatar.186
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
-	option = { # Incite Rebellion 
+
+	option = { # Incite Rebellion
 		trigger = {
 			any_rival = {
 				any_realm_province = {
@@ -2157,18 +2185,18 @@ character_event = { # Avatar takes action
 		}
 		name = EVTOPTCavatarA.186
 	}
-	
-	option = { # Find Ally 
+
+	option = { # Find Ally
 		name = EVTOPTCavatarB.186
 	}
-	
+
 	option = { # Launch Invasion
 		trigger = {
 			is_variable_equal = { which = avatar_allies value = 12 }
 		}
 		name = EVTOPTCavatarC.186
 	}
-	
+
 	option = { # Challenge Tyrant
 		trigger = {
 			any_independent_ruler = {
@@ -2179,7 +2207,7 @@ character_event = { # Avatar takes action
 		}
 		name = EVTOPTCavatarD.186
 	}
-	
+
 }
 
 character_event = { # Avatar takes action - Incite Uprising
@@ -2187,11 +2215,11 @@ character_event = { # Avatar takes action - Incite Uprising
 	desc = EVTDESCavatar.187
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # Curses!
 		name = EVTOPTCavatar.187
 	}
-	
+
 }
 
 character_event = { # Avatar takes action - Visit Ruler
@@ -2199,15 +2227,15 @@ character_event = { # Avatar takes action - Visit Ruler
 	desc = EVTDESCavatar.188
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # I will aid you
 		name = EVTOPTCavatar.185
 	}
-	
+
 	option = { # I will not be involved
 		name = EVTOPTCavatar.185
 	}
-	
+
 }
 
 character_event = { # Avatar takes action - Launch Invasion
@@ -2215,15 +2243,15 @@ character_event = { # Avatar takes action - Launch Invasion
 	desc = EVTDESCavatar.189
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # I will aid you
 		name = EVTOPTCavatar.185
 	}
-	
+
 	option = { # I will not be involved
 		name = EVTOPTCavatar.185
 	}
-	
+
 }
 
 character_event = { # Descendent leaves Court for family
@@ -2233,12 +2261,12 @@ character_event = { # Descendent leaves Court for family
 	picture = GFX_evt_fire_wedding
 	ai = yes
 	min_age = 18
-	
+
 	trigger = {
 		is_married = no
 		trait = directdescendantavatar
 	}
-	
+
 	option = { # Alright
 		name = EVTOPTCavatar.190
 		random_playable_ruler = {
@@ -2277,32 +2305,32 @@ character_event = { # Descendent leaves Court for family
 			}
 		}
 	}
-	
+
 }
 
-character_event = { # Descendent leaves Court for fame
-	id = avatar.191
-	desc = EVTDESCavatar.191
-	is_triggered_only = yes
-	picture = GFX_evt_cliff_face
-	
-	trigger = {
-		any_child = {
-			age = 16
-		}
-	}
-	
-	option = { # Alright
-		name = EVTOPTCavatar.184
-		any_independent_ruler = {
-			limit = {
-				realm_size = 3
-			}
-			character_event = { id = avatar.197 }
-		}
-	}
-	
-}
+#character_event = { # Descendent leaves Court for fame
+#	id = avatar.191
+#	desc = EVTDESCavatar.191
+#	is_triggered_only = yes
+#	picture = GFX_evt_cliff_face
+#
+#	trigger = {
+#		any_child = {
+#			age = 16
+#		}
+#	}
+#
+#	option = { # Alright
+#		name = EVTOPTCavatar.184
+#		any_independent_ruler = {
+#			limit = {
+#				realm_size = 3
+#			}
+#			character_event = { id = avatar.197 }
+#		}
+#	}
+#
+#}
 
 character_event = { # Avatar marries
 	id = avatar.192
@@ -2310,14 +2338,14 @@ character_event = { # Avatar marries
 	hide_window = yes
 	ai = yes
 	min_age = 16
-	
+
 	trigger = {
 		is_married = no
 		NOT = { has_character_flag = has_been_married }
 		trait = fullyrealisedavatar
 		NOT = { has_character_flag = is_roku }
 	}
-	
+
 	option = {
 		random_playable_ruler = {
 			limit = {
@@ -2353,7 +2381,7 @@ character_event = { # Avatar marries
 			}
 		}
 	}
-	
+
 }
 
 character_event = { # Is asked
@@ -2361,7 +2389,7 @@ character_event = { # Is asked
 	desc = EVTDESCavatar.193
 	is_triggered_only = yes
 	picture = GFX_evt_fire_wedding
-	
+
 	option = { # Yes
 		name = EVTOPTCavatarA.193
 		if = { # If landed, marry
@@ -2396,14 +2424,14 @@ character_event = { # Is asked
 			factor = 1
 		}
 	}
-	
+
 	option = { # No
 		name = EVTOPTCavatarB.193
 		ai_chance = {
 			factor = 0
 		}
 	}
-	
+
 }
 
 character_event = { # Liege is asked
@@ -2411,7 +2439,7 @@ character_event = { # Liege is asked
 	desc = EVTDESCavatar.194
 	is_triggered_only = yes
 	picture = GFX_evt_fire_wedding
-	
+
 	option = { # Yes
 		name = EVTOPTCavatarA.194
 		if = {
@@ -2437,14 +2465,14 @@ character_event = { # Liege is asked
 			factor = 1
 		}
 	}
-	
+
 	option = { # No
 		name = EVTOPTCavatarB.194
 		ai_chance = {
 			factor = 0
 		}
 	}
-	
+
 }
 
 character_event = { # Asks
@@ -2452,7 +2480,7 @@ character_event = { # Asks
 	desc = EVTDESCavatar.193
 	is_triggered_only = yes
 	picture = GFX_evt_fire_wedding
-	
+
 	option = { # Yes
 		name = EVTOPTCavatarA.193
 		if = { # If landed, marry
@@ -2476,14 +2504,14 @@ character_event = { # Asks
 			factor = 1
 		}
 	}
-	
+
 	option = { # No
 		name = EVTOPTCavatarB.196
 		ai_chance = {
 			factor = 0
 		}
 	}
-	
+
 }
 
 character_event = { # Liege Asks
@@ -2491,7 +2519,7 @@ character_event = { # Liege Asks
 	desc = EVTDESCavatar.194
 	is_triggered_only = yes
 	picture = GFX_evt_fire_wedding
-	
+
 	option = { # Yes
 		name = EVTOPTCavatarA.194
 		if = {
@@ -2516,63 +2544,63 @@ character_event = { # Liege Asks
 			factor = 1
 		}
 	}
-	
+
 	option = { # No
 		name = EVTOPTCavatarB.194
 		ai_chance = {
 			factor = 0
 		}
 	}
-	
+
 }
 
-character_event = { # Descendent leaves Court for fame - New Liege is asked
-	id = avatar.197
-	desc = EVTDESCavatar.197
-	is_triggered_only = yes
-	picture = GFX_evt_cliff_face
-	
-	option = { # Alright
-		name = EVTOPTCavatarA.197
-		FROM = { move_character = ROOT }
-		FROMFROM = { character_event = { id = avatar.198 } }
-		ai_chance = {
-			factor = 1
-		}
-	}
-	
-	option = { # No
-		name = EVTOPTCavatarB.197
-		FROM = { prestige = -25 }
-		ai_chance = {
-			factor = 0
-		}
-	}
-	
-}
+#character_event = { # Descendent leaves Court for fame - New Liege is asked
+#	id = avatar.197
+#	desc = EVTDESCavatar.197
+#	is_triggered_only = yes
+#	picture = GFX_evt_cliff_face
+#
+#	option = { # Alright
+#		name = EVTOPTCavatarA.197
+#		FROM = { move_character = ROOT }
+#		FROMFROM = { character_event = { id = avatar.198 } }
+#		ai_chance = {
+#			factor = 1
+#		}
+#	}
+#
+#	option = { # No
+#		name = EVTOPTCavatarB.197
+#		FROM = { prestige = -25 }
+#		ai_chance = {
+#			factor = 0
+#		}
+#	}
+#
+#}
 
-character_event = { # Descendent leaves Court for fame - Father is informed
-	id = avatar.198
-	desc = EVTDESCavatar.198
-	is_triggered_only = yes
-	picture = GFX_evt_cliff_face
-	
-	option = { # Alright
-		name = EVTOPTCavatar.198
-	}
-	
-}
+#character_event = { # Descendent leaves Court for fame - Father is informed
+#	id = avatar.198
+#	desc = EVTDESCavatar.198
+#	is_triggered_only = yes
+#	picture = GFX_evt_cliff_face
+#
+#	option = { # Alright
+#		name = EVTOPTCavatar.198
+#	}
+#
+#}
 
 character_event = { # Avatar aids defender
 	id = avatar.199
 	desc = EVTDESCavatar.199
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	trigger = {
 		war = no
 	}
-	
+
 	option = { # Alright
 		name = EVTOPTCavatarA.199
 		random_playable_ruler = {
@@ -2623,14 +2651,14 @@ character_event = { # Avatar aids defender
 			factor = 1
 		}
 	}
-	
+
 	option = { # No
 		name = EVTOPTCavatarB.199
 		ai_chance = {
 			factor = 0
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar aids Defender - Defender
@@ -2638,11 +2666,11 @@ character_event = { # Avatar aids Defender - Defender
 	desc = EVTDESCavatar.200
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # Alright
 		name = EVTOPTCavatar.200
 	}
-	
+
 }
 
 character_event = { # Avatar aids Defender - Attackers
@@ -2650,11 +2678,11 @@ character_event = { # Avatar aids Defender - Attackers
 	desc = EVTDESCavatar.201
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # Alright
 		name = EVTOPTCavatar.201
 	}
-	
+
 }
 
 character_event = { # Avatar Found?
@@ -2662,25 +2690,25 @@ character_event = { # Avatar Found?
 	desc = EVTDESCavatar.202
 	is_triggered_only = yes
 	picture = GFX_evt_cliff_face
-	
+
 	option = { # We must train them!
 		trigger = {
 			is_landed = yes
 		}
 		name = EVTOPTCavatarA.202
 	}
-	
+
 	option = { # The proper authorities should be informed
 		trigger = {
 			is_landed = no
 		}
 		name = EVTOPTCavatarB.202
 	}
-	
+
 	option = { # They're not the Avatar!
 		name = EVTOPTCavatarC.202
 	}
-	
+
 }
 
 character_event = { # Authority Informed
@@ -2688,22 +2716,22 @@ character_event = { # Authority Informed
 	desc = EVTDESCavatar.203
 	is_triggered_only = yes
 	picture = GFX_evt_cliff_face
-	
+
 	option = { # We must train them!
 		name = EVTOPTCavatarA.203
 	}
-	
+
 	option = { # They're not the Avatar!
 		name = EVTOPTCavatarC.203
 	}
-	
+
 }
 
 character_event = { # Avatar's Wrath - Assassination
 	id = avatar.204
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	trigger = {
 		is_title_active = d_avatar
 		OR = {
@@ -2723,7 +2751,7 @@ character_event = { # Avatar's Wrath - Assassination
 			}
 		}
 	}
-	
+
 	option = {
 		d_avatar = {
 			holder_scope = {
@@ -2731,7 +2759,7 @@ character_event = { # Avatar's Wrath - Assassination
 			}
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar's Wrath - Assassination - Avatar
@@ -2739,7 +2767,7 @@ character_event = { # Avatar's Wrath - Assassination - Avatar
 	desc = EVTDESCavatar.205
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # My Vengence shall be swift!
 		name = EVTOPTCavatarA.205
 		FROMFROM = { character_event = { id = avatar.206 } }
@@ -2747,7 +2775,7 @@ character_event = { # Avatar's Wrath - Assassination - Avatar
 			factor = 1
 		}
 	}
-	
+
 	option = { # I shall spare them
 		name = EVTOPTCavatarB.205
 		piety = 100
@@ -2755,7 +2783,7 @@ character_event = { # Avatar's Wrath - Assassination - Avatar
 			factor = 0
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar's Wrath - Assassination - FROM
@@ -2763,7 +2791,7 @@ character_event = { # Avatar's Wrath - Assassination - FROM
 	desc = EVTDESCavatar.206
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_resist
-	
+
 	option = { # To the Death!
 		name = EVTOPTCavatarA.206
 		trigger = {
@@ -2795,7 +2823,7 @@ character_event = { # Avatar's Wrath - Assassination - FROM
 			}
 		}
 	}
-	
+
 	option = { # Mercy!
 		name = EVTOPTCavatarB.206
 		trigger = {
@@ -2803,7 +2831,7 @@ character_event = { # Avatar's Wrath - Assassination - FROM
 		}
 		death = { death_reason = death_battle killer = FROM }
 	}
-	
+
 	option = { # Mercy!!!
 		name = EVTOPTCavatarC.206
 		trigger = {
@@ -2811,14 +2839,14 @@ character_event = { # Avatar's Wrath - Assassination - FROM
 		}
 		death = { death_reason = death_battle killer = FROM }
 	}
-	
+
 }
 
 character_event = { # Avatar's Wrath - Abduction
 	id = avatar.207
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	trigger = {
 		is_title_active = d_avatar
 		OR = {
@@ -2838,7 +2866,7 @@ character_event = { # Avatar's Wrath - Abduction
 			}
 		}
 	}
-	
+
 	option = {
 		d_avatar = {
 			holder_scope = {
@@ -2846,7 +2874,7 @@ character_event = { # Avatar's Wrath - Abduction
 			}
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar's Wrath - Abduction - Avatar
@@ -2854,7 +2882,7 @@ character_event = { # Avatar's Wrath - Abduction - Avatar
 	desc = EVTDESCavatar.208
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	
+
 	option = { # My Vengence shall be swift!
 		name = EVTOPTCavatarA.205
 		FROMFROM = { character_event = { id = avatar.209 } }
@@ -2862,7 +2890,7 @@ character_event = { # Avatar's Wrath - Abduction - Avatar
 			factor = 1
 		}
 	}
-	
+
 }
 
 character_event = { # Avatar's Wrath - Abduction - FROM
@@ -2870,7 +2898,7 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 	desc = EVTDESCavatar.209
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_resist
-	
+
 	option = { # To the Death!
 		name = EVTOPTCavatarA.206
 		trigger = {
@@ -2929,7 +2957,7 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 		}
 		}
 	}
-	
+
 	option = { # Mercy!
 		name = EVTOPTCavatarB.206
 		trigger = {
@@ -2964,7 +2992,7 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 		}
 		}
 	}
-	
+
 	option = { # Mercy!!!
 		name = EVTOPTCavatarC.206
 		trigger = {
@@ -2999,5 +3027,5 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 		}
 		}
 	}
-	
+
 }

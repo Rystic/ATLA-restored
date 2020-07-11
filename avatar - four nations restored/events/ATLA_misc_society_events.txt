@@ -1,0 +1,278 @@
+# Force join AI characters to societies
+namespace = AMSE
+
+character_event = {
+	id = AMSE.1
+	hide_window = yes
+	is_triggered_only = yes
+	only_rulers = yes
+
+	immediate = {
+		if = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = yes
+				society_rank < 3
+				society_can_rank_up = yes
+			}
+			random_list = {
+				75 = {}
+				25 = {
+					society_rank_up = 1
+				}
+			}
+		}
+		if = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_adult = yes
+				is_in_society = no
+				controls_religion = no
+				block_general_event_trigger = no
+			}
+			character_event = { id = MNHHN.3051 }
+		}
+		any_courtier = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = yes
+				society_rank < 3
+				society_can_rank_up = yes
+			}
+			random_list = {
+				95 = {}
+				5 = {
+					society_rank_up = 1
+				}
+			}
+		}
+		any_courtier = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = no
+				controls_religion = no
+				block_general_event_trigger = no
+			}
+			character_event = { id = AMSE.2 }
+		}
+	}
+}
+
+character_event = {
+	id = AMSE.2
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_list = {
+			95 = {}
+			5 = {
+				trigger = {
+					can_join_society = healing_hut_north
+				}
+				modifier = {
+					factor = 3
+					is_smart_trigger = yes
+				}
+				modifier = {
+					factor = 5
+					is_benevolent_trigger = yes
+				}
+				modifier = {
+					factor = 5
+					learning = 12
+				}
+				modifier = {
+					factor = 5
+					healing_hut_north = { num_of_society_members < 15 }
+				}
+				modifier = {
+					factor = 5
+					healing_hut_north = { num_of_society_members < 10 }
+				}
+				modifier = {
+					factor = 0
+					is_female = no
+				}
+				join_society = healing_hut_north
+				if = {
+					limit = {
+						NOT = {
+							society = {
+								any_society_member = {
+									is_society_grandmaster = yes
+								}
+							}
+						}
+					}
+					set_society_grandmaster = yes
+				}
+			}
+		}
+
+		random_list = {
+			95 = {}
+			5 = {
+				trigger = {
+					can_join_society = the_black_market
+				}
+				modifier = {
+					factor = 3
+					OR = {
+						trait = wroth
+						trait = greedy
+						intrigue = 12
+					}
+				}
+				modifier = {
+					factor = 10
+					OR = {
+						trait = pirate_trait
+					}
+				}
+				modifier = {
+					factor = 2
+					the_black_market = { num_of_society_members < 25 }
+				}
+				modifier = {
+					factor = 2
+					the_black_market = { num_of_society_members < 15 }
+				}
+				join_society = the_black_market
+				if = {
+					limit = {
+						NOT = {
+							society = {
+								any_society_member = {
+									is_society_grandmaster = yes
+								}
+							}
+						}
+					}
+					set_society_grandmaster = yes
+				}
+			}
+		}
+
+		random_list = {
+			95 = {}
+			5 = {
+				trigger = {
+					can_join_society = the_white_lotus
+				}
+				modifier = {
+					factor = 3
+					is_smart_trigger = yes
+				}
+				modifier = {
+					factor = 5
+					is_benevolent_trigger = yes
+				}
+				modifier = {
+					factor = 3
+					learning = 12
+				}
+				modifier = {
+					factor = 10
+					learning = 16
+				}
+				modifier = {
+					factor = 2
+					the_white_lotus = { num_of_society_members < 25 }
+				}
+				modifier = {
+					factor = 2
+					the_white_lotus = { num_of_society_members < 15 }
+				}
+				join_society = the_white_lotus
+				if = {
+					limit = {
+						NOT = {
+							society = {
+								any_society_member = {
+									is_society_grandmaster = yes
+								}
+							}
+						}
+					}
+					set_society_grandmaster = yes
+				}
+			}
+		}
+		random_list = {
+			95 = {}
+			5 = {
+				trigger = {
+					can_join_society = brotherhood_of_agni_kai
+				}
+				modifier = {
+					factor = 3
+					trait = competent_bender
+				}
+				modifier = {
+					factor = 5
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 25
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 25
+					trait = duelist
+				}
+				# modifier = {
+					# factor = 10
+					# trait = aspiring_duelist
+				# }
+				# modifier = {
+					# factor = 25
+					# trait = master_duelist
+				# }
+				modifier = {
+					factor = 2
+					martial = 12
+				}
+				modifier = {
+					factor = 2
+					martial = 16
+				}
+				modifier = {
+					factor = 2
+					martial = 20
+				}
+				modifier = {
+					factor = 4
+					brotherhood_of_agni_kai = { num_of_society_members < 25 }
+				}
+				modifier = {
+					factor = 4
+					brotherhood_of_agni_kai = { num_of_society_members < 15 }
+				}
+				join_society = brotherhood_of_agni_kai
+				if = {
+					limit = {
+						NOT = {
+							society = {
+								any_society_member = {
+									is_society_grandmaster = yes
+								}
+							}
+						}
+					}
+					set_society_grandmaster = yes
+				}
+			}
+		}
+	#end of random lists
+	}
+}

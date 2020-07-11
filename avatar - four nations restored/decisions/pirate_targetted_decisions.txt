@@ -1,0 +1,687 @@
+targetted_decisions = {
+	force_instate_slavery = {
+
+		from_potential = {
+			is_ruler = yes
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		
+		potential = {
+			ai = yes
+			religion = FROM
+			tier = COUNT
+			OR = {
+				is_tributary = { 
+					type = pirate_tributary 
+					suzerain = FROM
+				}
+				de_facto_liege = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 250
+			}
+			OR = {
+				ROOT = {
+					capital_scope = {
+						NOT = { religion = FROM }
+					}
+				}
+				custom_tooltip = {
+					text = doesnt_have_slavery
+					hidden_tooltip = {
+						ROOT = {
+							NOT = { has_law = slavery_legal }
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					FROM = {
+						has_global_flag = slavery_instated
+						has_law = slavery_legal
+					}
+				}
+			}
+		}
+		effect = {
+			FROM = {
+				prestige = -250
+			}
+			custom_tooltip = {
+				text = force_instate_name
+				hidden_tooltip = {
+					add_law = slavery_legal
+					revoke_law = slavery_outlawed
+				}
+			}
+			capital_scope = {
+				religion = FROM
+			}
+			religion_authority = {
+				modifier = forced_instate_slavery
+				years = 20
+			}
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random_list = {
+					75 = {}
+					25 = { FROM = { character_event = {id = PRT.20400 } } }
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+		
+	absorb_pirate_governor = {
+
+		from_potential = {
+			is_ruler = yes
+			government = pirate_cartel
+		}
+		
+		potential = {
+			ai = yes
+			tier = COUNT
+			is_tributary = {
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 500
+				government = pirate_cartel
+			}
+		}
+		
+		effect = {
+			FROM = {
+				prestige = -500
+			}
+			
+			set_defacto_liege = FROM
+			set_government_type = pirate_cartel
+			
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random_list = {
+					75 = {}
+					25 = { FROM = { character_event = {id = PRT.20400 } } }
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	decision_sell_prisoner = {
+
+		from_potential = {
+			society_member_of = the_black_market
+			society_rank > 1
+			is_playable = yes
+			is_adult = yes
+			prisoner = no
+			NOT = { trait = incapable }
+		}
+
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+		}
+
+		effect = {
+				custom_tooltip = {
+					text = decision_sell_prisoner_desc
+				}
+				hidden_tooltip = {
+					# Initial Slave Value -- How accepting is society of slavery? Either -2, 0, or 1.
+					FROM = { 
+						set_variable = { which = slave_value value = 0 } 
+						if = {
+							limit = {
+								NOT = { has_global_flag = slavery_instated }
+							}
+							change_variable = { which = slave_value value = -2 }
+						}
+						else = {
+							if = {
+								limit = {
+									government = pirate_cartel
+								}
+								change_variable = { which = slave_value value = 1 }
+							}			
+						}
+					}
+
+					# High society influence?
+					FROM = {
+						if = {
+							limit = {
+								society_influence > 20
+							}
+							change_variable = { which = slave_value value = 1 }
+						}
+						if = {
+							limit = {
+								society_influence > 50
+							}
+							change_variable = { which = slave_value value = 1 }
+						}
+						if = {
+							limit = {
+								society_influence > 80
+							}
+							change_variable = { which = slave_value value = 1 }
+						}
+					}
+				
+					#Are they useful as a bender?
+					ROOT = {
+						if = {
+							limit = {
+								trait = powerful_bender
+							}
+							FROM = { change_variable = { which = slave_value value = 1 } }
+						}
+						if = {
+							limit = {
+								trait = master_bender
+							}
+							FROM = { change_variable = { which = slave_value value = 3 } }
+						}
+						if = {
+							limit = {
+								trait = legendary_bender
+							}
+							FROM = { change_variable = { which = slave_value value = 6 } }
+						}
+					}
+					
+					#Do they have a prestigious title?
+					ROOT = {
+						if = {
+							limit = {
+								tier = count
+							}
+							FROM = { change_variable = { which = slave_value value = 1 } }
+						}
+						if = {
+							limit = {
+								tier = duke
+							}
+							FROM = { change_variable = { which = slave_value value = 2 } }
+						}
+						if = {
+							limit = {
+								tier = king
+							}
+							FROM = { change_variable = { which = slave_value value = 4 } }
+						}
+						if = {
+							limit = {
+								tier = emperor
+							}
+							FROM = { change_variable = { which = slave_value value = 8 } }
+						}
+					}
+						
+					#Male
+					ROOT = {
+						if = {
+							limit = {
+								is_female = no
+							}
+							FROM = { change_variable = { which = slave_value value = 2 } } #Base 2 worth.
+							if = {
+								limit = {
+									age = 50
+								}
+								FROM = { change_variable = { which = slave_value value = -2 } } #Old people less useful as slaves
+							} 
+							else = {
+								if = {
+									limit = {
+										trait = eunuch
+									}
+									FROM = { change_variable = { which = slave_value value = 5 } } #Eunuchs are valuable slaves
+								}
+								if = {
+									limit = {
+										trait = strong
+									}
+									FROM = { change_variable = { which = slave_value value = 3 } } #Strong slaves are preferred
+								}
+							}
+						}
+					}
+					
+					#Female
+					ROOT = {
+						if = {
+							limit = {
+								is_female = yes
+							}
+							FROM = { change_variable = { which = slave_value value = 3 } } #Base 3 worth.
+							if = {
+								limit = {
+									OR = {
+										age = 45
+										trait = ugly
+										trait = disfigured
+									}
+								}
+								FROM = { change_variable = { which = slave_value value = -5 } } #Old people less useful as slaves
+							} 
+							else = {
+								if = {
+									limit = {
+										age = 12
+										NOT = { age = 20 }
+									}
+									FROM = { change_variable = { which = slave_value value = 3 } } #Young girls are preferred
+									if = {
+										limit = {
+											trait = lustful
+										}
+										FROM = { change_variable = { which = slave_value value = 2 } } #Lustful girls are preferred
+									}
+								}
+								else = {
+									if = {
+										limit = {
+											trait = lustful
+										}
+										FROM = { change_variable = { which = slave_value value = 1 } } #Lustful girls are preferred
+									}
+								}
+							}
+						}
+					}				
+				
+					#What's the slave worth?
+					if = {
+						limit = {
+							check_variable = { which = slave_value value >= 1}
+						}
+						FROM = { wealth = 3 }
+					}
+					else = {
+						FROM = {
+							if = {
+								limit = {
+									check_variable = { which = slave_value value > 12 }
+								}
+								religion_authority = {
+									modifier = exceptional_slave
+									years = 20
+								}
+								add_society_currency_major_effect = yes
+								add_society_modifier = 	{
+									modifier = sold_an_exceptional_slave
+									years = 20
+								}
+							}
+							else = {
+								if = {
+									limit = {
+										check_variable = { which = slave_value value >= 6 }
+									}
+									religion_authority = {
+										modifier = good_slave
+										years = 20
+									}
+									add_society_currency_minor_effect = yes
+									add_society_modifier = 	{
+										modifier = sold_a_good_slave
+										years = 20
+									}
+								}
+								else = {
+									add_society_modifier = 	{
+										modifier = sold_a_decent_slave
+										years = 20
+									}	
+								}
+							}
+
+							multiply_variable = { which = slave_value which = slave_value  }
+							wealth = slave_value
+						}
+					}
+					
+					death = {
+						death_reason = death_slavery
+					}
+					if = {
+						limit = {
+							FROM = { NOT = { trait = pirate_trait} }
+						}
+						random_list = {
+							75 = {}
+							25 = { FROM = { character_event = {id = PRT.20400 } } }
+						}
+					}
+				}
+			}
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	decision_abduct = {
+		filter = all
+		ai_target_filter = realm
+		
+		only_playable = yes
+		ai = no
+		
+		from_potential = {
+			society_member_of = the_black_market
+			NOT = { trait = incapable }
+			prisoner = no
+			NOT = { has_any_opinion_modifier = opinion_abducting }
+		}
+		
+		potential = {
+			ai = yes
+			NOT = { character = FROM }
+			is_patrician = no
+			OR = {
+				lower_tier_than = DUKE
+				is_landed = no
+			}
+			OR = {
+				father_even_if_dead = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				NOT = {
+					father = {
+						always = yes
+					}
+				}
+			}
+			OR = {
+				mother_even_if_dead = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				NOT = {
+					mother = {
+						always = yes
+					}
+				}
+			}
+			OR = {
+				spouse = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				is_married = no
+			}
+		}
+		
+		allow = {
+			in_revolt = no
+			NOT = { war_with = FROM }
+			NOT = { same_society_as = FROM }
+			prisoner = no
+			OR = {
+				AND = {
+					is_landed = no
+					FROM = {
+						has_society_currency_tiny_trigger = yes
+					}
+				}
+				AND = {
+					is_landed = yes
+					NOT = {
+						higher_tier_than = BARON
+					}
+					FROM = {
+						has_society_currency_minor_trigger = yes
+					}
+				}
+				AND = {
+					higher_tier_than = BARON
+					FROM = {
+						has_society_currency_medium_trigger = yes
+					}
+				}
+			}
+			is_within_diplo_range = FROM
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						is_ruler = yes
+					}
+				}
+				FROM = {
+					detract_society_currency_tiny_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					is_ruler = yes
+					lower_tier_than = COUNT
+				}
+				FROM = {
+					detract_society_currency_minor_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					higher_tier_than = BARON
+				}
+				FROM = {
+					detract_society_currency_medium_effect = yes
+				}
+			}
+			hidden_tooltip = {
+				FROM = {
+					any_opinion_modifier_target = {
+						limit = {
+							reverse_has_opinion_modifier = {
+								who = PREV
+								modifier = opinion_abducting
+							}
+						}
+						reverse_remove_opinion = {
+							who = PREV
+							modifier = opinion_abducting
+						}
+					}
+					opinion = {
+						who = ROOT
+						modifier = opinion_abducting
+						months = 12000
+					}
+					character_event = { id = PRT.20070 days = 1 }
+				}
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 0 		# 1 = 100% chance every month (for each allowed target!)
+		}
+	}
+	
+	stop_abduct_decision = {
+		filter = self
+		ai_target_filter = self
+		ai = no
+	
+		potential = {
+			society_member_of = the_black_market
+			has_any_opinion_modifier = opinion_abducting
+		}
+		
+		effect = {
+			random_opinion_modifier_target = {
+				limit = {
+					ROOT = {
+						has_opinion_modifier = {
+							who = PREV
+							modifier = opinion_abducting
+						}
+					}
+				}
+				save_event_target_as = target_abduction
+				ROOT = { character_event = { id = PRT.20100 tooltip = stop_abduct_decision_tt } }
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	stop_abduct_decision_target = {
+		filter = all
+		ai_target_filter = realm
+		ai = no
+	
+		from_potential = {
+			society_member_of = the_black_market
+			has_any_opinion_modifier = opinion_abducting
+		}
+		
+		potential = {
+			FROM = {
+				has_opinion_modifier = {
+					who = ROOT
+					modifier = opinion_abducting
+				}
+			}
+		}
+		
+		effect = {
+			save_event_target_as = target_abduction
+			hidden_tooltip = {
+				FROM = { character_event = { id = PRT.20100 } }
+			}
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
+
+title_decisions = {
+	settle_pirates_decision = {
+		only_playable = yes
+		ai_check_interval = 3
+		
+		from_potential = {
+			is_ruler = yes
+			society_member_of = the_black_market
+			society_rank == 4
+		}
+		
+		potential = {
+			tier = COUNT
+			location = { NOT = { culture = FROM } }
+			holder_scope = {
+				OR = {
+					is_liege_or_above = FROM
+					character = FROM
+					is_tributary = { 
+						type = pirate_tributary 
+						suzerain = FROM
+					}
+				}
+			}
+		}
+		
+		allow = {
+			FROM = {
+				society_currency >= 1000
+			}
+			location = {
+				NOT = { culture = FROM }
+			}
+		}
+		
+		effect = {
+			FROM = {
+				change_society_currency = -1000
+				religion_authority = {
+					modifier = settle_pirates_ma
+					years = 20
+				}
+			}
+
+			location = {
+				culture = FROM
+				add_province_modifier = {
+					name = peasant_unrest
+					years = 2
+				}
+				random_list = {
+				}
+			}
+			hidden_tooltip = {
+				if = { # Notify county owner
+					limit = {
+						holder_scope = { NOT = { character = FROM } }
+					}
+					holder_scope = { character_event = { id = HF.23125 } }
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				FROM = { NOT = { trait = pirate_trait} }
+			}
+			random_list = {
+				75 = {}
+				25 = { FROM = { character_event = {id = PRT.20400 } } }
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+
+}

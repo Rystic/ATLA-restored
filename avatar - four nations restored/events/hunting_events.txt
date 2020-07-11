@@ -20,6 +20,7 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	only_playable = yes
 
 	trigger = {
 		has_character_modifier = holding_grand_hunt
@@ -145,8 +146,7 @@ character_event = {
 				hidden_tooltip = { character_event = { id = 38280 } }
 			}
 			4 = {
-				add_trait = maimed
-				hidden_tooltip = { character_event = { id = 38281 } }
+				add_maimed_trait_effect = yes
 			}
 			1 = {
 				death = { death_reason = death_accident }
@@ -163,8 +163,10 @@ character_event = {
 	desc = "EVTDESC36001"
 	picture = "GFX_evt_hunt"
 
-	prisoner = no
+	min_age =  16
 	capable_only = yes
+	only_playable = yes
+	prisoner = no
 
 	trigger = {
 		has_character_modifier = holding_grand_hunt
@@ -192,6 +194,7 @@ character_event = {
 	
 	immediate = {
 		set_character_flag = hunt_event_happened
+		set_character_flag = hunt_paranoia
 	}	
 
 	mean_time_to_happen = {
@@ -208,9 +211,6 @@ character_event = {
 		}		
 	}
 
-	immediate = {
-		set_character_flag = hunt_paranoia
-	}
 
 	option = {
 		name = "EVTOPTA36001"
@@ -224,14 +224,26 @@ character_event = {
 				}
 			}
 			4 = {
-				add_trait = maimed
+				add_maimed_trait_effect = yes
 				character_event = {
 					id = 36003
 					days = 1
 				}
 			}
 			1 = {
-				death = { death_reason = death_accident }
+				random_courtier = {
+					limit = {
+						has_plot = plot_kill_character
+						plot_target_char = {
+							character = root
+						}
+					}
+					save_event_target_as = killer_target
+				}
+				death = { 
+					death_reason = death_murder_unknown_arrow 
+					killer = event_target:killer_target 
+				}
 				any_courtier = {
 					limit = {
 						has_plot = plot_kill_character
@@ -289,7 +301,19 @@ character_event = {
 				}
 			}
 			5 = {
-				death = { death_reason = death_accident }
+				random_courtier = {
+					limit = {
+						has_plot = plot_kill_character
+						plot_target_char = {
+							character = root
+						}
+					}
+					save_event_target_as = killer_target
+				}
+				death = { 
+					death_reason = death_murder_unknown_arrow 
+					killer = event_target:killer_target 
+				}
 				any_courtier = {
 					limit = {
 						has_plot = plot_kill_character
@@ -342,7 +366,10 @@ character_event = {
 
 	option = {
 		name = "EVTOPTA36004"
-		death = { death_reason = death_accident }
+		death = { 
+			death_reason = death_murder_unknown_arrow
+			killer = FROM
+		}
 	}
 }
 
@@ -355,7 +382,10 @@ character_event = {
 
 	option = {
 		name = "EVTOPTA36005"
-		death = { death_reason = death_accident }
+		death = { 
+			death_reason = death_murder_unknown_arrow
+			killer = FROM
+		}
 	}
 }
 
@@ -366,6 +396,7 @@ character_event = {
 	desc = "EVTDESC36010"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
@@ -440,7 +471,7 @@ character_event = {
 			NOT = { trait = greedy }
 			NOT = { trait = cruel }
 		}
-		random_courtier = {
+		any_courtier = {
 			limit = {
 				trait = brave
 				war = no
@@ -449,6 +480,10 @@ character_event = {
 				in_command = no
 				is_abroad = no
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_disappointed
 				who = ROOT
@@ -463,6 +498,7 @@ character_event = {
 		trigger = {
 			any_courtier = {
 				is_female = no
+				is_adult = yes
 				OR = {
 					martial = 10
 					trait = hunter
@@ -473,6 +509,7 @@ character_event = {
 		random_courtier = {
 			limit = {
 				is_female = no
+				is_adult = yes
 				OR = {
 					martial = 10
 					trait = hunter
@@ -520,8 +557,7 @@ character_event = {
 				hidden_tooltip = { character_event = { id = 38280 } }
 			}
 			5 = {
-				add_trait = maimed
-				hidden_tooltip = { character_event = { id = 38281 } }
+				add_maimed_trait_effect = yes
 			}
 		}
 		prestige = 10
@@ -536,6 +572,7 @@ character_event = {
 	desc = "EVTDESC36015"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
@@ -628,7 +665,13 @@ character_event = {
 		prestige = 5
 		random_list = {
 			70 = {}
-			30 = { add_trait = craven hidden_tooltip = { character_event = { id = 38257 } } }
+			30 = { 
+				if = { 
+					limit = { NOT = { trait = berserker } }
+					add_trait = craven 
+					hidden_tooltip = { character_event = { id = 38257 } } 
+				}
+			}
 		}
 	}
 
@@ -664,8 +707,7 @@ character_event = {
 				hidden_tooltip = { character_event = { id = 38280 } }
 			}
 			5 = {
-				add_trait = maimed
-				hidden_tooltip = { character_event = { id = 38281 } }
+				add_maimed_trait_effect = yes
 			}
 		}
 
@@ -682,10 +724,10 @@ character_event = {
 	desc = "EVTDESC36020"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
-
 
 	trigger = {
 		has_character_modifier = holding_grand_hunt
@@ -791,10 +833,10 @@ character_event = {
 				hidden_tooltip = { character_event = { id = 38280 } }
 			}
 			5 = {
-				add_trait = maimed
-				hidden_tooltip = { character_event = { id = 38281 } }
+				add_maimed_trait_effect = yes
 			}
 		}
+		add_blood_splatter_effect = yes
 		set_character_flag = hunt_killed_something
 		prestige = 10
 
@@ -827,6 +869,7 @@ character_event = {
 	desc = "EVTDESC36025"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
@@ -942,6 +985,7 @@ character_event = {
 	desc = "EVTDESC36030"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
@@ -1021,6 +1065,8 @@ character_event = {
 	desc = "EVTDESC36035"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
+	only_playable = yes
 	prisoner = no
 	capable_only = yes
 
@@ -1091,6 +1137,7 @@ character_event = {
 	desc = "EVTDESC36040"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
@@ -1115,6 +1162,7 @@ character_event = {
 
 	immediate = {
 		set_character_flag = hunt_event_happened
+		set_character_flag = hunt_killed_something
 	}	
 	
 	mean_time_to_happen = {
@@ -1156,23 +1204,22 @@ character_event = {
 		}
 	}
 
-	immediate = {
-		set_character_flag = hunt_killed_something
-
-	}
-
 	option = {
 		name = "EVTOPTA36040"
 		prestige = -20
 	}
 	option = {
 		name = "EVTOPTB36040"
-		random_courtier = {
+		any_courtier = {
 			limit = {
 				is_adult = yes
 				is_female = no
 				martial = 8
 			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
 			opinion = {
 				modifier = opinion_disgruntled
 				who = ROOT
@@ -1192,6 +1239,7 @@ character_event = {
 	desc = "EVTDESC36045"
 	picture = "GFX_evt_hunt"
 
+	min_age =  16
 	only_playable = yes
 	prisoner = no
 	capable_only = yes
@@ -1216,6 +1264,7 @@ character_event = {
 
 	immediate = {
 		set_character_flag = hunt_event_happened
+		set_character_flag = hunt_killed_something
 	}	
 	
 	mean_time_to_happen = {
@@ -1250,11 +1299,6 @@ character_event = {
 
 	}
 
-	immediate = {
-		set_character_flag = hunt_killed_something
-
-	}
-
 	option = {
 		name = "EVTOPTA36045"
 		random_list = {
@@ -1283,8 +1327,7 @@ character_event = {
 				hidden_tooltip = { character_event = { id = 38280 } }
 			}
 			10 = {
-				add_trait = maimed
-				hidden_tooltip = { character_event = { id = 38281 } }
+				add_maimed_trait_effect = yes
 			}
 			5 = {
 				death = { death_reason = death_accident }
@@ -1296,9 +1339,12 @@ character_event = {
 	}
 	option = {
 		name = "EVTOPTB36045"
-		add_trait = craven
+		if = {
+			limit = { NOT = { trait = berserker } }
+			add_trait = craven
+			hidden_tooltip = { character_event = { id = 38257 } } 
+		}
 	}
-
 }
 
 # courtier/vassal with hunter trait kills something,
@@ -1307,16 +1353,18 @@ character_event = {
 	desc = "EVTDESC36050"
 	picture = "GFX_evt_hunt"
 
-	capable_only = yes
+	min_age =  16
+	only_playable = yes
 	prisoner = no
+	capable_only = yes
+	war = no
+	has_character_flag = hunt_begin
 
 	trigger = {
-		is_adult = yes
 		trait = hunter
 		liege = { has_character_modifier = holding_grand_hunt }
 		in_command = no
 		independent = no
-		war = no
 		NOT = { liege = { has_character_flag = hunt_killed_something } }
 		NOT = {	health_traits = 1 }
 		OR = {
@@ -1444,7 +1492,7 @@ character_event = {
 	}
 }
 
-letter_event = {
+character_event = {
 	id = 36080
 	picture = "GFX_evt_hunt"
 	desc = "EVTDESC36080"
@@ -1453,11 +1501,102 @@ letter_event = {
 	
 	immediate = {
 		set_character_flag = hunt_begin
+		if = {
+			limit = {
+				capital_scope = {
+					region = world_water_tribes
+				}
+			}
+			set_character_flag = white_stag
+		}
+		if = {
+			limit = {
+				capital_scope = {
+					region = world_water_tribes
+				}
+			}
+			set_character_flag = white_bear
+		}
+		if = {
+			limit = {
+				capital_scope = {
+					region = world_greater_earth_kingdom
+				}
+			}
+			set_character_flag = white_tiger
+		}
+		if = {
+			limit = {
+				capital_scope = {
+					region = world_greater_earth_kingdom
+				}
+			}
+			set_character_flag = white_lion
+		}
 	}	
 
 	option = {
 		name = "EVTOPTA36080"
+		trigger = {
+			has_character_flag = white_stag
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_character_flag = epic_hunt } }
+				clr_character_flag = white_stag
+				clr_character_flag = white_bear
+				clr_character_flag = white_tiger
+				clr_character_flag = white_lion
+			}
+		}
 	}
+	option = {
+		name = "EVTOPTB36080"
+		trigger = {
+			has_character_flag = white_bear
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_character_flag = epic_hunt } }
+				clr_character_flag = white_stag
+				clr_character_flag = white_bear
+				clr_character_flag = white_tiger
+				clr_character_flag = white_lion
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTC36080"
+		trigger = {
+			has_character_flag = white_tiger
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_character_flag = epic_hunt } }
+				clr_character_flag = white_stag
+				clr_character_flag = white_bear
+				clr_character_flag = white_tiger
+				clr_character_flag = white_lion
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTD36080"
+		trigger = {
+			has_character_flag = white_lion
+		}
+		hidden_effect = {
+			if = {
+				limit = { NOT = { has_character_flag = epic_hunt } }
+				clr_character_flag = white_stag
+				clr_character_flag = white_bear
+				clr_character_flag = white_tiger
+				clr_character_flag = white_lion
+			}
+		}
+	}
+
+
 }
 
 
@@ -1466,8 +1605,12 @@ character_event = {
 	id = 36089
 	desc = "EVTDESC36089"
 	picture = "GFX_evt_hunt"
+
+	min_age =  16
+	only_playable = yes
+	war = yes
+
 	trigger = {
-		war = yes
 		has_character_modifier = holding_grand_hunt
 	}
 
@@ -1529,11 +1672,12 @@ character_event = {
 	only_men = yes
 	capable_only = yes
 	prisoner = no
+	war = no
+	has_character_flag = hunt_begin
 
 	trigger = {
-		war = no
-		in_command = no
 		has_character_modifier = holding_grand_hunt
+		in_command = no
 		NOT = { has_character_flag = hunt_killed_something }
 		job_treasurer = {
 			NOT = {
@@ -1554,10 +1698,51 @@ character_event = {
 			flag = hunt_begin
 			days = 3
 		}
+		any_vassal = {
+			prisoner = no
+			NOT = { trait = incapable }
+			war = no
+			in_command = no
+			is_adult = yes
+			OR = {
+				is_abroad = no
+				at_location = ROOT
+			}
+			OR = {
+				trait = ambitious
+				NOT = {
+					trait = slothful
+				}
+			}
+		}
 	}
 	
 	immediate = {
 		set_character_flag = hunt_event_happened
+		any_vassal = {
+			limit = {
+				prisoner = no
+				NOT = { trait = incapable }
+				war = no
+				in_command = no
+				is_adult = yes
+				OR = {
+					is_abroad = no
+					at_location = ROOT
+				}
+				OR = {
+					trait = ambitious
+					NOT = {
+						trait = slothful
+					}
+				}
+			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
+			save_event_target_as = target_vassal
+		}
 	}	
 
 	mean_time_to_happen = {
@@ -1592,7 +1777,7 @@ character_event = {
 				trait = content
 			}
 		}
-		random_vassal = {
+		event_target:target_vassal = {
 			opinion = {
 				modifier = opinion_irritated
 				who = ROOT
@@ -1610,7 +1795,7 @@ character_event = {
 			}
 		}
 		treasury = -10
-		random_vassal = {
+		event_target:target_vassal = {
 			opinion = {
 				modifier = opinion_happy
 				who = ROOT
@@ -1627,19 +1812,7 @@ character_event = {
 				trait = content
 			}
 		}
-		random_vassal = {
-			limit = {
-				war = no
-				prisoner = no
-				is_adult = yes
-				OR = {
-					trait = diligent
-					trait = ambitious
-					NOT = {
-						trait = slothful
-					}
-				}
-			}
+		event_target:target_vassal = {
 			opinion = {
 				modifier = content_neg
 				who = ROOT

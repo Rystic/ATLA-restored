@@ -1,0 +1,629 @@
+###########################################
+#                                         #
+# Chinese Invasions				 		  #
+#                                         #
+# ID JD.10100-JD.10200    	              #
+#                                         #
+###########################################
+
+namespace = JD
+
+#Rebel General's Empire continues temple names, triggers for any title with the uses_temple_names_by_script title flag
+#Fired from various on_new_holder on actions
+character_event = {
+	id = JD.60204
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		FROM = { has_title_flag = uses_temple_names_by_script }
+		NOT = { has_character_flag = given_temple_name_by_script }
+	}
+
+    #has_dlc = "Jade Dragon" NAH MATE SUCC A DUCC HAHAHAHAHAHA
+
+	immediate = {
+		if = { #Chinese Imperial but not Chinese/Altaic, let convert culture
+			limit = { 
+				has_character_flag = chinese_imperial_government_preserve
+			}
+			repeat_event = { id = JD.60212 days = 1 }
+			break = yes
+		}
+		FROM = { save_event_target_as = temple_name_title }
+		if = { #New Chinese dynasty = new founder name
+			limit = { NOT = { dynasty = FROMFROM } }
+			random_list = {
+				1 = { set_name = Gaozu }
+				1 = { set_name = Taizu }
+				1 = { set_name = Shizu }
+				1 = { set_name = Zhaozu }
+				1 = { set_name = Jingzu }
+				1 = { set_name = Xianzu }
+				1 = { set_name = Liezu }
+				1 = { set_name = Chengzu }
+			}
+			set_character_flag = given_temple_name_by_script
+			#event_target:temple_name_title = { #Random Empire name that China doesn't have
+			#	clear_flags_with_prefix = temple_name_
+			#	clear_flags_with_prefix = china_name_
+			#	random_list = {
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = tang_china } } }
+			#			set_name = "Tang Empire"
+			#			set_title_flag = china_name_Tang
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = jin_china } } }
+			#			set_name = "Jin Empire"
+			#			set_title_flag = china_name_Jin
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = wei_china } } }
+			#			set_name = "Wei Empire"
+			#			set_title_flag = china_name_Wei
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = qi_china } } }
+			#			set_name = "Qi Empire"
+			#			set_title_flag = china_name_Qi
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = zhou_china } } }
+			#			set_name = "Zhou Empire"
+			#			set_title_flag = china_name_Zhou
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = han_china } } }
+			#			set_name = "Han Empire"
+			#			set_title_flag = china_name_Han
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = qin_china } } }
+			#			set_name = "Qin Empire"
+			#			set_title_flag = china_name_Qin
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = yan_china } } }
+			#			set_name = "Yan Empire"
+			#			set_title_flag = china_name_Yan
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = zhao_china } } }
+			#			set_name = "Zhao Empire"
+			#			set_title_flag = china_name_Zhao
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = liao_china } } }
+			#			set_name = "Liao Empire"
+			#			set_title_flag = china_name_Liao
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = yuan_china } } }
+			#			set_name = "Yuan Empire"
+			#			set_title_flag = china_name_Yuan
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = xia_china } } }
+			#			set_name = "Xia Empire"
+			#			set_title_flag = china_name_Xia
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = qing_china } } }
+			#			set_name = "Qing Empire"
+			#			set_title_flag = china_name_Qing
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = dai_china } } }
+			#			set_name = "Dai Empire"
+			#			set_title_flag = china_name_Dai
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = cheng_china } } }
+			#			set_name = "Cheng Empire"
+			#			set_title_flag = china_name_Cheng
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = liang_china } } }
+			#			set_name = "Liang Empire"
+			#			set_title_flag = china_name_Liang
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = song_china } } }
+			#			set_name = "Song Empire"
+			#			set_title_flag = china_name_Song
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = ming_china } } }
+			#			set_name = "Ming Empire"
+			#			set_title_flag = china_name_Ming
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = shu_china } } }
+			#			set_name = "Shu Empire"
+			#			set_title_flag = china_name_Shu
+			#	}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = wu_china } } }
+			#			set_name = "Wu Empire"
+			#			set_title_flag = china_name_Wu
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = chu_china } } }
+			#			set_name = "Chu Empire"
+			#			set_title_flag = china_name_Chu
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = yue_china } } }
+			#			set_name = "Yue Empire"
+			#			set_title_flag = china_name_Yue
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = yin_china } } }
+			#			set_name = "Yin Empire"
+			#			set_title_flag = china_name_Yin
+			#		}
+			#		1 = { 
+			#			trigger = { NOT = { offmap_china = { has_offmap_name = shun_china } } }
+			#			set_name = "Shun Empire"
+			#			set_title_flag = china_name_Shun
+			#		}
+			#	}
+			#}
+			break = yes
+		}
+		if = { #We somehow used every single one of the 56 temple names... clear them out then continue
+			limit = { 
+				event_target:temple_name_title = {
+					has_title_flag = temple_name_Gaozu
+					has_title_flag = temple_name_Hui
+					has_title_flag = temple_name_Qian
+					has_title_flag = temple_name_Hong
+					has_title_flag = temple_name_Wen
+					has_title_flag = temple_name_Jing
+					has_title_flag = temple_name_Wu
+					has_title_flag = temple_name_Qin
+					has_title_flag = temple_name_Xiao
+					has_title_flag = temple_name_Zhao
+					has_title_flag = temple_name_Xuan
+					has_title_flag = temple_name_Li
+					has_title_flag = temple_name_Yuan
+					has_title_flag = temple_name_Zhang
+					has_title_flag = temple_name_Shang
+					has_title_flag = temple_name_Dong
+					has_title_flag = temple_name_Huan
+					has_title_flag = temple_name_Jian
+					has_title_flag = temple_name_Chin
+					has_title_flag = temple_name_Hou
+					has_title_flag = temple_name_Kuei
+					has_title_flag = temple_name_Zhao
+					has_title_flag = temple_name_Xi
+					has_title_flag = temple_name_Jou
+					has_title_flag = temple_name_Shu
+					has_title_flag = temple_name_Han
+					has_title_flag = temple_name_Jin
+					has_title_flag = temple_name_Lan
+					has_title_flag = temple_name_Puyi
+					has_title_flag = temple_name_Ting
+					has_title_flag = temple_name_Ming
+					has_title_flag = temple_name_Tian
+					has_title_flag = temple_name_Yi
+					has_title_flag = temple_name_JinLong
+					has_title_flag = temple_name_Ching
+					has_title_flag = temple_name_WeiMin
+					has_title_flag = temple_name_Dao
+					has_title_flag = temple_name_Lie
+					has_title_flag = temple_name_Ai
+					has_title_flag = temple_name_ShuHan
+					has_title_flag = temple_name_De
+					has_title_flag = temple_name_Xing
+					has_title_flag = temple_name_Xin
+					has_title_flag = temple_name_Kang
+					has_title_flag = temple_name_Zhuang
+					has_title_flag = temple_name_Ping
+					has_title_flag = temple_name_Sima
+					has_title_flag = temple_name_Ying
+					has_title_flag = temple_name_Yang
+					has_title_flag = temple_name_Cao
+					has_title_flag = temple_name_Yong
+					has_title_flag = temple_name_Zhi
+					has_title_flag = temple_name_Sun
+					has_title_flag = temple_name_Shao
+					has_title_flag = temple_name_Gong
+					has_title_flag = temple_name_Yin
+				}
+			}
+			event_target:temple_name_title = {
+				clear_flags_with_prefix = temple_name_
+			}
+		}
+		random_list = { #Now continue with successor names
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Gaozu } } }
+				set_name = "Gaozu"
+				event_target:temple_name_title = { set_title_flag = temple_name_Gaozu }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Hui } } }
+				set_name = "Hui"
+				event_target:temple_name_title = { set_title_flag = temple_name_Hui }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Qian } } }
+				set_name = "Qian"
+				event_target:temple_name_title = { set_title_flag = temple_name_Qian }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Hong } } }
+				set_name = "Hong"
+				event_target:temple_name_title = { set_title_flag = temple_name_Hong }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Wen } } }
+				set_name = "Wen"
+				event_target:temple_name_title = { set_title_flag = temple_name_Wen }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Jing } } }
+				set_name = "Jing"
+				event_target:temple_name_title = { set_title_flag = temple_name_Jing }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Wu } } }
+				set_name = "Wu"
+				event_target:temple_name_title = { set_title_flag = temple_name_Wu }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Qin } } }
+				set_name = "Qin"
+				event_target:temple_name_title = { set_title_flag = temple_name_Qin }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Xiao } } }
+				set_name = "Xiao"
+				event_target:temple_name_title = { set_title_flag = temple_name_Xiao }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Zhao } } }
+				set_name = "Zhao"
+				event_target:temple_name_title = { set_title_flag = temple_name_Zhao }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Xuan } } }
+				set_name = "Xuan"
+				event_target:temple_name_title = { set_title_flag = temple_name_Xuan }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Li } } }
+				set_name = "Li"
+				event_target:temple_name_title = { set_title_flag = temple_name_Li }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Yuan } } }
+				set_name = "Yuan"
+				event_target:temple_name_title = { set_title_flag = temple_name_Yuan }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Zhang } } }
+				set_name = "Zhang"
+				event_target:temple_name_title = { set_title_flag = temple_name_Zhang }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Shang } } }
+				set_name = "Shang"
+				event_target:temple_name_title = { set_title_flag = temple_name_Shang }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Dong } } }
+				set_name = "Dong"
+				event_target:temple_name_title = { set_title_flag = temple_name_Dong }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Huan } } }
+				set_name = "Huan"
+				event_target:temple_name_title = { set_title_flag = temple_name_Huan }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Jian } } }
+				set_name = "Jian"
+				event_target:temple_name_title = { set_title_flag = temple_name_Jian }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Chin } } }
+				set_name = "Chin"
+				event_target:temple_name_title = { set_title_flag = temple_name_Chin }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Hou } } }
+				set_name = "Hou"
+				event_target:temple_name_title = { set_title_flag = temple_name_Hou }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Kuei } } }
+				set_name = "Kuei"
+				event_target:temple_name_title = { set_title_flag = temple_name_Kuei }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Zhao } } }
+				set_name = "Zhao"
+				event_target:temple_name_title = { set_title_flag = temple_name_Zhao }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Xi } } }
+				set_name = "Xi"
+				event_target:temple_name_title = { set_title_flag = temple_name_Xi }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Jou } } }
+				set_name = "Jou"
+				event_target:temple_name_title = { set_title_flag = temple_name_Jou }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Shu } } }
+				set_name = "Shu"
+				event_target:temple_name_title = { set_title_flag = temple_name_Shu }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Han } } }
+				set_name = "Han"
+				event_target:temple_name_title = { set_title_flag = temple_name_Han }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Jin } } }
+				set_name = "Jin"
+				event_target:temple_name_title = { set_title_flag = temple_name_Jin }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Lan } } }
+				set_name = "Lan"
+				event_target:temple_name_title = { set_title_flag = temple_name_Lan }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Puyi } } }
+				set_name = "Puyi"
+				event_target:temple_name_title = { set_title_flag = temple_name_Puyi }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Ting } } }
+				set_name = "Ting"
+				event_target:temple_name_title = { set_title_flag = temple_name_Ting }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Ming } } }
+				set_name = "Ming"
+				event_target:temple_name_title = { set_title_flag = temple_name_Ming }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Tian } } }
+				set_name = "Tian"
+				event_target:temple_name_title = { set_title_flag = temple_name_Tian }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Yi } } }
+				set_name = "Yi"
+				event_target:temple_name_title = { set_title_flag = temple_name_Yi }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_JinLong } } }
+				set_name = "Jin-Long"
+				event_target:temple_name_title = { set_title_flag = temple_name_JinLong }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Gongsun } } }
+				set_name = "Gongsun"
+				event_target:temple_name_title = { set_title_flag = temple_name_Gongsun }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Ching } } }
+				set_name = "Ching"
+				event_target:temple_name_title = { set_title_flag = temple_name_Ching }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_WeiMin } } }
+				set_name = "Wei-Min"
+				event_target:temple_name_title = { set_title_flag = temple_name_WeiMin }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Lie } } }
+				set_name = "Lie"
+				event_target:temple_name_title = { set_title_flag = temple_name_Lie }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Ai } } }
+				set_name = "Ai"
+				event_target:temple_name_title = { set_title_flag = temple_name_Ai }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_ShuHan } } }
+				set_name = "Shu-Han"
+				event_target:temple_name_title = { set_title_flag = temple_name_ShuHan }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_De } } }
+				set_name = "De"
+				event_target:temple_name_title = { set_title_flag = temple_name_De }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Xing } } }
+				set_name = "Xing"
+				event_target:temple_name_title = { set_title_flag = temple_name_Xing }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Xin } } }
+				set_name = "Xin"
+				event_target:temple_name_title = { set_title_flag = temple_name_Xin }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Kang } } }
+				set_name = "Kang"
+				event_target:temple_name_title = { set_title_flag = temple_name_Kang }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Zhuang } } }
+				set_name = "Zhuang"
+				event_target:temple_name_title = { set_title_flag = temple_name_Zhuang }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Ping } } }
+				set_name = "Ping"
+				event_target:temple_name_title = { set_title_flag = temple_name_Ping }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Sima } } }
+				set_name = "Sima"
+				event_target:temple_name_title = { set_title_flag = temple_name_Sima }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Ying } } }
+				set_name = "Ying"
+				event_target:temple_name_title = { set_title_flag = temple_name_Ying }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Yang } } }
+				set_name = "Yang"
+				event_target:temple_name_title = { set_title_flag = temple_name_Yang }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Cao } } }
+				set_name = "Cao"
+				event_target:temple_name_title = { set_title_flag = temple_name_Cao }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Yong } } }
+				set_name = "Yong"
+				event_target:temple_name_title = { set_title_flag = temple_name_Yong }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Zhi } } }
+				set_name = "Zhi"
+				event_target:temple_name_title = { set_title_flag = temple_name_Zhi }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Sun } } }
+				set_name = "Sun"
+				event_target:temple_name_title = { set_title_flag = temple_name_Sun }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Shao } } }
+				set_name = "Shao"
+				event_target:temple_name_title = { set_title_flag = temple_name_Shao }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Gong } } }
+				set_name = "Gong"
+				event_target:temple_name_title = { set_title_flag = temple_name_Gong }
+				set_character_flag = given_temple_name_by_script
+			}
+			1 = {
+				trigger = { NOT = { event_target:temple_name_title = { has_title_flag = temple_name_Yin } } }
+				set_name = "Yin"
+				event_target:temple_name_title = { set_title_flag = temple_name_Yin }
+				set_character_flag = given_temple_name_by_script
+			}
+		}
+	}
+}
+
+#You inherit a Chinese Empire, change culture to keep government?
+character_event = {
+	id = JD.60212
+	desc = EVT_DESC_JD_60212
+	picture = GFX_evt_china_rebel_general
+
+	is_triggered_only = yes
+	has_dlc = "Jade Dragon"
+
+	option = { #Convert culture
+		name = EVT_OPTA_JD_60212
+		culture = FROMFROM
+		clr_character_flag = chinese_imperial_government_preserve
+		repeat_event = { id = JD.60204 }
+	}
+#	option = { #Do not, let the Empire die
+#		name = EVT_OPTB_JD_60212
+#		ai_chance = { factor = 0 }
+#		primary_title = {
+#			clr_title_flag = pretender_chinese_empire
+#			clr_title_flag = uses_temple_names_by_script
+#			clear_flags_with_prefix = temple_name_
+#			clear_flags_with_prefix = china_name_
+#			set_name = "[Root.Capital.GetName] Empire"
+#		}
+#		if = {
+#			limit = {
+#				religion_group = muslim
+#			}
+#			set_government_type = muslim_government
+#		}
+#		else_if = {
+#			limit = {
+#				culture_group = tibetan_group
+#				OR = {
+#					religion = bon
+#					religion = bon_reformed
+#					religion = buddhist
+#				}
+#				higher_tier_than = BARON
+#			}
+#			set_government_type = theocratic_feudal_government
+#		}
+#		else = {
+#			set_government_type = feudal_government
+#		}
+#		clr_character_flag = chinese_imperial_government_preserve
+#	}
+}

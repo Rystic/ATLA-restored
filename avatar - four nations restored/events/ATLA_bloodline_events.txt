@@ -1,0 +1,289 @@
+namespace = bloodline_events
+character_event = {
+	id = bloodline_events.0001
+	desc = EVTDESCbender_bloodlines.1
+	min_age = 16
+		
+	trigger = {
+		NOR = {
+			trait = ambitious
+			has_character_flag = ambitious_check
+		}
+		any_owned_bloodline = {
+			has_bloodline_flag = bloodline_chin
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+		
+	option = {
+		name = EVTOPTbender_bloodlines.0001
+			
+		hidden_tooltip = {
+			random_list = {
+				60 = {
+					add_trait = ambitious
+				}
+				10 = {
+					add_trait = craven
+				}
+				1 = {
+					add_trait = ambitious
+					add_trait = strong
+				}
+				29 = {
+				}
+			}
+			set_flag = ambitious_check
+		}
+	}
+}
+
+character_event = {
+	id = bloodline_events.0002
+	desc = EVTDESCbender_bloodlines.2
+	min_age = 16
+		
+	trigger = {
+		AND = {
+			trait = fullyrealisedavatar
+			NOR = {
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_takahama
+				}
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_avatar_1
+				}
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_avatar_2
+				}
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_avatar_3
+				}
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_avatar_4
+				}
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+	
+	option = {
+		random_list = {
+			25 = {
+				create_bloodline = {
+					type = bloodline_avatar_1
+				}
+			}
+			25 = {
+				create_bloodline = {
+					type = bloodline_avatar_2
+                }
+            }
+			25 = {
+				create_bloodline = {
+					type = bloodline_avatar_3
+                }
+			}
+			25 = {
+				create_bloodline = {
+					type = bloodline_avatar_4
+                }
+            }
+        }
+    }
+}
+
+character_event = {
+	id = bloodline_events.0003
+	desc = EVTDESCbender_bloodlines.3
+	min_age = 16
+		
+	trigger = {
+		trait = earthbender
+		NOR = {
+			trait = metalbender
+			has_character_flag = metalbender_check
+		}
+		any_owned_bloodline = {
+			has_bloodline_flag = bloodline_metalbender_founder
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+		
+	option = {
+		name = EVTOPTbender_bloodlines.0003
+			
+		hidden_tooltip = {
+			random_list = {
+				50 = {
+					add_trait = metalbender
+				}
+				50 = {
+				}
+			}
+			set_flag = metalbender_check
+		}
+	}
+}
+
+character_event = { # kyoshi dies in personal duel
+	id = bloodline_events.0004
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		character = 34
+		OR = {
+			death_reason = death_duel
+			death_reason = death_mission_duel
+			death_reason = death_battle_duel
+			death_reason = death_legendary_fail_duel
+			death_reason = death_legendary_win_duel
+			death_reason = death_claim_duel_attacker
+			death_reason = death_claim_duel_defender
+		}
+		killer = {
+			is_alive = yes
+			religion = way_of_chin
+		}
+	}
+	
+	immediate = {
+		killer = { narrative_event = { id = bloodline_events.0005 days = 3 random = 2 } }
+	}
+}
+
+narrative_event = {
+	id = bloodline_events.0005
+	desc = EVTDESCbender_bloodlines.5
+	title = EVTTbender_bloodlines.5
+	
+	#picture =
+	
+	is_triggered_only = yes
+
+	option = {
+		name = bloodline_events.0005optA
+		
+		prestige = 250
+		create_bloodline = {
+			type = kyoshi_killer_chin
+		}
+	}
+}
+
+character_event = { # kyoshi dies in personal duel
+	id = bloodline_events.0006
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		character = 34
+		OR = {
+			death_reason = death_duel
+			death_reason = death_mission_duel
+			death_reason = death_battle_duel
+			death_reason = death_legendary_fail_duel
+			death_reason = death_legendary_win_duel
+			death_reason = death_claim_duel_attacker
+			death_reason = death_claim_duel_defender
+		}
+		killer = {
+			is_alive = yes
+		}
+	}
+	
+	immediate = {
+		killer = { narrative_event = { id = bloodline_events.0007 days = 3 random = 2 } }
+	}
+}
+
+narrative_event = {
+	id = bloodline_events.0007
+	desc = EVTDESCbender_bloodlines.7
+	title = EVTTbender_bloodlines.7
+	
+	#picture =
+	
+	is_triggered_only = yes
+
+	option = {
+		name = bloodline_events.0007optA
+		
+		prestige = 250
+		create_bloodline = {
+			type = kyoshi_killer
+		}
+	}
+}
+
+narrative_event = {
+	id = bloodline_events.0008
+	desc = EVTDESCbender_bloodlines.8
+	title = EVTTbender_bloodlines.8
+	#picture
+	is_triggered_only = yes
+	
+	trigger = {
+		prestige = 5000
+		piety = 5000
+		prisoner = no
+		NOR = {
+			any_owned_bloodline = {
+				has_bloodline_flag = bloodline_earthking
+			}
+			any_owned_bloodline = {
+				has_bloodline_flag = bloodline_houting
+			}
+		}
+	}
+	
+	option = {
+		name = bloodline_events.0008opt
+		
+		prestige = 250
+		create_bloodline = {
+			type = bloodline_earthking
+		}
+	}
+}
+
+narrative_event = {
+	id = bloodline_events.0009
+	desc = EVTDESCbender_bloodlines.9
+	title = EVTTbender_bloodlines.9
+	#picture
+	is_triggered_only = yes
+	
+	trigger = {
+		prisoner = no
+		completely_controls = e_earth_kingdom
+		NOT = { has_global_flag = earth_uniter }
+		NOR = {
+			any_owned_bloodline = {
+				has_bloodline_flag = earth_uniter_bloodline
+			}
+		}
+	}
+	
+	option = {
+		name = bloodline_events.0009opt
+		
+		prestige = 250
+		create_bloodline = {
+			type = bloodline_earth_uniter
+		}
+		set_global_flag = earth_uniter
+	}
+}

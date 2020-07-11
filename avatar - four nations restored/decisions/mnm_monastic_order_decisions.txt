@@ -5,6 +5,7 @@
 ###########################################
 
 # General
+
 society_decisions = { # Society decisions are only evaluated by members of societies	
 	request_to_rank_up_within_society = {
 		only_playable = yes
@@ -22,10 +23,13 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 						society_member_of = the_enlightened
 						society_member_of = the_kemurikage_sisterhood
 						society_member_of = the_white_lotus
+						society_member_of = healing_hut_north
+						society_member_of = the_black_market
 					}
 				}
 				society_rank < 4
 				days_in_society > 365
+				#has_dlc = "Mystics"
 				is_in_society = yes
 				OR = { #Players can always rank up (if they have the power)
 					ai = no
@@ -54,6 +58,32 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 				}
 			}
 			trigger_if = {
+				limit = { has_character_modifier = lost_rank_up_duel_cooldown }
+				custom_tooltip = {
+					text = recently_lost_rank_up_duel_tt
+					NOT = { has_character_modifier = lost_rank_up_duel_cooldown }				
+				}
+			}
+			trigger_if = {
+				limit = {
+					ai = no #if you are a player
+	                any_society_member = { #and there are already 4 other Heroes (rank is full).
+	                	count = 4
+	                    society_rank == 4
+	                }
+				}
+				custom_tooltip = {
+					text = there_is_a_hero_available_to_duel_tt
+		            any_society_member = { #there is no one to duel for the spot...
+	                    ai = yes
+                    	NOT = { has_character_flag = call_to_legend_active }
+	                    NOT = { trait = incapable }
+	                    prisoner = no
+	                    society_rank == 4
+	                }
+				}
+			}
+			trigger_if = {
 				limit = { has_character_flag = rank_up_blocked }
 				custom_tooltip = {
 					text = rank_up_blocked_tt
@@ -63,7 +93,7 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 			custom_tooltip = {
 				text = request_to_rank_up_within_society_cynical_tt
 				OR = {
-					NOT = { society_member_of = monastic_order_elder_council }
+					NOR = { society_member_of = monastic_order_elder_council }
 					AND = {
 						society_rank == 1
 						NOT = {
@@ -96,7 +126,7 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 			custom_tooltip = {
 				text = request_to_rank_up_within_society_virtues_tt
 				OR = {
-					NOT = { society_member_of = monastic_order_elder_council }
+					NOR = { society_member_of = monastic_order_elder_council }
 					AND = {
 						society_rank == 1
 						OR = {
@@ -165,31 +195,57 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 						society_member_of = the_enlightened
 						society_member_of = the_kemurikage_sisterhood
 						society_member_of = the_white_lotus
+						society_member_of = healing_hut_north
 					}
 				}
 			}
 		}
 
 		effect = {
-			#Rank up cost
-			if = {
-				limit = { society_rank == 1 }
-				change_society_currency = -750
-			}
-			if = {
-				limit = { society_rank == 2 }
-				change_society_currency = -1000
-			}
-			if = {
-				limit = { society_rank == 3 }
-				change_society_currency = -2000
+			society = { save_event_target_as = my_society }
+			if = { # Special handling for warrior lodge rank 3 members (in a society with enough Heroes already)...
+				limit = {
+					ai = no
+					is_member_of_any_warrior_lodge_trigger = yes
+					society_rank == 3
+					society = {
+	                    any_society_member = { #make sure there is someone you can duel for the spot.
+	                    	NOT = { has_character_flag = call_to_legend_active }
+		                    ai = yes
+		                    prisoner = no
+		                    society_rank == 4
+		                }
+		                any_society_member = { #make sure there are already 4 other Heroes (rank is full).
+		                	count = 4
+		                    society_rank == 4
+		                }
+					}
+				}
+				set_character_flag = has_sent_request_to_rank_up
+				character_event = { id = HF.10060 } #sends event presenting choice: to duel a current Hero or nah?
 			}
 
-			#Perform rank up
-			hidden_tooltip = {
-				save_event_target_as = rank_up_target
-				set_character_flag = has_sent_request_to_rank_up
-				character_event = { id = MNSAK.3000 days = 20 random = 10 } # sends hidden delayed event to self, which then sends request to Leader of the society
+			else = { #For everyone else...
+				#Rank up cost
+				if = {
+					limit = { society_rank == 1 }
+					change_society_currency = -750
+				}
+				if = {
+					limit = { society_rank == 2 }
+					change_society_currency = -1000
+				}
+				if = {
+					limit = { society_rank == 3 }
+					change_society_currency = -2000
+				}
+
+				#Perform rank up
+				hidden_tooltip = {
+					save_event_target_as = rank_up_target
+					set_character_flag = has_sent_request_to_rank_up
+					character_event = { id = MNSAK.3000 days = 20 random = 10 } # sends hidden delayed event to self, which then sends request to Leader of the society
+				}
 			}
 		}
 
@@ -213,7 +269,7 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 			}
 		}
 	}
-	
+
 	monastic_order_decide_policy = {
 		ai_check_interval = 12
 		is_high_prio = yes
@@ -2801,5 +2857,4 @@ targeted_decisions = {
 			}
 		}
 	}
-	
 }

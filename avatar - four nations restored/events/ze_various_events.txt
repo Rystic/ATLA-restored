@@ -26,12 +26,11 @@ character_event = {
 	trigger = {
 		has_dlc = "Zeus"
 		FROM = {
-			NOT = { new_character = { is_lover = FROM } }
 			is_female = yes
+			NOT = { new_character = { is_lover = FROM } }
 			OR = {
 				trait = possessed
-				trait = genius
-				trait = quick
+				is_smart_trigger = yes
 				trait = celibate
 				trait = diligent
 				trait = wroth
@@ -41,8 +40,7 @@ character_event = {
 				trait = homosexual
 			}
 			NOR = {
-				trait = slow
-				trait = imbecile
+				is_dumb_trigger = yes
 				trait = inbred
 				trait = humble
 				trait = slothful
@@ -127,16 +125,21 @@ character_event = {
 				}
 				random_list = {
 					10 = {
-						modifier = {
-							factor = 0
-							OR = {
-								trait = celibate
-								has_lover = yes
-							}
-						}
 						add_trait = celibate
 					}
 					10 = {
+						trigger = {
+							ROOT = {
+								any_courtier = {
+									is_ill = no
+									NOT = { trait = incapable }
+									NOT = { trait = celibate }
+									NOT = { has_ugly_trait_trigger = yes }
+									age = 16
+									NOT = { age = 50 }
+								}
+							}
+						}
 						custom_tooltip = { text = disobedient_daughter_takes_lover }
 						ROOT = {
 							random_courtier = {
@@ -144,7 +147,8 @@ character_event = {
 									is_ill = no
 									NOT = { trait = incapable }
 									NOT = { trait = celibate }
-									NOT = { trait = ugly }
+									NOT = { has_ugly_trait_trigger = yes }
+									age = 16
 									NOT = { age = 50 }
 								}
 								add_lover = FROMFROM
@@ -232,10 +236,10 @@ character_event = {
 		has_dlc = "Zeus"
 		has_lover = yes
 		OR = {
-			death_reason = death_execution
-			death_reason = death_murder
+			death_execution_trigger = yes
+			death_murder_known_trigger = yes
 			death_reason = death_dungeon
-			death_reason = death_sacrificed
+			death_sacrificed_trigger = yes
 		}
 		any_lover = {
 			OR = {
@@ -250,14 +254,13 @@ character_event = {
 			}
 			is_female = yes
 			NAND = {
-				ROOT = { death_reason = death_sacrificed }
+				ROOT = { death_sacrificed_trigger = yes }
 				trait = zealous
 				ROOT = { killer = { religion = PREVPREV } }
 			}
 			OR = {
 				trait = possessed
-				trait = genius
-				trait = quick
+				is_smart_trigger = yes
 				trait = celibate
 				trait = diligent
 				trait = wroth
@@ -267,8 +270,7 @@ character_event = {
 				trait = homosexual
 			}
 			NOR = {
-				trait = slow
-				trait = imbecile
+				is_dumb_trigger = yes
 				trait = inbred
 				trait = humble
 				trait = slothful
@@ -296,14 +298,13 @@ character_event = {
 					}
 				}
 				NAND = {
-					ROOT = { death_reason = death_sacrificed }
+					ROOT = { death_sacrificed_trigger = yes }
 					trait = zealous
 					ROOT = { killer = { religion = PREVPREV } }
 				}
 				OR = {
 					trait = possessed
-					trait = genius
-					trait = quick
+					is_smart_trigger = yes
 					trait = celibate
 					trait = diligent
 					trait = wroth
@@ -313,8 +314,7 @@ character_event = {
 					trait = homosexual
 				}
 				NOR = {
-					trait = slow
-					trait = imbecile
+					is_dumb_trigger = yes
 					trait = inbred
 					trait = humble
 					trait = slothful
@@ -370,21 +370,20 @@ character_event = {
 		any_friend = {
 			is_female = yes
 			OR = {
-				ROOT = { death_reason = death_execution }
-				ROOT = { death_reason = death_murder }
+				ROOT = { death_execution_trigger = yes }
+				ROOT = { death_murder_known_trigger = yes }
 				ROOT = { death_reason = death_dungeon }
 				AND = {
 					OR = {
 						NOT = { trait = zealous }
 						NOT = { ROOT = { killer = { religion = PREVPREV } } }
 					}
-					ROOT = { death_reason = death_sacrificed }
+					ROOT = { death_sacrificed_trigger = yes }
 				}
 			}
 			OR = {
 				trait = possessed
-				trait = genius
-				trait = quick
+				is_smart_trigger = yes
 				trait = celibate
 				trait = diligent
 				trait = wroth
@@ -394,8 +393,7 @@ character_event = {
 				trait = homosexual
 			}
 			NOR = {
-				trait = slow
-				trait = imbecile
+				is_dumb_trigger = yes
 				trait = inbred
 				trait = humble
 				trait = slothful
@@ -423,21 +421,20 @@ character_event = {
 			limit = {
 				is_female = yes
 				OR = {
-					ROOT = { death_reason = death_execution }
-					ROOT = { death_reason = death_murder }
+					ROOT = { death_execution_trigger = yes }
+					ROOT = { death_murder_known_trigger = yes }
 					ROOT = { death_reason = death_dungeon }
 					AND = {
 						OR = {
 							NOT = { trait = zealous }
 							NOT = { ROOT = { killer = { religion = PREVPREV } } }
 						}
-						ROOT = { death_reason = death_sacrificed }
+						ROOT = { death_sacrificed_trigger = yes }
 					}
 				}
 				OR = {
 					trait = possessed
-					trait = genius
-					trait = quick
+					is_smart_trigger = yes
 					trait = celibate
 					trait = diligent
 					trait = wroth
@@ -447,8 +444,7 @@ character_event = {
 					trait = homosexual
 				}
 				NOR = {
-					trait = slow
-					trait = imbecile
+					is_dumb_trigger = yes
 					trait = inbred
 					trait = humble
 					trait = slothful
@@ -518,7 +514,7 @@ character_event = {
 			is_female = yes
 			is_ill = no
 			NOT = { trait = incapable }
-			NOT = { trait = in_hiding }
+			NOT = { is_inaccessible_trigger = yes }
 			liege = { character = ROOT }
 			has_character_flag = disobedient_daughter
 			has_character_flag = disobedient_daughter_unhappy
@@ -528,10 +524,11 @@ character_event = {
 	immediate = {
 		random_child = {
 			limit = {
+				is_ruler = no
 				is_female = yes
 				is_ill = no
 				NOT = { trait = incapable }
-				NOT = { trait = in_hiding }
+				NOT = { is_inaccessible_trigger = yes }
 				liege = { character = ROOT }
 				has_character_flag = disobedient_daughter
 				has_character_flag = disobedient_daughter_unhappy
@@ -659,7 +656,7 @@ character_event = {
 				modifier = {
 					factor = 10
 					spouse = {
-						combat_rating_diff = { who = ROOT value = -4 }
+						combat_rating_diff = { who = ROOT value = -40 }
 					}
 				}
 				modifier = {
@@ -758,6 +755,20 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
+					NOT = {
+						liege = {
+							any_courtier = {
+								ai = yes
+								is_valid_romance_target = ROOT
+								prisoner = no
+								NOT = { character = ROOT }
+								NOT = { num_of_lovers = 5 }
+							}
+						}
+					}
+				}
+				modifier = {
+					factor = 0
 					num_of_lovers = 5
 				}
 				modifier = {
@@ -774,7 +785,7 @@ character_event = {
 				}
 				modifier = {
 					factor = 1.5
-					trait = fair
+					has_fair_trait_trigger = yes
 				}
 				remove_trait = chaste
 				liege = {
@@ -786,7 +797,7 @@ character_event = {
 							NOT = { character = ROOT }
 							NOT = { num_of_lovers = 5 }
 						}
-						remove_trait = in_hiding
+						end_inaccessibility_effect = yes
 						add_lover = ROOT
 					}
 				}
@@ -915,7 +926,7 @@ character_event = {
 		FROM = {
 			spouse = {
 				death = {
-					death_reason = death_murder_unknown
+					death_reason = death_murder_unknown_poison
 					killer = FROM
 				}
 			}
@@ -1005,10 +1016,7 @@ character_event = {
 	option = {
 		name = EVTOPTA_ZE_1142
 		FROMFROM = {
-			if = {
-				limit = { trait = in_hiding }
-				remove_trait = in_hiding
-			}
+			end_inaccessibility_effect = yes #removes in_hiding or in_seclusion
 			remove_spouse = spouse
 			random_lover = {
 				limit = {
@@ -1031,7 +1039,7 @@ character_event = {
 	}
 }
 
-# Starts mercenary/pirate band
+# Elopes and starts mercenary/pirate band
 character_event = {
 	id = ZE.1150
 	title = EVTTITLE_ZE_1150
@@ -1044,10 +1052,7 @@ character_event = {
 	option = {
 		name = EVTOPTA_ZE_1150
 		FROM = {
-			if = {
-				limit = { trait = in_hiding }
-				remove_trait = in_hiding
-			}
+			end_inaccessibility_effect = yes
 			remove_spouse = spouse
 			random_lover = {
 				limit = {
@@ -1055,7 +1060,7 @@ character_event = {
 					is_married = no
 					is_female = no
 				}
-				add_spouse_matrilineal = ROOT
+				add_spouse_matrilineal = PREV
 			}
 			hidden_tooltip = {
 				add_trait = adventurer
@@ -1080,14 +1085,15 @@ character_event = {
 				temporary = yes
 				adventurer = yes
 				custom_created = yes
-				culture = FROM
-				holder = FROM
+				culture = THIS
+				holder = THIS
 				mercenary = yes
 				army_template = mercenary_princess_composition
 				ruler = "CAPTAIN"
 				ruler_female = "CAPTAIN"
 				foa = "CAPTAIN_FOA"
 			}
+			set_defacto_liege = THIS
 		}
 	}
 }
