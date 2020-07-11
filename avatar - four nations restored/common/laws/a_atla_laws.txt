@@ -13,6 +13,22 @@ law_groups = {
 		law_type = realm
 		allowed_for_councillors = no
 	}
+	ek_army_laws = {
+		law_type = realm
+		allowed_for_councillors = no
+	}
+	ek_law_system = {
+		law_type = realm
+		allowed_for_councillors = no
+	}
+	ze_earth_administration_laws = {
+		law_type = realm
+		allowed_for_councillors = no
+	}
+	earth_bureaucracy_laws = {
+		law_type = realm
+		allowed_for_councillors = no
+	}
 	fire_administration = {
 		law_type = realm
 		allowed_for_councillors = no
@@ -22,7 +38,6 @@ law_groups = {
 		allowed_for_councillors = no
 	}
 }
-
 laws = {
 
 	# AIR NOMAD LAW
@@ -194,7 +209,7 @@ laws = {
 		group = unity_earthkingdom
 		
 		allow = {
-			has_law = ek_unity_1
+			has_law = ek_unity_outposts
 			custom_tooltip = {
 				text = has_RA_for_law_change
 				hidden_tooltip = {
@@ -218,6 +233,7 @@ laws = {
 		}
 		effect = {
 			hidden_tooltip = {
+				revoke_law = ek_unity_outposts
 				revoke_law = ek_unity_0
 				revoke_law = ek_unity_1
 				revoke_law = ek_unity_2
@@ -229,13 +245,56 @@ laws = {
 		}
 	}
 	
-	ek_unity_1 = {
+	ek_unity_outposts = {
 		group = unity_earthkingdom
 		default = yes
 		
 		allow = {
 			OR = {
 				has_law = ek_unity_0
+				has_law = ek_unity_1
+			}
+			custom_tooltip = {
+				text = has_RA_for_law_change_30
+				hidden_tooltip = {
+					check_variable = { which = global_royalAuthority value = 30 }
+				}
+			}
+		}
+		potential = {
+			holder_scope = {
+				has_landed_title = e_earth_kingdom
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}			
+		ai_will_do = {
+			factor = 1
+		}
+		ai_will_revoke = {
+			factor = 0
+		}
+		effect = {
+			hidden_tooltip = {
+				revoke_law = ek_unity_0
+				revoke_law = ek_unity_1
+				revoke_law = ek_unity_2
+				revoke_law = ek_unity_3
+			}
+			custom_tooltip = {
+				text = ek_unity_outposts_TOOLTIP
+			}
+		}
+	}
+	
+	ek_unity_1 = {
+		group = unity_earthkingdom
+		default = yes
+		
+		allow = {
+			OR = {
+				has_law = ek_unity_outposts
 				has_law = ek_unity_2
 			}
 			custom_tooltip = {
@@ -261,6 +320,7 @@ laws = {
 		}
 		effect = {
 			hidden_tooltip = {
+				revoke_law = ek_unity_outposts
 				revoke_law = ek_unity_0
 				revoke_law = ek_unity_1
 				revoke_law = ek_unity_2
@@ -303,6 +363,7 @@ laws = {
 		}
 		effect = {
 			hidden_tooltip = {
+				revoke_law = ek_unity_outposts
 				revoke_law = ek_unity_0
 				revoke_law = ek_unity_1
 				revoke_law = ek_unity_2
@@ -342,6 +403,7 @@ laws = {
 		}
 		effect = {
 			hidden_tooltip = {
+				revoke_law = ek_unity_outposts
 				revoke_law = ek_unity_0
 				revoke_law = ek_unity_1
 				revoke_law = ek_unity_2
@@ -738,4 +800,1142 @@ laws = {
 			factor = 1000
 		}
 	}	
+	
+	###				 ###
+	# Earth King laws ##
+	###				 ###
+	
+	ze_admin_anarchy = {
+	group = ze_earth_administration_laws
+	allow = {
+		always = no
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = admin_anarchy_tooltip
+			}
+		}
+
+	effect = {
+			custom_tooltip = {
+			text = admin_anarchy_tooltip
+			hidden_effect = {
+				revoke_law = ze_admin_province
+				revoke_law = ze_admin_territories 
+				revoke_law = ze_admin_balance
+				revoke_law = ze_admin_slight_central
+				revoke_law = ze_admin_central
+				}
+			}	
+		}
+		global_revolt_risk = 0.04
+		global_tax_modifier = -0.15
+		
+		demesne_size = -2
+		stewardship = -1
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	ze_admin_territories = {
+	group = ze_earth_administration_laws
+	
+	allow = {
+		OR = {
+			has_law = ze_admin_anarchy
+			has_law = ze_admin_province
+		}
+		custom_tooltip = {
+			text = has_RA_for_law_change_20
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 20 }
+			}
+		}
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = admin_territories_tooltip
+			}
+		}
+
+	effect = {
+		custom_tooltip = {
+			text = admin_territories_tooltip			
+			hidden_effect = {
+				revoke_law = ze_admin_anarchy
+				revoke_law = ze_admin_province
+				revoke_law = ze_admin_balance
+				revoke_law = ze_admin_slight_central
+				revoke_law = ze_admin_central
+				}
+			}
+		}
+		
+		demesne_size = -2
+		earth_kingdom_culture_opinion = 20
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}	
+
+	ze_admin_province = {
+	group = ze_earth_administration_laws
+	
+	allow = {
+		OR = {
+			has_law = ze_admin_territories
+			has_law = ze_admin_balance
+		}
+		has_law = ek_unity_1
+		custom_tooltip = {
+			text = has_RA_for_law_change_40
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 40 }
+			}
+		}
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	revoke_allowed = {
+		always = no
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ze_admin_province_tooltip
+			}
+		}
+
+	effect = {
+		custom_tooltip = {
+			text = ze_admin_province_tooltip
+			hidden_effect = {
+				revoke_law = ze_admin_territories 
+				revoke_law = ze_admin_balance
+				revoke_law = ze_admin_slight_central
+				revoke_law = ze_admin_central
+				revoke_law = ze_admin_anarchy
+				}
+			}
+		}
+		
+		demesne_size = -1
+		earth_kingdom_culture_opinion = 10
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+
+	ze_admin_balance = {
+	group = ze_earth_administration_laws
+	
+	allow = {
+		OR = {	
+			has_law = ze_admin_province
+			has_law = ze_admin_slight_central
+		}
+		custom_tooltip = {
+			text = has_RA_for_law_change_60
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 60 }
+			}
+		}
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	revoke_allowed = {
+		always = no
+	}
+	
+	pass_effect = {
+		custom_tooltip = {
+			text = ze_admin_balance_tooltip
+			}
+		}
+
+	effect = {
+		custom_tooltip = {
+			text = ze_admin_balance_tooltip
+			hidden_effect = {
+				revoke_law = ze_admin_territories 
+				revoke_law = ze_admin_balance
+				revoke_law = ze_admin_slight_central
+				revoke_law = ze_admin_central
+				revoke_law = ze_admin_anarchy
+				revoke_law = ze_admin_province
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ze_admin_slight_central = {
+	group = ze_earth_administration_laws
+	
+	allow = {
+		OR = {
+			has_law = ze_admin_balance
+			has_law = ze_admin_central
+		}
+		custom_tooltip = {
+			text = has_RA_for_law_change_80
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 80 }
+			}
+		}
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	revoke_allowed = {
+		always = no
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ze_admin_slight_central_tooltip
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ze_admin_slight_central_tooltip
+				hidden_effect = {
+				revoke_law = ze_admin_territories 
+				revoke_law = ze_admin_balance
+				revoke_law = ze_admin_central
+				revoke_law = ze_admin_anarchy
+				revoke_law = ze_admin_province
+				}
+			}
+		}
+		
+		earth_kingdom_culture_opinion = -10
+		demesne_size = 2
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ze_admin_central = {
+	group = ze_earth_administration_laws
+	
+	allow = {
+		has_law = ze_admin_slight_central
+		has_law = ek_unity_3
+		OR = {
+			has_law =  ek_system_law_5 
+			has_law =  ek_system_law_6
+		}
+		OR = {
+			has_law = good_bureaucracy
+			has_law = slight_bureaucratic_dominance
+			has_law = bureaucratic_dominance
+		}
+		NOT = { has_law = ek_army_law_0 }	
+		custom_tooltip = {
+			text = has_RA_for_law_change_100
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 100 }
+			}
+		}
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	revoke_allowed = {
+		always = no
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ze_admin_central_tooltip
+			}
+		}
+
+	effect = {
+			custom_tooltip = {
+			text = ze_admin_central_tooltip
+			hidden_effect = {
+				revoke_law = ze_admin_territories 
+				revoke_law = ze_admin_balance
+				revoke_law = ze_admin_slight_central
+				revoke_law = ze_admin_anarchy
+				revoke_law = ze_admin_province
+				}
+			}
+		}
+		earth_kingdom_culture_opinion = -10
+		demesne_size = 2
+		any_playable_ruler = {
+			limit = {
+				OR = {
+					AND = {
+						pays_tribute_to = e_earth_kingdom
+						culture_group = earth_kingdom_culture
+					}
+					has_landed_title = e_earth_kingdom
+				}
+			}
+			narrative_event = { id = earthking.66 }
+		}
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+
+	bureaucracy_anarchy = {
+	group = earth_bureaucracy_laws
+	
+	allow = {
+		always = no
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = bureaucracy_anarchy
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = bureaucracy_anarchy
+			}
+			hidden_effect = {
+				revoke_law = underfunded_bureaucracy
+				revoke_law = balanced_bureaucracy
+				revoke_law = good_bureaucracy
+				revoke_law = slight_bureaucratic_dominance
+				revoke_law = bureaucratic_dominance
+			}
+		}
+		global_tax_modifier = -0.3
+		vassal_limit = -80
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	underfunded_bureaucracy = {
+	group = earth_bureaucracy_laws
+	
+	allow = {
+		has_law = bureaucracy_anarchy
+		custom_tooltip = {
+			text = has_RA_for_law_change_20
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 20 }
+			}
+		}
+	}
+	
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+	
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = underfunded_bureaucracy
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = underfunded_bureaucracy
+			}
+			hidden_effect = {
+				revoke_law = balanced_bureaucracy
+				revoke_law = good_bureaucracy
+				revoke_law = slight_bureaucratic_dominance
+				revoke_law = bureaucratic_dominance
+				revoke_law = bureaucracy_anarchy
+			}
+		}
+		global_tax_modifier = -0.15
+		vassal_limit = -40
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	balanced_bureaucracy = {
+	group = earth_bureaucracy_laws
+	
+	allow = {
+		OR = {	
+			has_law = underfunded_bureaucracy
+			has_law = good_bureaucracy
+		}
+		custom_tooltip = {
+			text = has_RA_for_law_change_50
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 40 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = good_bureaucracy
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = good_bureaucracy
+			}
+			hidden_effect = {
+				revoke_law = underfunded_bureaucracy
+				revoke_law = good_bureaucracy
+				revoke_law = slight_bureaucratic_dominance
+				revoke_law = bureaucratic_dominance
+				revoke_law = bureaucracy_anarchy
+			}
+		}
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+
+	good_bureaucracy = {
+	group = earth_bureaucracy_laws
+	
+	allow = {
+		OR = {
+			has_law = balanced_bureaucracy
+			has_law = slight_bureaucratic_dominance
+		}
+		custom_tooltip = {
+			text = has_RA_for_law_change_60
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 60 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = good_bureaucracy
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = good_bureaucracy
+			}
+			hidden_effect = {
+				revoke_law = underfunded_bureaucracy
+				revoke_law = balanced_bureaucracy
+				revoke_law = slight_bureaucratic_dominance
+				revoke_law = bureaucratic_dominance
+				revoke_law = bureaucracy_anarchy
+			}
+		}
+		global_tax_modifier = 0.05
+		vassal_limit = 10
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	slight_bureaucratic_dominance = {
+	group = earth_bureaucracy_laws
+	
+	allow = {
+		OR = {	
+			has_law = good_bureaucracy
+			has_law = bureaucratic_dominance
+		}
+		custom_tooltip = {
+			text = has_RA_for_law_change_80
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 80 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = slight_bureaucratic_dominance
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = slight_bureaucratic_dominance
+			}
+			hidden_effect = {
+				revoke_law = underfunded_bureaucracy
+				revoke_law = balanced_bureaucracy
+				revoke_law = good_bureaucracy
+				revoke_law = bureaucratic_dominance
+				revoke_law = bureaucracy_anarchy
+			}
+		}
+		global_tax_modifier = 0.15
+		vassal_limit = 30
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	bureaucratic_dominance = {
+	group = earth_bureaucracy_laws
+	
+	allow = {
+		has_law = slight_bureaucratic_dominance
+		custom_tooltip = {
+			text = has_RA_for_law_change_100
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 100 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = bureaucratic_dominance
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = bureaucratic_dominance
+			}
+			hidden_effect = {
+				revoke_law = underfunded_bureaucracy
+				revoke_law = balanced_bureaucracy
+				revoke_law = good_bureaucracy
+				revoke_law = slight_bureaucratic_dominance
+				revoke_law = bureaucracy_anarchy
+			}
+		}
+		global_tax_modifier = 0.30
+		vassal_limit = 60
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+
+	ek_army_law_0 = {
+	group = ek_army_laws
+	
+	allow = {
+		always = no
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_army_law_0
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_army_law_0
+			}
+			hidden_effect = {
+				revoke_law = ek_army_law_1
+				revoke_law = ek_army_law_2
+				revoke_law = ek_army_law_3
+				revoke_law = ek_army_law_4
+				revoke_law = ek_army_law_5
+			}
+		}
+		global_levy_size = 0.3
+		land_morale = -0.25
+		global_garrison_size = -0.15
+		retinuesize_perc = -0.8
+		castle_vassal_min_levy = 0.2
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}  
+	
+	ek_army_law_1 = {
+	group = ek_army_laws
+	
+	allow = {
+		has_law = ek_army_law_0
+		custom_tooltip = {
+			text = has_RA_for_law_change_30
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 30 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_army_law_0
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_army_law_0
+			}
+			hidden_effect = {
+				revoke_law = ek_army_law_0
+				revoke_law = ek_army_law_2
+				revoke_law = ek_army_law_3
+				revoke_law = ek_army_law_4
+				revoke_law = ek_army_law_5
+			}
+		}
+		global_levy_size = 0.3
+		castle_vassal_min_levy = 0.2
+		retinuesize_perc = -0.5
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}  
+	
+	ek_army_law_2 = {
+	group = ek_army_laws
+	
+	allow = {
+		has_law = ek_army_law_1
+		custom_tooltip = {
+			text = has_RA_for_law_change_30
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 30 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_army_law_2
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_army_law_2
+			}
+			hidden_effect = {
+				revoke_law = ek_army_law_1
+				revoke_law = ek_army_law_0
+				revoke_law = ek_army_law_3
+				revoke_law = ek_army_law_4
+				revoke_law = ek_army_law_5
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}  
+
+	ek_army_law_3 = {
+	group = ek_army_laws
+	
+	allow = {
+		has_law = ek_army_law_2
+		custom_tooltip = {
+			text = has_RA_for_law_change_50
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 50 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_army_law_3
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_army_law_3
+			}
+			hidden_effect = {
+				revoke_law = ek_army_law_1
+				revoke_law = ek_army_law_2
+				revoke_law = ek_army_law_0
+				revoke_law = ek_army_law_4
+				revoke_law = ek_army_law_5
+			}
+		}
+		
+		global_levy_size = -0.25
+		retinuesize_perc = 0.25
+		castle_vassal_max_levy = -0.25
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}  
+	
+	ek_army_law_4 = {
+	group = ek_army_laws
+	
+	allow = {
+		has_law = ek_army_law_3
+		custom_tooltip = {
+			text = has_RA_for_law_change_60
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 60 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_army_law_4
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_army_law_4
+			}
+			hidden_effect = {
+				revoke_law = ek_army_law_1
+				revoke_law = ek_army_law_2
+				revoke_law = ek_army_law_3
+				revoke_law = ek_army_law_0
+				revoke_law = ek_army_law_5
+			}
+		}
+		
+		global_levy_size = -0.7
+		castle_vassal_max_levy = -0.7
+		retinuesize_perc = 1
+		retinue_maintenence_cost = -0.5
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}  
+	
+	ek_army_law_5 = {
+	group = ek_army_laws
+	
+	allow = {
+		has_law = ek_army_law_4
+		custom_tooltip = {
+			text = has_RA_for_law_change_60
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 60 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_army_law_5
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_army_law_5
+			}
+			hidden_effect = {
+				revoke_law = ek_army_law_1
+				revoke_law = ek_army_law_2
+				revoke_law = ek_army_law_3
+				revoke_law = ek_army_law_4
+				revoke_law = ek_army_law_0
+			}
+		}
+		
+		global_levy_size = -0.8
+		castle_vassal_max_levy = -0.8
+		retinuesize_perc = 1
+		retinue_maintenence_cost = -0.8
+		land_morale = 0.4
+		land_organisation = 0.25
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}  
+
+	ek_system_law_1 = {
+	group = ek_law_system
+	
+	allow = {
+		custom_tooltip = {
+			text = has_RA_for_law_change_30
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 30 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_system_law_1
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_system_law_1
+			}
+			hidden_effect = {
+				revoke_law = ek_system_law_2
+				revoke_law = ek_system_law_3
+				revoke_law = ek_system_law_4
+				revoke_law = ek_system_law_5
+				revoke_law = ek_system_law_6
+			}
+		}
+		
+		earth_kingdom_culture_opinion = 15
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ek_system_law_2 = {
+	group = ek_law_system
+	
+	allow = {
+		has_law = ek_system_law_1
+		custom_tooltip = {
+			text = has_RA_for_law_change_50
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 50 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_system_law_2
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_system_law_2
+			}
+			hidden_effect = {
+				revoke_law = ek_system_law_1
+				revoke_law = ek_system_law_3
+				revoke_law = ek_system_law_4
+				revoke_law = ek_system_law_5
+				revoke_law = ek_system_law_6
+			}
+		}
+		earth_kingdom_culture_opinion = 10
+		global_revolt_risk = -0.005
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ek_system_law_3 = {
+	group = ek_law_system
+	
+	allow = {
+		has_law = ek_system_law_2
+		custom_tooltip = {
+			text = has_RA_for_law_change_60
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 60 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_system_law_3
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_system_law_3
+			}
+			hidden_effect = {
+				revoke_law = ek_system_law_1
+				revoke_law = ek_system_law_2
+				revoke_law = ek_system_law_4
+				revoke_law = ek_system_law_5
+				revoke_law = ek_system_law_6
+			}
+		}
+		earth_kingdom_culture_opinion = 5
+		global_revolt_risk = -0.01
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ek_system_law_4 = {
+	group = ek_law_system
+	
+	allow = {
+		has_law = ek_system_law_3
+		custom_tooltip = {
+			text = has_RA_for_law_change_70
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 70 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_system_law_4
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_system_law_4
+			}
+			hidden_effect = {
+				revoke_law = ek_system_law_1
+				revoke_law = ek_system_law_2
+				revoke_law = ek_system_law_3
+				revoke_law = ek_system_law_5
+				revoke_law = ek_system_law_6
+			}
+		}
+		global_revolt_risk = -0.02
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ek_system_law_5 = {
+	group = ek_law_system
+	
+	allow = {
+		has_law = ek_system_law_4
+		custom_tooltip = {
+			text = has_RA_for_law_change_60
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 60 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_system_law_5
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_system_law_5
+			}
+			hidden_effect = {
+				revoke_law = ek_system_law_1
+				revoke_law = ek_system_law_2
+				revoke_law = ek_system_law_3
+				revoke_law = ek_system_law_4
+				revoke_law = ek_system_law_6
+			}
+		}
+		earth_kingdom_culture_opinion = -5
+		global_revolt_risk = -0.025
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	ek_system_law_6 = {
+	group = ek_law_system
+	
+	allow = {
+		has_law = ek_system_law_5
+		custom_tooltip = {
+			text = has_RA_for_law_change_30
+			hidden_tooltip = {
+				check_variable = { which = global_royalAuthority value = 30 }
+			}
+		}
+	}
+
+	potential = {
+		holder_scope = { government = chinese_imperial_government }
+	}
+
+	pass_effect = {
+		#log = "slavery_legal pass ([This.GetFullBaseName])"
+		custom_tooltip = {
+			text = ek_system_law_6
+			}
+		}
+
+	effect = {
+			#log = "slavery_legal ([This.GetFullBaseName])"
+			custom_tooltip = {
+				text = ek_system_law_6
+			}
+			hidden_effect = {
+				revoke_law = ek_system_law_1
+				revoke_law = ek_system_law_2
+				revoke_law = ek_system_law_3
+				revoke_law = ek_system_law_4
+				revoke_law = ek_system_law_5
+			}
+		}
+		earth_kingdom_culture_opinion = -10
+		global_revolt_risk = -0.03
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
 }
