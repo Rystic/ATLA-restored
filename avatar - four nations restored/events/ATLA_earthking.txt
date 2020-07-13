@@ -2333,7 +2333,7 @@ character_event = {
 			#	}
 			#}
 	}
-}
+	}
 
 # Earth Kingdom - Royal Authority - Relation Boost
 character_event = {
@@ -2452,6 +2452,7 @@ character_event = { # Law Change - Event Server
 				clr_title_flag = ek_ra_set_unity_1
 				clr_title_flag = ek_ra_set_unity_2
 				clr_title_flag = ek_ra_set_unity_3
+				clr_title_flag = ek_ra_set_unity_outposts
 				holder_scope = {
 					narrative_event = { id = earthking.60 }
 					break = yes
@@ -2530,6 +2531,21 @@ character_event = { # Law Change - Event Server
 				clr_title_flag = ek_ra_set_unity_2
 				holder_scope = {
 					narrative_event = { id = earthking.64 }
+					break = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				e_earth_kingdom = {
+					has_law = ze_admin_central
+					NOT = { has_title_flag = ek_central_admin }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = ek_central_admin
+				holder_scope = {
+					narrative_event = { id = earthking.66 }
 					break = yes
 				}
 			}
@@ -2872,7 +2888,7 @@ narrative_event = { # Outposts Law
 	immediate = {
 		if = {
 			limit = { has_landed_title = e_earth_kingdom }
-			subtract_variable = { which = global_royalAuthority value = 30 }
+			subtract_variable = { which = global_royalAuthority value = 100 }
 			any_independent_ruler = {
 				limit = {
 					OR = {
