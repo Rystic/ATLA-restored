@@ -7526,10 +7526,7 @@ character_event = {
 			45 = {
 				trigger = { 
 					is_ruler = yes
-					religion_group = christian
-					NOT = { society_member_of = the_satanists }
 					NOT = { num_of_children = 3 }
-					NOT = { is_devil_worshiper_trigger = yes }
 				}
 				modifier = { 
 					factor = 0.5
@@ -7559,29 +7556,13 @@ character_event = {
 						higher_real_tier_than = COUNT
 						spouse = { higher_real_tier_than = COUNT } 
 					} 
-					spouse = { 
-						OR = { 
-							religion = norse_pagan
-							religion = norse_pagan_reformed
-							religion = baltic_pagan
-							religion = baltic_pagan_reformed
-							religion = finnish_pagan
-							religion = finnish_pagan_reformed 
-						}  
+					spouse = {   
 						NOR = { 
 							trait = incapable 
 							prisoner = yes
 							is_inaccessible_trigger = yes
 						}
 					}
-					OR = { 
-						religion = norse_pagan
-						religion = norse_pagan_reformed
-						religion = baltic_pagan
-						religion = baltic_pagan_reformed
-						religion = finnish_pagan
-						religion = finnish_pagan_reformed 
-					} 
 				}
 				modifier = { 
 					factor = 0.5
@@ -7626,7 +7607,6 @@ character_event = {
 			50 = {
 				trigger = { 
 					is_ruler = yes
-					religion_group = pagan_group
 					OR = { 
 						is_tribal = yes
 						is_nomadic = yes
@@ -7653,29 +7633,13 @@ character_event = {
 						higher_real_tier_than = COUNT
 						spouse = { higher_real_tier_than = COUNT } 
 					} 
-					spouse = { 
-						OR = { 
-							religion = norse_pagan
-							religion = norse_pagan_reformed
-							religion = baltic_pagan
-							religion = baltic_pagan_reformed
-							religion = finnish_pagan
-							religion = finnish_pagan_reformed 
-						}  
+					spouse = {  
 						NOR = { 
 							trait = incapable 
 							prisoner = yes
 							is_inaccessible_trigger = yes
 						}
 					}
-					OR = { 
-						religion = norse_pagan
-						religion = norse_pagan_reformed
-						religion = baltic_pagan
-						religion = baltic_pagan_reformed
-						religion = finnish_pagan
-						religion = finnish_pagan_reformed 
-					} 
 				}
 				modifier = { 
 					factor = 0.5
@@ -8469,278 +8433,6 @@ character_event = {
 	}
 }
 
-#Mother gets positive omen.
-character_event = {
-	id = HFP.20565
-	desc = EVTDESCHFPA20565
-	picture = GFX_evt_comet
-
-	trigger = { 
-		trait = pregnant
-		NOT = { trait = troubled_pregnancy } 
-	}
-
-	is_triggered_only = yes
-
-	option = { #Interpret
-		name = EVTOPTAHFP20565
-		trigger = { learning = 10 }
-		tooltip_info = learning
-		piety = 300
-		add_character_modifier = {
-			name = mother_good_omen
-			duration = 150
-		}
-		hidden_tooltip = { spouse = { character_event = { id = HFP.20566 } }
-			if = { #Chance of a strange positive birth.
-				limit = { NOT = { has_dynasty_flag = flag_vision_baby } }
-				random_list = { 
-					90 = { } 									#No vision
-					10 = { 
-						modifier = { 
-							factor = 0 
-							NOR = { 
-								religion_group = christian
-								religion_group = muslim
-								religion = tengri_pagan
-								religion = tengri_pagan_reformed
-								religion = norse_pagan
-								religion = norse_pagan_reformed
-							} 
-						} 
-						set_dynasty_flag = flag_vision_baby		#Positive
-						character_event = { id = HFP.20503 days = 43 random = 20 }  
-					} 
-				} 
-			}
-		}
-		ai_chance = { 
-			factor = 100 
-		}
-	}
-	option = { 
-		name = EVTOPTBHFP20565
-		tiered_piety_reward_effect = yes
-		hidden_tooltip = { spouse = { character_event = { id = HFP.20566 } }
-			if = { #Chance of a strange positive birth.
-				limit = { NOT = { has_dynasty_flag = flag_vision_baby } }
-				random_list = { 
-					99 = { } 									#No vision
-					1 = { 
-						modifier = { 
-							factor = 0 
-							NOR = { 
-								religion_group = christian
-								religion_group = muslim
-								religion = tengri_pagan
-								religion = tengri_pagan_reformed
-								religion = norse_pagan
-								religion = norse_pagan_reformed
-							} 
-						} 
-						set_dynasty_flag = flag_vision_baby		#Positive
-						character_event = { id = HFP.20503 days = 43 random = 20 }  
-					} 
-				} 
-			}
-		}
-		add_character_modifier = {
-			name = mother_good_omen
-			duration = 100
-		}
-		ai_chance = { 
-			factor = 50 
-		}
-	}
-}
-#Husband notified.
-character_event = {
-	id = HFP.20566
-	desc = EVTDESCHFPA20566
-	picture = GFX_evt_comet
-
-	is_triggered_only = yes
-
-	option = { 
-		name = EVTOPTAHFP20566
-		ai_chance = { 
-			factor = 50 
-		}
-	}
-}
-#Mother gets negative omen.
-character_event = {
-	id = HFP.20567
-	desc = EVTDESCHFPA20567
-	picture = GFX_evt_comet
-
-	trigger = { 
-		trait = pregnant
-		NOT = { trait = troubled_pregnancy } 
-	}
-
-	is_triggered_only = yes
-
-	option = { #Interpret
-		name = EVTOPTAHFP20567
-		trigger = { learning = 10 }
-		tooltip_info = learning
-		piety = -50
-		add_character_modifier = {
-			name = mother_bad_omen
-			duration = 50
-		}
-		random = { 
-			chance = 15 
-			add_trait = stressed
-			hidden_tooltip = { character_event = { id = 38282 } }
-		}
-		hidden_tooltip = { spouse = { character_event = { id = HFP.20568 } }
-
-			if = { #Chance of a strange bad birth.
-				limit = { NOT = { has_dynasty_flag = flag_vision_baby } }
-				random_list = { 
-					99 = { } 									#No vision
-					1 = { 
-						modifier = { 
-							factor = 0 
-							NOR = { 
-								religion_group = christian
-								religion_group = muslim
-								religion = tengri_pagan
-								religion = tengri_pagan_reformed
-								religion = norse_pagan
-								religion = norse_pagan_reformed
-							} 
-						}
-						set_dynasty_flag = flag_vision_baby 	#Negative
-						character_event = { id = HFP.20504 days = 33 random = 20 }  
-					} 
-				} 
-			}
-		}
-		ai_chance = { 
-			factor = 100 
-		}
-	}
-	option = { 
-		name = EVTOPTBHFP20567
-		tiered_piety_negative_effect = yes
-		add_character_modifier = {
-			name = mother_bad_omen
-			duration = 100
-		}
-		if = {
-			limit = {
-				NOT = {
-					trait = stressed
-				}
-			}
-			random = { 
-				chance = 30 
-				add_trait = stressed
-				hidden_tooltip = { character_event = { id = 38282 } }
-			}
-		}
-
-		hidden_tooltip = { spouse = { character_event = { id = HFP.20568 } }
-
-			if = { #Chance of a strange bad birth.
-				limit = { NOT = { has_dynasty_flag = flag_vision_baby } }
-				random_list = { 
-					90 = { } 									#No vision
-					10 = { 
-						modifier = { 
-							factor = 0 
-							NOR = { 
-								religion_group = christian
-								religion_group = muslim
-								religion = tengri_pagan
-								religion = tengri_pagan_reformed
-								religion = norse_pagan
-								religion = norse_pagan_reformed
-							} 
-						}
-						set_dynasty_flag = flag_vision_baby 	#Negative
-						character_event = { id = HFP.20504 days = 33 random = 20 }  
-					} 
-				} 
-			}
-		}
-		ai_chance = { 
-			factor = 50 
-		}
-	}
-}
-
-#Husband notified.
-character_event = {
-	id = HFP.20568
-	desc = EVTDESCHFPA20568
-	picture = GFX_evt_comet
-
-	is_triggered_only = yes
-
-	option = { #Reinterpret the signs
-		name = EVTOPTAHFP20568
-		trigger = { learning = 10 }
-		tooltip_info = learning
-
-		FROM = {
-			hidden_tooltip = {	#Remove the older one first.
-			remove_character_modifier = mother_bad_omen
-		}
-			add_character_modifier = {
-				name = mother_bad_omen
-				duration = 50
-			}
-		}
-		ai_chance = { 
-			factor = 50 
-		}
-	}
-	option = { 
-		name = {
-			text = EVTOPTBHFP20568_A
-			trigger = {
-				is_lover = FROM
-			}
-		}
-		name = {
-			text = EVTOPTBHFP20568_B
-			trigger = {
-				NOT = { 
-					is_lover = FROM
-				}
-			}
-		}
-		if = { 
-			limit = { 
-				is_lover = FROM
-			}
-			random = { 
-				chance = 30 
-				add_trait = stressed
-			}
-		}
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {
-					name = mother_bad_omen
-					duration = 100
-				}
-				random = { 
-					chance = 30 
-					add_trait = stressed
-				}
-			}
-		}
-		ai_chance = { 
-			factor = 50 
-		}
-	}
-}
-
 #Christian Mother can make vow to the Holy Virgin.
 character_event = {
 	id = HFP.20569
@@ -8750,7 +8442,6 @@ character_event = {
 	trigger = { 
 		trait = pregnant
 		NOT = { trait = troubled_pregnancy } 
-		religion_group = christian
 	}
 
 	is_triggered_only = yes
@@ -8926,7 +8617,6 @@ character_event = {
 	trigger = { 
 		trait = pregnant
 		NOT = { trait = troubled_pregnancy } 
-		religion_group = pagan_group
 	}
 
 	is_triggered_only = yes
@@ -9338,9 +9028,6 @@ character_event = {
 				is_mother = ROOT
 			}
 			NOR = {
-				trait = on_hajj
-				trait = on_pilgrimage
-				trait = on_indian_pilgrimage
 				trait = kow_tow_travels
 				trait = travelling
 			}
@@ -9525,9 +9212,6 @@ character_event = {
 			is_alive = yes
 			is_lover = ROOT
 			NOR = {
-				trait = on_hajj
-				trait = on_pilgrimage
-				trait = on_indian_pilgrimage
 				trait = kow_tow_travels
 				trait = travelling
 			}
@@ -10592,72 +10276,6 @@ character_event = {
 	}
 }
 
-#Mother thinks about her son/daughter being the son/daughter of the Pope.
-character_event = {
-	id = HFP.20598
-	desc = EVTDESCHFPA20598
-	picture = GFX_evt_pope_feast
-
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-			religion = catholic
-			OR = { 
-				trait = bastard
-				trait = legit_bastard
-			} 
-		} 
-		religion = catholic
-	}
-	is_triggered_only = yes
-	
-	option = { 
-		name = EVTOPTBHFP20598
-		FROM = { 
-			if = { 
-				limit = { 
-					is_female = no	
-				} 
-				give_nickname = nick_the_vatican_prince
-			} 
-			if = { 
-				limit = { 
-					is_female = yes	
-				} 
-				give_nickname = nick_the_vatican_princess
-			}
-		}
-		if = { 
-			limit = { tier = COUNT }
-			FROM = {
-				prestige = 100
-				piety = -100
-			}
-		}
-		if = { 
-			limit = { tier = DUKE }
-			FROM = {
-				prestige = 150
-				piety = -150
-			}
-		}
-		if = { 
-			limit = { tier = KING }
-			FROM = {
-				prestige = 300
-				piety = -300
-			}
-		}
-		if = { 
-			limit = { tier = EMPEROR }
-			FROM = {
-				prestige = 500
-				piety = -500
-			}
-		}
-	}
-}
-
 #delayed from on_birth event. Mother develops bond with child.
 character_event = {
 	id = HFP.20599
@@ -10928,29 +10546,11 @@ character_event = {
 			}
 		}
 		name = {
-			text = EVTOPTAHFP20001_B 	#Still smoking
-			trigger = { 
-				has_character_modifier = hashish_addict
-				FROM = {
-					has_character_flag = flag_drugged_birth
-				}
-			}
-		}
-		name = {
 			text = EVTOPTAHFP20001_C 	#Stopped drinking
 			trigger = { 
 				NOT = { trait = drunkard }
 				FROM = {
 					has_character_flag = flag_drunk_birth
-				}
-			}
-		}
-		name = {
-			text = EVTOPTAHFP20001_D 	#Stopped smoking
-			trigger = { 
-				NOT = { has_character_modifier = hashish_addict }
-				FROM = {
-					has_character_flag = flag_drugged_birth
 				}
 			}
 		}
@@ -10964,28 +10564,6 @@ character_event = {
 						years = 20
 					}
 				}	
-			}
-		}
-		if = { 
-			limit = {
-				has_character_modifier = hashish_addict 
-				FROM = { has_character_flag = flag_drugged_birth } 
-			} 
-			if = { 
-				limit = { NOT = { has_character_modifier = withdrawal_symptoms } }
-				add_character_modifier = {
-					name = withdrawal_symptoms
-					duration = 150
-				}
-			}
-			random = {
-				chance = 20
-				add_trait = stressed
-				remove_character_modifier = hashish_addict
-				if = { 
-					limit = { has_character_modifier = withdrawal_symptoms }
-					remove_character_modifier = withdrawal_symptoms
-				}
 			}
 		}
 		if = { 
@@ -11010,7 +10588,6 @@ character_event = {
 					FROM = { has_character_flag = flag_drunk_birth } 
 				} 
 				AND = { 
-					has_character_modifier = hashish_addict 
 					FROM = { has_character_flag = flag_drugged_birth } 
 				} 
 			}
@@ -11073,25 +10650,12 @@ character_event = {
 			}
 		}
 		name = {
-			text = EVTOPTAHFP20002_B 	#Still smoking
-			trigger = { 
-				FROM = {
-					mother = { 
-						has_character_modifier = hashish_addict 
-						is_alive = yes 
-					}
-					has_character_flag = flag_drugged_birth
-				}
-			}
-		}
-		name = {
 			text = EVTOPTAHFP20002_C 	#Mother no longer addicted.
 			trigger = { 
 				FROM = {
 					mother = { 
 						is_alive = yes
 						NOT = { trait = drunkard } 
-						NOT = { has_character_modifier = hashish_addict } 
 					}
 				}
 			}
@@ -11406,9 +10970,6 @@ character_event = {
 			NOR = {
 				trait = incapable
 				trait = troubled_pregnancy
-				trait = on_hajj
-				trait = on_pilgrimage
-				trait = on_indian_pilgrimage
 				trait = kow_tow_travels
 				trait = travelling
 			}
