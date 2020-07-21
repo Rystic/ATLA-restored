@@ -44,7 +44,12 @@ character_event = {
 		hidden_tooltip = { character_event = { id = WoL.6020 days = 180 } }
 		clr_character_flag = building_observatory
 		set_character_flag = built_observatory
-		set_character_flag = achievement_stargazer
+		if = {
+			limit = {
+				ai = no
+			}
+			set_character_flag = achievement_stargazer
+		}
 		add_character_modifier = {
 			name = studying_the_stars
 			duration = -1
@@ -69,11 +74,41 @@ character_event = {
 
 	option = {
 		name = EVTOPTA_WoL_6020
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 2
+				trait = cynical
+			}
+		}
 		prestige = 10
 		hidden_tooltip = { character_event = { id = WoL.6100 days = 180 } } # Heliocentrism - how do the celestial bodies move?
 	}
 	option = {
 		name = EVTOPTB_WoL_6020
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 10
+				trait = possessed
+			}
+			modifier = {
+				factor = 10
+				trait = lunatic
+			}
+			modifier = {
+				factor = 2
+				trait = zealous
+			}
+		}
+		trigger = {
+			NOT = {
+				has_game_rule = {
+					name = supernatural_events
+					value = off
+				}
+			}
+		}
 		prestige = 5
 		hidden_tooltip = { character_event = { id = WoL.6300 days = 180 } } # Weird - maybe there's someone out there
 	}
@@ -103,14 +138,38 @@ character_event = {
 		name = EVTOPTA_WoL_6100
 		military_techpoints = 30
 		if = {
-			limit = { NOT = { trait = cynical } }
-			add_trait = cynical
+			limit = {
+				NOT = { trait = zealous }
+				NOT = { trait = cynical }
+			}
+			random = {
+				chance = 50
+				add_trait = cynical
+				hidden_tooltip = {
+					character_event = { id = 38258 } # Notification
+				}
+			}
+		}
+		if = {
+			limit = {
+				trait = zealous
+			}
+			random = {
+				chance = 50
+				remove_trait = zealous
+				hidden_tooltip = {
+					character_event = { id = 38310 } # Notification
+				}
+			}
 		}
 		if = {
 			limit = { NOT = { trait = diligent } }
 			random = {
 				chance = 20
 				add_trait = diligent
+				hidden_tooltip = {
+					character_event = { id = 38256 } # Notification
+				}
 			}
 		}
 		hidden_tooltip = { character_event = { id = WoL.6110 days = 180 } }
@@ -141,7 +200,17 @@ character_event = {
 				NOT = { wealth = 30 }
 			}
 		}
-		wealth = -30
+		if = {
+			limit = { has_character_flag = owns_observatory_equipment }
+			custom_tooltip = {
+				text = CUSTOM_TOOLTIP_OWNS_OBSERVATORY_EQUIPMENT
+			}
+		}
+		if = {
+			limit = { NOT = { has_character_flag = owns_observatory_equipment } }
+			set_character_flag = owns_observatory_equipment
+			wealth = -30
+		}
 		hidden_tooltip = { character_event = { id = WoL.6120 days = 180 } }
 	}
 	option = {
@@ -173,6 +242,7 @@ character_event = {
 				NOT = {
 					any_courtier = {
 						ai = yes
+						is_adult = yes
 						trait = zealous
 						at_location = ROOT
 						OR = {
@@ -194,6 +264,7 @@ character_event = {
 
 		random_courtier = {
 			limit = {
+				is_adult = yes
 				trait = zealous
 				at_location = ROOT
 				OR = {
@@ -245,6 +316,11 @@ character_event = {
 			random = {
 				chance = 10
 				add_trait = stressed
+				hidden_tooltip = {
+					character_event = {
+						id = 38282 #Notify Stressed
+					}
+				}
 			}
 		}
 		reverse_opinion = {
@@ -295,7 +371,7 @@ character_event = {
 	}
 
 	option = {
-		name = EVTOPTA_WoL_6140
+		name = EVTOPTA_WoL_6130
 		military_techpoints = 100
 		hidden_tooltip = { character_event = { id = WoL.6140 days = 180 } }
 	}
@@ -323,6 +399,11 @@ character_event = {
 			random = {
 				chance = 30
 				add_trait = diligent
+				hidden_tooltip = {
+					character_event = {
+						id = 38256 #Notify Diligent
+					}
+				}
 			}
 		}
 		if = {
@@ -330,6 +411,11 @@ character_event = {
 			random = {
 				chance = 10
 				add_trait = stressed
+				hidden_tooltip = {
+					character_event = {
+						id = 38282 #Notify Stressed
+					}
+				}
 			}
 		}
 		hidden_tooltip = { character_event = { id = WoL.6150 days = 180 } }
@@ -510,6 +596,34 @@ character_event = {
 				}
 			}
 		}
+		if = {
+			limit = {
+				NOT = { trait = airbender }
+			}
+			add_character_modifier = {
+				name = annoyed_religious
+				years = -1
+			}
+		}
+		custom_tooltip = {
+			text = "WOL_6170_OPINION_EFFECT"
+			hidden_effect = {
+				any_realm_character = {
+					limit = {
+						OR = {
+							is_priest = yes
+							trait = zealous
+						}
+						NOT = { trait = airbender }
+					}
+					opinion = {
+						modifier = opinion_heretic
+						who = ROOT
+						years = 5
+					}
+				}
+			}
+		}
 	}
 	option = {
 		name = EVTOPTB_WoL_6170 # Keep it secret but continue dedicating myself to knowledge
@@ -529,8 +643,23 @@ character_event = {
 	}
 	option = {
 		name = EVTOPTD_WoL_6170 # This is heretical - I must burn it!
+		trigger = {
+			NOT = { trait = airbender }
+		}
 		remove_character_modifier = studying_the_stars
-		add_trait = zealous
+		if = {
+			limit = {
+				NOT = { trait = zealous }
+				NOT = { trait = cynical }
+			}
+			add_trait = zealous
+		}
+		if = {
+			limit = {
+				trait = cynical
+			}
+			remove_trait = cynical
+		}
 	}
 }
 
@@ -566,6 +695,11 @@ character_event = {
 			random = {
 				chance = 30
 				add_trait = diligent
+				hidden_tooltip = {
+					character_event = {
+						id = 38256 #Notify Diligent
+					}
+				}
 			}
 		}
 		hidden_tooltip = { character_event = { id = WoL.6310 days = 180 } }
@@ -596,7 +730,17 @@ character_event = {
 				NOT = { wealth = 30 }
 			}
 		}
-		wealth = -30
+		if = {
+			limit = { has_character_flag = owns_observatory_equipment }
+			custom_tooltip = {
+				text = CUSTOM_TOOLTIP_OWNS_OBSERVATORY_EQUIPMENT
+			}
+		}
+		if = {
+			limit = { NOT = { has_character_flag = owns_observatory_equipment } }
+			set_character_flag = owns_observatory_equipment
+			wealth = -30
+		}
 		hidden_tooltip = { character_event = { id = WoL.6320 days = 180 } }
 	}
 	option = {
@@ -804,9 +948,9 @@ narrative_event = {
 		}
 		culture_techpoints = 30
 		wealth = -100
-		add_character_modifier = {
-			name = the_necronomicon
-			duration = -1
+		add_artifact = necronomicon
+		new_artifact = {
+			set_creation_date = 1.1.1
 		}
 		clr_character_flag = do_not_disturb
 		hidden_tooltip = { character_event = { id = WoL.6340 days = 180 } }
@@ -831,10 +975,11 @@ character_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_modifier = the_necronomicon
+		has_artifact = necronomicon
 	}
 
 	immediate = {
+		destroy_artifact = necronomicon
 		current_heir = {
 			character_event = { id = WoL.6336 days = 7 }
 		}
@@ -877,6 +1022,11 @@ character_event = {
 			random = {
 				chance = 30
 				add_trait = diligent
+				hidden_tooltip = {
+					character_event = {
+						id = 38256 #Notify Diligent
+					}
+				}
 			}
 		}
 		if = {
@@ -884,10 +1034,15 @@ character_event = {
 			random = {
 				chance = 20
 				add_trait = stressed
+				hidden_tooltip = {
+					character_event = {
+						id = 38282 #Notify Stressed
+					}
+				}
 			}
 		}
 		if = {
-			limit = { has_character_modifier = the_necronomicon }
+			limit = { has_artifact = necronomicon }
 			hidden_tooltip = { character_event = { id = WoL.6350 days = 180 } }
 			break = yes
 		}
@@ -941,6 +1096,9 @@ character_event = {
 			random = {
 				chance = 30
 				add_trait = lunatic
+				hidden_tooltip = {
+					character_event = { id = 38304 } # notify lunatic
+				}
 			}
 		}
 		if = {
@@ -948,6 +1106,11 @@ character_event = {
 			random = {
 				chance = 30
 				add_trait = paranoid
+				hidden_tooltip = {
+					character_event = {
+						id = 38275 #Notify Paranoid
+					}
+				}
 			}
 		}
 		if = {
