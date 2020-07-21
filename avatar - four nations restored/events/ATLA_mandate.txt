@@ -1,0 +1,979 @@
+####														 ####
+## Written for Avatar Four Nations restored by TypicalCrusader ##
+####														 ####
+
+namespace = mandate
+
+#law change to left (admin)
+
+character_event = {
+	id = mandate.1
+	desc = EVTDESCMAND1
+	picture = Peasant_mob_in_arms
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+		check_variable = { which = global_royalAuthority value <= -11 }
+		NOT = { has_character_modifier = ek_law_low_madate_change }
+		e_earth_kingdon = {
+			NOT = { has_law = ze_admin_anarchy }
+			}
+	}
+	
+	option = {
+		name = mandate.1
+		e_earth_kingdom = {
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = ze_admin_territories
+						}
+					}
+				revoke_law = ze_admin_territories
+				add_law = ze_admin_anarchy
+				set_variable = { which = global_royalAuthority value = -10 }
+				add_character_modifier = {
+						name = ek_law_low_madate_change 
+						years = 10
+					}
+				}
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = ze_admin_province
+						}
+					}
+				revoke_law = ze_admin_province
+				add_law = ze_admin_territories
+				set_variable = { which = global_royalAuthority value = -10 }	
+				add_character_modifier = {
+						name = ek_law_low_madate_change  
+						years = 10
+					}
+				}				
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = ze_admin_balance
+						}
+					}
+				revoke_law = ze_admin_balance
+				add_law = ze_admin_province	
+				set_variable = { which = global_royalAuthority value = -10 }
+				add_character_modifier = {
+						name = ek_law_low_madate_change 
+						years = 10
+					}
+				}
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = ze_admin_slight_central
+						}
+					}
+				revoke_law = ze_admin_slight_central
+				add_law = ze_admin_balance	
+				set_variable = { which = global_royalAuthority value = -10 }	
+				add_character_modifier = {
+						name = ek_law_low_madate_change 
+						years = 10
+				}
+			}				
+		}
+	}	
+	
+	weight_multiplier = {
+		months = 1
+		modifier = {
+			factor = 1000
+			check_variable = { which = global_royalAuthority value <= -60 }		
+		}
+		modifier = {
+			factor = 100
+			check_variable = { which = global_royalAuthority value <= -40 }		
+		}
+		modifier = {
+			factor = 10
+			check_variable = { which = global_royalAuthority value <= -20 }		
+		}	
+	}
+}
+
+character_event = { #make rebelion leader
+	id = mandate.2
+	desc = EVTDESCMAND2
+	picture = 
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+		OR = {
+			check_variable = { which = global_royalAuthority value <= -100 } #should not happen but still i would rather made it lower or equal
+			AND = {
+				stewardship <= 3
+				diplomacy <= 3
+				check_variable = { which = global_royalAuthority value <= -50 }
+			}
+		}
+		NOT = { has_global_flag = mandate_revolt_prepare }
+	}
+	
+	option = {
+		name = mandate.2
+		random_list = {
+			50 = { #noble
+				create_character = {
+					random_traits = yes
+					religion = ROOT
+					culture = ROOT
+					attributes = {
+						martial = 13
+					}
+					age => 16
+					add_trait = brilliant_strategist
+					add_trait = groomed
+					save_event_target_as = mandate_revolt_commander
+					set_character_flag = noble_pretender
+				}
+			}
+			50 = { #peasant
+				create_character = {
+					random_traits = yes
+					religion = ROOT
+					culture = ROOT
+					attributes = {
+						martial = 13
+					}
+					age => 16
+					add_trait = brilliant_strategist
+					add_trait = uncouth
+					add_trait = peasant_leader
+					save_event_target_as = mandate_revolt_commander
+					set_character_flag = peasant_pretender
+				}
+			}
+		}
+		set_global_flag = mandate_revolt_prepare
+		#character_event = { id = mandate.3 }
+		#event_target:mandate_revolt_commander = { character_event = { id = mandate.3 } }
+	}
+}
+narrative_event = {
+	id = mandate.3
+	desc = EVTDESCMAND3
+	title = EVTTITMAND3
+	hide_window = no
+	is_triggered_only = yes
+	
+	trigger = { 
+		has_landed_title = e_earth_kingdom
+		OR = {
+			has_character_flag = ek_conqueror
+			NOR = { #just to be sure that it will not fire for already existing dynasty
+				dynasty = 3973
+				dynasty = 3972
+				dynasty = 3971
+				dynasty = 1366
+				dynasty = 3977
+				dynasty = 3978
+				dynasty = 3979
+				dynasty = 3980
+				dynasty = 3981
+				dynasty = 3982
+				dynasty = 3983
+				dynasty = 3984
+				dynasty = 3985
+				dynasty = 3986
+				dynasty = 3987
+				dynasty = 3988
+				dynasty = 3989
+				dynasty = 3990
+			}
+		}
+		e_earth_kingdom = { #it makes sure that all dynasties does not exist if all 10 exist event wont fire
+			NAND = {
+				has_title_flag = dynasty_zhu
+				has_title_flag = dynasty_zang
+				has_title_flag = dynasty_min
+			}
+		}
+		NOT = { trait = bastard }
+		culture = barbarian
+	}
+
+	immediate = {
+		set_character_flag = ek_dyn_choose_site_1
+	}
+	
+	option = { #Zhu
+		name = mandate_dyn_zhu
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_wu }
+			}
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		dynasty = 3978
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3978
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3978
+		}
+		father_even_if_dead = {
+			dynasty = 3978			
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_1
+		e_earth_kingdom = {
+			set_title_flag = dynasty_wu
+		}
+		random_list = {
+			1 = { set_name = Dashengzu }
+			1 = { set_name = Gaoshangzu }
+			1 = { set_name = Huizu }
+			1 = { set_name = Taizu }
+		}
+		set_character_flag = given_temple_name_by_script
+	}
+	
+	option = { #Zang
+		name = mandate_dyn_zang
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_shu }
+			}
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		dynasty = 3979
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3979
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3979
+		}
+		father_even_if_dead = {
+			dynasty = 3979
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_1
+		e_earth_kingdom = {
+			set_title_flag = dynasty_shu
+		}
+		random_list = {
+			1 = { set_name = Xizu }
+			1 = { set_name = Chunzu }
+			1 = { set_name = Dashengzu } 
+			1 = { set_name = Taichuzu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+	
+	option = { #Min
+		name = mandate_dyn_min
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_wei }
+			}
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		dynasty = 3980
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3980
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3980
+		}
+		father_even_if_dead = {
+			dynasty = 3980
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_1
+		e_earth_kingdom = {
+			set_title_flag = dynasty_wei
+		}
+		random_list = {
+			1 = { set_name = Taizu }
+			1 = { set_name = Hongzu }
+			1 = { set_name = Jingzu }
+			1 = { set_name = Daizu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+}	
+		
+
+#choose dynasty for new ek dynasty (not bastards) bastards will be able to choose between adopting his father/mother dynasty or to fire this event
+narrative_event = {
+	id = mandate.4
+	desc = EVTDESCMAND4
+	title = EVTTITMAND4
+	is_triggered_only = yes
+	hide_window = no
+	#ai = no
+	
+	trigger = { 
+		has_landed_title = e_earth_kingdom
+		OR = {
+			has_character_flag = ek_conqueror
+			NOR = { #just to be sure that it will not fire for already existing dynasty
+				dynasty = 3973
+				dynasty = 3972
+				dynasty = 3971
+				dynasty = 1366
+				dynasty = 3977
+				dynasty = 3978
+				dynasty = 3979
+				dynasty = 3980
+				dynasty = 3981
+				dynasty = 3982
+				dynasty = 3983
+				dynasty = 3984
+				dynasty = 3985
+				dynasty = 3986
+				dynasty = 3987
+				dynasty = 3988
+				dynasty = 3989	
+				dynasty = 3990
+			}
+		}
+		e_earth_kingdom = { #it makes sure that all dynasties does not exist if all of them exist event wont fire
+			NAND = {
+				has_title_flag = dynasty_wu
+				has_title_flag = dynasty_shu
+				has_title_flag = dynasty_wei
+				has_title_flag = dynasty_qin
+				has_title_flag = dynasty_zhou
+				has_title_flag = dynasty_wang
+				has_title_flag = dynasty_xian
+				has_title_flag = dynasty_tao
+				has_title_flag = dynasty_se
+				has_title_flag = dynasty_jin
+			}
+		}
+		NOT = { trait = bastard } #bastards can adopt their father dynasty or go with their own.
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				NOR = {
+					has_character_flag = ek_dyn_choose_site_2
+					has_character_flag = ek_dyn_choose_site_3
+					has_character_flag = ek_dyn_choose_site_4
+				}
+			}
+		set_character_flag = ek_dyn_choose_site_1
+		}
+	}
+	
+	option = { #Wu
+		name = mandate_dyn_wu
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_wu }
+			}
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		dynasty = 3977
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3977
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3977
+		}
+		father_even_if_dead = {
+			dynasty = 3977			
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_1
+		e_earth_kingdom = {
+			set_title_flag = dynasty_wu
+		}
+		random_list = {
+			1 = { set_name = Dashengzu }
+			1 = { set_name = Gaoshangzu }
+			1 = { set_name = Huizu }
+			1 = { set_name = Taizu }
+		}
+		set_character_flag = given_temple_name_by_script
+	}
+	
+	option = { #Shu
+		name = mandate_dyn_shu
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_shu }
+			}
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		dynasty = 3978
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3978
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3978
+		}
+		father_even_if_dead = {
+			dynasty = 3978
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_1
+		e_earth_kingdom = {
+			set_title_flag = dynasty_shu
+		}
+		random_list = {
+			1 = { set_name = Xizu }
+			1 = { set_name = Chunzu }
+			1 = { set_name = Dashengzu } 
+			1 = { set_name = Taichuzu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+	
+	option = { #Wei
+		name = mandate_dyn_wei
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_wei }
+			}
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		dynasty = 3979
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3979
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3979
+		}
+		father_even_if_dead = {
+			dynasty = 3979
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_1
+		e_earth_kingdom = {
+			set_title_flag = dynasty_wei
+		}
+		random_list = {
+			1 = { set_name = Taizu }
+			1 = { set_name = Hongzu }
+			1 = { set_name = Jingzu }
+			1 = { set_name = Daizu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+	
+	option = { #next site
+		name = mandate_dyn_next_site
+		trigger = { 
+			has_character_flag = ek_dyn_choose_site_1
+		}
+		set_character_flag = ek_dyn_choose_site_2
+		clr_character_flag = ek_dyn_choose_site_1
+		narrative_event = { id = mandate.4 }
+	}
+	
+	option = { #Qin
+		name = mandate_dyn_qin
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_qin }
+			}
+			has_character_flag = ek_dyn_choose_site_2
+		}
+		dynasty = 3980
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3980
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3980
+		}
+		father_even_if_dead = {
+			dynasty = 3980
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_2
+		e_earth_kingdom = {
+			set_title_flag = dynasty_qin
+		}
+		random_list = {
+			1 = { set_name = Yingzu }
+			1 = { set_name = Xizu }
+			1 = { set_name = Shizu }
+			1 = { set_name = Zhuangzu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+	
+	option = { #Zhou
+		name = mandate_dyn_zhou
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_zhou }
+			}
+			has_character_flag = ek_dyn_choose_site_2
+		}
+		dynasty = 3981
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3981
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3981
+		}
+		father_even_if_dead = {
+			dynasty = 3981
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_2
+		e_earth_kingdom = {
+			set_title_flag = dynasty_zhou
+		}
+		random_list = {
+			1 = { set_name = Zhengzu }
+			1 = { set_name = Yizu }
+			1 = { set_name = Xinzu }
+			1 = { set_name = Wenzu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+	
+	option = { #Wang
+		name = mandate_dyn_wang
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_wang }
+			}
+			has_character_flag = ek_dyn_choose_site_2
+		}
+		dynasty = 3982
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3982
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3982
+		}
+		father_even_if_dead = {
+			dynasty = 3982
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_2
+		e_earth_kingdom = {
+			set_title_flag = dynasty_wang
+		}
+		random_list = {
+			1 = { set_name = Taizu }
+			1 = { set_name = Zhaozu }
+			1 = { set_name = Xianzu }
+			1 = { set_name = Wangzu }
+		}		
+	}
+	
+	option = { #next site
+		name = mandate_dyn_next_site
+		trigger = { 
+			has_character_flag = ek_dyn_choose_site_2
+		}
+		set_character_flag = ek_dyn_choose_site_3
+		clr_character_flag = ek_dyn_choose_site_2
+		narrative_event = { id = mandate.4 }
+	}
+	
+	option = { #Xian
+		name = mandate_dyn_xian
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_xian }
+			}
+			has_character_flag = ek_dyn_choose_site_3
+		}
+		dynasty = 3983
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3983
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3983
+		}
+		father_even_if_dead = {
+			dynasty = 3983
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_3
+		e_earth_kingdom = {
+			set_title_flag = dynasty_xian
+		}
+		random_list = {
+			1 = { set_name = Qingzu }
+			1 = { set_name = Taichuzu }
+			1 = { set_name = Shizu }
+			1 = { set_name = Shenzu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}	
+	
+	option = { #Tao
+		name = mandate_dyn_tao
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_tao }
+			}
+			has_character_flag = ek_dyn_choose_site_3
+		}
+		dynasty = 3984
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3984
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3984
+		}
+		father_even_if_dead = {
+			dynasty = 3984
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_3
+		e_earth_kingdom = {
+			set_title_flag = dynasty_tao
+		}
+		random_list = {
+			1 = { set_name = Ruizu }
+			1 = { set_name = Jingzu }
+			1 = { set_name = Wenzu }
+			1 = { set_name = Yanzu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+	
+	option = { #Se
+		name = mandate_dyn_se
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_se }
+			}
+			has_character_flag = ek_dyn_choose_site_3
+		}
+		dynasty = 3985
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3985
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3985
+		}
+		father_even_if_dead = {
+			dynasty = 3985
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_3
+		e_earth_kingdom = {
+			set_title_flag = dynasty_se
+		}
+		random_list = {
+			1 = { set_name = Yizu }
+			1 = { set_name = Tongzu }
+			1 = { set_name = Shengzu }
+			1 = { set_name = Liezu }
+		}
+		set_character_flag = given_temple_name_by_script		
+	}	
+	
+	option = { #next site
+		name = mandate_dyn_next_site
+		trigger = { 
+			has_character_flag = ek_dyn_choose_site_3
+		}
+		set_character_flag = ek_dyn_choose_site_4
+		clr_character_flag = ek_dyn_choose_site_3
+		narrative_event = { id = mandate.4 }
+	}	
+	
+	option = { #Jin
+		name = mandate_dyn_jin
+		trigger = {	
+			e_earth_kingdom = {
+				NOT = { has_title_flag = dynasty_jin }
+			}
+			has_character_flag = ek_dyn_choose_site_4
+		}
+		dynasty = 3986
+		create_bloodline = { 
+			type = bloodline_earthking 
+		}
+		any_sibling_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3986
+		}
+		any_child_even_if_dead = {
+			limit = { NOT = { trait = bastard } }
+			dynasty = 3986
+		}
+		father_even_if_dead = {
+			dynasty = 3986
+		}
+		clr_character_flag = ek_conqueror
+		clr_character_flag = ek_dyn_choose_site_3
+		e_earth_kingdom = {
+			set_title_flag = dynasty_jin
+		}
+		random_list = {
+			1 = { set_name = Guangzu }
+			1 = { set_name = Renzu }
+			1 = { set_name = Wangzu }
+			1 = { set_name = Yuanzu }
+
+		}
+		set_character_flag = given_temple_name_by_script		
+	}
+
+	option = { #go back
+		name = mandate_dyn_go_back
+		trigger = { 
+			has_character_flag = ek_dyn_choose_site_4
+		}
+		set_character_flag = ek_dyn_choose_site_1
+		clr_character_flag = ek_dyn_choose_site_4
+		narrative_event = { id = mandate.4 }
+	}	
+	
+	option = { #exit
+		name = mandate_dyn_exit
+		trigger = { 
+			has_character_flag = ek_dyn_choose_site_4
+			ai = no
+		}
+		clr_character_flag = ek_dyn_choose_site_4
+		clr_character_flag = ek_conqueror
+		create_bloodline = {
+			type = bloodline_earthking 
+		}	
+		random_list = {
+			1 = { set_name = Yizu  }
+			1 = { set_name = Zhaozu }
+			1 = { set_name = Taizu }
+			1 = { set_name = Dashengzu }
+		}		
+	}
+	
+}
+
+#turn weak ek to puppet
+character_event = {
+	id = mandate.5
+	desc = EVTDESCMAND5
+	picture =
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			AND = {
+				trait = earthkingconstitution
+				NOT = { has_global_flag = ek_gave_some_power }
+			}
+			trait = earthking
+		}
+		OR = {
+			AND = {
+				ROOT = {
+					stewardship <= 3
+					diplomacy <= 3
+					OR = {
+						check_variable = { which = global_royalAuthority value <= -75 }
+						has_character_flag = weak_ek
+					}
+				}
+			}
+			AND = {
+				ROOT = {
+					is_adult = no
+					OR = {
+						diplomacy <= 3
+						stewardship <= 3
+					}
+				}
+				OR = {
+					is_title_active = d_dai_li
+					offmap_ek = {
+						OR = {
+							has_status = bureaucratic_faction_absolute
+							has_status = bureaucratic_faction_parliament
+						}
+					}
+				}
+			}
+		}		
+	}
+	
+	option = {
+		name = mandatepuppet
+		
+		trigger = {
+			trait = earthking
+		}
+		
+		clr_global_flag = earth_king_in_power
+		remove_trait = earthking
+		add_trait = earthkingpuppet
+	}
+	
+	option = {
+		name = mandatepuppetcons
+		
+		trigger = {
+			trait = earthkingconstitution
+		}
+		
+		clr_global_flag = ek_gave_some_power 
+		clr_global_flag = ek_forced_give_power
+		remove_trait = earthkingconstitution
+		add_trait = earthkingpuppet	
+	}
+}
+
+character_event = {
+	id = mandate.6
+	desc = EVTDESCMAND6
+	picture = dik
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+		check_variable = { which = global_royalAuthority value <= -11 }
+		NOT = { has_character_modifier = ek_law_low_madate_change }
+		e_earth_kingdon = {
+			NOT = { has_law = bureaucracy_anarchy }
+			}
+	}
+	
+	option = {
+		name = mandate.6
+		e_earth_kingdom = {
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = underfunded_bureaucracy
+						}
+					}
+				revoke_law = underfunded_bureaucracy
+				add_law = bureaucracy_anarchy
+				set_variable = { which = global_royalAuthority value = -10 }
+				add_character_modifier = {
+						name = ek_law_low_madate_change 
+						years = 10
+					}
+				}
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = balanced_bureaucracy
+						}
+					}
+				revoke_law = balanced_bureaucracy
+				add_law = underfunded_bureaucracy
+				set_variable = { which = global_royalAuthority value = -10 }	
+				add_character_modifier = {
+						name = ek_law_low_madate_change  
+						years = 10
+					}
+				}				
+			if = {
+				limit = {
+					e_earth_kingdom = {
+						has_law = slight_bureaucratic_dominance
+						}
+					}
+				revoke_law = slight_bureaucratic_dominance
+				add_law = good_bureaucracy
+				set_variable = { which = global_royalAuthority value = -10 }
+				add_character_modifier = {
+						name = ek_law_low_madate_change 
+						years = 10
+				}
+			}				
+		}
+	}	
+	
+	weight_multiplier = {
+		months = 1
+		modifier = {
+			factor = 1000
+			check_variable = { which = global_royalAuthority value <= -60 }		
+		}
+		modifier = {
+			factor = 100
+			check_variable = { which = global_royalAuthority value <= -40 }		
+		}
+		modifier = {
+			factor = 10
+			check_variable = { which = global_royalAuthority value <= -20 }		
+		}	
+	}
+}
+	
+	
+
+		
+		
+		
+
+	
+	
+	
+
