@@ -2110,7 +2110,6 @@ character_event = {
 		set_variable = { which = bloodline_ra_gain value = 0 }
 		set_variable = { which = traits_ra_gain value = 0 }
 		set_variable = { which = religion_ra_gain value = 0 }
-
 		ROOT = {
 			any_tributary = { # Tributaries gain
 				change_variable = { which = global_num_of_ek_tributaries value = 1 }
@@ -2334,7 +2333,7 @@ character_event = {
 			#	}
 			#}
 	}
-}
+	}
 
 # Earth Kingdom - Royal Authority - Relation Boost
 character_event = {
@@ -2453,31 +2452,32 @@ character_event = { # Law Change - Event Server
 				clr_title_flag = ek_ra_set_unity_1
 				clr_title_flag = ek_ra_set_unity_2
 				clr_title_flag = ek_ra_set_unity_3
+				clr_title_flag = ek_ra_set_unity_outposts
 				holder_scope = {
 					narrative_event = { id = earthking.60 }
 					break = yes
 				}
 			}
 		}
-		if = {
-			limit = {
-				e_earth_kingdom = {
-					has_law = ek_unity_outposts
-					NOT = { has_title_flag = ek_ra_set_unity_outposts }
-				}
-			}
-			e_earth_kingdom = {
-				set_title_flag = ek_ra_set_unity_outposts
-				clr_title_flag = ek_ra_set_unity_0
-				clr_title_flag = ek_ra_set_unity_1
-				clr_title_flag = ek_ra_set_unity_2
-				clr_title_flag = ek_ra_set_unity_3
-				holder_scope = {
-					narrative_event = { id = earthking.65 }
-					break = yes
-				}
-			}
-		}
+		# if = {
+			# limit = {
+				# e_earth_kingdom = {
+					# has_law = ek_unity_outposts
+					# NOT = { has_title_flag = ek_ra_set_unity_outposts }
+				# }
+			# }
+			# e_earth_kingdom = {
+				# set_title_flag = ek_ra_set_unity_outposts
+				# clr_title_flag = ek_ra_set_unity_0
+				# clr_title_flag = ek_ra_set_unity_1
+				# clr_title_flag = ek_ra_set_unity_2
+				# clr_title_flag = ek_ra_set_unity_3
+				# holder_scope = {
+					# narrative_event = { id = earthking.65 }
+					# break = yes
+				# }
+			# }
+		# }
 		if = {
 			limit = {
 				e_earth_kingdom = {
@@ -2531,6 +2531,21 @@ character_event = { # Law Change - Event Server
 				clr_title_flag = ek_ra_set_unity_2
 				holder_scope = {
 					narrative_event = { id = earthking.64 }
+					break = yes
+				}
+			}
+		}
+		if = {
+			limit = {
+				e_earth_kingdom = {
+					has_law = ze_admin_central
+					NOT = { has_title_flag = ek_central_admin }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = ek_central_admin
+				holder_scope = {
+					narrative_event = { id = earthking.66 }
 					break = yes
 				}
 			}
@@ -2861,88 +2876,88 @@ narrative_event = { # Monarch Law
 	}
 }
 
-narrative_event = { # Outposts Law
-	id = earthking.65
-	picture = GFX_evt_ba_sing_sa
-	title = EVTNAMEEK.64
-	desc = EVTDESCEK.64
-	border = GFX_event_narrative_frame_war
-	is_triggered_only = yes
-	major = yes
+# narrative_event = { # Outposts Law
+	# id = earthking.65
+	# picture = GFX_evt_ba_sing_sa
+	# title = EVTNAMEEK.64
+	# desc = EVTDESCEK.64
+	# border = GFX_event_narrative_frame_war
+	# is_triggered_only = yes
+	# major = yes
 	
-	immediate = {
-		if = {
-			limit = { has_landed_title = e_earth_kingdom }
-			subtract_variable = { which = global_royalAuthority value = 30 }
-			any_independent_ruler = {
-				limit = {
-					OR = {
-						culture_group = earth_kingdom_culture
-						pays_tribute_to = e_earth_kingdom
-					}
-				}
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					NOR = { 
-						culture = sandbender
-						culture = southern_earth	
-					}
-					mercenary = no
-					holy_order = no
-					temporary = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOT = { religion = way_of_chin }
-					capital_scope = {
-							OR = {
-								region = world_north_west_kingdom
-								region = world_north_east_earth_kingdom
-								region = world_eastern_coast
-							}
+	# immediate = {
+		# if = {
+			# limit = { has_landed_title = e_earth_kingdom }
+			# subtract_variable = { which = global_royalAuthority value = 100 }
+			# any_independent_ruler = {
+				# limit = {
+					# OR = {
+						# culture_group = earth_kingdom_culture
+						# pays_tribute_to = e_earth_kingdom
+					# }
+				# }
+			# if = {
+				# limit = {
+					# culture_group = earth_kingdom_culture
+					# NOR = { 
+						# culture = sandbender
+						# culture = southern_earth	
+					# }
+					# mercenary = no
+					# holy_order = no
+					# temporary = no
+					# rebel = no
+					# NOT = { has_landed_title = d_avatar }
+					# NOT = { religion = way_of_chin }
+					# capital_scope = {
+							# OR = {
+								# region = world_north_west_kingdom
+								# region = world_north_east_earth_kingdom
+								# region = world_eastern_coast
+							# }
 							
-					}
-				}
-				FROM = {
-					make_tributary = {						
-						who = PREV
-							percentage = 0.10
-							tributary_type = earth_kingdom_outpost_tributary
-						}
-					}
-				}
-			}
-		}
-	}
+					# }
+				# }
+				# FROM = {
+					# make_tributary = {						
+						# who = PREV
+							# percentage = 0.10
+							# tributary_type = earth_kingdom_outpost_tributary
+						# }
+					# }
+				# }
+			# }
+		# }
+	# }
 	
-		option = {
-		name = EVTOPTA_EK_62
-		trigger = {
-			has_landed_title = e_earth_kingdom
-		}
-		custom_tooltip = {
-			text = EVTOPTC_EK_62_TOOLTIP
-		}
-	}
+		# option = {
+		# name = EVTOPTA_EK_62
+		# trigger = {
+			# has_landed_title = e_earth_kingdom
+		# }
+		# custom_tooltip = {
+			# text = EVTOPTC_EK_62_TOOLTIP
+		# }
+	# }
 	
-	option = {
-		name = EVTOPTB_EK_62
-		trigger = {
-			pays_tribute_to = e_earth_kingdom
-		}
-		custom_tooltip = {
-			text = EVTOPTC_EK_62B_TOOLTIP
-		}
-	}
+	# option = {
+		# name = EVTOPTB_EK_62
+		# trigger = {
+			# pays_tribute_to = e_earth_kingdom
+		# }
+		# custom_tooltip = {
+			# text = EVTOPTC_EK_62B_TOOLTIP
+		# }
+	# }
 	
-	option = {
-		name = EVTOPTC_EK_62
-		trigger = {
-			NOT = { pays_tribute_to = e_earth_kingdom }
-			NOT = { has_landed_title = e_earth_kingdom }
-		}
-	}
-}
+	# option = {
+		# name = EVTOPTC_EK_62
+		# trigger = {
+			# NOT = { pays_tribute_to = e_earth_kingdom }
+			# NOT = { has_landed_title = e_earth_kingdom }
+		# }
+	# }
+# }
 
 narrative_event = {
 	id = earthking.66
