@@ -19,9 +19,10 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Way of Life"
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
+		NOT = { trait = blinded }
 		in_command = no
 		NOT = {
 			lifestyle_traits = 1
@@ -108,13 +109,13 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Way of Life"
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
+		has_character_modifier = illumination
 		NOT = {
 			lifestyle_traits = 1
 		}
-		has_character_modifier = illumination
 	}
 	
 	mean_time_to_happen = {
@@ -200,9 +201,9 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Way of Life"
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
 		in_command = no
 		NOT = {
 			lifestyle_traits = 1
@@ -257,11 +258,7 @@ character_event = {
 	option = {
 		name = "EVTOPTB5020"
 		prestige = 20
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		set_character_flag = stake_pole
 	}
 }
@@ -275,10 +272,10 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	has_character_flag = LE_ST
+	lacks_dlc = "Way of Life"
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
-		has_character_flag = LE_ST
 		NOT = {
 			lifestyle_traits = 1
 		}
@@ -320,6 +317,15 @@ character_event = {
 		prestige = 20
 		clr_character_flag = stake_pole
 	}
+	
+	option = {
+		name = "EVTOPTB5021"
+		character_event = { 
+			id = 5023
+			days = 30
+			tooltip = "EVTTOOLTIP5023"
+		}
+	}
 }
 
 #Red Rose
@@ -331,10 +337,10 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	has_character_flag = LE_ST
+	lacks_dlc = "Way of Life"
 
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
-		has_character_flag = LE_ST
 		NOT = {
 			lifestyle_traits = 1
 		}
@@ -426,10 +432,10 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	has_character_flag = LE_ST
+	lacks_dlc = "Way of Life"
 
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
-		has_character_flag = LE_ST
 		NOT = {
 			lifestyle_traits = 1
 		}
@@ -475,10 +481,10 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	has_character_flag = LE_ST
+	lacks_dlc = "Way of Life"
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
-		has_character_flag = LE_ST
 		NOT = {
 			lifestyle_traits = 1
 		}
@@ -553,29 +559,21 @@ character_event = {
 	min_age = 25
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Way of Life"
+	is_married = no
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
 		in_command = no
 		has_lover = no
-		is_married = no
 		NOT = {
 			trait = homosexual
 		}
 		NOT = {
 			lifestyle_traits = 1
 		}
-		NOT = {
-			OR = {
-				religion_group = earth_religions
-				religion_group = fire_religions
-				religion_group = modern_religions
-				religion_group = outlaw_religions
-				religion_group = water_religions
-			}
-		}
 		any_courtier = {
 			has_lover = no
+			is_married = no
 			age = 25
 			NOT = {
 				age = 35
@@ -587,15 +585,45 @@ character_event = {
 			NOT = {
 				trait = homosexual
 			}
+			NOT = {
+				opinion = { who = ROOT value = 20 }
+			}
+			reverse_opinion = { who = ROOT value = 20 }
 		}
 		NOT = {
 			has_character_flag = LE_ST
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	immediate = {
 		set_character_flag = LE_ST
+		any_courtier = {
+			limit = {
+				age = 25
+				NOT = {
+					age = 35
+				}
+				is_female = yes
+				is_married = no
+				has_lover = no
+				NOT = {
+					trait = celibate
+				}
+				NOT = {
+					trait = homosexual
+				}
+				NOT = {
+					opinion = { who = ROOT value = 20 }
+				}
+				reverse_opinion = { who = ROOT value = 20 }
+			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
+			save_event_target_as = target_courtier
+		}
 	}
 	
 	mean_time_to_happen = {
@@ -628,25 +656,7 @@ character_event = {
 					days = 14
 					tooltip = "EVTTOOLTIPA5031"
 				}
-				random_courtier = {
-					limit = {
-						age = 25
-						NOT = {
-							age = 35
-						}
-						is_female = yes
-						is_married = no
-						NOT = {
-							trait = celibate
-						}
-						NOT = {
-							trait = homosexual
-						}
-						NOT = {
-							opinion = { who = ROOT value = 20 }
-						}
-						reverse_opinion = { who = ROOT value = 20 }
-					}
+				event_target:target_courtier = {
 					set_character_flag = ignore_courtship
 					opinion = {
 						modifier = opinion_disgusted
@@ -661,25 +671,7 @@ character_event = {
 					days = 14
 					tooltip = "EVTTOOLTIP5032"
 				}
-				random_courtier = {
-					limit = {
-						age = 25
-						NOT = {
-							age = 35
-						}
-						is_female = yes
-						is_married = no
-						NOT = {
-							trait = celibate
-						}
-						NOT = {
-							trait = homosexual
-						}
-						NOT = {
-							opinion = { who = ROOT value = 20 }
-						}
-						reverse_opinion = { who = ROOT value = 20 }
-					}
+				event_target:target_courtier = {
 					set_character_flag = encourage_courtship
 					opinion = {
 						modifier = opinion_approves
@@ -693,11 +685,7 @@ character_event = {
 	
 	option = {
 		name = "EVTOPTB5030" #Duelist!
-		if = {
-			limit = { trait = airbender }
-			piety = -20
-			custom_tooltip = { text = jain_ahimsa_tooltip }
-		}
+		pacifists_lose_piety_effect = yes
 		random_list = {
 			50 = {
 				character_event = { #Ignored
@@ -705,25 +693,7 @@ character_event = {
 					days = 14
 					tooltip = "EVTTOOLTIPB5031"
 				}
-				random_courtier = {
-					limit = {
-						age = 25
-						NOT = {
-							age = 35
-						}
-						is_female = yes
-						is_married = no
-						NOT = {
-							trait = celibate
-						}
-						NOT = {
-							trait = homosexual
-						}
-						NOT = {
-							opinion = { who = ROOT value = 20 }
-						}
-						reverse_opinion = { who = ROOT value = 20 }
-					}
+				event_target:target_courtier = {
 					set_character_flag = ignore_courtship
 					opinion = {
 						modifier = opinion_disgusted
@@ -738,25 +708,7 @@ character_event = {
 					days = 14
 					tooltip = "EVTTOOLTIP5033"
 				}
-				random_courtier = {
-					limit = {
-						age = 25
-						NOT = {
-							age = 35
-						}
-						is_female = yes
-						is_married = no
-						NOT = {
-							trait = celibate
-						}
-						NOT = {
-							trait = homosexual
-						}
-						NOT = {
-							opinion = { who = ROOT value = 20 }
-						}
-						reverse_opinion = { who = ROOT value = 20 }
-					}
+				event_target:target_courtier = {
 					set_character_flag = encourage_courtship
 					opinion = {
 						modifier = opinion_approves

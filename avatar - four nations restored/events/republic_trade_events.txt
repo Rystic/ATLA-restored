@@ -66,10 +66,6 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Thieving Captain (Player)
@@ -166,10 +162,6 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Ship Lost in Storm (Player)
@@ -245,6 +237,7 @@ character_event = {
 	
 	trigger = {
 		has_dlc = "The Republic"
+		in_revolt = no
 	}
 	
 	mean_time_to_happen = {
@@ -403,10 +396,6 @@ character_event = {
 				}
 			}
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -584,10 +573,6 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Mutiny! (Player)
@@ -681,10 +666,6 @@ character_event = {
 			character_event = { id = REP.69 }
 		}
 	}
-			
-	option = {
-		name = OK
-	}
 }
 
 # Set up Patrician 1
@@ -714,10 +695,6 @@ character_event = {
 			}
 		}
 		wealth = 1000
-	}
-			
-	option = {
-		name = OK
 	}
 }
 
@@ -749,10 +726,6 @@ character_event = {
 		}
 		wealth = 1000
 	}
-			
-	option = {
-		name = OK
-	}
 }
 
 # Set up Patrician 3
@@ -783,10 +756,6 @@ character_event = {
 		}
 		wealth = 1000
 	}
-			
-	option = {
-		name = OK
-	}
 }
 
 # Set up Patrician 4
@@ -816,10 +785,6 @@ character_event = {
 			}
 		}
 		wealth = 1000
-	}
-			
-	option = {
-		name = OK
 	}
 }
 
@@ -1288,7 +1253,6 @@ character_event = {
 letter_event = {
 	id = REP.310
 	desc = EVTDESC_REP_310
-	picture = GFX_evt_kraken
 	
 	is_triggered_only = yes
 	
@@ -1315,7 +1279,7 @@ letter_event = {
 		}
 		FROM = {
 			plot_target_char = {
-				character_event = { id = REP.311 days = 5 tooltip =  EVTTOOLTIPREP.311 }
+				letter_event = { id = REP.311 days = 5 tooltip =  EVTTOOLTIPREP.311 }
 				opinion = {
 					who = ROOT
 					modifier = opinion_disgruntled
@@ -1324,7 +1288,7 @@ letter_event = {
 			}
 		}
 		FROM = {
-			character_event = { id = REP.313 days = 5 tooltip = EVTTOOLTIPREP.311 }
+			letter_event = { id = REP.313 days = 5 tooltip = EVTTOOLTIPREP.311 }
 			opinion = {
 				who = ROOT
 				modifier = opinion_glad
@@ -1345,7 +1309,7 @@ letter_event = {
 			}
 		}
 		FROM = {
-			character_event = { id = REP.312 days = 5 tooltip = EVTTOOLTIPREP.313 }
+			letter_event = { id = REP.312 days = 5 tooltip = EVTTOOLTIPREP.313 }
 			opinion = {
 				who = ROOT
 				modifier = opinion_disgruntled
@@ -1359,7 +1323,6 @@ letter_event = {
 letter_event = {
 	id = REP.311
 	desc = EVTDESC_REP_311
-	picture = GFX_evt_kraken
 	
 	is_triggered_only = yes
 	
@@ -1373,7 +1336,6 @@ letter_event = {
 letter_event = {
 	id = REP.312
 	desc = EVTDESC_REP_312
-	picture = GFX_evt_kraken
 	
 	is_triggered_only = yes
 	
@@ -1389,7 +1351,6 @@ letter_event = {
 letter_event = {
 	id = REP.313
 	desc = EVTDESC_REP_313
-	picture = GFX_evt_kraken
 	
 	is_triggered_only = yes
 	
@@ -1421,15 +1382,19 @@ character_event = {
 	prisoner = no
 	min_age = 18
 	only_men = yes
+	is_married = no
 	
 	trigger = {
-		is_married = no
+		NOT = { has_character_flag = getting_married }
 		is_betrothed = no
 		is_primary_heir = no
 		is_pretender = no
 		is_theocracy = no
 		is_priest = no
-		NOT = { trait = chaste }
+		NOR = { 
+			trait = chaste
+			is_ascetic_trigger = yes
+		}
 		liege = {
 			NOT = { any_child = { character = ROOT } }
 			is_patrician = yes
@@ -1442,6 +1407,7 @@ character_event = {
 	}
 	
 	immediate = {
+		set_character_flag = getting_married
 		if = {
 			limit = {
 				age = 18
@@ -1469,10 +1435,6 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Family member marries burgher daughter (18 - 29)
@@ -1497,6 +1459,7 @@ character_event = {
 			new_character = {
 				add_spouse = PREV
 			}
+			clr_character_flag = getting_married
 		}
 	}
 }
@@ -1523,6 +1486,7 @@ character_event = {
 			new_character = {
 				add_spouse = PREV
 			}
+			clr_character_flag = getting_married
 		}
 	}
 }
@@ -1549,6 +1513,7 @@ character_event = {
 			new_character = {
 				add_spouse = PREV
 			}
+			clr_character_flag = getting_married
 		}
 	}
 }
@@ -1564,9 +1529,10 @@ character_event = {
 	min_age = 18
 	max_age = 40
 	only_men = yes
+	is_married = no
 	
 	trigger = {
-		is_married = no
+		NOT = { has_character_flag = getting_married }
 		is_betrothed = no
 		is_primary_heir = no
 		is_pretender = no
@@ -1585,6 +1551,7 @@ character_event = {
 	}
 	
 	immediate = {
+		set_character_flag = getting_married
 		random_list = {
 			33 = {
 				liege = {
@@ -1602,10 +1569,6 @@ character_event = {
 				}
 			}
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -1631,6 +1594,7 @@ character_event = {
 			new_character = {
 				add_spouse = PREV
 			}
+			clr_character_flag = getting_married
 		}
 	}
 }
@@ -1658,6 +1622,7 @@ character_event = {
 			new_character = {
 				add_spouse = PREV
 			}
+			clr_character_flag = getting_married
 		}
 	}
 }
@@ -1686,6 +1651,7 @@ character_event = {
 				add_spouse = PREV
 			}
 			wealth = 100
+			clr_character_flag = getting_married
 		}
 	}
 }
@@ -1700,9 +1666,9 @@ character_event = {
 	prisoner = no
 	min_age = 42
 	only_men = yes
+	is_married = no
 	
 	trigger = {
-		is_married = no
 		is_betrothed = no
 		is_primary_heir = no
 		is_pretender = no
@@ -1724,10 +1690,6 @@ character_event = {
 		liege = {
 			character_event = { id = REP.409 }
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -1768,9 +1730,9 @@ character_event = {
 	min_age = 18
 	max_age = 26
 	only_men = yes
+	is_married = no
 	
 	trigger = {
-		is_married = no
 		is_betrothed = no
 		is_primary_heir = no
 		is_pretender = no
@@ -1792,10 +1754,6 @@ character_event = {
 		liege = {
 			character_event = { id = REP.411 }
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -1835,9 +1793,9 @@ character_event = {
 	prisoner = no
 	min_age = 18
 	only_men = yes
+	is_married = no
 	
 	trigger = {
-		is_married = no
 		is_betrothed = no
 		is_primary_heir = no
 		is_pretender = no
@@ -1845,10 +1803,8 @@ character_event = {
 		is_priest = no
 		NOT = { trait = chaste }
 		can_marry = yes
-		NOT = { culture = manden }
 		liege = {
 			NOT = { any_child = { character = ROOT } }
-			NOT = { culture = manden }
 			is_patrician = yes
 			dynasty = ROOT
 		}
@@ -1862,10 +1818,6 @@ character_event = {
 		liege = {
 			character_event = { id = REP.413 }
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -1886,7 +1838,7 @@ character_event = {
 				female = yes
 				age = 26
 				religion = FROM
-				culture = manden
+				culture = sun_warrior
 			}
 			new_character = {
 				add_spouse = PREV
@@ -2310,15 +2262,17 @@ province_event = {
 				is_patrician = no
 			}
 		}
+
 		trade_post_owner = {
 			is_patrician = yes
 			ROOT = {
 				owner = {
-					any_realm_character = {
-						NOT = { character = PREVPREVPREV }
+					NOT = {
+						any_realm_character = { character = PREVPREVPREV }
 					}
 					top_liege = {
-						NOT = { 
+						NOR = {
+							is_vassal_or_below = PREVPREVPREV #this is backwards
 							opinion = { who = PREVPREVPREV value =  0 }
 							has_opinion_modifier = { who = PREVPREVPREV modifier = opinion_bribed_tp }
 							has_opinion_modifier = { who = PREVPREVPREV modifier = opinion_thwarted_tp_destruction }
@@ -2326,6 +2280,11 @@ province_event = {
 							has_opinion_modifier = { who = PREVPREVPREV modifier = opinion_burned_tp_despite_bribe }
 							war_with = PREVPREVPREV
 						}
+					}
+					
+					# Only if there is no non-aggression-pact with the trade post owner
+					NOT = {
+						has_non_aggression_pact_with = PREVPREV
 					}
 				}
 			}
@@ -2391,10 +2350,6 @@ province_event = {
 				character_event = { id = REP.601 }
 			}
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -2618,8 +2573,4 @@ province_event = {
 			character_event = { id = REP.604 }
 		}
 	}		
-	
-	option = {
-		name = OK
-	}
 }

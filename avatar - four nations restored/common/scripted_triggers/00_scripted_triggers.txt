@@ -1921,6 +1921,11 @@ useless_character_trigger = {
 	}
 }
 
+#True religion triggers
+true_religion_group_earth_religions_trigger = {
+	true_religion_group = earth_religions
+}
+
 relationship_with_root_trigger = {
 	OR = {
 		is_lover = ROOT
@@ -2314,6 +2319,24 @@ is_openly_of_roots_secret_religion_trigger = {
 	religion = { target = ROOT target_type = secret }
 }
 
+has_sympathy_for_true_religion_of_prev_trigger = { 
+	OR = {
+		AND = {
+			trait = sympathy_earth_religions
+			PREV = { true_religion_group_earth_religions_trigger = yes }
+		}
+	}
+}
+
+has_sympathy_for_true_religion_of_root_trigger = { 
+	OR = {
+		AND = {
+			trait = sympathy_earth_religions
+			ROOT = { true_religion_group_earth_religions_trigger = yes }
+		}
+	}
+}
+
 ok_sr_induction_mission_target_trigger = {
 	is_adult = yes
 	NOT = { secret_religion = ROOT }
@@ -2332,9 +2355,15 @@ ok_sr_sympathy_mission_target_trigger = {
 	has_secret_religion_trait_trigger = no
 	ROOT = {
 		NOT = { secret_religion = { target_type = public target = PREV } }
+		NOR = {
+			AND = {
+				true_religion_group = earth_religions
+				PREV = { trait = sympathy_earth_religions }
+			}
+		}
 	}
 	ROOT = { PREV = { is_openly_of_prevs_secret_religion_trigger = no } }
-	#ROOT = { PREV = { has_sympathy_for_true_religion_of_prev_trigger = no } }
+	ROOT = { PREV = { has_sympathy_for_true_religion_of_prev_trigger = no } }
 	prisoner = no
 	is_adult = yes
 	NOT = { trait = incapable }
@@ -5414,6 +5443,13 @@ has_at_least_3_traits_opposite_prev_trigger = {
 		}
 	}
 }
+
+has_any_sympathy_trait_trigger = { 
+	OR = {
+		trait = sympathy_earth_religions
+	}
+}
+
 preferred_gender_based_on_laws_trigger = {
 	OR = {
 		AND = {

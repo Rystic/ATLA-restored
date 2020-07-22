@@ -14,7 +14,7 @@ namespace = ZE
 character_event = {
 	id = ZE.4000
 	desc = EVTDESC_ZE_4000
-	picture = GFX_evt_steppe_mercenaries
+	picture = GFX_evt_melee
 	border = GFX_event_normal_frame_war
 
 	is_triggered_only = yes
@@ -27,7 +27,40 @@ character_event = {
 		is_nomadic = no
 		job_marshal = {
 			ai = yes
-			NOT = { trait = in_hiding }
+			NOT = { is_inaccessible_trigger = yes }
+		}
+		OR = {
+			NOT = { #...Or there are no valid vassal candidates that can be commanders.
+				any_vassal = { 
+					higher_real_tier_than = BARON
+					NOT = { 
+						primary_title = { temporary = yes } 
+					}
+					OR = {
+						AND = {
+							OR = {
+								male_can_hold_minor_title_trigger = yes
+								female_can_hold_minor_commander_title_trigger = yes
+							}
+							is_adult = yes
+						}
+						has_character_flag = special_marshal
+					}
+			
+					prisoner = no
+					NOT = { trait = incapable }
+					NOT = { is_inaccessible_trigger = yes }
+					NOT = { has_character_modifier = refusing_to_lead }
+					NOR = {
+						has_job_title = job_chancellor
+						has_job_title = job_marshal
+						has_job_title = job_treasurer
+						has_job_title = job_spymaster
+						has_job_title = job_spiritual
+						has_minor_title = title_commander
+					}
+				} 
+			}
 		}
 		OR = {
 			AND = {
@@ -283,7 +316,7 @@ character_event = {
 				trait = lunatic
 			}
 			NOT = { has_character_flag = marshal_military_experiments_ze }
-			NOT = { trait = in_hiding }
+			NOT = { is_inaccessible_trigger = yes }
 		}
 	}
 	
@@ -329,7 +362,7 @@ character_event = {
 		has_job_title = job_marshal
 		liege = { character = FROM }
 		ai = yes
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	immediate = {
@@ -418,7 +451,7 @@ narrative_event = {
 						factor = 0
 						OR = {
 							FROM = { trait = wounded }
-							FROM = { trait = maimed }
+							FROM = { is_maimed_trigger = yes }
 						}
 					}
 					FROM = { add_trait = wounded }
@@ -426,9 +459,9 @@ narrative_event = {
 				25 = {
 					modifier = {
 						factor = 0
-						FROM = { trait = maimed }
+						FROM = { NOT = { can_be_maimed_trigger = yes } }
 					}
-					FROM = { add_trait = maimed }
+					FROM = { add_maimed_trait_effect = yes }
 				}
 				50 = {
 				}
@@ -496,7 +529,7 @@ narrative_event = {
 						factor = 0
 						OR = {
 							FROM = { trait = wounded }
-							FROM = { trait = maimed }
+							FROM = { is_maimed_trigger = yes }
 						}
 					}
 					FROM = { add_trait = wounded }
@@ -504,9 +537,9 @@ narrative_event = {
 				25 = {
 					modifier = {
 						factor = 0
-						FROM = { trait = maimed }
+						FROM = { NOT = { can_be_maimed_trigger = yes } }
 					}
-					FROM = { add_trait = maimed }
+					FROM = { add_maimed_trait_effect = yes }
 				}
 				50 = {
 				}
@@ -558,7 +591,7 @@ narrative_event = {
 						factor = 0
 						OR = {
 							FROM = { trait = wounded }
-							FROM = { trait = maimed }
+							FROM = { is_maimed_trigger = yes }
 						}
 					}
 					FROM = { add_trait = wounded }
@@ -566,9 +599,9 @@ narrative_event = {
 				25 = {
 					modifier = {
 						factor = 0
-						FROM = { trait = maimed }
+						FROM = { NOT = { can_be_maimed_trigger = yes } }
 					}
-					FROM = { add_trait = maimed }
+					FROM = { add_maimed_trait_effect = yes }
 				}
 				50 = {
 				}
@@ -653,6 +686,11 @@ character_event = {
 				years = 5
 				modifier = opinion_traitor
 			}
+			opinion = {
+				who = ROOT
+				years = 3
+				modifier = opinion_turned_a_blind_eye
+			}
 		}
 	}
 }
@@ -674,10 +712,11 @@ character_event = {
 		has_dlc = "Zeus"
 		job_marshal = {
 			ai = yes
+			has_job_action = yes
 			NOT = { trait = honest }
 			NOT = { trait = just }
 			NOT = { trait = kind }
-			NOT = { trait = in_hiding }
+			NOT = { is_inaccessible_trigger = yes }
 			NOT = { has_character_flag = marshal_abuse_of_office }
 		}
 	}
@@ -728,7 +767,9 @@ character_event = {
 	option = {
 		name = EVTOPTA_ZE_4120 # Depose + get imprison reason
 		event_target:custom_marshal_4120 = {
+			show_scope_change = no
 			location = {
+				show_scope_change = no
 				add_province_modifier = {
 					name = peasant_unrest
 					years = 3
@@ -746,7 +787,9 @@ character_event = {
 	option = {
 		name = EVTOPTB_ZE_4120 # Turn a blind eye for now but get imprison reason
 		event_target:custom_marshal_4120 = {
+			show_scope_change = no
 			location = {
+				show_scope_change = no
 				add_province_modifier = {
 					name = peasant_unrest
 					years = 3
@@ -756,6 +799,11 @@ character_event = {
 				who = ROOT
 				years = 3
 				modifier = abuse_of_office
+			}
+			opinion = {
+				who = ROOT
+				years = 3
+				modifier = opinion_turned_a_blind_eye
 			}
 		}
 	}

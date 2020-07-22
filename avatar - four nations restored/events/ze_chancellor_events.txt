@@ -25,11 +25,15 @@ character_event = {
 			trait = charismatic_negotiator
 			trait = grey_eminence
 			trait = gregarious
-			trait = in_hiding
+			is_inaccessible_trigger = yes
+			has_character_modifier = multilingual
 		}
 		prisoner = no
 		job_chancellor = {
-			NOT = { trait = in_hiding }
+			is_alive = yes
+			vassal_of = ROOT
+			NOT = { is_inaccessible_trigger = yes }
+			NOT = { character = ROOT }
 			OR = {
 				trait = diligent
 				AND = {
@@ -62,7 +66,7 @@ character_event = {
 character_event = {
 	id = ZE.2021
 	desc = EVTDESC_ZE_2021
-	picture = GFX_evt_leaving_table_agnrily 
+	picture = GFX_evt_leaving_table_angrily 
 	border = GFX_event_normal_frame_diplomacy 
 	
 	is_triggered_only = yes
@@ -105,9 +109,12 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_ZE_2022
-		add_character_modifier = {
-			modifier = student_of_language
-			duration = -1
+		if = {
+			limit = { NOT = { has_character_modifier = student_of_language } }
+			add_character_modifier = {
+				modifier = student_of_language
+				duration = -1
+			}
 		}
 		tooltip = {
 			reverse_add_favor = FROM
@@ -379,7 +386,7 @@ character_event = {
 	is_triggered_only = yes
 	
 	option = {
-		name = EVTOPTA_ZE_2029
+		name = EXCELLENT
 		add_favor = FROM
 	}
 }
@@ -399,13 +406,13 @@ character_event = {
 	
 	trigger = {
 		has_dlc = "Zeus"
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 		prisoner = no
 		job_chancellor = {
 			NOT = { opinion = { who = liege value = -74 } }
 			NOR = { 
 				trait = honest 
-				trait = in_hiding
+				is_inaccessible_trigger = yes
 			}
 			ai = yes
 		}
@@ -466,6 +473,11 @@ character_event = {
 				who = ROOT
 				years = 3
 				modifier = abuse_of_office
+			}
+			opinion = {
+				who = ROOT
+				years = 3
+				modifier = opinion_turned_a_blind_eye
 			}
 		}
 	}
