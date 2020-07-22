@@ -3864,17 +3864,20 @@ character_event = {
 	min_age = 16
 	prisoner = no
 	capable_only = yes
+	has_dlc = "Way of Life"
 	
 	trigger = {
-		has_dlc = "Way of Life"
 		any_lover = {
 			is_married = yes
 			has_polygamy = no
 			in_command = no
 			has_regent = no
 			is_ill = no
+			prisoner = no
 			NOT = { trait = incapable }
 			spouse = {
+				prisoner = no
+				NOT = { trait = incapable }
 				NOT = { character = ROOT }
 				NOT = { is_lover = PREV }
 				NOT = {
@@ -3936,8 +3939,11 @@ character_event = {
 				in_command = no
 				has_regent = no
 				is_ill = no
+				prisoner = no
 				NOT = { trait = incapable }
 				spouse = {
+					prisoner = no
+					NOT = { trait = incapable }
 					NOT = { character = ROOT }
 					NOT = { is_lover = PREV }
 					NOT = {
@@ -4046,6 +4052,10 @@ character_event = {
 		FROM = { character_event = { id = WoL.1163 days = 3 tooltip = EVTTOOLTIP_WoL_1163 } }
 		
 		hidden_tooltip = {
+			random = {
+				chance = 50
+				venereal_disease_effect = yes
+			}
 			if = {
 				limit = {
 					fertility = 0.33
@@ -4054,15 +4064,21 @@ character_event = {
 						AND = {
 							is_female = yes
 							NOT = { age = 45 }
+							is_pregnant = no
+							FROM = { is_female = no }
 						}
-						FROM = {
-							is_female = yes
-							NOT = { age = 45 }
+						AND = {
+							is_female = no
+							FROM = {
+								is_female = yes
+								NOT = { age = 45 }
+								is_pregnant = no
+							}
 						}
 					}
 				}
 				random = {
-					chance = 50
+					chance = 25
 					if = {
 						limit = {
 							FROM = {
@@ -4137,6 +4153,10 @@ character_event = {
 		FROM = { character_event = { id = WoL.1162 days = 3 tooltip = EVTTOOLTIP_WoL_1162 } }
 		
 		hidden_tooltip = {
+			random = {
+				chance = 50
+				venereal_disease_effect = yes
+			}
 			if = {
 				limit = {
 					fertility = 0.33
@@ -4145,15 +4165,21 @@ character_event = {
 						AND = {
 							is_female = yes
 							NOT = { age = 45 }
+							is_pregnant = no
+							FROM = { is_female = no }
 						}
-						FROM = {
-							is_female = yes
-							NOT = { age = 45 }
+						AND = {
+							is_female = no
+							FROM = {
+								is_female = yes
+								NOT = { age = 45 }
+								is_pregnant = no
+							}
 						}
 					}
 				}
 				random = {
-					chance = 50
+					chance = 25
 					if = {
 						limit = {
 							FROM = {
@@ -4229,15 +4255,8 @@ character_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		# STD transmission
-		if = {
-			limit = { has_character_modifier = minor_disease_herpes }
-			FROM = { character_event = { id = WoL.40 days = 5 random = 10 } }
-		}
-		if = {
-			limit = { FROM = { has_character_modifier = minor_disease_herpes } }
-			character_event = { id = WoL.40 days = 5 random = 10 }
-		}
+		#STDs and pregnancy
+		unprotected_sex_effect = yes
 	
 		if = {
 			limit = {
@@ -4271,15 +4290,8 @@ character_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		# STD transmission
-		if = {
-			limit = { has_character_modifier = minor_disease_herpes }
-			FROM = { character_event = { id = WoL.40 days = 5 random = 10 } }
-		}
-		if = {
-			limit = { FROM = { has_character_modifier = minor_disease_herpes } }
-			character_event = { id = WoL.40 days = 5 random = 10 }
-		}
+		#STDs and pregnancy
+		unprotected_sex_effect = yes
 	
 		if = {
 			limit = {
