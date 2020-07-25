@@ -1,0 +1,226 @@
+##############################
+# SPYMASTER at WAN SHI TONG'S LIBRARY
+##############################
+
+# The regular study_technology events will still fire and are unaffected.
+# No Tui&La or Solar Eclipse stuff, could easily be added in here somewhere
+
+namespace = WSTLIBRARY
+
+# WSTLIBRARY.1: The Spymaster finds Wan Shi Tong's library
+character_event = {
+	id = WSTLIBRARY.1
+	title = "EVTNAMEWSTLIBRARY.1" 
+	desc = "EVTDESCWSTLIBRARY.1"
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_intrigue
+	
+	min_age = 16
+	capable_only = yes
+	prisoner = no
+	has_job_title = yes
+	
+	trigger = {
+		has_job_action = action_study_technology
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
+		location = { province = 287 } # Xiaohaizi
+		is_title_active = b_wan_shi_tongs_library
+	}
+	
+	mean_time_to_happen = {
+		months = 180
+		
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_focus = focus_scholarship
+				liege = { has_focus = focus_scholarship }
+			}
+		}
+		job_event_mtth_modifier_intrigue_score = yes
+	}
+
+	option = {
+		name = "EVTOPTAWSTLIBRARY.1" #Knowledge for Knowledge's Sake
+		liege = { letter_event = { id = WSTLIBRARY.2 tooltip = "EVTTOOLTIPWSTLIBRARY.2" } } #Some Economic+Cultural tech
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = {
+		name = "EVTOPTBWSTLIBRARY.1" #Knowledge to Destroy Our Enemy
+		random_list = { 
+			50 = {
+				modifier = {
+					factor = 1.2
+					intrigue = 11
+				}
+				modifier = {
+					factor = 1.2
+					intrigue = 14
+				}
+				modifier = {
+					factor = 1.2
+					intrigue = 17
+				}
+				modifier = { # approximately 66% at 20 intrigue
+					factor = 1.2
+					intrigue = 20
+				}
+				character_event = { id = WSTLIBRARY.3 tooltip = "EVTTOOLTIPWSTLIBRARY.3" days = 2 } #Successful deceit, lots of Military tech
+			}
+			50 = {
+				character_event = { id = WSTLIBRARY.5 tooltip = "EVTTOOLTIPWSTLIBRARY.5" days = 2 } #WST pissed, a little Military tech, chance for Spymaster to be killed
+			}
+		}
+		ai_chance = { #AI more likely to try the risky option when at war
+			factor = 1
+			modifier = {
+				factor = 5
+				liege = {
+					war = yes
+				}
+			}
+		}
+	}
+}
+
+# WSTLIBRARY.2: Inform Liege of "Knowledge for Knowledge's Sake"
+letter_event = {
+	id = WSTLIBRARY.2
+	desc = "EVTDESCWSTLIBRARY.2"
+	border = GFX_event_letter_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAWSTLIBRARY.2"
+		random_list = {
+			50 = { economy_techpoints = 100 }
+			50 = { culture_techpoints = 100 }
+		}
+		if = {
+			limit = {
+				has_dlc = "Reapers"
+			}
+			custom_tooltip = {
+				text = capital_prospers_custom_tooltip
+				hidden_tooltip = {
+					capital_scope = {
+						change_variable = { which = prosperity_value value = 6 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# WSTLIBRARY.3: Successful deceit, lots of Military tech
+character_event = {
+	id = WSTLIBRARY.3
+	title = "EVTNAMEWSTLIBRARY.3"
+	desc = "EVTDESCWSTLIBRARY.3"
+	picture = GFX_evt_library
+	border = GFX_event_normal_frame_intrigue
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTAWSTLIBRARY.3"
+		liege = { letter_event = { id = WSTLIBRARY.4 tooltip = "EVTTOOLTIPWSTLIBRARY.4" } } #Inform liege
+	}
+}
+
+# WSTLIBRARY.4: Inform Liege of "Knowledge to Destroy Our Enemy", success
+letter_event = {
+	id = WSTLIBRARY.4
+	desc = "EVTDESCWSTLIBRARY.4"
+	border = GFX_event_letter_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAWSTLIBRARY.4"
+		military_techpoints = 300 
+	}
+}
+
+# WSTLIBRARY.5: WST pissed
+character_event = {
+	id = WSTLIBRARY.5
+	title = "EVTNAMEWSTLIBRARY.5"
+	desc = "EVTDESCWSTLIBRARY.5"
+	picture = GFX_evt_wan_shi_tong_attack
+	border = GFX_event_normal_frame_intrigue
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTAWSTLIBRARY.5"
+		random_list = {
+			50 = {
+				liege = { letter_event = { id = WSTLIBRARY.6 tooltip = "EVTTOOLTIPWSTLIBRARY.6" } } #Inform liege, managed to escape with my life, etc.
+			}
+			50 = {
+				b_wan_shi_tongs_library = {
+					holder_scope = {
+						save_event_target_as = target_wan_shi_tong
+					}
+				}
+				death = { 
+					death_reason = death_battle 
+					killer = event_target:target_wan_shi_tong
+				}
+				liege = {
+					letter_event = { id = WSTLIBRARY.7 tooltip = "EVTTOOLTIPWSTLIBRARY.7" } #Wan Shi Tong sends a foxy messanger, he's angry, etc.
+				} 
+			}
+		}
+		
+	}
+}
+
+# WSTLIBRARY.6: Inform Liege of "Knowledge to Destroy Our Enemy", discovered, but escaped
+letter_event = {
+	id = WSTLIBRARY.6
+	desc = "EVTDESCWSTLIBRARY.6"
+	border = GFX_event_letter_frame_intrigue
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTAWSTLIBRARY.6"
+		military_techpoints = 100 
+	}
+}
+
+# WSTLIBRARY.7: WST sends foxy messanger to voice his anger
+letter_event = {
+	id = WSTLIBRARY.7
+	desc = "EVTDESCWSTLIBRARY.7"
+	picture = GFX_evt_spymaster
+	border = GFX_event_letter_frame_intrigue
+	portrait = b_wan_shi_tongs_library
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		b_wan_shi_tongs_library = {
+			holder_scope = {
+				save_event_target_as = target_wan_shi_tong
+			}
+		}
+	}
+	
+	option = {
+		name = "EVOPTAWSTLIBRARY.7"
+		opinion = {
+			modifier = opinion_furious
+				who = event_target:target_wan_shi_tong
+				years = 100
+			}
+		}
+	}
+}
