@@ -34,6 +34,7 @@ character_event = {
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
 		NOT = { has_character_flag = special_bender }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = {
@@ -45,7 +46,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_haughty_events
+					OR = {
+						has_character_flag = ze_child_haughty_events
+						trait = haughty
+					}
 				}
 				character_event = { id = ZE.12000 days = 10 random = 90 }
 			}
@@ -56,7 +60,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_affectionate_events
+					OR = {
+						has_character_flag = ze_child_affectionate_events
+						trait = affectionate
+					}
 				}
 				character_event = { id = ZE.12010 days = 10 random = 90 }
 			}
@@ -67,11 +74,11 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_timid_events
-				}
-				modifier = {
-					factor = 0
-					trait = rowdy # Mutually exclusive with Timid
+					OR = {
+						has_character_flag = ze_child_timid_events
+						trait = timid
+						trait = rowdy # Mutually exclusive with Timid
+					}
 				}
 				character_event = { id = ZE.12020 days = 10 random = 90 }
 			}
@@ -87,11 +94,9 @@ character_event = {
 						is_strong_trigger = yes
 						is_weak_trigger = yes
 						is_dumb_trigger = yes
+						trait = rowdy
+						trait = timid # Mutually exclusive with Rowdy
 					}
-				}
-				modifier = {
-					factor = 0
-					trait = timid # Mutually exclusive with Rowdy
 				}
 				character_event = { id = ZE.12030 days = 10 random = 90 }
 			}
@@ -102,7 +107,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_willful_events
+					OR = {
+						has_character_flag = ze_child_willful_events
+						trait = willful
+					}
 				}
 				character_event = { id = ZE.12040 days = 10 random = 90 }
 			}
@@ -113,7 +121,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_brooding_events
+					OR = {
+						has_character_flag = ze_child_brooding_events
+						trait = brooding
+					}
 				}
 				character_event = { id = ZE.12050 days = 10 random = 90 }
 			}
@@ -124,7 +135,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_indolent_events
+					OR = {
+						has_character_flag = ze_child_indolent_events
+						trait = indolent
+					}
 				}
 				character_event = { id = ZE.12060 days = 10 random = 90 }
 			}
@@ -138,6 +152,7 @@ character_event = {
 					OR = {
 						has_character_flag = ze_child_playful_events
 						trait = lunatic
+						trait = playful
 					}
 				}
 				character_event = { id = ZE.12070 days = 10 random = 90 }
@@ -149,7 +164,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_conscientious_events
+					OR = {
+						has_character_flag = ze_child_conscientious_events
+						trait = conscientious
+					}
 				}
 				character_event = { id = ZE.12080 days = 10 random = 90 }
 			}
@@ -160,7 +178,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_fussy_events
+					OR = {
+						has_character_flag = ze_child_fussy_events
+						trait = fussy
+					}
 				}
 				character_event = { id = ZE.12090 days = 10 random = 90 }
 			}
@@ -174,6 +195,7 @@ character_event = {
 					OR = {
 						has_character_flag = ze_child_curious_events
 						trait = genius
+						trait = curious
 					}
 				}
 				character_event = { id = ZE.12100 days = 10 random = 90 }
@@ -185,7 +207,11 @@ character_event = {
 				}
 				modifier = {
 					factor = 0
-					has_character_flag = ze_child_idolizer_events
+					OR = {
+						has_character_flag = ze_child_idolizer_events
+						trait = genius
+						trait = idolizer
+					}
 				}
 				character_event = { id = ZE.12110 days = 10 random = 90 }
 			}
@@ -340,6 +366,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_haughty_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	immediate = {  # Find courtier to use in events, set custom event target
@@ -512,6 +539,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTHAU
 		}
+		show_trait = haughty
 	}
 	option = {
 		name = EVTOPTD_ZE_12000	# Caught adult beating dog, joins in
@@ -642,12 +670,14 @@ character_event = {
 		random_list = {
 			5 = {
 				FROM = {
+					show_scope_change = no
 					tooltip = { add_trait = wounded }
 					set_character_flag = child_haughty_wounded
 				}
 			}
 			25 = {
 				FROM = {
+					show_scope_change = no				
 					tooltip = { add_trait = stressed }
 					set_character_flag = child_haughty_stressed
 				}
@@ -658,6 +688,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTHAU_FROM
 		}
+		show_trait = haughty
 	}
 	option = {
 		name = EVTOPTB_ZE_12002
@@ -709,6 +740,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTHAU_FROM
 		}
+		show_trait = haughty
 	}
 	option = {
 		name = EVTOPTE_ZE_12002
@@ -981,6 +1013,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_affectionate_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	immediate = {  # Find courtier to use in events, set custom event target
@@ -992,6 +1025,7 @@ character_event = {
 					NOT = {
 						educator = {
 							any_courtier = {
+								NOT = { character = ROOT }
 								NOT = { age = 12 }
 								NOT = { trait = incapable }
 								NOT = { has_character_modifier = the_oubliette }
@@ -1004,6 +1038,7 @@ character_event = {
 				educator = {
 					random_courtier = {
 						limit = {
+							NOT = { character = ROOT }
 							NOT = { age = 12 }
 							NOT = { trait = incapable }
 							NOT = { has_character_modifier = the_oubliette }
@@ -1110,8 +1145,8 @@ character_event = {
 			factor = 0
 		}
 		set_character_flag = child_affectionate_version_1_option_2
-		add_rival = FROM
 		event_target:affectionate_events_char_1 = {
+			add_rival = ROOT
 			hidden_tooltip = { character_event = { id = ZE.12012 } }
 		}
 	}
@@ -1488,7 +1523,7 @@ character_event = {
 	}
 	# Version 2
 	desc = {
-		text = EVTDESCA_ZE_12016
+		text = EVTDESCB_ZE_12016
 		trigger = {
 			FROM = { has_character_flag = child_affectionate_version_2_option_1 }
 		}
@@ -1567,6 +1602,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_timid_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	immediate = {  # Find courtier to use in events, set custom event target
@@ -1579,10 +1615,12 @@ character_event = {
 						educator = {
 							any_courtier = {
 								is_ruler = no
+								NOT = { character = ROOT }
 								NOT = { any_child = { character = ROOT } }
 								NOT = { trait = incapable }
 								NOT = { has_character_modifier = the_oubliette }
 								NOT = { has_character_modifier = the_dungeon }
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}					
 					}
@@ -1592,10 +1630,12 @@ character_event = {
 					random_courtier = {
 						limit = {
 							is_ruler = no
+							NOT = { character = ROOT }
 							NOT = { any_child = { character = ROOT } }
 							NOT = { trait = incapable }
 							NOT = { has_character_modifier = the_oubliette }
 							NOT = { has_character_modifier = the_dungeon }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = timid_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -1618,12 +1658,14 @@ character_event = {
 					NOT = {
 						educator = {
 							any_courtier = {
+								NOT = { character = ROOT }
 								NOT = { age = 12 }
 								NOT = { is_rival = ROOT }
 								NOT = { is_friend = ROOT }
 								NOT = { trait = incapable }
 								NOT = { has_character_modifier = the_oubliette }
 								NOT = { has_character_modifier = the_dungeon }
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -1631,12 +1673,14 @@ character_event = {
 				educator = {
 					random_courtier = {
 						limit = {
+							NOT = { character = ROOT }
 							NOT = { age = 12 }
 							NOT = { is_rival = ROOT }
 							NOT = { is_friend = ROOT }
 							NOT = { trait = incapable }
 							NOT = { has_character_modifier = the_oubliette }
 							NOT = { has_character_modifier = the_dungeon }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = timid_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -1894,7 +1938,7 @@ character_event = {
 			factor = 100
 		}
 		opinion = {
-			modifier = approves
+			modifier = opinion_approves
 			who = FROM
 			years = 2
 		}
@@ -2002,7 +2046,12 @@ character_event = {
 			who = FROM
 			years = 3
 		}
-		FROM = { hidden_tooltip = { character_event = { id = ZE.12026 } } }
+		hidden_tooltip = {
+			clr_character_flag = child_timid_version_1_option_1
+			clr_character_flag = child_timid_version_1
+			set_character_flag = child_timid_version_2_option_1
+			FROM = { character_event = { id = ZE.12026 } }
+		}
 	}
 	# Version 2
 	option = {
@@ -2062,7 +2111,7 @@ character_event = {
 	}
 	# Version 2
 	desc = {
-		text = EVTDESCA_ZE_12026
+		text = EVTDESCB_ZE_12026
 		trigger = {
 			FROM = { has_character_flag = child_timid_version_2_option_1 }
 		}
@@ -2140,6 +2189,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_rowdy_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 	
 	immediate = {  # Find courtier to use in events, set custom event target
@@ -2151,11 +2201,13 @@ character_event = {
 					NOT = {
 						educator = {
 							any_courtier = {
+								NOT = { character = ROOT }
 								NOT = { age = 12 }
 								NOT = { is_rival = ROOT }
 								NOT = { trait = incapable }
 								NOT = { has_character_modifier = the_oubliette }
 								NOT = { has_character_modifier = the_dungeon }
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}					
 					}
@@ -2164,11 +2216,13 @@ character_event = {
 				educator = {
 					random_courtier = {
 						limit = {
+							NOT = { character = ROOT }
 							NOT = { age = 12 }
 							NOT = { is_rival = ROOT }
 							NOT = { trait = incapable }
 							NOT = { has_character_modifier = the_oubliette }
 							NOT = { has_character_modifier = the_dungeon }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = rowdy_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -2191,11 +2245,13 @@ character_event = {
 					NOT = {
 						educator = {
 							any_courtier = {
+								NOT = { character = ROOT }
 								NOT = { age = 12 }
 								NOT = { is_rival = ROOT }
 								NOT = { trait = incapable }
 								NOT = { has_character_modifier = the_oubliette }
 								NOT = { has_character_modifier = the_dungeon }
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -2203,11 +2259,13 @@ character_event = {
 				educator = {
 					random_courtier = {
 						limit = {
+							NOT = { character = ROOT }
 							NOT = { age = 12 }
 							NOT = { is_rival = ROOT }
 							NOT = { trait = incapable }
 							NOT = { has_character_modifier = the_oubliette }
 							NOT = { has_character_modifier = the_dungeon }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = rowdy_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -2617,6 +2675,11 @@ character_event = {
 		random = {
 			chance = 10
 			add_trait = wounded
+			hidden_tooltip = {
+				character_event = {
+					id = 38280 #Notify wounded
+				}
+			}
 		}
 		clr_character_flag = child_rowdy_version_3_random_1
 		clr_character_flag = child_rowdy_version_3
@@ -2646,7 +2709,7 @@ character_event = {
 	}
 	# Version 2
 	desc = {
-		text = EVTDESCA_ZE_12036 # We did pranks and it was fun
+		text = EVTDESCB_ZE_12036 # We did pranks and it was fun
 		trigger = {
 			FROM = { has_character_flag = child_rowdy_version_2_option_1 }
 		}
@@ -2723,7 +2786,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_willful_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -2986,6 +3049,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -3114,6 +3178,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -3241,24 +3306,6 @@ character_event = {
 			}
 		}
 	}
-	desc = {
-		text = EVTDESCE_ZE_12046
-		picture = GFX_evt_fishing
-		trigger = {
-			FROM = {
-				has_character_flag = child_willful_version_3_huge_fish
-			}
-		}
-	}
-	desc = {
-		text = EVTDESCF_ZE_12046
-		picture = GFX_evt_fishing
-		trigger = {
-			FROM = {
-				has_character_flag = child_willful_version_3_small_fish
-			}
-		}
-	}
 
 	is_triggered_only = yes
 	
@@ -3268,6 +3315,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -3392,7 +3440,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_brooding_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -3659,6 +3707,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -3750,7 +3799,7 @@ character_event = {
 			character_event = { id = ZE.12054 }
 		}
 		custom_tooltip = {
-			text = EVTOPTBRO_FROM
+			text = EVTOPTBRO_FROM_B
 		}
 	}
 	option = {
@@ -3818,6 +3867,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -3919,12 +3969,13 @@ character_event = {
 			}
 		}
 		ai_chance = {
-			factor = 0
+			factor = 100
 			modifier = {
 				has_character_flag = child_brooding_version_2_not_everyone
 				factor = 2
 			}
 		}
+		add_trait = timid
 		set_character_flag = child_brooding_version_2_positive
 		FROM = {
 			character_event = { id = ZE.12056 }
@@ -4026,6 +4077,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -4106,6 +4158,9 @@ character_event = {
 			}
 		}
 		FROM = {
+			tooltip = {
+				add_trait = timid
+			}
 			hidden_tooltip = { character_event = { id = ZE.12057 } } #clear all flags
 		}
 	}
@@ -4182,7 +4237,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_indolent_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -4203,6 +4258,7 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon 
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -4222,6 +4278,7 @@ character_event = {
 								has_character_modifier = the_oubliette
 								has_character_modifier = the_dungeon 
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = indolent_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -4249,6 +4306,7 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -4265,6 +4323,7 @@ character_event = {
 								has_character_modifier = the_oubliette
 								has_character_modifier = the_dungeon
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = indolent_events_char_2
 						if = { # If we don't involve a player, skip these events
@@ -4311,6 +4370,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTIND
 		}
+		show_trait = indolent
 	}
 	option = {
 		name = EVTOPTB_ZE_12060	# Help out with tree cutting
@@ -4353,6 +4413,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTIND
 		}
+		show_trait = indolent
 	}
 	option = {
 		name = EVTOPTD_ZE_12060	# join other child on walk
@@ -4388,6 +4449,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTIND
 		}
+		show_trait = indolent
 	}
 	option = {
 		name = EVTOPTF_ZE_12060	# read book
@@ -4469,6 +4531,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -4492,6 +4555,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTIND_FROM
 		}
+		show_trait = indolent
 	}
 	option = {
 		name = EVTOPTB_ZE_12062	# worry about child
@@ -4513,6 +4577,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTIND_FROM
 		}
+		show_trait = indolent
 	}
 	option = {
 		name = EVTOPTC_ZE_12062	# Child helped, be grateful
@@ -4542,6 +4607,7 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTIND_FROM
 		}
+		show_trait = indolent
 	}
 	option = {
 		name = EVTOPTE_ZE_12062	# Refuse to go
@@ -4630,6 +4696,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -4809,6 +4876,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -4926,7 +4994,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_playful_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -4946,6 +5014,7 @@ character_event = {
 									trait = incapable
 									trait = cruel
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -4964,6 +5033,7 @@ character_event = {
 								trait = incapable
 								trait = cruel
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = playful_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -4991,6 +5061,7 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -5007,6 +5078,7 @@ character_event = {
 								has_character_modifier = the_oubliette
 								has_character_modifier = the_dungeon
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = playful_events_char_2
 						if = { # If we don't involve a player, skip these events
@@ -5216,6 +5288,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -5393,6 +5466,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -5521,6 +5595,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -5629,7 +5704,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_conscientious_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -5646,6 +5721,7 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -5661,6 +5737,7 @@ character_event = {
 								has_character_modifier = the_oubliette
 								has_character_modifier = the_dungeon
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = conscientious_events_char_1
 						if = { # If we don't involve a player, skip these events
@@ -5691,6 +5768,7 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -5710,6 +5788,7 @@ character_event = {
 								has_character_modifier = the_oubliette
 								has_character_modifier = the_dungeon
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = conscientious_events_char_2
 						if = { # If we don't involve a player, skip these events
@@ -5784,7 +5863,7 @@ character_event = {
 		ai_chance = {
 			factor = 100
 		}
-		set_character_flag = child_conscientious_version_2_tell_on
+		set_character_flag = child_conscientious_version_2_told_on
 		event_target:conscientious_events_char_2 = {
 			add_rival = ROOT
 			hidden_tooltip = {
@@ -5914,6 +5993,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -5988,6 +6068,7 @@ character_event = {
 		tooltip = {
 			add_rival = FROM
 		}
+		piety = 15
 		FROM = {
 			set_character_flag = child_conscientious_version_2_finish_dishes
 			character_event = { id = ZE.12084 }
@@ -6061,6 +6142,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -6150,7 +6232,23 @@ character_event = {
 		trigger = {
 			has_character_flag = child_conscientious_version_3_pneumonia
 		}
+		if = {
+			limit = {
+				NOT = {
+					has_dlc = "Reapers"
+				}
+			}
 		add_trait = pneumonic
+		}
+		if = {
+			limit = {
+				has_dlc = "Reapers"
+			}
+		add_trait = infection
+		hidden_tooltip = {
+			character_event = { id = RIP.11001 days = 365 random = 1095 }
+		}
+		}
 		hidden_tooltip = { character_event = { id = ZE.12087 } } # Clear all flags
 	}
 	option = {
@@ -6196,6 +6294,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -6308,7 +6407,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_fussy_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -6354,6 +6453,7 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
 						}
 					}
@@ -6370,6 +6470,7 @@ character_event = {
 								has_character_modifier = the_oubliette
 								has_character_modifier = the_dungeon
 							}
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						save_event_target_as = fussy_events_char_2
 						if = { # If we don't involve a player, skip these events
@@ -6594,6 +6695,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -6629,13 +6731,17 @@ character_event = {
 		}
 		prestige = -30
 		FROM = {
-			tooltip = {
-				opinion = {
-					who = ROOT
-					modifier = opinion_happy_with_guardian
-					years = 2
-				}
+			show_scope_change = no
+			custom_tooltip = {
+				text = EVTOPTFUS_FROM_TRUTH_BOMB_TT #They might be pleased with you.
 			}
+#			tooltip = { #Commented out as this was never a *guarantee*, so should not be tooltiped.
+#				opinion = {
+#					who = ROOT
+#					modifier = opinion_happy_with_guardian
+#					years = 2
+#				}
+#			}
 			hidden_tooltip = {
 				set_character_flag = child_fussy_version_1_fetched_toy
 				character_event = { id = ZE.12094 }
@@ -6782,6 +6888,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -6976,7 +7083,20 @@ character_event = {
 			has_character_flag = child_fussy_version_3_became_ill
 		}
 		change_diplomacy = 2
-		add_trait = ill
+		if = {
+			limit = {
+				NOT = {
+					has_dlc = "Reapers"
+				}
+			}
+			add_trait = ill
+		}
+		if = {
+			limit = {
+				has_dlc = "Reapers"
+			}
+			add_symptom_effect = yes
+		}
 		hidden_tooltip = { character_event = { id = ZE.12097 } } #Clear all flags
 	}
 }
@@ -7051,6 +7171,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -7061,7 +7182,12 @@ character_event = {
 				has_character_flag = child_fussy_version_1_persistent
 			}
 		}
+		
+		custom_tooltip = { text = from_has_gained_fussy_tt }
+		show_trait = fussy
+
 		FROM = {
+			show_scope_change = no
 			tooltip = {
 				opinion = {
 					who = ROOT
@@ -7081,6 +7207,7 @@ character_event = {
 		}
 		wealth = -10
 		FROM = {
+			show_scope_change = no
 			tooltip = {
 				opinion = {
 					who = FROM
@@ -7098,7 +7225,11 @@ character_event = {
 				has_character_flag = child_fussy_version_1_smelly_toy
 			}
 		}
+		custom_tooltip = { text = from_has_gained_fussy_tt }
+		show_trait = fussy
+
 		FROM = {
+			show_scope_change = no
 			tooltip = {
 				opinion = {
 					who = ROOT
@@ -7133,7 +7264,11 @@ character_event = {
 				has_character_flag = child_fussy_version_2_persistent
 			}
 		}
+		custom_tooltip = { text = from_has_gained_fussy_tt }
+		show_trait = fussy
+
 		FROM = {
+			show_scope_change = no
 			tooltip = {
 				opinion = {
 					who = ROOT
@@ -7235,7 +7370,7 @@ character_event = {
 		NOT = { has_character_flag = ze_child_curious_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
@@ -7249,6 +7384,7 @@ character_event = {
 							trait = incapable
 							has_character_modifier = the_oubliette
 							has_character_modifier = the_dungeon 
+							is_inaccessible_trigger = yes
 						}
 					}
 					factor = 0
@@ -7276,6 +7412,7 @@ character_event = {
 							trait = incapable
 							has_character_modifier = the_oubliette
 							has_character_modifier = the_dungeon
+							is_inaccessible_trigger = yes
 						}
 					}
 					factor = 0
@@ -7499,6 +7636,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -7584,7 +7722,9 @@ character_event = {
 		}
 		FROM = {
 			set_character_flag = child_curious_version_2_punished
-			character_event = { id = ZE.12104 }
+			hidden_tooltip = {
+				character_event = { id = ZE.12104 }
+			}
 		}
 		if = {
 			limit = { NOT = { trait = cruel } }
@@ -7688,6 +7828,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -7706,8 +7847,10 @@ character_event = {
 			years = 1
 		}
 		set_character_flag = child_curious_version_1_persistent
-		FROM = {
-			character_event = { id = ZE.12106 }
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ZE.12106 }
+			}
 		}
 	}
 	option = {
@@ -7726,8 +7869,10 @@ character_event = {
 			}
 		}
 		set_character_flag = child_curious_version_1_regretful
-		FROM = {
-			character_event = { id = ZE.12106 }
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ZE.12106 }
+			}
 		}
 	}
 	option = {
@@ -7885,6 +8030,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -8028,17 +8174,37 @@ character_event = {
 		NOT = { has_character_flag = ze_child_idolizer_events }
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	immediate = { #Find viable courtier or if none, only make third version available
 		set_character_flag = ze_child_idolizer_events
-		random_list = {
-			10 = {
-				modifier = {
+		hidden_effect = {
+			random_list = {
+				10 = {
+					modifier = {
+						educator = {
+							NOT = {
+								any_courtier = {
+									is_adult = yes
+									NOR = {
+										trait = incapable
+										trait = wroth
+										trait = cruel
+										trait = cynical
+										has_character_modifier = the_oubliette
+										has_character_modifier = the_dungeon
+									}
+									NOT = { is_inaccessible_trigger = yes }
+								}
+							}
+						}
+						factor = 0
+					}
+					set_character_flag = child_idolizer_version_1
 					educator = {
-						NOT = {
-							any_courtier = {
+						random_courtier = {
+							limit = {
 								is_adult = yes
 								NOR = {
 									trait = incapable
@@ -8048,44 +8214,44 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
 							}
-						}
-					}
-					factor = 0
-				}
-				set_character_flag = child_idolizer_version_1
-				educator = {
-					random_courtier = {
-						limit = {
-							is_adult = yes
-							NOR = {
-								trait = incapable
-								trait = wroth
-								trait = cruel
-								trait = cynical
-								has_character_modifier = the_oubliette
-								has_character_modifier = the_dungeon
-							}
-						}
-						save_event_target_as = idolizer_events_char_1
-						if = { # If we don't involve a player, skip these events
-							limit = {
-								ROOT = { ai = yes }
-								ai = yes
-							}
-							ROOT = {
-								clr_character_flag = child_idolizer_version_1 
-								add_trait = idolizer
+							save_event_target_as = idolizer_events_char_1
+							if = { # If we don't involve a player, skip these events
+								limit = {
+									ROOT = { ai = yes }
+									ai = yes
+								}
+								ROOT = {
+									clr_character_flag = child_idolizer_version_1 
+									add_trait = idolizer
+								}
 							}
 						}
 					}
 				}
-			}
-			10 = {
-				modifier = {
+				10 = {
+					modifier = {
+						educator = {
+							NOT = {
+								any_courtier = {
+									is_adult = no
+									NOR = { 
+										trait = imbecile
+										trait = incapable
+										has_character_modifier = the_oubliette
+										has_character_modifier = the_dungeon
+									}
+									NOT = { is_inaccessible_trigger = yes }
+								}
+							}
+						}
+						factor = 0
+					}
+					set_character_flag = child_idolizer_version_2
 					educator = {
-						NOT = {
-							any_courtier = {
+						random_courtier = {
+							limit = {
 								is_adult = no
 								NOR = { 
 									trait = imbecile
@@ -8093,44 +8259,30 @@ character_event = {
 									has_character_modifier = the_oubliette
 									has_character_modifier = the_dungeon
 								}
+								NOT = { is_inaccessible_trigger = yes }
+							}
+							save_event_target_as = idolizer_events_char_2
+							if = { # If we don't involve a player, skip these events
+								limit = {
+									ROOT = { ai = yes }
+									ai = yes
+								}
+								ROOT = { clr_character_flag = child_idolizer_version_2 
+									add_trait = idolizer
+								}
 							}
 						}
 					}
-					factor = 0
 				}
-				set_character_flag = child_idolizer_version_2
-				educator = {
-					random_courtier = {
+				10 = {
+					set_character_flag = child_idolizer_version_3
+					if = { # If we don't involve a player, skip these events
 						limit = {
-							is_adult = no
-							NOR = { 
-								trait = imbecile
-								trait = incapable
-								has_character_modifier = the_oubliette
-								has_character_modifier = the_dungeon
-							}
+							ai = yes
 						}
-						save_event_target_as = idolizer_events_char_2
-						if = { # If we don't involve a player, skip these events
-							limit = {
-								ROOT = { ai = yes }
-								ai = yes
-							}
-							ROOT = { clr_character_flag = child_idolizer_version_2 
-								add_trait = idolizer
-							}
-						}
+						clr_character_flag = child_idolizer_version_3
+						add_trait = idolizer
 					}
-				}
-			}
-			10= {
-				set_character_flag = child_idolizer_version_3
-				if = { # If we don't involve a player, skip these events
-					limit = {
-						ai = yes
-					}
-					clr_character_flag = child_idolizer_version_3
-					add_trait = idolizer
 				}
 			}
 		}
@@ -8311,6 +8463,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -8497,6 +8650,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -8722,6 +8876,7 @@ character_event = {
 		has_dlc = "Zeus"
 		NOT = { has_character_modifier = the_oubliette }
 		NOT = { has_character_modifier = the_dungeon }
+		NOT = { is_inaccessible_trigger = yes }
 	}
 
 	# Version 1
@@ -8837,7 +8992,7 @@ character_event = {
 		clr_character_flag = ze_child_affectionate_events
 		clr_character_flag = ze_child_timid_events
 		clr_character_flag = ze_child_rowdy_events
-		clr_character_flag = ze_childe_willful_events
+		clr_character_flag = ze_child_willful_events
 		clr_character_flag = ze_child_brooding_events
 		clr_character_flag = ze_child_indolent_events
 		clr_character_flag = ze_child_playful_events
@@ -8900,6 +9055,7 @@ character_event = {
 						}
 						host = {
 							any_courtier = {
+								NOT = { character = ROOT }
 								NOT = { trait = incapable }
 								prisoner = yes
 								NOT = { is_friend = ROOT }
@@ -8976,12 +9132,25 @@ character_event = {
 		}
 		if = {
 			limit = {
-				NOT = { trait = ill }
+				NOT = { is_ill = yes }
 				NOT = { trait = pneumonic }
 			}
 			random = {
 				chance = 20
-				add_trait = ill
+				if = {
+					limit = {
+						NOT = {
+							has_dlc = "Reapers"
+						}
+					}
+					add_trait = ill
+				}
+				if = {
+					limit = {
+						has_dlc = "Reapers"
+					}
+					add_symptom_effect = yes
+				}
 			}
 		}
 	}
@@ -9051,25 +9220,59 @@ character_event = {
 			random = {
 				chance = 30
 				add_trait = infirm
+				hidden_tooltip = {
+					character_event = {
+						id = 38284 #Notify Infirm
+					}
+				}
 			}
 		}
 		if = {
 			limit = {
-				trait = ill
+				is_ill = yes
 			}
 			random = {
 				chance = 30
-				add_trait = pneumonic
+				if = {
+					limit = {
+						NOT = {
+							has_dlc = "Reapers"
+						}
+					}
+					add_trait = pneumonic
+				}
+				if = {
+					limit = {
+						has_dlc = "Reapers"
+					}
+					add_trait = infection
+					hidden_tooltip = {
+						character_event = { id = RIP.11001 days = 365 random = 1095 }
+					}
+				}
 			}
 		}
 		if = {
 			limit = {
-				NOT = { trait = ill }
+				NOT = { is_ill = yes }
 				NOT = { trait = pneumonic }
 			}
 			random = {
 				chance = 30
-				add_trait = ill
+				if = {
+					limit = {
+						NOT = {
+							has_dlc = "Reapers"
+						}
+					}
+					add_trait = ill
+				}
+				if = {
+					limit = {
+						has_dlc = "Reapers"
+					}
+					add_symptom_effect = yes
+				}
 			}
 		}
 	}
@@ -9147,37 +9350,23 @@ character_event = {
 	}
 
 	option = {
-		name = EVTOPTA_ZE_12219 # I will never forget you, rat!
-		trigger = {
-			has_character_flag = rat_name_1
-		}
-		remove_character_modifier = pet_rat_dungeon
-		if = {
-			limit = {
-				NOT = { trait = brooding }
-				NOT = { age = 12 }
+		name = {
+			text = EVTOPTA_ZE_12219 # I will never forget you, rat!
+			trigger = {
+				has_character_flag = rat_name_1
 			}
-			add_trait = brooding
 		}
-	}
-	option = {
-		name = EVTOPTB_ZE_12219 # I will never forget you, rat!
-		trigger = {
-			has_character_flag = rat_name_2
-		}
-		remove_character_modifier = pet_rat_dungeon
-		if = {
-			limit = {
-				NOT = { trait = brooding }
-				NOT = { age = 12 }
+		name = {
+			text = EVTOPTB_ZE_12219 # I will never forget you, rat!
+			trigger = {
+				has_character_flag = rat_name_2
 			}
-			add_trait = brooding
 		}
-	}
-	option = {
-		name = EVTOPTC_ZE_12219 # I will never forget you, rat!
-		trigger = {
-			has_character_flag = rat_name_3
+		name = {
+			text = EVTOPTC_ZE_12219 # I will never forget you, rat!
+			trigger = {
+				has_character_flag = rat_name_3
+			}
 		}
 		remove_character_modifier = pet_rat_dungeon
 		if = {
@@ -9495,6 +9684,7 @@ character_event = {
 		}
 		host = {
 			any_courtier = {
+				NOT = { character = ROOT }
 				NOT = { trait = incapable }
 				prisoner = yes
 				NOT = { is_friend = ROOT }
@@ -9504,8 +9694,9 @@ character_event = {
 	
 	immediate = {
 		host = {
-			any_courtier = {
+			random_courtier = {
 				limit = {
+					NOT = { character = ROOT }
 					NOT = { trait = incapable }
 					prisoner = yes
 					NOT = { is_friend = ROOT }
@@ -9773,7 +9964,12 @@ character_event = {
 		hidden_tooltip = {
 			if = {
 				limit = {
-					NOT = { liege = { character = event_target:target_educator } }
+					liege = {
+						NOR = {
+							character = event_target:target_educator
+							character = ROOT
+						}
+					}
 				}
 				liege = { character_event = { id = ZE.2102 } }
 			}
@@ -9799,7 +9995,7 @@ character_event = {
 		name = EVTOPTA_ZE_2102
 		tooltip = {
 			FROM = {
-				religion = FROMFROM
+				religion = ROOT_FROMFROM
 			}
 		}
 	}
@@ -9870,7 +10066,12 @@ character_event = {
 		hidden_tooltip = {
 			if = {
 				limit = {
-					NOT = { liege = { character = event_target:target_educator } }
+					liege = {
+						NOR = {
+							character = event_target:target_educator
+							character = ROOT
+						}
+					}
 				}
 				liege = { character_event = { id = ZE.2112 } }
 			}
@@ -9896,7 +10097,7 @@ character_event = {
 		name = EVTOPTA_ZE_2102
 		tooltip = {
 			FROM = {
-				religion = FROMFROM
+				religion = ROOT_FROMFROM
 			}
 		}
 	}
@@ -9936,7 +10137,8 @@ character_event = {
 	option = {
 		name = EVTOPTA_ZE_2120
 		ai_chance = { factor = 100 }
-		tooltip = {
+		custom_tooltip = {
+			text = EVTOPTA_ZE_2120
 			reverse_culture = event_target:target_child
 		}
 		event_target:target_child = { character_event = { id = ZE.2121 } }
@@ -9967,7 +10169,12 @@ character_event = {
 		hidden_tooltip = {
 			if = {
 				limit = {
-					NOT = { liege = { character = event_target:target_educator } }
+					liege = {
+						NOR = {
+							character = event_target:target_educator
+							character = ROOT
+						}
+					}
 				}
 				liege = { character_event = { id = ZE.2122 } }
 			}
@@ -9993,7 +10200,7 @@ character_event = {
 		name = EVTOPTA_ZE_2122
 		tooltip = {
 			FROM = {
-				culture = FROMFROM
+				culture = ROOT_FROMFROM
 			}
 		}
 	}
@@ -10007,13 +10214,7 @@ letter_event = {
 	
 	is_triggered_only = yes
 	
-	trigger = {
-		FROM = {
-			host = {
-				character = FROMFROM
-			}
-		}
-	}
+	show_from_from = yes
 	
 	immediate = {
 		save_event_target_as = target_liege
@@ -10138,5 +10339,141 @@ letter_event = {
 		}
 		clr_character_flag = ZE_2132_DIPLOMATIC_RESPONSE
 		clr_character_flag = ZE_2132_OFFENDED_RESPONSE
+	}
+}
+
+# Fired from targeted decision to ask allowance to change ward's focus to faith
+letter_event = {
+	id = ZE.2140
+	desc = EVTDESC_ZE_2140
+	border = GFX_event_letter_frame_diplomacy
+	
+	is_triggered_only = yes
+	
+	show_from_from = yes
+	
+	immediate = {
+		save_event_target_as = target_liege
+		FROM = { save_event_target_as = target_ward }
+		FROMFROM = { save_event_target_as = target_guardian }
+	}
+	
+	option = {
+		name = EVTOPTA_ZE_2130
+		ai_chance = {
+			factor = 100	# AI always accepts
+		}
+		
+		tooltip = {
+			event_target:target_ward = {
+				set_focus = focus_ch_faith
+			}
+		}
+		hidden_tooltip = {
+			event_target:target_guardian = {
+				letter_event = { id = ZE.2141 }
+			}
+		}
+	}
+	
+	option = {
+		name = EVTOPTB_ZE_2130
+		ai_chance = {
+			factor = 0
+		}
+		if = {
+			limit = {
+				opinion = {
+					who = event_target:target_guardian
+					value = 25
+				}
+			}
+			tooltip = {
+				reverse_opinion = {
+					who = event_target:target_guardian
+					modifier = opinion_insulted
+					years = 2
+				}
+			}
+		}
+		hidden_tooltip = {
+			event_target:target_guardian = {
+				letter_event = { id = ZE.2142 }
+			}
+		}
+	}
+}
+
+letter_event = {
+	id = ZE.2141
+	desc = EVTDESC_ZE_2141
+	border = GFX_event_letter_frame_diplomacy
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_ZE_2131
+		event_target:target_ward = {
+			hidden_tooltip = {
+				clear_focus = yes
+			}
+			set_focus = focus_ch_faith
+		}
+	}
+}
+
+letter_event = {
+	id = ZE.2142
+	desc = {
+		text = EVTDESCA_ZE_2132
+		trigger = {
+			has_character_flag = ZE_2142_DIPLOMATIC_RESPONSE
+		}
+	}
+	desc = {
+		text = EVTDESCB_ZE_2142
+		trigger = {
+			has_character_flag = ZE_2142_OFFENDED_RESPONSE
+		}
+	}
+	border = GFX_event_letter_frame_diplomacy
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				reverse_opinion = {
+					who = event_target:target_liege
+					value = 25
+				}
+			}
+			set_character_flag = ZE_2142_DIPLOMATIC_RESPONSE
+			break = yes
+		}
+		set_character_flag = ZE_2142_OFFENDED_RESPONSE
+	}
+	
+	option = {
+		name = EVTOPTA_ZE_2132
+		trigger = {
+			has_character_flag = ZE_2142_DIPLOMATIC_RESPONSE
+		}
+		clr_character_flag = ZE_2142_DIPLOMATIC_RESPONSE
+		clr_character_flag = ZE_2142_OFFENDED_RESPONSE
+	}
+	
+	option = {
+		name = EVTOPTB_ZE_2132
+		trigger = {
+			has_character_flag = ZE_2142_OFFENDED_RESPONSE
+		}
+		opinion = {
+			who = event_target:target_liege
+			modifier = opinion_insulted
+			years = 2
+		}
+		clr_character_flag = ZE_2142_DIPLOMATIC_RESPONSE
+		clr_character_flag = ZE_2142_OFFENDED_RESPONSE
 	}
 }
