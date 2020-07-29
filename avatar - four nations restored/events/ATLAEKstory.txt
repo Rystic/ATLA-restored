@@ -1,0 +1,598 @@
+namespace = ekstory
+
+#start of chain
+narrative_event = {
+	id = ekstory.1
+	desc = EVTDESCEKSTORY1
+	title = EVTTITEKSTORY1
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+		is_adult = yes
+		year >= 579
+		year <= 581
+	}
+	
+	option = {#Canon
+		name = ekreconquestcanon
+		add_trait = unjust
+		set_global_flag = ek_choose_war
+		character_event = { id = ATLAE.4007 }
+		character_event = { id = ekstory.3 }
+	}
+	
+	option = { #"Peaceful"
+		name = ekunitybywords
+		add_trait = just
+		add_trait = virtuous
+		set_global_flag = ek_choose_peace
+		character_event = { id = ekstory.2 }
+		e_earth_kingdom = {
+			if = {
+				limit = {
+					has_law = ek_unity_law_0
+				}
+			revoke_law = ek_unity_law_0
+			add_law = ek_unity_law_1
+			clr_title_flag = ek_ra_set_unity_0
+			set_title_flag = ek_ra_set_unity_1
+			}
+			if = {
+				limit = {
+					has_law = ze_admin_anarchy
+				}
+			revoke_law = ze_admin_anarchy			
+			add_law = ze_admin_territories
+			}
+			if = {
+				limit = {
+					has_law = bureaucracy_anarchy
+				}
+			revoke_law = bureaucracy_anarchy		
+			add_law = underfunded_bureaucracy
+			}			
+		}
+		hidden_tooltip = {
+			any_independent_ruler = { #copy paste from law server event with way of chin block
+				limit = {
+					culture_group = earth_kingdom_culture
+					NOT = { religion = way_of_chin }
+				}
+			if = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					NOR = { 
+						culture = sandbender
+						culture = southern_earth
+						culture = barbarians	
+					}
+					mercenary = no
+					holy_order = no
+					temporary = no
+					rebel = no
+					NOT = { has_landed_title = d_avatar }
+					NOT = { religion = way_of_chin }
+					capital_scope = {
+							OR = {
+								region = world_north_west_kingdom
+								region = world_north_east_earth_kingdom
+								region = world_central_desert
+								region = world_western_earth_kingdom
+								region = world_eastern_coast
+							}
+							
+					}
+				}
+				FROM = {
+					make_tributary = {						
+						who = PREV
+							percentage = 0.16
+							tributary_type = earth_kingdom_province_tributary
+						}
+					}
+			}
+			if = {
+				limit = {
+					culture_group = earth_kingdom_culture
+					NOT = { culture = eastern_earth }
+					mercenary = no
+					holy_order = no
+					temporary = no
+					rebel = no
+					NOT = { has_landed_title = d_avatar }
+					NOT = { religion = way_of_chin }
+					capital_scope = {
+							OR = {
+								region = world_southern_earth_kingdom
+								region = world_earth_islands
+								region = world_eastern_coast
+								region = world_si_wong_fringe
+							}
+						}
+					}
+				FROM = {
+					make_tributary = {						
+						who = PREV
+							percentage = 0.12
+							tributary_type = earth_kingdom_territory_tributary
+						}
+					}
+			}
+			if = {
+				limit = {
+					OR = {
+						culture = barbarians
+						culture = sandbender
+					}
+					mercenary = no
+					holy_order = no
+					temporary = no
+					rebel = no
+					NOT = { has_landed_title = d_avatar }
+					capital_scope = {
+						OR = {
+							region = world_si_wong
+							region = world_western_earth_kingdom
+							region = world_north_east_earth_kingdom
+						}
+					}	
+				}
+				FROM = {
+					make_tributary = {						
+						who = PREV
+							percentage = 0.1
+							tributary_type = earth_kingdom_outpost_tributary
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Peaceful 1st event Remnants of Chin Empire
+narrative_event = {
+	id = ekstory.2
+	desc = EVTDESCEKSTORY2
+	title = EVTTITEKSTORY2
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+		has_global_flag = ek_choose_peace
+		NOR = { 
+			has_global_flag = ek_chin_remnants_submit 
+			has_global_flag = ek_chin_remnants_war
+		}
+	}
+	
+	option = {
+		name = ekstory2a
+		e_earth_kingdom = {
+				set_title_flag = chin_chosen_martial
+		}
+		if = {
+			limit = {
+				martial >= 12
+			}
+			random_list = {
+				70 = {
+					custom_tooltip = {
+						text = ekpeacemart1
+						hidden_effect = {
+							narrative_event = { id = ekstory.4 days = 100 random = 3 }
+							change_variable = { which = global_royalAuthority value = 10 }
+						}
+					}
+				}
+				30 = {
+					custom_tooltip = {
+						text = ekpeacemart1
+						hidden_effect = {
+							narrative_event = { id = ekstory.6 days = 100 random = 3 }
+							change_variable = { which = global_royalAuthority value = -3 }
+						}
+					}
+				}
+			}
+		}
+		else = {
+			random_list = {
+				50 = {
+					custom_tooltip = {
+						text = ekpeacemart1
+						hidden_effect = {
+							narrative_event = { id = ekstory.4 days = 100 random = 3 }
+							change_variable = { which = global_royalAuthority value = 10 }
+						}
+					}
+				}
+				50 = {
+					custom_tooltip = {
+						text = ekpeacemart1
+						hidden_effect = {
+							narrative_event = { id = ekstory.6 days = 100 random = 3 }
+							change_variable = { which = global_royalAuthority value = -3 }
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	option = {
+		name = ekstory2b
+		trigger = {
+			OR = {
+				stewardship >= 12
+				diplomacy >= 12
+			}
+		}
+		e_earth_kingdom = {	
+			set_title_flag = chin_chosen_diplo
+		}
+		random_list = {
+			65 = {
+				custom_tooltip = {
+					text = ekpeace1diplo1
+					hidden_effect = {
+						narrative_event = { id = ekstory.4 days = 100 random = 3 }
+						change_variable = { which = global_royalAuthority value = 10 }
+					}
+				}			
+			}
+			35 = {
+				custom_tooltip = {
+					text = ekpeace1diplo2
+					hidden_effect = {
+						narrative_event = { id = ekstory.6 days = 100 random = 3 }
+						change_variable = { which = global_royalAuthority value = -3 }
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = ekstory3b
+		trigger = {
+			stewardship >= 12
+		}
+		e_earth_kingdom = {		
+			set_title_flag = chin_chosen_tarifs
+		}
+		random_list = {
+			80 = {
+				custom_tooltip = {
+					text = ekpeace1tariffs1
+					hidden_effect = {
+						narrative_event = { id = ekstory.4 days = 100 random = 3 }
+						change_variable = { which = global_royalAuthority value = 10 }
+					}
+				}			
+			}
+			20 = {
+				custom_tooltip = {
+					text = ekpeace1tariffs2
+					hidden_effect = {
+						narrative_event = { id = ekstory.6 days = 100 random = 3 }
+						change_variable = { which = global_royalAuthority value = -3 }
+					}
+				}
+			}
+		}
+	}	
+		
+	option = {
+		name = ekstory3c
+		trigger = {
+			#always = no 
+			d_avatar = {
+				holder_scope = {
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}	
+		}
+		e_earth_kingdom = {
+			set_title_flag = chin_chosen_avatar
+		}
+		custom_tooltip = {
+			text = summon_avatar_chin
+			d_avatar = {
+				holder_scope = {
+					character_event = { id = ekstory.7 }
+				}
+			}
+			e_earth_kingdom = {
+				set_title_flag = chin_chosen_avatar
+			}
+		}
+	}
+}
+
+#Ba Sing Se rebelion
+narrative_event = {
+	id = ekstory.3
+	desc = EVTDESCEKSTORY3
+	title = EVTTITEKSTORY3
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = whispers_of_rebelion
+		NOT = { has_global_flag = ba_sing_se_rebelion }
+		year >= 600
+		year <= 630
+	}
+	
+	option = {
+		name = iwilldealwiththemmyself
+		custom_tooltip = {
+			text = rebelion_continues
+			set_global_flag = ba_sing_se_rebelion
+			narrative_event = { id = ekstory.10 years = 10 }
+			narrative_event = { id = ekstory.5 }
+		}
+	
+	}
+	option = { 
+		name = summontheavatar
+		trigger = {
+			d_avatar = {
+				holder_scope = {
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}
+		}
+		narrative_event = { id = ekstory.8 days = 150 random = 3 }
+		set_global_flag = ba_sing_se_rebelion
+	}	
+}
+#Chin Remnants submit and join EK
+narrative_event = { 
+	id = ekstory.4
+	desc = EVTDESCEKSTORY4
+	title = EVTTITEKSTORY3
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = ek_chin_remnants_submit }
+		has_landed_title = e_earth_kingdom
+		has_global_flag = ek_choose_peace
+	}
+	
+	option = {
+		name = ekchinsubmitdiplo
+		trigger = {
+			e_earth_kingdom = {
+				has_title_flag = chin_chosen_diplo
+			}
+		}		
+		custom_tooltip = {
+			text = chin_submit_np
+			any_independent_ruler = { 
+				limit = {
+					religion = way_of_chin
+					culture_group = earth_kingdom_culture
+				}
+				make_tributary = {
+					who = FROM
+					percentage = 0.12
+					tributary_type = earth_kingdom_territory_tributary
+				}
+			}
+			offmap_ek = {
+				set_policy = earth_kingdom_reconstruction
+			}
+			character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
+		}
+	}
+	
+	option = {
+		name = ekchinsubmittarrifs
+		trigger = {
+			e_earth_kingdom = {
+				has_title_flag = chin_chosen_tarifs
+			}
+		}
+		custom_tooltip = {
+			text = chin_submit_np
+			any_independent_ruler = { 
+				limit = {
+					religion = way_of_chin
+					culture_group = earth_kingdom_culture
+				}
+				make_tributary = {
+					who = FROM
+					percentage = 0.12
+					tributary_type = earth_kingdom_territory_tributary
+				}
+			}
+			offmap_ek = {
+				set_policy = earth_kingdom_reconstruction
+			}
+			character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
+		}
+	}
+
+	option = {
+		name = ekchinsubmitmartial
+		trigger = {
+			e_earth_kingdom = {
+				OR = {
+					has_title_flag = chin_chosen_martial
+					has_title_flag = chin_chosen_avatar
+				}
+			}
+		}
+		custom_tooltip = {
+			text = chin_submit_np
+			any_independent_ruler = { 
+				limit = {
+					religion = way_of_chin
+					culture_group = earth_kingdom_culture
+				}
+				make_tributary = {
+					who = FROM
+					percentage = 0.12
+					tributary_type = earth_kingdom_territory_tributary
+				}
+			}
+			offmap_ek = {
+				set_policy = earth_kingdom_reconstruction
+			}
+			character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
+		}
+	}	
+}
+
+#ba sing se rebelion event server
+character_event = {
+	id = ekstory.5
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		has_landed_title = e_earth_kingdom
+		year <= 630
+		year >= 600
+		has_global_flag = ek_choose_war
+	}
+	
+	immediate = { #well this akward
+		repeat_event = {
+			id = ekstory.5
+			days = 60
+			random = 10
+		}
+		random_list = { #random list of events
+			1 = { character_event = { id = ekstory.11 days = 150 random = 15 } }
+			1 = { character_event = { id = ekstory.12 days = 150 random = 15 } }
+			1 = { character_event = { id = ekstory.13 days = 150 random = 15 } }
+			1 = { character_event = { id = ekstory.14 days = 150 random = 15 } }
+			1 = { character_event = { id = ekstory.11 days = 250 random = 15 } }
+			1 = { character_event = { id = ekstory.12 days = 250 random = 15 } }
+			1 = { character_event = { id = ekstory.13 days = 250 random = 15 } }
+			1 = { character_event = { id = ekstory.14 days = 250 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 1 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 1 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 1 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 1 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 2 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 2 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 2 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 2 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 3 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 3 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 3 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 3 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 4 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 4 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 4 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 4 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 5 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 5 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 5 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 5 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 6 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 6 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 6 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 6 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 7 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 7 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 7 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 7 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 8 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 8 random = 15 } }
+			1 = { character_event = { id = ekstory.13 years = 8 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 8 random = 15 } }
+			1 = { character_event = { id = ekstory.11 years = 9 random = 15 } }
+			1 = { character_event = { id = ekstory.12 years = 9 random = 15 } } 
+			1 = { character_event = { id = ekstory.13 years = 9 random = 15 } }
+			1 = { character_event = { id = ekstory.14 years = 9 random = 15 } }
+		}		
+	}
+	
+	option = { 
+	}
+}
+
+narrative_event = {
+	id = ekstory.6
+	desc = EVTDESCEKSTORY6
+	title = EVTTITEKSTORY6
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = ek_chin_remnants_war }
+		has_landed_title = e_earth_kingdom
+		has_global_flag = ek_choose_peace
+		year <= 700
+	}
+	
+	immediate = {
+		set_global_flag = ek_chin_remnants_war
+	}
+	
+	option = {
+		name = chinitstreasonthen
+		any_independent_ruler = {
+			limit = {
+				culture_group = earth_kingdom_culture
+				religion = way_of_chin
+			}
+			reverse_war = { 	
+				target = ROOT #FROM
+				casus_belli = earth_kingdom_reconquest_disunion
+			}	
+		}
+	}
+}
+narrative_event = {
+	id = ekstory.7
+	desc = EVTDESCEKSTORY7
+	title = EVTTITEKSTORY7
+	is_triggered_only = yes
+	
+	trigger = {
+		has_landed_title = d_avatar
+		OR = { 
+			trait = avatar
+			trait = fullyrealisedavatar
+		}
+		has_global_flag = ba_sing_se_rebelion
+		year <= 630
+		year >= 600
+		NOT = { has_global_flag = kyoshi_summoned_canon }
+	}
+	
+	#refuse not for ai
+	option = {
+		trigger = {
+			ai = no
+		}
+		e_earth_kingdom = {
+			holder_scope = {
+				narrative_event = { id = ekhistory.16 days = 30 }
+			}
+		}
+	}
+
+	#accept summon
+	option = {
+		e_earth_kingdom = {
+			holder_scope = {
+				narrative_event = { id = ekhistory.15 days = 30 }
+			}
+		}
+	}	
+	
+	
+		
