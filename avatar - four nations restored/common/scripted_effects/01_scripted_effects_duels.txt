@@ -1,3 +1,178 @@
+############################################################
+##################### Duel System V.02 #####################
+############################################################
+
+#Separated into new file, because there was just too much... Mostly chronologically used! As in, the higher up in the file, the earlier in the progress of a duel chain of some kind is where it's used.
+
+apply_degree_of_dishonorable_duel_effect = { #Needs to be run in the scope of the *opponent* to check things correctly.
+	if = {
+		limit = { # As long as the person issuing the duel does not have a mission to duel this target...
+			NOT = {
+				is_quest_target_of = FROM
+				FROM = {
+					OR = {
+						has_quest = quest_warrior_lodge_duel_honor
+						has_quest = quest_warrior_lodge_duel_deadly
+					}
+				}
+			}
+		}	
+		#Major dishonor
+	    if = {
+	        limit = {
+	        	OR = {
+	        		AND = { #target is old (but not immortal)...
+	                	age = 80
+	        			NOT = { trait = immortal }
+	        		}
+	               	AND = { #target is a child, while attacker is adult...
+	               		is_adult = no
+	               		event_target:combatant_1 = { is_adult = yes }
+	               	}
+	               	AND = { #target is less than ten years old (while attacker is not)...
+		               	NOT = { age = 10 }
+		               	event_target:combatant_1 = { age = 10 }
+					}
+					AND = { #target has a *serious* disease and has NOT been treated *well* for it...
+						character_disease_trigger = yes
+						well_treated_for_disease_trigger = no
+					}
+					AND = { #Target has ANY disease, and has been *badly* treated for it...
+						has_disease_trigger = yes
+						poorly_treated_for_disease_trigger = yes #this should exclude lovers_pox (as it doesn't get treated)
+					}
+					has_injury_trigger = yes #target has an injury (wounded, or severly injured)...
+					has_severe_disability_trigger = yes #target has serious disability... (blind, mangled, etc)
+
+					AND = { #Target has any disease, and has not been treated/treated well for it, but is ALSO suffering from something from the medium category...
+						OR = {
+							character_disease_trigger = yes
+							OR = { #lovers_pox excluded
+								trait = scurvy
+								trait = dancing_plague
+								trait = ill
+								trait = leper
+							}
+						}
+						well_treated_for_disease_trigger = no
+						OR = {
+							age = 60 #target is old
+							is_maimed_trigger = yes #has a maimed trait
+							has_medium_disability_trigger = yes #limits the character to some extent
+						}
+					}
+				}
+	        }
+			#effect
+			custom_tooltip = {
+	            text = dishonorable_duel_major_tooltip
+	            hidden_tooltip = {
+	                event_target:combatant_1 = { #hand out opinion malus with appropriate realm characters..
+	                    any_realm_character = {
+	                        limit = {
+	                            NOT = { character = event_target:combatant_1 }
+	                            OR = {
+	                                trait = honest
+	                                trait = kind
+	                                trait = just
+	                            }
+	                        }
+	                        opinion = {
+	                            modifier = opinion_dishonorable_duel_major
+	                            who = event_target:combatant_1
+	                            months = 36
+	                        }
+	                    }
+	                }
+	            }
+	        }
+		}	
+	    #Medium dishonor
+	    else_if = {
+	        limit = {
+	      		OR = {
+	                age = 60 #target is old
+					has_medium_disability_trigger = yes #limits the character to some extent
+					character_disease_trigger = yes #Target has a *serious* disease (disregarding treatments)
+					
+					AND = { #Target has any disease, and has not been treated/treated well for it, while ALSO suffering from something minor...
+						OR = {
+							character_disease_trigger = yes
+							OR = { #lovers_pox excluded
+								trait = scurvy
+								trait = dancing_plague
+								trait = ill
+								trait = leper
+							}
+						}
+						well_treated_for_disease_trigger = no
+						OR = {
+							age = 50 #target is old
+							is_maimed_trigger = yes #has a maimed trait
+						}
+					}
+				}
+	        }
+	        #effect
+			custom_tooltip = {
+	            text = dishonorable_duel_medium_tooltip
+	            hidden_tooltip = {
+	                event_target:combatant_1 = { #hand out opinion malus with appropriate realm characters..
+	                    any_realm_character = {
+	                        limit = {
+	                            NOT = { character = event_target:combatant_1 }
+	                            OR = {
+	                                trait = honest
+	                                trait = kind
+	                                trait = just
+	                            }
+	                        }
+	                        opinion = {
+	                            modifier = opinion_dishonorable_duel
+	                            who = event_target:combatant_1
+	                            months = 36
+	                        }
+	                    }
+	                }
+	            }
+	        }
+		}
+
+		#Minor dishonor
+		else_if = {
+	        limit = {
+	            OR = {
+	                age = 50 #target is old...
+	                is_maimed_trigger = yes #has a maimed trait
+	                has_bruises_trigger = yes
+				}
+	        }
+	        #effect
+	        custom_tooltip = {
+	            text = dishonorable_duel_minor_tooltip
+	            hidden_tooltip = {
+	                event_target:combatant_1 = { #hand out opinion malus with appropriate realm characters..
+	                    any_realm_character = {
+	                        limit = {
+	                            NOT = { character = event_target:combatant_1 }
+	                            OR = {
+	                                trait = honest
+	                                trait = kind
+	                                trait = just
+	                            }
+	                        }
+	                        opinion = {
+	                            modifier = opinion_dishonorable_duel_minor
+	                            who = event_target:combatant_1
+	                            months = 36
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+    }
+}
 apply_random_minor_injury_effect = {
 	random_list = {
 		10 = {

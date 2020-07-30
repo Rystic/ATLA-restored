@@ -11,7 +11,7 @@
 namespace = WoL
 
 ###########################################
-# The Legendary Dragon/PBD/Mooselion	  #
+# The Legendary White Stag/Bear/Tiger/Lion#
 # ID WoL.5000-WoL.5199                    #
 ###########################################
 
@@ -26,6 +26,8 @@ character_event = {
 	
 	trigger = {
 		has_focus = focus_hunting
+		in_command = no
+		NOT = { has_character_flag = do_not_disturb }
 		NOT = { has_character_flag = epic_hunt }
 		NOT = { religion_group = air_religions }
 	}
@@ -38,7 +40,7 @@ character_event = {
 					region = world_fire_isles
 				}
 			}
-			set_character_flag = wild_dragon
+			set_character_flag = white_stag
 		}
 		if = {
 			limit = {
@@ -46,7 +48,7 @@ character_event = {
 					region = world_water_tribes
 				}
 			}
-			set_character_flag = polarBearDog
+			set_character_flag = white_bear
 		}
 		if = {
 			limit = {
@@ -54,7 +56,7 @@ character_event = {
 					region = world_greater_earth_kingdom
 				}
 			}
-			set_character_flag = mooseLion
+			set_character_flag = white_tiger
 		}
 		if = {
 			limit = {
@@ -66,7 +68,7 @@ character_event = {
 					}
 				}
 			}
-			set_character_flag = legendaryAnimal
+			set_character_flag = white_lion
 		}
 		narrative_event = { id = WoL.5001 }
 	}
@@ -80,52 +82,52 @@ narrative_event = {
 
 	is_triggered_only = yes
 	
-	title = { # Dragon
+	title = { # Stag
 		trigger = {
-			has_character_flag = wild_dragon
+			has_character_flag = white_stag
 		}
 		text = EVTTITLE_WoL_5001_stag
 	}
-	title = { # Saber-tooth moose lion
+	title = { # Bear
 		trigger = {
-			has_character_flag = mooseLion
+			has_character_flag = white_bear
 		}
 		text = EVTTITLE_WoL_5001_bear
 	}
-	title = { # Polar Bear Dog
+	title = { # Tiger
 		trigger = {
-			has_character_flag = polarBearDog
+			has_character_flag = white_tiger
 		}
 		text = EVTTITLE_WoL_5001_tiger
 	}
-	title = { # Shirshu
+	title = { # Lion
 		trigger = {
-			has_character_flag = legendaryAnimal
+			has_character_flag = white_lion
 		}
 		text = EVTTITLE_WoL_5001_lion
 	}
 	
-	desc = { # Dragon
+	desc = { # Stag
 		trigger = {
-			has_character_flag = wild_dragon
+			has_character_flag = white_stag
 		}
 		text = EVTDESC_WoL_5001_stag
 	}
-	desc = { # Saber-tooth moose lion
+	desc = { # Bear
 		trigger = {
-			has_character_flag = mooseLion
+			has_character_flag = white_bear
 		}
 		text = EVTDESC_WoL_5001_bear
 	}
-	desc = { # Polar Bear Dog
+	desc = { # Tiger
 		trigger = {
-			has_character_flag = polarBearDog
+			has_character_flag = white_tiger
 		}
 		text = EVTDESC_WoL_5001_tiger
 	}
-	desc = { # Shirshu
+	desc = { # Lion
 		trigger = {
-			has_character_flag = legendaryAnimal
+			has_character_flag = white_lion
 		}
 		text = EVTDESC_WoL_5001_lion
 	}
@@ -231,10 +233,9 @@ character_event = {
 	option = {
 		name = EVTOPTA_WoL_5004
 		hidden_tooltip = { character_event = { id = WoL.5010 days = 60 } }  # Set out on hunt!
-		if = {
-			limit = { trait = in_hiding }
-			remove_trait = in_hiding
-		}
+		
+		end_inaccessibility_effect = yes #removes in hiding or in_seclusion
+
 		set_character_flag = do_not_disturb
 	}
 	option = {
@@ -320,9 +321,7 @@ character_event = {
 		if = {
 			limit = {
 				capital_scope = {
-					OR = {
-						empire = { title = e_earth_kingdom }
-					}
+					region = world_fire_isles
 				}
 			}
 			set_character_flag = white_stag
@@ -330,9 +329,7 @@ character_event = {
 		if = {
 			limit = {
 				capital_scope = {
-					OR = {
-						empire = { title = e_water_tribes }
-					}
+					region = world_water_tribes
 				}
 			}
 			set_character_flag = white_bear
@@ -340,9 +337,7 @@ character_event = {
 		if = {
 			limit = {
 				capital_scope = {
-					OR = {
-						empire = { title = e_fire_nation }
-					}
+					region = world_greater_earth_kingdom
 				}
 			}
 			set_character_flag = white_tiger
@@ -350,8 +345,10 @@ character_event = {
 		if = {
 			limit = {
 				capital_scope = {
-					OR = {
-						empire = { title = e_air_nomads }
+					NOR = {
+						region = world_fire_isles
+						region = world_water_tribes
+						region = world_greater_earth_kingdom
 					}
 				}
 			}
@@ -428,9 +425,7 @@ narrative_event = {
 		if = {
 			limit = {
 				capital_scope = {
-					OR = {
-						empire = { title = e_earth_kingdom }
-					}
+					region = world_fire_isles
 				}
 			}
 			set_character_flag = white_stag
@@ -438,9 +433,7 @@ narrative_event = {
 		if = {
 			limit = {
 				capital_scope = {
-					OR = {
-						empire = { title = e_water_tribes }
-					}
+					region = world_water_tribes
 				}
 			}
 			set_character_flag = white_bear
