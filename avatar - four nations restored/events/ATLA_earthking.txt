@@ -13,6 +13,7 @@ character_event = {
 		NOR = {
 			trait = earthkingpuppet
 			trait = earthking
+			trait = earthkingconstitution
 		}
 	}
 	option = {
@@ -38,28 +39,31 @@ character_event = {
 		}
 		if = {
 			limit = {
-				NOT = { has_global_flag = earthking_in_power }
+				NOR = { 
+					has_global_flag = earthking_in_power
+					has_global_flag = kyoshi_parliamental_monarch
+				}
 			}
 			add_trait = earthkingpuppet
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
 			clr_global_flag = restoration_ambition_delay
 			subtract_variable = { which = global_royalAuthority value = 30 }
 		}
-		
-		if = { # Calculate Royal Court Power (aka RA)
-			limit = {
+		if = {
+			limit = { 
+				OR = {
+					has_global_flag = kyoshi_parliamental_monarch
+					has_global_flag = ek_gave_some_power 
+					
+				}
+			}
+			trait = earthkingconstitution
+		}
+		if = {
+			limit = { 
 				has_global_flag = earthking_in_power
 			}
-			add_trait = earthking
-			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
-			subtract_variable = { which = global_royalAuthority value = 15 }
-			if = {
-				limit = {
-					NOT = { age = 12 }
-					is_title_active = d_dai_li
-				}
-				character_event = { id = earthking.3 }
-			}
+			trait = earthking
 		}
 		character_event = { id = ATLAE.211 }
 	}
@@ -2688,24 +2692,42 @@ character_event = {
 		if = { # Authority Cap - Regency
 			limit = {
 				has_regent = yes
-				check_variable = { which = global_royalAuthority value = 75 }
+				check_variable = { which = global_royalAuthority value = 50 }
 			}
-			set_variable = { which = global_royalAuthority value = 75 }
+			set_variable = { which = global_royalAuthority value = 50 }
 		}
-		if = { # Authority Cap
+		if = { # Authority Cap - Absolute
 			limit = {
-				check_variable = { which = global_royalAuthority value = 101}
+				check_variable = { which = global_royalAuthority value = 101 }
+				NOT = { trait = earthkingconstitution }
 			}
 			set_variable = { which = global_royalAuthority value = 100 }
 		}
 		if = { # Authority Cap -
 			limit = {
 				check_variable = { which = global_royalAuthority value <= -101 }
+				NOT = { trait = earthkingconstitution }
 			}
 			set_variable = { which = global_royalAuthority value = -100 }
 		}
 		set_variable = { which = authority_gain which = global_royalAuthority }
 		subtract_variable = { which = authority_gain which = old_authority }
+		if = { # Authority Cap + constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value = 75 }
+				trait = earthkingconstitution
+			}
+			set_variable = { which = global_royalAuthority value = 75 }
+		}
+		if = { # Authority Cap - constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value <= -75 }
+				trait = earthkingconstitution
+			}
+			set_variable = { which = global_royalAuthority value = -75 }
+		}
+		set_variable = { which = authority_gain which = global_royalAuthority }
+		subtract_variable = { which = authority_gain which = old_authority }		
 	}
 	
 	option = {
