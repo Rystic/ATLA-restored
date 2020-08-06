@@ -13,6 +13,7 @@ character_event = {
 		NOR = {
 			trait = earthkingpuppet
 			trait = earthking
+			trait = earthkingconstitution
 		}
 	}
 	option = {
@@ -25,41 +26,31 @@ character_event = {
 		}
 		if = {
 			limit = {
-				has_dynasty_flag = ek_opinion_boost
-			}
-			add_character_modifier = { name = ek_good_authority duration = -1 }
-		}
-		if = {
-			limit = {
-				has_dynasty_flag = ek_tyranny
-			}
-			add_character_modifier = { name = ek_tyranny duration = -1 }
-			remove_character_modifier = ek_good_authority
-		}
-		if = {
-			limit = {
-				NOT = { has_global_flag = earthking_in_power }
+				NOR = { 
+					has_global_flag = earthking_in_power
+					has_global_flag = kyoshi_parliamental_monarch
+				}
 			}
 			add_trait = earthkingpuppet
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
 			clr_global_flag = restoration_ambition_delay
 			subtract_variable = { which = global_royalAuthority value = 30 }
 		}
-		
-		if = { # Calculate Royal Court Power (aka RA)
-			limit = {
+		if = {
+			limit = { 
+				OR = {
+					has_global_flag = kyoshi_parliamental_monarch
+					has_global_flag = ek_gave_some_power 
+					
+				}
+			}
+			trait = earthkingconstitution
+		}
+		if = {
+			limit = { 
 				has_global_flag = earthking_in_power
 			}
-			add_trait = earthking
-			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
-			subtract_variable = { which = global_royalAuthority value = 15 }
-			if = {
-				limit = {
-					NOT = { age = 12 }
-					is_title_active = d_dai_li
-				}
-				character_event = { id = earthking.3 }
-			}
+			trait = earthking
 		}
 		character_event = { id = ATLAE.211 }
 	}
@@ -447,14 +438,6 @@ character_event = { # Royal Authority System - Check Authority
 			character_event = { id = earthking.16 }
 			set_global_flag = ek_islands_left
 		}
-		if = { # Earth Kingdom Army Decay
-			limit = {
-				NOT = { check_variable = { which = global_royalAuthority value = 1 } }
-				NOT = { has_global_flag = royal_authority_army_low_decay }
-			}
-			character_event = { id = earthking.43 }
-			set_dynasty_flag = royal_authority_army_low_decay
-		}
 		if = { # Unity - Inner Provinces Rejoin EK
 			limit = {
 				check_variable = { which = global_royalAuthority value = 5 }
@@ -530,31 +513,47 @@ character_event = { # Royal Authority System - Check Authority
 			add_character_modifier = { name = ek_good_authority duration = -1 }
 			set_dynasty_flag = ek_opinion_boost
 		}
-		if = { # Puppet King Authority Cap
+		if = { # Authority Cap - Regency
 			limit = {
-				check_variable = { which = global_royalAuthority value = 75 }
-				trait = earthkingpuppet
+				has_regent = yes
+				check_variable = { which = global_royalAuthority value = 50 }
 			}
-			set_variable = { which = global_royalAuthority value = 75 }
-			if = {
-				limit = {
-					NOT = { has_dynasty_flag = warned_of_puppet_authority_cap }
-				}
-				character_event = { id = earthking.14 }
-				set_dynasty_flag = warned_of_puppet_authority_cap
-			}
+			set_variable = { which = global_royalAuthority value = 50 }
 		}
-		if = { # Authority Cap +
+		if = { # Authority Cap + Absolute
 			limit = {
 				check_variable = { which = global_royalAuthority value = 101 }
+				has_global_flag = earthking_in_power
 			}
 			set_variable = { which = global_royalAuthority value = 100 }
 		}
 		if = { # Authority Cap -
 			limit = {
 				check_variable = { which = global_royalAuthority value <= -101 }
+				OR = {
+					NOT = { trait = earthkingconstitution }
+					has_global_flag = kyoshi_parliamental_monarch
+				}
 			}
 			set_variable = { which = global_royalAuthority value = -100 }
+		}
+		if = { # Authority Cap + constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value = 75 }
+				trait = earthkingconstitution
+			}
+			set_variable = { which = global_royalAuthority value = 75 }
+		}
+		if = { # Authority Cap - constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value <= -75 }
+				AND = {
+					trait = earthkingconstitution
+					NOT = { has_global_flag = kyoshi_parliamental_monarch }
+				}
+				
+			}
+			set_variable = { which = global_royalAuthority value = -75 }
 		}
 	}
 }
@@ -1755,23 +1754,6 @@ character_event = {
 	}
 }
 
-# Army Decay - Lazy - Remove
-character_event = {
-	id = earthking.41
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.41
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_41
-		custom_tooltip = {
-			text = EVTOPTC_EK_41_TOOLTIP
-		}
-		remove_character_modifier = royal_army_decay_overgrowth
-	}
-}
-
 # Earth Monarchism - Restored
 character_event = {
 	id = earthking.42
@@ -1805,58 +1787,6 @@ character_event = {
 				}
 			}
 		}
-	}
-}
-
-# Army Decay - Low Morale
-character_event = {
-	id = earthking.43
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.43
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_43
-		custom_tooltip = {
-			text = EVTOPTC_EK_43_TOOLTIP
-		}
-		add_character_modifier = { name = royal_army_decay_collapse duration = -1 }
-	}
-}
-
-# Army Decay - Low Morale - Remove
-character_event = {
-	id = earthking.44
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.44
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_44
-		custom_tooltip = {
-			text = EVTOPTC_EK_41_TOOLTIP
-		}
-		remove_character_modifier = royal_army_decay_collapse
-	}
-}
-
-# Earth Kingdom Overextension
-character_event = {
-	id = earthking.45
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.45
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_45
-		custom_tooltip = {
-			text = EVTOPTC_EK_45_TOOLTIP
-		}
-		add_character_modifier = { name = supporting_the_earth_kingdom_overextended duration = -1 }
-		remove_character_modifier = supporting_the_earth_kingdom
 	}
 }
 
@@ -2112,28 +2042,35 @@ character_event = {
 		set_variable = { which = religion_ra_gain value = 0 }
 		ROOT = {
 			any_tributary = { # Tributaries gain
-				change_variable = { which = global_num_of_ek_tributaries value = 1 }
-			}
-			if = { # Bloodline Gain 
-				limit = {
-					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_houting
+				if = {
+					limit = {
+						is_tributary = {
+							type = earth_kingdom_territory_tributary
+						}
 					}
+					change_variable = { which = global_num_of_ek_tributaries value = 1 }
 				}
-				change_variable = { which = bloodline_ra_gain value = 1 }
-			}
-			if = { 
-				limit = {
-					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_hao
+				if = {
+					limit = {
+						is_tributary = {
+							type = earth_kingdom_province_tributary
+						}
 					}
+					change_variable = { which = global_num_of_ek_tributaries value = 2 }
 				}
-				change_variable = { which = bloodline_ra_gain value = 1 }
+				if = {
+					limit = {
+						is_tributary = {
+							type = earth_kingdom_state_tributary
+						}
+					}
+					change_variable = { which = global_num_of_ek_tributaries value = 3 }
+				}				
 			}
-			if = { 
+			if = {
 				limit = {
 					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_ting
+						has_bloodline_flag = hey_im_ek_succ_bloodline_flag
 					}
 				}
 				change_variable = { which = bloodline_ra_gain value = 1 }
@@ -2386,19 +2323,7 @@ character_event = {
 					trait = legit_bastard
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = craven
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = shy
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			}						
 			if = {
 				limit = {
 					trait = gluttonous
@@ -2434,31 +2359,13 @@ character_event = {
 					trait = humble
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}
-			if = {
-				limit = {
-					trait = one_legged
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = disfigured
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
 			}			
 			if = {
 				limit = {
 					trait = child_of_consort
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}
-			if = {
-				limit = {
-					trait = legit_bastard
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			}		
 			if = {
 				limit = {
 					trait = craven
@@ -2545,12 +2452,6 @@ character_event = {
 			}
 			if = {
 				limit = {
-					trait = drunkard
-				}
-				change_variable = { which = traits_ra_gain value = -2 }
-			}
-			if = {
-				limit = {
 					trait = incapable
 				}
 				change_variable = { which = traits_ra_gain value = -2 }
@@ -2569,23 +2470,10 @@ character_event = {
 			}
 			if = {
 				limit = {
-					trait = lunatic
-				}
-				change_variable = { which = traits_ra_gain value = -2 }
-			}
-			if = {
-				limit = {
-					trait = incapable
-				}
-				change_variable = { which = traits_ra_gain value = -2 }
-			}
-			if = {
-				limit = {
 					trait = drunkard
 				}
 				change_variable = { which = traits_ra_gain value = -2 }
 			}
-			
 		}
 		e_earth_kingdom = { # Laws gain
 			holder_scope = {
@@ -2688,24 +2576,47 @@ character_event = {
 		if = { # Authority Cap - Regency
 			limit = {
 				has_regent = yes
-				check_variable = { which = global_royalAuthority value = 75 }
+				check_variable = { which = global_royalAuthority value = 50 }
 			}
-			set_variable = { which = global_royalAuthority value = 75 }
+			set_variable = { which = global_royalAuthority value = 50 }
 		}
-		if = { # Authority Cap
+		if = { # Authority Cap + Absolute
 			limit = {
-				check_variable = { which = global_royalAuthority value = 101}
+				check_variable = { which = global_royalAuthority value = 101 }
+				has_global_flag = earthking_in_power
 			}
 			set_variable = { which = global_royalAuthority value = 100 }
 		}
 		if = { # Authority Cap -
 			limit = {
 				check_variable = { which = global_royalAuthority value <= -101 }
+				OR = {
+					NOT = { trait = earthkingconstitution }
+					has_global_flag = kyoshi_parliamental_monarch
+				}
 			}
 			set_variable = { which = global_royalAuthority value = -100 }
 		}
+		if = { # Authority Cap + constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value = 75 }
+				trait = earthkingconstitution
+			}
+			set_variable = { which = global_royalAuthority value = 75 }
+		}
+		if = { # Authority Cap - constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value <= -75 }
+				AND = {
+					trait = earthkingconstitution
+					NOT = { has_global_flag = kyoshi_parliamental_monarch }
+				}
+				
+			}
+			set_variable = { which = global_royalAuthority value = -75 }
+		}
 		set_variable = { which = authority_gain which = global_royalAuthority }
-		subtract_variable = { which = authority_gain which = old_authority }
+		subtract_variable = { which = authority_gain which = old_authority }		
 	}
 	
 	option = {
