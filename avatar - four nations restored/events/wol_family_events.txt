@@ -2,7 +2,7 @@
 #
 # Way of Life - Family Events
 #
-# Written by Henrik Fåhraeus
+# Written by Henrik Fï¿½hraeus
 #
 # ID Range: WoL.3000 to WoL.3999
 #
@@ -163,8 +163,8 @@ character_event = {
 character_event = {
 	id = WoL.3002
 	
-	picture = GFX_evt_family
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_family
+	border = GFX_event_normal_frame_diplomacy
 	
 	desc = EVTDESC_WOL_3002
 	
@@ -211,8 +211,8 @@ character_event = {
 	id = WoL.3003
 	desc = EVTDESC_WOL_3003
 	
-	picture = GFX_evt_family
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_family
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -286,20 +286,24 @@ character_event = {
 	id = WoL.3010
 	
 	desc = EVTDESC_WOL_3010
-	picture = GFX_evt_family
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_family
+	border = GFX_event_normal_frame_diplomacy
 	
-	only_playable = yes
+	is_triggered_only = yes
+	
 	prisoner = no
 	only_capable = yes
+	in_command = no
+	is_married = yes
+
 	
 	trigger = {
 		has_focus = focus_family
-		is_married = yes
 		has_regent = no
 		in_command = no
 		is_ill = no
 		any_spouse = {
+			is_alive = yes
 			NOT = { is_lover = ROOT }
 			NOT = { is_rival = ROOT }
 			NOT = { trait = incapable }
@@ -307,40 +311,41 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 60
+	weight_multiplier = {
+		factor = 1
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			has_character_modifier = wol_seducer_1
 		}
 		modifier = {
-			factor = 0.5
+			factor = 2.0
 			has_character_modifier = wol_seducer_2
 		}
 		modifier = {
-			factor = 0.25
+			factor = 4.0
 			OR = {
 				trait = seducer
 				trait = seductress
 			}
 		}
 		modifier = {
-			factor = 1.5
+			factor = 0.66
 			trait = cruel
 		}
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			trait = kind
 		}
 		modifier = {
-			factor = 0.75
-			trait = fair
+			factor = 1.33
+			has_fair_trait_trigger = yes
 		}
 	}
 	
 	immediate = {
 		random_spouse = {
 			limit = {
+				is_alive = yes
 				NOT = { is_lover = ROOT }
 				NOT = { is_rival = ROOT }
 				NOT = { trait = incapable }
@@ -413,8 +418,10 @@ character_event = {
 	id = WoL.3020
 	hide_window = yes
 	
-	only_playable = yes
+	is_triggered_only = yes
+	
 	prisoner = no
+	in_command = no
 	only_capable = yes
 	
 	trigger = {
@@ -423,6 +430,7 @@ character_event = {
 		in_command = no
 		is_ill = no
 		any_sibling = {
+			is_alive = yes
 			NOT = { is_friend = ROOT }
 			NOT = { trait = incapable }
 			NOT = { trait = inbred }
@@ -438,14 +446,14 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 60
+	weight_multiplier = {
+		factor = 1
 		modifier = {
-			factor = 1.5
+			factor = 0.66
 			trait = cruel
 		}
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			trait = kind
 		}
 	}
@@ -453,6 +461,7 @@ character_event = {
 	immediate = {
 		random_sibling = {
 			limit = {
+				is_alive = yes
 				NOT = { is_friend = ROOT }
 				NOT = { trait = incapable }
 				NOT = { trait = inbred }
@@ -493,8 +502,8 @@ character_event = {
 character_event = {
 	id = WoL.3022
 	
-	picture = GFX_evt_family
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_family
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -527,6 +536,14 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_WOL_3022
+		
+		if = {
+			limit = {
+				is_rival = FROM
+			}
+			remove_rival = FROM
+			break = yes
+		}
 		
 		if = {
 			limit = {
@@ -587,8 +604,10 @@ character_event = {
 	id = WoL.3030
 	hide_window = yes
 	
-	only_playable = yes
+	is_triggered_only = yes
+	
 	prisoner = no
+	in_command = no
 	only_capable = yes
 	
 	trigger = {
@@ -598,6 +617,7 @@ character_event = {
 		is_ill = no
 		OR = {
 			father = {
+				is_alive = yes
 				prisoner = no
 				NOT = { trait = incapable }
 				NOT = {
@@ -608,6 +628,7 @@ character_event = {
 				}
 			}
 			mother = {
+				is_alive = yes
 				prisoner = no
 				NOT = { trait = incapable }
 				NOT = {
@@ -620,14 +641,14 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 60
+	weight_multiplier = {
+		factor = 1
 		modifier = {
-			factor = 1.5
+			factor = 0.66
 			trait = cruel
 		}
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			trait = kind
 		}
 	}
@@ -700,8 +721,8 @@ character_event = {
 character_event = {
 	id = WoL.3032
 	
-	picture = GFX_evt_daughter_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_daughter_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -709,6 +730,14 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_WOL_3022
+		
+		if = {
+			limit = {
+				is_rival = FROM
+			}
+			remove_rival = FROM
+			break = yes
+		}
 		
 		if = {
 			limit = {
@@ -752,8 +781,8 @@ character_event = {
 character_event = {
 	id = WoL.3033
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -761,6 +790,14 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_WOL_3022
+		
+		if = {
+			limit = {
+				is_rival = FROM
+			}
+			remove_rival = FROM
+			break = yes
+		}
 		
 		if = {
 			limit = {
@@ -805,8 +842,10 @@ character_event = {
 	id = WoL.3040
 	hide_window = yes
 	
-	only_playable = yes
+	is_triggered_only = yes
+	
 	prisoner = no
+	in_command = no
 	only_capable = yes
 	
 	trigger = {
@@ -815,6 +854,7 @@ character_event = {
 		in_command = no
 		is_ill = no
 		any_child = {
+			is_alive = yes
 			NOT = { trait = incapable }
 			NOT = { trait = inbred }
 			NOT = { trait = imbecile }
@@ -835,14 +875,14 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 60
+	weight_multiplier = {
+		factor = 1
 		modifier = {
-			factor = 1.5
+			factor = 0.66
 			trait = cruel
 		}
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			trait = kind
 		}
 	}
@@ -850,6 +890,7 @@ character_event = {
 	immediate = {
 		random_child = {
 			limit = {
+				is_alive = yes
 				NOT = { trait = incapable }
 				NOT = { trait = inbred }
 				NOT = { trait = imbecile }
@@ -895,8 +936,8 @@ character_event = {
 character_event = {
 	id = WoL.3042
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -929,6 +970,14 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_WOL_3022
+		
+		if = {
+			limit = {
+				is_rival = FROM
+			}
+			remove_rival = FROM
+			break = yes
+		}
 		
 		if = {
 			limit = {
@@ -974,7 +1023,8 @@ character_event = {
 	
 	hide_window = yes
 	
-	only_playable = yes
+	is_triggered_only = yes
+	
 	prisoner = no
 	only_capable = yes
 	
@@ -985,14 +1035,14 @@ character_event = {
 		is_ill = no
 	}
 	
-	mean_time_to_happen = {
-		months = 60
+	weight_multiplier = {
+		factor = 1
 		modifier = {
-			factor = 1.5
+			factor = 0.66
 			trait = cruel
 		}
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			trait = kind
 		}
 	}
@@ -1001,7 +1051,9 @@ character_event = {
 		save_event_target_as = target_initiator
 		random_dynasty_member = {
 			limit = {
+				is_offmap_ruler = no
 				is_adult = yes
+				is_alive = yes
 				NOT = { trait = incapable }
 				NOT = { trait = inbred }
 				NOT = { trait = imbecile }
@@ -1045,7 +1097,9 @@ character_event = {
 	immediate = {
 		random_dynasty_member = {
 			limit = {
+				is_offmap_ruler = no
 				is_adult = yes
+				is_alive = yes
 				NOT = { trait = incapable }
 				NOT = { trait = inbred }
 				NOT = { trait = imbecile }
@@ -1088,8 +1142,8 @@ character_event = {
 	
 	desc = EVTDESC_WOL_3050
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1112,8 +1166,8 @@ character_event = {
 character_event = {
 	id = WoL.3051
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1152,8 +1206,8 @@ character_event = {
 character_event = {
 	id = WoL.3052
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1169,6 +1223,7 @@ character_event = {
 		
 		if = {
 			limit = {
+				NOT = { is_rival = FROM }
 				NOT = {
 					personal_opinion = {
 						who = FROM
@@ -1184,6 +1239,7 @@ character_event = {
 		
 		if = {
 			limit = {
+				NOT = { is_rival = FROM }
 				personal_opinion = {
 					who = FROM
 					value = 50
@@ -1226,8 +1282,8 @@ character_event = {
 character_event = {
 	id = WoL.3053
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1247,8 +1303,8 @@ character_event = {
 character_event = {
 	id = WoL.3054
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1268,8 +1324,8 @@ character_event = {
 character_event = {
 	id = WoL.3055
 	
-	picture = GFX_evt_son_asking_father
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_son_asking_father
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1289,8 +1345,8 @@ character_event = {
 character_event = {
 	id = WoL.3056
 	
-	picture = GFX_evt_feast
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1298,6 +1354,14 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_WOL_3056
+		
+		if = {
+			limit = {
+				is_rival = FROM
+			}
+			remove_rival = FROM
+			break = yes
+		}
 		
 		if = {
 			limit = {
@@ -1335,8 +1399,8 @@ character_event = {
 character_event = {
 	id = WoL.3057
 	
-	picture = GFX_evt_feast
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_feast
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
@@ -1353,7 +1417,7 @@ character_event = {
 	
 	hide_window = yes
 	
-	only_playable = yes
+	is_triggered_only = yes
 	prisoner = no
 	only_capable = yes
 	
@@ -1366,17 +1430,21 @@ character_event = {
 		any_child = {
 			age = 5
 			is_adult = no
+			is_alive = yes
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 36
+	weight_multiplier = {
+		factor = 1
 		modifier = {
-			factor = 1.5
+			factor = 2.0
+		}
+		modifier = {
+			factor = 0.66
 			trait = cruel
 		}
 		modifier = {
-			factor = 0.75
+			factor = 1.33
 			trait = kind
 		}
 	}
@@ -1385,6 +1453,7 @@ character_event = {
 		random_child = {
 			limit = {
 				is_adult = no
+				is_alive = yes
 				age = 5
 				NOT = { trait = incapable }
 				NOT = { trait = inbred }
@@ -1422,6 +1491,7 @@ character_event = {
 				random_child = {
 					limit = {
 						is_adult = no
+						is_alive = yes
 						age = 5
 						NOT = { trait = incapable }
 						NOT = { trait = inbred }
@@ -1487,8 +1557,8 @@ character_event = {
 	
 	desc = EVTDESC_WOL_3060
 	
-	picture = GFX_evt_child_sword
-	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_child_sword
+	border = GFX_event_normal_frame_diplomacy
 	
 	is_triggered_only = yes
 	
