@@ -212,44 +212,36 @@ character_event = { # Great warrior character arrives
 		name = EVTOPTA_NE_1
 		
 		trigger = {
-			OR = { 
-				NOT = { ROOT = { has_law = succ_byzantine_elective } }  #Either not Imperial...
-				NOT = { #...Or there are no valid vassal candidates that can be commanders.
-					any_vassal = { 
-						higher_real_tier_than = BARON
-						NOT = { 
-							primary_title = { temporary = yes } 
-						}
-						OR = {
-							AND = {
-								OR = {
-									male_can_hold_minor_title_trigger = yes
-									female_can_hold_minor_commander_title_trigger = yes
-								}
-								OR = {
-									NOT = { religion = hindu }
-									trait = kshatriya
-								}
-								is_adult = yes
+			NOT = { #...Or there are no valid vassal candidates that can be commanders.
+				any_vassal = { 
+					higher_real_tier_than = BARON
+					NOT = { 
+						primary_title = { temporary = yes } 
+					}
+					OR = {
+						AND = {
+							OR = {
+								male_can_hold_minor_title_trigger = yes
+								female_can_hold_minor_commander_title_trigger = yes
 							}
-							has_character_flag = special_marshal
+							is_adult = yes
 						}
+						has_character_flag = special_marshal
+					}
 				
-						prisoner = no
-						NOT = { trait = incapable }
-						NOT = { is_inaccessible_trigger = yes }
-						NOT = { has_character_flag = guru }
-						NOT = { has_character_modifier = refusing_to_lead }
-						NOR = {
-							has_job_title = job_chancellor
-							has_job_title = job_marshal
-							has_job_title = job_treasurer
-							has_job_title = job_spymaster
-							has_job_title = job_spiritual
-							has_minor_title = title_commander
-						}
-					} 
-				}
+					prisoner = no
+					NOT = { trait = incapable }
+					NOT = { is_inaccessible_trigger = yes }
+					NOT = { has_character_modifier = refusing_to_lead }
+					NOR = {
+						has_job_title = job_chancellor
+						has_job_title = job_marshal
+						has_job_title = job_treasurer
+						has_job_title = job_spymaster
+						has_job_title = job_spiritual
+						has_minor_title = title_commander
+					}
+				} 
 			}
 			event_target:invited_character = { has_character_flag = invited_soldier }
 			OR = {
@@ -380,56 +372,11 @@ character_event = { # Sympathy for founder group
 				is_alive = no
 				OR = {
 					AND = {
-						religion_group = pagan_group
+						religion_group = earth_religions
 						ROOT = {
 							NOR = {
-								religion_group = pagan_group
-								trait = sympathy_pagans
-							}
-						}
-					}
-					AND = {
-						religion_group = christian
-						ROOT = {
-							NOR = {
-								religion_group = christian
-								trait = sympathy_christendom
-							}
-						}
-					}
-					AND = {
-						religion_group = muslim
-						ROOT = {
-							NOR = {
-								religion_group = muslim
-								trait = sympathy_islam
-							}
-						}
-					}
-					AND = {
-						religion_group = zoroastrian_group
-						ROOT = {
-							NOR = {
-								religion_group = zoroastrian_group
-								trait = sympathy_zoroastrianism
-							}
-						}
-					}
-					AND = {
-						religion_group = jewish_group
-						ROOT = {
-							NOR = {
-								religion_group = jewish_group
-								trait = sympathy_judaism
-							}
-						}
-					}
-					AND = {
-						religion_group = indian_group
-						ROOT = {
-							NOR = {
-								religion_group = indian_group
-								trait = sympathy_indian
+								religion_group = earth_religions
+								trait = sympathy_earth_religions
 							}
 						}
 					}
@@ -448,56 +395,11 @@ character_event = { # Sympathy for founder group
 					is_alive = no
 					OR = {
 						AND = {
-							religion_group = pagan_group
+							religion_group = earth_religions
 							ROOT = {
 								NOR = {
-									religion_group = pagan_group
-									trait = sympathy_pagans
-								}
-							}
-						}
-						AND = {
-							religion_group = christian
-							ROOT = {
-								NOR = {
-									religion_group = christian
-									trait = sympathy_christendom
-								}
-							}
-						}
-						AND = {
-							religion_group = muslim
-							ROOT = {
-								NOR = {
-									religion_group = muslim
-									trait = sympathy_islam
-								}
-							}
-						}
-						AND = {
-							religion_group = zoroastrian_group
-							ROOT = {
-								NOR = {
-									religion_group = zoroastrian_group
-									trait = sympathy_zoroastrianism
-								}
-							}
-						}
-						AND = {
-							religion_group = jewish_group
-							ROOT = {
-								NOR = {
-									religion_group = jewish_group
-									trait = sympathy_judaism
-								}
-							}
-						}
-						AND = {
-							religion_group = indian_group
-							ROOT = {
-								NOR = {
-									religion_group = indian_group
-									trait = sympathy_indian
+									religion_group = earth_religions
+									trait = sympathy_earth_religions
 								}
 							}
 						}
@@ -519,12 +421,6 @@ character_event = { # Sympathy for founder group
 			NOT = {
 				trait = zealous
 			}
-			event_target:target_bloodline_founder = {
-				NOR = {
-					religion = pagan
-					religion = hellenic_pagan
-				}
-			}
 		}
 		
 		piety = -250
@@ -542,51 +438,19 @@ character_event = { # Sympathy for founder group
 		if = {
 			limit = {
 				event_target:target_bloodline_founder = {
-					religion_group = pagan_group
+					religion_group = earth_religions
 				}
 			}
-			add_trait = sympathy_pagans
+			add_trait = sympathy_earth_religions
 		}
-		else_if = {
-			limit = {
-				event_target:target_bloodline_founder = {
-					religion_group = christian
-				}
-			}
-			add_trait = sympathy_christendom
-		}
-		else_if = {
-			limit = {
-				event_target:target_bloodline_founder = {
-					religion_group = muslim
-				}
-			}
-			add_trait = sympathy_islam
-		}
-		else_if = {
-			limit = {
-				event_target:target_bloodline_founder = {
-					religion_group = jewish_group
-				}
-			}
-			add_trait = sympathy_judaism
-		}
-		else_if = {
-			limit = {
-				event_target:target_bloodline_founder = {
-					religion_group = zoroastrian_group
-				}
-			}
-			add_trait = sympathy_zoroastrianism
-		}
-		else_if = {
-			limit = {
-				event_target:target_bloodline_founder = {
-					religion_group = indian_group
-				}
-			}
-			add_trait = sympathy_indian
-		}
+		# else_if = {
+			# limit = {
+				# event_target:target_bloodline_founder = {
+					# religion_group = christian
+				# }
+			# }
+			# add_trait = sympathy_christendom
+		# }
 		
 		ai_chance = {
         	factor = 45
@@ -623,14 +487,6 @@ character_event = { # Chance of gaining a personality trait of Founder
 		}
 		any_owned_bloodline = {
 			bloodline_is_active_for = PREV
-			OR = {
-				NOT = {
-					has_bloodline_flag = saintly_bloodline
-				}
-				ROOT = {
-					religion_group = christian
-				}
-			}
 			founder = {
 				NOT = {
 					character = ROOT
@@ -647,14 +503,6 @@ character_event = { # Chance of gaining a personality trait of Founder
 		set_character_flag = had_bloodline_personality_event
 		random_owned_bloodline = {
 			limit ={
-				OR = {
-					NOT = {
-						has_bloodline_flag = saintly_bloodline
-					}
-					ROOT = {
-						religion_group = christian
-					}
-				}
 				founder = {
 					NOT = {
 						character = ROOT
@@ -717,511 +565,11 @@ character_event = { # Chance of gaining a personality trait of Founder
 }
 
 #Triggered by Cruel-torture event for Greek Sicilian King: Phalaris Bloodline (only gained by event).
-narrative_event = {
-	id = HF.24000
-	title = EVTTITLEHF24000
-	desc = EVTDESCHF24000
-	picture = GFX_evt_beheading
-	border = GFX_event_narrative_frame_intrigue
-	sound = bloodline_added
-	show_from_from = yes
-	
-	is_triggered_only = yes
-
-	trigger = { 
-		has_dlc = "Holy Fury" 
-		NOT = { has_global_flag = flag_phalaris_bloodline }
-		NOT = { has_dynasty_flag = flag_phalaris_event }
-		is_female = no
-	}
-
-	immediate = { 
-		set_dynasty_flag = flag_phalaris_event
-	} #If Character says no first time, event never fires again for his dynasty.
-	
-	option = { #Gain Phalaris bloodline.
-		name = EVTOPTAHF24000
-		custom_tooltip = { text = tooltip_restore_brazen_bull }
-		if = { 
-			limit = { has_nickname = no }
-			give_nickname = nick_the_tyrant
-		}
-		if = { 
-			limit = { is_female = no }
-			create_bloodline = {
-				type = phalaris_male
-			}
-			new_bloodline = {
-				set_description = "bloodline_desc_phalaris"
-			}		
-		}
-	#	if = { 
-	#		limit = { is_female = yes }
-	#		create_bloodline = {
-	#			type = phalaris_female
-	#		}
-	#		new_bloodline = {
-	#			set_description = "bloodline_desc_phalaris"
-	#		}
-	#	} 
-		hidden_tooltip = { 
-			if = { 
-				limit = { has_character_modifier = brazen_bull }
-				remove_character_modifier = brazen_bull #Negative opinion is now part of the bloodline itself.		
-			}
-			any_player = { 
-				limit = { 
-					is_within_diplo_range = ROOT 
-					NOT = { character = ROOT }
-				}	
-			narrative_event = { id = HF.24006 }	
-			}
-		}
-		set_global_flag = flag_phalaris_bloodline
-		ai_chance = { 
-			factor = 90
-			modifier = { 
-				factor = 1.5
-				trait = lunatic
-			}
-		}
-	}
-	option = { #Nothing.
-		name = EVTOPTBHF24000
-		tiered_prestige_negative_effect = yes
-		if = { 
-			limit = { has_character_modifier = brazen_bull }
-			remove_character_modifier = brazen_bull
-		}
-		ai_chance = { 
-			factor = 10
-			modifier = { 
-				factor = 1.5
-				trait = charitable
-			}
-			modifier = { 
-				factor = 1.5
-				trait = humble
-			}
-		}
-	}
-}
-
-# Killed by brazen bull - First time.
-character_event = {
-	id = HF.24001
-	desc = EVTDESCHF24001
-	picture = GFX_evt_beheading
-	border = GFX_event_normal_frame_intrigue
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = EVTOPTAHF24001
-		hidden_tooltip = {
-			FROM = { character_event = { id = HF.24002 } }
-		}
-		death = {
-			death_reason = death_execution_brazen_bull
-			killer = FROM
-		}
-	}
-}
-
-# Host notified of death by brazen bull - First time.
-character_event = {
-	id = HF.24002
-	desc = {
-		trigger = {
-			has_character_modifier = brazen_bull
-		}
-		text = EVTDESCAHF24002
-	}
-	desc = {
-		trigger = {
-			NOT = {
-				has_character_modifier = brazen_bull
-			}
-		}
-		text = EVTDESCBHF24002
-	}
-	picture = GFX_evt_beheading
-	border = GFX_event_normal_frame_intrigue
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = EVTOPTAHF24002
-		hidden_tooltip = {
-			narrative_event = { id = HF.24000 days = 30 random = 80 } #Apply bloodline after rumors spread.
-		}
-		tiered_piety_negative_effect = yes
-	}
-}
-
-# Killed by brazen bull - From Targetted decision. - First time.
-character_event = {
-	id = HF.24003
-	desc = EVTDESCHF24003
-	picture = GFX_evt_beheading
-	border = GFX_event_normal_frame_intrigue
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = EVTOPTAHF24003
-		death = {
-			death_reason = death_execution_brazen_bull
-			killer = FROMFROM
-		}
-	}
-}
-# Host notified of death by brazen bull (generic executions)
-character_event = {
-	id = HF.24004
-	desc = EVTDESCHF24004
-	picture = GFX_evt_beheading
-	border = GFX_event_normal_frame_intrigue
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = EVTOPTAHF24004
-	}
-}
-
-# Killed by brazen bull (generic executions)
-character_event = {
-	id = HF.24005
-	desc = EVTDESCHF24005
-	picture = GFX_evt_beheading
-	border = GFX_event_normal_frame_intrigue
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = EVTOPTAHF24005
-		death = {
-			death_reason = death_execution_brazen_bull
-			killer = FROMFROM
-		}
-	}
-}
-
-#Notification for players of the new Tyrant of Sicily.
-narrative_event = {
-	id = HF.24006
-	title = EVTTITLEHF24000
-	desc = EVTDESCHF24006
-	picture = GFX_evt_beheading
-	border = GFX_event_narrative_frame_intrigue
-	sound = bloodline_added
-	
-	is_triggered_only = yes
-
-	trigger = { 
-		has_dlc = "Holy Fury" 
-	}
-	option = {
-		name = EVTOPTAHF24006
-	}
-}
+#removed
 
 #Teuta's bloodline. Fired on_war_ended_victory of a war against Byzantium.
 # From = Attacker, Root = Defender
-character_event = {
-	id = HF.24010
-	hide_window = yes
-	
-	is_triggered_only = yes
-
-	trigger = { 
-		has_dlc = "Holy Fury" 
-		NOT = { has_global_flag = flag_teuta_bloodline } #Just once.
-		OR  = { 
-			AND = { #Either won as defensive...
-				ROOT = { 
-					is_female = yes
-					is_alternate_start = no 
-					independent = yes
-					lower_tier_than = EMPEROR
-					religion_group = pagan_group
-					NOT = { realm_size = 120 }
-					NOR = { 
-						religion = hellenic_pagan
-						religion = hellenic_pagan_reformed
-						culture = roman
-					}
-					OR = { 
-						culture_group = south_slavic
-						culture = dalmatian
-					}
-					capital_scope = { 
-						OR = { 
-							de_jure_liege = d_dioclea 
-							de_jure_liege = d_rashka
-						} 
-					}
-				}
-				FROM = { 
-					OR = { 
-						has_landed_title = e_byzantium
-						has_landed_title = e_roman_empire
-					}
-				}
-			}
-			AND = { #...Or as attacker.
-				FROM = { 
-					is_female = yes
-					is_alternate_start = no 
-					independent = yes
-					lower_tier_than = EMPEROR
-					religion_group = pagan_group
-					NOT = { realm_size = 120 }
-					NOR = { 
-						religion = hellenic_pagan
-						religion = hellenic_pagan_reformed
-						culture = roman
-					}
-					OR = { 
-						culture_group = south_slavic
-						culture = dalmatian
-					}
-					capital_scope = { 
-						OR = { 
-							de_jure_liege = d_dioclea 
-							de_jure_liege = d_rashka
-						} 
-					}
-				}
-				ROOT = { 
-					OR = { 
-						has_landed_title = e_byzantium
-						has_landed_title = e_roman_empire
-					}
-				}
-			}
-		}
-	}
-	immediate = { 
-		sound_effect = bloodline_added
-		set_global_flag = flag_teuta_bloodline
-		if = { 
-			limit = { 
-				ROOT = { 
-					is_female = yes
-					is_alternate_start = no 
-					independent = yes
-					lower_tier_than = EMPEROR
-					religion_group = pagan_group
-					NOT = { realm_size = 120 }
-					NOR = { 
-						religion = hellenic_pagan
-						religion = hellenic_pagan_reformed
-						culture = roman
-					}
-					OR = { 
-						culture_group = south_slavic
-						culture_group = latin
-					}
-					capital_scope = { 
-						OR = { 
-							de_jure_liege = d_dioclea 
-							de_jure_liege = d_rashka
-						} 
-					}
-				}
-			}
-			FROM = {
-				save_event_target_as = defeated_emperor
-			}	
-			ROOT = {
-				set_character_flag = flag_defensive_teuta
-				narrative_event = { id = HF.24011 days = 20 }
-			}	
-			break = yes
-		}
-		if = { 
-			limit = { 
-				FROM = { 
-					is_female = yes
-					is_alternate_start = no 
-					independent = yes
-					lower_tier_than = EMPEROR
-					religion_group = pagan_group
-					NOT = { realm_size = 120 }
-					NOR = { 
-						religion = hellenic_pagan
-						religion = hellenic_pagan_reformed
-						culture = roman
-					}
-					OR = { 
-						culture_group = south_slavic
-						culture_group = latin
-					}
-					capital_scope = { 
-						OR = { 
-							de_jure_liege = d_dioclea 
-							de_jure_liege = d_rashka
-						} 
-					}
-				}
-			}
-			ROOT = {
-				save_event_target_as = defeated_emperor
-			}	
-			FROM = {
-				set_character_flag = flag_offensive_teuta
-				narrative_event = { id = HF.24011 days = 20 }
-			}	
-			break = yes
-		}
-	}
-}
-
-narrative_event = {
-	id = HF.24011
-	title = EVTTITLEHF24011
-	desc = {
-		trigger = {
-				has_character_flag = flag_offensive_teuta
-		}
-		text = EVTDESCAHF24011
-	}
-	desc = {
-		trigger = {
-				has_character_flag = flag_defensive_teuta
-		}
-		text = EVTDESCBHF24011
-	}
-	picture = GFX_evt_norse_tempest
-	border = GFX_event_narrative_frame_war
-	sound = bloodline_added
-	
-	is_triggered_only = yes
-
-	trigger = { 
-		has_dlc = "Holy Fury" 
-	}
-	
-	option = {
-		name = EVTOPTAHF24011
-		if = { 
-			limit = { has_nickname = no }
-			give_nickname = nick_the_liberator
-		}
-		if = { 
-			limit = { is_female = yes }
-			create_bloodline = {
-				type = teuta_female
-			}
-			new_bloodline = {
-				set_description = "bloodline_desc_teuta"
-			}		
-		}
-		hidden_tooltip = { 
-			any_player = { 
-				limit = { 
-					is_within_diplo_range = ROOT 
-					NOT = { character = ROOT }
-				}	
-				narrative_event = { id = HF.24012 }	
-			}
-		}
-		ai_chance = { 
-			factor = 100
-		}
-	}
-	option = {
-		name = EVTOPTBHF24011
-		tiered_piety_reward_effect = yes
-		ai_chance = { 
-			factor = 0
-		}
-	}
-	after = {
-		clr_character_flag = flag_defensive_teuta
-		clr_character_flag = flag_offensive_teuta
-	}
-}
-narrative_event = {
-	id = HF.24012
-	title = EVTTITLEHF24012
-	desc = {
-		trigger = {
-			OR = {
-				has_landed_title = e_byzantium
-				has_landed_title = e_roman_empire
-			}
-		}
-		text = EVTDESCAHF24012
-	}
-	desc = {
-		trigger = {
-			NOR = {
-				has_landed_title = e_byzantium
-				has_landed_title = e_roman_empire
-			}
-		}
-		text = EVTDESCBHF24012
-	}
-	picture = GFX_evt_norse_tempest
-	border = GFX_event_narrative_frame_war
-	sound = bloodline_added
-	
-	is_triggered_only = yes
-
-	trigger = { 
-		has_dlc = "Holy Fury" 
-	}
-
-	option = {
-		name = EVTOPTAHF24012
-		trigger = { 
-			OR = {
-				has_landed_title = e_byzantium
-				has_landed_title = e_roman_empire
-			}
-		}
-		ai_chance = { 
-			factor = 100
-		}
-	}
-	option = {
-		name = EVTOPTBHF24012
-		trigger = { 
-			NOR = {
-				has_landed_title = e_byzantium
-				has_landed_title = e_roman_empire
-			}
-			OR = {
-				culture_group = byzantine
-				culture = roman
-				religion = hellenic_pagan
-				religion = hellenic_pagan_reformed
-			}
-		}
-		ai_chance = { 
-			factor = 100
-		}
-	}
-	option = {
-		name = EVTOPTCHF24012
-		trigger = { 
-			NOR = {
-				has_landed_title = e_byzantium
-				has_landed_title = e_roman_empire
-				culture_group = byzantine
-				culture = roman
-				religion = hellenic_pagan
-				religion = hellenic_pagan_reformed
-			}
-		}
-		ai_chance = { 
-			factor = 100
-		}
-	}
-}
+#removed
 
 #On_war_started: Corsair ships arrive for war.
 character_event = {
@@ -3213,14 +2561,14 @@ narrative_event = {
 		if = { 
 			limit = { 
 				this_has_super_cool_nickname_trigger = no 
-				religion_group = christian
+				trait = architect
 			}
 			ROOT = { give_nickname = nick_the_carpenter }
 		}
 		if = { 
 			limit = { 
 				this_has_super_cool_nickname_trigger = no 
-				NOT = { religion_group = christian }
+				NOT = { trait = architect }
 			}
 			ROOT = { give_nickname = nick_the_grandiose }
 		}
@@ -4833,7 +4181,7 @@ narrative_event = {
 			ROOT = { give_nickname = nick_the_theologian }
 		}
 		if = { 
-			limit = { religion_group = christian }
+			limit = { religion_group = earth_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4849,7 +4197,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = muslim }
+			limit = { religion_group = fire_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4865,7 +4213,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = jewish_group }
+			limit = { religion_group = air_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4881,7 +4229,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = pagan_group }
+			limit = { religion_group = water_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4897,7 +4245,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = zoroastrian_group }
+			limit = { religion_group = modern_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4913,7 +4261,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = indian_group }
+			limit = { religion_group = outlaw_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
