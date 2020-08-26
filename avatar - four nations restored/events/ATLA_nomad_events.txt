@@ -16,12 +16,12 @@ namespace = NOMAD
 # NOMAD.8 - On-action event: Right Home
 # NOMAD.9 - 
 # NOMAD.10 - On-action event: Pregnancy starts showing
-# NOMAD.11 - 
+# NOMAD.11 - Father reacts - woman's pregnancy
 # NOMAD.12 - On-action event: Courtiers
 # NOMAD.13 - Yangchen's Festival Start
 # NOMAD.14 - Yangchen's Festival Ends
-# NOMAD.15 - Adulthood
-# NOMAD.16 - Check
+# NOMAD.15 - Air Nomad Adulthood
+# NOMAD.16 - Unused
 ##########################
 
 # On-action event: A child is born
@@ -336,6 +336,7 @@ character_event = {
 	}
 }
 
+# Father reacts - woman's pregnancy
 character_event = {
 	id = NOMAD.11
 	picture = GFX_evt_pregnancy
@@ -657,23 +658,20 @@ character_event = { # Festival End
 
 #### Yangchen's Festival ####
 
-# Adulthood
+# Air Nomad Adulthood
 character_event = {
 	id = NOMAD.15
 	desc = NOMADEVTDESC15
 	picture = GFX_evt_nomad_wander
+	
 	is_triggered_only = yes
+	culture_group = air_nomad_culture
 	
 	trigger = {
-		OR = {
-			culture = northern_air_nomad
-			culture = eastern_air_nomad
-			culture = southern_air_nomad
-			culture = western_air_nomad
-		}
 		liege = {
 			culture_group = air_nomad_culture
 		}
+		# ???
 		NOT = { trait = avatar }
 		NOT = { trait = fullyrealisedavatar }
 		NOT = { trait = directdescendantavatar }
@@ -681,16 +679,19 @@ character_event = {
 	}
 	
 	option = {
-		name = "EVTOPTANOMADA.15"
+		name = EVTOPTANOMADA.15
 		remove_trait = airinitiate
 		add_trait = airnomad
+		
+		if = {
+			limit = {
+				is_landed = no
+			}
 		liege = { # Ask Liege
 			hidden_tooltip = {
-				character_event = { id = NOMAD.402 }
+					character_event = { id = NOMAD.401 }
 			}
 		}
-		trigger = {
-			is_landed = no
 		}
 		ai_chance = {
 			factor = 10
@@ -705,15 +706,16 @@ character_event = {
 		}
 	}
 	
+	# REWORK #
 	option = {
-		name = "EVTOPTANOMADB.15"
+		name = EVTOPTANOMADB.15
 		remove_trait = airinitiate
 		add_trait = airnomad
 		if = {
 			limit = {
 				is_ruler = no
 			}
-			liege = { # Tell Liege
+			liege = { # Tell Liege you refuse
 				hidden_tooltip = {
 					character_event = { id = NOMAD.402 }
 				}
@@ -733,7 +735,7 @@ character_event = {
 	}
 }
 
-# Check
+# UNUSED #
 character_event = {
 	id = NOMAD.16
 	hide_window = yes
@@ -774,6 +776,7 @@ character_event = {
 		text = NOMADEVTDESCB401
 	}
 	picture = GFX_evt_nomad_wander
+	
 	is_triggered_only = yes
 	
 	option = {
