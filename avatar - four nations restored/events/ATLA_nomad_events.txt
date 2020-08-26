@@ -25,6 +25,7 @@ namespace = NOMAD
 ##########################
 
 # On-action event: A child is born
+# Should be hidden?
 character_event = {
 	id = NOMAD.1
 	desc = NOMADEVTDESC1
@@ -38,9 +39,10 @@ character_event = {
 	}
 
 	option = {
-		name = "EVTOPTANOMAD.1"
+		name = OK
 		remove_trait = bastard
 		add_trait = airinitiate
+
 		mother = {
 			character_event = { id = NOMAD.6 } # The father's reaction
 		}
@@ -58,7 +60,7 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.2"	
+		name = EVTOPTANOMAD.2
 	}
 }
 
@@ -70,7 +72,7 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.3"	
+		name = EVTOPTANOMAD.3
 		if = {
 			limit = {
 				is_ruler = yes
@@ -97,7 +99,7 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.4"	
+		name = EVTOPTANOMAD.4
 		if = {
 			limit = {
 				is_ruler = yes
@@ -124,7 +126,63 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.5"	
+		name = EVTOPTANOMAD.5
+	}
+}
+
+# Ping Father
+character_event = {
+	id = NOMAD.6
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			if = {
+				limit = {
+					is_female = yes
+				}
+				father = {
+					character_event = { id = NOMAD.2 days = 1 } # The father's reaction - Female
+				}
+			}
+			if = {
+				limit = {
+					is_female = no
+				}
+				father = {
+					character_event = { id = NOMAD.4 days = 1 } # The father's reaction - Male
+				}
+			}
+		}
+	}
+}
+
+# Ping Mother
+character_event = {
+	id = NOMAD.7
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			if = {
+				limit = {
+					is_female = yes
+				}
+				mother = {
+					character_event = { id = NOMAD.3 days = 1 } # The mother's reaction - Female
+				}
+			}
+			if = {
+				limit = {
+					is_female = no
+				}
+				mother = {
+					character_event = { id = NOMAD.5 days = 1 } # The mother's reaction - Male
+				}
+			}
+		}
 	}
 }
 
