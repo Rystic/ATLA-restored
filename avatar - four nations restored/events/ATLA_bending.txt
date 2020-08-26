@@ -1995,18 +1995,14 @@ character_event = {
 	id = bending.96
 	hide_window = yes
 	is_triggered_only = yes
-	religion_group = air_religions
+	culture_group = air_nomad_culture
 
 	trigger = {
+		NOT = { trait = airnomad }
+		NOT = { trait = airinitiate }
 		NOT = { trait = waterbender }
 		NOT = { trait = earthbender }
 		NOT = { trait = firebender }
-		OR = {
-			culture = western_air_nomad
-			culture = northern_air_nomad
-			culture = southern_air_nomad
-			culture = eastern_air_nomad
-		}
 	}
 
 	immediate = {
@@ -2039,7 +2035,21 @@ character_event = {
 	}
 
 	option = {
-		add_trait = airnomad
+		if = {
+			limit = {
+				min_age = 14
+			}
+		
+			add_trait = airnomad
+		}
+
+		if = {
+			limit = {
+				max_age = 14
+			}
+		
+			add_trait = airinitiate
+		}
 	}
 }
 
