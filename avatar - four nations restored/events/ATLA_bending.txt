@@ -1767,26 +1767,21 @@ character_event = {
 ##### Air Events #####
 ######################
 
-# bending.91 - Something
+# bending.91 - Child gains airbending
 character_event = {
 	id = bending.91
-	desc = EVTDESCbending.91 #Look! I warmed the tea without fire!
+	desc = EVTDESCbending.91 #Today I sneezed and suddenly went flying high into the sky
 	picture = GFX_evt_family
+
 	is_triggered_only = yes
-	min_age = 16
-	religion_group = air_religions
+	min_age = 5
+	culture_group = air_nomad_culture
 
 	trigger = {
 		NOT = { trait = waterbender }
 		NOT = { trait = earthbender }
 		NOT = { trait = firebender }
 		NOT = { trait = airbender }
-		OR = {
-			culture = western_air_nomad
-			culture = northern_air_nomad
-			culture = southern_air_nomad
-			culture = eastern_air_nomad
-		}
 	}
 
 	option = {
@@ -1828,7 +1823,7 @@ character_event = {
 			break = yes
 		}
 		name = EVTOPTAbending.91 #
-		add_trait = airnomad
+		# add_trait = airnomad
 		add_trait = airbender
 		add_trait = incompetent_bender
 	}
@@ -1863,18 +1858,13 @@ character_event = {
 	desc = EVTDESCbending.93
 	picture = GFX_evt_family
 	is_triggered_only = yes
-	min_age = 16
+	min_age = 10
 	prisoner = no
 	capable_only = yes
+	culture_group = air_nomad_culture
 
 	trigger = {
 		is_landed = yes
-		OR = {
-			culture = western_air_nomad
-			culture = northern_air_nomad
-			culture = southern_air_nomad
-			culture = eastern_air_nomad
-		}
 		NOT = { any_artifact = { has_artifact_flag = pet } }
 	}
 
@@ -1933,22 +1923,14 @@ character_event = { # Develops Airbending - Parent
 	id = bending.95
 	desc = {
 		trigger = {
-			OR = {
-				culture = western_air_nomad
-				culture = northern_air_nomad
-				culture = southern_air_nomad
-				culture = eastern_air_nomad
-			}
+			culture_group = air_nomad_culture
 		}
 		text = EVTDESCbending.98
 	}
 	desc = {
 		trigger = {
-			AND = {
-				NOT = { culture = western_air_nomad }
-				NOT = { culture = northern_air_nomad }
-				NOT = { culture = southern_air_nomad }
-				NOT = { culture = eastern_air_nomad }
+			NOT = {
+				culture_group = air_nomad_culture
 			}
 		}
 		text = EVTDESCbending.99
@@ -1960,12 +1942,7 @@ character_event = { # Develops Airbending - Parent
 	option = {
 		name = EVTOPTAbending.98 # As normal
 		trigger = {
-			OR = {
-				culture = western_air_nomad
-				culture = northern_air_nomad
-				culture = southern_air_nomad
-				culture = eastern_air_nomad
-			}
+			culture_group = air_nomad_culture
 		}
 		FROM = {
 			add_trait = airbender
@@ -1976,11 +1953,8 @@ character_event = { # Develops Airbending - Parent
 	option = {
 		name = EVTOPTBbending.98 # An Airbender?
 		trigger = {
-			AND = {
-				NOT = { culture = western_air_nomad }
-				NOT = { culture = northern_air_nomad }
-				NOT = { culture = southern_air_nomad }
-				NOT = { culture = eastern_air_nomad }
+			NOT = {
+				culture_group = air_nomad_culture
 			}
 		}
 		FROM = {
@@ -2521,7 +2495,15 @@ character_event = { # Fires Chance for Bending Event
 					factor = 2
 					trait = descendantavatar
 				}
-				character_event = { id = bending.94 days = 10 random = 90 }
+				random_list = {
+					# All airnomads are benders
+					80 = {
+						character_event = { id = bending.91 days = 10 random = 90 }
+					}
+					20 = {
+						character_event = { id = bending.94 days = 10 random = 90 }
+					}
+				}
 			}
 			60 = { # Non-Bender
 				modifier = {
@@ -2623,6 +2605,7 @@ character_event = { # Fires Chance for Bending Event
 				modifier = {
 					factor = 0
 					AND = {
+						# All airnomads are benders
 						culture_group = air_nomad_culture
 						NOT = { has_global_flag = HYW_4 }
 					}
