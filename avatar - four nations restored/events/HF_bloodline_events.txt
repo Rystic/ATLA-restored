@@ -4840,7 +4840,7 @@ narrative_event = {
 			ROOT = { give_nickname = nick_the_zealot }
 		}
 		if = { 
-			limit = { religion_group = christian }
+			limit = { religion_group = earth_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4856,7 +4856,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = muslim }
+			limit = { religion_group = fire_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4872,7 +4872,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = jewish_group }
+			limit = { religion_group = air_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4888,7 +4888,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = pagan_group }
+			limit = { religion_group = water_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4904,7 +4904,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = zoroastrian_group }
+			limit = { religion_group = outlaw_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -4920,7 +4920,7 @@ narrative_event = {
 			}
 		}
 		else_if = { 
-			limit = { religion_group = indian_group }
+			limit = { religion_group = modern_religions }
 			if = { 
 				limit = { is_female = no }
 				create_bloodline = {
@@ -6267,29 +6267,6 @@ character_event = {
 	option = {
 		name = EVTOPTAHF24116
 		FROM = { death = { death_reason = death_murder_unknown killer = event_target:assassin_plot_owner } } 
-		#If quest holder, clear quest and reward
-		if = {
-			limit = {
-				society_member_of = the_assassins
-				has_quest = quest_the_assassins_assassination
-				quest_target = { character = event_target:plot_target }
-			}
-			clr_quest = quest_the_assassins_assassination
-			sound_effect = assassins_assassinate_character
-
-			if = {
-				limit = { event_target:plot_target = { higher_tier_than = DUKE } }
-				add_society_currency_major_effect = yes
-			}
-			if = {
-				limit = { event_target:plot_target = { tier = DUKE } } 
-				add_society_currency_medium_effect = yes
-			}
-			if = {
-				limit = { event_target:plot_target = { lower_tier_than = DUKE } }
-				add_society_currency_minor_effect = yes
-			}
-		}
 		clr_character_flag = murder_in_motion
 	}
 }
@@ -6358,29 +6335,6 @@ character_event = {
 	option = {
 		name = EVTOPTAHF24119
 		FROM = { death = { death_reason = death_murder killer = event_target:assassin_plot_owner } }
-		#If quest holder, clear quest and reward
-		if = {
-			limit = {
-				society_member_of = the_assassins
-				has_quest = quest_the_assassins_assassination
-				quest_target = { character = event_target:plot_target }
-			}
-			clr_quest = quest_the_assassins_assassination
-			sound_effect = assassins_assassinate_character
-
-			if = {
-				limit = { event_target:plot_target = { higher_tier_than = DUKE } }
-				add_society_currency_major_effect = yes
-			}
-			if = {
-				limit = { event_target:plot_target = { tier = DUKE } } 
-				add_society_currency_medium_effect = yes
-			}
-			if = {
-				limit = { event_target:plot_target = { lower_tier_than = DUKE } }
-				add_society_currency_minor_effect = yes
-			}
-		}
 		clr_character_flag = murder_in_motion
 	}
 }
@@ -6623,7 +6577,7 @@ character_event = {
 				NOT = {
 					character = ROOT
 				}
-				religion_group = christian
+				religion_group = earth_religions
 			}
 		}
 	}
@@ -6709,44 +6663,37 @@ character_event = { # Knight character arrives
 		name = EVTOPTAHF24130
 		
 		trigger = {
-			OR = { 
-				NOT = { ROOT = { has_law = succ_byzantine_elective } }  #Either not Imperial...
-				NOT = { #...Or there are no valid vassal candidates that can be commanders.
-					any_vassal = { 
-						higher_real_tier_than = BARON
-						NOT = { 
-							primary_title = { temporary = yes } 
-						}
-						OR = {
-							AND = {
-								OR = {
-									male_can_hold_minor_title_trigger = yes
-									female_can_hold_minor_commander_title_trigger = yes
-								}
-								OR = {
-									NOT = { religion = hindu }
-									trait = kshatriya
-								}
-								is_adult = yes
+			NOT = { #...Or there are no valid vassal candidates that can be commanders.
+				any_vassal = { 
+					higher_real_tier_than = BARON
+					NOT = { 
+						primary_title = { temporary = yes } 
+					}
+					OR = {
+						AND = {
+							OR = {
+								male_can_hold_minor_title_trigger = yes
+								female_can_hold_minor_commander_title_trigger = yes
 							}
-							has_character_flag = special_marshal
+							is_adult = yes
 						}
+						has_character_flag = special_marshal
+					}
 				
-						prisoner = no
-						NOT = { trait = incapable }
-						NOT = { is_inaccessible_trigger = yes }
-						NOT = { has_character_flag = guru }
-						NOT = { has_character_modifier = refusing_to_lead }
-						NOR = {
-							has_job_title = job_chancellor
-							has_job_title = job_marshal
-							has_job_title = job_treasurer
-							has_job_title = job_spymaster
-							has_job_title = job_spiritual
-							has_minor_title = title_commander
-						}
-					} 
-				}
+					prisoner = no
+					NOT = { trait = incapable }
+					NOT = { is_inaccessible_trigger = yes }
+					NOT = { has_character_flag = guru }
+					NOT = { has_character_modifier = refusing_to_lead }
+					NOR = {
+						has_job_title = job_chancellor
+						has_job_title = job_marshal
+						has_job_title = job_treasurer
+						has_job_title = job_spymaster
+						has_job_title = job_spiritual
+						has_minor_title = title_commander
+					}
+				} 
 			}
 			any_realm_character = {
 				NOT = {
@@ -6847,44 +6794,37 @@ character_event = { # Knight character arrives
 		name = EVTOPTAHF24130
 		
 		trigger = {
-			OR = { 
-				NOT = { ROOT = { has_law = succ_byzantine_elective } }  #Either not Imperial...
-				NOT = { #...Or there are no valid vassal candidates that can be commanders.
-					any_vassal = { 
-						higher_real_tier_than = BARON
-						NOT = { 
-							primary_title = { temporary = yes } 
-						}
-						OR = {
-							AND = {
-								OR = {
-									male_can_hold_minor_title_trigger = yes
-									female_can_hold_minor_commander_title_trigger = yes
-								}
-								OR = {
-									NOT = { religion = hindu }
-									trait = kshatriya
-								}
-								is_adult = yes
+			NOT = { #...Or there are no valid vassal candidates that can be commanders.
+				any_vassal = { 
+					higher_real_tier_than = BARON
+					NOT = { 
+						primary_title = { temporary = yes } 
+					}
+					OR = {
+						AND = {
+							OR = {
+								male_can_hold_minor_title_trigger = yes
+								female_can_hold_minor_commander_title_trigger = yes
 							}
-							has_character_flag = special_marshal
+							is_adult = yes
 						}
+						has_character_flag = special_marshal
+					}
 				
-						prisoner = no
-						NOT = { trait = incapable }
-						NOT = { is_inaccessible_trigger = yes }
-						NOT = { has_character_flag = guru }
-						NOT = { has_character_modifier = refusing_to_lead }
-						NOR = {
-							has_job_title = job_chancellor
-							has_job_title = job_marshal
-							has_job_title = job_treasurer
-							has_job_title = job_spymaster
-							has_job_title = job_spiritual
-							has_minor_title = title_commander
-						}
-					} 
-				}
+					prisoner = no
+					NOT = { trait = incapable }
+					NOT = { is_inaccessible_trigger = yes }
+					NOT = { has_character_flag = guru }
+					NOT = { has_character_modifier = refusing_to_lead }
+					NOR = {
+						has_job_title = job_chancellor
+						has_job_title = job_marshal
+						has_job_title = job_treasurer
+						has_job_title = job_spymaster
+						has_job_title = job_spiritual
+						has_minor_title = title_commander
+					}
+				} 
 			}
 			event_target:invited_character = { has_character_flag = invited_soldier }
 			OR = {
@@ -7049,7 +6989,7 @@ character_event = {
 		is_ruler = no
 		is_female = yes
 		NOT = { has_religion_feature = religion_matriarchal }
-		religion_group = christian
+		religion_group = earth_religions
 		is_married = no
 		NOT = { num_of_children = 1 }
 		NOT = { num_of_lovers = 1 }
