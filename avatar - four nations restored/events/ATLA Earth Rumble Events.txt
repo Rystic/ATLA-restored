@@ -1,0 +1,2244 @@
+#Earth Rumble Events
+
+namespace = ERB
+
+# Hidden start: Send the rank-up request to the current Grandmaster (delayed event on self, from decision to rank up)
+character_event = {
+	id = ERB.3000
+
+	hide_window = yes
+
+	trigger = {
+		has_character_flag = has_sent_request_to_rank_up
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { is_in_society = yes }
+			random_society_member = {
+				limit = {
+					is_society_grandmaster = yes
+					same_society_as = ROOT
+				}
+				character_event = { id = ERB.3001 } # send request to Grand Master. Relic rewards also handled by this event
+			}
+		}
+		if = {
+			limit = { is_in_society = no }
+			clr_character_flag = has_sent_request_to_rank_up
+		}
+	}
+}
+
+# Grandmaster gets the rank-up request
+character_event = {
+	id = ERB.3001
+
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		event_target:rank_up_target = { letter_event = { id = ERB.3002 } }
+	}
+}
+
+#Grand master approves my request
+letter_event = {
+	id = ERB.3002
+	desc = EVTDESC_MNM_10001_A
+	border = GFX_event_letter_frame_intrigue
+
+	trigger = {
+		society_rank < 4
+		has_character_flag = has_sent_request_to_rank_up
+	}
+
+	is_triggered_only = yes
+
+	#Yes
+	option = {
+		name = {
+			text = EVTOPTA_10001
+		}
+		if = { limit = { society_rank < 4 } #Reminder: Remember you can rankup to 4 in some societies
+			society_rank_up = 1
+		}
+		clr_character_flag = has_sent_request_to_rank_up
+	}
+}
+
+
+#From on_character_ask_to_join_society - EARTH RUMBLE
+character_event = {
+    id = ERB.4450
+	hide_window = yes
+    is_triggered_only = yes
+    trigger = {
+    	FROM = { leader = { society_member_of = earth_rumble } }
+    }
+    immediate = {
+    	FROM = { leader = { character_event = { id = ERB.4451 } } }
+    }
+}
+
+#Ping event
+character_event = {
+    id = ERB.4451
+	hide_window = yes
+    is_triggered_only = yes
+    immediate = {
+    	FROM = { letter_event = { id = ERB.4452 } }
+    }
+}
+
+#Welcome letter
+letter_event = {
+    id = ERB.4452
+    desc = ERB_JOIN_LETTER
+    border = GFX_event_letter_frame_religion
+
+    is_triggered_only = yes
+
+	immediate = {
+		set_character_flag = society_join_block
+		FROM = { character_event = { id = ERB.4453 } }
+	}
+
+    option = {
+        name = EVTOPTA_MNM_44511
+		join_society = earth_rumble
+		clr_character_flag = society_join_block
+    }
+}
+
+#Earth Rumble Promoter Arrives
+character_event = {
+	id = ERB.4403
+	picture = GFX_evt_secluded_in_prayer
+	desc = EVTDESC_4403
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_ERB_4403
+		hidden_effect = {
+			set_variable = { which = earth_rumble_points value = 0 }
+			set_character_flag = earth_gimmick_timer
+			character_event = { id = ERB.4404 days = 40 random = 30 } 
+		}
+	}
+}
+
+#Tombola & outcome evaluator for meditation/penance
+character_event = {
+	id = ERB.4404
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+			society_member_of = earth_rumble
+		#OR = {
+		#	has_quest = quest_monastic_order_penance
+		#	has_quest = quest_monastic_order_meditation
+		#}
+	}
+
+	immediate = {
+		#if = {
+		#	limit = {
+		#		OR = {
+		#			is_monastic_member_trigger = no
+		#			NOR = {
+		#				has_quest = quest_monastic_order_penance
+		#				has_quest = quest_monastic_order_meditation
+		#			}
+		#		}
+		#	}
+		#	character_event = { id = ERB.4399 }
+		#	break = yes
+		#}
+		if = {
+			limit = { 
+				OR = {
+					has_quest = quest_monastic_order_penance
+					has_quest = quest_monastic_order_meditation
+				}
+				OR = {
+					has_character_modifier = in_meditation
+					has_character_modifier = doing_penance
+				}
+			}
+			if = {
+				limit = { 
+					NOR = {
+						check_variable = { which = earth_rumble_points value = 4 } 
+						NOT = { check_variable = { which = earth_rumble_points value = -2 } }
+					}
+				}
+				clear_event_target = interrupting_child
+				random_list = { #Next mission
+					30 = { #Struggle with a vice
+						modifier = { 
+							factor = 0 
+							trait = temperate
+							trait = charitable
+							trait = diligent
+							OR = {
+								religion = hindu
+								NOT = { trait = lustful }
+							}
+						}
+						modifier = {
+							factor = 0
+							has_character_flag = holy_seclusion_struggled_with_vice
+						}
+						set_character_flag = holy_seclusion_struggled_with_vice
+						random_list = {
+							10 = { 
+								modifier = { factor = 0 OR = { NOT = { trait = lustful } religion = hindu } }
+								set_character_flag = holy_seclusion_lustful
+							}
+							10 = { 
+								modifier = { factor = 0 trait = temperate }
+								set_character_flag = holy_seclusion_gluttonous
+							}
+							10 = { 
+								modifier = { factor = 0 trait = charitable }
+								set_character_flag = holy_seclusion_greedy
+							}
+							10 = { 
+								modifier = { factor = 0 trait = diligent }
+								set_character_flag = holy_seclusion_slothful
+							}
+						}
+
+						character_event = { id = ERB.4405 }
+					}
+					10 = { #Lonely
+						modifier = {
+							factor = 0
+							NAND = {
+								OR = {
+									trait = gregarious
+									trait = socializer
+								}
+								any_courtier = {
+									is_adult = yes
+									prisoner = no
+									NOR = { 
+										is_friend = ROOT 
+										is_lover = ROOT
+										is_rival = ROOT
+										any_spouse = { character = ROOT }
+									}
+								}
+							}
+						}
+						modifier = {
+							factor = 0
+							has_character_flag = holy_seclusion_struggled_with_loneliness
+						}
+						set_character_flag = holy_seclusion_struggled_with_loneliness
+						character_event = { id = ERB.4410 }
+					}
+					10000 = { #Scripture reading 
+						modifier = {
+							factor = 0
+							OR = {
+								NOT = {	any_courtier = { has_job_title = job_spiritual } }
+								has_character_flag = holy_seclusion_scripture_reading
+							}
+						}
+						set_character_flag = holy_seclusion_scripture_reading
+						character_event = { id = ERB.4414 }
+					}
+					#Child interrupting
+					10 = {
+						modifier = {
+							factor = 0
+							NOT = { 
+								any_child = {
+									age = 4
+									host = { character = ROOT }
+									is_adult = no
+									prisoner = no
+									opinion = { who = ROOT value = 5 }
+								}
+							}
+						}
+						modifier = {
+							factor = 0
+							has_character_flag = holy_seclusion_interrupting_child
+						}
+						random_child = {
+							limit = {
+								age = 4
+								host = { character = ROOT }
+								is_adult = no
+								prisoner = no
+								opinion = { who = ROOT value = 5 }
+							}
+							save_event_target_as = interrupting_child
+						}
+						random_child = {
+							limit = {
+								age = 4
+								host = { character = ROOT }
+								is_adult = no
+								prisoner = no
+								opinion = { who = ROOT value = 5 }
+								is_primary_heir = ROOT
+								NOR = { 
+									has_opinion_modifier = { modifier = kind_parent who = ROOT }
+									has_opinion_modifier = { modifier = cruel_parent who = ROOT }
+								}
+							}
+							save_event_target_as = interrupting_child
+						}
+						set_character_flag = holy_seclusion_interrupting_child
+						event_target:interrupting_child = { character_event = { id = ERB.4419 } }
+					}
+					10 = { #General success 
+						modifier = {
+							is_virtous = yes
+							factor = 1.5
+						}
+						modifier = {
+							is_wicked = yes
+							factor = 0.7
+						}
+						modifier = {
+							is_learned_trigger = yes
+							factor = 1.5
+						}
+						character_event = { id = ERB.4426 }
+					}
+					10 = { #If all missions have been done already....
+						modifier = {
+							factor = 0
+							NAND = {
+								has_character_flag = holy_seclusion_struggled_with_vice
+								has_character_flag = holy_seclusion_struggled_with_loneliness
+								has_character_flag = holy_seclusion_scripture_reading
+								has_character_flag = holy_seclusion_interrupting_child
+							}
+						}
+						clr_character_flag = holy_seclusion_struggled_with_vice
+						clr_character_flag = holy_seclusion_struggled_with_loneliness
+						clr_character_flag = holy_seclusion_scripture_reading
+						clr_character_flag = holy_seclusion_interrupting_child
+					}
+				}
+				character_event = { id = ERB.4404 days = 40 random = 30 } #Sends the tombola again
+			}
+			if = {
+				limit = { 
+					OR = {
+						check_variable = { which = earth_rumble_points value = 4 } 
+						NOT = { check_variable = { which = earth_rumble_points value = -2 } }
+					}
+				} 
+
+				random_society_member = {
+					limit = {
+						is_society_grandmaster = yes
+						same_society_as = ROOT
+					}
+					character_event = { id = ERB.4427 } #Mission success/fail
+				}
+			}
+		}
+	}
+}
+
+#Penance/seclusion: Dealing with vice
+character_event = {
+	id = ERB.4405
+	picture = GFX_evt_dark_love
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	hide_from = yes
+
+	immediate = {
+		trigger_switch = {
+			on_trigger = has_character_flag
+			holy_seclusion_lustful = {
+				if = {
+					limit = {
+						any_artifact = {
+							OR = {
+								has_artifact_flag = about_religion
+								artifact_type = the_confessions_of_root
+							}
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							OR = {
+								has_artifact_flag = about_religion
+								artifact_type = the_confessions_of_root
+							}
+							is_artifact_equipped = yes
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+			holy_seclusion_gluttonous = {
+				if = {
+					limit = {
+						any_artifact = {
+							has_artifact_flag = cooking
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							has_artifact_flag = cooking
+							is_artifact_equipped = yes
+							NOT = { artifact_type = gastronomic_tonics } #Not really about food
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+			holy_seclusion_greedy = {
+				if = {
+					limit = {
+						any_artifact = {
+							OR = {
+								artifact_type = the_confessions_of_root
+								has_artifact_flag = about_diplomacy
+							}
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							OR = {
+								artifact_type = the_confessions_of_root
+								has_artifact_flag = about_diplomacy
+							}
+							is_artifact_equipped = yes
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+			holy_seclusion_slothful = {
+				if = {
+					limit = {
+						any_artifact = {
+							OR = {
+								AND = {
+									has_artifact_flag = about_dynasty
+									original_owner = { NOT = { character = ROOT } }
+								}
+								has_artifact_flag = poetry
+							}
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							OR = {
+								AND = {
+									has_artifact_flag = about_dynasty
+									original_owner = { NOT = { character = ROOT } }
+								}
+								has_artifact_flag = poetry
+							}
+							is_artifact_equipped = yes
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+		}
+	}
+
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_lustful }
+		text = EVTDESC_4405_LUSTFUL
+		picture = GFX_evt_dark_love
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_gluttonous }
+		text = EVTDESC_4405_GLUTTONOUS
+		picture = GFX_evt_feast
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_greedy }
+		text = EVTDESC_4405_GREEDY
+		picture = GFX_evt_charity
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_slothful }
+		text = EVTDESC_4405_SLOTHFUL
+		picture = GFX_evt_recovery
+	}
+
+	#Indulge
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTA_4405_LUSTFUL
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTA_4405_GLUTTONOUS
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTA_4405_GREEDY
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTA_4405_SLOTHFUL
+		}
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			gain_weight_small_effect = yes
+			weight_trait_check_effect = yes
+		}
+
+		random_list = {
+			65 = { 
+				custom_tooltip = { 
+					text = EVTOPTA_ERB_4405_tt_success
+					character_event = { id = ERB.4406 days = 3 }
+				}
+			}
+			35 = {
+				custom_tooltip = { 
+					text = EVTOPTA_ERB_4405_tt_fail
+					character_event = { id = ERB.4407 days = 3 }
+				}
+			}
+		}
+	}
+
+	#Fight it  (with reading from your library!)
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTB_4405_LUSTFUL_book
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTB_4405_GLUTTONOUS_book
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTB_4405_GREEDY_book
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTB_4405_SLOTHFUL_book
+		}
+
+		tooltip_info_custom = available_because_books_tt
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			lose_weight_small_effect = yes
+			weight_trait_check_effect = yes
+		}
+
+		set_character_flag = used_a_book
+
+		random_list = {
+			70 = { 
+				custom_tooltip = { 
+					text = EVTOPTB_ERB_4405_tt_success
+					character_event = { id = ERB.4408 days = 14 }
+				}
+			}
+			30 = {
+				custom_tooltip = { 
+					text = EVTOPTB_ERB_4405_tt_fail
+					character_event = { id = ERB.4409 days = 14 }
+				}
+			}
+		}
+		trigger = {
+			event_target:book_target = { always = yes }
+		}
+	}
+
+	#Fight it
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTB_4405_LUSTFUL
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTB_4405_GLUTTONOUS
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTB_4405_GREEDY
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTB_4405_SLOTHFUL
+		}
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_greedy }
+			scaled_wealth = { value = -0.5 min = -50 }
+		}
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			lose_weight_small_effect = yes
+			weight_trait_check_effect = yes
+		}
+
+		random_list = {
+			40 = { 
+				custom_tooltip = { 
+					text = EVTOPTB_ERB_4405_tt_success
+					character_event = { id = ERB.4408 days = 14 }
+				}
+			}
+			60 = {
+				custom_tooltip = { 
+					text = EVTOPTB_ERB_4405_tt_fail
+					character_event = { id = ERB.4409 days = 14 }
+				}
+			}
+		}
+	}
+}
+
+#Vice outcome - small success
+character_event = {
+	id = ERB.4406
+	picture = GFX_evt_dark_love
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	desc = {
+		trigger = { 
+			has_character_flag = holy_seclusion_lustful 
+			event_target:holy_seclusion_lover = { always = yes }
+		}
+		text = EVTDESC_4406_LUSTFUL_A
+		picture = GFX_evt_dark_love
+	}
+	desc = {
+		trigger = { 
+			has_character_flag = holy_seclusion_lustful 
+			event_target:holy_seclusion_lover = { always = no }
+		}
+		text = EVTDESC_4406_LUSTFUL_B
+		picture = GFX_evt_dark_love
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_gluttonous }
+		text = EVTDESC_4406_GLUTTONOUS
+		picture = GFX_evt_feast
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_greedy }
+		text = EVTDESC_4406_GREEDY
+		picture = GFX_evt_charity
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_slothful }
+		text = EVTDESC_4406_SLOTHFUL
+		picture = GFX_evt_recovery
+	}
+
+	immediate = {
+		if = {
+			limit = { has_character_flag = holy_seclusion_lustful }
+			random_courtier = {
+				limit = {
+					age = 16
+					root_attraction_trigger = yes
+					prisoner = no
+					NOT = { trait = incapable }
+					NOT = { trait = celibate }
+					NOT = { is_close_relative = ROOT }
+					is_married = no
+					is_attractive_trigger = yes
+				}
+				save_event_target_as = holy_seclusion_lover
+			}
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTA_4406_LUSTFUL
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTA_4406_GLUTTONOUS
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTA_4406_GREEDY
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTA_4406_SLOTHFUL
+		}
+
+		custom_tooltip = { 
+			text = EVTOPTA_4406_TOOLTIP 
+		}
+
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 1 } }
+
+		if = {
+			limit = { 
+				has_character_flag = holy_seclusion_lustful 
+				event_target:holy_seclusion_lover = { NOT = { is_lover = ROOT } }
+			}
+			random = {
+				chance = 30
+				event_target:holy_seclusion_lover = { add_lover = ROOT }
+			}
+		}
+
+		hidden_effect = {
+			clr_character_flag = holy_seclusion_lustful
+			clr_character_flag = holy_seclusion_gluttonous
+			clr_character_flag = holy_seclusion_greedy
+			clr_character_flag = holy_seclusion_slothful
+		}
+	}
+}
+
+#vice outcome - small failure
+character_event = {
+	id = ERB.4407
+	picture = GFX_evt_recovery
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_lustful }
+		text = EVTDESC_4407_LUSTFUL
+		picture = GFX_evt_recovery
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_gluttonous }
+		text = EVTDESC_4407_GLUTTONOUS
+		picture = GFX_evt_drunk
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_greedy }
+		text = EVTDESC_4407_GREEDY
+		picture = GFX_evt_drunk
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_slothful }
+		text = EVTDESC_4407_SLOTHFUL
+		picture = GFX_evt_drunk
+	}
+
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTA_4407_LUSTFUL
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTA_4407_GLUTTONOUS
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTA_4407_GREEDY
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTA_4407_SLOTHFUL
+		}
+
+		custom_tooltip = { 
+			text = EVTOPTA_4407_TOOLTIP 
+		}
+
+		hidden_effect = {
+			clr_character_flag = holy_seclusion_lustful
+			clr_character_flag = holy_seclusion_gluttonous
+			clr_character_flag = holy_seclusion_greedy
+			clr_character_flag = holy_seclusion_slothful
+		}
+	}
+}
+
+#Vice outcome big success
+character_event = {
+	id = ERB.4408
+	picture = GFX_evt_secluded_in_prayer
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_lustful
+		}
+		text = EVTDESC_4408_LUSTFUL
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_gluttonous
+		}
+		text = EVTDESC_4408_GLUTTONOUS
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_greedy
+			NOT = { has_character_flag = used_a_book }
+		}
+		text = EVTDESC_4408_GREEDY
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_slothful
+			NOT = { has_character_flag = used_a_book }
+
+		}
+		text = EVTDESC_4408_SLOTHFUL
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_greedy
+			has_character_flag = used_a_book
+		}
+		text = EVTDESC_4408_GREEDY_book
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_slothful
+			has_character_flag = used_a_book
+		}
+		text = EVTDESC_4408_SLOTHFUL_book
+	}
+
+
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTA_4408_LUSTFUL
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTA_4408_GLUTTONOUS
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTA_4408_GREEDY
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTA_4408_SLOTHFUL
+		}
+
+		custom_tooltip = { 
+			text = EVTOPTA_4408_TOOLTIP 
+		}
+
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 2 } }
+		hidden_effect = { monastic_order_purity_effect = yes }
+		
+		if = {
+			limit = { has_character_flag = holy_seclusion_lustful }
+
+			add_trait = celibate
+			add_character_modifier = {
+				name = promise_of_celibacy
+				years = 3
+			}
+
+			random = {
+				chance = 50
+				remove_trait_silently_lustful_effect = yes
+			}
+		}
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			if = {
+				limit = { NOT = { trait = gluttonous } }
+				random = {
+					chance = 50
+					add_trait_temperate_effect = yes
+				}
+			}
+			if = {
+				limit = { trait = gluttonous }
+				random = {
+					chance = 50
+					remove_trait_silently_gluttonous_effect = yes
+				}
+			}
+		}
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_greedy }
+
+			if = {
+				limit = { NOT = { trait = greedy } }
+				random = {
+					chance = 50
+					add_trait_charitable_effect = yes
+				}
+			}
+			if = {
+				limit = { trait = greedy }
+				random = {
+					chance = 50
+					remove_trait_silently_greedy_effect = yes
+				}
+			}
+		}
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_slothful }
+
+			if = {
+				limit = { NOT = { trait = slothful } }
+				random = {
+					chance = 50
+					add_trait_diligent_effect = yes
+				}
+			}
+			if = {
+				limit = { trait = slothful }
+				random = {
+					chance = 50
+					remove_trait_slothful_effect = yes
+				}
+			}
+		}
+
+		hidden_effect = {
+			clr_character_flag = holy_seclusion_lustful
+			clr_character_flag = holy_seclusion_gluttonous
+			clr_character_flag = holy_seclusion_greedy
+			clr_character_flag = holy_seclusion_slothful
+			clr_character_flag = used_a_book
+		}
+	}
+}
+
+#vice outcome - big failure
+character_event = {
+	id = ERB.4409
+	picture = GFX_evt_drunk
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_lustful }
+		text = EVTDESC_4409_LUSTFUL
+		picture = GFX_evt_brothel
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_gluttonous }
+		text = EVTDESC_4409_GLUTTONOUS
+		picture = GFX_evt_drunk
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_greedy }
+		text = EVTDESC_4409_GREEDY
+		picture = GFX_evt_drunk
+	}
+	desc = {
+		trigger = { has_character_flag = holy_seclusion_slothful }
+		text = EVTDESC_4409_SLOTHFUL
+		picture = GFX_evt_drunk
+	}
+
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTA_4409_LUSTFUL
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTA_4409_GLUTTONOUS
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTA_4409_GREEDY
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTA_4409_SLOTHFUL
+		}
+
+		custom_tooltip = { 
+			text = EVTOPTA_4409_TOOLTIP 
+		}
+
+		hidden_effect = { change_variable = { which = earth_rumble_points value = -5 } }
+		
+		if = {
+			limit = { 
+				has_character_flag = holy_seclusion_lustful 
+				NOT = { trait = lovers_pox }
+			}
+			add_trait = lovers_pox
+			if = {
+				limit = { is_married = yes }
+				character_event = { id = 20 }
+			}
+		}
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			if = {
+				limit = { NOT = { trait = gluttonous } }
+				random = {
+					chance = 30
+					add_trait_gluttonous_effect = yes
+				}
+			}
+		}
+
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_greedy }
+			scaled_wealth = { value = 0.5 min = 50 }
+			if = {
+				limit = { NOT = { trait = greedy } }
+				random = {
+					chance = 30
+					add_trait_greedy_effect = yes
+				}
+			}
+		}
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_slothful }
+			if = {
+				limit = { NOT = { trait = slothful } }
+				random = {
+					chance = 30
+					add_trait_slothful_effect = yes
+				}
+			}
+		}
+
+		if = {
+			limit = { is_christian_monastic_member_trigger = yes }
+			add_character_modifier = {
+				name = rampant_sinner_christian
+				years = 3
+			}
+		}
+		if = {
+			limit = { 
+				OR = {
+					society_member_of = monastic_order_stoics 
+					is_dharmic_monastic_member_trigger = yes 
+				}
+			}
+			add_character_modifier = {
+				name = rampant_sinner_dharmic
+				years = 3
+			}
+		}
+
+		hidden_effect = {
+			clr_character_flag = holy_seclusion_lustful
+			clr_character_flag = holy_seclusion_gluttonous
+			clr_character_flag = holy_seclusion_greedy
+			clr_character_flag = holy_seclusion_slothful
+			clr_character_flag = used_a_book
+		}
+	}
+}
+
+#Penance/meditation: struggle with loneliness
+character_event = {
+	id = ERB.4410
+	desc = EVTDESC_ERB_4410
+	picture = GFX_evt_secluded_in_prayer
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_adult = yes
+				prisoner = no
+				NOR = { 
+					is_friend = ROOT 
+					is_rival = ROOT
+					is_lover = ROOT
+					any_spouse = { character = ROOT }
+				}
+			}
+			save_event_target_as = potential_friend
+		}
+	}
+
+	#Go out and talk with them
+	option = {
+		name = EVTOPTA_ERB_4410
+		custom_tooltip = { text = EVTOPTA_ERB_4410_TOOLTIP }
+		hidden_effect = { character_event = { id = ERB.4411 days = 2 } }
+		random = {
+			chance = 50
+			tooltip = { add_friend = event_target:potential_friend }
+			set_character_flag = new_friend
+		}
+
+	}
+
+	option = {
+		name = EVTOPTB_ERB_4410
+
+		random_list = {
+			65 = {
+				custom_tooltip = { text = EVTOPTA_4406_TOOLTIP }
+				hidden_tooltip = { character_event = { id = ERB.4412 days = 2 } }
+			}
+			35 = {
+				custom_tooltip = { text = EVTOPTA_4407_TOOLTIP }
+				tooltip = {
+					if = {
+						limit = { trait = stressed NOT = { trait = depressed } }
+						random = {
+							chance = 50
+							tooltip = { add_trait = depressed }
+							set_character_flag = add_depressed
+						}
+					}
+					if = {
+						limit = { NOT = { trait = stressed } }
+						random = {
+							chance = 50
+							tooltip = { add_trait = stressed }
+							set_character_flag = add_stressed
+						}
+					}
+				}
+				hidden_tooltip = { character_event = { id = ERB.4413 days = 2 } }
+			}	
+		}
+
+		tooltip = {
+			if = {
+				limit = { trait = gregarious }
+				random = {
+					chance = 20
+					tooltip = { remove_trait = gregarious }
+					set_character_flag = lose_gregarious
+				}
+			}
+		}
+	}
+}
+
+#You went to talk to them
+character_event = {
+	id = ERB.4411
+	desc = EVTDESC_ERB_4411
+	picture = GFX_evt_courtiers_talking
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4411
+		custom_tooltip = { text = EVTOPTA_ERB_4410_TOOLTIP }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = -1 } }
+		if = {
+			limit = { has_character_flag = new_friend }
+			add_friend = event_target:potential_friend
+			clr_character_flag = new_friend
+		}
+	}
+}
+
+#You managed to deal with it
+character_event = {
+	id = ERB.4412
+	desc = EVTDESC_ERB_4412
+	picture = GFX_evt_secluded_in_prayer
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4412
+		custom_tooltip = { text = EVTOPTA_4406_TOOLTIP }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 1 } }
+
+		if = {
+			limit = { has_character_flag = lose_gregarious }
+			remove_trait = gregarious
+			clr_character_flag = lose_gregarious
+		}
+	}
+}
+
+#You get very lonely
+character_event = {
+	id = ERB.4413
+	desc = EVTDESC_ERB_4413
+	picture = GFX_evt_recovery
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4413
+		custom_tooltip = { text = EVTOPTA_4406_TOOLTIP }
+
+		if = {
+			limit = { has_character_flag = lose_gregarious }
+			remove_trait = gregarious
+			clr_character_flag = lose_gregarious
+		}
+		if = {
+			limit = { has_character_flag = add_depressed }
+			add_trait = depressed
+			clr_character_flag = add_depressed
+		}
+		if = {
+			limit = { has_character_flag = add_stressed }
+			add_trait = stressed
+			clr_character_flag = add_stressed
+		}
+	}
+}
+
+#You struggle with the scripture
+character_event = {
+	id = ERB.4414
+	desc = EVTDESC_ERB_4414
+	picture = GFX_evt_secluded_in_prayer
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = { has_job_title = job_spiritual }
+			save_event_target_as = court_spiritual
+		}
+	}
+
+	#You keep reading
+	option = {
+		name = EVTOPTA_ERB_4414
+
+		random_list = {
+			35 = {
+				modifier = {
+					is_smart_trigger = yes
+					factor = 1.4
+				}
+				modifier = {
+					learning = 14
+					factor = 1.4
+				}
+				modifier = {
+					learning = 16
+					factor = 1.4
+				}
+				modifier = {
+					is_learned_trigger = yes
+					factor = 2
+				}
+				custom_tooltip = { text = EVTOPTA_ERB_4414_TOOLTIP_SUCCESS }
+				hidden_effect = { character_event = { id = ERB.4415 days = 3 } }
+			}
+			65 = {
+				modifier = {
+					is_dumb_trigger = yes
+					factor = 1.5
+				}
+				modifier = {
+					NOT = { learning = 8 }
+					factor = 1.5
+				}
+				custom_tooltip = { text = EVTOPTA_ERB_4414_TOOLTIP_FAILURE }
+				hidden_effect = { character_event = { id = ERB.4416 days = 3 } }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTB_ERB_4414
+
+		random_list = {
+			65 = {
+				custom_tooltip = { text = EVTOPTB_ERB_4414_TOOLTIP_SUCCESS }
+				hidden_effect = { character_event = { id = ERB.4417 days = 3 } }
+			}
+			35 = {
+				custom_tooltip = { text = EVTOPTB_ERB_4414_TOOLTIP_FAILURE }
+				hidden_effect = { character_event = { id = ERB.4418 days = 3 } }
+			}
+		}
+	}
+}
+
+#You interpret the text
+character_event = {
+	id = ERB.4415
+	desc = EVTDESC_ERB_4415
+	picture = GFX_evt_library
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { NOR = { religion = buddhist religion = jain } }
+			text = EVTOPTA_ERB_4415_A
+		}
+		name = {
+			trigger = { OR = { religion = buddhist religion = jain } }
+			text = EVTOPTA_ERB_4415_B
+		}
+		custom_tooltip = { text = EVTOPTA_ERB_4414_TOOLTIP_SUCCESS }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 2 } }
+		hidden_effect = { monastic_order_purity_effect = yes }
+
+		piety = 100
+
+		if = {
+			limit = { NOT = { trait = erudite } }
+			add_trait = erudite
+		}
+	}
+}
+
+#You fail to interpret the text 
+character_event = {
+	id = ERB.4416
+	desc = EVTDESC_ERB_4416
+	picture = GFX_evt_recovery
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { NOR = { religion = buddhist religion = jain } }
+			text = EVTOPTA_ERB_4416_A
+		}
+		name = {
+			trigger = { OR = { religion = buddhist religion = jain } }
+			text = EVTOPTA_ERB_4416_B
+		}
+		custom_tooltip = { text = EVTOPTA_ERB_4414_TOOLTIP_FAILURE }
+	}
+}
+
+#You get help
+character_event = {
+	id = ERB.4417
+	desc = EVTDESC_ERB_4417
+	picture = GFX_evt_bishop
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { NOR = { religion = buddhist religion = jain } }
+			text = EVTOPTA_ERB_4415_A
+		}
+		name = {
+			trigger = { OR = { religion = buddhist religion = jain } }
+			text = EVTOPTA_ERB_4415_B
+		}
+		custom_tooltip = { text = EVTOPTB_ERB_4414_TOOLTIP_SUCCESS }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 1 } }
+	}
+}
+
+#Unhelpful court chaplain
+character_event = {
+	id = ERB.4418
+	desc = EVTDESC_ERB_4418
+	picture = GFX_evt_recovery
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4418
+		custom_tooltip = { text = EVTOPTB_ERB_4414_TOOLTIP_FAILURE }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = -1 } }
+		
+		if = {
+			limit = {
+				event_target:court_spiritual = { is_alive = yes }
+			}
+			opinion = {
+				who = event_target:court_spiritual
+				modifier = opinion_ungrateful
+				years = 5
+			}
+
+			reverse_opinion = {
+				who = event_target:court_spiritual
+				modifier = opinion_ignorant
+				years = 5
+			}
+		}
+	}
+}
+
+#Your child wants your attention ping
+character_event = {
+	id = ERB.4419
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = { FROM = { character_event = { id = ERB.4420 } } }
+}
+
+character_event = {
+	id = ERB.4420
+	desc = EVTDESC_ERB_4420
+	picture = GFX_evt_child_play
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	#Teach them about the scripture
+	option = {
+		name = EVTOPTA_ERB_4420
+
+		random_list = {
+			50 = {
+				modifier = {
+					factor = 1.5
+					event_target:interrupting_child = { is_smart_trigger = yes }
+				}
+				modifier = {
+					factor = 1.5
+					event_target:interrupting_child = { OR = { trait = idolizer trait = zealous } }
+				}
+				modifier = {
+					factor = 1.5
+					event_target:interrupting_child = { opinion = { who = ROOT value = 50 } }
+				}
+				custom_tooltip = { text = EVTOPTA_ERB_4420_TOOLTIP_SUCCESS }
+				event_target:interrupting_child = { 
+					set_character_flag = understood_lesson
+					hidden_tooltip = { character_event = { id = ERB.4421 days = 2 } }
+				}
+			}
+			50 = {
+				modifier = {
+					factor = 1.5
+					event_target:interrupting_child = { is_dumb_trigger = yes }
+				}
+				modifier = {
+					factor = 1.5
+					event_target:interrupting_child = { trait = cynical }
+				}
+				custom_tooltip = { text = EVTOPTA_ERB_4420_TOOLTIP_FAILURE }
+				event_target:interrupting_child = { 
+					set_character_flag = failed_lesson
+					hidden_tooltip = { character_event = { id = ERB.4421 days = 2 } }
+				}
+			}
+		}
+	}
+
+	#Be patient with them
+	option = {
+		name = EVTOPTB_ERB_4420
+		custom_tooltip = { text = EVTOPTB_ERB_4420_TOOLTIP }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = -1 } }
+
+		random = {
+			chance = 20	
+			add_trait_kind_effect = yes
+		}	
+
+		random_list = {
+			80 = {
+				reverse_opinion = {
+					who = event_target:interrupting_child
+					modifier = kind_parent
+					years = 10
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					is_friend = event_target:interrupting_child
+				}
+				add_friend = event_target:interrupting_child
+			}
+		}
+	}
+
+	#Sho away
+	option = {
+		name = EVTOPTC_ERB_4420
+
+		random_list = {
+			65 = {
+				modifier = {
+					is_benevolent_trigger = yes
+					factor = 1.5
+				}
+				modifier = {
+					has_pleasant_personality_trigger = yes
+					factor = 1.5
+				}
+				custom_tooltip = { text = EVTOPTC_ERB_4420_TOOLTIP_SUCCESS }
+				event_target:interrupting_child = { 
+					set_character_flag = kindly_rejected
+					hidden_tooltip = { character_event = { id = ERB.4421 days = 2 } }
+				}
+			}
+			35 = {
+				modifier = {
+					is_evil_trigger = yes
+					factor = 1.5
+				}
+				modifier = {
+					has_unpleasant_personality_trigger = yes
+					factor = 1.5
+				}
+				custom_tooltip = { text = EVTOPTC_ERB_4420_TOOLTIP_FAILURE }
+				event_target:interrupting_child = { 
+					set_character_flag = cruelly_rejected
+					hidden_tooltip = { character_event = { id = ERB.4421 days = 2 } }
+				}
+			}
+		}
+	}
+}
+
+#Child ping event
+character_event = {
+	id = ERB.4421
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = { 
+		trigger_switch = {
+			on_trigger = has_character_flag 
+			understood_lesson 	= { FROM = { character_event = { id = ERB.4422 } } clr_character_flag = understood_lesson }
+			failed_lesson 		= { FROM = { character_event = { id = ERB.4423 } } clr_character_flag = failed_lesson }
+			kindly_rejected 	= { FROM = { character_event = { id = ERB.4424 } } clr_character_flag = kindly_rejected }
+			cruelly_rejected 	= { FROM = { character_event = { id = ERB.4425 } } clr_character_flag = cruelly_rejected }
+		}
+	}
+}
+
+#Understood lesson
+character_event = {
+	id = ERB.4422
+	desc = EVTDESC_ERB_4422
+	picture = GFX_evt_child_reading
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4422
+		custom_tooltip = { text = EVTOPTA_ERB_4420_TOOLTIP_SUCCESS }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 2 } }
+		hidden_effect = { monastic_order_purity_effect = yes }
+
+		event_target:interrupting_child = {
+			if = {
+				limit = {
+					has_dlc = "Zeus"
+					NOT = { trait = idolizer }
+				}
+				add_trait = idolizer
+			}
+			if = {
+				limit = {
+					NOT = { has_dlc = "Zeus" }
+					NOT = { trait = zealous }
+				}
+				add_trait = zealous
+			}
+			if = {
+				limit = { NOT = { is_smart_trigger = yes } }
+				random = {
+					chance = 20
+					add_trait = shrewd
+				}
+			}
+		}
+
+		random_list = {
+			80 = {
+				reverse_opinion = {
+					who = event_target:interrupting_child
+					modifier = kind_parent
+					years = 10
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					is_friend = event_target:interrupting_child
+				}
+				add_friend = event_target:interrupting_child
+			}
+		}
+	}
+}
+
+#Did not understand lesson
+character_event = {
+	id = ERB.4423
+	desc = EVTDESC_ERB_4423
+	picture = GFX_evt_child_bully
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4423
+		custom_tooltip = { text = EVTOPTA_ERB_4420_TOOLTIP_FAILURE }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = -1 } }
+
+		event_target:interrupting_child = {
+			if = {
+				limit = { NOT = { is_dumb_trigger = yes } }
+				random = {
+					chance = 15
+					add_trait = dull
+				}
+			}
+		}
+	}
+}	
+
+#Kindly rejected
+character_event = {
+	id = ERB.4424
+	desc = EVTDESC_ERB_4424
+	picture = GFX_evt_child_reading
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4424
+		custom_tooltip = { text = EVTOPTC_ERB_4420_TOOLTIP_SUCCESS }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = 1 } }
+	}
+}
+
+#Cruelly rejected
+character_event = {
+	id = ERB.4425
+	desc = EVTDESC_ERB_4425
+	picture = GFX_evt_child_bully
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	immediate = { 
+		event_target:interrupting_child = {
+			mother_even_if_dead = {
+				if = {
+					limit = { NOT = { character = ROOT } }
+					save_event_target_as = other_parent
+				}
+			}
+			father_even_if_dead = {
+				if = {
+					limit = { NOT = { character = ROOT } }
+					save_event_target_as = other_parent
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4425
+		custom_tooltip = { text = EVTOPTC_ERB_4420_TOOLTIP_FAILURE }
+		hidden_effect = { change_variable = { which = earth_rumble_points value = -2 } }
+
+		random = {
+			chance = 20 
+			add_trait_cruel_effect = yes
+		}
+
+		random_list = {
+			80 = {
+				reverse_opinion = {
+					who = event_target:interrupting_child
+					modifier = cruel_parent
+					years = 10
+				}
+			}
+			20 = {
+				modifier = {
+					factor = 0
+					is_friend = event_target:interrupting_child
+				}
+				add_rival = event_target:interrupting_child
+			}
+		}
+	}
+}
+
+#General good outcome
+character_event = {
+	id = ERB.4426
+	picture = GFX_evt_religious_exultation
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	desc = {
+		trigger = { has_character_flag = success_seculison_desc_A }
+		text = EVTDESC_ERB_4425_A
+	}
+	desc = {
+		trigger = { has_character_flag = success_seculison_desc_B }
+		text = EVTDESC_ERB_4425_B
+	}
+	desc = {
+		trigger = { has_character_flag = success_seculison_desc_C }
+		text = EVTDESC_ERB_4425_C
+	}
+
+
+	immediate = {
+		random_list = { #This setup
+			33 = { 
+				modifier = { factor = 0 has_character_flag = success_seculison_desc_A }
+				set_character_flag = success_seculison_desc_A
+				clr_character_flag = success_seculison_desc_B
+				clr_character_flag = success_seculison_desc_C
+			}
+			33 = { 
+				modifier = { factor = 0 has_character_flag = success_seculison_desc_B }
+				set_character_flag = success_seculison_desc_B
+				clr_character_flag = success_seculison_desc_A
+				clr_character_flag = success_seculison_desc_C
+			}
+			33 = { 
+				modifier = { factor = 0 has_character_flag = success_seculison_desc_C }
+				set_character_flag = success_seculison_desc_C
+				clr_character_flag = success_seculison_desc_B
+				clr_character_flag = success_seculison_desc_A
+			}
+		}
+	}
+
+	option = {
+		name = {
+			trigger = {
+				NOR = {
+					society_member_of = monastic_order_buddhist
+					society_member_of = monastic_order_jain
+				}
+			}
+			text = EVTOPTA_ERB_4426_GOD
+		}
+		name = {
+			trigger = {
+				OR = {
+					society_member_of = monastic_order_buddhist
+					society_member_of = monastic_order_jain
+					society_member_of = monastic_order_stoics
+				}
+			}
+			text = EVTOPTA_ERB_4426_NOGOD
+		}
+		custom_tooltip = { text = EVTOPTA_4406_TOOLTIP }
+
+		hidden_effect = {
+			change_variable = { which = earth_rumble_points value = 1 }
+			#clr_character_flag = success_seculison_desc_A
+			#clr_character_flag = success_seculison_desc_B
+			#clr_character_flag = success_seculison_desc_C
+		}
+	}
+}
+
+#Fail/success evaluation for penance/meditation
+character_event = {
+	id = ERB.4427
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { FROM = { check_variable = { which = earth_rumble_points value = 4 } } }
+			FROM = { letter_event = { id = ERB.4428 } }
+		}
+		if = {
+			limit = { FROM = { NOT = { check_variable = { which = earth_rumble_points value = -2 } } } }
+			FROM = { letter_event = { id = ERB.4429 } }
+		}
+	}
+}
+
+#Penance/meditation success
+letter_event = {
+	id = ERB.4428
+	border = GFX_event_letter_frame_religion
+	desc = EVTDESC_ERB_4428
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4428
+
+		if = {
+			limit = { has_quest = quest_monastic_order_penance }
+			clr_quest = quest_monastic_order_penance
+			sound_effect = monastic_orders_penance
+			remove_character_modifier = doing_penance
+		}
+		if = {
+			limit = { has_quest = quest_monastic_order_meditation }
+			clr_quest = quest_monastic_order_meditation
+			sound_effect = monastic_orders_meditate_in_seclusion
+			remove_character_modifier = in_meditation
+		}
+		if = {
+			limit = {
+				any_owned_bloodline = {
+					has_bloodline_flag = monastic_saintly_bloodline
+				}
+			}
+			add_society_currency_major_effect = yes
+		}
+		else = {
+			add_society_currency_medium_effect = yes
+		}
+		hidden_effect = { 
+			monastic_order_purity_effect = yes 
+			clr_character_flag = success_seculison_desc_A #Flags from 4426
+			clr_character_flag = success_seculison_desc_B
+			clr_character_flag = success_seculison_desc_C
+			clr_character_flag = holy_seclusion_struggled_with_vice
+			clr_character_flag = holy_seclusion_scripture_reading
+			clr_character_flag = holy_seclusion_timer
+			clr_character_flag = holy_seclusion_struggled_with_loneliness
+			clr_character_flag = holy_seclusion_interrupting_child
+		}
+	}
+}
+
+#Penance/meditation failure
+letter_event = {
+	id = ERB.4429
+	border = GFX_event_letter_frame_religion
+	desc = EVTDESC_ERB_4429
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_christian_monastic_member_trigger = yes
+			is_dharmic_monastic_member_trigger = yes
+			society_member_of = monastic_order_stoics
+		}
+		OR = {
+			has_quest = quest_monastic_order_penance
+			has_quest = quest_monastic_order_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4429
+
+		if = {
+			limit = { has_quest = quest_monastic_order_penance }
+			clr_quest = { id = quest_monastic_order_penance failure = yes }
+			remove_character_modifier = doing_penance
+		}
+		if = {
+			limit = { has_quest = quest_monastic_order_meditation }
+			clr_quest = { id = quest_monastic_order_meditation failure = yes }
+			remove_character_modifier = in_meditation
+		}
+		hidden_effect = {
+			clr_character_flag = success_seculison_desc_A #Flags from 4426
+			clr_character_flag = success_seculison_desc_B
+			clr_character_flag = success_seculison_desc_C
+		}
+	}
+}
+
+#Left Monastic Order or cancelled seclusion mission, and therefore rejoins the world of the living
+character_event = {
+	id = ERB.4399
+	border = GFX_event_normal_frame_religion
+	desc = EVTDESC_ERB_4399
+	picture = GFX_evt_recovery
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			remove_character_modifier = doing_penance
+			remove_character_modifier = in_meditation
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4399
+
+		if = {
+			limit = { has_quest = quest_monastic_order_penance }
+			clr_quest = { id = quest_monastic_order_penance failure = yes }
+		}
+		if = {
+			limit = { has_quest = quest_monastic_order_meditation }
+			clr_quest = { id = quest_monastic_order_meditation failure = yes }
+		}
+		hidden_effect = {
+			hidden_effect = {
+				clr_character_flag = success_seculison_desc_A #Flags from 4426
+				clr_character_flag = success_seculison_desc_B
+				clr_character_flag = success_seculison_desc_C
+				clr_character_flag = holy_seclusion_struggled_with_vice
+				clr_character_flag = holy_seclusion_scripture_reading
+				clr_character_flag = holy_seclusion_timer
+				clr_character_flag = holy_seclusion_struggled_with_loneliness
+				clr_character_flag = holy_seclusion_interrupting_child
+			}
+		}
+	}
+}
+
+character_event = { # Fired from on_character_leave_society (meant to clear any society related flags and effects)
+    id = ERB.2000
+    is_triggered_only = yes
+	desc = ERB_FORCED_RETIREMENT_DESC
+	
+	trigger = {
+		society_member_of = earth_rumble
+		age = 65 
+	}
+	
+	option = {
+		name = ERB_FORCED_RETIREMENT_OPT_DESC
+		leave_society = yes
+	}
+}
+
+character_event = { # Fired from on_character_leave_society (meant to clear any society related flags and effects)
+    id = ERB.4560
+    is_triggered_only = yes
+    hide_window = yes
+    
+    immediate = {
+    	clean_up_after_leaving_society_effect = yes #NOTE: update if more societies are added
+    }
+}
