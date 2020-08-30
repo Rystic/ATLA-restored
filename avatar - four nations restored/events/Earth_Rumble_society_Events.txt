@@ -114,21 +114,161 @@ letter_event = {
     }
 }
 
+# Bending Training - Giver
+character_event = {
+	id = ERB.5064
+	desc = ERB_TEACH_BENDING_DESC
+	is_triggered_only = yes
+
+	option = { # End Training
+		name = ERB_TEACH_BENDING_OPT_DESC
+	}
+}
+
+# Learn bending from a Master - receiver
+character_event = {
+	id = ERB.5065
+	desc = ERB_LEARN_BENDING_DESC
+	is_triggered_only = yes
+
+	option = { # End Training
+		name = ERB_LEARN_BENDING_OPT_DESC
+	}
+}
+
+character_event = { # Fired from on_character_leave_society (meant to clear any society related flags and effects)
+    id = ERB.2000
+    is_triggered_only = yes
+	desc = ERB_FORCED_RETIREMENT_DESC
+	
+	trigger = {
+		society_member_of = earth_rumble
+		age = 65 
+	}
+	
+	option = {
+		name = ERB_FORCED_RETIREMENT_OPT_DESC
+		leave_society = yes
+	}
+}
+
+character_event = { # Fired from on_character_leave_society (meant to clear any society related flags and effects)
+    id = ERB.4560
+    is_triggered_only = yes
+    hide_window = yes
+    
+    immediate = {
+    	clean_up_after_leaving_society_effect = yes #NOTE: update if more societies are added
+    }
+}
+
+#Quest Events 
+
+### ERB QUESTS
+character_event = {
+	id = ERB.5070
+	hide_window = no
+
+	is_triggered_only = yes
+	is_in_society = yes
+	only_capable = yes
+
+	trigger = {
+		society_member_of = earth_rumble
+		is_society_grandmaster = no
+		has_any_quest = no
+		NOT = { is_inaccessible_trigger = yes }
+		NOT = { has_character_modifier = quest_cooldown_timer }
+		#NOT = {
+		#	society_rank = 2
+		#}
+	}
+
+	immediate = {
+		random_society_member = {
+			limit = {
+				is_society_grandmaster = yes
+				same_society_as = ROOT
+			}
+			save_event_target_as = monastic_leader
+		}
+
+		random_list = {
+			#10 = { 
+			#	modifier = { factor = 0 is_playable = no }
+			#	modifier = { factor = 0 age = 16 }
+			#	modifier = { factor = 0 trait = powerful_bender }
+			#	modifier = { factor = 0 trait = master_bender }
+			#	modifier = { factor = 0 trait = legendary_bender }
+			#	set_character_flag = erb_quest_learn_bending
+			#}
+			10 = { 
+				modifier = { factor = 0 is_playable = no }
+				set_character_flag = erb_quest_pick_gimmick
+			}
+		}
+		event_target:monastic_leader = { character_event = { id = ERB.5071 days = 7 random = 7 } }
+	}
+}
+
+#Tombola Ping Event
+character_event = {
+	id = ERB.5071
+	hide_window = no
+
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = {
+			trigger_switch = {
+				on_trigger = has_character_flag
+				erb_quest_pick_gimmick =	{ clr_character_flag = erb_quest_pick_gimmick society_quest_event = { id = ERB.5002 } }
+				erb_quest_learn_bending =	{ clr_character_flag = erb_quest_learn_bending society_quest_event = { id = MNSAK.5076 } }
+			}
+		}
+	}
+}
+
+#QUEST: Do penance/meditate
+society_quest_event = {
+  id = ERB.5002
+  border = GFX_event_letter_frame_war
+  desc = ERB_RANK_1_PROMOTER
+  is_triggered_only = yes
+
+  option = {
+    name = ACCEPT
+    set_quest = quest_erb_gimmick
+  }
+
+  option = {
+    name = DECLINE
+    custom_tooltip = { text = decline_quest_tooltip }
+
+    add_character_modifier = {
+      name = quest_cooldown_timer
+      hidden = yes
+      days = 60
+    }
+
+    ai_chance = { factor = 0 }
+  }
+}
+
 #Earth Rumble Promoter Arrives
 character_event = {
 	id = ERB.4403
-	picture = GFX_evt_secluded_in_prayer
-	desc = EVTDESC_4403
-	border = GFX_event_normal_frame_religion
+	desc = ERB_RANK_1_TOMBOLA
+	border = GFX_event_normal_frame_war
 
 	is_triggered_only = yes
 
 	option = {
-		name = EVTOPTA_ERB_4403
+		name = ERB_RANK_1_TOMBOLA_OPT
 		hidden_effect = {
 			set_variable = { which = earth_rumble_points value = 0 }
 			set_character_flag = earth_gimmick_timer
-			character_event = { id = ERB.4404 days = 40 random = 30 } 
+			character_event = { id = ERB.4404 days = 1 } 
 		}
 	}
 }
@@ -2215,30 +2355,4 @@ character_event = {
 			}
 		}
 	}
-}
-
-character_event = { # Fired from on_character_leave_society (meant to clear any society related flags and effects)
-    id = ERB.2000
-    is_triggered_only = yes
-	desc = ERB_FORCED_RETIREMENT_DESC
-	
-	trigger = {
-		society_member_of = earth_rumble
-		age = 65 
-	}
-	
-	option = {
-		name = ERB_FORCED_RETIREMENT_OPT_DESC
-		leave_society = yes
-	}
-}
-
-character_event = { # Fired from on_character_leave_society (meant to clear any society related flags and effects)
-    id = ERB.4560
-    is_triggered_only = yes
-    hide_window = yes
-    
-    immediate = {
-    	clean_up_after_leaving_society_effect = yes #NOTE: update if more societies are added
-    }
 }
