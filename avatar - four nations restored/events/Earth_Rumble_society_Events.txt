@@ -202,6 +202,13 @@ character_event = {
 			#}
 			10 = { 
 				modifier = { factor = 0 is_playable = no }
+				modifier = {
+					factor = 0
+					trait = dust_fighter
+					trait = crag_climber
+					trait = slab_smasher
+					trait = facebending
+				}
 				set_character_flag = erb_quest_pick_gimmick
 			}
 		}
@@ -382,7 +389,7 @@ character_event = {
 	picture = GFX_evt_earth_team
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
-	hide_from = yes
+	hide_window = yes
 
 	trigger = {
 		society_member_of = earth_rumble
@@ -400,45 +407,58 @@ character_event = {
 			}
 			# success/fail became dust fighter
 			clr_character_flag = erb_pillar_dust
+			clr_character_flag = erb_fighting_mickey_dust
+			clr_character_flag = erb_dusty_skirmish
+			clr_character_flag = erb_locker_room_rubble
 			character_event = { id = ERB.10002 } #Mission success/fail
+			break = yes
 		}
 		#run the tombola
-		random_list = { 
-			5 = {
-				character_event = { id = ERB.10010 }
+		if = {
+			limit = { 
+				has_quest = quest_erb_gimmick
+				has_character_flag = earth_gimmick_timer
 			}
-			#10 = {
-			#	modifier = {
-			#		has_character_flag = erb_pillar_dust
-			#	}
-			#	set_character_flag = erb_pillar_dust
-			#	character_event = { id = ERB.10020 }
-			#}
-			#10 = {
-			#	modifier = {
-			#		has_character_flag = erb_fighting_mickey_dust
-			#	}
-			#	set_character_flag = erb_fighting_mickey_dust
-			#	character_event = { id = ERB.10030 }
-			#}
-			#10 = {
-			#	modifier = {
-			#		has_character_flag = erb_dusty_skirmish
-			#	}
-			#	set_character_flag = erb_dusty_skirmish
-			#	character_event = { id = ERB.10040 }
-			#}
-			#10 = {
-			#	modifier = {
-			#		has_character_flag = erb_locker_room_rubble
-			#	}
-			#	set_character_flag = erb_locker_room_rubble
-			#	character_event = { id = ERB.10050 }
-			#}
+			random_list = { 
+				5 = {
+					character_event = { id = ERB.10010 }
+				}
+				#10 = {
+				#	modifier = {
+				#		factor = 0
+				#		has_character_flag = erb_pillar_dust
+				#	}
+				#	set_character_flag = erb_pillar_dust
+				#	character_event = { id = ERB.10020 }
+				#}
+				#10 = {
+				#	modifier = {
+				#		factor = 0
+				#		has_character_flag = erb_fighting_mickey_dust
+				#	}
+				#	set_character_flag = erb_fighting_mickey_dust
+				#	character_event = { id = ERB.10030 }
+				#}
+				#10 = {
+				#	modifier = {
+				#		factor = 0
+				#		has_character_flag = erb_dusty_skirmish
+				#	}
+				#	set_character_flag = erb_dusty_skirmish
+				#	character_event = { id = ERB.10040 }
+				#}
+				#10 = {
+				#	modifier = {
+				#		factor = 0
+				#		has_character_flag = erb_locker_room_rubble
+				#	}
+				#	set_character_flag = erb_locker_room_rubble
+				#	character_event = { id = ERB.10050 }
+				#}
+			}
 		}
 	}
 }
-
 character_event = {
 	id = ERB.10010
 	picture = GFX_evt_earth_team
@@ -450,6 +470,35 @@ character_event = {
 	option = {
 		name = ERB_MICKEY_THROWS_DUST_OPT
 		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.10001 }
+	}
+}
+
+character_event = {
+	id = ERB.10020
+	picture = GFX_evt_earth_team
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_PILLAR_TRAINING
+	
+	option = {
+		name = ERB_PILLAR_TRAINING_OPTA
+		random_list = {
+			90 = {
+				modifier = {
+				character_event = { id = ERB.10021 }
+			}
+			10 = {
+				character_event = { id = ERB.10022 }
+			}
+		}
+	}
+	option = {
+		name = ERB_PILLAR_TRAINING_OPTB
+	}
+	option = {
+		name = ERB_PILLAR_TRAINING_OPTC
 	}
 }
 
@@ -481,45 +530,21 @@ letter_event = {
 	trigger = {
 		society_member_of = earth_rumble
 		has_quest = quest_erb_gimmick
-		}
 	}
 
 	option = {
 		name = EVTOPTA_ERB_4428
-
+		add_trait = dust_fighter
 		if = {
-			limit = { has_quest = quest_monastic_order_penance }
-			clr_quest = quest_monastic_order_penance
-			sound_effect = monastic_orders_penance
-			remove_character_modifier = doing_penance
-		}
-		if = {
-			limit = { has_quest = quest_monastic_order_meditation }
-			clr_quest = quest_monastic_order_meditation
-			sound_effect = monastic_orders_meditate_in_seclusion
-			remove_character_modifier = in_meditation
-		}
-		if = {
-			limit = {
-				any_owned_bloodline = {
-					has_bloodline_flag = monastic_saintly_bloodline
-				}
-			}
-			add_society_currency_major_effect = yes
+			limit = { has_quest = quest_erb_gimmick }
+			clr_quest = quest_erb_gimmick
+			remove_character_modifier = erb_working_with_promoter
 		}
 		else = {
 			add_society_currency_medium_effect = yes
 		}
 		hidden_effect = { 
-			monastic_order_purity_effect = yes 
-			clr_character_flag = success_seculison_desc_A #Flags from 4426
-			clr_character_flag = success_seculison_desc_B
-			clr_character_flag = success_seculison_desc_C
-			clr_character_flag = holy_seclusion_struggled_with_vice
-			clr_character_flag = holy_seclusion_scripture_reading
-			clr_character_flag = holy_seclusion_timer
-			clr_character_flag = holy_seclusion_struggled_with_loneliness
-			clr_character_flag = holy_seclusion_interrupting_child
+			clr_character_flag = earth_gimmick_timer
 		}
 	}
 }
