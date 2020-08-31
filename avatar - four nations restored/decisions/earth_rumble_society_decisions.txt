@@ -1,3 +1,120 @@
+###########################################
+#
+# Society decisions for Earth Rumble League
+#
+###########################################
+
+society_decisions = {
+
+	earth_rumble_gimmick_decision = {
+		ai_check_interval = 24
+		
+		potential = {
+			society_member_of = earth_rumble
+			has_quest = quest_erb_gimmick
+		}
+
+		allow = {
+			has_quest = quest_erb_gimmick
+			custom_tooltip = {
+				text = earth_rumble_gimmick_allow_tt
+				OR = {
+					NOT = { has_character_flag = earth_gimmick_timer }
+					had_character_flag = { flag = earth_gimmick_timer days = 120 }
+				}
+			}
+			custom_tooltip = {
+				text = erb_gimmick_cooldown_tt
+				hidden_trigger = {
+					NOT = {
+						has_character_modifier = erb_working_with_promoter
+					}
+				}
+			}
+		}
+
+		effect = {
+			add_character_modifier = {
+				name = erb_working_with_promoter
+				duration = -1
+			}
+			hidden_effect = { character_event = { id = ERB.5003 } }
+		}
+
+		revoke_allowed = {
+			always = no
+		}
+		
+		ai_will_do = {
+			factor = 1
+
+			modifier = {
+				factor = 0.01
+				war = yes
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					trait = gregarious
+					trait = ambitious
+				}
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					trait = strong
+					trait = robust
+				}
+			}
+			modifier = {
+				factor = 4
+				OR = {
+					trait = misguided_warrior
+					trait = tough_soldier
+					trait = skilled_tactician
+					trait = brilliant_strategist
+				}
+			}
+			modifier = {
+				factor = 5
+				martial = 20
+			}
+			modifier = {
+				factor = 3
+				martial = 12
+			}
+		}
+	}
+	
+	monastic_order_rejoin_world = {
+		ai_check_interval = 24
+
+		potential = {
+			has_character_modifier = erb_working_with_promoter
+			}
+		}
+
+		allow = {
+			has_character_modifier = erb_working_with_promoter
+		}
+
+		effect = {
+			remove_character_modifier = erb_working_with_promoter
+			hidden_effect = {
+				clr_character_flag = success_seculison_desc_A #Flags from 4426
+				clr_character_flag = success_seculison_desc_B
+				clr_character_flag = success_seculison_desc_C
+			}
+		}
+
+		revoke_allowed = { always = no }
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
+
 targetted_decisions = {
 
 	erb_learn_bending = {
@@ -20,6 +137,10 @@ targetted_decisions = {
 		from_potential = {
 			society_rank >= 1
 			society_member_of = earth_rumble
+			NOT = {
+				age = 16
+				has_character_flag = erb_trained_in_bending
+			}
 			NOT= {
 				trait = master_bender
 				trait = legendary_bender
@@ -42,7 +163,6 @@ targetted_decisions = {
 		
 		effect = {
 			FROM = {
-				add_trait = healer
 				detract_society_currency_minor_effect = yes	###lose 100SocCur
 				if = {
 					limit = {
@@ -59,15 +179,15 @@ targetted_decisions = {
 					add_trait = competent_bender
 				}
 				hidden_tooltip = {
-					character_event = { id = MNerb.5065 } 
+					character_event = { id = ERB.5065 } 
 				}
+				set_character_flag = erb_trained_in_bending
 			}
 			ROOT = {
 				hidden_tooltip = {
-					character_event = { id = MNerb.5064 } 
+					character_event = { id = ERB.5064 } 
 				}
 			}
-			add_taught_healing = yes
 		}
 		
 		ai_will_do = {

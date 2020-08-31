@@ -99,7 +99,6 @@ letter_event = {
     id = ERB.4452
     desc = ERB_JOIN_LETTER
     border = GFX_event_letter_frame_religion
-
     is_triggered_only = yes
 
 	immediate = {
@@ -166,9 +165,8 @@ character_event = { # Fired from on_character_leave_society (meant to clear any 
 
 ### ERB QUESTS
 character_event = {
-	id = ERB.5070
-	hide_window = no
-
+	id = ERB.5000
+	hide_window = yes
 	is_triggered_only = yes
 	is_in_society = yes
 	only_capable = yes
@@ -179,9 +177,9 @@ character_event = {
 		has_any_quest = no
 		NOT = { is_inaccessible_trigger = yes }
 		NOT = { has_character_modifier = quest_cooldown_timer }
-		#NOT = {
-		#	society_rank = 2
-		#}
+		NOT = {
+			society_rank = 2
+		}
 	}
 
 	immediate = {
@@ -207,15 +205,14 @@ character_event = {
 				set_character_flag = erb_quest_pick_gimmick
 			}
 		}
-		event_target:monastic_leader = { character_event = { id = ERB.5071 days = 7 random = 7 } }
+		event_target:monastic_leader = { character_event = { id = ERB.5001 days = 7 random = 7 } }
 	}
 }
 
 #Tombola Ping Event
 character_event = {
-	id = ERB.5071
+	id = ERB.5001
 	hide_window = no
-
 	is_triggered_only = yes
 
 	immediate = {
@@ -234,7 +231,9 @@ society_quest_event = {
   id = ERB.5002
   border = GFX_event_letter_frame_war
   desc = ERB_RANK_1_PROMOTER
+  picture = GFX_evt_badgermole
   is_triggered_only = yes
+  hide_from = yes
 
   option = {
     name = ACCEPT
@@ -257,7 +256,8 @@ society_quest_event = {
 
 #Earth Rumble Promoter Arrives
 character_event = {
-	id = ERB.4403
+	id = ERB.5003
+	picture = GFX_event_earth_city
 	desc = ERB_RANK_1_TOMBOLA
 	border = GFX_event_normal_frame_war
 
@@ -268,239 +268,267 @@ character_event = {
 		hidden_effect = {
 			set_variable = { which = earth_rumble_points value = 0 }
 			set_character_flag = earth_gimmick_timer
-			character_event = { id = ERB.4404 days = 1 } 
+			character_event = { id = ERB.5004 } 
 		}
 	}
 }
 
-#Tombola & outcome evaluator for meditation/penance
 character_event = {
-	id = ERB.4404
-	hide_window = yes
+	id = ERB.5004
+	desc = ERB_RANK_1_TOMBOLA_5004
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	option = {
+		name = ERB_RANK_1_TOMBOLA_OPT_5004
+		hidden_effect = {
+			character_event = { id = ERB.5005 days = 1 } 
+		}
+	}
+}
 
+#Tombola & outcome evaluator for earth rumble gimmick
+character_event = {
+	id = ERB.5005
+	hide_window = yes
 	is_triggered_only = yes
 
 	trigger = {
 			society_member_of = earth_rumble
-		#OR = {
-		#	has_quest = quest_monastic_order_penance
-		#	has_quest = quest_monastic_order_meditation
-		#}
+			has_quest = quest_erb_gimmick
 	}
 
 	immediate = {
-		#if = {
-		#	limit = {
-		#		OR = {
-		#			is_monastic_member_trigger = no
-		#			NOR = {
-		#				has_quest = quest_monastic_order_penance
-		#				has_quest = quest_monastic_order_meditation
-		#			}
-		#		}
-		#	}
-		#	character_event = { id = ERB.4399 }
-		#	break = yes
-		#}
+		if = {
+			limit = {
+				NOR = {
+					society_member_of = earth_rumble
+					has_quest = quest_erb_gimmick
+				}
+			}
+			character_event = { id = ERB.4399 }
+			break = yes
+		}
 		if = {
 			limit = { 
-				OR = {
-					has_quest = quest_monastic_order_penance
-					has_quest = quest_monastic_order_meditation
-				}
-				OR = {
-					has_character_modifier = in_meditation
-					has_character_modifier = doing_penance
-				}
+				has_quest = quest_erb_gimmick
+				has_character_flag = earth_gimmick_timer
 			}
-			if = {
-				limit = { 
-					NOR = {
-						check_variable = { which = earth_rumble_points value = 4 } 
-						NOT = { check_variable = { which = earth_rumble_points value = -2 } }
+			random_list = { #Next mission
+				30 = { #Dust Fighter
+					modifier = { 
+						factor = 2
+						trait = deceitful
 					}
-				}
-				clear_event_target = interrupting_child
-				random_list = { #Next mission
-					30 = { #Struggle with a vice
-						modifier = { 
-							factor = 0 
-							trait = temperate
-							trait = charitable
-							trait = diligent
-							OR = {
-								religion = hindu
-								NOT = { trait = lustful }
-							}
-						}
-						modifier = {
-							factor = 0
-							has_character_flag = holy_seclusion_struggled_with_vice
-						}
-						set_character_flag = holy_seclusion_struggled_with_vice
-						random_list = {
-							10 = { 
-								modifier = { factor = 0 OR = { NOT = { trait = lustful } religion = hindu } }
-								set_character_flag = holy_seclusion_lustful
-							}
-							10 = { 
-								modifier = { factor = 0 trait = temperate }
-								set_character_flag = holy_seclusion_gluttonous
-							}
-							10 = { 
-								modifier = { factor = 0 trait = charitable }
-								set_character_flag = holy_seclusion_greedy
-							}
-							10 = { 
-								modifier = { factor = 0 trait = diligent }
-								set_character_flag = holy_seclusion_slothful
-							}
-						}
-
-						character_event = { id = ERB.4405 }
+					modifier = { 
+						factor = 2
+						trait = craven
 					}
-					10 = { #Lonely
-						modifier = {
-							factor = 0
-							NAND = {
-								OR = {
-									trait = gregarious
-									trait = socializer
-								}
-								any_courtier = {
-									is_adult = yes
-									prisoner = no
-									NOR = { 
-										is_friend = ROOT 
-										is_lover = ROOT
-										is_rival = ROOT
-										any_spouse = { character = ROOT }
-									}
-								}
-							}
-						}
-						modifier = {
-							factor = 0
-							has_character_flag = holy_seclusion_struggled_with_loneliness
-						}
-						set_character_flag = holy_seclusion_struggled_with_loneliness
-						character_event = { id = ERB.4410 }
+					modifier = { 
+						factor = 2
+						trait = paranoid
 					}
-					10000 = { #Scripture reading 
-						modifier = {
-							factor = 0
-							OR = {
-								NOT = {	any_courtier = { has_job_title = job_spiritual } }
-								has_character_flag = holy_seclusion_scripture_reading
-							}
-						}
-						set_character_flag = holy_seclusion_scripture_reading
-						character_event = { id = ERB.4414 }
+					modifier = { 
+						factor = 2
+						trait = cynical
 					}
-					#Child interrupting
-					10 = {
-						modifier = {
-							factor = 0
-							NOT = { 
-								any_child = {
-									age = 4
-									host = { character = ROOT }
-									is_adult = no
-									prisoner = no
-									opinion = { who = ROOT value = 5 }
-								}
-							}
-						}
-						modifier = {
-							factor = 0
-							has_character_flag = holy_seclusion_interrupting_child
-						}
-						random_child = {
-							limit = {
-								age = 4
-								host = { character = ROOT }
-								is_adult = no
-								prisoner = no
-								opinion = { who = ROOT value = 5 }
-							}
-							save_event_target_as = interrupting_child
-						}
-						random_child = {
-							limit = {
-								age = 4
-								host = { character = ROOT }
-								is_adult = no
-								prisoner = no
-								opinion = { who = ROOT value = 5 }
-								is_primary_heir = ROOT
-								NOR = { 
-									has_opinion_modifier = { modifier = kind_parent who = ROOT }
-									has_opinion_modifier = { modifier = cruel_parent who = ROOT }
-								}
-							}
-							save_event_target_as = interrupting_child
-						}
-						set_character_flag = holy_seclusion_interrupting_child
-						event_target:interrupting_child = { character_event = { id = ERB.4419 } }
+					modifier = { 
+						factor = 2
+						trait = trickster 
 					}
-					10 = { #General success 
-						modifier = {
-							is_virtous = yes
-							factor = 1.5
-						}
-						modifier = {
-							is_wicked = yes
-							factor = 0.7
-						}
-						modifier = {
-							is_learned_trigger = yes
-							factor = 1.5
-						}
-						character_event = { id = ERB.4426 }
+					modifier = { 
+						factor = 1.3
+						trait = indolent
 					}
-					10 = { #If all missions have been done already....
-						modifier = {
-							factor = 0
-							NAND = {
-								has_character_flag = holy_seclusion_struggled_with_vice
-								has_character_flag = holy_seclusion_struggled_with_loneliness
-								has_character_flag = holy_seclusion_scripture_reading
-								has_character_flag = holy_seclusion_interrupting_child
-							}
-						}
-						clr_character_flag = holy_seclusion_struggled_with_vice
-						clr_character_flag = holy_seclusion_struggled_with_loneliness
-						clr_character_flag = holy_seclusion_scripture_reading
-						clr_character_flag = holy_seclusion_interrupting_child
+					modifier = { 
+						factor = 1.3
+						trait = brooding 
 					}
-				}
-				character_event = { id = ERB.4404 days = 40 random = 30 } #Sends the tombola again
-			}
-			if = {
-				limit = { 
-					OR = {
-						check_variable = { which = earth_rumble_points value = 4 } 
-						NOT = { check_variable = { which = earth_rumble_points value = -2 } }
+					modifier = {
+						factor = 0
+						has_character_flag = erb_dust_fighter_training
 					}
-				} 
-
-				random_society_member = {
-					limit = {
-						is_society_grandmaster = yes
-						same_society_as = ROOT
+					set_character_flag = erb_dust_fighter_training
+					character_event = { id = ERB.10000 }
 					}
-					character_event = { id = ERB.4427 } #Mission success/fail
-				}
+				#10 = {
+				#}
 			}
 		}
 	}
 }
 
-#Penance/seclusion: Dealing with vice
 character_event = {
-	id = ERB.4405
-	picture = GFX_evt_dark_love
-	border = GFX_event_normal_frame_religion
+	id = ERB.10000
+	border = GFX_event_normal_frame_war
+	picture = GFX_evt_earth_team
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_DUST_FIGHTER_DESC
+	
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+	}
+	
+	option = {
+		name = ERB_DUST_FIGHTER_OPT_DESC
+		character_event = { id = ERB.10001 }
+	}
+}
+
+#Promoter Training - Dust Fighter 
+character_event = {
+	id = ERB.10001
+	picture = GFX_evt_earth_team
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+	}
+
+	immediate = {
+	#Check to see if event is going to come to an end
+		if = { 
+			limit = {
+				OR = {
+					check_variable = { which = earth_rumble_points value = 3 }
+					NOT = { check_variable = { which = earth_rumble_points value = -2 } }
+				}
+			}
+			# success/fail became dust fighter
+			clr_character_flag = erb_pillar_dust
+			character_event = { id = ERB.10002 } #Mission success/fail
+		}
+		#run the tombola
+		random_list = { 
+			5 = {
+				character_event = { id = ERB.10010 }
+			}
+			#10 = {
+			#	modifier = {
+			#		has_character_flag = erb_pillar_dust
+			#	}
+			#	set_character_flag = erb_pillar_dust
+			#	character_event = { id = ERB.10020 }
+			#}
+			#10 = {
+			#	modifier = {
+			#		has_character_flag = erb_fighting_mickey_dust
+			#	}
+			#	set_character_flag = erb_fighting_mickey_dust
+			#	character_event = { id = ERB.10030 }
+			#}
+			#10 = {
+			#	modifier = {
+			#		has_character_flag = erb_dusty_skirmish
+			#	}
+			#	set_character_flag = erb_dusty_skirmish
+			#	character_event = { id = ERB.10040 }
+			#}
+			#10 = {
+			#	modifier = {
+			#		has_character_flag = erb_locker_room_rubble
+			#	}
+			#	set_character_flag = erb_locker_room_rubble
+			#	character_event = { id = ERB.10050 }
+			#}
+		}
+	}
+}
+
+character_event = {
+	id = ERB.10010
+	picture = GFX_evt_earth_team
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_MICKEY_THROWS_DUST
+	
+	option = {
+		name = ERB_MICKEY_THROWS_DUST_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+	}
+}
+
+#Fail/success evaluation for earth rumble gimmick - dust fighter
+character_event = {
+	id = ERB.10002
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { FROM = { check_variable = { which = earth_rumble_points value = 3 } } }
+			FROM = { letter_event = { id = ERB.10003 } }
+		}
+		if = {
+			limit = { FROM = { NOT = { check_variable = { which = earth_rumble_points value = -2 } } } }
+			FROM = { letter_event = { id = ERB.10004 } }
+		}
+	}
+}
+
+# Earth Rumble Gimmick - Dust Fighter success
+letter_event = {
+	id = ERB.10003
+	border = GFX_event_letter_frame_religion
+	desc = ERB_SUCCESSFUL_DUST_FIGHTER
+	is_triggered_only = yes
+	
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+		}
+	}
+
+	option = {
+		name = EVTOPTA_ERB_4428
+
+		if = {
+			limit = { has_quest = quest_monastic_order_penance }
+			clr_quest = quest_monastic_order_penance
+			sound_effect = monastic_orders_penance
+			remove_character_modifier = doing_penance
+		}
+		if = {
+			limit = { has_quest = quest_monastic_order_meditation }
+			clr_quest = quest_monastic_order_meditation
+			sound_effect = monastic_orders_meditate_in_seclusion
+			remove_character_modifier = in_meditation
+		}
+		if = {
+			limit = {
+				any_owned_bloodline = {
+					has_bloodline_flag = monastic_saintly_bloodline
+				}
+			}
+			add_society_currency_major_effect = yes
+		}
+		else = {
+			add_society_currency_medium_effect = yes
+		}
+		hidden_effect = { 
+			monastic_order_purity_effect = yes 
+			clr_character_flag = success_seculison_desc_A #Flags from 4426
+			clr_character_flag = success_seculison_desc_B
+			clr_character_flag = success_seculison_desc_C
+			clr_character_flag = holy_seclusion_struggled_with_vice
+			clr_character_flag = holy_seclusion_scripture_reading
+			clr_character_flag = holy_seclusion_timer
+			clr_character_flag = holy_seclusion_struggled_with_loneliness
+			clr_character_flag = holy_seclusion_interrupting_child
+		}
+	}
+}
+
+#Earth Rumble Gimmick - Dust Fighter failure
+letter_event = {
+	id = ERB.10004
+	border = GFX_event_letter_frame_religion
+	desc = EVTDESC_ERB_4429
 	is_triggered_only = yes
 
 	trigger = {
@@ -515,294 +543,23 @@ character_event = {
 		}
 	}
 
-	hide_from = yes
-
-	immediate = {
-		trigger_switch = {
-			on_trigger = has_character_flag
-			holy_seclusion_lustful = {
-				if = {
-					limit = {
-						any_artifact = {
-							OR = {
-								has_artifact_flag = about_religion
-								artifact_type = the_confessions_of_root
-							}
-							is_artifact_equipped = yes
-						}
-					}
-					random_artifact = {
-						limit = {
-							OR = {
-								has_artifact_flag = about_religion
-								artifact_type = the_confessions_of_root
-							}
-							is_artifact_equipped = yes
-						}
-						preferred_limit = {
-							quality = 3
-						}
-						preferred_limit = {
-							quality = 2
-						}
-						preferred_limit = {
-							quality = 1
-						}
-						save_event_target_as = book_target
-					}
-				}
-			}
-			holy_seclusion_gluttonous = {
-				if = {
-					limit = {
-						any_artifact = {
-							has_artifact_flag = cooking
-							is_artifact_equipped = yes
-						}
-					}
-					random_artifact = {
-						limit = {
-							has_artifact_flag = cooking
-							is_artifact_equipped = yes
-							NOT = { artifact_type = gastronomic_tonics } #Not really about food
-						}
-						preferred_limit = {
-							quality = 3
-						}
-						preferred_limit = {
-							quality = 2
-						}
-						preferred_limit = {
-							quality = 1
-						}
-						save_event_target_as = book_target
-					}
-				}
-			}
-			holy_seclusion_greedy = {
-				if = {
-					limit = {
-						any_artifact = {
-							OR = {
-								artifact_type = the_confessions_of_root
-								has_artifact_flag = about_diplomacy
-							}
-							is_artifact_equipped = yes
-						}
-					}
-					random_artifact = {
-						limit = {
-							OR = {
-								artifact_type = the_confessions_of_root
-								has_artifact_flag = about_diplomacy
-							}
-							is_artifact_equipped = yes
-						}
-						preferred_limit = {
-							quality = 3
-						}
-						preferred_limit = {
-							quality = 2
-						}
-						preferred_limit = {
-							quality = 1
-						}
-						save_event_target_as = book_target
-					}
-				}
-			}
-			holy_seclusion_slothful = {
-				if = {
-					limit = {
-						any_artifact = {
-							OR = {
-								AND = {
-									has_artifact_flag = about_dynasty
-									original_owner = { NOT = { character = ROOT } }
-								}
-								has_artifact_flag = poetry
-							}
-							is_artifact_equipped = yes
-						}
-					}
-					random_artifact = {
-						limit = {
-							OR = {
-								AND = {
-									has_artifact_flag = about_dynasty
-									original_owner = { NOT = { character = ROOT } }
-								}
-								has_artifact_flag = poetry
-							}
-							is_artifact_equipped = yes
-						}
-						preferred_limit = {
-							quality = 3
-						}
-						preferred_limit = {
-							quality = 2
-						}
-						preferred_limit = {
-							quality = 1
-						}
-						save_event_target_as = book_target
-					}
-				}
-			}
-		}
-	}
-
-	desc = {
-		trigger = { has_character_flag = holy_seclusion_lustful }
-		text = EVTDESC_4405_LUSTFUL
-		picture = GFX_evt_dark_love
-	}
-	desc = {
-		trigger = { has_character_flag = holy_seclusion_gluttonous }
-		text = EVTDESC_4405_GLUTTONOUS
-		picture = GFX_evt_feast
-	}
-	desc = {
-		trigger = { has_character_flag = holy_seclusion_greedy }
-		text = EVTDESC_4405_GREEDY
-		picture = GFX_evt_charity
-	}
-	desc = {
-		trigger = { has_character_flag = holy_seclusion_slothful }
-		text = EVTDESC_4405_SLOTHFUL
-		picture = GFX_evt_recovery
-	}
-
-	#Indulge
 	option = {
-		name = {
-			trigger = { has_character_flag = holy_seclusion_lustful }
-			text = EVTOPTA_4405_LUSTFUL
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_gluttonous }
-			text = EVTOPTA_4405_GLUTTONOUS
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_greedy }
-			text = EVTOPTA_4405_GREEDY
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_slothful }
-			text = EVTOPTA_4405_SLOTHFUL
-		}
-		if = {
-			limit = { has_character_flag = holy_seclusion_gluttonous }
-			gain_weight_small_effect = yes
-			weight_trait_check_effect = yes
-		}
-
-		random_list = {
-			65 = { 
-				custom_tooltip = { 
-					text = EVTOPTA_ERB_4405_tt_success
-					character_event = { id = ERB.4406 days = 3 }
-				}
-			}
-			35 = {
-				custom_tooltip = { 
-					text = EVTOPTA_ERB_4405_tt_fail
-					character_event = { id = ERB.4407 days = 3 }
-				}
-			}
-		}
-	}
-
-	#Fight it  (with reading from your library!)
-	option = {
-		name = {
-			trigger = { has_character_flag = holy_seclusion_lustful }
-			text = EVTOPTB_4405_LUSTFUL_book
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_gluttonous }
-			text = EVTOPTB_4405_GLUTTONOUS_book
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_greedy }
-			text = EVTOPTB_4405_GREEDY_book
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_slothful }
-			text = EVTOPTB_4405_SLOTHFUL_book
-		}
-
-		tooltip_info_custom = available_because_books_tt
+		name = EVTOPTA_ERB_4429
 
 		if = {
-			limit = { has_character_flag = holy_seclusion_gluttonous }
-			lose_weight_small_effect = yes
-			weight_trait_check_effect = yes
-		}
-
-		set_character_flag = used_a_book
-
-		random_list = {
-			70 = { 
-				custom_tooltip = { 
-					text = EVTOPTB_ERB_4405_tt_success
-					character_event = { id = ERB.4408 days = 14 }
-				}
-			}
-			30 = {
-				custom_tooltip = { 
-					text = EVTOPTB_ERB_4405_tt_fail
-					character_event = { id = ERB.4409 days = 14 }
-				}
-			}
-		}
-		trigger = {
-			event_target:book_target = { always = yes }
-		}
-	}
-
-	#Fight it
-	option = {
-		name = {
-			trigger = { has_character_flag = holy_seclusion_lustful }
-			text = EVTOPTB_4405_LUSTFUL
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_gluttonous }
-			text = EVTOPTB_4405_GLUTTONOUS
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_greedy }
-			text = EVTOPTB_4405_GREEDY
-		}
-		name = {
-			trigger = { has_character_flag = holy_seclusion_slothful }
-			text = EVTOPTB_4405_SLOTHFUL
-		}
-
-		if = {
-			limit = { has_character_flag = holy_seclusion_greedy }
-			scaled_wealth = { value = -0.5 min = -50 }
+			limit = { has_quest = quest_monastic_order_penance }
+			clr_quest = { id = quest_monastic_order_penance failure = yes }
+			remove_character_modifier = doing_penance
 		}
 		if = {
-			limit = { has_character_flag = holy_seclusion_gluttonous }
-			lose_weight_small_effect = yes
-			weight_trait_check_effect = yes
+			limit = { has_quest = quest_monastic_order_meditation }
+			clr_quest = { id = quest_monastic_order_meditation failure = yes }
+			remove_character_modifier = in_meditation
 		}
-
-		random_list = {
-			40 = { 
-				custom_tooltip = { 
-					text = EVTOPTB_ERB_4405_tt_success
-					character_event = { id = ERB.4408 days = 14 }
-				}
-			}
-			60 = {
-				custom_tooltip = { 
-					text = EVTOPTB_ERB_4405_tt_fail
-					character_event = { id = ERB.4409 days = 14 }
-				}
-			}
+		hidden_effect = {
+			clr_character_flag = success_seculison_desc_A #Flags from 4426
+			clr_character_flag = success_seculison_desc_B
+			clr_character_flag = success_seculison_desc_C
 		}
 	}
 }
@@ -2197,7 +1954,7 @@ character_event = {
 	}
 }
 
-#Fail/success evaluation for penance/meditation
+#Fail/success evaluation for earth rumble gimmick
 character_event = {
 	id = ERB.4427
 	hide_window = yes
@@ -2206,7 +1963,7 @@ character_event = {
 
 	immediate = {
 		if = {
-			limit = { FROM = { check_variable = { which = earth_rumble_points value = 4 } } }
+			limit = { FROM = { check_variable = { which = earth_rumble_points value = 3 } } }
 			FROM = { letter_event = { id = ERB.4428 } }
 		}
 		if = {
