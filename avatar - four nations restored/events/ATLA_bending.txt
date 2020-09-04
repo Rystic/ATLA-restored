@@ -2011,7 +2011,10 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-				min_age = 14
+				OR = {
+					age = 14
+					min_age = 14
+				}
 			}
 		
 			add_trait = airnomad
@@ -2019,7 +2022,12 @@ character_event = {
 
 		if = {
 			limit = {
-				max_age = 14
+				OR = {
+					max_age = 14
+					NOT = {
+						age = 14
+					}
+				}
 			}
 		
 			add_trait = airinitiate
@@ -3207,6 +3215,25 @@ character_event = { # Parent informed - Bender
 			FROM = {
 				remove_trait = competent_bender
 				add_trait = powerful_bender
+
+				if = {
+					limit = {
+						AND = {
+							trait = airbender
+							educator = {
+								trait = airbender
+							}
+
+							NOT = {
+								trait = airnomad_tattoos
+							}
+						}
+					}
+					
+					character_event = {
+						id = NOMAD.550 days = 20
+					}
+				}
 			}
 		}
 		if = {

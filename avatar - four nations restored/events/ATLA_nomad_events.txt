@@ -1183,6 +1183,162 @@ character_event = {
 	}
 }
 
+### AIR NOMAD SUCCESSION
+
+# father decided to make me his pretendent
+character_event = {
+	id = NOMAD.500
+	desc = NOMADEVTDESC500
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Accept
+		name = OK #"EVTOPTANOMADA.500"
+
+		trigger = {
+			NOR = {
+				OR = { # I'm too young
+					trait = airinitiate
+					age <= 20
+				}
+				OR = { # I'm on journey
+					trait = on_journey
+					has_character_flag = nomad_journey
+				}
+			}
+		}
+
+		FROM = {
+			character_event = {
+				id = NOMAD.501
+				days = 1
+			}
+		}
+
+		ai_chance = {
+			factor = 10
+		}
+	}
+	
+	option = { # No, for some reasons
+		name = NO #"EVTOPTANOMADA.500"
+
+		if = {
+			limit = {
+				OR = {
+					trait = airinitiate
+					age <= 20
+				}
+			}
+			FROM = {
+				character_event = {
+					id = NOMAD.502
+					days = 1
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				OR = { # I'm on journey
+					trait = on_journey
+					has_character_flag = nomad_journey
+				}
+			}
+			FROM = {
+				character_event = {
+					id = NOMAD.503
+					days = 1
+				}
+			}
+		}
+
+		ai_chance = {
+			factor = 1
+		}
+	
+	}
+}
+
+# the child has accepted
+character_event = {
+	id = NOMAD.501
+	desc = NOMADEVTDESC501
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Yes, (s)he is ready
+		name = "NOMADEVTOPTA.501"
+
+		FROM = {
+			set_father = ROOT
+			dynasty = ROOT
+			opinion = {
+				modifier = opinion_adopted_as_successor
+				who = ROOT
+			}
+			reverse_opinion = {
+				modifier = opinion_adopted_as_a_successor
+				who = ROOT
+			}
+		}
+
+		ai_chance = {
+			factor = 10
+		}
+	}
+
+	option = { # No, (s)he isn't ready
+		name = "NOMADEVTOPTB.501"
+		
+		FROM = {
+			clr_character_flag = potential_successor
+		}
+
+		ai_chance = {
+			factor = 5
+		}
+	}
+}
+
+# the child has declined due young age
+character_event = {
+	id = NOMAD.502
+	desc = NOMADEVTDESC502
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Yes, (s)he isn't ready
+		name = "NOMADEVTOPA.502"
+	}
+}
+
+# the child has declined due travelling
+character_event = {
+	id = NOMAD.503
+	desc = NOMADEVTDESC503
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Yes, (s)he needs to see the world.
+		name = "NOMADEVTOPA.503"
+	}
+}
+
+# AIRBENDER GAINS HIS TATTOOS
+character_event = {
+	id = NOMAD.550
+	desc = NOMADEVTDESC550
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = {
+		name = OK #"EVTOPTANOMADA.550"
+
+		add_trait = airnomad_tattoos
+	}
+}
+
 ### AIR NOMAD CONTROL EVENT
 # Initiate
 # Nomad
@@ -1198,6 +1354,7 @@ character_event = {
 			trait = airinitiate
 			trait = airnomad
 			trait = airelder
+			trait = airnomad_tattoos
 		}
 	}
 	
@@ -1207,8 +1364,9 @@ character_event = {
 				age = 50
 			}
 			add_trait = airelder
+			add_trait = airnomad_tattoos
 			add_trait = airbender
-			add_trait = competent_bender
+			add_trait = powerful_bender
 			break = yes
 		}
 		if = {
@@ -1218,7 +1376,7 @@ character_event = {
 			}
 			add_trait = airnomad
 			add_trait = airbender
-			add_trait = incompetent_bender
+			add_trait = competent_bender
 			break = yes
 		}
 		if = {
@@ -1273,15 +1431,79 @@ character_event = {
 	desc = NOMADEVTDESC603
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-	
+
 	option = { # Approve
 		name = "EVTOPTANOMADA.603"
 		hidden_tooltip = {
 			character_event = { id = NOMAD.604 days = 21 }
 		}
 	}
-	option = { # Cancel
+
+	option = { # I will choose someone from my family
 		name = "EVTOPTANOMADB.603"
+		trigger = { 
+			ai = no 
+			# has_living_children = yes 
+		}
+		
+		# if the char is a man
+		if = {
+			limit = {
+				is_female = no
+			}
+
+			any_child = {
+				is_female = no
+
+				set_character_flag = potential_successor
+
+				character_event = {
+					id = NOMAD.500 days = 1
+				}
+			}
+
+			any_sibling = {
+				is_female = no
+
+				set_character_flag = potential_successor
+
+				character_event = {
+					id = NOMAD.500 days = 1
+				}
+			}
+		}
+	
+		# a woman
+		if = {
+			limit = {
+				is_female = yes
+			}
+
+			any_child = {
+				is_female = yes
+
+				set_character_flag = potential_successor
+
+				character_event = {
+					id = NOMAD.500 days = 1
+				}
+			}
+
+			any_sibling = {
+				is_female = yes
+				
+				set_character_flag = potential_successor
+
+				character_event = {
+					id = NOMAD.500 days = 1
+				}
+			}
+		}
+
+	}
+
+	option = { # Cancel
+		name = "EVTOPTANOMADC.603"
 		clr_character_flag = search_for_successor
 		trigger = { ai = no }
 	}
@@ -1610,6 +1832,7 @@ character_event = {
 					limit = { is_female = yes }
 					FROM = {
 						set_mother = ROOT
+						dynasty = ROOT
 						opinion = {
 							modifier = opinion_adopted_as_successor
 							who = ROOT
@@ -1624,6 +1847,7 @@ character_event = {
 					limit = { is_female = no }
 					FROM = {
 						set_father = ROOT
+						dynasty = ROOT
 						opinion = {
 							modifier = opinion_adopted_as_successor
 							who = ROOT
