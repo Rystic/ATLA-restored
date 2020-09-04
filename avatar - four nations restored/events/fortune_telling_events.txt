@@ -1,0 +1,38 @@
+namespace = FORTUNE
+
+character_event = {
+	id = FORTUNE.1
+	is_triggered_only = yes
+	hide_window = yes
+	only_independent = yes
+	
+	trigger = {
+		always = yes
+		is_save_game = no
+	}
+	
+	immediate = {
+		random_list = {
+			10 = { set_variable = { which = global_world_luck value = 2 } }
+			10 = { set_variable = { which = global_world_luck value = 3 } }
+			10 = { set_variable = { which = global_world_luck value = 4 } }
+			10 = { set_variable = { which = global_world_luck value = 5 } }
+			10 = { set_variable = { which = global_world_luck value = 6 } }
+			10 = { set_variable = { which = global_world_luck value = 7 } }
+			10 = { set_variable = { which = global_world_luck value = 8 } }
+		}
+	}
+	
+	option = {
+		if = {
+			limit = {
+				check_variable = { which = global_world_luck value >= 5 }
+			}
+			set_global_flag = global_world_luck_good
+			clr_global_flag = global_world_luck_bad
+		} else = {
+			clr_global_flag = global_world_luck_good
+			set_global_flag = global_world_luck_bad
+		}
+	}
+}
