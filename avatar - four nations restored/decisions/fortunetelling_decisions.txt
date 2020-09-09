@@ -8,6 +8,7 @@ decisions = {
 		potential = {
 			religion = fortune_telling
 			NOT = { trait = fortuneteller }
+			NOT = { has_character_flag = learning_ft }
 		}
 		
 		allow = {
@@ -17,32 +18,8 @@ decisions = {
 		
 		effect = {
 			piety = -500
-			add_trait = fortuneteller
-			hidden_tooltip = {
-				random_list = {
-					10 = { set_variable = { which = personal_luck value = 0 } }
-					10 = { set_variable = { which = personal_luck value = 1 } }
-					10 = { set_variable = { which = personal_luck value = 2 } }
-					10 = { set_variable = { which = personal_luck value = 3 } }
-					10 = { set_variable = { which = personal_luck value = 4 } }
-					10 = { set_variable = { which = personal_luck value = 5 } }
-					10 = { set_variable = { which = personal_luck value = 6 } }
-					10 = { set_variable = { which = personal_luck value = 7 } }
-					10 = { set_variable = { which = personal_luck value = 8 } }
-					10 = { set_variable = { which = personal_luck value = 9 } }
-					10 = { set_variable = { which = personal_luck value = 10 } }
-				}
-				if = {
-					limit = {
-						check_variable = { which = personal_luck value >= 5 }
-					}
-					set_character_flag = personal_luck_good
-					clr_character_flag = personal_luck_bad
-				} else = {
-					clr_character_flag = personal_luck_good
-					set_character_flag = personal_luck_bad
-				}
-			}
+			set_character_flag = learning_ft
+			character_event = { id = FORTUNE.1000 }
 		}
 	}
 }
@@ -86,14 +63,7 @@ targetted_decisions = {
 			}
 			hidden_tooltip = {
 				FROM = {
-					set_variable = { which = luck_difference which = global_world_luck }
-					subtract_variable = { which = luck_difference which = personal_luck }
-					if = {
-						limit = {
-							check_variable = { which = luck_difference value < 0 }
-						}
-						multiply_variable = { which = luck_difference value = -1 }
-					}
+					character_event = { id = FORTUNE.1002 }
 				}
 				random_list = {
 					30 = { # bad outcome
