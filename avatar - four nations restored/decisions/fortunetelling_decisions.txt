@@ -12,14 +12,50 @@ decisions = {
 		}
 		
 		allow = {
-			piety = 500
-			intrigue = 12
+			OR = {
+				piety = 500
+				OR = {
+					piety = 100
+					intrigue = 12
+				}
+			}
 		}
 		
 		effect = {
-			piety = -500
+			custom_tooltip = {
+				text = variable_piety_loss
+				hidden_tooltip = {
+					if = {
+						limit = {
+							intrigue = 12
+						}
+						piety = -100
+					} else = {
+						piety = -500
+					}
+				}
+			}
 			set_character_flag = learning_ft
 			character_event = { id = FORTUNE.1000 }
+		}
+				
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 1000
+				intrigue = 20
+			}
+			modifier = {
+				factor = 1000
+				AND = {
+					piety = 100
+					intrigue = 12
+				}
+			}
+			modifier = {
+				factor = 1000
+				has_trait = zealous
+			}
 		}
 	}
 }
@@ -28,7 +64,8 @@ targetted_decisions = {
 
 	tell_fortune = {
 	
-		ai_check_interval = 12
+		ai_check_interval = 6
+		ai_target_filter = realm
 	
 		potential = {
 			FROM = {
@@ -37,6 +74,10 @@ targetted_decisions = {
 				trait = fortuneteller
 			}
 			ROOT = {
+				prisoner = no
+				in_revolt = no
+				NOT = { war_with = FROM }
+				NOT = { reverse_has_truce = FROM }
 				is_within_diplo_range = FROM
 				ai = yes
 			}
@@ -698,14 +739,26 @@ targetted_decisions = {
 				}
 			}
 		}
-	}
-	
-	seek_fortune = {
-		potential = {
-			ROOT = {
-				religion = fortune_telling
-				trait = fortuneteller
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 100
+				intrigue = 20
 			}
-		}
+			modifier = {
+				factor = 100
+				intrigue = 12
+			}
+			modifier = {
+				factor = 0
+				NOT = { intrigue = 6 }
+			}
+			modifier = {
+				factor = 0
+				ROOT = {
+					learning = 16
+				}
+			}
+		}		
 	}
 }
