@@ -1185,7 +1185,7 @@ character_event = {
 
 ### AIR NOMAD SUCCESSION
 
-# father decided to make me his pretendent
+# father decided to make me his succession pretendent
 character_event = {
 	id = NOMAD.500
 	desc = NOMADEVTDESC500
@@ -1208,10 +1208,12 @@ character_event = {
 			}
 		}
 
+		set_character_flag = accepted_potential_successor
+
 		FROM = {
 			character_event = {
 				id = NOMAD.501
-				days = 1
+				days = 20
 			}
 		}
 
@@ -1233,7 +1235,7 @@ character_event = {
 			FROM = {
 				character_event = {
 					id = NOMAD.502
-					days = 1
+					days = 20
 				}
 			}
 		}
@@ -1248,7 +1250,7 @@ character_event = {
 			FROM = {
 				character_event = {
 					id = NOMAD.503
-					days = 1
+					days = 20
 				}
 			}
 		}
@@ -1292,7 +1294,7 @@ character_event = {
 		name = "NOMADEVTOPTB.501"
 		
 		FROM = {
-			clr_character_flag = potential_successor
+			clr_character_flag = accepted_potential_successor
 		}
 
 		ai_chance = {
@@ -1325,6 +1327,102 @@ character_event = {
 	}
 }
 
+# End searching
+character_event = {
+	id = NOMAD.504
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = { # I've found a successor
+			limit = {
+				OR = {
+					any_child = {
+						has_character_flag = accepted_potential_successor
+					}
+					any_sibling = {
+						has_character_flag = accepted_potential_successor
+					}
+				}
+			}
+
+			character_event = {
+				id = NOMAD.505
+				days = 1
+			}
+		}
+		if = { # I've found no successor
+			limit = {
+				NOR = {
+					any_child = {
+						has_character_flag = accepted_potential_successor
+					}
+					any_sibling = {
+						has_character_flag = accepted_potential_successor
+					}
+				}
+			}
+
+			character_event = {
+				id = NOMAD.506
+				days = 1
+			}
+		}
+	}
+}
+
+# I've found a successor
+character_event = {
+	id = NOMAD.505
+	desc = NOMADEVTDESC505
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+
+		prestige = 50
+
+		any_child = {
+			limit = {
+				has_character_flag = accepted_potential_successor
+			}
+		}
+		any_sibling = {
+			limit = {
+				has_character_flag = accepted_potential_successor
+			}
+		}
+
+		clr_character_flag = search_for_successor
+	}
+}
+
+# I've found no successor
+character_event = {
+	id = NOMAD.506
+	desc = NOMADEVTDESC506
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+
+		prestige = -50
+
+		clr_character_flag = search_for_successor
+	}
+
+	option = { # I'll repeat my searching
+		name = "NOMADEVTOPA.506"
+
+		character_event = {
+			id = NOMAD.603
+			days = 20
+		}
+	}
+}
+
 # the ruler dies and children return to cadet-dynasties
 character_event = {
 	id = NOMAD.520
@@ -1335,20 +1433,20 @@ character_event = {
 	immediate = {
 		any_child = {
 			limit = {
-				has_character_flag = potential_successor
+				has_character_flag = accepted_potential_successor
 				is_heir = yes
 			}
 
-			clr_character_flag = potential_successor
+			clr_character_flag = accepted_potential_successor
 		}
 
 		any_sibling = {
 			limit = {
-				has_character_flag = potential_successor
+				has_character_flag = accepted_potential_successor
 				is_heir = yes
 			}
 
-			clr_character_flag = potential_successor
+			clr_character_flag = accepted_potential_successor
 		}
 	}
 
@@ -1357,7 +1455,7 @@ character_event = {
 
 		any_child = {
 			limit = {
-				has_character_flag = potential_successor
+				has_character_flag = accepted_potential_successor
 			}
 
 			if = {
@@ -1368,12 +1466,12 @@ character_event = {
 				dynasty = father_bastard
 			}
 
-			clr_character_flag = potential_successor
+			clr_character_flag = accepted_potential_successor
 		}
 
 		any_sibling = {
 			limit = {
-				has_character_flag = potential_successor
+				has_character_flag = accepted_potential_successor
 			}
 
 			if = {
@@ -1384,7 +1482,7 @@ character_event = {
 				dynasty = father_bastard
 			}
 
-			clr_character_flag = potential_successor
+			clr_character_flag = accepted_potential_successor
 		}
 	}
 }
@@ -1519,8 +1617,6 @@ character_event = {
 			any_child = {
 				is_female = no
 
-				set_character_flag = potential_successor
-
 				character_event = {
 					id = NOMAD.500 days = 1
 				}
@@ -1528,8 +1624,6 @@ character_event = {
 
 			any_sibling = {
 				is_female = no
-
-				set_character_flag = potential_successor
 
 				character_event = {
 					id = NOMAD.500 days = 1
@@ -1546,8 +1640,6 @@ character_event = {
 			any_child = {
 				is_female = yes
 
-				set_character_flag = potential_successor
-
 				character_event = {
 					id = NOMAD.500 days = 1
 				}
@@ -1556,14 +1648,15 @@ character_event = {
 			any_sibling = {
 				is_female = yes
 				
-				set_character_flag = potential_successor
-
 				character_event = {
 					id = NOMAD.500 days = 1
 				}
 			}
 		}
 
+		character_event = {
+			id = NOMAD.504 days = 60
+		}
 	}
 
 	option = { # Cancel
@@ -1889,6 +1982,9 @@ character_event = {
 	
 	option = { # Approve - End Search
 		name = "EVTOPTANOMADA.606"
+
+		clr_character_flag = search_for_successor
+		
 		custom_tooltip = {
 			text = end_search_for_successor_tooltip
 			hidden_tooltip = {
