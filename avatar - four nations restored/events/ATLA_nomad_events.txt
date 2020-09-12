@@ -1325,6 +1325,70 @@ character_event = {
 	}
 }
 
+# the ruler dies and children return to cadet-dynasties
+character_event = {
+	id = NOMAD.520
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		any_child = {
+			limit = {
+				has_character_flag = potential_successor
+				is_heir = yes
+			}
+
+			clr_character_flag = potential_successor
+		}
+
+		any_sibling = {
+			limit = {
+				has_character_flag = potential_successor
+				is_heir = yes
+			}
+
+			clr_character_flag = potential_successor
+		}
+	}
+
+	option = {
+		name = OK
+
+		any_child = {
+			limit = {
+				has_character_flag = potential_successor
+			}
+
+			if = {
+				limit = {
+					dynasty = ROOT
+				}
+
+				dynasty = father_bastard
+			}
+
+			clr_character_flag = potential_successor
+		}
+
+		any_sibling = {
+			limit = {
+				has_character_flag = potential_successor
+			}
+
+			if = {
+				limit = {
+					dynasty = ROOT
+				}
+
+				dynasty = father_bastard
+			}
+
+			clr_character_flag = potential_successor
+		}
+	}
+}
+
 # AIRBENDER GAINS HIS TATTOOS
 character_event = {
 	id = NOMAD.550
