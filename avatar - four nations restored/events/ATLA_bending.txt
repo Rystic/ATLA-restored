@@ -2038,15 +2038,19 @@ character_event = { # Develops Airbending - Parent
 character_event = {
 	id = bending.96
 	hide_window = yes
+	
 	is_triggered_only = yes
 	culture_group = air_nomad_culture
 
 	trigger = {
-		NOT = { trait = airnomad }
-		NOT = { trait = airinitiate }
-		NOT = { trait = waterbender }
-		NOT = { trait = earthbender }
-		NOT = { trait = firebender }
+		NOR = {
+			trait = airinitiate
+			trait = airnomad
+			trait = airelder
+			trait = waterbender
+			trait = earthbender
+			trait = firebender
+		}
 	}
 
 	immediate = {
@@ -2095,6 +2099,16 @@ character_event = {
 			}
 		
 			add_trait = airinitiate
+		}
+
+		if = {
+			limit = {
+				OR = {
+					age = 50
+				}
+			}
+
+			add_trait = airelder
 		}
 	}
 }
