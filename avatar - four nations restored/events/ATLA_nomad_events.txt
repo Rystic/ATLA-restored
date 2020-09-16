@@ -1197,14 +1197,8 @@ character_event = {
 
 		trigger = {
 			NOR = {
-				OR = { # I'm too young
-					trait = airinitiate
-					age <= 20
-				}
-				OR = { # I'm on journey
-					trait = on_journey
-					has_character_flag = nomad_journey
-				}
+				trait = airinitiate # young age
+				has_character_flag = nomad_journey # journey
 			}
 		}
 
@@ -1225,12 +1219,9 @@ character_event = {
 	option = { # No, for some reasons
 		name = NO #"EVTOPTANOMADA.500"
 
-		if = {
+		if = { # cause of age
 			limit = {
-				OR = {
-					trait = airinitiate
-					age <= 20
-				}
+				trait = airinitiate
 			}
 			FROM = {
 				character_event = {
@@ -1238,14 +1229,12 @@ character_event = {
 					days = 20
 				}
 			}
+			break = yes
 		}
 
-		if = {
+		if = { # cause of journey
 			limit = {
-				OR = { # I'm on journey
-					trait = on_journey
-					has_character_flag = nomad_journey
-				}
+				has_character_flag = nomad_journey
 			}
 			FROM = {
 				character_event = {
@@ -1253,6 +1242,7 @@ character_event = {
 					days = 20
 				}
 			}
+			break = yes
 		}
 
 		ai_chance = {
@@ -1311,7 +1301,7 @@ character_event = {
 	is_triggered_only = yes
 	
 	option = { # Yes, (s)he isn't ready
-		name = "NOMADEVTOPA.502"
+		name = "NOMADEVTOPTA.502"
 	}
 }
 
@@ -1319,17 +1309,51 @@ character_event = {
 character_event = {
 	id = NOMAD.503
 	desc = NOMADEVTDESC503
-	picture = GFX_evt_air_south
+	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
 	
 	option = { # Yes, (s)he needs to see the world.
-		name = "NOMADEVTOPA.503"
+		name = "NOMADEVTOPTA.503"
+	}
+
+	option = { # No, return him
+		name = "NOMADEVTOPTB.503"
+
+		FROM = {
+			character_event = {
+				id = NOMAD.504
+				days = 10
+			}
+		}
+	}
+}
+
+# they need me at home
+character_event = {
+	id = NOMAD.504
+	desc = NOMADEVTDESC504
+	picture = GFX_evt_nomad_wander
+	is_triggered_only = yes
+	
+	option = { # Well
+		name = OK
+
+		liege = {
+			character_event = { id = NOMAD.410 }
+		}
+
+		FROM = {
+			character_event = {
+				id = NOMAD.501
+				days = 10
+			}
+		}
 	}
 }
 
 # End searching
 character_event = {
-	id = NOMAD.504
+	id = NOMAD.510
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -1373,7 +1397,7 @@ character_event = {
 
 # I've found a successor
 character_event = {
-	id = NOMAD.505
+	id = NOMAD.511
 	desc = NOMADEVTDESC505
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
@@ -1385,7 +1409,7 @@ character_event = {
 
 		add_character_modifier = {
 			name = just_choosed_candidate
-			years = 2
+			years = 3
 		}
 
 		any_child = {
@@ -1405,7 +1429,7 @@ character_event = {
 
 # I've found no successor
 character_event = {
-	id = NOMAD.506
+	id = NOMAD.512
 	desc = NOMADEVTDESC506
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
@@ -1419,7 +1443,7 @@ character_event = {
 	}
 
 	option = { # I'll repeat my searching
-		name = "NOMADEVTOPA.506"
+		name = "NOMADEVTOPTA.506"
 
 		character_event = {
 			id = NOMAD.603
@@ -1601,6 +1625,7 @@ character_event = {
 
 	option = { # Approve
 		name = "EVTOPTANOMADA.603"
+		log = "[From.GetFullName] choosed random"
 		hidden_tooltip = {
 			character_event = { id = NOMAD.604 days = 21 }
 		}
@@ -1609,10 +1634,13 @@ character_event = {
 	option = { # I will choose someone from my family
 		name = "EVTOPTANOMADB.603"
 		trigger = { 
-			ai = no 
+			# ai = no 
+			has_character_flag = experimental_airnomad
 			# has_living_children = yes 
 		}
 		
+		log = "[From.GetFullName] choosed family"
+
 		# if the char is a man
 		if = {
 			limit = {
@@ -1621,7 +1649,8 @@ character_event = {
 
 			any_child = {
 				limit = {
-					is_female = no					
+					is_female = no
+					age = 20
 				}
 
 				character_event = {
@@ -1631,7 +1660,8 @@ character_event = {
 
 			any_sibling = {
 				limit = {
-					is_female = no					
+					is_female = no
+					age >= 20	
 				}
 
 				character_event = {
@@ -1668,7 +1698,7 @@ character_event = {
 		}
 
 		character_event = {
-			id = NOMAD.504 days = 60
+			id = NOMAD.510 days = 60
 		}
 	}
 
