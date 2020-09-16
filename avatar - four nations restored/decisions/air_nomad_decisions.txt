@@ -9,6 +9,14 @@ decisions = {
 			prisoner = no
 			OR = {
 				NOT = { num_of_children = 1 }
+				NOR = {
+					any_child = {
+						same_sex = ROOT
+					}
+					any_sibling = {
+						same_sex = ROOT
+					}
+				}
 				current_heir = {
 					NOT = { dynasty = ROOT }
 				}
@@ -20,10 +28,17 @@ decisions = {
 			}
 		}
 		allow = {
-			prestige = 50
+			OR = {
+				prestige = 50
+
+				current_heir = {
+					NOT = { dynasty = ROOT }
+				}
+			}
 		}
 		effect = {
 			prestige = -50
+			log = "[Root.GetFullName] established successor decision"
 			custom_tooltip = {
 				text = establish_successor_tooltip
 				hidden_tooltip = {
@@ -36,7 +51,7 @@ decisions = {
 			always = no
 		}
 		ai_will_do = {
-			factor = 0.1
+			factor = 0.5
 		}
 	}
 	
@@ -175,8 +190,7 @@ decisions = {
 						days = 730
 					}
 				}
-			}			
-			
+			}
 		}
 	}
 	
