@@ -1,0 +1,59 @@
+succession_laws = {
+    succ_air_nomad_elective = {
+		oldest_child_opinion = -15
+		child_opinion = -5
+		dynasty_opinion = -5
+		vassal_opinion = 10
+		potential = {
+			holder_scope = {
+				OR = {
+					independent = yes
+					NOT = {
+						any_liege = {
+							holy_order = yes
+						}
+					}
+				}
+				is_merchant_republic = no
+				is_patrician = no
+				holy_order = no
+				OR = {
+					independent = yes
+					NOT = {
+						any_demesne_title = {
+							is_vice_royalty = yes
+						}
+					}
+				}
+				NOT = { government = chinese_imperial_government }
+			}
+			OR = {
+				is_landless_type_title = no
+				is_landless_type_title = yes
+				is_tribal_type_title = yes
+				temporary = yes
+			}
+			holder_scope = { NOT = { government = lawless_piracy } }
+			holder_scope = { NOT = { government = chinese_imperial_government } }
+			#is_primary_type_title = no
+			NOT = { tier = baron }
+		}
+		allow = {
+			custom_tooltip = {
+				text = not_forced_tt
+				hidden_tooltip = {
+					holder_scope = { NOT = { has_character_flag = liege_forced_succ_law } }
+				}
+			}
+		}
+		effect = {
+			succession = {
+				base_type = feudal_elective
+				voting_rules = air_nomad_elective
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}			
+	}
+}

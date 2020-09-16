@@ -1,0 +1,131 @@
+# The entry should be named in the same way that the elective succession law is named to define it's voter's logic.
+# Root scope - Voter, the character voting in the election
+# From scope - Candidate, Character considered for the title
+# FromFrom scope - The title the nomination is for
+# FromFromFrom scope - The title owner's candidate
+# The voter will vote for the top score candidate calculated from this script.
+
+air_nomad_elective = {
+	# elector_stances = { #Electoral stances visible on the Electors' tab. Do not directly affect voting pattern unless used as triggers in the modifiers of candidate_voter_score.
+	# 	my_stance = {
+	# 		icon = 5
+	# 		days = 1
+	# 		additive_modifier = {
+	# 			trait = humble
+	# 			value = 6
+	# 		}
+	# 	}
+	# 	other_stance = {
+	# 		icon = 3
+	# 		days = 1
+	# 	}
+	# 	third_stance = {
+	# 		icon = 1
+	# 		days = 5
+	# 		additive_modifier = {
+	# 			trait = wroth
+	# 			value = 10
+	# 		}
+	# 	}
+	# }
+	
+	elector_selection = {
+		days = 1 		# If below 0, ROOT is not valid to be an Elector. Any character above 0 will be an elector.
+		max_amount = 5 # Determines max amount of electors, with the lower scoring ones being excluded (limit is optional)
+		
+		# only elders
+		additive_modifier = {
+			value = 100
+			trait = airelder
+		}
+	}
+
+	# todo
+	elector_vote_strength = { #Affects the voting strength of each elector.
+		days = 1 # 1 elector = 1 vote.
+		
+		# elder council rank
+		additive_modifier = { 
+			value = 1
+			society_member_of = monastic_order_elder_council
+			society_rank == 1
+		}
+		additive_modifier = { 
+			value = 2
+			society_member_of = monastic_order_elder_council
+			society_rank == 2
+		}
+		additive_modifier = { 
+			value = 3
+			society_member_of = monastic_order_elder_council
+			society_rank == 3
+		}
+		additive_modifier = { 
+			value = 4
+			society_member_of = monastic_order_elder_council
+			society_rank == 4
+		}
+
+		# virtue
+		additive_modifier = {
+			value = 2
+			trait = honest
+		}
+
+		# bending
+		additive_modifier = { # only elders
+			value = 3
+			trait = powerful_bender
+		}
+		additive_modifier = { # only elders
+			value = 4
+			trait = master_bender
+		}
+		additive_modifier = { # only elders
+			value = 5
+			trait = legendary_bender
+		}
+
+		# learning
+		additive_modifier = { # only elders
+			value = 4
+			trait = scholarly_theologian
+		}
+		additive_modifier = { # only elders
+			value = 5
+			trait = mastermind_theologian
+		}
+	}
+	
+	# todo
+	candidate_vote_score = { #Chance of an Elector voting for a candidate over the other. The candidate with the highest value will be picked.
+		days = 1
+		##########################   Elector voting himself   ##########################
+		additive_modifier = {
+			value = 15
+			localisation_key = tooltip_feudal_elector_vote_myself
+			character = FROM
+			NOR = {
+				trait = humble
+				trait = content
+				trait = craven
+				trait = slothful
+				trait = stressed
+				trait = depressed
+				trait = ambitious
+			}
+		}
+	}
+
+	#ROOT = Current Title holder, FROM = Candidate, FROMFROM = Title, FROMFROMFROM = Null
+	candidate_trigger = {
+		NOT = { character = FROM } #Not the current ruler.
+		FROM = {
+			culture_group = air_nomad_culture
+			OR = {
+				trait = airnomad
+				trait = airelder
+			}
+		}
+	}
+}
