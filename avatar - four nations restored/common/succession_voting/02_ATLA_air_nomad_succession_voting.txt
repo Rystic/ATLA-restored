@@ -30,12 +30,27 @@ air_nomad_elective = {
 	# }
 	
 	elector_selection = {
-		days = 1 		# If below 0, ROOT is not valid to be an Elector. Any character above 0 will be an elector.
+		days = -5 		# If below 0, ROOT is not valid to be an Elector. Any character above 0 will be an elector.
 		max_amount = 5 # Determines max amount of electors, with the lower scoring ones being excluded (limit is optional)
-		
-		# only elders
-		additive_modifier = {
-			value = 100
+
+		additive_modifier = { #Current ruler is always an elector.
+			value = 10
+			FROMFROM = { #Either title is higher than Duke-tier, or must be primary.
+				OR = {
+					higher_tier_than = DUKE
+					holder_scope = { primary_title = { title = PREVPREV } }
+				}
+			}
+			FROMFROM = {
+				holder_scope = {
+					character = PREVPREV
+				}
+			}
+		}
+
+		additive_modifier = { # elder vassals and courts
+			value = 10
+			vassal_of = FROMFROM
 			trait = airelder
 		}
 	}
@@ -73,25 +88,25 @@ air_nomad_elective = {
 		}
 
 		# bending
-		additive_modifier = { # only elders
+		additive_modifier = {
 			value = 3
 			trait = powerful_bender
 		}
-		additive_modifier = { # only elders
+		additive_modifier = {
 			value = 4
 			trait = master_bender
 		}
-		additive_modifier = { # only elders
+		additive_modifier = {
 			value = 5
 			trait = legendary_bender
 		}
 
 		# learning
-		additive_modifier = { # only elders
+		additive_modifier = {
 			value = 4
 			trait = scholarly_theologian
 		}
-		additive_modifier = { # only elders
+		additive_modifier = {
 			value = 5
 			trait = mastermind_theologian
 		}
@@ -99,7 +114,7 @@ air_nomad_elective = {
 	
 	# todo
 	candidate_vote_score = { #Chance of an Elector voting for a candidate over the other. The candidate with the highest value will be picked.
-		days = 1
+		days = 0
 		##########################   Elector voting himself   ##########################
 		additive_modifier = {
 			value = 15
@@ -114,6 +129,190 @@ air_nomad_elective = {
 				trait = depressed
 				trait = ambitious
 			}
+			NOT = {
+				FROMFROM = {
+					holder_scope = {
+						is_parent_of = ROOT
+					}
+				}
+			}
+		}
+		additive_modifier = {
+			value = -15
+			localisation_key = tooltip_feudal_elector_vote_not_myself
+			character = FROM
+			NOT = { trait = ambitious }
+			OR = {
+				trait = humble
+				trait = content
+				trait = craven
+				trait = slothful
+				trait = stressed
+				trait = depressed
+			}
+		}
+		additive_modifier = {
+			value = 40
+			localisation_key = tooltip_feudal_elector_vote_myself_heir
+			character = FROM
+			NOR = {
+				trait = humble
+				trait = content
+				trait = craven
+				trait = slothful
+				trait = stressed
+				trait = depressed
+				trait = ambitious
+			}
+			FROMFROM = {
+				holder_scope = {
+					is_parent_of = ROOT
+				}
+			}
+		}
+		additive_modifier = {
+			value = 40
+			localisation_key = tooltip_feudal_elector_vote_myself_ambitious
+			character = FROM
+			trait = ambitious
+		}
+		additive_modifier = {
+			value = 10
+			# localisation_key = tooltip_feudal_elector_vote_myself_ambitious
+			character = FROM
+			trait = airnomad_tattooos
+		}
+
+		##########################   Candidate's traits   ##########################
+
+		#The heir
+		additive_modifier = { #Current ruler will always try to elect his player heir.
+			value = 50
+			localisation_key = tooltip_feudal_elector_vote_player_heir
+			player_heir = {
+				character = FROM
+				NOT = { character = ROOT }
+			}
+			FROMFROM = {
+				holder_scope = {
+					character = PREVPREV
+				}
+				NOT = {
+					is_rival = FROM #Unless is rival.
+				}
+			}
+		}
+
+		# Ageism
+		additive_modifier = {
+			value = -30
+			localisation_key = tooltip_feudal_elector_vote_child
+			NOT = { character = FROM }
+			FROM = {
+				age = 10
+				NOT = {
+					age = 16
+				}
+			}
+		}
+		additive_modifier = { #Still too young for older rulers
+			value = -10
+			localisation_key = tooltip_feudal_elector_vote_youngster
+			NOT = { character = FROM }
+			age = 30
+			FROM = {
+				age = 16
+				NOT = {
+					age = 25
+				}
+			}
+		}
+		additive_modifier = {
+			value = -5
+			localisation_key = tooltip_feudal_elector_vote_youngster
+			NOT = { character = FROM }
+			age = 40
+			FROM = {
+				age = 25
+				NOT = {
+					age = 35
+				}
+			}
+		}
+		additive_modifier = { #Or too old for younger rulers. -Less of a malus for Tanistry
+			value = -5
+			localisation_key = tooltip_feudal_elector_vote_oldtimer
+			NOT = { character = FROM }
+			NOT = { age = 50 }
+			FROM = {
+				age = 40
+				NOT = { age = 50 }
+			}
+		}
+		additive_modifier = { #Or too old for younger rulers. -Less of a malus for Tanistry
+			value = -10
+			localisation_key = tooltip_feudal_elector_vote_oldtimer
+			NOT = { character = FROM }
+			NOT = { age = 60 }
+			FROM = {
+				age = 50
+				NOT = { age = 60 }
+			}
+		}
+		additive_modifier = { #Or too old for younger rulers. -Less of a malus for Tanistry
+			value = -10
+			localisation_key = tooltip_feudal_elector_vote_oldtimer
+			NOT = { character = FROM }
+			NOT = { age = 70 }
+			FROM = {
+				age = 60
+			}
+		}
+
+		# bending
+		additive_modifier = {
+			value = 2
+			NOT = { character = FROM }
+			FROM = {
+				trait = competent_bender
+			}
+		}
+		additive_modifier = {
+			value = 3
+			NOT = { character = FROM }
+			FROM = {
+				trait = powerful_bender
+			}
+		}
+		additive_modifier = {
+			value = 4
+			NOT = { character = FROM }
+			FROM = {
+				trait = master_bender
+			}
+		}
+		additive_modifier = {
+			value = 5
+			NOT = { character = FROM }
+			FROM = {
+				trait = legendary_bender
+			}
+		}
+
+		# learning
+		additive_modifier = {
+			value = 4
+			NOT = { character = FROM }
+			FROM = {
+				trait = scholarly_theologian
+			}
+		}
+		additive_modifier = {
+			value = 5
+			NOT = { character = FROM }
+			FROM = {
+				trait = mastermind_theologian
+			}
 		}
 	}
 
@@ -122,6 +321,10 @@ air_nomad_elective = {
 		NOT = { character = FROM } #Not the current ruler.
 		FROM = {
 			culture_group = air_nomad_culture
+			is_landed = no # they don't elect from rulers
+			host = {
+				character = ROOT
+			}
 			OR = {
 				trait = airnomad
 				trait = airelder
