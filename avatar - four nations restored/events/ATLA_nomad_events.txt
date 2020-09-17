@@ -1262,8 +1262,20 @@ character_event = {
 	option = { # Yes, (s)he is ready
 		name = "NOMADEVTOPTA.501"
 
+		set_character_flag = found_at_least_one_pretendent
+
 		FROM = {
 			# set_father = ROOT
+
+			if = { # if (s)he isn't (grand)father or brother or child or etc, make him/her your child 
+				limit = {
+					NOT = {
+						is_close_relative = ROOT
+					}
+				}
+				set_father = ROOT
+			}
+
 			dynasty = ROOT
 			opinion = {
 				modifier = opinion_adopted_as_successor
@@ -1314,6 +1326,7 @@ character_event = {
 	
 	option = { # Yes, (s)he needs to see the world.
 		name = "NOMADEVTOPTA.503"
+		trigger = { ai = no }
 	}
 
 	option = { # No, return him
@@ -1338,6 +1351,8 @@ character_event = {
 	option = { # Well
 		name = OK
 
+		set_character_flag = accepted_potential_successor
+
 		liege = {
 			character_event = { id = NOMAD.410 }
 		}
@@ -1360,35 +1375,23 @@ character_event = {
 	immediate = {
 		if = { # I've found a successor
 			limit = {
-				OR = {
-					any_child = {
-						has_character_flag = accepted_potential_successor
-					}
-					any_sibling = {
-						has_character_flag = accepted_potential_successor
-					}
-				}
+				has_character_flag = found_at_least_one_pretendent
 			}
 
 			character_event = {
-				id = NOMAD.505
+				id = NOMAD.511
 				days = 1
 			}
 		}
 		if = { # I've found no successor
 			limit = {
-				NOR = {
-					any_child = {
-						has_character_flag = accepted_potential_successor
-					}
-					any_sibling = {
-						has_character_flag = accepted_potential_successor
-					}
+				NOT = {
+					has_character_flag = found_at_least_one_pretendent
 				}
 			}
 
 			character_event = {
-				id = NOMAD.506
+				id = NOMAD.512
 				days = 1
 			}
 		}
@@ -1398,7 +1401,7 @@ character_event = {
 # I've found a successor
 character_event = {
 	id = NOMAD.511
-	desc = NOMADEVTDESC505
+	desc = NOMADEVTDESC511
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
 	
@@ -1412,14 +1415,16 @@ character_event = {
 			years = 3
 		}
 
-		any_child = {
+		any_close_relative = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 			}
 		}
-		any_sibling = {
+		
+		any_courtier = {
 			limit = {
 				has_character_flag = accepted_potential_successor
+				dynasty = ROOT
 			}
 		}
 
@@ -1430,7 +1435,7 @@ character_event = {
 # I've found no successor
 character_event = {
 	id = NOMAD.512
-	desc = NOMADEVTDESC506
+	desc = NOMADEVTDESC512
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
 	
@@ -1443,7 +1448,7 @@ character_event = {
 	}
 
 	option = { # I'll repeat my searching
-		name = "NOMADEVTOPTA.506"
+		name = "NOMADEVTOPTA.512"
 
 		character_event = {
 			id = NOMAD.603
@@ -1460,7 +1465,7 @@ character_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		any_child = {
+		any_close_relative = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 				is_heir = yes
@@ -1468,10 +1473,10 @@ character_event = {
 
 			clr_character_flag = accepted_potential_successor
 		}
-
-		any_sibling = {
+		any_courtier = { # any kinsman I've adopted
 			limit = {
 				has_character_flag = accepted_potential_successor
+				dynasty = ROOT
 				is_heir = yes
 			}
 
@@ -1482,7 +1487,7 @@ character_event = {
 	option = {
 		name = OK
 
-		any_child = {
+		any_close_relative = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 			}
@@ -1498,21 +1503,15 @@ character_event = {
 			clr_character_flag = accepted_potential_successor
 		}
 
-		any_sibling = {
+		any_courtier = { # any kinsman I've adopted
 			limit = {
 				has_character_flag = accepted_potential_successor
+				dynasty = ROOT
 			}
 
-			if = {
-				limit = {
-					dynasty = ROOT
-				}
-
-				dynasty = father_bastard
-			}
-
-			clr_character_flag = accepted_potential_successor
+			dynasty = father_bastard
 		}
+
 	}
 }
 
@@ -1635,75 +1634,53 @@ character_event = {
 		name = "EVTOPTANOMADB.603"
 		trigger = { 
 			# ai = no 
-			has_character_flag = experimental_airnomad
-			# has_living_children = yes 
+			# has_character_flag = experimental_airnomad
+			any_close_relative = {
+				same_sex = ROOT
+				is_alive = yes
+			}
 		}
 		
 		log = "[From.GetFullName] choosed family"
 
-		# if the char is a man
-		if = {
+		any_close_relative = {
 			limit = {
-				is_female = no
+				same_sex = ROOT
+				age = 20
 			}
 
-			any_child = {
-				limit = {
-					is_female = no
-					age = 20
-				}
-
-				character_event = {
-					id = NOMAD.500 days = 1
-				}
-			}
-
-			any_sibling = {
-				limit = {
-					is_female = no
-					age >= 20	
-				}
-
-				character_event = {
-					id = NOMAD.500 days = 1
-				}
-			}
-		}
-	
-		# a woman
-		if = {
-			limit = {
-				is_female = yes
-			}
-
-			any_child = {
-				limit = {
-					is_female = yes
-				}
-
-				character_event = {
-					id = NOMAD.500 days = 1
-				}
-			}
-
-			any_sibling = {
-				limit = {
-					is_female = yes					
-				}
-				
-				character_event = {
-					id = NOMAD.500 days = 1
-				}
+			character_event = { # make him/her an offer
+				id = NOMAD.500 days = 1
 			}
 		}
 
-		character_event = {
+		character_event = { # end search
+			id = NOMAD.510 days = 60
+		}
+	}
+
+	option = { # I will choose the person whom the council has elected
+		name = "EVTOPTANOMADC.603"
+		
+		log = "[From.GetFullName] choosed council"
+
+		any_courtier = {
+			limit = {
+				is_heir = ROOT
+			}
+
+			character_event = { # make him/her an offer
+				id = NOMAD.500 days = 1
+			}
+		}
+
+		character_event = { # end search
 			id = NOMAD.510 days = 60
 		}
 	}
 
 	option = { # Cancel
-		name = "EVTOPTANOMADC.603"
+		name = "EVTOPTANOMADD.603"
 		clr_character_flag = search_for_successor
 		trigger = { ai = no }
 	}
