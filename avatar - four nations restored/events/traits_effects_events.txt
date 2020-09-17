@@ -5992,21 +5992,27 @@ character_event = {
 	desc = EVTDESC3280
 	picture = GFX_evt_courtiers_talking
 	
+	only_playable = yes
 	min_age = 16
 	capable_only = yes
 	prisoner = no
+	war = no
+	
 	is_triggered_only = yes 
 	
 	trigger = {
 		trait = honest
-		NOT = { trait = shy }
-		war = no
 		in_command = no
-		NOT = { trait = in_hiding }
+		NOR = {
+			trait = shy
+			is_inaccessible_trigger = yes
+		}
 		any_courtier = {
 			age = 16
-			NOT = { trait = honest }
-			NOT = { trait = in_hiding }
+			NOR = {
+				trait = honest
+				is_inaccessible_trigger = yes
+			}
 			OR = {
 				AND = {
 					trait = gluttonous
@@ -6045,7 +6051,10 @@ character_event = {
 		random_courtier = {
 			limit = {
 				age = 16
-				NOT = { trait = honest }
+				NOR = {
+					trait = honest
+					is_inaccessible_trigger = yes
+				}
 				OR = {
 					AND = {
 						trait = gluttonous
@@ -6107,14 +6116,15 @@ character_event = {
 	desc = EVTDESC3282
 	picture = GFX_evt_emissary
 	
+	only_playable = yes
 	min_age = 16
 	capable_only = yes
 	prisoner = no
+	war = no
 	is_triggered_only = yes 
 	
 	trigger = {
 		trait = honest
-		war = no
 		in_command = no
 		intrigue = 12
 	}
@@ -6255,116 +6265,6 @@ character_event = {
 #		piety = 10
 #	}
 #}
-
-### Good vassal! ###
-character_event = {
-	id = 3286
-	desc = EVTDESC3286
-	picture = GFX_evt_throne_room
-	
-	min_age = 16
-	capable_only = yes
-	prisoner = no
-	is_triggered_only = yes 
-	
-	trigger = {
-		trait = honest
-		war = no
-		in_command = no
-		NOT = { trait = in_hiding }
-		any_vassal = {
-			age = 16
-			NOT = { trait = in_hiding }
-			OR = {
-				trait = charitable
-				trait = kind
-				trait = diligent
-				trait = chaste
-				trait = temperate
-				trait = patient
-				trait = humble
-			}
-		}		
-	}
-	
-	weight_multiplier = {
-		factor = 1
-	}
-	
-	immediate = {
-		random_vassal = {
-			limit = {
-				age = 16
-				NOT = { trait = in_hiding }
-				OR = {
-					trait = charitable
-					trait = kind
-					trait = diligent
-					trait = chaste
-					trait = temperate
-					trait = patient
-					trait = humble
-				}
-			}
-			set_character_flag = honest_good_vassal_for_us				
-		}
-	}
-	
-	option = {
-		name = EVTOPTA3286
-		random_vassal = {
-			limit = { has_character_flag = honest_good_vassal_for_us }
-			letter_event = { id = 3287 tooltip = EVTTOOLTIP3287 }
-		}
-		any_vassal = {
-			limit = {
-				NOT = { has_character_flag = honest_good_vassal_for_us	} 
-			}
-			opinion = { who = ROOT modifier = honest_neg_small years = 10 }
-		}
-		random_vassal = {
-			limit = { has_character_flag = honest_good_vassal_for_us }
-			clr_character_flag = honest_good_vassal_for_us 
-			opinion = { who = ROOT modifier = honest_pos years = 10 }
-		}
-	}
-
-	option = {
-		name = EVTOPTB3286
-		scaled_wealth = -0.05
-		random_vassal = {
-			limit = { has_character_flag = honest_good_vassal_for_us }
-			clr_character_flag = honest_good_vassal_for_us 
-			letter_event = { id = 3288 tooltip = EVTTOOLTIP3288 }
-		}
-	}
-}
-
-#Praise publicly
-letter_event = {
-	id = 3287
-	desc = EVTDESC3287
-	
-	is_triggered_only = yes 
-	
-	option = {
-		name = EVTOPTA3287
-		prestige = 10
-	}
-}
-
-#Reward with gold
-letter_event = {
-	id = 3288
-	desc = EVTDESC3288
-	
-	is_triggered_only = yes 
-	
-	option = {
-		name = EVTOPTA3288
-		scaled_wealth = 0.2
-	}
-}
 
 ####################################
 # Craven
