@@ -1454,6 +1454,10 @@ character_event = {
 	option = { # I'll repeat my searching
 		name = "NOMADEVTOPTA.512"
 
+		custom_tooltip = {
+			text = bad_search_tt
+		}
+
 		character_event = {
 			id = NOMAD.603
 			days = 20
@@ -1566,14 +1570,13 @@ character_event = {
 			trait = airinitiate
 			trait = airnomad
 			trait = airelder
-			trait = airnomad_tattoos
 		}
 	}
 	
 	option = {
 		if = {
 			limit = {
-				age = 50
+				age = 45
 			}
 			add_trait = airelder
 			add_trait = airnomad_tattoos
@@ -1583,7 +1586,7 @@ character_event = {
 		}
 		if = {
 			limit = {
-				NOT = { age = 50 }
+				NOT = { age = 45 }
 				age = 16
 			}
 			add_trait = airnomad
@@ -1644,31 +1647,18 @@ character_event = {
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
 
-	option = { # Approve
-		name = "EVTOPTANOMADA.603"
-		log = "[From.GetFullName] choosed random"
-		hidden_tooltip = {
-			character_event = { id = NOMAD.604 days = 21 }
-		}
-	}
-
-	option = { # I will choose someone from my family
-		name = "EVTOPTANOMADB.603"
-		trigger = { 
-			# ai = no 
-			# has_character_flag = experimental_airnomad
-			any_close_relative = {
-				same_sex = ROOT
-				is_alive = yes
-			}
-		}
+	option = { # I will choose the person whom the council has elected
+		name = "EVTOPTANOMADC.603"
+		log = "[From.GetFullName] choosed council"
 		
-		log = "[From.GetFullName] choosed family"
+		tooltip_info = learning
+		custom_tooltip = {
+			text = choose_council_nominee_tt
+		}
 
-		any_close_relative = {
+		any_courtier = {
 			limit = {
-				same_sex = ROOT
-				age = 20
+				is_heir = ROOT
 			}
 
 			character_event = { # make him/her an offer
@@ -1681,21 +1671,44 @@ character_event = {
 		}
 	}
 
-	option = { # I will choose the person whom the council has elected
-		name = "EVTOPTANOMADC.603"
-		
-		log = "[From.GetFullName] choosed council"
+	option = { # I will find someone in the temple
+		name = "EVTOPTANOMADA.603"
+		log = "[From.GetFullName] choosed random"
+		tooltip_info = diplomacy
+		custom_tooltip = {
+			text = choose_random_tt
+		}
+		hidden_tooltip = {
+			character_event = { id = NOMAD.604 days = 21 }
+		}
+	}
 
-		any_courtier = {
+	option = { # I will choose someone from my family
+		name = "EVTOPTANOMADB.603"
+		tooltip_info = intrigue
+		custom_tooltip = {
+			text = choose_family_tt
+		}
+
+		log = "[From.GetFullName] choosed family"
+		trigger = { 
+			# ai = no 
+			# has_character_flag = experimental_airnomad
+			any_close_relative = {
+				same_sex = ROOT
+				is_alive = yes
+			}
+		}
+		any_close_relative = {
 			limit = {
-				is_heir = ROOT
+				same_sex = ROOT
+				age = 20
 			}
 
 			character_event = { # make him/her an offer
 				id = NOMAD.500 days = 1
 			}
 		}
-
 		character_event = { # end search
 			id = NOMAD.510 days = 60
 		}
@@ -1737,7 +1750,7 @@ character_event = {
 						trait = charismatic_negotiator
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 					}
 					new_character = {
 						set_character_flag = is_diplomat_successor
@@ -1747,7 +1760,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 25
+						age = 32
 						attributes = { 
 							martial = 9
 							diplomacy = 4
@@ -1772,7 +1785,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 22
+						age = 26
 						attributes = { 
 							martial = 4
 							diplomacy = 5
@@ -1786,7 +1799,7 @@ character_event = {
 						trait = fortune_builder
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1797,7 +1810,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 24
+						age = 25
 						attributes = { 
 							martial = 7
 							diplomacy = 4
@@ -1811,7 +1824,7 @@ character_event = {
 						trait = intricate_webweaver
 						trait = airnomad
 						trait = airbender
-						trait = competent_bender
+						trait = powerful_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1822,7 +1835,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 21
+						age = 32
 						attributes = { 
 							martial = 2
 							diplomacy = 5
@@ -1836,7 +1849,7 @@ character_event = {
 						trait = scholarly_theologian
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = master_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1867,7 +1880,7 @@ character_event = {
 						trait = charismatic_negotiator
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 					}
 					new_character = {
 						set_character_flag = is_diplomat_successor
@@ -1876,7 +1889,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 25
+						age = 31
 						attributes = { 
 							martial = 9
 							diplomacy = 4
@@ -1900,7 +1913,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 22
+						age = 24
 						attributes = { 
 							martial = 4
 							diplomacy = 5
@@ -1914,7 +1927,7 @@ character_event = {
 						trait = fortune_builder
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1924,7 +1937,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 24
+						age = 26
 						attributes = { 
 							martial = 7
 							diplomacy = 4
@@ -1938,7 +1951,7 @@ character_event = {
 						trait = intricate_webweaver
 						trait = airnomad
 						trait = airbender
-						trait = competent_bender
+						trait = powerful_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1948,7 +1961,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 21
+						age = 34
 						attributes = { 
 							martial = 2
 							diplomacy = 5
@@ -1962,7 +1975,7 @@ character_event = {
 						trait = scholarly_theologian
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = master_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -2085,6 +2098,15 @@ character_event = {
 		name = "EVTOPTANOMADC.606"
 		trigger = { 
 			has_character_flag = had_chance_to_find_successor
+		}
+		clr_character_flag = had_chance_to_find_successor
+
+		custom_tooltip = {
+			text = bad_search_tt
+		}
+		character_event = {
+			id = NOMAD.603
+			days = 1
 		}
 	}
 }
