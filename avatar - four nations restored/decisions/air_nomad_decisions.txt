@@ -9,19 +9,36 @@ decisions = {
 			prisoner = no
 			OR = {
 				NOT = { num_of_children = 1 }
+				NOR = {
+					any_child = {
+						same_sex = ROOT
+					}
+					any_sibling = {
+						same_sex = ROOT
+					}
+				}
 				current_heir = {
 					NOT = { dynasty = ROOT }
 				}
 			}
-			NOT = { 
+			NOR = { 
 				has_character_flag = search_for_successor
+
+				has_character_modifier = just_choosed_candidate
 			}
 		}
 		allow = {
-			prestige = 50
+			OR = {
+				prestige = 50
+
+				current_heir = {
+					NOT = { dynasty = ROOT }
+				}
+			}
 		}
 		effect = {
 			prestige = -50
+			log = "[Root.GetFullName] established successor decision"
 			custom_tooltip = {
 				text = establish_successor_tooltip
 				hidden_tooltip = {
@@ -29,13 +46,12 @@ decisions = {
 					character_event = { id = NOMAD.603 }
 				}
 			}
-			
 		}
 		revoke_allowed = {
 			always = no
 		}
 		ai_will_do = {
-			factor = 0.1
+			factor = 0.5
 		}
 	}
 	
@@ -174,8 +190,7 @@ decisions = {
 						days = 730
 					}
 				}
-			}			
-			
+			}
 		}
 	}
 	

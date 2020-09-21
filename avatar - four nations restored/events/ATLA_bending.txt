@@ -1845,6 +1845,7 @@ character_event = {
 	}
 
 	option = {
+		name = EVTOPTAbending.91 # I am an airbender
 		if = {
 			limit = {
 				is_unimportant_trigger = yes
@@ -1882,8 +1883,7 @@ character_event = {
 			death = { death_reason = death_missing }
 			break = yes
 		}
-		name = EVTOPTAbending.91 #
-		# add_trait = airnomad
+
 		add_trait = airbender
 		add_trait = incompetent_bender
 	}
@@ -1918,13 +1918,14 @@ character_event = {
 	desc = EVTDESCbending.93
 	picture = GFX_evt_family
 	is_triggered_only = yes
-	min_age = 10
+	min_age = 8
+	max_age = 16
 	prisoner = no
 	capable_only = yes
 	culture_group = air_nomad_culture
 
 	trigger = {
-		is_landed = yes
+		# is_landed = yes
 		NOT = { any_artifact = { has_artifact_flag = pet } }
 	}
 
@@ -2038,15 +2039,19 @@ character_event = { # Develops Airbending - Parent
 character_event = {
 	id = bending.96
 	hide_window = yes
+	
 	is_triggered_only = yes
 	culture_group = air_nomad_culture
 
 	trigger = {
-		NOT = { trait = airnomad }
-		NOT = { trait = airinitiate }
-		NOT = { trait = waterbender }
-		NOT = { trait = earthbender }
-		NOT = { trait = firebender }
+		NOR = {
+			trait = airinitiate
+			trait = airnomad
+			trait = airelder
+			trait = waterbender
+			trait = earthbender
+			trait = firebender
+		}
 	}
 
 	immediate = {
@@ -2081,20 +2086,69 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-				age = 14
-			}
-		
-			add_trait = airnomad
-		}
-
-		if = {
-			limit = {
 				NOT = {
 					age = 14
 				}
 			}
 		
 			add_trait = airinitiate
+		}
+
+		if = {
+			limit = {
+				age = 14
+			}
+		
+			add_trait = airnomad
+
+			# make competent bender
+			if = {
+				limit = {
+					more_experienced_incompetent_trigger = no
+				}
+				add_trait = competent_bender
+			} 
+			
+			# add tattoos to powerful+ bender
+			if = {
+				limit = {
+					more_experienced_competent_trigger = yes
+				}
+				add_trait = airnomad_tattoos
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					age = 45
+					AND = {
+						is_ruler = yes
+						age = 40
+					}
+				}
+			}
+
+			add_trait = airelder
+
+			# make elder powerful
+			if = {
+				limit = {
+					more_experienced_competent_trigger = no
+				}
+				add_trait = powerful_bender
+			}
+
+			# add tattoos if char has no them
+			if = {
+				limit = {
+					NOT = {
+						trait = airnomad_tattoos
+					}
+				}
+
+				add_trait = airnomad_tattoos
+			}
 		}
 	}
 }
