@@ -24,10 +24,27 @@ character_event = {
 	only_men = yes
 	
 	trigger = {
-		has_dlc = "Rajas of India"
+		OR = {
+			has_dlc = "Rajas of India"
+			has_dlc = "Jade Dragon"
+			has_dlc = "Holy Fury"
+			has_dlc = "The Sword of Islam"
+		}
+		NOT = {
+			has_game_rule = {
+				name = supernatural_events
+				value = off
+			}
+		}
 		OR = {
 			father = {
-				ai = no
+				OR = {
+					ai = no
+					has_game_rule = {
+						name = supernatural_events
+						value = unrestricted
+					}
+				}
 				is_reincarnated = no
 				father_even_if_dead = {
 					OR = {
@@ -69,11 +86,16 @@ character_event = {
 	}
 	
 	option = {
-		name = OK
 		if = {
 			limit = {
 				father = { 
-					ai = no
+					OR = {
+						ai = no
+						has_game_rule = {
+							name = supernatural_events
+							value = unrestricted
+						}
+					}
 				}
 			}
 			if = {
@@ -90,7 +112,7 @@ character_event = {
 					father_even_if_dead = {
 						father_even_if_dead = {
 							ROOT = {
-								set_reincarnation = THIS
+								set_reincarnation = PREV
 							}
 						}
 					}
@@ -103,7 +125,7 @@ character_event = {
 				father = {
 					father_even_if_dead = {
 						ROOT = {
-							set_reincarnation = THIS
+							set_reincarnation = PREV
 						}
 					}
 				}
@@ -135,7 +157,7 @@ character_event = {
 					father_even_if_dead = {
 						father_even_if_dead = {
 							ROOT = {
-								set_reincarnation = THIS
+								set_reincarnation = PREV
 							}
 						}
 					}
@@ -148,7 +170,7 @@ character_event = {
 				mother = {
 					father_even_if_dead = {
 						ROOT = {
-							set_reincarnation = THIS
+							set_reincarnation = PREV
 						}
 					}
 				}
@@ -345,9 +367,8 @@ character_event = {
 		has_dlc = "Rajas of India"
 		reincarnation_scope = {
 			OR = {
-				death_reason = death_murder
-				death_reason = death_murder_unknown
-				death_reason = death_execution
+				death_murder_trigger = yes
+				death_execution_trigger = yes
 			}
 			killer = {
 				always = yes
@@ -413,7 +434,7 @@ character_event = {
 	}
 }
 
-# [on_yearly_pulse] Reincarnation: Reincarnated player remembers birth of oldest child
+# [on_yearly_pulse] Reincarnation: Reincarnated player remembers child
 character_event = {
 	id = RoI.10022
 	desc = EVTDESC_RoI_10022
@@ -431,14 +452,25 @@ character_event = {
 		has_dlc = "Rajas of India"
 		reincarnation_scope = {
 			num_of_children = 1
+			any_child = {
+				always = yes
+			}
 		}
-		NOT = { has_character_flag = reinc_remembered_oldest_child }
+		NOT = { has_character_flag = reinc_remembered_child }
+	}
+
+	immediate = {
+		reincarnation_scope = {
+			random_child = {
+				save_event_target_as = target_child
+			}
+		}
 	}
 	
 	option = {
 		name = EVTOPTA_RoI_10022
 		
-		set_character_flag = reinc_remembered_oldest_child
+		set_character_flag = reinc_remembered_child
 	}
 }
 
