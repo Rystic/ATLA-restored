@@ -119,6 +119,7 @@ diploresponse_event = {
 ###########################################
 
 # Apart from these events, other events have been modified to make sure the Demon character is very likely to start adventures and is hard to kill
+
 # Event triggers for a player
 character_event = {
 	id = SoA.3000
@@ -1398,10 +1399,11 @@ character_event = {
 	desc = EVTDESC_SOA_3050
 	picture = GFX_evt_lunatic
 	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 	
 	trigger = {
-		trait = maimed
-		trait = possessed
+		is_maimed_trigger = yes
+#		trait = possessed
 		has_dlc = "Sons of Abraham"
 		OR = {
 			has_character_modifier = voice_of_satan
@@ -1409,17 +1411,44 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 24
+	weight_multiplier = {
+		days = 1
 		modifier = {
-			factor = 10
+			factor = 0.05
 			NOT = { has_character_flag = demon_child_non_pagan }
 		}
 	}
 	
 	option = {
 		name = EVTOPTA_SOA_3050
-		remove_trait = maimed
+		if = {
+			limit = { trait = maimed }
+			remove_trait = maimed
+		}
+		if = {
+			limit = { trait = one_eyed }
+			remove_trait = one_eyed
+		}
+		if = {
+			limit = { trait = one_handed }
+			remove_trait = one_handed
+		}
+		if = {
+			limit = { trait = one_legged }
+			remove_trait = one_legged
+		}
+		if = {
+			limit = { trait = disfigured }
+			remove_trait = disfigured
+		}
+		if = {
+			limit = { trait = mangled }
+			remove_trait = mangled
+		}
+		if = {
+			limit = { has_character_modifier = phantom_pain }
+			remove_character_modifier = phantom_pain
+		}
 	}
 }
 
@@ -1429,10 +1458,11 @@ character_event = {
 	desc = EVTDESC_SOA_3051
 	picture = GFX_evt_lunatic
 	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 	
 	trigger = {
 		trait = blinded
-		trait = possessed
+#		trait = possessed
 		has_dlc = "Sons of Abraham"
 		OR = {
 			has_character_modifier = voice_of_satan
@@ -1440,10 +1470,10 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 24
+	weight_multiplier = {
+		days = 1
 		modifier = {
-			factor = 10
+			factor = 0.05
 			NOT = { has_character_flag = demon_child_non_pagan }
 		}
 	}
@@ -1460,10 +1490,11 @@ character_event = {
 	desc = EVTDESC_SOA_3052
 	picture = GFX_evt_lunatic
 	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 	
 	trigger = {
 		trait = eunuch
-		trait = possessed
+#		trait = possessed
 		has_dlc = "Sons of Abraham"
 		OR = {
 			has_character_modifier = voice_of_satan
@@ -1471,10 +1502,10 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 24
+	weight_multiplier = {
+		days = 1
 		modifier = {
-			factor = 10
+			factor = 0.05
 			NOT = { has_character_flag = demon_child_non_pagan }
 		}
 	}
@@ -1491,6 +1522,7 @@ character_event = {
 	desc = EVTDESC_SOA_3053
 	picture = GFX_evt_lunatic
 	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 	
 	max_age = 75
 	
@@ -1499,7 +1531,7 @@ character_event = {
 			trait = incapable
 			trait = infirm
 		}
-		trait = possessed
+#		trait = possessed
 		has_dlc = "Sons of Abraham"
 		OR = {
 			has_character_modifier = voice_of_satan
@@ -1507,10 +1539,10 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 24
+	weight_multiplier = {
+		days = 1
 		modifier = {
-			factor = 10
+			factor = 0.05
 			NOT = { has_character_flag = demon_child_non_pagan }
 		}
 	}
@@ -1538,21 +1570,13 @@ character_event = {
 	desc = EVTDESC_SOA_3054
 	picture = GFX_evt_lunatic
 	border = GFX_event_normal_frame_religion
+	is_sick = yes
 	
 	trigger = {
-		trait = possessed
+#		trait = possessed
 		has_dlc = "Sons of Abraham"
-		OR = {
-			trait = syphilitic
-			trait = leper
-			trait = has_tuberculosis
-			trait = has_typhoid_fever
-			trait = has_typhus
-			trait = has_bubonic_plague
-			trait = has_measles
-			trait = has_small_pox
-			trait = has_aztec_disease
-		}
+		has_epidemic = yes
+		
 		OR = {
 			has_character_modifier = voice_of_satan
 			has_character_flag = demon_child_non_pagan
@@ -1560,69 +1584,27 @@ character_event = {
 	}
 	
 	mean_time_to_happen = {
-		months = 2
+		months = 1
 		modifier = {
-			factor = 10
+			factor = 12
 			NOT = { has_character_flag = demon_child_non_pagan }
 		}
 	}
 	
 	option = {
 		name = EVTOPTA_SOA_3054
-		if = {
-			limit = {
-				trait = syphilitic
-			}
-			remove_trait = syphilitic
-		}
-		if = {
-			limit = {
-				trait = leper
-			}
-			remove_trait = leper
-		}
-		if = {
-			limit = {
-				trait = has_tuberculosis
-			}
-			remove_trait = has_tuberculosis
-		}
-		if = {
-			limit = {
-				trait = has_typhoid_fever
-			}
-			remove_trait = has_typhoid_fever
-		}
-		if = {
-			limit = {
-				trait = has_typhus
-			}
-			remove_trait = has_typhus
-		}
+		
 		if = {
 			limit = {
 				trait = has_bubonic_plague
 			}
 			remove_trait = has_bubonic_plague
+			set_character_flag = achievement_i_got_better
 		}
-		if = {
-			limit = {
-				trait = has_measles
-			}
-			remove_trait = has_measles
-		}
-		if = {
-			limit = {
-				trait = has_small_pox
-			}
-			remove_trait = has_small_pox
-		}
-		if = {
-			limit = {
-				trait = has_aztec_disease
-			}
-			remove_trait = has_aztec_disease
-		}
+		
+		cure_illness = yes
+		
+		clear_disease_level_effect = yes
 	}
 }
 
@@ -1632,11 +1614,12 @@ character_event = {
 	desc = EVTDESC_SOA_3060
 	picture = GFX_evt_courier
 	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 	
 	prisoner = yes
 	
 	trigger = {
-		trait = possessed
+#		trait = possessed
 		has_dlc = "Sons of Abraham"
 		OR = {
 			has_character_modifier = voice_of_satan
@@ -1644,10 +1627,10 @@ character_event = {
 		}
 	}
 	
-	mean_time_to_happen = {
-		months = 24
+	weight_multiplier = {
+		days = 1
 		modifier = {
-			factor = 10
+			factor = 0.05
 			NOT = { has_character_flag = demon_child_non_pagan }
 		}
 	}
@@ -1684,24 +1667,7 @@ character_event = {
 	picture = GFX_evt_burning_house
 	border = GFX_event_normal_frame_religion
 	
-	only_rulers = yes
-	
-	trigger = {
-		war = yes
-		trait = possessed
-		has_dlc = "Sons of Abraham"
-		has_character_flag = demon_child_non_pagan
-		OR = {
-			is_primary_war_defender = yes
-			is_primary_war_attacker = yes
-		}
-		NOT = { has_character_flag = demon_child_non_pagan_cultists }
-		is_at_sea = no
-	}
-	
-	mean_time_to_happen = {
-		months = 24
-	}
+	is_triggered_only = yes
 	
 	immediate = {
 		location = {
@@ -1709,9 +1675,8 @@ character_event = {
 				create_character = {
 					dynasty = none
 					religion = ROOT
-					culture = northern_earth
+					culture = ROOT
 					female = yes
-					name = Toph
 					age = 25
 					dna=bdlhexmbcai
 					attributes = {
@@ -1730,8 +1695,6 @@ character_event = {
 					trait = mystic
 					trait = brilliant_strategist
 					trait = flanker
-					trait = earthbender
-					trait = master_bender
 				}
 				new_character = {
 					spawn_unit = {
@@ -1762,9 +1725,8 @@ character_event = {
 				create_character = {
 					dynasty = none
 					religion = ROOT
-					culture = fire_nation
+					culture = ROOT
 					female = yes
-					name = Mai
 					age = 24
 					dna=dhmfgmabaaz
 					attributes = {
@@ -1783,8 +1745,6 @@ character_event = {
 					trait = hedonist
 					trait = grey_eminence
 					trait = inspiring_leader
-					trait = firebender
-					trait = master_bender
 				}
 				new_character = {
 					spawn_unit = {
@@ -1815,9 +1775,8 @@ character_event = {
 				create_character = {
 					dynasty = none
 					religion = ROOT
-					culture = northern_water
+					culture = ROOT
 					female = yes
-					name = Katara
 					age = 27
 					dna=aefccojcgbd
 					attributes = {
@@ -1837,8 +1796,6 @@ character_event = {
 					trait = mystic
 					trait = elusive_shadow
 					trait = defensive_leader
-					trait = waterbender
-					trait = master_bender
 				}
 				new_character = {
 					spawn_unit = {
@@ -1879,22 +1836,9 @@ character_event = {
 # A witch nanny arrives at court
 character_event = {
 	id = SoA.3070
-	desc = OK
-	
 	hide_window = yes
 	
-	max_age = 15
-	prisoner = no
-	
-	trigger = {
-		has_dlc = "Sons of Abraham"
-		has_character_flag = demon_child_non_pagan
-		NOT = { has_character_flag = demon_child_non_pagan_got_nanny }
-	}
-	
-	mean_time_to_happen = {
-		months = 3
-	}
+	is_triggered_only = yes
 	
 	immediate = {
 		set_character_flag = demon_child_non_pagan_got_nanny
@@ -1931,7 +1875,7 @@ character_event = {
 		create_character = {
 			dynasty = none
 			religion = ROOT
-			culture = northern_earth
+			culture = ROOT
 			female = yes
 			age = 20
 			dna=dkkdfdgibbe
@@ -1955,7 +1899,6 @@ character_event = {
 			new_character = {
 				set_character_flag = special_treasurer
 				set_character_flag = special_chancellor
-				set_character_flag = special_spiritual
 				set_character_flag = special_spymaster
 				
 				set_character_flag = witch_nanny
@@ -2016,7 +1959,6 @@ character_event = {
 			new_character = {
 				set_character_flag = special_treasurer
 				set_character_flag = special_chancellor
-				set_character_flag = special_spiritual
 				set_character_flag = special_spymaster
 				
 				set_character_flag = witch_nanny
@@ -2041,21 +1983,24 @@ character_event = {
 # Witch nanny moves with her charge
 character_event = {
 	id = SoA.3073
-	desc = OK
-	
 	hide_window = yes
 	
 	only_women = yes
 	prisoner = no
 	only_capable = yes
 	min_age = 16
+	has_character_flag = witch_nanny
+	has_dlc = "Sons of Abraham"
+	is_married = no
 	
 	trigger = {
-		has_dlc = "Sons of Abraham"
 		is_ruler = no
-		is_married = no
 		is_consort = no
-		has_character_flag = witch_nanny
+		NOR = {
+			religion = vaatuism
+			religion = witchcraft
+			religion = barbarism
+		}
 		NOT = {
 			any_courtier = {
 				has_character_flag = demon_child_non_pagan
@@ -2117,15 +2062,20 @@ character_event = {
 # Witch nanny commits suicide for the demon child
 character_event = {
 	id = SoA.3075
-	desc = OK
-	
 	hide_window = yes
 	
 	prisoner = no
+	min_age = 6
 	max_age = 15
+	has_character_flag = demon_child_non_pagan_got_nanny
 	
 	trigger = {
 		has_dlc = "Sons of Abraham"
+		NOR = {
+			religion = vaatuism
+			religion = witchcraft
+			religion = barbarism
+		}
 		OR = {
 			ai = no
 			liege = {
@@ -2133,7 +2083,6 @@ character_event = {
 			}
 		}
 		has_character_flag = demon_child_non_pagan
-		has_character_flag = demon_child_non_pagan_got_nanny
 		any_courtier = {
 			is_female = yes
 			prisoner = no
@@ -2162,8 +2111,6 @@ character_event = {
 # Witch nanny commits suicide for the demon child
 character_event = {
 	id = SoA.3076
-	desc = OK
-	
 	hide_window = yes
 	
 	is_triggered_only = yes
@@ -2190,7 +2137,7 @@ character_event = {
 			}
 		}
 		death = {
-			death_reason = death_suicide
+			death_reason = death_suicide_fall
 		}
 	}
 }
