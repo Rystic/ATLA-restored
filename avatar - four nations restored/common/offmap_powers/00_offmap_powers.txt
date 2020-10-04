@@ -1,0 +1,778 @@
+offmap_ek = {
+	name = royal_court
+	window_name = ek_offmaps_window
+	button_name = ek_icon_offmaps_entry 
+	currency_name = TXT_INFLUENCE
+	currency_gain = monthly_influence
+	currency_reset_on_dynasty_change = no
+	currency_below_zero = no
+	holder_title = title_ek_emperor	# minor title used to identify a character as holder of this offmap power
+	governor_title = c_royal_earth_palace #any landed or titular title
+	tier = emperor #Loc string example if set to duchy it will show up as Tang Duchy
+	#non_aggression_modifier = peace_deal_with_china
+	coa_religion = earth_religions
+	government = chinese_imperial_government
+	beginning_of_history = 1.1.1
+	sound = china_interaction_interface
+	display_trigger = {
+		has_dlc = "Jade Dragon"
+		OR = {
+			is_title_active = e_earth_kingdom
+			is_title_active = k_ba_sing_se
+		}
+	}
+	policies = {
+		earth_kingdom_anarchy 
+		earth_kingdom_peaceful
+		earth_kingdom_expansionist
+		earth_kingdom_status_quo
+		earth_kingdom_isolationist
+		earth_kingdom_reconstruction
+	}
+	statuses = {
+		military_faction_absolute
+		military_faction_parliament
+		military_faction_puppet
+		daili_faction_absolute
+		daili_faction_parliament
+		daili_faction_puppet
+		bureaucratic_faction_absolute
+		bureaucratic_faction_parliament
+		bureaucratic_faction_puppet
+		noble_faction_absolute
+		noble_faction_parliament
+		noble_faction_puppet
+	}
+	buttons = {
+		offmap_ek_inf = {
+			is_active_trigger = {
+				FROM = {
+					OR = {
+						has_landed_title = e_earth_kingdom
+						AND = {
+							has_landed_title = k_ba_sing_se
+							NOT = { is_title_active = e_earth_kingdom }
+						}
+					}
+				}
+			}
+		}
+		offmap_ek_modifier = {
+			is_active_trigger = {
+				OR = {
+					has_landed_title = e_earth_kingdom
+					AND = {
+						has_landed_title = k_ba_sing_se
+						NOT = { is_title_active = e_earth_kingdom }
+					}
+				}
+			}
+		}
+	}
+	
+	#These conditions only effect the appearance of the button, it does not actually disable them from being clickable. The same triggers are used in all tribute/boon decisions respectively
+	
+	icon_triggers = {
+		china_physician_cd = {
+			frame = 9
+			trigger = {
+				hidden_tooltip = {
+					has_character_flag = chinese_grace_physician_sent
+				}
+			}
+		}
+		china_raid_cd = {
+			frame = 8
+			right = yes	
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = china_raid_grace_cd
+				}
+			}
+		}
+		china_famine_cd = {
+			frame = 7
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = china_send_relief
+				}
+			}
+		}
+		china_tributary_cd = {
+			frame = 6
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = chinese_grace_tributary_timer
+				}
+			}
+		}
+		china_boon_cd = {
+			frame = 5
+			right = yes	
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = jd_china_boon_cd
+				}
+			}
+		}
+		china_commander_cd = {
+			frame = 4
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = chinese_grace_send_commander_timer
+				}
+			}
+		}
+		china_eunuch_cd = {
+			frame = 3
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = chinese_grace_send_eunuch_timer
+				}
+			}
+		}
+		china_concubine_cd = {
+			frame = 2
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = chinese_grace_send_concubine_timer
+				}
+			}
+		}
+		china_gift_cd = {
+			frame = 1
+			trigger = {
+				hidden_tooltip = {
+					has_character_modifier = chinese_grace_send_gift_timer
+				}
+			}
+		}
+	}
+	
+	monthly_currency_gain = {
+		offmap_same_dynasty = {
+			value = 10
+			offmap_ek = { offmap_ruler = { dynasty = FROM } }
+		}
+		offmap_war_with_me = {
+			value = -10
+			war_with = FROM
+		}
+		offmap_likes_me = {
+			value = 1
+			FROM = { is_liked_by_China_trigger = yes }
+			is_within_diplo_range = FROM
+		}
+		offmap_likes_tributaries = {
+			value = 2
+			offmap_ek = {			
+				offmap_has_like = likes_tributaries
+			}
+			FROM = {
+				is_tributary = {
+					type = offmap
+				}
+			}
+		}
+		vassal_of_WP = {
+			value = 2
+			FROM = {
+				liege = {
+					has_landed_title = e_earth_kingdom
+				}
+			}
+		}
+		offmap_same_culture_and_religion = {
+			value = 2
+			offmap_ruler = {
+				culture = FROM
+				religion = FROM
+			}
+			is_within_diplo_range = FROM
+		}
+	}
+	
+	temple_names = {
+		{ # Founder names
+			Gaozu
+		}
+		{ # Successor names
+			Zhenzong
+		}
+	}
+	holder_succession = {
+		is_female = {					# chances of getting a female holder, as a percentage: if the total is >= 100, the new holder will always be female. If the total is <= 0, the new holder will always be male
+			value = 5
+			additive_modifier = {
+				value = 45
+				has_game_rule = {
+					name = gender
+					value = all
+				}
+			}
+		}
+		culture = {
+	
+			han = { # default culture for new emperor
+				value = 99 # if any other value reaches 100, it will be picked instead
+			}
+			FROM = { # default culture for new emperor
+								# the left side here (and for culture, religion, graphical_culture and dynasty) can be a right hand side value (FROM, ROOT, a culture name, etc). and the right hand side / inside the brackets is a standard MTTH evaluation. Only the one with the highest weight will be used. If there's a tie, one of the tied values is picked at random
+				value = 0
+				additive_modifier = { #the new emperor will keep current culture if things are great
+					value = 100
+					#china_is_fine_trigger = yes
+					FROM = { culture_scope = { always = yes } } # Essentially a check that the previous emperor actually exists
+				}
+			}
+			red_panda = {
+				value = 0
+				additive_modifier = {
+					has_alternate_start_parameter = { key = special_culture value = animal_world }
+					value = 100
+				}
+			}
+		}
+
+		graphical_culture = { 
+			FROM = {
+				value = 100
+			}
+		}
+
+		religion = {
+			taoist = { # default religion for new emperor
+				value = 99 # if any other value reaches 100, it will be picked instead (unless equal, then it will randomize)
+			}
+			FROM = {
+				value = 0
+				additive_modifier = { # the new emperor will keep current religion if things are great
+					value = 100
+					#china_is_fine_trigger = yes
+					FROM = { religion_scope = { always = yes } } # Essentially a check that the previous emperor actually exists
+				}
+			}
+		}
+
+		dynasty = {
+			FROM = { #default dynasty for new emperor
+				value = 99 #might drop from modifiers -- highest value will be picked instead (unless equal, then it will randomize)
+			}
+			actually_culture = {
+				value = 0
+				additive_modifier = {
+					value = 100
+					NOT = { FROM = { character = yes } }
+				}
+				additive_modifier = { #Fix for simulating Chinese history on old save boot-up
+					value = 100
+					random < 12
+					has_game_started = no
+				}
+			}
+		}
+		
+		likes = {
+			likes_concubines = {
+				value = 300
+				modifier = {
+					factor = 0.1
+					FROMFROM = { is_female = yes }
+				}
+			}
+			likes_eunuchs = {
+				value = 300
+			}
+			likes_wealth = {
+				value = 300
+			}
+			likes_tributaries = {
+				value = 100
+			}
+			likes_earth_kingdom = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture_group = earth_kingdom_culture
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_ba_sing_se = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = ba_sing_se
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_northern_earth = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = northern_earth
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_eastern_earth = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = eastern_earth
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_southern_earth = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = southern_earth
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_western_earth = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = western_earth
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_omashuan = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = omashuan
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_earth_islander = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = earth_islander
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_sandbender = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = sandbender
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+			likes_barbarians = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture = barbarians
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+			}
+		}
+		
+		dislikes = {
+			likes_concubines = {
+				value = 100
+				modifier = {
+					factor = 5.0
+					FROMFROM = { is_female = yes }
+				}
+			}
+			likes_eunuchs = {
+				value = 100
+			}
+			likes_tributaries = {
+				value = 100
+			}
+			likes_wealth = {
+				value = 100
+			}
+			likes_earth_kingdom = {
+				value = 100
+				modifier = {
+					factor = 0
+					NOT = {
+						any_province = {
+							culture_group = earth_kingdom_culture
+							is_within_diplo_range = offmap_china
+						}
+					}
+				}
+				modifier = {
+					factor = 0
+					FROMFROM = {
+						culture_group = earth_kingdom_culture
+					}
+				}
+			}
+		}
+	}
+	
+    diplomatic_range = { #Already includes the western governor's "normal" diplo range
+        OR = {
+            has_game_rule = {
+                name = chinese_interactions
+                value = all
+            }
+            AND = {
+                has_game_rule = {
+                    name = chinese_interactions
+                    value = within_range
+                }
+                OR = {
+                    top_liege = {
+                        suzerain = {
+                            has_landed_title = e_earth_kingdom
+                        }
+                    }
+                    any_neighbor_independent_ruler = {
+                        OR = {
+                            has_landed_title = e_earth_kingdom
+                            suzerain = {
+                                has_landed_title = e_earth_kingdom
+                            }
+                        }
+                    }
+                    any_realm_province = { #Is within reach of the silk road
+                        OR = {
+                            trade_route = silk_road
+                            region = world_steppe_east
+                            region = world_himalayas
+                            region = world_india
+                            region = world_persia
+                        }
+                    }
+                }
+            }
+            AND = {
+                has_game_rule = {
+                    name = chinese_interactions
+                    value = restricted
+                }
+                OR = {
+                    top_liege = {
+                        suzerain = {
+                            has_landed_title = e_earth_kingdom
+                        }
+                    }
+                    any_neighbor_independent_ruler = {
+                        has_landed_title = e_earth_kingdom
+                    }
+                    any_realm_province = { #Is within the Chinese region of influence
+                        OR = {
+                            region = world_steppe_tarim
+                            region = world_steppe_east
+                            region = world_himalayas
+                            region = world_india
+                        }
+                    }
+                }              
+            }
+        }
+    }
+}
+
+offmap_spirit = {
+	name = spirit_world
+	window_name = domestic_offmaps_window
+	button_name = icon_offmaps_entry
+	currency_name = TXT_SPIRITUALITY
+	currency_gain = monthly_spirituality
+	currency_reset_on_dynasty_change = yes
+	holder_title = title_spirit_world		# minor title used to identify a character as holder of this offmap power
+	governor_title = d_avatar #any title can be governor
+	tier = emperor
+	non_aggression_modifier = peace_deal_with_china
+	coa_religion = earth_spirituality
+	#government = confucian_bureaucracy
+	beginning_of_history = 1.1.1
+	sound = china_interaction_interface
+	display_trigger = {
+		has_dlc = "Jade Dragon"
+	}
+	policies = {
+		spirit_world_peaceful
+		spirit_world_unrest
+		spirit_world_turmoil
+		spirit_world_chaotic
+		spirit_world_harmonic_convergence
+	}
+	statuses = {
+		spirit_world_age_of_uncertainty
+		spirit_world_age_of_rebellion
+		spirit_world_age_of_smoke_and_shadow
+		spirit_world_age_of_prosperity
+		spirit_world_age_of_aggression
+		spirit_world_age_of_destruction
+		spirit_world_age_of_hostility
+		spirit_world_age_of_devastation
+		spirit_world_age_of_disharmony
+		spirit_world_age_of_peace
+		spirit_world_age_of_progress
+		spirit_world_age_of_fire
+		spirit_world_age_of_air
+		spirit_world_age_of_water
+		spirit_world_age_of_earth
+	}
+	buttons = {
+		offmap_gifts = {
+			is_active_trigger = {
+				always = yes
+			}
+		}
+		offmap_boons = {
+			is_active_trigger = {
+				spirit_world_offmap_boon_decisions_enabled_trigger = yes
+			}
+		}
+		#offmap_hostility = {
+		#	is_active_trigger = {
+		#		china_offmap_hostile_decisions_enabled_trigger = yes
+		#	}
+		#	display_trigger = {
+		#		always = no
+		#	}
+		#}
+		#offmap_hostility2 = {
+		#	display_trigger = {
+		#		always = no
+		#	}
+		#}
+	}
+	
+	#These conditions only effect the appearance of the button, it does not actually disable them from being clickable. The same triggers are used in all tribute/boon decisions respectively
+	
+	icon_triggers = {
+	}
+			
+	monthly_currency_gain = {
+		offmap_likes_avatar = {
+			value = 5.0
+			FROM = { likes_avatar = yes }
+		}
+		offmap_likes_fullyrealizedavatar = {
+			value = 7.5
+			FROM = { likes_fullyrealizedavatar = yes }
+		}
+		offmap_likes_directdescendentavatar = {
+			value = 2.5
+			FROM = { likes_directdescendentavatar = yes }
+		}
+		offmap_likes_descendantavatar = {
+			value = 1.5
+			FROM = { likes_descendantavatar = yes }
+		}
+		offmap_likes_avatargroupie = {
+			value = 0.5
+			FROM = { likes_avatargroupie = yes }
+		}
+		offmap_likes_waterbender = {
+			value = 0.25
+			FROM = { likes_waterbender = yes }
+		}
+		offmap_likes_firebender = {
+			value = 0.25
+			FROM = { likes_firebender = yes }
+		}
+		offmap_likes_airbender = {
+			value = 0.25
+			FROM = { likes_airbender = yes }
+		}
+		offmap_likes_earthbender = {
+			value = 0.25
+			FROM = { likes_earthbender = yes }
+		}
+		offmap_likes_chaste = {
+			value = 0.25
+			FROM = { likes_chaste = yes }
+		}
+		offmap_likes_temperate = {
+			value = 0.25
+			FROM = { likes_temperate = yes }
+		}
+		offmap_likes_charitable = {
+			value = 0.25
+			FROM = { likes_charitable = yes }
+		}
+		offmap_likes_dilligent = {
+			value = 0.25
+			FROM = { likes_dilligent = yes }
+		}
+		offmap_likes_kind = {
+			value = 0.25
+			FROM = { likes_kind = yes }
+		}
+		offmap_likes_patient = {
+			value = 0.25
+			FROM = { likes_patient = yes }
+		}
+		offmap_likes_humble = {
+			value = 0.25
+			FROM = { likes_humble = yes }
+		}
+		offmap_likes_honest = {
+			value = 0.25
+			FROM = { likes_honest = yes }
+		}
+		offmap_likes_content = {
+			value = 0.25
+			FROM = { likes_content = yes }
+		}
+		offmap_likes_just = {
+			value = 0.25
+			FROM = { likes_just = yes }
+		}
+		offmap_likes_zealous = {
+			value = 0.15
+			FROM = { likes_just = yes }
+		}
+
+#Negative#
+		offmap_likes_envious = {
+			value = -0.25
+			FROM = { likes_envious = yes }
+		}
+		offmap_likes_lustful = {
+			value = -0.25
+			FROM = { likes_lustful = yes }
+		}
+		offmap_likes_gluttonous = {
+			value = -0.25
+			FROM = { likes_gluttonous = yes }
+		}
+		offmap_likes_greedy = {
+			value = -0.25
+			FROM = { likes_greedy = yes }
+		}
+		offmap_likes_slothful = {
+			value = -0.25
+			FROM = { likes_slothful = yes }
+		}
+		offmap_likes_wroth = {
+			value = -0.25
+			FROM = { likes_wroth = yes }
+		}
+		offmap_likes_proud = {
+			value = -0.25
+			FROM = { likes_proud = yes }
+		}
+		offmap_likes_deceitful = {
+			value = -0.25
+			FROM = { likes_deceitful = yes }
+		}
+		offmap_likes_ambitious = {
+			value = -0.25
+			FROM = { likes_ambitious = yes }
+		}
+		offmap_likes_arbitrary = { 
+			value = -0.25
+			FROM = { likes_arbitrary = yes }
+		}
+		offmap_likes_cynical = {
+			value = -0.15
+			FROM = { likes_cynical = yes }
+		}
+	}
+
+	temple_names = {
+		{ # Founder names
+			"Raava"
+		}
+		{ # Successor names
+			"Raava"
+		}
+	}
+	holder_succession = {
+		is_female = {					# chances of getting a female holder, as a percentage: if the total is >= 100, the new holder will always be female. If the total is <= 0, the new holder will always be male
+			value = 0
+		}
+		culture = {
+			spirit = {
+				value = 100
+			}
+		}
+
+		graphical_culture = {
+			FROM = {
+				value = 100
+			}
+		}
+
+		religion = {
+			earth_spirituality = {
+				value = 100
+			}
+		}
+
+		dynasty = {
+			FROM = {
+				value = 100
+			}
+		}
+
+		likes = {
+			likes_piety = {
+				value = 250
+			}
+		}
+		dislikes = {
+			# likes = 
+		}
+	}
+	
+	diplomatic_range = { #Already includes the western governor's "normal" diplo range
+        OR = {
+            has_game_rule = {
+                name = chinese_interactions
+                value = all
+            }
+            AND = {
+                has_game_rule = {
+                    name = chinese_interactions
+                    value = within_range
+                }
+			}
+		}
+	}
+}	
