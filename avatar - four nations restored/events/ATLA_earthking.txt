@@ -13,53 +13,44 @@ character_event = {
 		NOR = {
 			trait = earthkingpuppet
 			trait = earthking
+			trait = earthkingconstitution
 		}
 	}
 	option = {
 		name = EVTOPTearthking.1
 		if = {
 			limit = {
-				NOT = { check_variable = { which = global_royalAuthority value = -100 } }
+				NOT = { check_variable = { which = global_royalAuthority value >= -100 } }
 			}
-			 set_variable = { which = global_royalAuthority value = 50 }
+			set_variable = { which = global_royalAuthority value = 50 }
 		}
 		if = {
 			limit = {
-				has_dynasty_flag = ek_opinion_boost
-			}
-			add_character_modifier = { name = ek_good_authority duration = -1 }
-		}
-		if = {
-			limit = {
-				has_dynasty_flag = ek_tyranny
-			}
-			add_character_modifier = { name = ek_tyranny duration = -1 }
-			remove_character_modifier = ek_good_authority
-		}
-		if = {
-			limit = {
-				NOT = { has_global_flag = earthking_in_power }
+				NOR = { 
+					has_global_flag = earthking_in_power
+					has_global_flag = kyoshi_parliamental_monarch
+				}
 			}
 			add_trait = earthkingpuppet
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
 			clr_global_flag = restoration_ambition_delay
 			subtract_variable = { which = global_royalAuthority value = 30 }
 		}
-		
-		if = { # Calculate Royal Court Power (aka RA)
-			limit = {
+		if = {
+			limit = { 
+				OR = {
+					has_global_flag = kyoshi_parliamental_monarch
+					has_global_flag = ek_gave_some_power 
+					
+				}
+			}
+			trait = earthkingconstitution
+		}
+		if = {
+			limit = { 
 				has_global_flag = earthking_in_power
 			}
-			add_trait = earthking
-			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
-			subtract_variable = { which = global_royalAuthority value = 15 }
-			if = {
-				limit = {
-					NOT = { age = 12 }
-					is_title_active = d_dai_li
-				}
-				character_event = { id = earthking.3 }
-			}
+			trait = earthking
 		}
 		character_event = { id = ATLAE.211 }
 	}
@@ -447,14 +438,6 @@ character_event = { # Royal Authority System - Check Authority
 			character_event = { id = earthking.16 }
 			set_global_flag = ek_islands_left
 		}
-		if = { # Earth Kingdom Army Decay
-			limit = {
-				NOT = { check_variable = { which = global_royalAuthority value = 1 } }
-				NOT = { has_global_flag = royal_authority_army_low_decay }
-			}
-			character_event = { id = earthking.43 }
-			set_dynasty_flag = royal_authority_army_low_decay
-		}
 		if = { # Unity - Inner Provinces Rejoin EK
 			limit = {
 				check_variable = { which = global_royalAuthority value = 5 }
@@ -474,14 +457,6 @@ character_event = { # Royal Authority System - Check Authority
 			}
 			character_event = { id = earthking.12 }
 			set_global_flag = ek_north_range_left
-		}
-		if = { # Earth Kingdom Army Decay - Remove
-			limit = {
-				check_variable = { which = global_royalAuthority value = 15 }
-				has_dynasty_flag = royal_authority_army_low_decay
-			}
-			character_event = { id = earthking.44 }
-			clr_dynasty_flag = royal_authority_army_low_decay
 		}
 		if = {  # Si Wong Leaves
 			limit = {
@@ -530,31 +505,47 @@ character_event = { # Royal Authority System - Check Authority
 			add_character_modifier = { name = ek_good_authority duration = -1 }
 			set_dynasty_flag = ek_opinion_boost
 		}
-		if = { # Puppet King Authority Cap
+		if = { # Authority Cap - Regency
 			limit = {
-				check_variable = { which = global_royalAuthority value = 75 }
-				trait = earthkingpuppet
+				has_regent = yes
+				check_variable = { which = global_royalAuthority value = 50 }
 			}
-			set_variable = { which = global_royalAuthority value = 75 }
-			if = {
-				limit = {
-					NOT = { has_dynasty_flag = warned_of_puppet_authority_cap }
-				}
-				character_event = { id = earthking.14 }
-				set_dynasty_flag = warned_of_puppet_authority_cap
-			}
+			set_variable = { which = global_royalAuthority value = 50 }
 		}
-		if = { # Authority Cap +
+		if = { # Authority Cap + Absolute
 			limit = {
 				check_variable = { which = global_royalAuthority value = 101 }
+				has_global_flag = earthking_in_power
 			}
 			set_variable = { which = global_royalAuthority value = 100 }
 		}
 		if = { # Authority Cap -
 			limit = {
 				check_variable = { which = global_royalAuthority value <= -101 }
+				OR = {
+					NOT = { trait = earthkingconstitution }
+					has_global_flag = kyoshi_parliamental_monarch
+				}
 			}
 			set_variable = { which = global_royalAuthority value = -100 }
+		}
+		if = { # Authority Cap + constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value = 75 }
+				trait = earthkingconstitution
+			}
+			set_variable = { which = global_royalAuthority value = 75 }
+		}
+		if = { # Authority Cap - constitutional monarch
+			limit = {
+				check_variable = { which = global_royalAuthority value <= -75 }
+				AND = {
+					trait = earthkingconstitution
+					NOT = { has_global_flag = kyoshi_parliamental_monarch }
+				}
+				
+			}
+			set_variable = { which = global_royalAuthority value = -75 }
 		}
 	}
 }
@@ -1755,23 +1746,6 @@ character_event = {
 	}
 }
 
-# Army Decay - Lazy - Remove
-character_event = {
-	id = earthking.41
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.41
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_41
-		custom_tooltip = {
-			text = EVTOPTC_EK_41_TOOLTIP
-		}
-		remove_character_modifier = royal_army_decay_overgrowth
-	}
-}
-
 # Earth Monarchism - Restored
 character_event = {
 	id = earthking.42
@@ -1805,58 +1779,6 @@ character_event = {
 				}
 			}
 		}
-	}
-}
-
-# Army Decay - Low Morale
-character_event = {
-	id = earthking.43
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.43
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_43
-		custom_tooltip = {
-			text = EVTOPTC_EK_43_TOOLTIP
-		}
-		add_character_modifier = { name = royal_army_decay_collapse duration = -1 }
-	}
-}
-
-# Army Decay - Low Morale - Remove
-character_event = {
-	id = earthking.44
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.44
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_44
-		custom_tooltip = {
-			text = EVTOPTC_EK_41_TOOLTIP
-		}
-		remove_character_modifier = royal_army_decay_collapse
-	}
-}
-
-# Earth Kingdom Overextension
-character_event = {
-	id = earthking.45
-	picture = GFX_evt_ba_sing_sa
-	border = GFX_event_normal_frame_diplomacy
-	desc = EVTDESCEK.45
-	is_triggered_only = yes
-		
-	option = {
-		name = EVTOPTA_EK_45
-		custom_tooltip = {
-			text = EVTOPTC_EK_45_TOOLTIP
-		}
-		add_character_modifier = { name = supporting_the_earth_kingdom_overextended duration = -1 }
-		remove_character_modifier = supporting_the_earth_kingdom
 	}
 }
 
@@ -2112,140 +2034,181 @@ character_event = {
 		set_variable = { which = religion_ra_gain value = 0 }
 		ROOT = {
 			any_tributary = { # Tributaries gain
-				change_variable = { which = global_num_of_ek_tributaries value = 1 }
+				if = {
+					limit = {
+						is_tributary = {
+							type = earth_kingdom_territory_tributary
+						}
+					}
+					change_variable = { which = global_num_of_ek_tributaries value = 1 }
+				}
+				if = {
+					limit = {
+						is_tributary = {
+							type = earth_kingdom_province_tributary
+						}
+					}
+					change_variable = { which = global_num_of_ek_tributaries value = 2 }
+				}
+				if = {
+					limit = {
+						is_tributary = {
+							type = earth_kingdom_state_tributary
+						}
+					}
+					change_variable = { which = global_num_of_ek_tributaries value = 3 }
+				}				
 			}
-			if = { # Bloodline Gain 
+			
+			if = {
 				limit = {
 					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_houting
+						has_bloodline_flag = hey_im_ek_succ_bloodline_flag
 					}
 				}
 				change_variable = { which = bloodline_ra_gain value = 1 }
 			}
-			if = { 
-				limit = {
-					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_hao
-					}
-				}
-				change_variable = { which = bloodline_ra_gain value = 1 }
+
+			trigger_switch = {
+			on_trigger = trait
+				lustful = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				chaste = { change_variable = { which = traits_ra_gain value = 0.5 } }
 			}
-			if = { 
-				limit = {
-					any_owned_bloodline = {
-						has_bloodline_flag = bloodline_ting
-					}
-				}
-				change_variable = { which = bloodline_ra_gain value = 1 }
+			
+			trigger_switch = {
+			on_trigger = trait
+				greedy = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				charitable = { change_variable = { which = traits_ra_gain value = -0.5 } }
+			
+			}	
+
+			trigger_switch = {
+			on_trigger = trait			
+				gluttonous = { change_variable = { which = traits_ra_gain value = -0.5 } }
+				temperate = { change_variable = { which = traits_ra_gain value = 0.5 } }	
 			}
-			if = {
-				limit = {
-					trait = lustful
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
+			
+			trigger_switch = {
+			on_trigger = trait
+				proud = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				humble = { change_variable = { which = traits_ra_gain value = -0.5 } }
 			}
-			if = {
-				limit = {
-					trait = greedy
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = proud
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = chaste
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = temperate
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = diligent
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = kind
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = patient
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = gregarious
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
+			
+			trigger_switch = {
+			on_trigger = trait
+				diligent = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				slothful = { change_variable = { which = traits_ra_gain value = -0.5 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				kind = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				envious = { change_variable = { which = traits_ra_gain value = -0.5 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				patient = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				wroth = { change_variable = { which = traits_ra_gain value = 0.5 } }
+			}
+
+			trigger_switch = {
+			on_trigger = trait
+				gregarious = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				shy = { change_variable = { which = traits_ra_gain value = -0.5 } } 
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				brave = { change_variable = { which = traits_ra_gain value = 1 } }
+				craven = { change_variable = { which = traits_ra_gain value = -1 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				earthking = { change_variable = { which = traits_ra_gain value = 1 } }
+				earthkingpuppet = { change_variable = { which = traits_ra_gain value = -0.5 } }
+				earthkingconstitution = { change_variable = { which = traits_ra_gain value = 0.5 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait	
+				competent_bender = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				powerful_bender = { change_variable = { which = traits_ra_gain value = 1 } }
+				master_bender = { change_variable = { which = traits_ra_gain value = 1.5 } }
+				legendary_bender = { change_variable = { which = traits_ra_gain value = 2 } }
+			}
+
+			trigger_switch = {
+			on_trigger = trait
+				charismatic_negotiator = { change_variable = { which = traits_ra_gain value = 1 } }
+				fortune_builder = { change_variable = { which = traits_ra_gain value = 1 } }
+				skilled_tactician = { change_variable = { which = traits_ra_gain value = 1 } }
+				scholarly_theologian = { change_variable = { which = traits_ra_gain value = 1 } }
+				brilliant_strategist = { change_variable = { which = traits_ra_gain value = 2 } }
+				midas_touched = { change_variable = { which = traits_ra_gain value = 2 } }
+				mastermind_theologian = { change_variable = { which = traits_ra_gain value = 2 } }
+				grey_eminence = { change_variable = { which = traits_ra_gain value = 2 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				shrewd = { change_variable = { which = traits_ra_gain value = 1 } }
+				dull = { change_variable = { which = traits_ra_gain value = -1 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				imbecile = { change_variable = { which = traits_ra_gain value = -2 } }
+				slow = { change_variable = { which = traits_ra_gain value = -1 } }
+				quick = { change_variable = { which = traits_ra_gain value = 1 } }
+				genius = { change_variable = { which = traits_ra_gain value = 2 } }
+			}	
+			
+			trigger_switch = {
+			on_trigger = trait
+				fair = { change_variable = { which = traits_ra_gain value = 1 } }
+				ugly = { change_variable = { which = traits_ra_gain value = -1 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				strong = { change_variable = { which = traits_ra_gain value = 2 } }
+				weak = { change_variable = { which = traits_ra_gain value = -2 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait
+				robust = { change_variable = { which = traits_ra_gain value = 0.5 } }
+				feeble = { change_variable = { which = traits_ra_gain value = -0.5 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait			
+				bastard = { change_variable = { which = traits_ra_gain value = -1 } }
+				legit_bastard = { change_variable = { which = traits_ra_gain value = -0.5 } }
+				child_of_consort = { change_variable = { which = traits_ra_gain value = -0.5 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait				
+				is_malnourished = { change_variable = { which = traits_ra_gain value = -1 } }
+				is_fat = { change_variable = { which = traits_ra_gain value = -1 } }
+			}
+			
+			trigger_switch = {
+			on_trigger = trait			
+				giant = { change_variable = { which = traits_ra_gain value = -1 } }
+				dwarf = { change_variable = { which = traits_ra_gain value = -1 } }
+			}	
+			
 			if = {
 				limit = {
 					trait = erudite
 				}
 				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = competent_bender
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}			
-			if = {
-				limit = {
-					trait = robust
-				}
-				change_variable = { which = traits_ra_gain value = 0.5 }
-			}
-			if = {
-				limit = {
-					trait = charismatic_negotiator
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = fortune_builder
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = skilled_tactician
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = brave
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = shrewd
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = powerful_bender
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
+			}		
+			
 			if = {
 				limit = {
 					AND = {
@@ -2254,331 +2217,105 @@ character_event = {
 					}
 				}
 				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = scholarly_theologian
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = fair
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = quick
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}			
-			if = {
-				limit = {
-					trait = earthking
-				}
-				change_variable = { which = traits_ra_gain value = 1 }
-			}
-			if = {
-				limit = {
-					trait = master_bender
-				}
-				change_variable = { which = traits_ra_gain value = 1.5 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = born_in_the_purple
 				}
 				change_variable = { which = traits_ra_gain value = 1.5 }
-			}			
-			if = {
+			}											
+			else_if = {
 				limit = {
-					trait = strong
+					NOT = { trait = born_in_the_purple }
 				}
-				change_variable = { which = traits_ra_gain value = 2 }
-			}			
-			if = {
-				limit = {
-					trait = genius
-				}
-				change_variable = { which = traits_ra_gain value = 2 }
-			}			
-			if = {
-				limit = {
-					trait = brilliant_strategist
-				}
-				change_variable = { which = traits_ra_gain value = 2 }
-			}			
-			if = {
-				limit = {
-					trait = midas_touched
-				}
-				change_variable = { which = traits_ra_gain value = 2 }
-			}			
-			if = {
-				limit = {
-					trait = grey_eminence
-				}
-				change_variable = { which = traits_ra_gain value = 2 }
+				change_variable = { which = traits_ra_gain value = -1 }
 			}
-			if = {
-				limit = {
-					trait = legendary_bender
-				}
-				change_variable = { which = traits_ra_gain value = 2 }
-			}			
-			if = {
-				limit = {
-					trait = mastermind_theologian
-				}
-				change_variable = { which = traits_ra_gain value = 2 }
-			}
-			if = {
-				limit = {
-					trait = feeble
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			
 			if = {
 				limit = {
 					trait = uncouth
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = dull
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = earthkingpuppet
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = one_handed
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = one_legged
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = disfigured
 				}
 				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = child_of_consort
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}
-			if = {
-				limit = {
-					trait = legit_bastard
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = craven
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = shy
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = gluttonous
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = slothful
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = envious
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = wroth
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}
-			if = {
-				limit = {
-					trait = charitable
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = humble
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}
-			if = {
-				limit = {
-					trait = one_legged
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = disfigured
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = child_of_consort
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}
-			if = {
-				limit = {
-					trait = legit_bastard
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = craven
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
-			if = {
-				limit = {
-					trait = shy
-				}
-				change_variable = { which = traits_ra_gain value = -0.5 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = lisp
 				}
 				change_variable = { which = traits_ra_gain value = -1 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = hunchback
 				}
 				change_variable = { which = traits_ra_gain value = -1 }
-			}			
+			}	
+			
 			if = {
 				limit = {
 					trait = harelip
 				}
 				change_variable = { which = traits_ra_gain value = -1 }
-			}			
-			if = {
-				limit = {
-					trait = dwarf
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
-			}
+			}	
+			
 			if = {
 				limit = {
 					trait = clubfooted
 				}
 				change_variable = { which = traits_ra_gain value = -1 }
-			}			
-			if = {
-				limit = {
-					trait = bastard
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
 			}	
-			if = {
-				limit = {
-					trait = is_malnourished
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
-			}			
-			if = {
-				limit = {
-					trait = is_fat
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
-			}			
-			if = {
-				limit = {
-					NOT = { trait = born_in_the_purple }
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
-			}			
-			if = {
-				limit = {
-					trait = giant
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
-			}
+			
 			if = {
 				limit = {
 					trait = stutter
 				}
 				change_variable = { which = traits_ra_gain value = -1 }
-			}			
-			if = {
-				limit = {
-					trait = ugly
-				}
-				change_variable = { which = traits_ra_gain value = -1 }
-			}
-			if = {
-				limit = {
-					trait = drunkard
-				}
-				change_variable = { which = traits_ra_gain value = -2 }
-			}
+			}	
+			
 			if = {
 				limit = {
 					trait = incapable
 				}
 				change_variable = { which = traits_ra_gain value = -2 }
 			}
+			
 			if = {
 				limit = {
 					trait = lunatic
 				}
 				change_variable = { which = traits_ra_gain value = -2 }
 			}
+			
 			if = {
 				limit = {
 					trait = possessed
 				}
 				change_variable = { which = traits_ra_gain value = -2 }
 			}
-			if = {
-				limit = {
-					trait = lunatic
-				}
-				change_variable = { which = traits_ra_gain value = -2 }
-			}
-			if = {
-				limit = {
-					trait = incapable
-				}
-				change_variable = { which = traits_ra_gain value = -2 }
-			}
+			
 			if = {
 				limit = {
 					trait = drunkard
@@ -2587,92 +2324,33 @@ character_event = {
 			}
 			
 		}
-		e_earth_kingdom = { # Laws gain
+		primary_title = { # Laws gain
 			holder_scope = {
-				if = {
-					limit = {
-						has_law = ze_admin_anarchy
-					}
-					change_variable = { which = laws_ra_gain value = -3 }
+				trigger_switch = {
+				on_trigger = has_law
+					ze_admin_anarchy = { change_variable = { which = laws_ra_gain value = -3 } }
+					ze_admin_territories = { change_variable = { which = laws_ra_gain value = -1 } }
+					ze_admin_province = { change_variable = { which = laws_ra_gain value = -0.5 } }
+					ze_admin_slight_central = { change_variable = { which = laws_ra_gain value = 1 } }
+					ze_admin_central = { change_variable = { which = laws_ra_gain value = 2 } }
+				}	
+				
+				trigger_switch = {
+				on_trigger = has_law			
+					ek_unity_outposts = { change_variable = { which = laws_ra_gain value = 1 } }
+					ek_unity_1 = { change_variable = { which = laws_ra_gain value = 1.5 } }
+					ek_unity_2 = { change_variable = { which = laws_ra_gain value = 2 } }
+					ek_unity_3 = { change_variable = { which = laws_ra_gain value = 2.5 } }	
 				}
-				if = {
-					limit = {
-						has_law = ze_admin_territories
-					}
-					change_variable = { which = laws_ra_gain value = -1 }
+				
+				trigger_switch = {
+				on_trigger = has_law				
+					ek_system_law_1 = { change_variable = { which = laws_ra_gain value = -3 } }
+					ek_system_law_2 = { change_variable = { which = laws_ra_gain value = -2 } }
+					ek_system_law_3 = { change_variable = { which = laws_ra_gain value = -1 } }
+					ek_system_law_5 = { change_variable = { which = laws_ra_gain value = 1 } }
+					ek_system_law_6 = { change_variable = { which = laws_ra_gain value = 1.5 } }
 				}
-				if = {
-					limit = {
-						has_law = ze_admin_province
-					}
-					change_variable = { which = laws_ra_gain value = -0.5 }
-				}
-				if = {
-					limit = {
-						has_law = ze_admin_slight_central
-					}
-					change_variable = { which = laws_ra_gain value = 1 }
-				}
-				if = {
-					limit = {
-						has_law = ze_admin_central
-					}
-					change_variable = { which = laws_ra_gain value = 2 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_outposts
-					}
-					change_variable = { which = laws_ra_gain value = 1 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_1
-					}
-					change_variable = { which = laws_ra_gain value = 1.5 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_2
-					}
-					change_variable = { which = laws_ra_gain value = 2 }
-				}
-				if = {
-					limit = {
-						has_law = ek_unity_3
-					}
-					change_variable = { which = laws_ra_gain value = 2.5 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_1
-					}
-					change_variable = { which = laws_ra_gain value = -3 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_2
-					}
-					change_variable = { which = laws_ra_gain value = -2 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_3
-					}
-					change_variable = { which = laws_ra_gain value = -1 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_5
-					}
-					change_variable = { which = laws_ra_gain value = 1 }
-				}
-				if = {
-					limit = {
-						has_law = ek_system_law_6
-					}
-					change_variable = { which = laws_ra_gain value = 1.5 }
-				}				
 			}
 		}
 		divide_variable = { which = global_num_of_ek_tributaries value = 20 }
@@ -2685,18 +2363,48 @@ character_event = {
 		change_variable = { which = global_royalAuthority which = laws_ra_gain }
 		change_variable = { which = global_royalAuthority which = traits_ra_gain }	
 		change_variable = { which = global_royalAuthority which = religion_ra_gain }			
+		
 		if = { # Authority Cap - Regency
 			limit = {
 				has_regent = yes
+				check_variable = { which = global_royalAuthority value = 50 }
+			}
+			set_variable = { which = global_royalAuthority value = 50 }
+		}
+		if = { # Authority Cap + Absolute
+			limit = {
+				check_variable = { which = global_royalAuthority value = 101 }
+				has_global_flag = earthking_in_power
+			}
+			set_variable = { which = global_royalAuthority value = 100 }
+		}
+		if = { # Authority Cap -
+			limit = {
+				check_variable = { which = global_royalAuthority value <= -101 }
+				OR = {
+					NOT = { trait = earthkingconstitution }
+					has_global_flag = kyoshi_parliamental_monarch
+				}
+			}
+			set_variable = { which = global_royalAuthority value = -100 }
+		}
+		if = { # Authority Cap + constitutional monarch
+			limit = {
 				check_variable = { which = global_royalAuthority value = 75 }
+				trait = earthkingconstitution
 			}
 			set_variable = { which = global_royalAuthority value = 75 }
 		}
-		if = { # Authority Cap
+		if = { # Authority Cap - constitutional monarch
 			limit = {
-				check_variable = { which = global_royalAuthority value = 101}
+				check_variable = { which = global_royalAuthority value <= -75 }
+				AND = {
+					trait = earthkingconstitution
+					NOT = { has_global_flag = kyoshi_parliamental_monarch }
+				}
+				
 			}
-			set_variable = { which = global_royalAuthority value = 100 }
+			set_variable = { which = global_royalAuthority value = -75 }
 		}
 		if = { # Authority Cap -
 			limit = {
@@ -2705,7 +2413,7 @@ character_event = {
 			set_variable = { which = global_royalAuthority value = -100 }
 		}
 		set_variable = { which = authority_gain which = global_royalAuthority }
-		subtract_variable = { which = authority_gain which = old_authority }
+		subtract_variable = { which = authority_gain which = old_authority }		
 	}
 	
 	option = {
