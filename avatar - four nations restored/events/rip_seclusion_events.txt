@@ -37,6 +37,7 @@ character_event = {
 	only_rulers = yes
 	only_capable = yes
 	prisoner = no
+	ai = yes # Not really an interesting event for player vassals
 	
 	immediate = {
 		liege = {
@@ -212,7 +213,6 @@ character_event = {
 					has_minor_title = title_councilmember_emperor
 				}
 			}
-			cancel_job_action = yes
 			force_host = ROOT
 		}
 		hidden_tooltip = {
@@ -225,7 +225,6 @@ character_event = {
 					liege = { character = ROOT }
 					NOT = { character = ROOT }
 				}
-				cancel_job_action = yes
 				add_character_modifier = {
 					name = in_seclusion
 					duration = -1
@@ -270,6 +269,13 @@ character_event = {
 			any_vassal = {
 				character_event = { id = RIP.12001 days = 7 random = 7 }
 			}
+			if = { #Notify employer that councillor is going into seclusion
+				limit = { 
+					is_councillor = yes 
+					liege = { ai = no }
+				}
+				liege = { letter_event = { id = RIP.12101 days = 1 } }
+			}
 		}
 	}
 }
@@ -285,12 +291,17 @@ narrative_event = {
 	
 	only_rulers = yes
 	
+	trigger = {
+		has_character_modifier = in_seclusion
+	}
+	
 	immediate = {
 		set_character_flag = seclusion_food_events
 		set_character_flag = seclusion_events_on
 	}
 
 	option = {
+		tooltip_info = gardener
 		trigger = {
 			trait = gardener
 		}
@@ -315,6 +326,10 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 
 	is_triggered_only = yes
+	
+	trigger = {
+		has_character_modifier = in_seclusion
+	}
 	
 	immediate = {
 		set_character_flag = seclusion_food_shortage
@@ -368,7 +383,7 @@ character_event = {
 		}		
 		name = RIP.11551.c #gotta eat while you still can
 		change_variable = { which = remaining_food value = -2 }
-		#give everyone modifier with  health penalty?
+		#give everyone modifier with health penalty
 		add_character_modifier = {
 			name = greedy_food_shortage
 				duration = -1
@@ -442,6 +457,7 @@ character_event = {
 	has_character_flag = seclusion_food_shortage
 	
 	trigger = {
+		has_character_modifier = in_seclusion
 		OR = {
 			had_character_flag = { flag = seclusion_refuse_to_eat_rats days = 180 }
 			NOT = {
@@ -493,6 +509,7 @@ character_event = {
 	has_character_flag = seclusion_food_shortage
 	
 	trigger = {
+		has_character_modifier = in_seclusion
 		NOT = {
 			has_character_flag = seclusion_rats_eaten
 		}
@@ -525,6 +542,7 @@ character_event = {
 	has_character_flag = seclusion_food_shortage
 	
 	trigger = {
+		has_character_modifier = in_seclusion
 		check_variable = { which = remaining_food value = 1 }
 		#check for gluttons or hedonists
 		any_courtier = {
@@ -532,7 +550,10 @@ character_event = {
 				trait = gluttonous 
 				trait = hedonist
 			}
+			prisoner = no
 			has_character_modifier = in_seclusion
+			is_incapable = no
+			NOT = { has_character_flag = stole_food }
 		}
 	}
 	
@@ -540,7 +561,7 @@ character_event = {
 		random_courtier = {
 			limit = {
 				OR = {
-					trait = gluttonous 
+					trait = gluttonous
 					trait = hedonist
 				}
 				has_character_modifier = in_seclusion
@@ -553,6 +574,7 @@ character_event = {
 				duration = -1
 			}
 			save_event_target_as = target_greedy_courtier 
+			set_character_flag = stole_food
 		}
 	}
 	
@@ -650,7 +672,10 @@ character_event = {
 
 			modifier = {
 				factor = 0
-				NOT = { has_character_modifier = cannibal }
+				NOR = { 
+					has_character_modifier = cannibal 
+					trait = cannibal_trait
+				}
 			}
 			
 			modifier = {
@@ -665,21 +690,19 @@ character_event = {
 		}
 		event_target:target_greedy_courtier = {			
 			death = {
-				death_reason = death_execution_eaten
+				death_reason = death_execution_eaten_unknown
 				killer = ROOT
 			}
 		}
 		change_variable = { which = remaining_food value = 1 }
 		if = {
 			limit = {
-				NOT = {
+				NOR = {
 					has_character_modifier = cannibal
+					trait = cannibal_trait
 				}
 			}
-			add_character_modifier = {
-				name = cannibal
-				duration = -1
-			}
+			add_trait = cannibal_trait
 		}
 	}
 }
@@ -694,6 +717,7 @@ character_event = {
 	has_character_flag = seclusion_food_shortage
 	
 	trigger = {
+		has_character_modifier = in_seclusion
 		any_courtier = {
 			ai = yes
 			at_location = ROOT
@@ -729,22 +753,25 @@ character_event = {
 				NOT = { is_child_of = ROOT }
 				has_character_modifier = in_seclusion
 			}
-			death = {
-				death_reason = death_execution_eaten
-				killer = ROOT
+			tooltip = {
+				death = {
+					death_reason = death_execution_eaten
+					killer = ROOT
+				}
+			}
+			hidden_effect = {
+				death = { death_reason = death_execution_eaten }
 			}
 		}
 		change_variable = { which = remaining_food value = 1 }
 		if = {
 			limit = {
-				NOT = {
+				NOR = {
 					has_character_modifier = cannibal
+					trait = cannibal_trait
 				}
 			}
-			add_character_modifier = {
-				name = cannibal
-				duration = -1
-			}
+			add_trait = cannibal_trait
 		}
 	}
 	option = {
@@ -753,6 +780,7 @@ character_event = {
 				trait = gluttonous 
 				trait = hedonist
 				has_character_modifier = cannibal
+				trait = cannibal_trait
 			}
 		}
 		name = RIP.11555.b
@@ -765,6 +793,8 @@ character_event = {
 				}
 			}
 			add_trait = temperate
+			lose_weight_small_effect = yes
+			weight_trait_check_effect = yes
 		}
 		set_character_flag = seclusion_refuse_to_eat_fellow_man
 	}
@@ -780,6 +810,7 @@ character_event = {
 	has_character_flag = seclusion_food_shortage
 	
 	trigger = {
+		has_character_modifier = in_seclusion
 		NOT = { has_character_flag = seclusion_starving }
 		NOT = { check_variable = { which = remaining_food value = 1 } }
 	}
@@ -791,9 +822,18 @@ character_event = {
 	option = {
 		name = RIP.11556.a
 		set_character_flag = seclusion_starving
-		remove_character_modifier = tiny_food_shortage
-		remove_character_modifier = minor_food_shortage
-		remove_character_modifier = normal_food_shortage
+		if = {
+			limit = { has_character_modifier = tiny_food_shortage }
+			remove_character_modifier = tiny_food_shortage 
+		}
+		if = {
+			limit = { has_character_modifier = minor_food_shortage }
+			remove_character_modifier = minor_food_shortage 
+		}
+		if = {
+			limit = { has_character_modifier = normal_food_shortage }
+			remove_character_modifier = normal_food_shortage 
+		}
 		add_character_modifier = {
 			name = starving_food_shortage
 				duration = -1
@@ -823,6 +863,8 @@ character_event = {
 	
 	is_triggered_only = yes #triggered by "Open the gates"
 	
+	notification = yes
+	
 	trigger = {
 		OR = {
 			has_character_modifier = tiny_food_shortage
@@ -832,16 +874,44 @@ character_event = {
 			has_character_modifier = greedy_food_shortage
 		}
 	}
+	
+	immediate = {
+		if = {
+			limit = {
+				has_character_modifier = tiny_food_shortage
+			}
+			remove_character_modifier = tiny_food_shortage
+		}
+		if = {
+			limit = {
+				has_character_modifier = minor_food_shortage
+			}
+			remove_character_modifier = minor_food_shortage
+		}
+		if = {
+			limit = {
+				has_character_modifier = normal_food_shortage
+			}
+			remove_character_modifier = normal_food_shortage
+		}
+		if = {
+			limit = {
+				has_character_modifier = starving_food_shortage
+			}
+			remove_character_modifier = starving_food_shortage
+		}
+		if = {
+			limit = {
+				has_character_modifier = greedy_food_shortage
+			}
+			remove_character_modifier = greedy_food_shortage
+		}
+		clr_character_flag = seclusion_food_shortage
+		clr_character_flag = seclusion_starving
+	}
 
 	option = {
 		name = OK
-		remove_character_modifier = tiny_food_shortage
-		remove_character_modifier = minor_food_shortage
-		remove_character_modifier = normal_food_shortage
-		remove_character_modifier = starving_food_shortage
-		remove_character_modifier = greedy_food_shortage
-		clr_character_flag = seclusion_food_shortage
-		clr_character_flag = seclusion_starving
 	}
 }
 
@@ -983,7 +1053,11 @@ character_event = {
 		if = {
 			limit = {
 				event_target:sick_courtier = {
-					has_character_flag = got_bubonic_plague
+					OR = {
+						has_character_flag = got_bubonic_plague
+						has_character_flag = manifest_bubonic_plague
+						trait = has_bubonic_plague
+					}
 				}
 				ai = no
 			}
@@ -1181,7 +1255,7 @@ character_event = {
 				years = 5
 			}
 		}
-		event_target:lower_two = {
+		event_target:lover_two = {
 			opinion = {
 				who = ROOT
 				modifier = opinion_angry
@@ -1270,7 +1344,7 @@ character_event = {
 
 	trigger = {
 		event_target:lover_one = {
-			lover = {
+			any_lover = {
 				character = event_target:lover_two
 			}
 		}
