@@ -1921,6 +1921,14 @@ useless_character_trigger = {
 	}
 }
 
+#True religion triggers
+true_religion_group_earth_religions_trigger = {
+	true_religion_group = earth_religions
+}
+true_religion_group_water_religions_trigger = {
+	true_religion_group = water_religions
+}
+
 relationship_with_root_trigger = {
 	OR = {
 		is_lover = ROOT
@@ -2098,118 +2106,6 @@ has_society_currency_huge_trigger = {
 	society_currency >= 2000
 }
 
-add_society_currency_trivial_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 10
-	}
-}
-
-add_society_currency_tiny_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 50
-	}
-} 
-
-add_society_currency_minor_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 100
-	}
-}
-
-add_society_currency_medium_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 300
-	}
-}
-
-add_society_currency_major_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 500
-	}
-}
-
-add_society_currency_large_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 750
-	}
-}
-
-add_society_currency_massive_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 1000
-	}
-}
-
-add_society_currency_huge_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = 2000
-	}
-}
-
-detract_society_currency_trivial_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -15
-	}
-}
-
-detract_society_currency_tiny_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -50
-	}
-}
-
-detract_society_currency_minor_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -150
-	}
-}
-
-detract_society_currency_medium_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -300
-	}
-}
-
-detract_society_currency_major_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -500
-	}
-}
-
-detract_society_currency_large_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -750
-	}
-}
-
-detract_society_currency_massive_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -1000
-	}
-}
-
-detract_society_currency_huge_effect = {
-	if = {
-		limit = { is_in_society = yes }
-		change_society_currency = -2000
-	}
-}
-
 is_ill_trigger = {
 	OR = {
 		has_disease_trigger = yes
@@ -2314,6 +2210,32 @@ is_openly_of_roots_secret_religion_trigger = {
 	religion = { target = ROOT target_type = secret }
 }
 
+has_sympathy_for_true_religion_of_prev_trigger = { 
+	OR = {
+		AND = {
+			trait = sympathy_earth_religions
+			PREV = { true_religion_group_earth_religions_trigger = yes }
+		}
+		AND = {
+			trait = sympathy_water_religions
+			PREV = { true_religion_group_water_religions_trigger = yes }
+		}
+	}
+}
+
+has_sympathy_for_true_religion_of_root_trigger = { 
+	OR = {
+		AND = {
+			trait = sympathy_earth_religions
+			ROOT = { true_religion_group_earth_religions_trigger = yes }
+		}
+		AND = {
+			trait = sympathy_water_religions
+			ROOT = { true_religion_group_water_religions_trigger = yes }
+		}
+	}
+}
+
 ok_sr_induction_mission_target_trigger = {
 	is_adult = yes
 	NOT = { secret_religion = ROOT }
@@ -2332,9 +2254,19 @@ ok_sr_sympathy_mission_target_trigger = {
 	has_secret_religion_trait_trigger = no
 	ROOT = {
 		NOT = { secret_religion = { target_type = public target = PREV } }
+		NOR = {
+			AND = {
+				true_religion_group = earth_religions
+				PREV = { trait = sympathy_earth_religions }
+			}
+			AND = {
+				true_religion_group = water_religions
+				PREV = { trait = sympathy_water_religions }
+			}
+		}
 	}
 	ROOT = { PREV = { is_openly_of_prevs_secret_religion_trigger = no } }
-	#ROOT = { PREV = { has_sympathy_for_true_religion_of_prev_trigger = no } }
+	ROOT = { PREV = { has_sympathy_for_true_religion_of_prev_trigger = no } }
 	prisoner = no
 	is_adult = yes
 	NOT = { trait = incapable }
@@ -3746,10 +3678,10 @@ is_liked_by_Spirits_trigger = {
             type = offmap_spirit_world
         }
     }
-    offmap_spirit_world = {
-        show_scope_change = no
-        custom_tooltip = { text = emperor_likes_THIS_tt }
-    }
+    # offmap_spirit_world = {
+    #     show_scope_change = no
+    #     custom_tooltip = { text = emperor_likes_THIS_tt }
+    # }
 }
 
 is_disliked_by_Spirits_trigger = {
@@ -3761,10 +3693,10 @@ is_disliked_by_Spirits_trigger = {
             type = offmap_spirit_world
         }
     }
-    offmap_spirit_world = {
-        show_scope_change = no
-        custom_tooltip = { text = emperor_dislikes_THIS_tt }
-    }
+    # offmap_spirit_world = {
+    #     show_scope_change = no
+    #     custom_tooltip = { text = emperor_dislikes_THIS_tt }
+    # }
 }
 
 is_liked_and_disliked_by_Spirits = {
@@ -3774,10 +3706,10 @@ is_liked_and_disliked_by_Spirits = {
     liked_by_offmap = {
         type = offmap_spirit_world
     }
-    offmap_spirit_world = {
-        show_scope_change = no
-        custom_tooltip = { text = emperor_has_ambiguous_feelings_of_THIS_tt }
-    }
+    # offmap_spirit_world = {
+    #     show_scope_change = no
+    #     custom_tooltip = { text = emperor_has_ambiguous_feelings_of_THIS_tt }
+    # }
 }
 
 likes_fire_spirituality = {
@@ -3844,6 +3776,15 @@ likes_chaotic_outlaws = {
 likes_orderly_outlaws = {
 	religion = modernism
 }
+
+## > EK 
+
+# JADE DRAGON
+
+
+## < EK
+
+
 is_blood_relative_of_root_trigger = {
 	OR = {
 		is_ancestor_of = ROOT
@@ -3856,40 +3797,91 @@ is_blood_relative_of_root_trigger = {
 	}
 }
 
-silk_road_trade_post_trigger = {
+southern_earth_trade_post_trigger = {
 	custom_tooltip = {
-		text = silk_road_province_desc
+		text = southern_earth_trade_province_desc
 		hidden_tooltip = {
 			OR = {
-				province_id = 7
-				province_id = 61
-				province_id = 72
-				province_id = 79
-				province_id = 84
-				province_id = 95
-				province_id = 228
-				province_id = 239
-				province_id = 246
-				province_id = 207
-				province_id = 214
-				province_id = 234
-				province_id = 273
-				province_id = 309
-				province_id = 315
-				province_id = 283
-				province_id = 281
-				province_id = 20
-				province_id = 25
-				province_id = 37
-				province_id = 166
-				province_id = 168
-				province_id = 289
-				province_id = 340
-				province_id = 366
-				province_id = 386
-				province_id = 376
-				province_id = 568
-				province_id = 569
+				province_id = 340 #Gaoling
+				province_id = 336 #Chin
+				province_id = 329 #Mojiang
+				province_id = 315 #Zaofu
+				province_id = 309 #Omashu
+				province_id = 366 #Yunyu
+				province_id = 368 #Renxin
+				province_id = 360 #Sanyaa
+				province_id = 376 #Tongdoa
+				province_id = 389 #Kyoshi Island
+			}
+		}
+	}
+}
+
+eastern_earth_trade_post_trigger = {
+	custom_tooltip = {
+		text = eastern_earth_trade_province_desc
+		hidden_tooltip = {
+			OR = {
+			province_id = 150 #Nangang
+			province_id = 171 #Qixian
+			province_id = 159 #Wuhai
+			province_id = 162 #Alxa
+			province_id = 166 #Kuka
+			province_id = 183 #Helong
+			province_id = 139 #Yaodi
+			province_id = 146 #Xiadian
+			}
+		}
+	}
+}
+
+western_earth_trade_post_trigger = {
+	custom_tooltip = {
+		text = western_earth_trade_province_desc
+		hidden_tooltip = {
+			OR = {
+			province_id = 228 #Yu Dao
+			province_id = 230 #Gaoqing
+			province_id = 246 #Garsai
+			province_id = 234 #Yantai
+			province_id = 216 #Wuying
+			province_id = 214 #Badaji
+			province_id = 206 #Ningqi
+			province_id = 221 #Xiong Lin
+			province_id = 540 #Sasakimura
+			province_id = 243 #Shijian
+			}
+		}
+	}
+}
+
+water_tribes_trade_post_trigger = {
+	custom_tooltip = {
+		text = water_tribes_trade_province_desc
+		hidden_tooltip = {
+			OR = {
+			province_id = 7 #Northern Water Tribe
+			province_id = 20 #Southern Water Tribe
+			province_id = 27 #Qixak
+			province_id = 562 #Ublaami
+			province_id = 16 #Nigliktok
+			province_id = 10 #Tatkret
+			}
+		}
+	}
+}
+
+fire_island_trade_post_trigger = {
+	custom_tooltip = {
+		text = fire_island_trade_province_desc
+		hidden_tooltip = {
+			OR = {
+			province_id = 61 #Fire Capital
+			province_id = 79 #Taki
+			province_id = 95 #Amagasaki
+			province_id = 98 #Shuhon
+			province_id = 66 #Tottori
+			province_id = 70 #Jooshima
 			}
 		}
 	}
@@ -4716,7 +4708,6 @@ this_has_lame_nickname_trigger = {
 		has_nickname = nick_the_affable
 		has_nickname = nick_the_liberator
 		has_nickname = nick_the_glorious
-		has_nickname = nick_the_german
 		has_nickname = nick_the_younger
 		has_nickname = nick_the_youthful
 		has_nickname = nick_the_unfaithful
@@ -4790,11 +4781,8 @@ this_has_lame_nickname_trigger = {
 		has_nickname = nick_one_leg
 		has_nickname = nick_the_wicked
 		has_nickname = nick_the_bewitched
-		has_nickname = nick_priest_hater
-		has_nickname = nick_the_pious
 		has_nickname = nick_the_blessed
 		has_nickname = nick_the_monk
-		has_nickname = nick_the_nun
 		has_nickname = nick_the_ill_ruler
 		has_nickname = nick_the_terrible
 		has_nickname = nick_the_oppressor
@@ -4806,10 +4794,6 @@ this_has_lame_nickname_trigger = {
 		has_nickname = nick_the_hunchback
 		has_nickname = nick_the_scholar
 		has_nickname = nick_the_black
-		has_nickname = nick_the_healer
-		has_nickname = nick_the_unmercenary_healer
-		has_nickname = nick_the_understanding
-		has_nickname = nick_the_merciful
 		has_nickname = nick_the_flat_chested
 		has_nickname = nick_the_oakskin
 		has_nickname = nick_the_green_faced
@@ -4861,13 +4845,11 @@ this_has_average_nickname_trigger = {
 		has_nickname = nick_the_usurper
 		has_nickname = nick_the_conqueror
 		has_nickname = nick_the_victorious
-		has_nickname = nick_the_crusader
 		has_nickname = nick_the_martyr
 		has_nickname = nick_the_heathen
 		has_nickname = nick_the_jackal
 		has_nickname = nick_the_saint
 		has_nickname = nick_the_maid
-		has_nickname = nick_darc
 		has_nickname = nick_ring
 		has_nickname = nick_of_the_wilds
 		has_nickname = nick_the_impaler
@@ -4908,26 +4890,15 @@ this_has_average_nickname_trigger = {
 		has_nickname = nick_the_lord_of_realm
 		has_nickname = nick_the_beanstalk
 		has_nickname = nick_the_accursed
-		has_nickname = nick_the_apostle
 		has_nickname = nick_the_confessor
-		has_nickname = nick_the_ironside
-		has_nickname = nick_the_lion
 		has_nickname = nick_the_bold
 		has_nickname = nick_the_unready
 		has_nickname = nick_the_tyrant
 		has_nickname = nick_the_quarreller
-		has_nickname = nick_the_devil
 		has_nickname = nick_the_great
 		has_nickname = nick_the_giant
 		has_nickname = nick_tiny
 		has_nickname = nick_the_shield_of_capital
-		has_nickname = nick_the_myrrh_streaming
-		has_nickname = nick_the_god_bearing
-		has_nickname = nick_the_righteous
-		has_nickname = nick_the_venerable
-		has_nickname = nick_the_spark_of_god
-		has_nickname = nick_the_right_believing
-		has_nickname = nick_the_miracle_worker
 		has_nickname = nick_the_pest
 		has_nickname = nick_the_little_crow
 		has_nickname = nick_the_piglet
@@ -4957,8 +4928,6 @@ this_has_average_nickname_trigger = {
 		has_nickname = nick_the_bone_squeezer
 		has_nickname = nick_the_bull
 		has_nickname = nick_the_butch
-		has_nickname = nick_the_protector
-		has_nickname = nick_the_guardian
 		has_nickname = nick_the_sharp_tongue
 		has_nickname = nick_the_trickster
 		has_nickname = nick_the_merciless
@@ -4982,8 +4951,6 @@ this_has_cool_nickname_trigger = {
 		has_nickname = nick_the_stranger
 		has_nickname = nick_the_bald
 		has_nickname = nick_the_stammerer
-		has_nickname = nick_the_master_of_hungary
-		has_nickname = nick_hildetand
 		has_nickname = nick_the_shadow
 		has_nickname = nick_the_whisperer
 		has_nickname = nick_the_spider
@@ -5005,7 +4972,6 @@ this_has_cool_nickname_trigger = {
 		has_nickname = nick_the_eastern_wind
 		has_nickname = nick_the_despoiler
 		has_nickname = nick_the_bane_of_realmname
-		has_nickname = nick_the_heavenly
 		has_nickname = nick_the_great_beast
 		has_nickname = nick_the_great_eagle
 		has_nickname = nick_the_artist_ruler
@@ -5024,27 +4990,14 @@ this_has_cool_nickname_trigger = {
 		has_nickname = nick_of_a_thousand_faces
 		has_nickname = nick_the_plaguebearer
 		has_nickname = nick_the_persevering
-		has_nickname = nick_twistedbeard
 		has_nickname = nick_the_bear
 		has_nickname = nick_the_boar
 		has_nickname = nick_the_faceless
 		has_nickname = nick_the_cyclops
-		has_nickname = nick_the_lionheart
 		has_nickname = nick_the_dragon
-		has_nickname = nick_the_dragoness
 		has_nickname = nick_the_undying
-		has_nickname = nick_the_wolf
-		has_nickname = the_timely_rain
-		has_nickname = the_jade_unicorn
-		has_nickname = the_wizard
-		has_nickname = the_big_halberd
-		has_nickname = beautiful_beard
-		has_nickname = the_tattooed_monk
-		has_nickname = the_unrestrained
 		has_nickname = nick_the_roaring_flame
 		has_nickname = nick_the_goliath
-		has_nickname = nick_the_mythological_creature
-		has_nickname = nick_the_fool_for_christ
 		has_nickname = nick_the_skull_crusher
 		has_nickname = nick_the_quick_foot
 		has_nickname = nick_the_bleeder
@@ -5059,47 +5012,14 @@ this_has_cool_nickname_trigger = {
 		has_nickname = nick_the_scarlet_eagle
 		has_nickname = nick_the_exalted_chosen_of_province
 		has_nickname = nick_the_scarlet_painter
-		has_nickname = nick_the_ladder_legs
-		has_nickname = nick_the_peacock
-		has_nickname = nick_the_bellower
 	}
 }
 this_has_super_cool_nickname_trigger = {
 	OR = {
-		has_nickname = nick_haardraade
-		has_nickname = nick_lodbrok
 		has_nickname = nick_the_boneless
 		has_nickname = nick_bluetooth
-		has_nickname = nick_snake_in_the_eye
-		has_nickname = nick_fairhair
-		has_nickname = nick_whiteshirt
-		has_nickname = nick_the_saoshyant
-		has_nickname = nick_hardeknud
 		has_nickname = nick_the_world_burner
-		has_nickname = nick_the_vatican_prince
-		has_nickname = nick_the_vatican_princess
-		has_nickname = nick_the_pale_prince
-		has_nickname = nick_the_leechlord
-		has_nickname = nick_the_black_boar
-		has_nickname = nick_the_apostate
-		has_nickname = nick_the_hawk_of_quarysh
-		has_nickname = nick_the_submissive
-		has_nickname = nick_the_deliverer
-		has_nickname = nick_the_purified
-		has_nickname = nick_the_illuminated
-		has_nickname = nick_the_exalted
-		has_nickname = nick_the_awoken
-		has_nickname = nick_the_bleeding_eyes
-		has_nickname = nick_the_sky_rider
-		has_nickname = nick_the_civilized
-		has_nickname = nick_the_missionary
-		has_nickname = nick_the_proselytizer
-		has_nickname = nick_the_adjudicator
 		has_nickname = nick_the_enlightened
-		has_nickname = nick_the_waking_teacher
-		has_nickname = nick_the_whirling_spell
-		has_nickname = nick_the_horse_shepherd
-		has_nickname = nick_the_educator
 		has_nickname = nick_the_white_raven
 		has_nickname = nick_the_salt_snake
 		has_nickname = nick_the_salt_viper
@@ -5108,21 +5028,6 @@ this_has_super_cool_nickname_trigger = {
 		has_nickname = nick_the_fury
 		has_nickname = nick_the_stormforged
 		has_nickname = nick_the_tempest_of_capital
-		has_nickname = the_panther_head
-		has_nickname = the_thunderbolt
-		has_nickname = the_whirlwind
-		has_nickname = the_black_whirlwind
-		has_nickname = the_winged_tiger
-		has_nickname = the_turbulent_river_dragon
-		has_nickname = the_ferocious_giant
-		has_nickname = the_prodigy
-		has_nickname = nick_of_the_nine_hostages
-		has_nickname = nick_gods_torturer
-		has_nickname = nick_gods_hedonist
-		has_nickname = nick_gods_cannibal
-		has_nickname = nick_gods_drunkard
-		has_nickname = nick_papal_lover
-		has_nickname = nick_gods_seducer
 		has_nickname = nick_the_red_storm
 		has_nickname = nick_the_scarlet_hands
 		has_nickname = nick_the_blood_monger
@@ -5450,6 +5355,14 @@ has_at_least_3_traits_opposite_prev_trigger = {
 		}
 	}
 }
+
+has_any_sympathy_trait_trigger = { 
+	OR = {
+		trait = sympathy_earth_religions
+		trait = sympathy_water_religions
+	}
+}
+
 preferred_gender_based_on_laws_trigger = {
 	OR = {
 		AND = {
@@ -5689,3 +5602,113 @@ is_single_player_observer_mode = {
 		is_local_human_observer = yes
 	}
 }
+
+has_positive_ra_gain_trait_0.5 = {
+	OR = {
+		trait = lustful	
+		trait = greedy	
+		trait = proud
+		trait = chaste
+		trait = temperate
+		trait = diligent
+		trait = kind
+		trait = patient
+		trait = gregarious
+		trait = erudite
+		trait = competent_bender
+		trait = robust
+	}
+}
+
+has_positive_ra_gain_trait_1 = {
+	OR = {
+		trait = charismatic_negotiator
+		trait = fortune_builder
+		trait = skilled_tactician
+		trait = brave
+		trait = shrewd
+		trait = powerful_bender
+		AND = {
+			trait = zealous
+			religion = earth_monarchism
+		}
+		trait = scholarly_theologian
+		trait = fair
+		trait = quick
+		trait = earthking
+	}
+}
+
+has_positive_ra_gain_trait_1.5 = {
+	OR = {
+		trait = master_bender
+		trait = born_in_the_purple
+	}
+}
+
+
+has_positive_ra_gain_trait_2 = {
+	OR = {
+		trait = strong
+		trait = genius
+		trait = brilliant_strategist
+		trait = midas_touched
+		trait = grey_eminence
+		trait = legendary_bender
+		trait = mastermind_theologian
+	}
+}
+
+has_negative_ra_gain_trait_0.5 = {
+	OR = {
+		trait =	humble
+		trait = charitable
+		trait =	wroth
+		trait =	envious
+		trait =	slothful
+		trait =	gluttonous
+		trait = shy
+		trait = craven
+		trait = legit_bastard
+		trait = child_of_consort
+		trait = disfigured
+		trait = one_legged
+		trait = one_handed
+		trait = earthkingpuppet
+		trait = dull
+		trait = uncouth
+		trait = feeble
+	}
+}
+
+has_negative_ra_gain_trait_1 = {
+	OR = {
+		trait =	bastard
+		trait = clubfooted
+		trait = dwarf
+		trait = harelip
+		trait = hunchback
+		trait = lisp
+		trait = ugly
+		trait = stutter
+		trait = giant
+		NOT = { trait = born_in_the_purple }
+		trait = is_fat
+		trait = is_malnourished
+	}
+}
+
+has_negative_ra_gain_trait_2 = {
+	OR = {
+		trait =	freckles
+		trait = weak
+		trait = slow
+		trait = inbred
+		trait = imbecile
+		trait = possessed
+		trait = lunatic
+		trait = incapable
+		trait = drunkard
+	}
+}
+

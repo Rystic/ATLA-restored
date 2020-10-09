@@ -22,6 +22,10 @@ character_event = {
 				enemy = yes
 			}
 		}
+		has_game_rule = {
+			name = siege_events
+			value = on
+		}
 	}
 
 	weight_multiplier = {
@@ -51,6 +55,14 @@ character_event = {
 					leader = {
 						martial = 10
 					}
+				}
+			}
+		}
+		modifier = {
+			factor = 10
+			siege = {
+				location = {
+					has_wonder_upgrade = upgrade_hidden_gates
 				}
 			}
 		}
@@ -148,6 +160,10 @@ character_event = {
 				enemy = yes
 			}
 		}
+		has_game_rule = {
+			name = siege_events
+			value = on
+		}
 	}
 
 	weight_multiplier = {
@@ -183,6 +199,14 @@ character_event = {
 					leader = {
 						NOT = { martial = 4 }
 					}
+				}
+			}
+		}
+		modifier = {
+			factor = 10
+			siege = {
+				location = {
+					has_wonder_upgrade = upgrade_hidden_gates
 				}
 			}
 		}
@@ -277,6 +301,12 @@ character_event = {
 				who = troops
 				value = 0.1
 				enemy = yes
+			}
+		}
+		NOT = {
+			has_game_rule = {
+				name = siege_events
+				value = off
 			}
 		}
 	}
@@ -408,6 +438,10 @@ character_event = {
 				enemy = yes
 			}
 		}
+		has_game_rule = {
+			name = siege_events
+			value = on
+		}
 	}
 
 	weight_multiplier = {
@@ -505,6 +539,12 @@ character_event = {
 	trigger = {
 		siege = {
 			is_attacker = yes
+		}
+		NOT = {
+			has_game_rule = {
+				name = siege_events
+				value = off
+			}
 		}
 	}
 
@@ -604,6 +644,10 @@ character_event = {
 		siege = {
 			is_attacker = yes
 		}
+		has_game_rule = {
+			name = siege_events
+			value = on
+		}
 	}
 
 	weight_multiplier = {
@@ -702,6 +746,12 @@ character_event = {
 		siege = {
 			is_attacker = no
 		}
+		NOT = {
+			has_game_rule = {
+				name = siege_events
+				value = off
+			}
+		}
 	}
 
 	weight_multiplier = {
@@ -797,6 +847,12 @@ character_event = {
 	trigger = {
 		siege = {
 			is_attacker = no
+		}
+		NOT = {
+			has_game_rule = {
+				name = siege_events
+				value = off
+			}
 		}
 	}
 	
@@ -898,12 +954,9 @@ character_event = {
 		siege = {
 			is_attacker = yes
 		}
-		NOT = {
-			OR = {
-				province_id = 323
-				province_id = 328
-				province_id = 330
-			}
+		has_game_rule = {
+			name = siege_events
+			value = on
 		}
 	}
 
@@ -997,16 +1050,13 @@ character_event = {
 
 	is_triggered_only = yes
 	
-	notification = yes
-
 	trigger = {
 		siege = {
 			is_attacker = yes
 		}
-		OR = {
-			province_id = 323
-			province_id = 328
-			province_id = 330
+		has_game_rule = {
+			name = siege_events
+			value = on
 		}
 	}
 
@@ -1102,15 +1152,13 @@ character_event = {
 
 	is_triggered_only = yes
 	
-	notification = yes
-
 	trigger = {
 		siege = {
 			is_attacker = yes
 		}
 		NOT = {	trait = craven }
 		NOT = {	trait = cynical	}
-		NOT = {	trait = maimed	}
+		can_be_maimed_trigger = yes
 		NOT = {	trait = wounded	}
 	}
 
@@ -1147,7 +1195,7 @@ character_event = {
 			}
 		}
 		random_list = {
-			10 = { add_trait = maimed hidden_tooltip = { character_event = { id = 38281 } } }
+			10 = { add_maimed_trait_effect = yes }
 			10 = { add_trait = wounded hidden_tooltip = { character_event = { id = 38280 } } }
 		}
 	}
@@ -1162,7 +1210,7 @@ character_event = {
 				}
 			}
 			random_list = {
-				10 = { add_trait = maimed hidden_tooltip = { character_event = { id = 38281 } } }
+				10 = { add_maimed_trait_effect = yes }
 				10 = { add_trait = wounded hidden_tooltip = { character_event = { id = 38280 } } }
 			}
 		}
@@ -1178,8 +1226,6 @@ character_event = { # Other side gets event
 	border = GFX_event_normal_frame_war
 
 	is_triggered_only = yes
-	
-	notification = yes
 	
 	trigger = {
 		ai = no
@@ -1202,12 +1248,7 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		OR = {
-			trait = ill
-			trait = pneumonic
-			trait = leper
-			trait = syphilitic
-		}
+		is_ill = yes
 		NOT = {
 			trait = craven
 		}
@@ -1244,7 +1285,7 @@ character_event = {
 		}
 		random_list = {
 			60 = {
-				add_trait = maimed
+				add_maimed_trait_effect = yes
 				prestige = 50
 			}
 			40 = {
@@ -1280,9 +1321,17 @@ character_event = {
 				}
 			}
 		}
-		random = {
-			chance = 50
-			add_trait = craven
+		if = {
+			limit = { NOT = { trait = craven } }
+			random = {
+				chance = 50
+				add_trait = craven
+				hidden_tooltip = {
+					character_event = {
+						id = 38257 #Notify Craven
+					}
+				}
+			}
 		}
 		prestige = -50
 	}
@@ -1420,6 +1469,11 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA62100
+		trigger = {
+			center_flank_leader = {
+				mercenary = no
+			}
+		}
 		new_character = {
 			ROOT = {
 				imprison = PREV
@@ -1428,6 +1482,20 @@ character_event = {
 		hidden_tooltip = {
 			new_character = {
 				character_event = { id = 62101 }
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA62100
+		trigger = {
+			center_flank_leader = {
+				mercenary = yes
+			}
+		}
+		center_flank_leader = {
+			ROOT = {
+				imprison = PREV
 			}
 		}
 	}

@@ -48,35 +48,42 @@ character_event = {
 						NOT = { had_character_flag = { flag = got_physician_village_drunkard days = 3650 } }
 					}
 				}
-				create_character = {
-					religion = ROOT
-					culture = ROOT
-					dynasty = none
-					age = 35
-					random_traits = yes
-					female = no
-					attributes = {
-						learning = 20
-					}
-					health = 6
-					trait = detached_priest
-					trait = drunkard
-					flag = is_court_physician
-					flag = physician_village_drunkard
-				}
-				new_character = {
-					remove_trait = temperate
-					remove_trait = scholar
-					remove_trait = mystic
-					random_list = { # Is the Physician a Quack?
-						90 = {
+				random_list = {
+					100 = { # Same Religion & Culture as ROOT
+						create_character = {
+							religion = ROOT
+							culture = ROOT
+							dynasty = none
+							age = 35
+							random_traits = yes
+							female = no
+							attributes = {
+								learning = 20
+							}
+							health = 6
+							trait = detached_priest
+							trait = drunkard
+							flag = is_court_physician
+							flag = physician_village_drunkard
 						}
-						10 = {
-							set_character_flag = physician_is_quack
+						new_character = {
+							set_character_flag = no_court_invites
+							remove_trait = temperate
+							remove_trait = scholar
+							remove_trait = mystic
+							remove_trait = imbecile
+							remove_trait = slow
+							random_list = { # Is the Physician a Quack?
+								90 = {
+								}
+								10 = {
+									set_character_flag = physician_is_quack
+								}
+							}
+							save_event_target_as = recruited_physician_target
+							character_event = { id = RIP.11052 }
 						}
 					}
-					save_event_target_as = recruited_physician_target
-					character_event = { id = RIP.11052 }
 				}
 			}
 			5 = { # Ship's Physician (Physician)
@@ -101,57 +108,64 @@ character_event = {
 					}
 					save_event_target_as = physician_port_target
 				}
-				create_character = {
-					religion = ROOT
-					culture = ROOT
-					dynasty = none
-					age = 30
-					random_traits = yes
-					female = no
-					attributes = {
-						learning = 10
-					}
-					health = 6
-					trait = underhanded_rogue 
-					trait = physician
-					trait = one_legged
-					trait = greedy
-					flag = is_court_physician
-					flag = physician_ships_physician
-				}
-				new_character = {
-					remove_trait = charitable
-					remove_trait = mystic
-					remove_trait = poet
-					remove_trait = socializer
-					remove_trait = gamer
-					remove_trait = hedonist
-					remove_trait = duelist
-					remove_trait = hunter
-					remove_trait = strategist
-					remove_trait = administrator
-					remove_trait = architect
-					remove_trait = gardener
-					remove_trait = schemer
-					remove_trait = impaler
-					remove_trait = seducer
-					remove_trait = seductress
-					remove_trait = theologian
-					remove_trait = scholar
-					add_character_modifier = {
-						modifier = pet_parrot
-						duration = -1
-					}
-					random_list = { # Is the Physician a Quack?
-						90 = {
+				random_list = {
+					100 = { # Same Religion & Culture as ROOT
+						create_character = {
+							religion = ROOT
+							culture = ROOT
+							dynasty = none
+							age = 30
+							random_traits = yes
+							female = no
+							attributes = {
+								learning = 10
+							}
+							health = 6
+							trait = underhanded_rogue 
+							trait = physician
+							trait = one_legged
+							trait = greedy
+							flag = is_court_physician
+							flag = physician_ships_physician
 						}
-						10 = {
-							set_character_flag = physician_is_quack
+						new_character = {
+							set_character_flag = no_court_invites
+							remove_trait = charitable
+							remove_trait = mystic
+							remove_trait = poet
+							remove_trait = socializer
+							remove_trait = gamer
+							remove_trait = hedonist
+							remove_trait = duelist
+							remove_trait = hunter
+							remove_trait = strategist
+							remove_trait = administrator
+							remove_trait = architect
+							remove_trait = gardener
+							remove_trait = schemer
+							remove_trait = impaler
+							remove_trait = seducer
+							remove_trait = seductress
+							remove_trait = theologian
+							remove_trait = scholar
+							remove_trait = imbecile
+							remove_trait = slow
+							add_character_modifier = {
+								modifier = pet_parrot
+								duration = -1
+							}
+							random_list = { # Is the Physician a Quack?
+								90 = {
+								}
+								10 = {
+									set_character_flag = physician_is_quack
+								}
+							}
+							give_nickname = nick_the_sea_devil
+							save_event_target_as = recruited_physician_target
+							character_event = { id = RIP.11052 }
 						}
 					}
-					give_nickname = nick_the_sea_devil
-					save_event_target_as = recruited_physician_target
-					character_event = { id = RIP.11052 }
 				}
 			}
 			5 = { # Wise Hermit Dwarf (Physician)
@@ -205,7 +219,9 @@ character_event = {
 					flag = ai_flag_refuse_conversion
 				}
 				new_character = {
+					set_character_flag = no_court_invites
 					remove_trait = fair
+					remove_trait = giant
 					remove_trait = gregarious
 					remove_trait = slow
 					remove_trait = imbecile
@@ -227,6 +243,192 @@ character_event = {
 					remove_trait = theologian
 					remove_trait = scholar
 					become_heretic = yes
+					random_list = { # Is the Physician a Quack?
+						90 = {
+						}
+						10 = {
+							set_character_flag = physician_is_quack
+						}
+					}
+					save_event_target_as = recruited_physician_target
+					character_event = { id = RIP.11052 }
+				}
+			}
+			5 = { # Condemned Sorcerer (Mystic)
+				modifier = {
+					factor = 0
+					AND = {
+						has_character_flag = got_physician_condemned_sorcerer
+						NOT = { had_character_flag = { flag = got_physician_condemned_sorcerer days = 3650 } }
+					}
+				}
+				modifier = {
+					factor = 0
+					NOT = {
+						job_spymaster = {
+							always = yes
+						}
+					}
+				}
+				modifier = {
+					factor = 0
+					NOT = {
+						any_realm_province = {
+							any_province_holding = {
+								holding_type = city
+							}
+						}
+					}
+				}
+				any_realm_province = {
+					limit = {
+						any_province_holding = {
+							holding_type = city
+						}
+					}
+					random_province_holding = {
+						limit = {
+							holding_type = city
+						}
+					save_event_target_as = sorcerer_city_target
+					}
+				}
+				random_list = {
+					100 = { # Same Religion & Culture as ROOT
+						create_character = {
+							religion = ROOT
+							culture = ROOT
+							dynasty = none
+							age = 28
+							random_traits = yes
+							female = no
+							attributes = {
+								learning = 9
+							}
+							health = 6
+							trait = naive_appeaser
+							trait = mystic
+							flag = is_court_physician
+							flag = physician_condemned_sorcerer
+						}
+						new_character = {
+							set_character_flag = no_court_invites
+							remove_trait = scholar
+							remove_trait = socializer
+							remove_trait = gamer
+							remove_trait = hedonist
+							remove_trait = duelist
+							remove_trait = hunter
+							remove_trait = strategist
+							remove_trait = administrator
+							remove_trait = architect
+							remove_trait = gardener
+							remove_trait = schemer
+							remove_trait = impaler
+							remove_trait = seducer
+							remove_trait = seductress
+							remove_trait = theologian
+							remove_trait = imbecile
+							remove_trait = slow
+							random_list = { # Is the Physician a Quack?
+								80 = {
+								}
+								20 = {
+									set_character_flag = physician_is_quack
+								}
+							}
+							become_heretic = yes
+							save_event_target_as = recruited_physician_target
+							character_event = { id = RIP.11052 }
+						}
+					}
+				}
+			}
+			5 = { # Cynical Clergyman (Mystic)
+				modifier = {
+					factor = 0
+					AND = {
+						has_character_flag = got_physician_cynical_clergyman
+						NOT = { had_character_flag = { flag = got_physician_cynical_clergyman days = 3650 } }
+					}
+				}
+				modifier = {
+					factor = 0
+					NOT = {
+						any_realm_province = {
+							any_province_holding = {
+								holding_type = temple
+							}
+						}
+					}
+				}
+				any_realm_province = {
+					limit = {
+						any_province_holding = {
+							holding_type = temple
+						}
+					}
+					random_province_holding = {
+						limit = {
+							holding_type = temple
+						}
+					save_event_target_as = clergyman_temple_target
+					}
+				}
+				create_character = {
+					religion = ROOT
+					culture = ROOT
+					dynasty = none
+					age = 60
+					random_traits = yes
+					female = no
+					attributes = {
+						learning = 4
+					}
+					health = 7
+					trait = mastermind_theologian 
+					trait = mystic
+					trait = cynical
+					flag = is_court_physician
+					flag = physician_cynical_clergyman
+				}
+				new_character = {
+					set_character_flag = no_court_invites
+					remove_trait = zealous
+					remove_trait = scholar
+					remove_trait = socializer
+					remove_trait = gamer
+					remove_trait = hedonist
+					remove_trait = duelist
+					remove_trait = hunter
+					remove_trait = strategist
+					remove_trait = administrator
+					remove_trait = architect
+					remove_trait = gardener
+					remove_trait = schemer
+					remove_trait = impaler
+					remove_trait = seducer
+					remove_trait = seductress
+					remove_trait = theologian
+					remove_trait = imbecile
+					remove_trait = slow
+					random_list = { # Random chance to add Physician
+						50 = {
+							add_trait = physician
+							change_learning = -2
+						}
+						50 = {
+							
+						}
+					}
+					random_list = { # Random chance to add Physician
+						50 = {
+							add_trait = physician
+						}
+						50 = {
+							
+						}
+					}
 					random_list = { # Is the Physician a Quack?
 						90 = {
 						}
@@ -270,6 +472,7 @@ character_event = {
 							flag = physician_beloved_wise_man
 						}
 						new_character = {
+							set_character_flag = no_court_invites
 							remove_trait = greedy
 							remove_trait = wroth
 							remove_trait = cruel
@@ -293,6 +496,8 @@ character_event = {
 							remove_trait = seductress
 							remove_trait = theologian
 							remove_trait = scholar
+							remove_trait = imbecile
+							remove_trait = slow
 							random_list = { # Random chance to add Scholar
 								30 = {
 									add_trait = scholar
@@ -336,6 +541,7 @@ character_event = {
 							flag = physician_beloved_wise_man
 						}
 						new_character = {
+							set_character_flag = no_court_invites
 							remove_trait = greedy
 							remove_trait = wroth
 							remove_trait = cruel
@@ -359,6 +565,8 @@ character_event = {
 							remove_trait = seductress
 							remove_trait = theologian
 							remove_trait = scholar
+							remove_trait = imbecile
+							remove_trait = slow
 							random_list = { # Random chance to add Scholar
 								30 = {
 									add_trait = scholar
@@ -410,6 +618,7 @@ character_event = {
 					flag = ai_flag_refuse_conversion
 				}
 				new_character = {
+					set_character_flag = no_court_invites
 					remove_trait = dull
 					remove_trait = slow
 					remove_trait = imbecile
@@ -436,7 +645,7 @@ character_event = {
 					}
 				}
 				random_list = {
-					75 = {
+					1 = {
 						create_character = {
 							religion = ROOT
 							culture = ROOT
@@ -455,6 +664,7 @@ character_event = {
 							flag = physician_erudite_herbalist
 						}
 						new_character = {
+							set_character_flag = no_court_invites
 							remove_trait = mystic
 							remove_trait = scholar
 							remove_trait = socializer
@@ -470,6 +680,8 @@ character_event = {
 							remove_trait = seducer
 							remove_trait = seductress
 							remove_trait = theologian
+							remove_trait = imbecile
+							remove_trait = slow
 							random_list = { # Is the Physician a Quack?
 								90 = {
 								}

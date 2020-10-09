@@ -115,8 +115,17 @@ targetted_decisions = {
 			is_liege_or_above = FROM
 		}
 		allow = {
-			FROM = {
-				piety = 20
+			conditional_tooltip = {
+				trigger = {
+					NOT = {
+						any_owned_bloodline = {
+							has_bloodline_flag = bloodline_legitimize
+						}
+					}
+				}
+				FROM = {
+					piety = 20
+				}
 			}
 		}
 		effect = {
@@ -124,7 +133,21 @@ targetted_decisions = {
 			remove_trait = bastard
 			add_trait = legit_bastard
 			recalc_succession = yes
-			FROM = { piety = -20 }
+			FROM = { 
+				show_scope_change = no
+				if = {
+					limit = {
+						NOT = {
+							any_owned_bloodline = {
+								has_bloodline_flag = bloodline_legitimize
+							}
+						}
+					}
+					FROM = {
+						piety = -20
+					}
+				}
+			}
 			if = {
 				limit = {
 					prisoner = yes

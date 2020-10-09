@@ -62,12 +62,8 @@ character_event = {
 		set_character_flag = trade_route_progress
 		if = {
 			limit = {
-				OR = {
-					title = k_omashu
-					title = k_liaoyang
-					title = k_beidiqiu
-					title = k_xiong_lin
-					title = e_earth_kingdom
+				capital_scope = {
+					region = world_greater_earth_kingdom
 				}
 			}
 			character_event = { id = WoL.10103 }
@@ -244,7 +240,7 @@ character_event = {
 	id = WoL.10105
 	is_triggered_only = yes
 	desc = EVTDESC_WOL_10105
-	picture = GFX_evt_priest
+	picture = GFX_evt_bishop
 	border = GFX_event_normal_frame_economy
 	
 	option = {
@@ -294,6 +290,7 @@ character_event = {
 					if = {
 						limit = { has_character_flag = trade_bandits_fail }
 						character_event = { id = WoL.10110 days = 7 }
+						break = yes
 					}
 					character_event = { id = WoL.10111 days = 14 }
 				}
@@ -327,7 +324,7 @@ character_event = {
 	id = WoL.10106
 	is_triggered_only = yes
 	desc = EVTDESC_WOL_10106
-	picture = GFX_evt_priest
+	picture = GFX_evt_bishop
 	border = GFX_event_normal_frame_economy
 	
 	option = {
@@ -480,7 +477,6 @@ character_event = {
 	
 	option = {
 		name = EVTOPTA_WOL_10111
-		#add_trait = expedition
 		hidden_tooltip = {
 			if = {
 				limit = {
@@ -504,20 +500,22 @@ character_event = {
 		random_independent_ruler = {
 			limit = {
 				ai = yes
+				controls_religion = no
 				is_adult = yes
 				is_within_diplo_range = ROOT
 				mercenary = no
 				holy_order = no
-				NOT = {
-					OR = {
-						is_rival = ROOT
-						trait = incapable
-						prisoner = yes
-						religion_group = ROOT
-						ROOT = {
-							any_liege = {
-								character = PREVPREV
-							}
+				primary_title = {
+					is_landless_type_title = no
+				}
+				NOR = {
+					is_rival = ROOT
+					trait = incapable
+					prisoner = yes
+					religion_group = ROOT
+					ROOT = {
+						any_liege = {
+							character = PREVPREV
 						}
 					}
 				}
@@ -528,20 +526,22 @@ character_event = {
 		random_independent_ruler = {
 			limit = {
 				ai = yes
+				controls_religion = no
 				is_adult = yes
 				is_within_diplo_range = ROOT
 				mercenary = no
 				holy_order = no
-				NOT = {
-					OR = {
-						is_rival = ROOT
-						trait = incapable
-						prisoner = yes
-						religion = ROOT
-						ROOT = {
-							any_liege = {
-								character = PREVPREV
-							}
+				primary_title = {
+					is_landless_type_title = no
+				}
+				NOR = {
+					is_rival = ROOT
+					trait = incapable
+					prisoner = yes
+					religion = ROOT
+					ROOT = {
+						any_liege = {
+							character = PREVPREV
 						}
 					}
 				}
@@ -552,19 +552,21 @@ character_event = {
 		random_independent_ruler = {
 			limit = {
 				ai = yes
+				controls_religion = no
 				is_adult = yes
 				is_within_diplo_range = ROOT
 				mercenary = no
 				holy_order = no
-				NOT = {
-					OR = {
-						is_rival = ROOT
-						trait = incapable
-						prisoner = yes
-						ROOT = {
-							any_liege = {
-								character = PREVPREV
-							}
+				primary_title = {
+					is_landless_type_title = no
+				}
+				NOR = {
+					is_rival = ROOT
+					trait = incapable
+					prisoner = yes
+					ROOT = {
+						any_liege = {
+							character = PREVPREV
 						}
 					}
 				}
@@ -575,9 +577,13 @@ character_event = {
 		random_independent_ruler = {
 			limit = {
 				ai = yes
+				controls_religion = no
 				is_adult = yes
 				mercenary = no
 				holy_order = no
+				primary_title = {
+					is_landless_type_title = no
+				}
 				NOT = {
 					OR = {
 						is_rival = ROOT
@@ -603,9 +609,8 @@ character_event = {
 	id = WoL.10999
 	is_triggered_only = yes
 	desc = EVTDESC_WOL_10999
-	picture = GFX_evt_priest
+	picture = GFX_evt_market
 	border = GFX_event_normal_frame_economy
-	hide_window = yes
 	
 	option = {
 		name = EVTOPTA_WOL_10999
@@ -643,9 +648,7 @@ character_event = {
 		name = { # A dozen of strong horses
 			text = EVTOPTA_WOL_10114_HORSES
 			trigger = { 
-				OR = {
-					culture_group = earth_kingdom_culture
-				}
+				culture_group = earth_kingdom_culture
 			}
 		}
 		name = { # A dozen of sturdy camels
@@ -788,7 +791,10 @@ character_event = {
 	
 	immediate = {
 		if = {
-			limit = { FROM = { has_character_flag = trade_priest } }
+			limit = { 
+				FROM = { has_character_flag = trade_priest } 
+				NOT = { religion = FROM }
+			}
 			FROM = {
 				character_event = { id = WoL.10118 days = 7 }
 			}
@@ -841,43 +847,35 @@ character_event = {
 	}
 	
 	option = {
-		name = EVTOPTC_WOL_10118
-		trigger = {
-			NOT = {
+		name = {
+			text = EVTOPTC_WOL_10118
+			trigger = {
 				FROM = {
+					NOT = {
+						religion = ROOT
+					}
 					religion_group = ROOT
 				}
 			}
 		}
-		random = {
-			chance = 50
-			add_trait = zealous
-		}
-		FROM = {
-			opinion = {
-				modifier = opinion_religious_quarrel
-				who = ROOT
-				months = 12
-			}
-			hidden_tooltip = {
-				character_event = { id = WoL.10119 days = 7 }
-			}
-		}
-	}
-	
-	option = {
-		name = EVTOPTD_WOL_10118
-		trigger = {
-			FROM = {
+		name = {
+			text = EVTOPTD_WOL_10118
+			trigger = {
 				NOT = {
-					religion = ROOT
+					FROM = {
+						religion_group = ROOT
+					}
 				}
-				religion_group = ROOT
 			}
 		}
 		random = {
 			chance = 50
 			add_trait = zealous
+			hidden_tooltip = {
+				character_event = {
+					id = 38269 #Notify Zealous
+				}
+			}
 		}
 		FROM = {
 			opinion = {
@@ -1127,11 +1125,11 @@ character_event = {
 	option = {
 		name = EVTOPTA_WOL_10123
 		if = {
-			limit = { trait = indulgent_wastrel }
+			limit = { trait = fortune_builder }
 			hidden_tooltip = {
-				remove_trait = indulgent_wastrel
+				remove_trait = fortune_builder
 			}
-			add_trait = thrifty_clerk
+			add_trait = midas_touched 
 		}
 		if = {
 			limit = { trait = thrifty_clerk }
@@ -1141,11 +1139,11 @@ character_event = {
 			add_trait = fortune_builder
 		}
 		if = {
-			limit = { trait = fortune_builder }
+			limit = { trait = indulgent_wastrel }
 			hidden_tooltip = {
-				remove_trait = fortune_builder
+				remove_trait = indulgent_wastrel
 			}
-			add_trait = midas_touched 
+			add_trait = thrifty_clerk
 		}
 	}
 }
@@ -1177,7 +1175,12 @@ character_event = {
 		}
 		prestige = 150
 		set_character_flag = est_trade_route
-		set_character_flag = achievement_were_in_business
+		if = {
+			limit = {
+				ai = no
+			}
+			set_character_flag = achievement_were_in_business
+		}
 		clr_character_flag = trade_route_progress
 		clr_character_flag = trade_priest
 		capital_scope = {
@@ -1194,7 +1197,18 @@ character_event = {
 					duration = 9125
 					hidden = yes
 				}
-				province_event = { id = WoL.10129 years = 28 }
+				province_event = { id = WoL.10129 days = 10220 }
+			}
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				custom_tooltip = {
+					text = capital_prospers_custom_tooltip
+					hidden_tooltip = {
+						change_variable = { which = prosperity_value value = 6 }
+					}
+				}
 			}
 		}
 		
@@ -1238,6 +1252,7 @@ character_event = {
 		transfer_scaled_wealth = {
 			to = event_target:steward
 			value = 0.5
+			max = 200
 		}
 		event_target:steward = {
 			hidden_tooltip = {
@@ -1257,6 +1272,11 @@ character_event = {
 		random = {
 			chance = 50
 			add_trait = greedy
+			hidden_tooltip = {
+				character_event = {
+					id = 38252 #Notify Greedy
+				}
+			}
 		}
 		event_target:steward = {
 			hidden_tooltip = {
@@ -1278,7 +1298,6 @@ character_event = {
 	hide_window = yes ###fix if time
 	
 	option = {
-		name = EVTOPTA_WOL_10127
 		trigger = {
 			has_character_flag = trade_rewarded
 		}
@@ -1294,7 +1313,6 @@ character_event = {
 	}
 	
 	option = {
-		name = EVTOPTB_WOL_10127
 		trigger = {
 			NOT = { has_character_flag = trade_rewarded }
 		}
@@ -1349,7 +1367,6 @@ character_event = {
 		clr_character_flag = trade_bandits_fail
 		clr_character_flag = trade_bandits
 		clr_character_flag = trade_is_land
-		clr_character_flag = trade_route_progress
 		clr_character_flag = trade_priest
 		clr_character_flag = trade_friend
 		clr_character_flag = trade_success
@@ -1366,13 +1383,7 @@ province_event = {
 	immediate = {
 		if = {
 			limit = {
-				OR = {
-					kingdom = { title = k_omashu }
-					kingdom = { title = k_liaoyang }
-					kingdom = { title = k_beidiqiu }
-					kingdom = { title = k_xiong_lin }
-					empire = { title = e_earth_kingdom }
-				}
+				region = world_greater_earth_kingdom
 			}
 			province_event = { id = WoL.10130 }
 			break = yes
@@ -1388,6 +1399,8 @@ province_event = {
 	desc = EVTDESC_WOL_10130
 	picture = GFX_evt_merchant_caravan
 	border = GFX_event_normal_frame_economy
+
+	hide_from = yes
 	
 	trigger = {
 		has_province_modifier = trade_route
@@ -1399,9 +1412,15 @@ province_event = {
 		ai_chance = {
 			factor = 1
 		}
-		scaled_wealth = -2.5
-		hidden_tooltip = {
-			remove_province_modifier = trade_route
+		holder_scope = {
+			if = {
+				limit = { NOT = { yearly_income = 80 } }
+				scaled_wealth = -2.5
+			}
+			if = {
+				limit = { yearly_income = 80 }
+				wealth = -200
+			}
 		}
 		add_province_modifier = {
 			name = trade_route
@@ -1413,7 +1432,7 @@ province_event = {
 				duration = 9125
 				hidden = yes
 			}
-			province_event = { id = WoL.10129 years = 28 }
+			province_event = { id = WoL.10129 days = 10220 }
 		}
 	}
 	
@@ -1422,7 +1441,9 @@ province_event = {
 		ai_chance = {
 			factor = 3
 		}
-		prestige = -25
+		holder_scope = {
+			prestige = -25
+		}
 	}
 }
 
@@ -1433,6 +1454,8 @@ province_event = {
 	desc = EVTDESC_WOL_10131
 	picture = GFX_evt_busy_trading_dock_republic
 	border = GFX_event_normal_frame_economy
+
+	hide_from = yes
 	
 	trigger = {
 		has_province_modifier = trade_route
@@ -1444,13 +1467,15 @@ province_event = {
 		ai_chance = {
 			factor = 1
 		}
-		if = {
-			limit = { NOT = { yearly_income = 80 } }
-			scaled_wealth = -2.5
-		}
-		if = {
-			limit = { yearly_income = 80 }
-			wealth = -200
+		holder_scope = {
+			if = {
+				limit = { NOT = { yearly_income = 80 } }
+				scaled_wealth = -2.5
+			}
+			if = {
+				limit = { yearly_income = 80 }
+				wealth = -200
+			}
 		}
 		
 		hidden_tooltip = {
@@ -1466,7 +1491,7 @@ province_event = {
 				duration = 9125
 				hidden = yes
 			}
-			province_event = { id = WoL.10129 years = 28 }
+			province_event = { id = WoL.10129 days = 10220 }
 		}
 	}
 	
@@ -1475,7 +1500,9 @@ province_event = {
 		ai_chance = {
 			factor = 3
 		}
-		prestige = -25
+		holder_scope = {
+			prestige = -25
+		}
 	}
 }
 
@@ -1531,7 +1558,7 @@ character_event = {
 		capital_scope = {
 			create_character = {
 				random_traits = no
-				dynasty = culture
+				dynasty = NONE
 				religion = ROOT
 				culture = PREV
 				age = 28
@@ -1565,11 +1592,13 @@ character_event = {
 		trigger = {
 			trait = greedy
 		}
+		hidden_tooltip = {} #for new random seed. Do not remove!
+
 		scaled_wealth = -0.08
 		capital_scope = {
 			create_character = {
 				random_traits = no
-				dynasty = culture
+				dynasty = NONE
 				religion = PREV
 				culture = PREV
 				age = 17
@@ -1607,88 +1636,111 @@ character_event = {
 	picture = GFX_evt_scandal
 	border = GFX_event_normal_frame_economy
 	hide_from = yes
+
+	immediate = {
+		random_vassal = {
+			limit = {
+				NOT = { has_character_flag = selected }
+				NOT = { trait = incapable }
+				prisoner = no
+				is_adult = yes
+				is_republic = yes
+			}
+			set_character_flag = selected
+			save_event_target_as = selected_1	
+		}
+		random_vassal = {
+			limit = {
+				NOT = { has_character_flag = selected }
+				NOT = { trait = incapable }
+				prisoner = no
+				is_adult = yes
+				is_republic = yes
+			}
+			set_character_flag = selected
+			save_event_target_as = selected_2
+		}
+		random_vassal = {
+			limit = {
+				NOT = { has_character_flag = selected }
+				NOT = { trait = incapable }
+				prisoner = no
+				is_adult = yes
+				is_republic = yes
+			}
+			set_character_flag = selected	
+			save_event_target_as = selected_3		
+		}
+		random_vassal = {
+			limit = {
+				NOT = { has_character_flag = selected }
+				NOT = { trait = incapable }
+				prisoner = no
+				is_adult = yes
+				is_republic = yes
+			}
+			set_character_flag = selected
+			save_event_target_as = selected_4	
+		}
+	}
 	
 	option = {
 		name = EVTOPTA_WOL_10202
-		random_vassal = {
+		if = {
 			limit = {
-				NOT = {
-					OR = {
-						has_character_flag = selected 
-						trait = incapable
-					}
-				}
-				prisoner = no
-				is_adult = yes
-				is_republic = yes
+				event_target:selected_1 = { always = yes } 
 			}
-			set_character_flag = selected			
-			opinion = {
-				modifier = opinion_impressed
-				years = 2
-				who = ROOT
+			event_target:selected_1 = {
+				show_scope_change = no
+				opinion = {
+					modifier = opinion_impressed
+					years = 2
+					who = ROOT
+				}
+				clr_character_flag = selected
 			}
 		}
-		random_vassal = {
+		if = {
 			limit = {
-				NOT = {
-					OR = {
-						has_character_flag = selected 
-						trait = incapable
-					}
-				}
-				prisoner = no
-				is_adult = yes
-				is_republic = yes
+				event_target:selected_2 = { always = yes } 
 			}
-			set_character_flag = selected			
-			opinion = {
-				modifier = opinion_impressed
-				years = 2
-				who = ROOT
+			event_target:selected_2 = {
+				show_scope_change = no
+				opinion = {
+					modifier = opinion_impressed
+					years = 2
+					who = ROOT
+				}
+				clr_character_flag = selected
 			}
 		}
-		random_vassal = {
+		if = {
 			limit = {
-				NOT = {
-					OR = {
-						has_character_flag = selected 
-						trait = incapable
-					}
-				}
-				prisoner = no
-				is_adult = yes
-				is_republic = yes
+				event_target:selected_3 = { always = yes } 
 			}
-			set_character_flag = selected			
-			opinion = {
-				modifier = opinion_impressed
-				years = 2
-				who = ROOT
+			event_target:selected_3 = {
+				show_scope_change = no
+				opinion = {
+					modifier = opinion_impressed
+					years = 2
+					who = ROOT
+				}
+				clr_character_flag = selected
 			}
 		}
-		random_vassal = {
+		if = {
 			limit = {
-				NOT = {
-					OR = {
-						has_character_flag = selected 
-						trait = incapable
-					}
+				event_target:selected_4 = { always = yes } 
+			}
+			event_target:selected_4 = {
+				show_scope_change = no
+				opinion = {
+					modifier = opinion_impressed
+					years = 2
+					who = ROOT
 				}
-				prisoner = no
-				is_adult = yes
-				is_republic = yes
+				clr_character_flag = selected
 			}
-			set_character_flag = selected			
-			opinion = {
-				modifier = opinion_impressed
-				years = 2
-				who = ROOT
-			}
-		}
-		any_vassal = {
-			limit = { has_character_flag = selected }
-			clr_character_flag = selected
 		}
 		hidden_tooltip = {
 			event_target:stonemason = {
@@ -1810,6 +1862,17 @@ character_event = {
 				name = stone_quarry
 				duration = 29200 # 80 years
 			}
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				custom_tooltip = {
+					text = capital_prospers_custom_tooltip
+					hidden_tooltip = {
+						change_variable = { which = prosperity_value value = 6 }
+					}
+				}
+			}
 		}
 	}
 	
@@ -1865,6 +1928,7 @@ province_event = {
 	border = GFX_event_normal_frame_economy
 	
 	option = {
+		name = EVTOPTA_WOL_10207
 		remove_province_modifier = stone_quarry
 	}
 }
@@ -2052,7 +2116,7 @@ character_event = {
 	
 	immediate = {
 		death = {
-			death_reason = death_accident
+			death_reason = death_accident_fall
 		}
 	}
 	
@@ -2060,7 +2124,7 @@ character_event = {
 		name = EVTOPTA_WOL_10214
 		tooltip = {
 			death = {
-				death_reason = death_accident
+				death_reason = death_accident_fall
 			}
 		}
 	}
@@ -2075,9 +2139,10 @@ character_event = {
 	border = GFX_event_normal_frame_economy
 	
 	immediate = {
-		FROMFROM = {
+		FROM = {
 			death = {
-				death_reason = death_accident
+				death_reason = death_murder_unknown_fall
+				killer = ROOT
 			}
 		}
 	}
@@ -2085,9 +2150,10 @@ character_event = {
 	option = {
 		name = EVTOPTA_WOL_10215
 		tooltip = {
-			FROMFROM = {
+			FROM = {
 				death = {
-					death_reason = death_accident
+					death_reason = death_murder_unknown_fall
+					killer = ROOT
 				}
 			}
 		}
@@ -2120,7 +2186,7 @@ long_character_event = {
 		remove_character_modifier = trader
 		add_character_modifier = {
 			name = great_tower
-			duration = 3650
+			duration = -1
 		}
 		hidden_tooltip = {
 			random = {
@@ -2143,7 +2209,7 @@ long_character_event = {
 								}
 							}
 						}
-						province_event = { id = WoL.10217 years = 10 }
+						province_event = { id = WoL.10217 days = 3650 }
 					}
 				}
 				if = {
@@ -2157,7 +2223,7 @@ long_character_event = {
 							}
 						}
 					}
-					capital_scope = { province_event = { id = WoL.10217 years = 10 } }
+					capital_scope = { province_event = { id = WoL.10217 days = 3650 } }
 				}
 				break = yes
 			}
@@ -2193,7 +2259,7 @@ long_character_event = {
 								}
 							}
 						}
-						province_event = { id = WoL.10217 years = 10 }
+						province_event = { id = WoL.10217 days = 3650 }
 					}
 				}
 				if = {
@@ -2207,7 +2273,7 @@ long_character_event = {
 							}
 						}
 					}
-					capital_scope = { province_event = { id = WoL.10217 years = 10 } }
+					capital_scope = { province_event = { id = WoL.10217 days = 3650 } }
 				}
 				break = yes
 			} 
@@ -2468,7 +2534,7 @@ character_event = {
 		name = EVTOPTA_WOL_10219
 		hidden_tooltip = {
 			FROM = {
-				long_character_event = { id = WoL.10221 years = 3 }
+				long_character_event = { id = WoL.10221 days = 1095 }
 			}
 		}
 	}
@@ -2654,7 +2720,9 @@ long_character_event = {
 				name = leaning_tower
 				duration = -1
 			}
-			prestige = -50
+			holder_scope = {
+				prestige = -50
+			}
 		}
 		hidden_tooltip = { character_event = { id = WoL.10222 } }
 	}
@@ -2755,6 +2823,14 @@ long_character_event = {
 						set_defacto_liege = PREV
 					}
 					random_demesne_title = {
+						limit = {
+							tier = COUNT
+							location = {
+								any_province_holding = {
+									NOT = { holding_type = nomad }
+								}
+							}
+						}
 						grant_title = PREVPREV
 					}
 				}
@@ -2965,7 +3041,7 @@ character_event = {
 			opinion = {
 				modifier = opinion_impressed
 				who = ROOT
-				months = 120
+				years = 10
 			}
 		}
 		random_vassal = {
@@ -2976,7 +3052,7 @@ character_event = {
 			opinion = {
 				modifier = opinion_impressed
 				who = ROOT
-				months = 120
+				years = 10
 			}
 		}
 		hidden_tooltip = { character_event = { id = WoL.10303 days = 28 } }
@@ -3199,10 +3275,11 @@ character_event = {
 	hide_window = yes
 	
 	only_playable = yes
+	prisoner = no
+	only_capable = yes
 	
 	trigger = {
 		has_focus = focus_business
-		prisoner = no
 		in_command = no
 		demesne_size = 1
 		NOT = {
@@ -3238,6 +3315,7 @@ character_event = {
 								}
 							}
 							NOT = { has_province_modifier = artisan_workshop }
+							NOT = { has_province_flag = workshop_construction }
 						}
 					}
 					factor = 0
@@ -3251,6 +3329,7 @@ character_event = {
 							}
 						}
 						NOT = { has_province_modifier = artisan_workshop }
+						NOT = { has_province_flag = workshop_construction }
 					}
 					province_event = { id = WoL.10439 }
 				}
@@ -3275,6 +3354,15 @@ character_event = {
 					}
 					factor = 0
 				}
+				modifier = {
+					has_character_modifier = sell_land_cd
+					factor = 0
+				}
+				add_character_modifier = {
+					name = sell_land_cd
+					hidden = yes
+					years = 5
+				}
 				capital_scope = {
 					random_province_holding = {
 						limit = {
@@ -3292,6 +3380,10 @@ character_event = {
 			}
 			30 = {
 				character_event = { id = WoL.10420 }
+				modifier = {
+					has_character_modifier = wol_debase_timer
+					factor = 0
+				}
 			}
 			30 = {
 				modifier = {
@@ -3339,6 +3431,7 @@ character_event = {
 				modifier = {
 					OR = {
 						is_tribal = yes
+						is_nomadic = yes
 						NOT = { has_character_modifier = trader }
 						lifestyle_traits = 1
 						has_character_flag = tower_start
@@ -3392,13 +3485,18 @@ character_event = {
 								}
 							}
 						}
-						has_character_flag = trade_route_progress
 						has_character_flag = est_trade_route
+						NOT = { demesne_size = 1 }
 					}
 					factor = 0
 				}
-				set_character_flag = trade_route_progress
+				modifier = {
+					has_character_flag = trade_route_progress
+					factor = 0.1
+				}
 				character_event = { id = WoL.10100 }
+			}
+			1 = { # No event
 			}
 		}
 	}
@@ -3445,6 +3543,17 @@ long_character_event = {
 				name = carpenters_guild
 				duration = 3650
 			}
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				custom_tooltip = {
+					text = capital_prospers_custom_tooltip
+					hidden_tooltip = {
+						change_variable = { which = prosperity_value value = 6 }
+					}
+				}
+			}
 		}
 		hidden_tooltip = {
 			random = {
@@ -3482,6 +3591,14 @@ character_event = {
 	desc = EVTDESC_WOL_10420
 	picture = GFX_evt_spymaster
 	border = GFX_event_normal_frame_economy
+	
+	immediate = {
+		add_character_modifier = {
+			modifier = wol_debase_timer
+			duration = 730
+			hidden = yes
+		}
+	}
 	
 	option = {
 		name = EVTOPTA_WOL_10420
@@ -3527,7 +3644,7 @@ character_event = {
 	id = WoL.10421
 	is_triggered_only = yes
 	desc = EVTDESC_WOL_10421
-	picture = GFX_evt_priest
+	picture = GFX_evt_bishop
 	border = GFX_event_normal_frame_economy
 	
 	option = {
@@ -3586,6 +3703,7 @@ province_event = {
 	hide_window = yes
 	
 	immediate = {
+		set_province_flag = workshop_construction
 		FROM = {
 			character_event = { id = WoL.10440 }
 		}
@@ -3619,6 +3737,11 @@ character_event = {
 	
 	option = {
 		name = EVTOPTB_WOL_10440
+		hidden_tooltip = {
+			FROM = { 
+				clr_province_flag = workshop_construction
+			}
+		}
 	}
 }
 
@@ -3626,7 +3749,7 @@ character_event = {
 	id = WoL.10441
 	is_triggered_only = yes
 	desc = EVTDESC_WOL_10441
-	picture = GFX_evt_priest
+	picture = GFX_evt_bishop
 	border = GFX_event_normal_frame_economy
 	
 	option = {
@@ -3636,6 +3759,18 @@ character_event = {
 			add_province_modifier = {
 				name = artisan_workshop
 				duration = 3650
+			}
+			clr_province_flag = workshop_construction
+			if = {
+				limit = {
+					has_dlc = "Reapers"
+				}
+				custom_tooltip = {
+					text = capital_prospers_custom_tooltip
+					hidden_tooltip = {
+						change_variable = { which = prosperity_value value = 6 }
+					}
+				}
 			}
 		}
 		hidden_tooltip = {
@@ -3648,11 +3783,16 @@ character_event = {
 	id = WoL.10442
 	is_triggered_only = yes
 	desc = EVTDESC_WOL_10442
-	picture = GFX_evt_priest
+	picture = GFX_evt_bishop
 	border = GFX_event_normal_frame_economy
 	
 	option = {
 		name = EVTOPTA_WOL_10442
+		hidden_tooltip = {
+			FROMFROM = {
+				clr_province_flag = workshop_construction
+			}
+		}
 	}
 }
 

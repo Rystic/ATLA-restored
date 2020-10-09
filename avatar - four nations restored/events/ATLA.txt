@@ -6,6 +6,43 @@ namespace = ATLA
 #avatar_air: northern_air_nomad, eastern_air_nomad, western_air_nomad, southern_air_nomad, new_air_nation, but air_acolytes if a parent is an airbender
 #avatar_water: northern_water, southern_water and republic and air_acolytes if a parent is a waterbender
 #avatar_earth: northern_earth, ba_sing_se, southern_earth, sandbender, earth_islander, republic_city, air_acolytes and colonial if parent is earthbender
+###
+#list of events in this dumpsterfire by TypicalCrusader
+#1 - avatar killed
+#2 - create the new avatar #on_birth is recycled (Air)
+#3 - The avatar is dead and the search begins
+#4 - avatar revealed
+#5 - News event - Avatar Revealed
+#6 - create the new avatar #on_birth is recycled (Water (does not include swampy boiz :C ))
+#7 - create the new avatar #on_birth is recycled (Earth)
+#8 - create the new avatar #on_birth is recycled (fire)
+#9 - ensures the avatar's descendents get the appropriate descendent trait
+#10 - NOTHING
+#11,20,25 - Avatar Search Sozin/Amibition/Zuko/White lotus ???
+#12 - 19, 21 - 24 - NOTHING
+#26 - Move Avatar cycle by one element if Avatar died without beeing revieled
+#27 - Avatar Search failed - Avatar Revealed by another person
+#28 - 29 - NOTHING
+#30 - triggers on avatars untimely death
+#31 - Avatar resists Imprisonment - ROOT
+#32 - Avatar resists Imprisonment - Avatar
+#33 - Generate Benders
+#34 - Something about Avatar confronting someone unfinished by original devs
+#35 - 99 - NOTHING
+#100 - Gib minor title to avatar
+#101 - Avatar Event handler
+#102 - Turn Bender RD trait to normal trait
+#103 - Assign EK tributes
+#104 - FROM asked to convert to ROOT religion
+#105 - Inherit Succession (Air)
+#106 - Check Ambition Status ( see realm growth )
+#107 - Avatar reborn - Air 
+#108 - Avatar reborn - Water 
+#109 - Avatar reborn - Earth
+#110 - Avatar reborn - Fire
+#111 - 11099 - NOTHING
+#11100 - 11102 - Various EK handlers
+###
 
 character_event = { #avatar killed
 	id = ATLA.1
@@ -38,7 +75,6 @@ character_event = { #avatar killed
 
 character_event = { #create the new avatar #on_birth is recycled
 	id = ATLA.2
-	desc = "EVTDESCATLA.2"
 	is_triggered_only = yes
 	hide_window = yes
 
@@ -81,7 +117,6 @@ character_event = { #create the new avatar #on_birth is recycled
 		set_global_flag = avatar_unrevealed
 	}
 	option = {
-		name = "EVTOPTAATLA.2"
 		any_playable_ruler = {
 			character_event = { id = ATLA.107 }
 		}
@@ -91,7 +126,7 @@ character_event = { #create the new avatar #on_birth is recycled
 				is_female = no
 			}
 			set_name = "Aang"
-			set_graphical_culture = aanggfx
+			set_graphical_culture = customPortrait_aang #aanggfx
 			set_global_flag = Aang
 			add_trait = canon_character
 			set_character_flag = is_aang
@@ -157,6 +192,7 @@ character_event = { #avatar revealed
 	}
 }
 
+#News event - Avatar Revealed
 narrative_event = {
 	id = ATLA.5
 	desc = "EVTDESCATLA.5"
@@ -172,7 +208,6 @@ narrative_event = {
 
 character_event = { #create the new avatar #on_birth is recycled
 	id = ATLA.6
-	desc = "EVTDESCATLA.6"
 	is_triggered_only = yes
 	hide_window = yes
 
@@ -216,7 +251,6 @@ character_event = { #create the new avatar #on_birth is recycled
 		set_global_flag = avatar_unrevealed
 	}
 	option = {
-		name = "EVTOPTAATLA.6"
 		any_playable_ruler = {
 			character_event = { id = ATLA.108 }
 		}
@@ -235,7 +269,6 @@ character_event = { #create the new avatar #on_birth is recycled
 
 character_event = { #create the new avatar #on_birth is recycled
 	id = ATLA.7
-	desc = "EVTDESCATLA.7"
 	is_triggered_only = yes
 	hide_window = yes
 
@@ -263,7 +296,6 @@ character_event = { #create the new avatar #on_birth is recycled
 		set_global_flag = avatar_unrevealed
 	}
 	option = {
-		name = "EVTOPTAATLA.7"
 		any_playable_ruler = {
 			character_event = { id = ATLA.109 }
 		}
@@ -272,7 +304,6 @@ character_event = { #create the new avatar #on_birth is recycled
 
 character_event = { #create the new avatar #on_birth is recycled
 	id = ATLA.8
-	desc = EVTDESCATLA.8
 	is_triggered_only = yes
 	hide_window = yes
 
@@ -315,7 +346,6 @@ character_event = { #create the new avatar #on_birth is recycled
 		set_global_flag = avatar_unrevealed
 	}
 	option = {
-		name = "EVTOPTAATLA.8"
 		any_playable_ruler = {
 			character_event = { id = ATLA.110 }
 		}
@@ -331,6 +361,7 @@ character_event = { #create the new avatar #on_birth is recycled
 		}
 	}
 }
+
 
 character_event = { #ensures the avatar's descendents get the appropriate descendent trait
 	id = ATLA.9
@@ -402,6 +433,7 @@ character_event = { # Previously missing event for searching the avatar!
 	}
 }
 
+#Never caled probably for zuko or Sozin/ambition??? - TypicalCrusader
 character_event = {
 	id = ATLA.20
 	desc = EVTDESCATLA.20
@@ -444,6 +476,7 @@ character_event = {
 	}
 }
 
+#Never caled probably for zuko or Sozin???/ambition - TypicalCrusader
 character_event = {
 	id = ATLA.25
 	desc = EVTDESCATLA.25
@@ -541,7 +574,7 @@ character_event = { #triggers on avatars untimely death
 
 	immediate = {
 		d_avatar = {
-			unsafe_destroy_landed_title = yes
+			unsafe_destroy_landed_title = d_avatar #yes
 		}
 		create_character = {
 			dynasty = random
@@ -711,34 +744,35 @@ character_event = { #Generate Benders
 	}
 }
 
-character_event = {
-	id = ATLA.34
-	desc = "EVTDESCATLA.34"
-	picture = GFX_evt_cliff_face
-	is_triggered_only = yes
-	hide_window = no
-	min_age = 16
-
-	trigger = {
-		trait = fullyrealisedavatar
-		NOT = { has_character_flag = avatar_busy }
-	}
-
-	option = { # Confront Agressor
-		name = EVTOPTATLA.32
-		set_character_flag = avatar_busy
-	}
-
-	option = { # Fight Aggressors
-		name = EVTOPTATLA.32
-		set_character_flag = avatar_busy
-	}
-
-	option = { # Travel
-		name = EVTOPTATLA.32
-		set_character_flag = avatar_busy
-	}
-}
+#Something abaout avatar confronting something??? - TypicalCrusader
+#character_event = {
+#	id = ATLA.34
+#	desc = "EVTDESCATLA.34"
+#	picture = GFX_evt_cliff_face
+#	is_triggered_only = yes
+#	hide_window = no
+#	min_age = 16
+#
+#	trigger = {
+#		trait = fullyrealisedavatar
+#		NOT = { has_character_flag = avatar_busy }
+#	}
+#
+#	option = { # Confront Agressor
+#		name = EVTOPTATLA.32
+#		set_character_flag = avatar_busy
+#	}
+#
+#	option = { # Fight Aggressors
+#		name = EVTOPTATLA.32
+#		set_character_flag = avatar_busy
+#	}
+#
+#	option = { # Travel
+#		name = EVTOPTATLA.32
+#		set_character_flag = avatar_busy
+#	}
+#}
 
 character_event = {
 	id = ATLA.100
@@ -1223,7 +1257,6 @@ character_event = { # Earth Kingdom settings
 	only_independent = yes
 
 	trigger = {
-		always = yes
 		is_save_game = no
 		# OR = {
 			# has_game_rule = {
@@ -1258,7 +1291,6 @@ character_event = { # Earth Kingdom settings
 					}
 					mercenary = no
 					holy_order = no
-					temporary = no
 					rebel = no
 					NOT = { has_landed_title = d_avatar }
 					NOT = { religion = way_of_chin }
@@ -1299,7 +1331,6 @@ character_event = { # Earth Kingdom settings
 					NOT = { culture = eastern_earth }
 					mercenary = no
 					holy_order = no
-					temporary = no
 					rebel = no
 					NOT = { has_landed_title = d_avatar }
 					NOT = { religion = way_of_chin }
@@ -1340,7 +1371,6 @@ character_event = { # Earth Kingdom settings
 					}
 					mercenary = no
 					holy_order = no
-					temporary = no
 					rebel = no
 					NOT = { has_landed_title = d_avatar }
 					capital_scope = {
@@ -1613,7 +1643,6 @@ character_event = {
 	only_independent = yes
 
 	trigger = {
-		always = yes
 		is_save_game = no
 		# OR = {
 			# has_game_rule = {
@@ -1701,9 +1730,45 @@ character_event = {
 					set_title_flag = ek_ra_set_unity_1
 				}
 			}
+			if = {
+				limit = {
+					year < 610
+				}
+				set_global_flag = earthking_in_power
+				set_global_flag = dai_li_disbanded
+			}	
 		}
 	}
 }
+
+#character_event = {
+#	id = ATLA.11103
+#	is_triggered_only = yes
+#	hide_window = yes
+#	only_independent = yes
+#
+#	trigger = {
+#		OR = {
+#			check_variable = { which = global_royalAuthority value <= -100 }
+#			check_variable = { which = global_royalAuthority value => 100 }
+#		}
+#	}
+#
+#	option = {
+#		if = {
+#			limit = { 
+#				check_variable = { which = global_royalAuthority value <= -100 }
+#			} 
+#			set_variable = { which = global_royalAuthority value = -100 }
+#		}
+#		if = {
+#			limit = { 
+#				check_variable = { which = global_royalAuthority value => 100 }
+#			} 
+#			set_variable = { which = global_royalAuthority value = 100 }
+#		}		
+#	}
+#}
 
 character_event = {
 	id = ATLA.11102
@@ -1732,8 +1797,8 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = c_royal_earth_palace
+				has_landed_title = e_earth_kingdom
+				has_landed_title = c_royal_earth_palace
 			}
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
 		}
