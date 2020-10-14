@@ -1,3 +1,127 @@
+#####################################################
+##################### Dueling #######################
+#####################################################
+
+
+######## To check for weapon types used...
+is_dueling_weapon_artifact_and_equipped = { #meaning ranged weapons (except the handgun) and lances are excluded 
+	has_artifact_flag = combat_weapon
+	NOT = { #Currently, we are not using bows - for future reference, that'd go here
+		has_artifact_flag = bow
+		has_artifact_flag = crossbow
+		has_artifact_flag = ranged_weapon
+	}
+	is_artifact_equipped = yes
+}
+is_using_blunt_weapon_trigger = { #blunt weapon!
+	OR = {
+		has_character_flag = weapon_is_mace
+		has_character_flag = weapon_is_staff
+		event_target:dueling_weapon_1 = {
+			OR = {
+				has_artifact_flag = mace
+				has_artifact_flag = hammer
+				has_artifact_flag = staff
+			}
+			artifact_owner = { character = PREVPREV }
+		}
+		event_target:dueling_weapon_2 = {
+			OR = {
+				has_artifact_flag = mace
+				has_artifact_flag = hammer
+				has_artifact_flag = staff
+			}
+			artifact_owner = { character = PREVPREV }
+		}
+	}
+}
+is_using_sharp_weapon_trigger = { #Sharp weapon!
+	OR = {
+		has_character_flag = weapon_is_sword
+		has_character_flag = weapon_is_scimitar
+		has_character_flag = weapon_is_axe
+		has_character_flag = weapon_is_spear
+		event_target:dueling_weapon_1 = {
+			OR = {
+				has_artifact_flag = sword
+				has_artifact_flag = axe
+				has_artifact_flag = spear
+			}
+			artifact_owner = { character = PREVPREV }
+		}
+		event_target:dueling_weapon_2 = {
+			OR = {
+				has_artifact_flag = sword
+				has_artifact_flag = axe
+				has_artifact_flag = spear
+			}
+			artifact_owner = { character = PREVPREV }
+		}
+	}
+}
+is_using_piercing_weapon_trigger = { #Sharp, but not an axe
+	is_using_sharp_weapon_trigger = yes
+	NOT = { has_character_flag = weapon_is_axe }
+	NOT = {
+		event_target:dueling_weapon_1 = {
+			has_artifact_flag = axe
+			artifact_owner = { character = PREVPREV }
+		}
+	}
+	NOT = {
+		event_target:dueling_weapon_2 = {
+			has_artifact_flag = axe
+			artifact_owner = { character = PREVPREV }
+		}
+	}
+}
+is_using_spear_weapon_trigger = { #A spear!
+	OR = {
+		has_character_flag = weapon_is_spear
+		event_target:dueling_weapon_1 = {
+			has_artifact_flag = spear
+			artifact_owner = { character = PREVPREV }
+		}
+		event_target:dueling_weapon_2 = {
+			has_artifact_flag = spear
+			artifact_owner = { character = PREVPREV }
+		}
+	}
+}
+
+# is_using_gun_trigger = { #A gun!
+# 	OR = {
+# 		event_target:dueling_weapon_1 = {
+# 			has_artifact_flag = gun
+# 			artifact_owner = { character = PREVPREV }
+# 		}
+# 		event_target:dueling_weapon_2 = {
+# 			has_artifact_flag = gun
+# 			artifact_owner = { character = PREVPREV }
+# 		}
+# 	}
+# }
+
+
+######## To check whether a character has dueled before...
+has_duel_exp_modifier_trigger = {
+	custom_tooltip = {
+		text = has_dueling_exp_tt
+		hidden_trigger = {
+			OR = {
+				has_character_modifier = duel_exp_1
+				has_character_modifier = duel_exp_2
+				has_character_modifier = duel_exp_3
+				has_character_modifier = duel_exp_4
+				has_character_modifier = duel_exp_5
+				has_character_modifier = duel_exp_6
+				has_character_modifier = duel_exp_7
+				has_character_modifier = duel_exp_8
+			}
+		}
+	}
+}
+
 ######## Personal combat rating values... #Reusable
 is_the_worst_duelist_trigger = {
 	NOT = { combat_rating = 0 }

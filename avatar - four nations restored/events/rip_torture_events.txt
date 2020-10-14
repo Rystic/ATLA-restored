@@ -334,27 +334,29 @@ character_event = {
  			}
 			30 = {
 				if = {
-   					limit = { NOT = { trait = cough } }
+					limit = {
+						NOR = {
+							num_of_symptoms = 1
+							is_ill = yes
+							has_character_flag = developing_illness
+							has_character_flag = disease_not_serious
+						}
+					}
 
    					tooltip = { add_trait = cough }
 
- 					hidden_tooltip = { 
- 						if = {
- 							limit = {
-	 							NOR = {
-	 								has_character_flag = developing_illness
-	 								has_character_flag = disease_not_serious
-	 								has_character_flag = got_pneumonia
-	 							}
-	 						}
-
- 							random_list = {
-								80 = { set_character_flag = disease_not_serious }
-								20 = { set_character_flag = got_pneumonia } 
+ 					hidden_tooltip = {
+						random_list = {
+							80 = {
+								set_character_flag = disease_not_serious
+								character_event = { id = RIP.11002 days = 30 random = 90 }
+							}
+							20 = {
+								set_character_flag = got_pneumonia
+								set_character_flag = developing_illness
 							}
 						}
-						#adds cough
-						character_event = { id = RIP.5000 } 
+						character_event = { id = RIP.5000 }
  					}
  				}
 			}
@@ -537,19 +539,6 @@ character_event = {
 		tooltip = {
 			from = {
 				add_trait = eunuch
-				
-				if = { 
-					limit = { NOR = { trait = craven trait = berserker } }
-					random = {
-						chance = 20
-						add_trait = craven
-						hidden_tooltip = {
-							character_event = {
-								id = 38257 #Notify Craven
-							}
-						}
-					}
-				}
 			
 				jailor_mutilate_effect = yes
 			}
@@ -769,9 +758,29 @@ character_event = {
 # Prisoner Tar 'n' Feather
 character_event = {
 	id = RIP.15002
-	desc = EVTDESCRIP.15002
 	picture = GFX_evt_into_the_dungeon
 	border = GFX_event_normal_frame_intrigue
+
+	desc = {
+		trigger = {
+			has_game_rule = {
+				name = punishment_release_prisoner
+				value = on
+			}
+		}
+		text = EVTDESCRIP.15002
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				has_game_rule = {
+					name = punishment_release_prisoner
+					value = on
+				}
+			}
+		}
+		text = EVTDESCRIP.15002_not_released
+	}
 	
 	hide_from = yes
 	
@@ -804,13 +813,33 @@ character_event = {
 # Prisoner Stocks
 character_event = {
 	id = RIP.15004
-	desc = EVTDESCRIP.15004
 	picture = GFX_evt_into_the_dungeon
 	border = GFX_event_normal_frame_intrigue
 
 	hide_from = yes
 	
 	is_triggered_only = yes
+
+	desc = {
+		trigger = {
+			has_game_rule = {
+				name = punishment_release_prisoner
+				value = on
+			}
+		}
+		text = EVTDESCRIP.15004
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				has_game_rule = {
+					name = punishment_release_prisoner
+					value = on
+				}
+			}
+		}
+		text = EVTDESCRIP.15004_not_released
+	}
 	
 	option = {
 		name = EVTOPTARIP.15004
@@ -840,13 +869,33 @@ character_event = {
 # Prisoner Walk of Shame
 character_event = {
 	id = RIP.15006
-	desc = EVTDESCRIP.15006
 	picture = GFX_evt_scandal
 	border = GFX_event_normal_frame_intrigue
 	
 	hide_from = yes
 	
 	is_triggered_only = yes
+
+	desc = {
+		trigger = {
+			has_game_rule = {
+				name = punishment_release_prisoner
+				value = on
+			}
+		}
+		text = EVTDESCRIP.15006
+	}
+	desc = {
+		trigger = {
+			NOT = {
+				has_game_rule = {
+					name = punishment_release_prisoner
+					value = on
+				}
+			}
+		}
+		text = EVTDESCRIP.15006_not_released
+	}
 	
 	option = {
 		name = EVTOPTARIP.15006

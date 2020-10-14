@@ -1,22 +1,48 @@
+##########################
+### AIR NOMADS' EVENTS ###
 namespace = NOMAD
+##########################
+### Old nomadic events ###
+### Nomadic Lifestyle: 401-750
+##########################
+# Old nomadic events 
+# NOMAD.1 - On-action event: A child is born
+# NOMAD.2 - Father reacts - Female 
+# NOMAD.3 - Mother reacts - Female 
+# NOMAD.4 - Father reacts - Male 
+# NOMAD.5 - Mother reacts - Male 
+# NOMAD.6 - Ping Father
+# NOMAD.7 - Ping Mother
+# NOMAD.8 - On-action event: Right Home
+# NOMAD.9 - 
+# NOMAD.10 - On-action event: Pregnancy starts showing
+# NOMAD.11 - Father reacts - woman's pregnancy
+# NOMAD.12 - On-action event: Courtiers
+# NOMAD.13 - Yangchen's Festival Start
+# NOMAD.14 - Yangchen's Festival Ends
+# NOMAD.15 - Air Nomad Adulthood
+# NOMAD.16 - Unused
+##########################
 
 # On-action event: A child is born
+# Should be hidden?
 character_event = {
 	id = NOMAD.1
 	desc = NOMADEVTDESC1
 	picture = GFX_evt_birth
 	is_triggered_only = yes
-	
+	culture_group = air_nomad_culture
+
 	trigger = {
-		culture_group = air_nomad_culture
 		NOT = { trait = directdescendantavatar }
 		NOT = { trait = descendantavatar }
 	}
 
 	option = {
-		name = "EVTOPTANOMAD.1"
+		name = OK
 		remove_trait = bastard
 		add_trait = airinitiate
+
 		mother = {
 			character_event = { id = NOMAD.6 } # The father's reaction
 		}
@@ -26,7 +52,7 @@ character_event = {
 	}
 }
 
-# Father reacts - Female 
+# Father reacts - Female
 character_event = {
 	id = NOMAD.2
 	desc = NOMADEVTDESC2
@@ -34,11 +60,11 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.2"	
+		name = EVTOPTANOMAD.2
 	}
 }
 
-# Mother reacts - Female 
+# Mother reacts - Female
 character_event = {
 	id = NOMAD.3
 	desc = NOMADEVTDESC3
@@ -46,7 +72,7 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.3"	
+		name = EVTOPTANOMAD.3
 		if = {
 			limit = {
 				is_ruler = yes
@@ -73,7 +99,7 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.4"	
+		name = EVTOPTANOMAD.4
 		if = {
 			limit = {
 				is_ruler = yes
@@ -100,7 +126,63 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.5"	
+		name = EVTOPTANOMAD.5
+	}
+}
+
+# Ping Father
+character_event = {
+	id = NOMAD.6
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			if = {
+				limit = {
+					is_female = yes
+				}
+				father = {
+					character_event = { id = NOMAD.2 days = 1 } # The father's reaction - Female
+				}
+			}
+			if = {
+				limit = {
+					is_female = no
+				}
+				father = {
+					character_event = { id = NOMAD.4 days = 1 } # The father's reaction - Male
+				}
+			}
+		}
+	}
+}
+
+# Ping Mother
+character_event = {
+	id = NOMAD.7
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		FROM = {
+			if = {
+				limit = {
+					is_female = yes
+				}
+				mother = {
+					character_event = { id = NOMAD.3 days = 1 } # The mother's reaction - Female
+				}
+			}
+			if = {
+				limit = {
+					is_female = no
+				}
+				mother = {
+					character_event = { id = NOMAD.5 days = 1 } # The mother's reaction - Male
+				}
+			}
+		}
 	}
 }
 
@@ -108,11 +190,14 @@ character_event = {
 character_event = {
 	id = NOMAD.8
 	hide_window = yes
+
 	is_triggered_only = yes
 	culture_group = air_nomad_culture
 	ai = yes
 	
 	trigger = {
+		is_ruler = no
+
 		OR = {
 			AND = {
 				is_female = yes
@@ -154,7 +239,7 @@ character_event = {
 			death = { death_reason = death_missing }
 			break = yes
 		}
-		if = {
+		if = { # Female
 			limit = {
 				is_female = yes
 			}
@@ -162,10 +247,11 @@ character_event = {
 				50 = {
 					any_playable_ruler = {
 						limit = {
+							is_female = yes
 							culture = eastern_air_nomad
 						}
 						ROOT = { 
-							move_character = THIS 
+							force_host = PREV 
 							culture = eastern_air_nomad
 						}
 					}
@@ -173,17 +259,18 @@ character_event = {
 				50 = {
 					any_playable_ruler = {
 						limit = {
+							is_female = yes
 							culture = western_air_nomad
 						}
 						ROOT = { 
-							move_character = THIS 
+							force_host = PREV 
 							culture = western_air_nomad
 						}
 					}
 				}
 			}
 		}
-		if = {
+		if = { # Male
 			limit = {
 				is_female = no
 			}
@@ -191,10 +278,11 @@ character_event = {
 				50 = {
 					any_playable_ruler = {
 						limit = {
+							is_female = no
 							culture = northern_air_nomad
 						}
 						ROOT = { 
-							move_character = THIS 
+							force_host = PREV 
 							culture = northern_air_nomad
 						}
 					}
@@ -202,10 +290,11 @@ character_event = {
 				50 = {
 					any_playable_ruler = {
 						limit = {
+							is_female = no
 							culture = southern_air_nomad
 						}
 						ROOT = { 
-							move_character = THIS 
+							force_host = PREV 
 							culture = southern_air_nomad
 						}
 					}
@@ -223,11 +312,11 @@ character_event = {
 	border = GFX_event_normal_frame_religion
 	
 	is_triggered_only = yes
+	only_women = yes
+	culture_group = air_nomad_culture
 	
-	trigger = {
-		culture_group = air_nomad_culture
+	trigger = {	
 		NOT = { trait = pregnant }
-		is_female = yes
 	}
 	
 	option = {
@@ -247,6 +336,7 @@ character_event = {
 	}
 }
 
+# Father reacts - woman's pregnancy
 character_event = {
 	id = NOMAD.11
 	picture = GFX_evt_pregnancy
@@ -538,48 +628,50 @@ character_event = {
 	}
 }
 
-character_event = { # Festival Start
+#### Yangchen's Festival ####
+
+# Festival Start
+character_event = {
 	id = NOMAD.13
-	desc = NOMADEVTDESC13
+	desc = EVTDESCNOMAD.13
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.13"
+		name = EVTOPTANOMAD.13
 	}
 }
 
 character_event = { # Festival End
 	id = NOMAD.14
-	desc = NOMADEVTDESC13
+	desc = NOMADEVTDESC.14
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
 
 	option = {
-		name = "EVTOPTANOMAD.13"
+		name = EVTOPTANOMAD.14
 		clr_character_flag = do_not_disturb
 		clr_character_flag = recent_minor_decision
 		clr_character_flag = holding_nomad_festival
 	}
 }
 
-# Adulthood
+#### Yangchen's Festival ####
+
+# Air Nomad Adulthood
 character_event = {
 	id = NOMAD.15
 	desc = NOMADEVTDESC15
 	picture = GFX_evt_nomad_wander
+	
 	is_triggered_only = yes
+	culture_group = air_nomad_culture
 	
 	trigger = {
-		OR = {
-			culture = northern_air_nomad
-			culture = eastern_air_nomad
-			culture = southern_air_nomad
-			culture = western_air_nomad
-		}
 		liege = {
 			culture_group = air_nomad_culture
 		}
+		# ???
 		NOT = { trait = avatar }
 		NOT = { trait = fullyrealisedavatar }
 		NOT = { trait = directdescendantavatar }
@@ -587,16 +679,19 @@ character_event = {
 	}
 	
 	option = {
-		name = "EVTOPTANOMADA.15"
+		name = EVTOPTANOMADA.15
 		remove_trait = airinitiate
 		add_trait = airnomad
+		
+		if = {
+			limit = {
+				is_landed = no
+			}
 		liege = { # Ask Liege
 			hidden_tooltip = {
-				character_event = { id = NOMAD.402 }
+					character_event = { id = NOMAD.401 }
 			}
 		}
-		trigger = {
-			is_landed = no
 		}
 		ai_chance = {
 			factor = 10
@@ -611,15 +706,16 @@ character_event = {
 		}
 	}
 	
+	# REWORK #
 	option = {
-		name = "EVTOPTANOMADB.15"
+		name = EVTOPTANOMADB.15
 		remove_trait = airinitiate
 		add_trait = airnomad
 		if = {
 			limit = {
 				is_ruler = no
 			}
-			liege = { # Tell Liege
+			liege = { # Tell Liege you refuse
 				hidden_tooltip = {
 					character_event = { id = NOMAD.402 }
 				}
@@ -639,7 +735,7 @@ character_event = {
 	}
 }
 
-# Check
+# UNUSED #
 character_event = {
 	id = NOMAD.16
 	hide_window = yes
@@ -680,6 +776,7 @@ character_event = {
 		text = NOMADEVTDESCB401
 	}
 	picture = GFX_evt_nomad_wander
+	
 	is_triggered_only = yes
 	
 	option = {
@@ -1086,7 +1183,413 @@ character_event = {
 	}
 }
 
+### AIR NOMAD SUCCESSION
+
+# ruler decided to make me his succession pretendent
+character_event = {
+	id = NOMAD.500
+	desc = NOMADEVTDESC500
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Accept
+		name = OK #"EVTOPTANOMADA.500"
+
+		trigger = {
+			NOR = {
+				trait = airinitiate # young age
+				has_character_flag = nomad_journey # journey
+			}
+		}
+
+		set_character_flag = accepted_potential_successor
+
+		FROM = {
+			character_event = {
+				id = NOMAD.501
+				days = 20
+			}
+		}
+
+		ai_chance = {
+			factor = 10
+		}
+	}
+	
+	option = { # No, for some reasons
+		name = NO #"EVTOPTANOMADA.500"
+
+		if = { # cause of age
+			limit = {
+				trait = airinitiate
+			}
+			FROM = {
+				character_event = {
+					id = NOMAD.502
+					days = 20
+				}
+			}
+			break = yes
+		}
+
+		if = { # cause of journey
+			limit = {
+				has_character_flag = nomad_journey
+			}
+			FROM = {
+				character_event = {
+					id = NOMAD.503
+					days = 20
+				}
+			}
+			break = yes
+		}
+
+		ai_chance = {
+			factor = 1
+		}
+	
+	}
+}
+
+# has accepted
+character_event = {
+	id = NOMAD.501
+	desc = NOMADEVTDESC501
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Yes, (s)he is ready
+		name = "NOMADEVTOPTA.501"
+
+		set_character_flag = found_at_least_one_pretendent
+
+		FROM = {
+			# set_father = ROOT
+
+			if = { # if (s)he isn't (grand)father or brother or child or etc, make him/her your child 
+				limit = {
+					NOT = {
+						is_close_relative = ROOT
+					}
+				}
+				if = {
+					limit = {
+						is_female = yes
+					}
+					set_mother = ROOT
+				}
+				else = {
+					set_father = ROOT
+				}
+			}
+
+			dynasty = ROOT
+			opinion = {
+				modifier = opinion_adopted_as_successor
+				who = ROOT
+			}
+			reverse_opinion = {
+				modifier = opinion_adopted_as_a_successor
+				who = ROOT
+			}
+		}
+
+		ai_chance = {
+			factor = 10
+		}
+	}
+
+	option = { # No, (s)he isn't ready
+		name = "NOMADEVTOPTB.501"
+		
+		trigger = {
+			ai = no
+		}
+
+		FROM = {
+			clr_character_flag = accepted_potential_successor
+		}
+
+		ai_chance = {
+			factor = 5
+		}
+	}
+}
+
+# has declined due young age
+character_event = {
+	id = NOMAD.502
+	desc = NOMADEVTDESC502
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = { # Yes, (s)he isn't ready
+		name = "NOMADEVTOPTA.502"
+	}
+}
+
+# has declined due travelling
+character_event = {
+	id = NOMAD.503
+	desc = NOMADEVTDESC503
+	picture = GFX_evt_nomad_wander
+	is_triggered_only = yes
+	
+	option = { # Yes, (s)he needs to see the world.
+		name = "NOMADEVTOPTA.503"
+		trigger = { ai = no }
+	}
+
+	option = { # No, return him
+		name = "NOMADEVTOPTB.503"
+
+		FROM = {
+			character_event = {
+				id = NOMAD.504
+				days = 10
+			}
+		}
+	}
+}
+
+# they need me at home
+character_event = {
+	id = NOMAD.504
+	desc = NOMADEVTDESC504
+	picture = GFX_evt_nomad_wander
+	is_triggered_only = yes
+	
+	option = {
+		name = "NOMADEVTOPT.504"
+
+		set_character_flag = accepted_potential_successor
+
+		liege = {
+			character_event = { id = NOMAD.410 }
+		}
+
+		FROM = {
+			character_event = {
+				id = NOMAD.501
+				days = 10
+			}
+		}
+	}
+}
+
+# End searching
+character_event = {
+	id = NOMAD.510
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = { # I've found a successor
+			limit = {
+				has_character_flag = found_at_least_one_pretendent
+			}
+
+			character_event = {
+				id = NOMAD.511
+				days = 1
+			}
+		}
+		if = { # I've found no successor
+			limit = {
+				NOT = {
+					has_character_flag = found_at_least_one_pretendent
+				}
+			}
+
+			character_event = {
+				id = NOMAD.512
+				days = 1
+			}
+		}
+	}
+}
+
+# I've found a successor
+character_event = {
+	id = NOMAD.511
+	desc = NOMADEVTDESC511
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+
+		prestige = 50
+
+		add_character_modifier = {
+			name = just_choosed_candidate
+			years = 3
+		}
+
+		any_close_relative = {
+			limit = {
+				has_character_flag = accepted_potential_successor
+			}
+		}
+		
+		any_courtier = {
+			limit = {
+				has_character_flag = accepted_potential_successor
+				dynasty = ROOT
+			}
+		}
+
+		clr_character_flag = search_for_successor
+	}
+}
+
+# I've found no successor
+character_event = {
+	id = NOMAD.512
+	desc = NOMADEVTDESC512
+	picture = GFX_evt_air_south
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+
+		prestige = -50
+
+		clr_character_flag = search_for_successor
+	}
+
+	option = { # I'll repeat my searching
+		name = "NOMADEVTOPTA.512"
+
+		custom_tooltip = {
+			text = bad_search_tt
+		}
+
+		character_event = {
+			id = NOMAD.603
+			days = 20
+		}
+	}
+}
+
+# the ruler dies and heirs return to cadet-dynasties
+character_event = {
+	id = NOMAD.520
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		any_close_relative = {
+			limit = {
+				has_character_flag = accepted_potential_successor
+				is_heir = yes
+			}
+
+			clr_character_flag = accepted_potential_successor
+		}
+		any_courtier = { # any kinsman I've adopted
+			limit = {
+				has_character_flag = accepted_potential_successor
+				dynasty = ROOT
+				is_heir = yes
+			}
+
+			clr_character_flag = accepted_potential_successor
+		}
+	}
+
+	option = {
+		name = OK
+
+		any_close_relative = {
+			limit = {
+				has_character_flag = accepted_potential_successor
+			}
+
+			if = {
+				limit = {
+					dynasty = ROOT
+				}
+
+				dynasty = father_bastard
+			}
+
+			clr_character_flag = accepted_potential_successor
+		}
+
+		any_courtier = { # any kinsman I've adopted
+			limit = {
+				has_character_flag = accepted_potential_successor
+				dynasty = ROOT
+			}
+
+			dynasty = father_bastard
+		}
+
+	}
+}
+
+# AIRBENDER GAINS HIS TATTOOS
+character_event = {
+	id = NOMAD.550
+	hide_window = yes
+	is_triggered_only = yes
+
+	option = {
+		name = OK
+
+		liege = {
+			character_event = {
+				id = NOMAD.551
+			}
+		}
+	}
+}
+
+character_event = {
+	id = NOMAD.551
+	desc = NOMADEVTDESC551
+	picture = GFX_evt_air_tattoos_ceremony
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTANOMAD.551"
+
+		FROM = {
+			add_trait = airnomad_tattoos
+		}
+	}
+}
+
 ### AIR NOMAD CONTROL EVENT
+
+# Give skybison
+character_event = {
+	id = NOMAD.599
+	is_triggered_only = yes
+	hide_window = yes
+	culture_group = air_nomad_culture
+	religion_group = air_religions
+	min_age = 9
+
+	trigger = {
+		trait = airbender
+		NOT = {
+			has_artifact = petSkybison
+		}
+	}
+	
+	option = {
+		add_artifact = petSkybison
+
+		new_artifact = {
+			set_name = "[Root.GetSkybisonName]"
+		}
+	}
+}
+
 # Initiate
 # Nomad
 # Elder
@@ -1107,21 +1610,22 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-				age = 50
+				age = 45
 			}
 			add_trait = airelder
+			add_trait = airnomad_tattoos
 			add_trait = airbender
-			add_trait = competent_bender
+			add_trait = powerful_bender
 			break = yes
 		}
 		if = {
 			limit = {
-				NOT = { age = 50 }
+				NOT = { age = 45 }
 				age = 16
 			}
 			add_trait = airnomad
 			add_trait = airbender
-			add_trait = incompetent_bender
+			add_trait = competent_bender
 			break = yes
 		}
 		if = {
@@ -1176,15 +1680,76 @@ character_event = {
 	desc = NOMADEVTDESC603
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-	
-	option = { # Approve
+
+	option = { # I will choose the person whom the council has elected
+		name = "EVTOPTANOMADC.603"
+		log = "[From.GetFullName] choosed council"
+		
+		tooltip_info = learning
+		custom_tooltip = {
+			text = choose_council_nominee_tt
+		}
+
+		any_courtier = {
+			limit = {
+				is_heir = ROOT
+			}
+
+			character_event = { # make him/her an offer
+				id = NOMAD.500 days = 1
+			}
+		}
+
+		character_event = { # end search
+			id = NOMAD.510 days = 60
+		}
+	}
+
+	option = { # I will find someone in the temple
 		name = "EVTOPTANOMADA.603"
+		log = "[From.GetFullName] choosed random"
+		tooltip_info = diplomacy
+		custom_tooltip = {
+			text = choose_random_tt
+		}
 		hidden_tooltip = {
 			character_event = { id = NOMAD.604 days = 21 }
 		}
 	}
-	option = { # Cancel
+
+	option = { # I will choose someone from my family
 		name = "EVTOPTANOMADB.603"
+		tooltip_info = intrigue
+		custom_tooltip = {
+			text = choose_family_tt
+		}
+
+		log = "[From.GetFullName] choosed family"
+		trigger = { 
+			# ai = no 
+			# has_character_flag = experimental_airnomad
+			any_close_relative = {
+				same_sex = ROOT
+				is_alive = yes
+			}
+		}
+		any_close_relative = {
+			limit = {
+				same_sex = ROOT
+				age = 20
+			}
+
+			character_event = { # make him/her an offer
+				id = NOMAD.500 days = 1
+			}
+		}
+		character_event = { # end search
+			id = NOMAD.510 days = 60
+		}
+	}
+
+	option = { # Cancel
+		name = "EVTOPTANOMADD.603"
 		clr_character_flag = search_for_successor
 		trigger = { ai = no }
 	}
@@ -1219,7 +1784,7 @@ character_event = {
 						trait = charismatic_negotiator
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 					}
 					new_character = {
 						set_character_flag = is_diplomat_successor
@@ -1229,7 +1794,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 25
+						age = 32
 						attributes = { 
 							martial = 9
 							diplomacy = 4
@@ -1244,6 +1809,7 @@ character_event = {
 						trait = airnomad
 						trait = airbender
 						trait = master_bender
+						trait = airnomad_tattoos
 					}
 					new_character = {
 						set_character_flag = is_martial_successor
@@ -1253,7 +1819,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 22
+						age = 26
 						attributes = { 
 							martial = 4
 							diplomacy = 5
@@ -1267,7 +1833,7 @@ character_event = {
 						trait = fortune_builder
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1278,7 +1844,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 24
+						age = 25
 						attributes = { 
 							martial = 7
 							diplomacy = 4
@@ -1292,7 +1858,7 @@ character_event = {
 						trait = intricate_webweaver
 						trait = airnomad
 						trait = airbender
-						trait = competent_bender
+						trait = powerful_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1303,7 +1869,7 @@ character_event = {
 				10 = {
 					create_character = {
 						female = yes
-						age = 21
+						age = 32
 						attributes = { 
 							martial = 2
 							diplomacy = 5
@@ -1317,7 +1883,7 @@ character_event = {
 						trait = scholarly_theologian
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = master_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1348,7 +1914,7 @@ character_event = {
 						trait = charismatic_negotiator
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 					}
 					new_character = {
 						set_character_flag = is_diplomat_successor
@@ -1357,7 +1923,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 25
+						age = 31
 						attributes = { 
 							martial = 9
 							diplomacy = 4
@@ -1372,6 +1938,7 @@ character_event = {
 						trait = airnomad
 						trait = airbender
 						trait = master_bender
+						trait = airnomad_tattoos
 					}
 					new_character = {
 						set_character_flag = is_martial_successor
@@ -1380,7 +1947,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 22
+						age = 24
 						attributes = { 
 							martial = 4
 							diplomacy = 5
@@ -1394,7 +1961,7 @@ character_event = {
 						trait = fortune_builder
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = competent_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1404,7 +1971,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 24
+						age = 26
 						attributes = { 
 							martial = 7
 							diplomacy = 4
@@ -1418,7 +1985,7 @@ character_event = {
 						trait = intricate_webweaver
 						trait = airnomad
 						trait = airbender
-						trait = competent_bender
+						trait = powerful_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1428,7 +1995,7 @@ character_event = {
 				}
 				10 = {
 					create_character = {
-						age = 21
+						age = 34
 						attributes = { 
 							martial = 2
 							diplomacy = 5
@@ -1442,7 +2009,7 @@ character_event = {
 						trait = scholarly_theologian
 						trait = airnomad
 						trait = airbender
-						trait = incompetent_bender
+						trait = master_bender
 						random_traits = yes
 					}
 					new_character = {
@@ -1506,6 +2073,9 @@ character_event = {
 	
 	option = { # Approve - End Search
 		name = "EVTOPTANOMADA.606"
+
+		clr_character_flag = search_for_successor
+		
 		custom_tooltip = {
 			text = end_search_for_successor_tooltip
 			hidden_tooltip = {
@@ -1513,6 +2083,7 @@ character_event = {
 					limit = { is_female = yes }
 					FROM = {
 						set_mother = ROOT
+						dynasty = ROOT
 						opinion = {
 							modifier = opinion_adopted_as_successor
 							who = ROOT
@@ -1527,6 +2098,7 @@ character_event = {
 					limit = { is_female = no }
 					FROM = {
 						set_father = ROOT
+						dynasty = ROOT
 						opinion = {
 							modifier = opinion_adopted_as_successor
 							who = ROOT
@@ -1560,6 +2132,15 @@ character_event = {
 		name = "EVTOPTANOMADC.606"
 		trigger = { 
 			has_character_flag = had_chance_to_find_successor
+		}
+		clr_character_flag = had_chance_to_find_successor
+
+		custom_tooltip = {
+			text = bad_search_tt
+		}
+		character_event = {
+			id = NOMAD.603
+			days = 1
 		}
 	}
 }
@@ -1622,14 +2203,17 @@ character_event = {
 	
 	option = { # Change Policy - Towards Aggression
 		name = "EVTOPTANOMADA.608"
+		tooltip_info = martial
 		trigger = {
 			primary_title = {
 				NOT = { has_law = an_law_3 }
 			}
 		}
 		custom_tooltip = {
+			
 			text = change_policy_to_aggression
 			hidden_tooltip = {
+				
 				set_global_flag = cp_talked_aggression
 				set_variable = { which = global_cp_aggression_vote value = 1 }
 				any_society_member = { # Get Votes
@@ -1646,12 +2230,14 @@ character_event = {
 	}
 	option = { # Change Policy - Towards Isolation
 		name = "EVTOPTANOMADB.608"
+		tooltip_info = diplomacy
 		trigger = {
 			primary_title = {
 				NOT = { has_law = an_law_0 }
 			}
 		}
 		custom_tooltip = {
+			
 			text = change_policy_to_isolation
 			hidden_tooltip = {
 				set_global_flag = cp_talked_isolation
@@ -1670,6 +2256,7 @@ character_event = {
 	}
 	option = { # Change Policy - Reaffirm Pacifism
 		name = "EVTOPTANOMADD.608"
+		tooltip_info = learning
 		trigger = {
 			religion = air_spirituality
 		}
@@ -1692,6 +2279,7 @@ character_event = {
 	}
 	option = { # Change Policy - Reaffirm Nhilism
 		name = "EVTOPTANOMADE.608"
+		tooltip_info = nomadic_nihilism
 		trigger = {
 			religion = nomadic_nihilism
 		}
@@ -1714,6 +2302,7 @@ character_event = {
 	}
 	option = { # Change Policy - Reaffirm Trade
 		name = "EVTOPTANOMADF.608"
+		tooltip_info = stewardship
 		custom_tooltip = {
 			text = change_policy_to_trade
 			hidden_tooltip = {
@@ -1733,6 +2322,7 @@ character_event = {
 	}
 	option = { # Change Policy - Reaffirm Protection
 		name = "EVTOPTANOMADC.608"
+		tooltip_info = stewardship
 		custom_tooltip = {
 			text = change_policy_to_protection
 			hidden_tooltip = {
@@ -1919,6 +2509,12 @@ character_event = {
 							has_law = an_law_2 
 						}
 					}
+					
+					ROOT = { # 'cause any_independent_ruler doesn't include it
+						primary_title = {
+							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+						}
+					}
 					any_independent_ruler = {
 						limit = { religion_group = air_religions }
 						primary_title = {
@@ -1932,6 +2528,12 @@ character_event = {
 							has_law = an_law_1 
 						}
 					}
+
+					ROOT = { # 'cause any_independent_ruler doesn't include it
+						primary_title = {
+							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+						}
+					}
 					any_independent_ruler = {
 						limit = { religion_group = air_religions }
 						primary_title = {
@@ -1943,6 +2545,11 @@ character_event = {
 					limit = {
 						primary_title = { 
 							has_law = an_law_0 
+						}
+					}
+					ROOT = { # 'cause any_independent_ruler doesn't include it
+						primary_title = {
+							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
 						}
 					}
 					any_independent_ruler = {
@@ -2360,6 +2967,11 @@ character_event = {
 							has_law = an_law_3
 						}
 					}
+					ROOT = { # 'cause any_independent_ruler doesn't include it
+						primary_title = {
+							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+						}
+					}
 					any_independent_ruler = {
 						limit = { religion_group = air_religions }
 						primary_title = {
@@ -2373,6 +2985,11 @@ character_event = {
 							has_law = an_law_2
 						}
 					}
+					ROOT = { # 'cause any_independent_ruler doesn't include it
+						primary_title = {
+							add_law = { law = an_law_1 cooldown = no opinion_effect = no }
+						}
+					}
 					any_independent_ruler = {
 						limit = { religion_group = air_religions }
 						primary_title = {
@@ -2384,6 +3001,11 @@ character_event = {
 					limit = {
 						primary_title = { 
 							has_law = an_law_1
+						}
+					}
+					ROOT = { # 'cause any_independent_ruler doesn't include it
+						primary_title = {
+							add_law = { law = an_law_0 cooldown = no opinion_effect = no }
 						}
 					}
 					any_independent_ruler = {
