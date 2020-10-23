@@ -2707,14 +2707,14 @@ blessing_removes_disease_effect = {
 		}
 		hidden_tooltip = { character_event = { id = TOG.7015 days = 30 } }
 	}
-	if = {
-		limit = {
-			has_dlc = "Sons of Abraham"
-			has_character_flag = pilgrim_blessing
-			has_character_modifier = blessing_of_health 
-		}
-		hidden_tooltip = { character_event = { id = SoA.5068 days = 30 } }
-	}
+	# if = {
+		# limit = {
+			# has_dlc = "Sons of Abraham"
+			# has_character_flag = pilgrim_blessing
+			# has_character_modifier = blessing_of_health 
+		# }
+		# hidden_tooltip = { character_event = { id = SoA.5068 days = 30 } }
+	# }
 }
 
 deaths_gift_removes_disease_effect = {
@@ -3944,366 +3944,366 @@ remove_secret_religion_trait_effect = {
 	clear_secret_religion = yes
 }
 
-major_soul_corruption_effect = {
-	custom_tooltip = { 
-		text = major_soul_corruption_effect_tooltip
-	}
-	hidden_effect = {
-		if = {
-			limit = {
-				NAND = {
-					trait = cruel
-					trait = arbitrary
-					trait = deceitful
-					trait = possessed
-				}
-			}
-			random_list = {
-				20 = {
-					modifier = {
-						factor = 0
-						OR = {
-							NOT = { trait = kind }
-							trait = cruel
-							has_character_flag = corruption_remove_kind 
-						}
-					}
-					set_character_flag = corruption_remove_kind
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				20 = {
-					modifier = {
-						factor = 0
-						OR = {
-							trait = kind
-							trait = cruel
-							has_character_flag = corruption_add_cruel 
-						}
-					}
-					set_character_flag = corruption_add_cruel
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				15 = {
-					modifier = {
-						factor = 0
-						OR = {
-							NOT = { trait = just }
-							trait = arbitrary
-							has_character_flag = corruption_remove_just
-						} 
-					}
-					set_character_flag = corruption_remove_just
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				15 = {
-					modifier = {
-						factor = 0
-						OR = {
-							trait = just
-							trait = arbitrary
-							has_character_flag = corruption_add_arbitrary
-						} 
-					}
-					set_character_flag = corruption_add_arbitrary
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				10 = {
-					modifier = {
-						factor = 0
-						OR = {
-							NOT = { trait = honest }
-							trait = deceitful
-							has_character_flag = corruption_remove_honest
-						} 
-					}
-					set_character_flag = corruption_remove_honest	
-					character_event = { id = MNM.7050 days = 3 random = 27 }		
-				}
-				10 = {
-					modifier = {
-						factor = 0
-						OR = {
-							trait = honest
-							trait = deceitful
-							has_character_flag = corruption_add_deceitful
-						} 
-					}
-					set_character_flag = corruption_add_deceitful
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				5 = { 
-					modifier = {
-						factor = 0
-						trait = possessed
-						has_character_flag = corruption_add_possessed
-					}
-					set_character_flag = corruption_add_possessed
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				50 = { }
-			}
-		}
-		random_list = { #Risk of getting weaker
-			10 = {
-				trigger = { NOT = { trait = stressed } }
-				character_event = { id = MNM.7051 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOT = { trait = lunatic } }
-				character_event = { id = MNM.7052 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = stutter } }
-				character_event = { id = MNM.7053 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = clubfooted } }
-				character_event = { id = MNM.7054 days = 32 random = 5} 
-			}
-			5 = {
-				trigger = { NOR = { trait = hunchback } }
-				character_event = { id = MNM.7055 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = ugly } }
-				character_event = { id = MNM.7056 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = {
-					NOR = {
-			    		trait = feeble
-			    		trait = weak
-			    		trait = strong
-			    	}
-				}
-				character_event = { id = MNM.7059 days = 32 random = 5 }
-			}
-			40 = {
-				#trigger = { 
-				#	NOR = { 
-				#		NOT = { health = 3 }
-				#		has_character_modifier = corrupting_magic_minor
-				#		has_character_modifier = corrupting_magic_major
-				#	}
-				#}
-				character_event = { id = MNM.7057 days = 32 random = 5 }
-			}
-			220 = { # High visibility (ability abuse) increases the risk of getting weaker
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 10 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 15 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 20 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 25 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 30 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 35 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 40 }
-				}
-			}
-		}
-		random = {
-			chance = 2
-			set_character_flag = has_it_coming
-			character_event = { id = MNM.7854 days = 30 random = 50 } #Demon hunters come after you...
-		}
-	}
-}
+# major_soul_corruption_effect = {
+	# custom_tooltip = { 
+		# text = major_soul_corruption_effect_tooltip
+	# }
+	# hidden_effect = {
+		# if = {
+			# limit = {
+				# NAND = {
+					# trait = cruel
+					# trait = arbitrary
+					# trait = deceitful
+					# trait = possessed
+				# }
+			# }
+			# random_list = {
+				# 20 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# NOT = { trait = kind }
+							# trait = cruel
+							# has_character_flag = corruption_remove_kind 
+						# }
+					# }
+					# set_character_flag = corruption_remove_kind
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 20 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# trait = kind
+							# trait = cruel
+							# has_character_flag = corruption_add_cruel 
+						# }
+					# }
+					# set_character_flag = corruption_add_cruel
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 15 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# NOT = { trait = just }
+							# trait = arbitrary
+							# has_character_flag = corruption_remove_just
+						# } 
+					# }
+					# set_character_flag = corruption_remove_just
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 15 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# trait = just
+							# trait = arbitrary
+							# has_character_flag = corruption_add_arbitrary
+						# } 
+					# }
+					# set_character_flag = corruption_add_arbitrary
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 10 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# NOT = { trait = honest }
+							# trait = deceitful
+							# has_character_flag = corruption_remove_honest
+						# } 
+					# }
+					# set_character_flag = corruption_remove_honest	
+					# character_event = { id = MNM.7050 days = 3 random = 27 }		
+				# }
+				# 10 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# trait = honest
+							# trait = deceitful
+							# has_character_flag = corruption_add_deceitful
+						# } 
+					# }
+					# set_character_flag = corruption_add_deceitful
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 5 = { 
+					# modifier = {
+						# factor = 0
+						# trait = possessed
+						# has_character_flag = corruption_add_possessed
+					# }
+					# set_character_flag = corruption_add_possessed
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 50 = { }
+			# }
+		# }
+		# random_list = { #Risk of getting weaker
+			# 10 = {
+				# trigger = { NOT = { trait = stressed } }
+				# character_event = { id = MNM.7051 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOT = { trait = lunatic } }
+				# character_event = { id = MNM.7052 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = stutter } }
+				# character_event = { id = MNM.7053 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = clubfooted } }
+				# character_event = { id = MNM.7054 days = 32 random = 5} 
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = hunchback } }
+				# character_event = { id = MNM.7055 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = ugly } }
+				# character_event = { id = MNM.7056 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = {
+					# NOR = {
+			    		# trait = feeble
+			    		# trait = weak
+			    		# trait = strong
+			    	# }
+				# }
+				# character_event = { id = MNM.7059 days = 32 random = 5 }
+			# }
+			# 40 = {
+				# #trigger = { 
+				# #	NOR = { 
+				# #		NOT = { health = 3 }
+				# #		has_character_modifier = corrupting_magic_minor
+				# #		has_character_modifier = corrupting_magic_major
+				# #	}
+				# #}
+				# character_event = { id = MNM.7057 days = 32 random = 5 }
+			# }
+			# 220 = { # High visibility (ability abuse) increases the risk of getting weaker
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 10 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 15 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 20 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 25 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 30 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 35 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 40 }
+				# }
+			# }
+		# }
+		# random = {
+			# chance = 2
+			# set_character_flag = has_it_coming
+			# character_event = { id = MNM.7854 days = 30 random = 50 } #Demon hunters come after you...
+		# }
+	# }
+# }
 
-minor_soul_corruption_effect = {
-	custom_tooltip = { 
-		text = minor_soul_corruption_effect_tooltip
-	}
-	hidden_effect = {
-		if = {
-			limit = {
-				NAND = {
-					trait = cruel
-					trait = arbitrary
-					trait = deceitful
-					trait = possessed
-				}
-			}
-			random_list = {
-				10 = {
-					modifier = {
-						factor = 0
-						OR = {
-							NOT = { trait = kind }
-							trait = cruel
-							has_character_flag = corruption_remove_kind 
-						}
-					}
-					set_character_flag = corruption_remove_kind
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				5 = {
-					modifier = {
-						factor = 0
-						OR = {
-							trait = kind
-							trait = cruel
-							has_character_flag = corruption_add_cruel 
-						}
-					}
-					set_character_flag = corruption_add_cruel
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				10 = {
-					modifier = {
-						factor = 0
-						OR = {
-							NOT = { trait = just }
-							trait = arbitrary
-							has_character_flag = corruption_remove_just
-						}
-					}
-					set_character_flag = corruption_remove_just
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				5 = {
-					modifier = {
-						factor = 0
-						OR = {
-							trait = just
-							trait = arbitrary
-							has_character_flag = corruption_add_arbitrary
-						} 
-					}
-					set_character_flag = corruption_add_arbitrary
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				10 = {
-					modifier = {
-						factor = 0
-						OR = {
-							NOT = { trait = honest }
-							trait = deceitful
-							has_character_flag = corruption_remove_honest
-						} 
-					}
-					set_character_flag = corruption_remove_honest
-					character_event = { id = MNM.7050 days = 3 random = 27 }			
-				}
-				5 = {
-					modifier = {
-						factor = 0
-						OR = {
-							trait = honest
-							trait = deceitful
-							has_character_flag = corruption_add_deceitful
-						} 
-					}
-					set_character_flag = corruption_add_deceitful
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				5 = { 
-					modifier = {
-						factor = 0
-						trait = possessed
-						has_character_flag = corruption_add_possessed
-					}
-					set_character_flag = corruption_add_possessed
-					character_event = { id = MNM.7050 days = 3 random = 27 }
-				}
-				80 = { }
-			}
-		}
-		random_list = { #Risk of getting weaker
-			15 = {
-				trigger = { NOT = { trait = stressed } }
-				character_event = { id = MNM.7051 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOT = { trait = lunatic } }
-				character_event = { id = MNM.7052 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = stutter } }
-				character_event = { id = MNM.7053 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = clubfooted } }
-				character_event = { id = MNM.7054 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = hunchback } }
-				character_event = { id = MNM.7055 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = { NOR = { trait = ugly } }
-				character_event = { id = MNM.7056 days = 32 random = 5 }
-			}
-			5 = {
-				trigger = {
-					NOR = {
-						trait = feeble
-						trait = weak
-						trait = strong
-					}
-				}
-				character_event = { id = MNM.7059 days = 32 random = 5 }
-			}
-			50 = {
-				#trigger = { 
-				#	NOR = { 
-				#		NOT = { health = 3 }
-				#		has_character_modifier = corrupting_magic_minor
-				#		has_character_modifier = corrupting_magic_major
-				#	}
-				#}
-				character_event = { id = MNM.7058 days = 32 random = 5 }
-			}
-			450 = {  # High visibility (ability abuse) increases the risk of getting weaker
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 10 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 15 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 20 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 25 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 30 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 35 }
-				}
-				modifier = {
-					factor = 0.9
-					check_variable = { which = visibility_value value = 40 }
-				}
-			}
-		}
-	}
-}
+# minor_soul_corruption_effect = {
+	# custom_tooltip = { 
+		# text = minor_soul_corruption_effect_tooltip
+	# }
+	# hidden_effect = {
+		# if = {
+			# limit = {
+				# NAND = {
+					# trait = cruel
+					# trait = arbitrary
+					# trait = deceitful
+					# trait = possessed
+				# }
+			# }
+			# random_list = {
+				# 10 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# NOT = { trait = kind }
+							# trait = cruel
+							# has_character_flag = corruption_remove_kind 
+						# }
+					# }
+					# set_character_flag = corruption_remove_kind
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 5 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# trait = kind
+							# trait = cruel
+							# has_character_flag = corruption_add_cruel 
+						# }
+					# }
+					# set_character_flag = corruption_add_cruel
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 10 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# NOT = { trait = just }
+							# trait = arbitrary
+							# has_character_flag = corruption_remove_just
+						# }
+					# }
+					# set_character_flag = corruption_remove_just
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 5 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# trait = just
+							# trait = arbitrary
+							# has_character_flag = corruption_add_arbitrary
+						# } 
+					# }
+					# set_character_flag = corruption_add_arbitrary
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 10 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# NOT = { trait = honest }
+							# trait = deceitful
+							# has_character_flag = corruption_remove_honest
+						# } 
+					# }
+					# set_character_flag = corruption_remove_honest
+					# character_event = { id = MNM.7050 days = 3 random = 27 }			
+				# }
+				# 5 = {
+					# modifier = {
+						# factor = 0
+						# OR = {
+							# trait = honest
+							# trait = deceitful
+							# has_character_flag = corruption_add_deceitful
+						# } 
+					# }
+					# set_character_flag = corruption_add_deceitful
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 5 = { 
+					# modifier = {
+						# factor = 0
+						# trait = possessed
+						# has_character_flag = corruption_add_possessed
+					# }
+					# set_character_flag = corruption_add_possessed
+					# character_event = { id = MNM.7050 days = 3 random = 27 }
+				# }
+				# 80 = { }
+			# }
+		# }
+		# random_list = { #Risk of getting weaker
+			# 15 = {
+				# trigger = { NOT = { trait = stressed } }
+				# character_event = { id = MNM.7051 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOT = { trait = lunatic } }
+				# character_event = { id = MNM.7052 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = stutter } }
+				# character_event = { id = MNM.7053 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = clubfooted } }
+				# character_event = { id = MNM.7054 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = hunchback } }
+				# character_event = { id = MNM.7055 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = { NOR = { trait = ugly } }
+				# character_event = { id = MNM.7056 days = 32 random = 5 }
+			# }
+			# 5 = {
+				# trigger = {
+					# NOR = {
+						# trait = feeble
+						# trait = weak
+						# trait = strong
+					# }
+				# }
+				# character_event = { id = MNM.7059 days = 32 random = 5 }
+			# }
+			# 50 = {
+				# #trigger = { 
+				# #	NOR = { 
+				# #		NOT = { health = 3 }
+				# #		has_character_modifier = corrupting_magic_minor
+				# #		has_character_modifier = corrupting_magic_major
+				# #	}
+				# #}
+				# character_event = { id = MNM.7058 days = 32 random = 5 }
+			# }
+			# 450 = {  # High visibility (ability abuse) increases the risk of getting weaker
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 10 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 15 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 20 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 25 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 30 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 35 }
+				# }
+				# modifier = {
+					# factor = 0.9
+					# check_variable = { which = visibility_value value = 40 }
+				# }
+			# }
+		# }
+	# }
+# }
 
 add_society_currency_trivial_effect = {
 	if = {
@@ -8650,6 +8650,13 @@ add_sympathy_for_prevs_true_religion_effect = {
 		}
 		add_trait = sympathy_water_religions
 	}
+	if = {
+		limit = { 
+			PREV = { true_religion_group_fire_religions_trigger = yes } 
+			NOT = { religion_group = fire_religions }
+		}
+		add_trait = sympathy_fire_religions
+	}
 }
 
 add_sympathy_for_prevs_open_religion_effect = {
@@ -8666,6 +8673,13 @@ add_sympathy_for_prevs_open_religion_effect = {
 			NOT = { religion_group = water_religions }
 		}
 		add_trait = sympathy_water_religions
+	}
+	if = {
+		limit = { 
+			PREV = { religion_group = fire_religions } 
+			NOT = { religion_group = fire_religions }
+		}
+		add_trait = sympathy_fire_religions
 	}
 }
 
@@ -15721,6 +15735,14 @@ add_sympathy_for_religion_effect = {
 		}
 		ROOT = {
 			add_trait = sympathy_water_religions
+		}
+	}
+	else_if = {
+		limit = {
+			religion_group = fire_religions
+		}
+		ROOT = {
+			add_trait = sympathy_fire_religions
 		}
 	}
 }
