@@ -1,0 +1,117 @@
+###########################################
+#                                         #
+# M&M Assassins Society Events            #
+#                                         #
+# ID MNM.6000-MNM.6999		              #
+#                                         #
+###########################################
+
+namespace = MNM
+
+#Love ping event
+character_event = {
+	id = MNM.6906
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = { 
+
+		random_list = {
+    		50 = { #Not interested
+    			modifier = { is_married = yes factor = 2 }
+    			modifier = { any_lover = { is_alive = yes } factor = 4 }
+    			modifier = { trait = chaste factor = 4 }
+    			modifier = { trait = celibate factor = 10 }
+    			modifier = { has_unpleasant_trait_trigger = yes factor = 2 }
+    			modifier = { NOT = { opinion = { who = FROM value = 20 } } factor = 2 }
+    			modifier = { 
+					root_attraction_trigger = no 
+					NOT = { trait = homosexual }
+					factor = 0.5 
+    			}
+    			modifier = { 
+					root_attraction_trigger = no 
+					trait = homosexual
+					factor = 0
+    			}
+    			set_character_flag = not_interested
+    		} 
+    		50 = { #Interested
+    			modifier = { trait = lustful factor = 4 }
+    			modifier = { has_pleasant_trait_trigger = yes factor = 2 }
+    			modifier = { opinion = { who = FROM value = 40 } factor = 2 }
+    			modifier = { FROM = { has_attractive_trait_trigger = yes } factor = 3 }
+
+    			set_character_flag = interested
+
+    			if = {
+    				limit = { same_sex = FROM }
+    				add_trait = homosexual 
+    			}
+    		}
+    	}
+
+		FROM = { character_event = { id = MNM.6907 } }
+	}
+}
+
+#Love outcome
+character_event = {
+    id = MNM.6907
+    border = GFX_event_normal_frame_diplomacy
+    picture = GFX_evt_lovers
+
+    desc = {
+    	trigger = { FROM = { has_character_flag = not_interested } }
+    	text = EVTDESC_MNM_6907_A
+    	picture = GFX_evt_courtiers_talking
+    }
+    desc = {
+    	trigger = { FROM = { has_character_flag = interested } }
+    	text = EVTDESC_MNM_6907_B
+    	picture = GFX_evt_lovers
+    }
+
+    is_triggered_only = yes
+
+    #Friends instead?
+    option = {
+    	trigger = { FROM = { has_character_flag = not_interested } }
+        name = EVTOPTC_MNM_6907
+
+        add_friend = FROM
+    }
+
+    #Nah
+    option = { 
+    	trigger = { FROM = { has_character_flag = not_interested } } 
+        name = EVTOPTA_MNM_6907
+
+        opinion = {
+        	modifier = opinion_distressing_encounter
+        	who = FROM
+        	years = 5
+        }
+        reverse_opinion = {
+        	modifier = opinion_distressing_encounter
+        	who = FROM
+        	years = 5
+        }
+    }
+
+    #Love
+    option = {
+    	trigger = { FROM = { has_character_flag = interested } }
+        name = EVTOPTB_MNM_6907
+
+        add_lover = FROM
+    }
+
+    after = {
+    	hidden_effect = {
+    		FROM  = {
+    			clr_character_flag = not_interested
+    			clr_character_flag = interested
+    		}
+    	}
+    }
+}
