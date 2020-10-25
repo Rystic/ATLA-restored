@@ -17,62 +17,73 @@ character_event = {
 	}
 	
 	immediate = {
-		royal_court = {
-			any_society_member = {
-				if = {
-					limit = {
-						NOR = {
-							trait = DaiLiFactMember
-							trait = AdminFactMember
-							trait = MilitaristFactMember
-							trait = NobleFactMember
-						}
-					}
+			royal_court = {
+				any_society_member = {
 					if = {
-						limit = { 
-							NOT = { has_global_flag = dai_li_disbanded }
+						limit = {
+							NOR = {
+								trait = DaiLiFactMember
+								trait = AdminFactMember
+								trait = MilitaristFactMember
+								trait = NobleFactMember
+							}
 						}
-						random_list = {
+						if = {
+							limit = { 
+								NOT = { has_global_flag = dai_li_disbanded }
+								society_rank = {
+									society = royal_court
+									rank >= 1
+								}								
+							}
+							random_list = {
+							
+							25 = { add_trait = DaiLiFactMember }
+							25 = { add_trait = AdminFactMember }
+							25 = { add_trait = MilitaristFactMember }
+							25 = { add_trait = NobleFactMember }
+							}
+						}
+						else_if = {
+							limit = {
+								society_rank = {
+									society = royal_court
+									rank >= 1
+								}
+							}	
+							random_list = {
+								
+							33 = { add_trait = AdminFactMember }
+							33 = { add_trait = MilitaristFactMember }
+							33 = { add_trait = NobleFactMember }
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							society_rank = {
+								society = royal_court
+								rank = 4
+							}
+							NOR = {
+								trait = DaiLiFactLeader
+								trait = AdminFactLeader
+								trait = MilitaristFactLeader
+								trait = NobleFactLeader
+							}
+						}
+						trigger_switch = {
+						on_trigger = trait 
 						
-						25 = { add_trait = DaiLiFactMember }
-						25 = { add_trait = AdminFactMember }
-						25 = { add_trait = MilitaristFactMember }
-						25 = { add_trait = NobleFactMember }
+						DaiLiFactMember = { add_trait = DaiLiFactLeader }
+						AdminFactMember = { add_trait = AdminFactLeader }
+						MilitaristFactMember = { add_trait = MilitaristFactLeader }
+						NobleFactMember = { add_trait = NobleFactLeader }
+						
 						}
-					}
-					else = {
-						random_list = {
-						33 = { add_trait = AdminFactMember }
-						33 = { add_trait = MilitaristFactMember }
-						33 = { add_trait = NobleFactMember }
-						}	
-					}
-				}
-				else_if = {
-					limit = {
-						society_rank = {
-							society = royal_court
-							rank = 4
-						}
-						NOR = {
-							trait = DaiLiFactLeader
-							trait = AdminFactLeader
-							trait = MilitaristFactLeader
-							trait = NobleFactLeader
-						}
-					}
-					trigger_switch = {
-					on_trigger = trait 
-					
-					DaiLiFactMember = { add_trait = DaiLiFactLeader }
-					AdminFactMember = { add_trait = AdminFactLeader }
-					MilitaristFactMember = { add_trait = MilitaristFactLeader }
-					NobleFactMember = { add_trait = NobleFactLeader }
-					
 					}
 				}
 			}
-		}
 	}
 }
 
