@@ -1195,6 +1195,135 @@ character_event = {
 					character_event = { id = RIP.11052 }
 				}
 			}
+			7 = { # Witch (Mystic)
+				modifier = {
+					factor = 0
+					AND = {
+						has_character_flag = got_physician_witch
+						NOT = { had_character_flag = { flag = got_physician_witch days = 3650 } }
+					}
+				}
+				random_list = {
+					50 = { # Same Religion & Culture as ROOT + Attractive
+						create_character = {
+							religion = ROOT
+							culture = ROOT
+							dynasty = none
+							age = 21
+							random_traits = yes
+							female = yes
+							attributes = {
+								learning = 12
+								intrigue = 6
+							}
+							health = 6
+							trait = intricate_webweaver
+							trait = mystic
+							trait = fair
+							flag = is_court_physician
+							flag = physician_witch
+						}
+						new_character = {
+							set_character_flag = no_court_invites
+							remove_trait = scholar
+							remove_trait = socializer
+							remove_trait = gamer
+							remove_trait = hedonist
+							remove_trait = duelist
+							remove_trait = hunter
+							remove_trait = strategist
+							remove_trait = administrator
+							remove_trait = architect
+							remove_trait = gardener
+							remove_trait = schemer
+							remove_trait = impaler
+							remove_trait = seducer
+							remove_trait = seductress
+							remove_trait = theologian
+							remove_trait = ugly
+							remove_trait = imbecile
+							remove_trait = slow
+							random_list = { # Random chance to add Physician
+								10 = {
+									add_trait = physician
+									change_learning = -2
+								}
+								90 = {
+									
+								}
+							}
+							random_list = { # Is the Physician a Quack?
+								90 = {
+								}
+								10 = {
+									set_character_flag = physician_is_quack
+								}
+							}
+							save_event_target_as = recruited_physician_target
+							character_event = { id = RIP.11052 }
+						}
+					}
+					50 = { # Same Religion & Culture as ROOT + Disfigured
+						create_character = {
+							religion = ROOT
+							culture = ROOT
+							dynasty = none
+							age = 53
+							random_traits = yes
+							female = yes
+							attributes = {
+								learning = 8
+								intrigue = 6
+							}
+							health = 6
+							trait = intricate_webweaver
+							trait = mystic
+							trait = disfigured
+							flag = is_court_physician
+							flag = physician_witch
+						}
+						new_character = {
+							set_character_flag = no_court_invites
+							remove_trait = scholar
+							remove_trait = socializer
+							remove_trait = gamer
+							remove_trait = hedonist
+							remove_trait = duelist
+							remove_trait = hunter
+							remove_trait = strategist
+							remove_trait = administrator
+							remove_trait = architect
+							remove_trait = gardener
+							remove_trait = schemer
+							remove_trait = impaler
+							remove_trait = seducer
+							remove_trait = seductress
+							remove_trait = theologian
+							remove_trait = fair
+							remove_trait = imbecile
+							remove_trait = slow
+							random_list = { # Random chance to add Physician
+								50 = {
+									add_trait = physician
+									change_learning = -2
+								}
+								50 = {
+									
+								}
+							}
+							random_list = { # Is the Physician a Quack?
+								90 = {
+								}
+								10 = {
+									set_character_flag = physician_is_quack
+								}
+							}
+							save_event_target_as = recruited_physician_target
+							character_event = { id = RIP.11052 }
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -1338,34 +1467,10 @@ character_event = {
 	}
 	
 	desc = {
-		text = EVTDESC_RIP_11053_SCHOOLED_EUNUCH
-		picture = GFX_evt_feast
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_schooled_eunuch }
-		}
-	}
-	
-	desc = {
-		text = EVTDESC_RIP_11053_PUS_SUCKING_NUN
-		picture = GFX_evt_monastery_nuns
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_pus_sucking_nun }
-		}
-	}
-	
-	desc = {
 		text = EVTDESC_RIP_11053_WITCH
 		picture = GFX_evt_wise_woman
 		trigger = {
 			event_target:recruited_physician_target = { has_character_flag = physician_witch }
-		}
-	}
-	
-	desc = {
-		text = EVTDESC_RIP_11053_HORSE_MD
-		picture = GFX_evt_horse_friend
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_horse_md }
 		}
 	}
 	
@@ -1919,79 +2024,6 @@ character_event = {
 		}
 	}
 	
-	option = {
-		name = EVTOPTS_RIP_11053
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_schooled_eunuch }
-		}
-		hidden_tooltip = {
-			set_character_flag = got_physician_schooled_eunuch
-			if = {
-				limit = {
-					any_courtier_or_vassal = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-				}
-				any_courtier_or_vassal = {
-					limit = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-					remove_title = title_court_physician
-				}
-			}
-		}
-		transfer_scaled_wealth = {
-			to = event_target:recruited_physician_target
-			min = 10
-			value = 0.15
-		}
-		event_target:recruited_physician_target = {
-			show_scope_change = no
-			opinion = {
-				modifier = opinion_glad
-				who = ROOT
-				years = 5
-			}
-			give_minor_title = title_court_physician
-		}
-	}
-	
-	option = {
-		name = EVTOPTT_RIP_11053
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_pus_sucking_nun }
-		}
-		hidden_tooltip = {
-			set_character_flag = got_physician_pus_sucking_nun
-			if = {
-				limit = {
-					any_courtier_or_vassal = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-				}
-				any_courtier_or_vassal = {
-					limit = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-					remove_title = title_court_physician
-				}
-			}
-		}
-		scaled_wealth = { value = -0.3 min = -10 }
-		event_target:recruited_physician_target = {
-			show_scope_change = no
-			opinion = {
-				modifier = opinion_glad
-				who = ROOT
-				years = 5
-			}
-			give_minor_title = title_court_physician
-		}
-	}
 	
 	option = {
 		name = EVTOPTU_RIP_11053
@@ -2038,161 +2070,6 @@ character_event = {
 		}
 	}
 	
-	option = {
-		name = EVTOPTV_RIP_11053
-		tooltip_info = lunatic
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_horse_md }
-		}
-		hidden_tooltip = {
-			set_character_flag = got_physician_horse_md
-			if = {
-				limit = {
-					any_courtier_or_vassal = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-				}
-				any_courtier_or_vassal = {
-					limit = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-					remove_title = title_court_physician
-				}
-			}
-		}
-		prestige = -50
-		event_target:recruited_physician_target = {
-			hidden_tooltip = {
-				opinion = {
-					modifier = opinion_my_master
-					who = ROOT
-					years = 100
-				}
-				reverse_opinion = {
-					modifier = opinion_my_horse
-					who = ROOT
-					years = 100
-				}
-			}
-			give_minor_title = title_court_physician
-		}
-	}
-	
-	option = {
-		name = EVTOPTW_RIP_11053
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_travelling_nestorian }
-		}
-		hidden_tooltip = {
-			set_character_flag = got_physician_travelling_nestorian
-			if = {
-				limit = {
-					any_courtier_or_vassal = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-				}
-				any_courtier_or_vassal = {
-					limit = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-					remove_title = title_court_physician
-				}
-			}
-		}
-		transfer_scaled_wealth = {
-			to = event_target:recruited_physician_target
-			min = 10
-			value = 0.2
-		}
-		event_target:recruited_physician_target = {
-			show_scope_change = no
-			opinion = {
-				modifier = opinion_glad
-				who = ROOT
-				years = 5
-			}
-			give_minor_title = title_court_physician
-		}
-	}
-	
-	option = {
-		name = EVTOPTX_RIP_11053
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_mazdan_doctor }
-		}
-		hidden_tooltip = {
-			set_character_flag = got_physician_mazdan_doctor
-			if = {
-				limit = {
-					any_courtier_or_vassal = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-				}
-				any_courtier_or_vassal = {
-					limit = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-					remove_title = title_court_physician
-				}
-			}
-		}
-		transfer_scaled_wealth = {
-			to = event_target:recruited_physician_target
-			min = 10
-			value = 0.25
-		}
-		event_target:recruited_physician_target = {
-			show_scope_change = no
-			opinion = {
-				modifier = opinion_glad
-				who = ROOT
-				years = 5
-			}
-			give_minor_title = title_court_physician
-		}
-	}
-	
-	option = {
-		name = EVTOPTY_RIP_11053
-		trigger = {
-			event_target:recruited_physician_target = { has_character_flag = physician_manichean_merchant }
-		}
-		hidden_tooltip = {
-			set_character_flag = got_physician_manichean_merchant
-			if = {
-				limit = {
-					any_courtier_or_vassal = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-				}
-				any_courtier_or_vassal = {
-					limit = {
-						liege = { character = ROOT }
-						has_minor_title = title_court_physician
-					}
-					remove_title = title_court_physician
-				}
-			}
-		}
-		prestige = -25
-		piety = -25
-		event_target:recruited_physician_target = {
-			show_scope_change = no
-			opinion = {
-				modifier = opinion_very_grateful
-				who = ROOT
-				years = 5
-			}
-			give_minor_title = title_court_physician
-		}
-	}
 
 	option = {
 		name = EVTOPTA_RIP_11053
