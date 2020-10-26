@@ -4599,6 +4599,77 @@ character_event = {
 		}
 	}
 
+	#Steal skull
+	option = {
+		name = EVTOPTA_RIP_29010
+		custom_tooltip = { text = EVTOPTA_RIP_29010_TOOLTIP }
+		
+		trigger = {
+			OR = {
+				trait = cruel
+				trait = wroth
+				trait = impaler
+				trait = lunatic
+				trait = possessed
+				trait = arbitrary
+			}
+		}
+
+		hidden_tooltip = {
+			random_list = {
+				#Fail
+				40 = {
+					modifier = {
+						factor = 0
+						OR = {
+							NOT = { event_target:rip_widow = { always = yes } }
+							NOT = { event_target:rip_child = { always = yes } }
+							event_target:rip_widow = { character = ROOT }
+							event_target:rip_child = { character = ROOT }
+						}
+					}
+
+					if = {
+						limit = { event_target:rip_widow = { NOT = { character = ROOT } } }
+						event_target:rip_widow = { character_event = { id = RIP.29011 days = 7 } }
+						break = yes
+					}
+					if = {
+					limit = { event_target:rip_child = { NOT = { character = ROOT } } }
+					event_target:rip_child = { character_event = { id = RIP.29011 days = 7 } }
+					}
+				}
+				#Success
+				60 = {
+					modifier = {
+						factor = 1.2
+						intrigue = 9
+					}
+					modifier = {
+						factor = 1.2
+						intrigue = 12
+					}
+					modifier = {
+						factor = 1.2
+						intrigue = 15
+					}
+					modifier = {
+						factor = 1.2
+						intrigue = 18
+					}
+					modifier = {
+						factor = 1.2
+						intrigue = 21
+					}
+
+					character_event = { id = RIP.29013 days = 7 }
+				}
+			}
+		}
+
+		ai_chance = { factor = 2 } 
+	}
+
 	#Enemy of my enemy
 	option = {
 		trigger = { event_target:rip_enemy_2 = { is_alive = yes } }
