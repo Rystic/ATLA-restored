@@ -2415,6 +2415,12 @@ character_event = {
 		days = 1
 		
 		modifier = {
+			factor = 15
+			any_owned_bloodline = {
+				has_bloodline_flag = bloodline_ambition
+			}
+		}
+		modifier = {
 			factor = 1.7
 			trait = proud
 		}
@@ -2428,72 +2434,82 @@ character_event = {
 		name = "EVTOPTA1012"
 		if = {
 			limit = {
-				trait = proud
-				NOT = {
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_ambition
+				}
+			}
+			add_trait = ambitious
+		}
+		else = {
+			if = {
+				limit = {
+					trait = proud
+					NOT = {
+						trait = shy
+					}
+				}
+				random = {
+					chance = 70
+					
+					add_trait = ambitious
+					hidden_tooltip = {
+						character_event = {
+							id = 38278 #Notify Ambitious
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					trait = shy
+					NOT = {
+						trait = proud
+					}
+				}
+				random = {
+					chance = 20
+					
+					add_trait = ambitious
+					hidden_tooltip = {
+						character_event = {
+							id = 38278 #Notify Ambitious
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						trait = proud
+					}
+					NOT = {
+						trait = shy
+					}
+				}
+				random = {
+					chance = 45
+					
+					add_trait = ambitious
+					hidden_tooltip = {
+						character_event = {
+							id = 38278 #Notify Ambitious
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					trait = proud
 					trait = shy
 				}
-			}
-			random = {
-				chance = 70
-				
-				add_trait = ambitious
-				hidden_tooltip = {
-					character_event = {
-						id = 38278 #Notify Ambitious
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				trait = shy
-				NOT = {
-					trait = proud
-				}
-			}
-			random = {
-				chance = 20
-				
-				add_trait = ambitious
-				hidden_tooltip = {
-					character_event = {
-						id = 38278 #Notify Ambitious
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				NOT = {
-					trait = proud
-				}
-				NOT = {
-					trait = shy
-				}
-			}
-			random = {
-				chance = 45
-				
-				add_trait = ambitious
-				hidden_tooltip = {
-					character_event = {
-						id = 38278 #Notify Ambitious
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				trait = proud
-				trait = shy
-			}
-			random = {
-				chance = 45
-				
-				add_trait = ambitious
-				hidden_tooltip = {
-					character_event = {
-						id = 38278 #Notify Ambitious
+				random = {
+					chance = 45
+					
+					add_trait = ambitious
+					hidden_tooltip = {
+						character_event = {
+							id = 38278 #Notify Ambitious
+						}
 					}
 				}
 			}
@@ -2501,6 +2517,13 @@ character_event = {
 	}
 	option = {
 		name = "EVTOPTB1012"
+		trigger = {
+			NOT = {
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_ambition
+				}
+			}
+		}
 		if = {
 			limit = {
 				trait = patient
@@ -4799,6 +4822,12 @@ character_event = {
 	trigger = {
 		personality_traits = 6
 		trait = ambitious
+		NOR = {
+			has_character_flag = is_child_of_destiny
+			any_owned_bloodline = {
+				has_bloodline_flag = bloodline_ambition
+			}
+		}
 	}
 	
 	weight_multiplier = {
