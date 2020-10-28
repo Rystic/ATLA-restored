@@ -356,3 +356,1606 @@ character_event = {
 		clr_character_flag = purity_add_diligent
 	}
 }
+
+###INTERACTION EVENTS###
+
+#Monastic Friendship & Love #
+
+#Starter Event for Monastic Friendship - I need a friend.
+character_event = {
+	id = MNM.4435
+	picture = GFX_evt_stone_church
+	desc = EVTDESC_MNM_4435
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+	only_capable = yes
+
+	trigger = {
+		NOT = { is_inaccessible_trigger = yes }
+		NOT = { trait = homosexual }
+		any_society_member = {
+			same_society_as = ROOT
+			NOT = { character = ROOT }
+			ai = yes
+			opinion = {
+				who = ROOT
+				value = 0
+			}
+			reverse_opinion = {
+				who = ROOT
+				value = 0
+			}
+			NOT = {
+				trait = amateurish_plotter
+				trait = flamboyant_schemer
+				trait = intricate_webweaver
+				trait = elusive_shadow
+				is_rival = ROOT
+				is_friend = ROOT
+				is_lover = ROOT
+				trait = chaste
+				trait = celibate
+			}
+			OR = {
+				AND = {
+					is_female = no
+					ROOT = { is_female = no }
+				}
+				AND = {
+					is_female = yes
+					ROOT = { is_female = yes }
+				}
+			}
+		}
+		society_member_of = monastic_order_elder_council	
+	}
+
+	immediate = {
+		save_event_target_as = monastic_befriender
+		random_society_member = {
+			limit = {
+				same_society_as = ROOT
+				NOT = { character = ROOT }
+				ai = yes
+				AND = {
+					opinion = {
+						who = ROOT
+						value = 0
+					}
+					reverse_opinion = {
+						who = ROOT
+						value = 0
+					}
+					NOT = {
+						trait = amateurish_plotter
+						trait = flamboyant_schemer
+						trait = intricate_webweaver
+						trait = elusive_shadow
+						is_rival = ROOT
+						is_friend = ROOT
+						is_lover = ROOT
+						trait = chaste
+						trait = celibate
+					}
+					OR = {
+						AND = {
+							is_female = no
+							ROOT = { is_female = no }
+						}
+						AND = {
+							is_female = yes
+							ROOT = { is_female = yes }
+						}
+					}
+				}
+			}
+			save_event_target_as = monastic_friend
+		}
+	}
+
+	option = { #I will come as summoned.
+		name = EVTOPTA_MNM_4435	
+		event_target:monastic_friend = {
+			character_event = { id = MNM.4436 days = 30 random = 30 }
+		}
+	}
+}
+
+#Ping Event for Monastic Friendship
+character_event = {
+	id = MNM.4436
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		event_target:monastic_befriender = {
+			character_event = { id = MNM.4437 }
+		}
+	}
+}
+
+#Become closer with other member (Shared activity might lead to friendship? What to do?)
+character_event = {
+	id = MNM.4437
+	picture = GFX_evt_monastery_monks
+	desc = {
+		text = EVTDESC_MNM_4437
+		picture = GFX_evt_monastery_monks
+		trigger = {	is_female = no }
+	}
+	desc = { 
+		text = EVTDESC_MNM_4437
+		picture = GFX_evt_monastery_nuns
+		trigger = {	is_female = yes }
+	}
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_monastic_member_trigger = yes
+	}
+
+
+	immediate = {
+		opinion = {
+			who = FROM
+			modifier = opinion_budding_friendship
+		}
+		FROM = {
+			opinion = {
+				who = ROOT
+				modifier = opinion_budding_friendship
+			}
+		}
+	}
+
+	option = { #play a game of strategy
+		name = EVTOPTA_MNM_4437
+		random = {
+			chance = 75
+			add_character_modifier = {
+				modifier = played_strategy_game
+				years = 5
+			}
+		}
+		custom_tooltip = {
+			text = monastic_may_become_friends
+			hidden_tooltip = {
+				event_target:monastic_friend = {
+					if = {
+						limit = {
+							OR = {
+								trait = misguided_warrior
+								trait = tough_soldier
+								trait = skilled_tactician
+								trait = brilliant_strategist
+							}
+						}
+						character_event = { id = MNM.4438 days = 15 random = 15 }
+					}
+					if = {
+						limit = {
+							NOT = {
+								trait = misguided_warrior
+								trait = tough_soldier
+								trait = skilled_tactician
+								trait = brilliant_strategist
+							}
+						}
+						character_event = { id = MNM.4442 days = 15 random = 15 }
+					}
+				}
+			}
+		}
+	}
+
+	option = { #discuss the holy scripture
+		name = EVTOPTB_MNM_4437
+		random = {
+			chance = 75
+			add_character_modifier = {
+				modifier = discussed_scripture
+				years = 5
+			}
+		}
+		custom_tooltip = {
+			text = monastic_may_become_friends
+			hidden_tooltip = {
+				event_target:monastic_friend = {
+					if = {
+						limit = {
+							OR = {
+								trait = detached_priest
+								trait = martial_cleric
+								trait = scholarly_theologian
+								trait = mastermind_theologian
+							}
+						}
+						character_event = { id = MNM.4438 days = 15 random = 15 }
+					}
+					if = {
+						limit = {
+							NOT = {
+								trait = detached_priest
+								trait = martial_cleric
+								trait = scholarly_theologian
+								trait = mastermind_theologian
+							}
+						}
+						character_event = { id = MNM.4442 days = 15 random = 15 }
+					}
+				}
+			}
+		}
+	}
+
+	option = { #discuss the intricacies of managing a realm
+		name = EVTOPTC_MNM_4437
+		random = {
+			chance = 75
+			add_character_modifier = {
+				modifier = discussed_realm_management
+				years = 5
+			}
+		}
+		custom_tooltip = {
+			text = monastic_may_become_friends
+			hidden_tooltip = {
+				event_target:monastic_friend = {
+					if = {
+						limit = {
+							OR = {
+								trait = indulgent_wastrel
+								trait = thrifty_clerk
+								trait = fortune_builder
+								trait = midas_touched
+							}
+						}
+						character_event = { id = MNM.4438 days = 15 random = 15 }
+					}
+					if = {
+						limit = {
+							NOT = {
+								trait = indulgent_wastrel
+								trait = thrifty_clerk
+								trait = fortune_builder
+								trait = midas_touched
+							}
+						}
+						character_event = { id = MNM.4442 days = 15 random = 15 }
+					}
+				}
+			}
+		}
+	}
+
+	option = { #take a stroll while engaging in small talk
+		name = EVTOPTD_MNM_4437
+		random = {
+			chance = 75
+			add_character_modifier = {
+				modifier = took_stroll_small_talk
+				years = 5
+			}
+		}
+		custom_tooltip = {
+			text = monastic_may_become_friends
+			hidden_tooltip = {
+				event_target:monastic_friend = {
+					if = {
+						limit = {
+							OR = {
+								trait = naive_appeaser
+								trait = underhanded_rogue
+								trait = charismatic_negotiator
+								trait = grey_eminence
+							}
+						}
+						character_event = { id = MNM.4438 days = 15 random = 15 }
+					}
+					if = {
+						limit = {
+							NOT = {
+								trait = naive_appeaser
+								trait = underhanded_rogue
+								trait = charismatic_negotiator
+								trait = grey_eminence
+							}
+						}
+						character_event = { id = MNM.4442 days = 15 random = 15 }
+					}
+				}
+			}
+		}
+	}
+}
+
+#Ping event for friendship established
+character_event = {
+	id = MNM.4438
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		event_target:monastic_befriender = {
+			if = {
+				limit = {
+					NOT = {
+						is_rival = FROM
+					}
+				}
+				character_event = { id = MNM.4439 }
+			}
+		}
+	}
+}
+
+#Friendship Established! Pursue it further, or focus on monastic duties?
+character_event = {
+	id = MNM.4439
+	picture = GFX_evt_monastery_monks
+	desc = {
+		text = EVTDESC_MNM_4439
+		picture = GFX_evt_monastery_monks
+		trigger = {	is_female = no }
+	}
+	desc = { 
+		text = EVTDESC_MNM_4439
+		picture = GFX_evt_monastery_nuns
+		trigger = {	is_female = yes }
+	}
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_monastic_member_trigger = yes
+	}
+
+
+	immediate = {
+		remove_opinion = {
+			who = FROM
+			modifier = opinion_budding_friendship
+		}
+		FROM = {
+			remove_opinion = {
+				who = ROOT
+				modifier = opinion_budding_friendship
+			}
+		}
+		add_friend = FROM
+	}
+
+	option = { #Focus on monastic duties
+		name = EVTOPTA_MNM_4439
+		ai_chance = {
+			factor = 1
+		}
+		tooltip = {
+			add_friend = FROM
+		}
+		piety = 25
+		add_character_modifier = {
+			modifier = focused_on_monastic_studies
+			years = 10
+		}
+	}
+
+	option = { #Pursue the friendship further
+		name = EVTOPTB_MNM_4439
+		ai_chance = {
+			factor = 1
+			modifier = {
+				factor = 3
+				OR = {
+					trait = depressed
+					trait = stressed
+				}
+			}
+			modifier = {
+				factor = 0
+				NOR = {
+					trait = depressed
+					trait = stressed
+				}
+			}
+		}
+		tooltip = {
+			add_friend = FROM
+		}
+		custom_tooltip = {
+			text = monastic_may_lead_to_more
+			hidden_tooltip = {
+				random_list = {
+					10 = {
+						modifier = {
+							factor = 0
+							OR = {
+								trait = chaste
+								trait = celibate
+							}
+						}
+						event_target:monastic_friend = {
+							character_event = { id = MNM.4440 days = 30 random = 30 }
+						}
+					}
+					10 = {
+						modifier = {
+							factor = 0
+							trait = lustful
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					trait = depressed
+					trait = stressed
+					NOT = { trait = gregarious }
+				}
+			}
+			random_list = {
+				10 = {
+					modifier = {
+						factor = 0
+						NOT = { trait = depressed }
+					}
+					remove_trait = depressed
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						NOT = { trait = stressed }
+					}
+					remove_trait = stressed
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						trait = gregarious
+					}
+					modifier = {
+						factor = 0
+						trait = shy
+					}
+					add_trait = gregarious
+					character_event = { id = 38265 }
+				}
+				10 = {
+					modifier = {
+						factor = 0
+						trait = gregarious
+					}
+					modifier = {
+						factor = 0
+						NOT = { trait = shy }
+					}
+					remove_trait = shy
+					character_event = { id = 38295 }
+				}
+				10 = {}
+			}
+		}
+	}
+}
+
+#Ping event for 'tension'
+character_event = {
+	id = MNM.4440
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		event_target:monastic_befriender = {
+			character_event = { id = MNM.4441 }
+		}
+	}
+}
+
+#Long lonely time without your spouse
+character_event = {
+	id = MNM.4441
+	picture = GFX_evt_monastery_monks
+	desc = {
+		text = EVTDESC_MNM_4441
+		picture = GFX_evt_monastery_monks
+		trigger = {	is_female = no }
+	}
+	desc = { 
+		text = EVTDESC_MNM_4441
+		picture = GFX_evt_monastery_nuns
+		trigger = {	is_female = yes }
+	}
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_monastic_member_trigger = yes
+	}
+
+	option = { #Suppress the urge
+		name = EVTOPTA_MNM_4441
+		random_list = {
+			10 = {
+				modifier = {
+					factor = 0
+					trait = stressed
+				}
+				add_trait = stressed
+				character_event = { id = 38282 }
+			}
+			10 = {
+				modifier = {
+					factor = 0
+					OR = {
+						trait = lustful
+						trait = chaste
+					}
+				}
+				add_trait = chaste
+				character_event = { id = 38274 }
+			}
+			10 = {
+				modifier = {
+					factor = 0
+					NOT = { trait = lustful }
+				}
+				remove_trait = lustful
+			}
+		}
+	}
+
+	option = { #Do it
+		name = EVTOPTB_MNM_4441
+		add_trait = homosexual
+		event_target:monastic_friend = {
+			add_trait = homosexual
+			set_character_flag = monastic_friend_lover_@ROOT
+		}
+		add_lover = FROM
+		hidden_effect = {
+			remove_friend = FROM
+		}
+	}
+}
+
+#Ping event for friendship not established
+character_event = {
+	id = MNM.4442
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		event_target:monastic_befriender = {
+			character_event = { id = MNM.4443 }
+		}
+	}
+}
+
+#Friendship not established notification
+character_event = {
+	id = MNM.4443
+	picture = GFX_evt_monastery_monks
+	desc = {
+		text = EVTDESC_MNM_4443
+		picture = GFX_evt_monastery_monks
+		trigger = {	is_female = no }
+	}
+	desc = { 
+		text = EVTDESC_MNM_4443
+		picture = GFX_evt_monastery_nuns
+		trigger = {	is_female = yes }
+	}
+	border = GFX_event_normal_frame_religion
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_monastic_member_trigger = yes
+	}
+
+	immediate = {
+		remove_opinion = {
+			who = FROM
+			modifier = opinion_budding_friendship
+		}
+		FROM = {
+			remove_opinion = {
+				who = ROOT
+				modifier = opinion_budding_friendship
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPTA_MNM_4443
+	}
+}
+############################################
+####   Advising a Poet: Hidden start    ####
+############################################
+character_event = {
+    id = MNM.3260
+    hide_window = yes
+	
+	is_in_society = yes
+	capable_only = yes
+	prisoner = no
+	min_age = 16
+    
+    is_triggered_only = yes
+
+    trigger = {
+    	is_monastic_member_trigger = yes
+
+    	NOT = { has_character_modifier = patron_of_the_arts }
+		NOT = { has_character_modifier = preserver_of_poetry }
+		NOT = { has_character_modifier = published_poet }
+
+    	society = {
+		    any_society_member = {
+	            ai = yes
+	            is_incapable = no
+	            prisoner = no
+	            in_command = no
+	            is_inaccessible_trigger = no
+	            OR = {
+					trait = poet
+					learning = 15
+					diplomacy = 15
+	            }
+	            NOT = { character = ROOT }
+	            is_within_diplo_range = ROOT
+	        }
+	    }	
+    }
+       
+    immediate = {
+        # First look for someone at court
+        society = {
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    OR = {
+						trait = poet
+						learning = 15
+						diplomacy = 15
+		            }
+                    NOT = { character = ROOT }
+                    host = { character = ROOT }
+                }
+                character_event = { id = MNM.3261 }
+                break = yes
+            }
+            
+            # Then look for someone in the same realm
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    OR = {
+						trait = poet
+						learning = 15
+						diplomacy = 15
+		            }
+                    NOT = { character = ROOT }
+                    same_realm = yes
+                }
+                character_event = { id = MNM.3261 }
+                break = yes
+            }
+            
+            # Then look abroad...
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    OR = {
+						trait = poet
+						learning = 15
+						diplomacy = 15
+		            }
+                    NOT = { character = ROOT }
+                    is_within_diplo_range = ROOT
+                }
+                character_event = { id = MNM.3261 }
+                break = yes
+            }
+        }
+    }
+}
+
+
+#Ping event for other member (the poet)
+character_event = {
+    id = MNM.3261
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = { FROM = { character_event = { id = MNM.3262 } } }
+}
+
+# A fellow member seeks your advice on some writing of theirs
+character_event = {
+    id = MNM.3262
+    desc = EVTDESC_MNM_3262
+    picture = GFX_evt_recieve_letter
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+    
+    trigger = {
+    	FROM = { is_alive = yes }
+    }
+
+    immediate = {
+
+    }
+
+    option = { #Highlight X
+        name = EVTOPTA_MNM_3262
+        custom_tooltip = { text = EVTOPTA_MNM_3262_TT }
+        set_character_flag = suggestion_A_flag
+        hidden_effect = { FROM = { character_event = { id = MNM.3263 days = 15 random = 30 } } } #send new ping
+    }
+    option = { #Go more in Y direction
+        name = EVTOPTB_MNM_3262
+        custom_tooltip = { text = EVTOPTA_MNM_3262_TT }
+        set_character_flag = suggestion_B_flag
+        hidden_effect = { FROM = { character_event = { id = MNM.3263 days = 15 random = 30 } } } #send new ping
+    }
+    option = { # Writing is frivolous and dumb / opt out
+        name = EVTOPTC_MNM_3262
+        custom_tooltip = { text = EVTOPTC_MNM_3262_TT }
+
+        reverse_opinion = {
+            who = FROM
+            modifier = opinion_disappointed
+            years = 10
+        }
+    }
+}
+
+#Ping event for other member (the poet)
+character_event = {
+    id = MNM.3263
+    hide_window = yes
+    is_triggered_only = yes
+    trigger = { is_alive = yes }
+    immediate = { FROM = { character_event = { id = MNM.3264 } } }
+}
+
+character_event = {
+    id = MNM.3264
+    desc = EVTDESC_MNM_3264
+    picture = GFX_evt_recieve_letter
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+    
+    trigger = {
+    	FROM = { is_alive = yes }
+    	is_monastic_member_trigger = yes
+    }
+
+    option = { # This should be published! (The writer will NOT be pleased)
+        name = EVTOPTA_MNM_3264
+        custom_tooltip = { text = EVTOPTA_MNM_3264_TT }
+        set_character_flag = 3264_publish_flag
+        wealth = -55
+
+        add_character_modifier = {
+            name = patron_of_the_arts
+            years = 10
+        }
+    }
+    option = { # Our Order will preserve these words for generations (The writer will be pleased)
+        name = EVTOPTB_MNM_3264
+        custom_tooltip = { text = EVTOPTB_MNM_3264_TT }
+        set_character_flag = 3264_preserve_flag
+        
+        add_character_modifier = {
+            name = preserver_of_poetry
+            years = 10
+        }
+    }
+    option = { # DEPRESSED - FEEL BETTER
+        name = EVTOPTC_MNM_3264
+        custom_tooltip = { text = EVTOPTC_MNM_3264_TT }
+        random = {
+            chance = 25
+			remove_trait = depressed
+            hidden_tooltip = {
+				character_event = { id = 38314 days = 1 } # Notify lost Depressed
+			}
+        }
+        set_character_flag = 3264_depressed_flag
+        tooltip_info = depressed
+        trigger = { trait = depressed }
+    }
+    option = { # DECEITFUL - STEAL TEXT
+        name = EVTOPTD_MNM_3264
+        custom_tooltip = { text = EVTOPTD_MNM_3264_TT }
+
+        piety = -50
+
+        set_character_flag = 3264_deceitful_flag
+        add_character_modifier = {
+            name = published_poet
+            years = 15
+        }
+        tooltip_info = deceitful
+        trigger = { trait = deceitful }
+    }
+    after = {
+    	hidden_effect = { FROM = { character_event = { id = MNM.3265 days = 20 random = 10 } } } #send new ping
+    }
+}
+
+#Ping event for other member (the poet)
+character_event = {
+    id = MNM.3265
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = {
+    	FROM = {
+	    	trigger_switch = { # Which event to send
+	            on_trigger = has_character_flag
+	            3264_publish_flag = {
+	                character_event = { id = MNM.3266 }
+	                clr_character_flag = 3264_publish_flag
+	            }
+	            3264_preserve_flag = {
+	                character_event = { id = MNM.3267 }
+	                clr_character_flag = 3264_preserve_flag
+	            }
+	            3264_depressed_flag = {
+			    	character_event = { id = MNM.3268 }
+	                clr_character_flag = 3264_depressed_flag
+	            }
+	            3264_deceitful_flag = {
+			    	character_event = { id = MNM.3269 }
+	                clr_character_flag = 3264_deceitful_flag
+	            }
+	        }
+	    }
+        if = {
+        	limit = { NOT = { trait = poet } }
+        	add_trait = poet
+        }
+    }
+}
+
+
+# The writer's reaction - PUBLISHED AGAINST THEIR WISHES
+character_event = {
+    id = MNM.3266
+    picture = GFX_evt_recieve_letter
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+    
+    trigger = {
+    	FROM = { is_alive = yes }
+    }
+
+	desc = {
+		trigger = { has_character_flag = suggestion_A_flag }
+		text = EVTDESC_MNM_3266_A
+    }
+    desc = {
+        trigger = { has_character_flag = suggestion_B_flag }
+        text = EVTDESC_MNM_3266_B
+    }
+
+    option = { # I seized an opportunity
+        name = EVTOPTA_MNM_3266
+        custom_tooltip = { text = EVTOPTA_MNM_3266_TT }
+
+        reverse_opinion = {
+            who = FROM
+            modifier = opinion_insulted
+            years = 10
+        }
+        hidden_effect = { character_event = { id = MNM.3270 } } #clean up
+    }
+}
+
+# The writer's reaction - WRITINGS WILL BE SENT TO THE ORDER
+character_event = {
+    id = MNM.3267
+    desc = EVTDESC_MNM_3267
+    picture = GFX_evt_recieve_letter
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+    
+    trigger = {
+    	FROM = { is_alive = yes }
+    	is_monastic_member_trigger = yes
+    }
+
+    option = { # This should be preserved
+        name = EVTOPTA_MNM_3267
+
+        if = {
+        	limit = {
+				OR = {
+					has_opinion_modifier = { who = FROM modifier = opinion_budding_friendship }
+					reverse_has_opinion_modifier = { who = FROM modifier = opinion_budding_friendship }
+					reverse_opinion = { who = FROM value = 50 }
+					opinion = { who = FROM value = 50 }
+				}
+        	}
+        	add_friend = FROM
+        	break = yes
+        }
+        if = {
+        	limit = { NOT = { is_friend = FROM } }
+	        opinion = {
+	            who = FROM
+	            modifier = opinion_budding_friendship
+	            years = 10
+	        }
+	        reverse_opinion = {
+	            who = FROM
+	            modifier = opinion_budding_friendship
+	            years = 10
+	        }
+        }
+        hidden_effect = { character_event = { id = MNM.3270 } } #clean up
+    }
+}
+
+# The writer's reaction 3 - THEIR WRITING SAVED YOU FROM DEPRESSION
+character_event = {
+    id = MNM.3268
+    desc = EVTDESC_MNM_3268
+    picture = GFX_evt_recieve_letter
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+    
+    trigger = {
+    	FROM = { is_alive = yes }
+    	is_monastic_member_trigger = yes
+    }
+
+    option = { # This saved me
+        name = EVTOPTA_MNM_3268
+        custom_tooltip = { text = EVTOPTA_MNM_3268_TT }        
+
+        if = {
+        	limit = { NOT = { is_friend = FROM } }
+	        opinion = {
+	            who = FROM
+	            modifier = opinion_budding_friendship
+	            years = 10
+	        }
+	        reverse_opinion = {
+	            who = FROM
+	            modifier = opinion_budding_friendship
+	            years = 10
+	        }
+        }
+        hidden_effect = { character_event = { id = MNM.3270 } } #clean up
+    }
+}
+
+# The writer's reaction - YOU STOLE THEIR WORK
+character_event = {
+    id = MNM.3269
+    picture = GFX_evt_recieve_letter
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+    
+    trigger = {
+    	FROM = { is_alive = yes }
+    	is_monastic_member_trigger = yes
+    }
+
+	desc = {
+		trigger = { has_character_flag = suggestion_A_flag }
+		text = EVTDESC_MNM_3269_A
+    }
+    desc = {
+        trigger = { has_character_flag = suggestion_B_flag }
+        text = EVTDESC_MNM_3269_B
+    }
+
+    option = { # tough luck
+        name = EVTOPTA_MNM_3269
+        custom_tooltip = { text = EVTOPTA_MNM_3269_TT }
+
+        reverse_opinion = {
+            who = FROM
+            modifier = opinion_betrayed
+            years = 25
+        }
+
+        if = {
+        	limit = {
+        		NOT = { is_friend = FROM }
+        		NOT = { is_rival = FROM }
+        	}
+        	random = {
+	            chance = 25 
+	            add_rival = FROM
+	        }
+        }
+		if = {
+			limit = {
+				is_friend = FROM
+        	}
+        	remove_friend = FROM
+        }
+        hidden_effect = { character_event = { id = MNM.3270 } } #clean up
+    }
+}
+
+character_event = { #clean up event
+    id = MNM.3270
+    is_triggered_only = yes
+    hide_window = yes
+
+    immediate = {
+    	clr_character_flag = suggestion_A_flag
+    	clr_character_flag = suggestion_B_flag
+		clr_character_flag = 3264_publish_flag
+		clr_character_flag = 3264_preserve_flag
+		clr_character_flag = 3264_depressed_flag
+		clr_character_flag = 3264_depressed_flag
+    }
+}
+
+#######################################################
+################## 4200 - Gardening ###################
+#######################################################
+
+character_event = {
+    id = MNM.4200
+    hide_window = yes
+    
+    is_triggered_only = yes
+    only_capable = yes
+    is_in_society = yes
+
+
+    trigger = {
+    	is_monastic_member_trigger = yes
+
+    	NOT = { has_character_modifier = gardening_cooldown_timer }
+
+    	society = {
+		    any_society_member = {
+	            ai = yes
+	            is_incapable = no
+	            prisoner = no
+	            in_command = no
+	            is_inaccessible_trigger = no
+	            OR = {
+					trait = gardener
+					learning = 15
+	            }
+	            NOT = { character = ROOT }
+	            is_within_diplo_range = ROOT
+	        }
+	    }	
+    }
+       
+    immediate = {
+        # First look for someone at court
+        society = {
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    OR = {
+						trait = gardener
+						learning = 15
+		            }
+                    NOT = { character = ROOT }
+                    host = { character = ROOT }
+                }
+                character_event = { id = MNM.4201 }
+                break = yes
+            }
+            
+            # Then look for someone in the same realm
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    OR = {
+						trait = gardener
+						learning = 15
+						diplomacy = 15
+		            }
+                    NOT = { character = ROOT }
+                    same_realm = yes
+                }
+                character_event = { id = MNM.4201 }
+                break = yes
+            }
+            
+            # Then look abroad...
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    OR = {
+						trait = gardener
+						learning = 15
+		            }
+                    NOT = { character = ROOT }
+                    is_within_diplo_range = ROOT
+                }
+                character_event = { id = MNM.4201 }
+                break = yes
+            }
+        }
+	    add_character_modifier = {
+			name = gardening_cooldown_timer
+			hidden = yes
+			days = 1825
+		}
+    }
+}
+
+#Ping event for other member (the botanist)
+character_event = {
+    id = MNM.4201
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = { FROM = { character_event = { id = MNM.4202 } } }
+}
+
+#Fellow member asks if you want to check out their roses
+character_event = {
+    id = MNM.4202
+    desc = EVTDESC_MNM_4202
+    picture = GFX_evt_gathering_of_minds
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    option = { #Go to the monastery/ashram
+        name = {
+        	text = EVTOPTA_MNM_4202_CHRISTIAN
+        	trigger = { is_christian_monastic_member_trigger = yes }
+        }
+        name = {
+        	text = EVTOPTA_MNM_4202_DHARMIC
+        	trigger = { is_dharmic_monastic_member_trigger = yes }
+        }
+        custom_tooltip = { text = EVTOPTA_MNM_4202_TT }
+
+        set_character_flag = 4202_visit_monastery_flag
+    }
+    option = { #Pay someone to acquire the roses
+        name = EVTOPTB_MNM_4202
+        custom_tooltip = { text = EVTOPTB_MNM_4202_TT }
+        set_character_flag = 4202_hire_someone_flag
+    }
+    option = { # Send sample from my own garden
+    	name = EVTOPTC_MNM_4202
+    	custom_tooltip = { text = EVTOPTC_MNM_4202_TT }
+    	set_character_flag = 4202_send_my_own_samples_flag
+
+		tooltip_info = gardener
+		trigger = { trait = gardener }
+    }
+	option = {# do nothing
+    	name = EVTOPTD_MNM_4202
+    	#custom_tooltip = { text = EVTOPTD_MNM_4202_TT }
+    }
+    after = {
+    	FROM = { character_event = { id = MNM.4203 days = 15 random = 30 } }
+    }
+}
+
+#Ping event for other member (the botanist)
+character_event = {
+    id = MNM.4203
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = {
+    	FROM = {
+	    	trigger_switch = { # which event to send
+	            on_trigger = has_character_flag
+	            4202_visit_monastery_flag = {
+	                character_event = { id = MNM.4204 }
+	                clr_character_flag = 4202_visit_monastery_flag
+	            }
+	            4202_hire_someone_flag = {
+	                character_event = { id = MNM.4205 }
+	                clr_character_flag = 4202_hire_someone_flag
+	            }
+	            4202_send_my_own_samples_flag = {
+			    	character_event = { id = MNM.4206 }
+	                clr_character_flag = 4202_send_my_own_samples_flag
+	            }
+	        }
+        }
+    }
+}
+
+#Visited the monastery
+character_event = {
+    id = MNM.4204
+    desc = EVTDESC_MNM_4204
+    picture = GFX_evt_garden
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    trigger = {
+		is_monastic_member_trigger = yes
+		NAND = {
+			has_character_modifier = green_fingers
+			has_character_modifier = dirty_hands
+		}
+	}
+
+    option = { # It's like coming home
+        name = EVTOPTA_MNM_4204
+
+        custom_tooltip = { text = EVTOPTA_MNM_4204_TT }
+
+        if = {
+        	limit = { has_character_modifier = green_fingers }
+        	add_trait = gardener
+        }
+        trigger = {
+        	NOT = { lifestyle_traits = 1 }
+        	NOT = { trait = gardener }
+        	has_character_modifier = green_fingers
+		}
+    }
+
+    option = { # Embrace this new interest
+        name = EVTOPTB_MNM_4204
+        custom_tooltip = { text = EVTOPTB_MNM_4204_TT }
+        random_list = {
+        	60 = {
+        		modifier = {
+        			factor = 10
+        			trait = gardener
+        		}
+        		modifier = {
+        			factor = 1.2
+        			trait = diligent
+        		}
+        		modifier = {
+        			factor = 1.1
+        			learning = 12
+        		}
+        		add_character_modifier = {
+		        	name = green_fingers
+		        	years = 10
+				}
+        	}
+        	40 = {
+        		modifier = {
+        			factor = 10
+        			trait = imbecile
+        		}
+        		modifier = {
+        			factor = 0.5
+        			trait = genius
+        		}
+		        add_character_modifier = {
+		        	name = dirty_hands
+		        	years = 5
+				}
+        	}
+        }
+    }
+
+    option = { # Praise the botanist
+    	name = EVTOPTC_MNM_4204
+    	custom_tooltip = { text = EVTOPTC_MNM_4204_TT }
+
+    	reverse_opinion = {
+            who = FROM
+            modifier = opinion_was_praised
+            years = 10
+        }
+    }
+}
+
+#I hired someone who brought me roses
+character_event = {
+    id = MNM.4205
+    desc = EVTDESC_MNM_4205
+    picture = GFX_evt_garden
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    trigger = { is_monastic_member_trigger = yes }
+
+    option = { # Praise the botanist
+    	name = EVTOPTA_MNM_4205
+    	custom_tooltip = { text = EVTOPTA_MNM_4205_TT }
+
+    	add_character_modifier = {
+        	name = rose_gardens
+        	years = 15
+		}
+
+    	reverse_opinion = {
+            who = FROM
+            modifier = opinion_was_praised
+            years = 10
+        }
+    }
+}
+
+#I sent some of my own flowers to the botanist
+character_event = {
+    id = MNM.4206
+    desc = EVTDESC_MNM_4206
+    picture = GFX_evt_garden
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    trigger = { is_monastic_member_trigger = yes }
+
+    option = { # I am happy to help
+    	name = EVTOPTA_MNM_4206
+    	custom_tooltip = { text = EVTOPTA_MNM_4206_TT }
+
+		add_character_modifier = {
+			name = the_name_of_the_rose
+			years = 10
+		}
+
+    	reverse_opinion = {
+            who = FROM
+            modifier = opinion_was_praised
+            years = 10
+        }
+    }
+}
+
+
+#######################################################
+############ 4210 - Someone falls asleep ##############
+#######################################################
+
+character_event = { #Hidden start
+    id = MNM.4210
+    hide_window = yes
+    
+    is_triggered_only = yes
+    only_capable = yes
+    is_in_society = yes
+
+    trigger = {
+    	is_monastic_member_trigger = yes
+
+    	NOT = { has_character_modifier = fell_asleep_in_church_cooldown_timer }
+
+    	society = {
+		    any_society_member = {
+	            ai = yes
+	            is_incapable = no
+	            prisoner = no
+	            in_command = no
+	            is_inaccessible_trigger = no
+	            has_vice_trigger = yes
+	            NOT = { character = ROOT }
+	            is_within_diplo_range = ROOT
+	        }
+	    }	
+    }
+       
+    immediate = {
+        # First look for someone at court
+        society = {
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+					has_vice_trigger = yes
+                    NOT = { character = ROOT }
+                    host = { character = ROOT }
+                }
+                character_event = { id = MNM.4211 }
+                break = yes
+            }
+            
+            # Then look for someone in the same realm
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    has_vice_trigger = yes
+                    NOT = { character = ROOT }
+                    same_realm = yes
+                }
+                character_event = { id = MNM.4211 }
+                break = yes
+            }
+            
+            # Then look abroad...
+            random_society_member = {
+                limit = {
+                    ai = yes
+                    is_incapable = no
+                    prisoner = no
+                    in_command = no
+                    is_inaccessible_trigger = no
+                    has_vice_trigger = yes
+                    NOT = { character = ROOT }
+                    is_within_diplo_range = ROOT
+                }
+                character_event = { id = MNM.4211 }
+                break = yes
+            }
+        }
+	    add_character_modifier = {
+			name = fell_asleep_in_church_cooldown_timer
+			hidden = yes
+			days = 1825
+		}
+    }
+}
+
+
+#Ping event for other member (the sleeper)
+character_event = {
+    id = MNM.4211
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = { FROM = { character_event = { id = MNM.4212 } } }
+}
+
+#Fellow member is snoring in temple
+character_event = {
+    id = MNM.4212
+    desc = EVTDESC_MNM_4212
+    picture = GFX_evt_gathering_of_minds
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    option = { #Wake them up
+        name = EVTOPTA_MNM_4212
+        set_character_flag = 4212_woke_them_up_flag
+    }
+    option = { #Let them sleep
+        name = EVTOPTB_MNM_4212
+        set_character_flag = 4212_let_them_sleep_flag
+    }
+    option = { # Prank
+    	name = EVTOPTC_MNM_4212
+    	set_character_flag = 4212_pranked_them_flag
+
+		tooltip_info = lunatic
+		trigger = { trait = lunatic }
+    }
+
+    after = {
+    	FROM = { character_event = { id = MNM.4213 days = 1 } }
+    }
+}
+
+#Ping event for other member (the sleeper)
+character_event = {
+    id = MNM.4213
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = {
+    	FROM = {
+	    	trigger_switch = { # which event to send
+	            on_trigger = has_character_flag
+	            4212_woke_them_up_flag = {
+	                character_event = { id = MNM.4214 }
+	                clr_character_flag = 4212_woke_them_up_flag
+	            }
+	            4212_let_them_sleep_flag = {
+	                character_event = { id = MNM.4215 }
+	                clr_character_flag = 4212_let_them_sleep_flag
+	            }
+	            4212_pranked_them_flag = {
+			    	character_event = { id = MNM.4216 }
+	                clr_character_flag = 4212_pranked_them_flag
+	            }
+	        }
+        }
+    }
+}
+
+# Woke them up
+character_event = {
+    id = MNM.4214
+    desc = EVTDESC_MNM_4214
+    picture = GFX_evt_gathering_of_minds
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    option = { # Think nothing of it, friend
+        name = EVTOPTA_MNM_4214
+	
+    	reverse_opinion = {
+            who = FROM
+            modifier = opinion_grateful
+            years = 10
+        }
+    }
+
+    option = { # Insinuate that they owe you
+        name = EVTOPTB_MNM_4214
+        if = {
+			limit = {
+				has_dlc = "Conclave"
+			}
+			add_favor = FROM
+		}
+		trigger = {
+			has_dlc = "Conclave"
+		}
+    }
+}
+
+# I let them sleep
+character_event = {
+    id = MNM.4215
+    desc = EVTDESC_MNM_4215
+    picture = GFX_evt_gathering_of_minds
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    option = { # They are embarrassed
+    	name = EVTOPTA_MNM_4215
+
+    	FROM = {
+	    	add_character_modifier = {
+	        	name = embarrassed_believer
+	        	years = 5
+			}
+    	}
+    }
+}
+
+#I pranked them
+character_event = {
+    id = MNM.4216
+    desc = EVTDESC_MNM_4216
+    picture = GFX_evt_gathering_of_minds
+    border = GFX_event_normal_frame_religion
+    is_triggered_only = yes
+
+    option = { # Amazing
+    	name = EVTOPTA_MNM_4216
+
+    	reverse_opinion = {
+            who = FROM
+            modifier = opinion_insulted
+            years = 10
+        }
+    }
+}
