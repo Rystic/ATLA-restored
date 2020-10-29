@@ -1,5 +1,5 @@
 name="Avatar - Four Nations Restored"
-path="mod/avatar - four nations restored"
+path="mod/ATLA-restored/avatar - four nations restored"
 replace_path="common/artifacts"
 replace_path="common/bloodlines"
 replace_path="common/bookmarks"
