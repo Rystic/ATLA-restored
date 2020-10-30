@@ -17,18 +17,12 @@ character_event = {
 	
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Way of Life"
 	
 	is_triggered_only = yes
 
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
-		NOT = {
-			trait = airbender
-		}
 		spouse = {
-			NOT = {
-				trait = airbender
-			}
 			in_command = no
 			war = no
 			is_abroad = no
@@ -281,15 +275,18 @@ character_event = {
 	
 	capable_only = yes
 	prisoner = no
+	lacks_dlc = "Way of Life"
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
+		NOT = {
+			has_dlc = "Reapers"
+		}
 		any_lover = {
 			is_abroad = no
 			OR = {
-				trait = ill
+				is_ill = yes
 				trait = pneumonic
 			}
 		}
@@ -303,11 +300,24 @@ character_event = {
 		
 		modifier = {
 			factor = 0.5
-			trait = ill
+			is_ill = yes
 		}
 		modifier = {
 			factor = 2
 			trait = kind
+		}
+	}
+	
+	immediate = {
+		random_lover = {
+			limit = {
+				is_abroad = no
+				OR = {
+					is_ill = yes
+					trait = pneumonic
+				}			
+			}
+			set_character_flag = lover_ill_flag_64005
 		}
 	}
 	
@@ -316,26 +326,18 @@ character_event = {
 		trigger = {
 			any_lover = {
 				is_female = no
-				is_abroad = no
-				OR = {
-					trait = ill
-					trait = pneumonic
-				}
+				has_character_flag = lover_ill_flag_64005
 			}
 		}
 		ai_chance = { factor = 50 }
 		random_lover = {
 			limit = {
-				is_female = no
-				is_abroad = no
-				OR = {
-					trait = ill
-					trait = pneumonic
-				}			
+				has_character_flag = lover_ill_flag_64005
 			}
+			clr_character_flag = lover_ill_flag_64005
 			if = {
 				limit = {
-					trait = ill
+					is_ill = yes
 				}
 				random = {
 					chance = 10
@@ -364,16 +366,12 @@ character_event = {
 		scaled_wealth = -0.2
 		random_lover = {
 			limit = {
-				is_female = no
-				is_abroad = no
-				OR = {
-					trait = ill
-					trait = pneumonic
-				}			
+				has_character_flag = lover_ill_flag_64005
 			}
+			clr_character_flag = lover_ill_flag_64005
 			if = {
 				limit = {
-					trait = ill
+					is_ill = yes
 				}
 				random = {
 					chance = 10
@@ -397,13 +395,9 @@ character_event = {
 		ai_chance = { factor = 0 }
 		random_lover = {
 			limit = {
-				is_female = no
-				is_abroad = no
-				OR = {
-					trait = ill
-					trait = pneumonic
-				}			
+				has_character_flag = lover_ill_flag_64005
 			}		
+			clr_character_flag = lover_ill_flag_64005
 			character_event = {
 				id = 64046
 				tooltip = "EVTTOOLTIP64046"
@@ -416,26 +410,19 @@ character_event = {
 		trigger = {
 			any_lover = {
 				is_female = yes
-				is_abroad = no
-				OR = {
-					trait = ill
-					trait = pneumonic
-				}
+				has_character_flag = lover_ill_flag_64005
 			}
 		}
 		ai_chance = { factor = 50 }
 		random_lover = {
 			limit = {
 				is_female = yes
-				is_abroad = no
-				OR = {
-					trait = ill
-					trait = pneumonic
-				}			
+				has_character_flag = lover_ill_flag_64005
 			}
+			clr_character_flag = lover_ill_flag_64005
 			if = {
 				limit = {
-					trait = ill
+					is_ill = yes
 				}
 				random = {
 					chance = 10
@@ -485,11 +472,21 @@ character_event = {
 		
 		modifier = {
 			factor = 0.5
-			trait = ill
+			is_ill = yes
 		}
 		modifier = {
 			factor = 2
 			trait = kind
+		}
+	}
+	
+	immediate = {
+		random_lover = {
+			limit = {
+				is_abroad = no
+				trait = wounded			
+			}
+			set_character_flag = lover_wounded_flag_64006
 		}
 	}
 	
@@ -498,12 +495,13 @@ character_event = {
 		ai_chance = { factor = 50 }
 		random_lover = {
 			limit = {
-				is_abroad = no
-				trait = wounded			
+				has_character_flag = lover_wounded_flag_64006
 			}
+			clr_character_flag = lover_wounded_flag_64006
 			random = {
 				chance = 10
 				remove_trait = wounded
+				add_scarred_tiered_effect = yes
 			}
 		}
 	}
@@ -513,12 +511,13 @@ character_event = {
 		scaled_wealth = -0.2
 		random_lover = {
 			limit = {
-				is_abroad = no
-				trait = wounded			
+				has_character_flag = lover_wounded_flag_64006
 			}
+			clr_character_flag = lover_wounded_flag_64006
 			random = {
 				chance = 20
 				remove_trait = wounded
+				add_scarred_tiered_effect = yes
 			}
 		}
 	}
@@ -528,9 +527,9 @@ character_event = {
 		ai_chance = { factor = 0 }
 		random_lover = {
 			limit = {
-				is_abroad = no
-				trait = wounded			
+				has_character_flag = lover_wounded_flag_64006
 			}
+			clr_character_flag = lover_wounded_flag_64006
 			character_event = {
 				id = 64046
 				tooltip = "EVTTOOLTIP64046"
@@ -548,20 +547,20 @@ character_event = {
 	prisoner = no
 	min_age = 12
 	max_age = 18
+	lacks_dlc = "Way of Life"
+	is_married = no
 	
 	is_triggered_only = yes
 	
 	trigger = {
-		NOT = { has_dlc = "Way of Life" }
-		is_married = no
 		has_epidemic = no
 		is_ill = no
 		is_pregnant = no
-		NOT = {
+		NOR = {
 			trait = homosexual
-		}
-		NOT = {
 			trait = celibate
+			trait = incapable
+			trait = eunuch
 		}
 		any_courtier = {
 			is_married = no
@@ -571,16 +570,12 @@ character_event = {
 			is_abroad = no
 			is_pregnant = no
 			age = 12
-			NOT = {
+			NOR = {
 				trait = homosexual
-			}
-			NOT = {
 				trait = celibate
-			}
-			NOT = {
+				trait = incapable
+				trait = eunuch
 				family = ROOT
-			}
-			NOT = {
 				age = 18
 			}
 			OR = {
@@ -603,6 +598,61 @@ character_event = {
 	weight_multiplier = {
 		days = 1
 	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				age = 12
+				OR = {
+					AND = {
+						ROOT = { is_female = no }
+						is_female = yes
+					}
+					AND = {
+						ROOT = { is_female = yes }
+						is_female = no
+					}
+					AND = {
+						ROOT = {
+							is_female = yes
+							trait = homosexual
+						}
+						is_female = yes
+					}
+					AND = {
+						ROOT = {
+							is_female = no
+							trait = homosexual
+						}
+						is_female = no
+					}
+				}
+				is_married = no
+				has_epidemic = no
+				is_ill = no
+				NOT = {
+					trait = celibate
+				}
+				NOT = {
+					trait = incapable
+				}
+				NOT = {
+					trait = eunuch
+				}
+				NOT = {
+					family = ROOT
+				}
+				NOT = {
+					age = 18
+				}
+			}
+			score_value = { #Prioritizes selecting an interesting courtier...
+	            value = 10
+	            interesting_courtier_selection_score = yes
+	        }
+			save_event_target_as = lover
+		}
+	}
 	
 	option = {
 		name = "EVTOPTA64010"
@@ -612,26 +662,7 @@ character_event = {
 		ai_chance = {
 			factor = 95
 		}
-		random_courtier = {
-			limit = {
-				age = 12
-				is_female = yes
-				is_married = no
-				has_epidemic = no
-				is_ill = no
-				NOT = {
-					trait = homosexual
-				}
-				NOT = {
-					trait = celibate
-				}
-				NOT = {
-					family = ROOT
-				}
-				NOT = {
-					age = 18
-				}
-			}
+		event_target:lover = {
 			random_list = {
 				80 = {
 					set_character_flag = good_reply
@@ -658,26 +689,7 @@ character_event = {
 		ai_chance = {
 			factor = 95
 		}
-		random_courtier = {
-			limit = {
-				age = 12
-				is_female = no
-				is_married = no
-				has_epidemic = no
-				NOT = {
-					trait = homosexual
-				}
-				NOT = {
-					trait = celibate
-				}
-				is_ill = no
-				NOT = {
-					family = ROOT
-				}
-				NOT = {
-					age = 18
-				}
-			}
+		event_target:lover = {
 			random_list = {
 				80 = {
 					set_character_flag = good_reply
@@ -810,28 +822,18 @@ character_event = {
 				}
 			}
 			30 = {
-				if = {
-					limit = {
-						NOT = {
-							trait = airbender
-						}
-					}
-					add_trait = chaste
-					hidden_tooltip = {
-						character_event = {
-							id = 38274 #Notify Chaste
-						}
+				add_trait = chaste
+				hidden_tooltip = {
+					character_event = {
+						id = 38274 #Notify Chaste
 					}
 				}
-				if = {
-					limit = {
-						trait = airbender
-					}
-					add_trait = cynical
-					hidden_tooltip = {
-						character_event = {
-							id = 38258 #Notify Cynical
-						}
+			}
+			30 = {
+				add_trait = cynical
+				hidden_tooltip = {
+					character_event = {
+						id = 38258 #Notify Cynical
 					}
 				}
 			}
@@ -839,7 +841,7 @@ character_event = {
 				add_trait = shy
 				hidden_tooltip = {
 					character_event = {
-						id = 38263 #Notify 
+						id = 38263 #Notify Shy
 					}
 				}
 			}
