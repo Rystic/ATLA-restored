@@ -31,11 +31,16 @@ character_event = {
 	picture = GFX_evt_carriage
 	border = GFX_event_normal_frame_economy
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_squeeze_peasants
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			county = {
 				is_occupied = no
@@ -49,58 +54,27 @@ character_event = {
 	}
 	
 	mean_time_to_happen = {
-		months = 360
-		
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 2 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 10
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 11
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 12
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 13
-		}
+		months = 360		
+		job_event_mtth_modifier_stewardship_score = yes
 	}
 	
 	option = {
 		name = "EVTOPTA920"
-		liege = { letter_event = { id = 20200 days = 7 tooltip = "EVTTOOLTIP20200" } }
+		liege = { letter_event = { id = 20200 tooltip = "EVTTOOLTIP20200" } }
 	}
 }
 
 # 20200: The liege is informed
-letter_event = {
+character_event = {
 	id = 20200
-	desc = "EVTDESC20200"
-	border = GFX_event_letter_frame_economy
+	desc = EVTDESC20200
+	picture = GFX_evt_carriage
+	border = GFX_event_normal_frame_economy
 	
 	is_triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA20200"
+		name = EVTOPTA20200
 		scaled_wealth = 0.5
 	}
 }
@@ -113,11 +87,16 @@ character_event = {
 	desc = "EVTDESC921"
 	picture = GFX_evt_peasants
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_squeeze_peasants
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			owner = {
 				job_treasurer = {
@@ -130,38 +109,8 @@ character_event = {
 	mean_time_to_happen = {
 		months = 240
 	
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 2 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 3 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 4 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 5 }
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 10
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 11
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 12
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 13
-		}
+		job_event_mtth_modifier_inverted_stewardship_score = yes
+
 		modifier = {
 			factor = 0.5
 			location = {
@@ -189,7 +138,12 @@ character_event = {
 		}
 		random_list = {
 			25 = { character_event = { id = 20210 tooltip = "EVTTOOLTIP20210" } }
-			50 = { character_event = { id = 20211 tooltip = "EVTTOOLTIP20211" } }
+			50 = {
+				character_event = { id = 20211 tooltip = "EVTTOOLTIP20211" }
+				hidden_tooltip = {
+					liege = { letter_event = { id = 20212 } }
+				}
+			}
 			25 = {
 				death = {
 					death_reason = death_rabble
@@ -209,7 +163,12 @@ character_event = {
 		}
 		random_list = {
 			35 = { character_event = { id = 20210 tooltip = "EVTTOOLTIP20210" } }
-			50 = { character_event = { id = 20211 tooltip = "EVTTOOLTIP20211" } }
+			50 = {
+				character_event = { id = 20211 tooltip = "EVTTOOLTIP20211" }
+				hidden_tooltip = {
+					liege = { letter_event = { id = 20212 } }
+				}
+			}
 			15 = {
 				death = {
 					death_reason = death_rabble
@@ -269,36 +228,41 @@ character_event = {
 	is_triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA20211"
+		name = EVTOPTA20211
 		add_trait = wounded
 		custom_tooltip = { text = EVTTOOLTIP20212 }
 	}
 }
 
 # 20212: Inform the Liege about wounding
-letter_event = {
+character_event = {
 	id = 20212
-	desc = "EVTDESC20212"
+	desc = EVTDESC20212
+	picture = GFX_evt_carriage
 	
 	is_triggered_only = yes
 	
+	notification = yes
+	
 	option = {
-		name = "EVTOPTA20212"
-		prestige = -10
+		name = EVTOPTA20212
+#		prestige = -10
 	}
 }
 
 # 20213: Inform the Liege about death
 character_event = {
 	id = 20213
-	desc = "EVTDESC20213"
+	desc = EVTDESC20213
 	picture = GFX_evt_death
 	
 	is_triggered_only = yes
 	
+	notification = yes
+	
 	option = {
-		name = "EVTOPTA20213"
-		prestige = -15
+		name = EVTOPTA20213
+#		prestige = -15
 	}
 }
 
@@ -308,11 +272,16 @@ character_event = {
 	desc = "EVTDESC20214"
 	picture = GFX_evt_peasants
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_squeeze_peasants
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			owner = {
 				job_treasurer = {
@@ -326,38 +295,8 @@ character_event = {
 	mean_time_to_happen = {
 		months = 240
 	
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 2 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 3 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 4 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 5 }
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 10
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 11
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 12
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 13
-		}
+		job_event_mtth_modifier_inverted_stewardship_score = yes
+
 		modifier = {
 			factor = 0.75
 			location = {
@@ -406,7 +345,7 @@ character_event = {
 				}
 				# Inform liege
 				ROOT = {
-					liege = { letter_event = { id = 20216 days = 1 } }
+					liege = { letter_event = { id = 20216 } }
 					clr_character_flag = liege_informed
 				}
 			}
@@ -431,6 +370,7 @@ character_event = {
 letter_event = {
 	id = 20216
 	desc = "EVTDESC20216"
+	border = GFX_event_letter_frame_economy
 	
 	is_triggered_only = yes
 	
@@ -474,11 +414,16 @@ character_event = {
 	picture = GFX_evt_castle_construction
 	border = GFX_event_normal_frame_economy
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_oversee_construction
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		NOT = { has_character_modifier = master_builder }
 		location = {
 			owner = {
@@ -491,39 +436,7 @@ character_event = {
 	
 	mean_time_to_happen = {
 		months = 480
-		
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 2 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 10
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 11
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 12
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 13
-		}
+		job_event_mtth_modifier_stewardship_score = yes
 	}
 	
 	option = {
@@ -532,7 +445,7 @@ character_event = {
 			name = master_builder
 			duration = -1
 		}
-		liege = { letter_event = { id = 20230 days = 7 tooltip = "EVTTOOLTIP20230" } }
+		liege = { letter_event = { id = 20230 tooltip = "EVTTOOLTIP20230" } }
 	}
 }
 
@@ -557,6 +470,21 @@ letter_event = {
 				duration = -1
 			}
 		}
+		if = {
+			limit = {
+				has_dlc = "Reapers"
+			}
+			custom_tooltip = {
+				text = increase_prosperity_custom_tooltip
+				hidden_tooltip = {
+					FROM = {
+						location = {
+							change_variable = { which = prosperity_value value = 6 }
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -568,11 +496,16 @@ character_event = {
 	picture = GFX_evt_castle_construction
 	border = GFX_event_normal_frame_economy
 	
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_oversee_construction
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			any_province_lord = {
 				independent = no
@@ -586,39 +519,7 @@ character_event = {
 	
 	mean_time_to_happen = {
 		months = 120
-		
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 2 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 3 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 4 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { stewardship = 5 }
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 10
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 11
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 12
-		}
-		modifier = {
-			factor = 1.25
-			stewardship = 13
-		}
+		job_event_mtth_modifier_inverted_stewardship_score = yes
 	}
 	
 	option = {
@@ -692,7 +593,7 @@ character_event = {
 	
 	option = {
 		name = "EVTOPTA20241"
-		liege = { letter_event = { id = 20242 days = 3 tooltip = "EVTTOOLTIP20242" } }
+		liege = { letter_event = { id = 20242 tooltip = "EVTTOOLTIP20242" } }
 	}
 }
 
@@ -726,7 +627,7 @@ character_event = {
 	
 	option = {
 		name = "EVTOPTA20243"
-		liege = { letter_event = { id = 20244 days = 7 tooltip = "EVTTOOLTIP20244" } }
+		liege = { letter_event = { id = 20244 tooltip = "EVTTOOLTIP20244" } }
 	}
 }
 
@@ -770,11 +671,16 @@ character_event = {
 	picture = GFX_evt_stone_church
 	border = GFX_event_normal_frame_economy
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_settle_tribe
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			county = {
 				is_occupied = no
@@ -785,11 +691,35 @@ character_event = {
 				}
 				NOT = { culture = PREV }
 			}
+			OR = {
+				NOT = { 
+					has_game_rule = {
+						name = culture_conversion
+						value = restricted
+					}
+				}
+				any_neighbor_province = { ROOT = { liege = { culture = PREVPREV } } }
+				any_neighbor_province = { port = yes } 
+			}
 		}
 	}
 	
 	mean_time_to_happen = {
 		months = 600
+		
+		modifier = {
+			factor = 3
+			OR = {
+				has_game_rule = {
+					name = culture_conversion
+					value = slower_normal
+				}
+				has_game_rule = {
+					name = culture_conversion
+					value = faster_melting_pots_and_slower_normal
+				}
+			}
+		}
 		
 		modifier = {
 			factor = 3.0
@@ -798,42 +728,8 @@ character_event = {
 			}
 		}
 		
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 2 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { stewardship = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 9
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 10
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 11
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 12
-		}
-		modifier = {
-			factor = 0.75
-			stewardship = 13
-		}
+		job_event_mtth_modifier_stewardship_score = yes
+
 		modifier = {
 			factor = 0.50
 			AND = {
