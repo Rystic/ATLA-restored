@@ -426,8 +426,6 @@ character_event = {
 					if = {
 						limit = {
 							is_close_relative = PREV
-							NOT = { religion = messalian }
-							NOT = { religion = zoroastrian }
 						}
 						add_character_modifier = {
 							name = incestuous_adulteress
@@ -436,11 +434,7 @@ character_event = {
 					}
 					if = {
 						limit = {
-							OR = {
-								NOT = { is_close_relative = PREV }
-								religion = messalian
-								religion = zoroastrian
-							}
+							NOT = { is_close_relative = PREV }
 						}
 						add_character_modifier = {
 							name = adulteress
@@ -503,7 +497,7 @@ character_event = {
 						limit = { same_sex = PREV }
 						if = {
 							limit = {
-								religion_group = pagan_group
+								religion_group = outlaw_religions
 							}
 							add_character_modifier = {
 								name = known_sodomite_pagan
@@ -512,7 +506,7 @@ character_event = {
 						}
 						if = {
 							limit = {
-								NOT = { religion_group = pagan_group }
+								NOT = { religion_group = outlaw_religions }
 							}
 							add_character_modifier = {
 								name = known_sodomite
@@ -524,8 +518,6 @@ character_event = {
 					if = {
 						limit = {
 							is_close_relative = PREV
-							NOT = { religion = messalian }
-							NOT = { religion = zoroastrian }
 						}
 						add_character_modifier = {
 							name = incestuous_adulterer
@@ -535,15 +527,11 @@ character_event = {
 					if = {
 						limit = {
 							is_married = yes
-							OR = {
-								NOT = { is_close_relative = PREV }
-								religion = messalian
-								religion = zoroastrian
-							}
+							NOT = { is_close_relative = PREV }
 						}
 						if = {
 							limit = {
-								NOT = { religion_group = pagan_group }
+								NOT = { religion_group = outlaw_religions }
 							}
 							add_character_modifier = {
 								name = adulterer
@@ -2185,7 +2173,9 @@ diploresponse_event = {
 		ai = no
 	}
 
-	desc = EVTDESC236_NC
+	desc = {
+		text = EVTDESC236_NC
+	}
 
 	option = {
 		name = "OK"
@@ -2853,258 +2843,6 @@ character_event = {
 	}
 }
 
-# On-action event: Zoroastrian Xwedodah marriage
-character_event = {
-	id = 501
-	desc = EVTDESC501
-	picture = GFX_evt_marriage_zoroastrian_group
-	
-	is_triggered_only = yes
-	
-	trigger = {
-		religion = zoroastrian
-		new_character = { is_close_relative = FROM }
-		OR = {
-			FROM = { character = ROOT }
-			AND = {
-				FROM = {
-					dynasty = ROOT
-					is_primary_heir = ROOT
-				}
-				new_character = {
-					NOT = { character = ROOT }
-				}
-			}
-		}
-	}
-	
-	option = {
-		name = EVTOPTA500
-		scaled_wealth = {
-			value = 0.5
-			min = 10
-		}
-		
-		if = {
-			limit = { tier = EMPEROR }
-			piety = 300
-		}
-		if = {
-			limit = { tier = KING }
-			piety = 200
-		}
-		if = {
-			limit = { tier = DUKE }
-			piety = 100
-		}
-		if = {
-			limit = { tier = COUNT }
-			piety = 50
-		}
-		if = {
-			limit = { tier = BARON }
-			piety = 25
-		}
-	}
-	option = {
-		name = EVTOPTB500
-		
-		if = {
-			limit = { tier = EMPEROR }
-			piety = 300
-		}
-		if = {
-			limit = { tier = KING }
-			piety = 200
-		}
-		if = {
-			limit = { tier = DUKE }
-			piety = 100
-		}
-		if = {
-			limit = { tier = COUNT }
-			piety = 50
-		}
-		if = {
-			limit = { tier = BARON }
-			piety = 25
-		}
-		
-		if = {
-			limit = {
-				NOT = { yearly_income = 50 }
-			}
-			if = {
-				limit = { tier = EMPEROR }
-				prestige = 150
-			}
-			if = {
-				limit = { tier = KING }
-				prestige = 50
-			}
-			if = {
-				limit = { tier = DUKE }
-				prestige = 25
-			}
-			if = {
-				limit = { tier = COUNT }
-				prestige = 13
-			}
-			if = {
-				limit = { tier = BARON }
-				prestige = 6
-			}
-			break = yes
-		}
-		
-		if = {
-			limit = { tier = EMPEROR }
-			prestige = 300
-		}
-		if = {
-			limit = { tier = KING }
-			prestige = 200
-		}
-		if = {
-			limit = { tier = DUKE }
-			prestige = 100
-		}
-		if = {
-			limit = { tier = COUNT }
-			prestige = 50
-		}
-		if = {
-			limit = { tier = BARON }
-			prestige = 25
-		}
-	}
-}
-
-# On-action event: Messalian close kin marriage
-character_event = {
-	id = 502
-	desc = EVTDESC502
-	picture = GFX_evt_marriage
-	
-	is_triggered_only = yes
-	
-	trigger = {
-		religion = messalian
-		new_character = { is_close_relative = FROM }
-		OR = {
-			FROM = { character = ROOT }
-			AND = {
-				FROM = {
-					dynasty = ROOT
-					is_primary_heir = ROOT
-				}
-				new_character = {
-					NOT = { character = ROOT }
-				}
-			}
-		}
-	}
-	
-	option = {
-		name = EVTOPTA500
-		scaled_wealth = {
-			value = 0.5
-			min = 10
-		}
-		if = {
-			limit = { tier = EMPEROR }
-			piety = 300
-		}
-		if = {
-			limit = { tier = KING }
-			piety = 200
-		}
-		if = {
-			limit = { tier = DUKE }
-			piety = 100
-		}
-		if = {
-			limit = { tier = COUNT }
-			piety = 50
-		}
-		if = {
-			limit = { tier = BARON }
-			piety = 25
-		}
-	}
-	option = {
-		name = EVTOPTB500
-		
-		if = {
-			limit = { tier = EMPEROR }
-			piety = 300
-		}
-		if = {
-			limit = { tier = KING }
-			piety = 200
-		}
-		if = {
-			limit = { tier = DUKE }
-			piety = 100
-		}
-		if = {
-			limit = { tier = COUNT }
-			piety = 50
-		}
-		if = {
-			limit = { tier = BARON }
-			piety = 25
-		}
-		
-		if = {
-			limit = {
-				NOT = { yearly_income = 50 }
-			}
-			if = {
-				limit = { tier = EMPEROR }
-				prestige = 150
-			}
-			if = {
-				limit = { tier = KING }
-				prestige = 50
-			}
-			if = {
-				limit = { tier = DUKE }
-				prestige = 25
-			}
-			if = {
-				limit = { tier = COUNT }
-				prestige = 13
-			}
-			if = {
-				limit = { tier = BARON }
-				prestige = 6
-			}
-			break = yes
-		}
-		
-		if = {
-			limit = { tier = EMPEROR }
-			prestige = 300
-		}
-		if = {
-			limit = { tier = KING }
-			prestige = 200
-		}
-		if = {
-			limit = { tier = DUKE }
-			prestige = 100
-		}
-		if = {
-			limit = { tier = COUNT }
-			prestige = 50
-		}
-		if = {
-			limit = { tier = BARON }
-			prestige = 25
-		}
-	}
-}
 
 
 # Approve or disapprove of de facto Law Change
@@ -3550,81 +3288,6 @@ character_event = {
 	}
 }
 
-# Crusade/Jihad Succeeds
-narrative_event = {
-	
-	# ROOT is the target title
-	# new_character is the Enemy
-	# FROM is the taker
-	
-	id = 620
-	title = "EVTNAME620"
-	desc = "EVTDESC620"
-	picture = "GFX_evt_battle"
-	border = "GFX_event_narrative_frame_religion"
-	
-	major = yes
-	
-	only_rulers = yes
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA620"
-		trigger = {
-			religion_group = FROM
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB620"
-		trigger = {
-			NOT = {
-				religion_group = FROM
-			}
-		}
-	}
-}
-
-# Crusade/Jihad Fails
-narrative_event = {
-
-	# ROOT is the target title
-	# new_character is the Enemy
-	# FROM is the Pope/Caliph
-	
-	id = 621
-	title = "EVTNAME621"
-	desc = "EVTDESC621"
-	picture = "GFX_evt_battle"
-	border = "GFX_event_narrative_frame_religion"
-	
-	major = yes
-	
-	only_rulers = yes
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA621"
-		trigger = {
-			FROM = {
-				religion_group = PREV
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB621"
-		trigger = {
-			NOT = {
-				FROM = {
-					religion_group = PREV
-				}
-			}
-		}
-	}
-}
 
 # On-action event: On Death - hidden - clear stuff
 character_event = {
@@ -3940,21 +3603,7 @@ character_event = {
 	
 }
 
-# Remove patron deity modifiers for hindu converts
-character_event = {
-	id = 63105
-	hide_window = yes
-	
-	is_triggered_only = yes
-	
-	trigger = {
-		NOT = { religion = hindu }
-	}
-	
-	immediate = {
-		remove_patrons_effect = yes
-	}
-}
+# Remove patron deity modifiers for hindu converts - removed
 
 # Safety check event for flag clearace - do_not_disturb etc
 character_event = {
@@ -4345,70 +3994,6 @@ character_event = {
 	}
 }
 
-# Crusade/Jihad is invalidated 
-narrative_event = {
-
-	# ROOT is the target title
-	# new_character is the Enemy
-	# FROM is the Pope/Caliph
-	
-	id = 534
-	title = "EVTNAME534"
-	picture = "GFX_evt_battle"
-	border = "GFX_event_narrative_frame_religion"
-	
-	desc = {
-		picture = GFX_evt_battle
-		text = EVTDESC534_converted
-		trigger = { 
-			new_character = { religion_group = FROM }
-		}
-	}
-	desc = {
-		picture = GFX_evt_battle
-		text = EVTDESC534_coup
-		trigger = { 
-			new_character = { NOT = { religion_group = FROM } }
-		}
-	}
-	
-	major = yes
-	
-	only_rulers = yes
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA620"
-		trigger = {
-			new_character = {
-				religion_group = FROM
-			}
-			religion_group = FROM
-		}
-	}
-	
-	option = {
-		name = EVTOPTC534
-		trigger = {
-			new_character = {
-				NOT = {
-					religion_group = FROM
-				}
-			}
-			religion_group = FROM
-		}
-	}
-	
-	option = {
-		name = "EVTOPTB620"
-		trigger = {
-			NOT = {
-				religion_group = FROM
-			}
-		}
-	}
-}
 
 # ASK_TO_JOIN_AMBITION_INTERACTION_ACCEPT_EVENT =
 diploresponse_event = {

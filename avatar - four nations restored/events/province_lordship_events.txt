@@ -9,6 +9,130 @@
 # Designed by Johan Andersson
 # Written by Sara Wendel-Örtqvist
 
+# The Clergy demands a stop to commerce in all church squares
+province_event = {
+	id = 77000
+	desc = EVTDESC77000
+	picture = GFX_evt_market
+	
+	trigger = {
+		NOT = {
+			has_province_modifier = stop_commerce
+		}
+		any_province_lord = {
+			is_theocracy = yes
+		}
+		any_province_lord = {
+			is_republic = yes
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 36000
+	}
+	
+	option = {
+		name = EVTOPTA77000
+		owner = {
+			piety = 5
+		}
+		add_province_modifier = {
+			name = stop_commerce
+			duration = 3650
+		}
+		random_province_lord = {
+			limit = {
+				is_theocracy = yes
+			}
+			opinion = {
+				modifier = opinion_happy
+				who = ROOT
+				years = 2
+			}
+		}
+		random_province_lord = {
+			limit = {
+				is_republic = yes
+			}
+			opinion = {
+				modifier = opinion_dislike
+				who = ROOT
+				years = 2
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB77000
+		random_province_lord = {
+			limit = {
+				is_theocracy = yes
+			}
+			opinion = {
+				modifier = opinion_dislike
+				who = ROOT
+				years = 2
+			}
+		}
+	}
+}
+
+# Burghers demands that city laws is set higher than canonical law
+province_event = {
+	id = 77001
+	desc = EVTDESC77001
+	picture = GFX_evt_cathedral
+	
+	trigger = {
+		any_province_lord = {
+			is_theocracy = yes
+		}
+		any_province_lord = {
+			is_republic = yes
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 36000
+	}
+	
+	option = {
+		name = EVTOPTA77001
+		random_province_lord = {
+			limit = {
+				is_theocracy = yes
+			}
+			opinion = {
+				modifier = opinion_dislike
+				who = ROOT
+				years = 2
+			}
+		}
+		random_province_lord = {
+			limit = {
+				is_republic = yes
+			}
+			opinion = {
+				modifier = opinion_happy
+				who = ROOT
+				years = 2
+			}
+		}
+	}
+	option = {
+		name = EVTOPTB77001
+		random_province_lord = {
+			limit = {
+				is_republic = yes
+			}
+			opinion = {
+				modifier = opinion_dislike
+				who = ROOT
+				years = 2
+			}
+		}
+	}
+}
+
 # The Nobility demands Prima Noctae rights
 province_event = {
 	id = 77002
@@ -16,7 +140,6 @@ province_event = {
 	picture = GFX_evt_peasants
 	
 	trigger = {
-		# trait = airbender - causes an error
 		NOT = {
 			has_province_modifier = prima_noctae
 		}
@@ -89,11 +212,6 @@ province_event = {
 	picture = GFX_evt_market
 	
 	trigger = {
-		owner = {
-			OR = {
-				NOT = { trait = airbender }
-			}
-		}
 		any_province_lord = {
 			is_republic = yes
 		}
@@ -146,19 +264,14 @@ province_event = {
 	picture = GFX_evt_hunt
 	
 	trigger = {
-		OR = {
-			always = yes
-		}
-		owner = {
-			OR = {
-				always = yes
-			}
-		}
 		any_province_lord = {
+			is_adult = yes
 			is_feudal = yes
 			is_female = no
+			NOT = { trait = incapable }
 		}
 		any_province_lord = {
+			NOT = { trait = incapable }
 			is_theocracy = yes
 		}
 	}
@@ -167,24 +280,36 @@ province_event = {
 		months = 36000
 		
 	}
+
+	immediate = {
+		random_province_lord = {
+			limit = {
+				is_adult = yes
+				is_feudal = yes
+				is_female = no
+				NOT = { trait = incapable }
+			}
+			save_event_target_as = target_feudal
+		}
+		random_province_lord = {
+			limit = {
+				NOT = { trait = incapable }
+				is_theocracy = yes
+			}
+			save_event_target_as = target_bishop
+		}
+	}
 	
 	option = {
 		name = EVTOPTA77004
-		random_province_lord = {
-			limit = {
-				is_feudal = yes
-				is_female = no
-			}
+		event_target:target_feudal = {
 			opinion = {	
 				modifier = opinion_happy
 				who = ROOT
 				years = 2
 			}
 		}
-		random_province_lord = {
-			limit = {
-				is_theocracy = yes
-			}
+		event_target:target_bishop = {
 			opinion = {	
 				modifier = opinion_dislike
 				who = ROOT
@@ -194,21 +319,14 @@ province_event = {
 	}
 	option = {
 		name = EVTOPTB77004
-		random_province_lord = {
-			limit = {
-				is_theocracy = yes
-			}
+		event_target:target_bishop = {
 			opinion = {	
 				modifier = opinion_happy
 				who = ROOT
 				years = 2
 			}
 		}
-		random_province_lord = {
-			limit = {
-				is_feudal = yes
-				is_female = no
-			}
+		event_target:target_feudal = {
 			opinion = {	
 				modifier = opinion_dislike
 				who = ROOT
@@ -225,14 +343,6 @@ province_event = {
 	picture = GFX_evt_stone_church
 	
 	trigger = {
-		OR = {
-			always = yes
-		}
-		owner = {
-			OR = {
-				always = yes
-			}
-		}
 		NOT = {
 			has_province_modifier = clergy_extra_tithe
 		}
@@ -341,14 +451,6 @@ province_event = {
 	
 	trigger = {
 		port = yes
-		OR = {
-			always = yes
-		}
-		owner = {
-			OR = {
-				always = yes
-			}
-		}
 		any_province_lord = {
 			is_feudal = yes
 		}
@@ -381,7 +483,7 @@ province_event = {
 			opinion ={
 				modifier = opinion_happy
 				who = ROOT
-				years = 2
+				years = 5
 			}
 		}
 	}
@@ -401,7 +503,7 @@ province_event = {
 			opinion ={
 				modifier = opinion_happy
 				who = ROOT
-				years = 2
+				years = 5
 			}
 		}
 	}
@@ -428,14 +530,14 @@ province_event = {
 			opinion ={
 				modifier = opinion_happy
 				who = ROOT
-				years = 2
+				years = 5
 			}
 		}
 	}
 	option = {
 		name = EVTOPTD77007
 		owner = {
-			scaled_wealth = 0.05
+			scaled_wealth = { value = 0.05 min = 10 }
 		}
 	}
 }
