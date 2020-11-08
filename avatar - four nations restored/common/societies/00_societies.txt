@@ -267,9 +267,202 @@ secret_religious_society_template = {
 	}
 }
 
+airball_association = { # Airball
+	primary_attribute = martial
+
+	opinion_to_other_members = +10
+	opinion_per_rank_above = +5
+	sound = monastic_orders_interface
+	society_ranks_gfx = monk_ranks
+	non_interference = {
+		always = yes
+	}
+	
+	active = {
+		always = yes
+	}
+	indestructible = no
+
+	can_join_society = {
+		hidden_trigger = {
+			NOT = { has_character_flag = society_join_block }
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = airball_association
+					rank = 1
+				}
+			}
+		}
+		age >= 8
+		age <= 40
+		martial = 10
+		trait = airbender
+		religion_group = air_religions
+		custom_tooltip = {
+			text = did_not_betray_society
+			NOT = { has_character_flag = betrayed_airball_association }
+		}
+	}
+
+	show_society = {
+		religion_group = air_religions
+	}
+
+	potential = {
+		religion_group = air_religions
+		# age <= 40
+	}
+
+	society_rank = { # Junior
+		level = 1
+		limit = 50
+		startup_limit = 25
+		modifier = {
+			monthly_character_prestige = 0.05
+			combat_rating = 5
+		}
+		decisions = {
+			airball_balance_training
+			airball_challenge_fellow_member_to_spar
+		}
+	}
+	
+	society_rank = { # Senior
+		level = 2
+		limit = 25
+		startup_limit = 10
+		modifier = { 
+			monthly_character_prestige = 0.1
+			martial = 3
+			combat_rating = 10
+		}
+		decisions = {
+			airball_challenge_fellow_member_to_play_airball
+			# airball_participate_in_a_match
+		}
+	}
+	
+	society_rank = { # Champion
+		level = 3
+		limit = 10
+		startup_limit = 5
+		modifier = {
+			monthly_character_prestige = 0.2
+			martial = 5
+			combat_rating = 20
+		}
+		decisions = {
+			airball_learn_bending
+			# airball_participate_in_a_championate
+		}
+	}
+
+	society_rank = { # Coach
+		level = 4
+		limit = 5
+		startup_limit = 5
+		modifier = { 
+			monthly_character_prestige = 0.5
+			martial = 10
+			combat_rating = 30
+		}
+		decisions = {
+			airball_instruct_others
+			# air_start_a_championate
+		}
+	}
+
+	monthly_currency_gain = {
+		name = airball_association_currency
+    	
+    	per_attribute = {
+    		name = martial
+    		value = 0.5
+    	}
+		has_trait = {
+			trait = legendary_bender
+			value = 5
+		}
+		has_trait = {
+			trait = master_bender
+			value = 4
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+	}
+
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			tier = EMPEROR
+			factor = 2.5
+		}
+		modifier = {
+			tier = KING
+			factor = 2.0
+		}
+		modifier = {
+			tier = DUKE
+			factor = 1.5
+		}
+		modifier = {
+			tier = COUNT
+			factor = 1.1
+		}
+		modifier = {
+			trait = legendary_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.2
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+		   	religion_group = air_religions
+			trait = airbender
+			martial = 10
+			
+			age >= 8
+			age <= 30
+
+			has_secret_religion_trait_trigger = no
+			is_in_society = no
+			NOR = {
+				mercenary = yes
+				holy_order = yes
+			}
+		}
+	}
+}
+
 monastic_order_elder_council = { # Air Nomad Hierarchy
 	primary_attribute = learning
 	is_religious = yes
+	
 	opinion_to_other_members = +10
 	opinion_per_rank_above = +5
 	sound = monastic_orders_interface

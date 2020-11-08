@@ -312,4 +312,37 @@ decisions = {
 			factor = 1
 		}
 	}
+
+	airball_balance_training = {
+		ai_check_interval = 12
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {
+			society_member_of = airball_association
+			society_rank >= 1
+			OR = {
+				NOT = { has_character_flag = air_balance_training_done }
+				had_character_flag = { flag = air_balance_training_done days = 1500 }
+			}
+		}
+		
+		allow = {
+			prisoner = no
+			NOT = { trait = incapable }
+			has_society_currency_medium_trigger = yes
+		}
+		
+		effect = {
+			detract_society_currency_medium_effect = yes
+			hidden_effect = { 
+				character_event = { id = AIRBALL.1100 days = 7 }
+				set_character_flag = air_balance_training_done
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }
