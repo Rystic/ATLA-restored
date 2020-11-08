@@ -1,0 +1,293 @@
+level_up_bending_effect = {
+    trigger_switch = {
+		on_trigger = trait
+        incompetent_bender =    { remove_trait = incompetent_bender add_trait = competent_bender }    
+        competent_bender =      { remove_trait = competent_bender add_trait = powerful_bender }    
+        powerful_bender =       { remove_trait = powerful_bender add_trait = master_bender }    
+        master_bender =         { remove_trait = master_bender add_trait = legendary_bender }    
+    }
+}
+
+set_duel_variables_effect = {
+    set_variable = { which = myHP value = 30 } # SET UP HP
+    set_variable = { which = myDEF value = 3 } # SET UP DEF
+    set_variable = { which = myATK value = 10 } # SET UP ATK
+
+    if = { # Avatar = +20 HP, +2 DEF, +3 ATK
+        limit = { trait = avatar }
+        change_variable = { which = myHP value = 20 }
+        change_variable = { which = myDEF value = 2 }
+        change_variable = { which = myATK value = 3 }
+    }
+    if = { # Trained Avatar = +40 HP, +3 DEF, +4 ATK
+        limit = { trait = fullyrealisedavatar }
+        change_variable = { which = myHP value = 40 }
+        change_variable = { which = myDEF value = 3 }
+        change_variable = { which = myATK value = 4 }
+    }
+    if = { # Secret Buff = +10 HP, +1 ATK, +1 DEF
+        limit = { trait = canon_character }
+        change_variable = { which = myHP value = 10 }
+        change_variable = { which = myATK value = 1 }
+        change_variable = { which = myDEF value = 1 }
+    }
+    if = { # Strong = +10 HP, +2 ATK, +1 DEF
+        limit = { trait = strong }
+        change_variable = { which = myHP value = 10 }
+        change_variable = { which = myATK value = 2 }
+        change_variable = { which = myDEF value = 1 }
+    }
+    if = { # Robust = +5 HP, +1 DEF
+        limit = { trait = robust }
+        change_variable = { which = myHP value = 5 }
+        change_variable = { which = myDEF value = 1 }
+    }
+    if = { # Wounded = -5 HP, -1 DEF
+        limit = { trait = wounded }
+        subtract_variable = { which = myHP value = 5 }
+        subtract_variable = { which = myDEF value = 1 }
+    }
+    if = { # Maimed = -5 HP, -2 DEF
+        limit = { trait = maimed }
+        subtract_variable = { which = myHP value = 5 }
+        subtract_variable = { which = myDEF value = 2 }
+    }
+    if = { # Ill = -5 HP, -1 DEF
+        limit = { trait = ill }
+        subtract_variable = { which = myHP value = 5 }
+        subtract_variable = { which = myDEF value = 1 }
+    }
+    if = { # Weak = -5 HP, -1 DEF
+        limit = { trait = weak }
+        subtract_variable = { which = myHP value = 5 }
+        subtract_variable = { which = myDEF value = 1 }
+    }
+    if = { # Feeble = -5 HP
+        limit = { trait = feeble }
+        subtract_variable = { which = myHP value = 5 }
+    }
+    if = { # Military Education = +1 ATK. +1 DEF
+        limit = { has_education_martial_trigger = yes }
+        change_variable = { which = myATK value = 1 }
+        change_variable = { which = myDEF value = 1 }
+    }
+    if = { # Quick = +2 ATK
+        limit = { trait = quick }
+        change_variable = { which = myATK value = 2 }
+    }
+    if = { # Shrewd = +1 ATK
+        limit = { trait = shrewd }
+        change_variable = { which = myATK value = 1 }
+    }
+    if = { # Impaler = +1 ATK
+        limit = { trait = impaler }
+        change_variable = { which = myATK value = 1 }
+    }
+    if = { # Duelist = +2 ATK
+        limit = { trait = duelist }
+        change_variable = { which = myATK value = 2 }
+    }
+    if = { # Wroth = +1 ATK
+        limit = { trait = wroth }
+        change_variable = { which = myATK value = 1 }
+    }
+    if = { # Cruel = +1 ATK
+        limit = { trait = cruel }
+        change_variable = { which = myATK value = 1 }
+    }
+    if = { # Brave = +1 ATK
+        limit = { trait = brave }
+        change_variable = { which = myATK value = 1 }
+    }
+    if = { # Slow = -1 ATK
+        limit = { trait = slow }
+        subtract_variable = { which = myATK value = 1 }
+    }
+    if = { # Craven = -2 ATK
+        limit = { trait = craven }
+        subtract_variable = { which = myATK value = 2 }
+    }
+    if = { # One Handed = -2 ATK
+        limit = { trait = one_handed }
+        subtract_variable = { which = myATK value = 2 }
+    }
+
+    set_variable = { which = mySTA value = 1 } # SET UP STA
+    export_to_variable = { which = addSTA value = combat_rating }
+    change_variable = { which = mySTA which = addSTA }
+    set_variable = { which = mySTAcap which = addSTA } # SET UP STA CAP
+    subtract_variable = { which = mySTAcap value = 1 }
+    set_variable = { which = mySTAcha value = 1 } # SET UP STA CHA
+    set_variable = { which = myHPcap which = myHP } # SET UP HP CAP
+}
+
+
+set_airball_variables_effect = {
+    # SETUP
+    set_variable = { which = scored_goals value = 0 }
+    set_variable = { which = vPAC value = 40 } # pace
+    set_variable = { which = vSHO value = 40 } # shooting
+    set_variable = { which = vDEF value = 40 } # defending
+    set_variable = { which = vPHY value = 40 } # physical
+
+    # Setup pace
+    if = { # Military Education
+        limit = { has_education_martial_trigger = yes }
+        change_variable = { which = vPAC value = 1 }
+        change_variable = { which = vSHO value = 1 }
+        change_variable = { which = vDEF value = 1 }
+    }
+    if = { # Avatar
+        limit = { trait = avatar }
+        change_variable = { which = vPAC value = 3 }
+        change_variable = { which = vSHO value = 3 }
+        change_variable = { which = vDEF value = 2 }
+    }
+    if = { # Trained Avatar
+        limit = { trait = fullyrealisedavatar }
+        change_variable = { which = vPAC value = 4 }
+        change_variable = { which = vSHO value = 4 }
+        change_variable = { which = vDEF value = 3 }
+    }
+    if = { # Secret Buff
+        limit = { trait = canon_character }
+        change_variable = { which = vPAC value = 1 }
+        change_variable = { which = vSHO value = 1 }
+        change_variable = { which = vDEF value = 1 }
+    }
+    if = { # Incompetent bender
+        limit = { trait = incompetent_bender }
+        change_variable = { which = vPAC value = 1 }
+        change_variable = { which = vSHO value = 1 }
+        change_variable = { which = vDEF value = 1 }
+    }
+    if = { # Competent bender
+        limit = { trait = competent_bender }
+        change_variable = { which = vPAC value = 3 }
+        change_variable = { which = vSHO value = 3 }
+        change_variable = { which = vDEF value = 3 }
+    }
+    if = { # Powerful bender
+        limit = { trait = powerful_bender }
+        change_variable = { which = vPAC value = 5 }
+        change_variable = { which = vSHO value = 5 }
+        change_variable = { which = vDEF value = 5 }
+    }
+    if = { # Master bender
+        limit = { trait = master_bender }
+        change_variable = { which = vPAC value = 7 }
+        change_variable = { which = vSHO value = 7 }
+        change_variable = { which = vDEF value = 7 }
+    }
+    if = { # Legendary bender
+        limit = { trait = legendary_bender }
+        change_variable = { which = vPAC value = 10 }
+        change_variable = { which = vSHO value = 10 }
+        change_variable = { which = vDEF value = 10 }
+    }
+    if = { # Quick
+        limit = { trait = quick }
+        change_variable = { which = vPAC value = 2 }
+        change_variable = { which = vSHO value = 2 }
+    }
+    if = { # Shrewd
+        limit = { trait = shrewd }
+        change_variable = { which = vPAC value = 1 }
+        change_variable = { which = vSHO value = 1 }
+    }
+    if = { # Slow
+        limit = { trait = slow }
+        subtract_variable = { which = vPAC value = 1 }
+        subtract_variable = { which = vSHO value = 1 }
+    }
+    if = { # One Legged
+        limit = { trait = one_legged }
+        subtract_variable = { which = vPAC value = 3 }
+        subtract_variable = { which = vSHO value = 2 }
+    }
+    if = { # Wounded
+        limit = { trait = wounded }
+        subtract_variable = { which = vPAC value = 1 }
+        subtract_variable = { which = vSHO value = 1 }
+        subtract_variable = { which = vDEF value = 1 }
+    }
+    if = { # Weak
+        limit = { trait = weak }
+        subtract_variable = { which = vPAC value = 1 }
+        subtract_variable = { which = vSHO value = 1 }
+        subtract_variable = { which = vDEF value = 1 }
+    }
+    if = { # Maimed
+        limit = { trait = maimed }
+        subtract_variable = { which = vPAC value = 2 }
+        subtract_variable = { which = vSHO value = 2 }
+        subtract_variable = { which = vDEF value = 2 }
+    }
+    if = { # Ill
+        limit = { trait = ill }
+        subtract_variable = { which = vPAC value = 1 }
+        subtract_variable = { which = vSHO value = 1 }
+        subtract_variable = { which = vDEF value = 1 }
+    }
+    if = { # One Handed
+        limit = { trait = one_handed }
+        subtract_variable = { which = vSHO value = 2 }
+    }
+    if = { # Strong
+        limit = { trait = strong }
+        change_variable = { which = vDEF value = 1 }
+    }
+    if = { # Robust
+        limit = { trait = robust }
+        change_variable = { which = vDEF value = 1 }
+    }
+
+    export_to_variable = { which = addPAC value = combat_rating }
+    divide_variable = { which = addPAC value = 3 }
+    change_variable = { which = vPAC which = addPAC }
+
+    # Setup shooting
+    
+    export_to_variable = { which = addSHO value = combat_rating }
+    divide_variable = { which = addSHO value = 2 }
+    change_variable = { which = vSHO which = addSHO }
+
+    # setup defending
+    export_to_variable = { which = addDEF value = combat_rating }
+    divide_variable = { which = addDEF value = 4 }
+    change_variable = { which = vDEF which = addDEF }
+
+    # Setup phy
+    export_to_variable = { which = vPHY value = combat_rating }
+    
+    # final rating
+    set_variable = { which = final_rating value = 0 } # pace
+
+    set_variable = { which = vFPAC value = 0 } # pace
+    set_variable = { which = vFSHO value = 0 } # shooting
+    set_variable = { which = vFDEF value = 0 } # defending
+    set_variable = { which = vFPHY value = 0 } # physical
+
+    change_variable = { which = vFPAC which = vPAC } # pace
+    change_variable = { which = vFSHO which = vSHO } # shooting
+    change_variable = { which = vFDEF which = vDEF } # defending
+    change_variable = { which = vFPHY which = vPHY } # physical
+
+    multiply_variable = { which = vFPAC value = 0.3 }
+    multiply_variable = { which = vFSHO value = 0.3 }
+    multiply_variable = { which = vFDEF value = 0.2 }
+    multiply_variable = { which = vFPHY value = 0.2 }
+
+    change_variable = { which = final_rating which = vFPAC }
+    change_variable = { which = final_rating which = vFSHO }
+    change_variable = { which = final_rating which = vFDEF }
+    change_variable = { which = final_rating which = vFPHY }
+}
+
+clear_airball_variables_effect = {
+    set_variable = { which = scored_goals value = 0 }
+    set_variable = { which = vPAC value = 0 } # pace
+    set_variable = { which = vSHO value = 0 } # shooting
+    set_variable = { which = vDEF value = 0 } # defending
+    set_variable = { which = vPHY value = 0 } # physical
+}
