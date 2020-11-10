@@ -29,11 +29,16 @@ character_event = {
 	picture = GFX_evt_emissary
 	border = GFX_event_normal_frame_diplomacy
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_improve_relations
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			any_province_lord = {
 				OR = {
@@ -50,46 +55,7 @@ character_event = {
 	mean_time_to_happen = {
 		months = 100
 		
-		modifier = {
-			factor = 1.25
-			NOT = { diplomacy = 2 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { diplomacy = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { diplomacy = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { diplomacy = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			diplomacy = 10
-		}
-		modifier = {
-			factor = 0.75
-			diplomacy = 11
-		}
-		modifier = {
-			factor = 0.75
-			diplomacy = 12
-		}
-		modifier = {
-			factor = 0.75
-			diplomacy = 13
-		}
-		modifier = {
-			factor = 0.75
-			diplomacy = 15
-		}
-		modifier = {
-			factor = 0.75
-			diplomacy = 18
-		}
+		job_event_mtth_modifier_diplomacy_score = yes
 	}
 	
 	option = {
@@ -126,7 +92,7 @@ character_event = {
 		name = "EVTOPTA20100"
 		hidden_tooltip = {
 			FROM = {
-				liege = { letter_event = { id = 20101 days = 7 } }
+				liege = { letter_event = { id = 20101 } }
 			}
 		}
 	}
@@ -163,11 +129,16 @@ character_event = {
 	picture = GFX_evt_emissary
 	border = GFX_event_normal_frame_diplomacy
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_improve_relations
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = { 
 			any_province_lord = {
 				is_priest = no
@@ -179,39 +150,7 @@ character_event = {
 	
 	mean_time_to_happen = {
 		months = 120
-		
-		modifier = {
-			factor = 0.75
-			NOT = { diplomacy = 2 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { diplomacy = 3 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { diplomacy = 4 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { diplomacy = 5 }
-		}
-		modifier = {
-			factor = 1.25
-			diplomacy = 10
-		}
-		modifier = {
-			factor = 1.25
-			diplomacy = 11
-		}
-		modifier = {
-			factor = 1.25
-			diplomacy = 12
-		}
-		modifier = {
-			factor = 1.25
-			diplomacy = 13
-		}
+		job_event_mtth_modifier_inverted_diplomacy_score = yes
 	}
 	
 	option = {
@@ -234,7 +173,14 @@ character_event = {
 # 20110: Inform the noble
 character_event = {
 	id = 20110
-	desc = "EVTDESC20110"
+	desc = {
+		text = "EVTDESCA20110"
+		trigger = { NOT = { same_liege = FROM }	}
+	}
+	desc = {
+		text = "EVTDESCB20110"
+		trigger = { same_liege = FROM }
+	}
 	picture = GFX_evt_emissary
 	border = GFX_event_normal_frame_diplomacy
 	
@@ -244,7 +190,7 @@ character_event = {
 		name = "EVTOPTA20110"
 		hidden_tooltip = {
 			FROM = {
-				liege = { letter_event = { id = 20111 days = 7 } }
+				liege = { letter_event = { id = 20111 } }
 			}
 		}
 	}
@@ -280,16 +226,21 @@ letter_event = {
 # 913: The Chancellor fabricates a claim for his liege on a landed noble's title
 character_event = {
 	id = 913
-	title = "EVTNAME913"
-	desc = "EVTDESC913"
+	title = EVTNAME913
+	desc = EVTDESC913
 	picture = GFX_evt_council
 	border = GFX_event_normal_frame_diplomacy
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_fabricate_claims
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		NOT = { has_character_modifier = bribed_by_noble_timer }
 		independent = no
 		liege = {
