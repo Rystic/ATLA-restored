@@ -27,14 +27,17 @@ character_event = {
 	desc = EVTDESC938
 	picture = GFX_evt_bloody_man
 	
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_advance_mil_tech
-		NOT = {
-			trait = maimed
-		}
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
+		can_be_maimed_trigger = yes
 		location = {
 			owner = {
 				job_marshal = {
@@ -46,39 +49,7 @@ character_event = {
 	
 	mean_time_to_happen = {
 		months = 240
-		
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 2 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 3 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 4 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 5 }
-		}
-		modifier = {
-			factor = 1.25
-			martial = 10
-		}
-		modifier = {
-			factor = 1.25
-			martial = 11
-		}
-		modifier = {
-			factor = 1.25
-			martial = 12
-		}
-		modifier = {
-			factor = 1.25
-			martial = 13
-		}
+		job_event_mtth_modifier_inverted_martial_score = yes
 	}
 	
 	immediate = {
@@ -106,7 +77,7 @@ character_event = {
 	option = {
 		name = "EVOPTB938"
 		trigger = { has_character_flag = marshal_maimed }
-		add_trait = maimed
+		add_maimed_trait_effect = yes
 		liege = { letter_event = { id = 20381 tooltip = "EVTTOOLTIP20380" } }
 		clr_character_flag = marshal_maimed
 	}
@@ -137,7 +108,7 @@ letter_event = {
 	option = {
 		name = "EVTOPTA20381"
 		tooltip = {
-			FROM = { add_trait = maimed }
+			FROM = { add_maimed_trait_effect = yes }
 		}
 	}
 }
@@ -150,11 +121,16 @@ character_event = {
 	desc = "EVTDESC939"
 	picture = GFX_evt_large_army
 	
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_advance_mil_tech
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			owner = {
 				job_marshal = {
@@ -186,37 +162,11 @@ character_event = {
 			}
 		}
 		modifier = {
-			factor = 1.25
-			NOT = { martial = 2 }
+			factor = 2
+			has_religion_feature = religion_dogmatic
 		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			martial = 10
-		}
-		modifier = {
-			factor = 0.75
-			martial = 11
-		}
-		modifier = {
-			factor = 0.75
-			martial = 12
-		}
-		modifier = {
-			factor = 0.75
-			martial = 13
-		}
+		
+		job_event_mtth_modifier_martial_score = yes
 	}
 	
 	option = {
@@ -291,7 +241,7 @@ character_event = {
 				years = 2
 			}
 		}
-		liege = { letter_event = { id = 20392 days = 7 tooltip = "EVTTOOLTIP20392" } }
+		liege = { letter_event = { id = 20392 tooltip = "EVTTOOLTIP20392" } }
 	}
 }
 
@@ -299,7 +249,6 @@ character_event = {
 letter_event = {
 	id = 20392
 	desc = "EVTDESC20392"
-	picture = GFX_evt_large_army
 	
 	is_triggered_only = yes
 	
@@ -331,11 +280,16 @@ character_event = {
 	desc = EVTDESC941
 	picture = GFX_evt_large_army
 	
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_train_troops
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			owner = {
 				job_marshal = {
@@ -348,56 +302,26 @@ character_event = {
 	
 	mean_time_to_happen = {
 		months = 120
-	
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 2 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			martial = 10
-		}
-		modifier = {
-			factor = 0.75
-			martial = 11
-		}
-		modifier = {
-			factor = 0.75
-			martial = 12
-		}
-		modifier = {
-			factor = 0.75
-			martial = 13
-		}
+		job_event_mtth_modifier_martial_score = yes
 	}
 	
 	option = {
 		name = "EVTOPTA941"
-		liege = { letter_event = { id = 20410 days = 7 tooltip = "EVTTOOLTIP20410" } }
+		liege = { letter_event = { id = 20410 tooltip = "EVTTOOLTIP20410" } }
 	}
 }
 
 # 20410: Liege
-letter_event = {
+character_event = {
 	id = 20410
-	desc = "EVTDESC20410"
+	desc = EVTDESC20410
+	picture = GFX_evt_large_army
 	
 	is_triggered_only = yes
 	
-	option = {
-		name = "EVTOPTA20410"
+	notification = yes
+	
+	immediate = {
 		FROM = {
 			location = {
 				add_province_modifier = {
@@ -406,6 +330,25 @@ letter_event = {
 				}
 			}
 		}
+		if = {
+			limit = {
+				has_dlc = "Reapers"
+			}
+			custom_tooltip = {
+				text = increase_prosperity_custom_tooltip
+				hidden_tooltip = {
+					FROM = {
+						location = {
+							change_variable = { which = prosperity_value value = 6 }
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = "EVTOPTA20410"
 	}
 }
 
@@ -417,11 +360,16 @@ character_event = {
 	desc = "EVTDESC942"
 	picture = GFX_evt_large_army
 	
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
 		has_job_action = action_train_troops
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		location = {
 			owner = {
 				job_marshal = {
@@ -446,38 +394,7 @@ character_event = {
 	mean_time_to_happen = {
 		months = 240
 
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 2 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 3 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 4 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { martial = 5 }
-		}
-		modifier = {
-			factor = 1.25
-			martial = 10
-		}
-		modifier = {
-			factor = 1.25
-			martial = 11
-		}
-		modifier = {
-			factor = 1.25
-			martial = 12
-		}
-		modifier = {
-			factor = 1.25
-			martial = 13
-		}
+		job_event_mtth_modifier_inverted_martial_score = yes
 	}
 	
 	option = {
@@ -518,7 +435,7 @@ character_event = {
 						who = ROOT
 						years = 1
 					}
-					letter_event = { id = 20421 days = 7 tooltip = "EVTTOOLTIP20421" }
+					letter_event = { id = 20421 tooltip = "EVTTOOLTIP20421" }
 				}
 			}
 		}
@@ -577,10 +494,16 @@ character_event = {
 	picture = GFX_evt_battle
 	border = GFX_event_normal_frame_war
 
+	min_age = 16
 	capable_only = yes
 	prisoner = no
+	has_job_title = yes
 	
 	trigger = {
+		has_job_action = action_organize_raid
+		NOT = { has_character_modifier = in_seclusion }
+		NOT = { has_character_modifier = bedridden_illness }
+		NOT = { trait = incapable }
 		liege = {
 			is_adult = yes
 			prisoner = no
@@ -591,7 +514,6 @@ character_event = {
 			}
 			war = no
 		}
-		has_job_action = action_organize_raid
 		location = {
 			county = {
 				is_occupied = no
@@ -613,43 +535,17 @@ character_event = {
 				tier = count
 			}
 		}
+		modifier = {
+			factor = 0.75
+			liege = {
+				any_owned_bloodline = {
+					has_bloodline_flag = more_raiders_bloodline
+					bloodline_is_active_for = PREV
+				}
+			}
+		}
 		
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 2 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 3 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 4 }
-		}
-		modifier = {
-			factor = 1.25
-			NOT = { martial = 5 }
-		}
-		modifier = {
-			factor = 0.75
-			martial = 9
-		}
-		modifier = {
-			factor = 0.75
-			martial = 10
-		}
-		modifier = {
-			factor = 0.75
-			martial= 11
-		}
-		modifier = {
-			factor = 0.75
-			martial = 12
-		}
-		modifier = {
-			factor = 0.75
-			martial = 13
-		}
+		job_event_mtth_modifier_martial_score = yes
 	}
 	
 	option = {
@@ -673,42 +569,120 @@ character_event = {
 	
 	immediate = {
 		capital_scope = {
-			ROOT = {
-				spawn_unit = {
-					province = PREV
-					home = PREV
-					owner = THIS
-					match_character = THIS
-					match_mult = 0.025
-					match_min = 100
-					match_max = 3000
-					attrition = 1.0
-					cannot_inherit = yes
-					earmark = tribal_organize_raid
+			if = { 
+				limit = {
+					ROOT = { 
+						NOT = {
+							any_owned_bloodline = {
+								has_bloodline_flag = more_raiders_bloodline
+								bloodline_is_active_for = PREV
+							}
+						}
+					}
 				}
-				spawn_unit = {
-					province = PREV
-					home = PREV
-					owner = THIS
-					match_character = THIS
-					match_mult = 0.025
-					match_min = 100
-					match_max = 3000
-					attrition = 1.0
-					cannot_inherit = yes
-					earmark = tribal_organize_raid
+				ROOT = {
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.025
+						match_min = 100
+						match_max = 3000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.025
+						match_min = 100
+						match_max = 3000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.025
+						match_min = 100
+						match_max = 3000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
 				}
-				spawn_unit = {
-					province = PREV
-					home = PREV
-					owner = THIS
-					match_character = THIS
-					match_mult = 0.025
-					match_min = 100
-					match_max = 3000
-					attrition = 1.0
-					cannot_inherit = yes
-					earmark = tribal_organize_raid
+			}
+			if = { 
+				limit = {
+					ROOT = { 
+						any_owned_bloodline = {
+							has_bloodline_flag = more_raiders_bloodline
+							bloodline_is_active_for = PREV
+						}
+					}
+				}
+				ROOT = {
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.03
+						match_min = 250
+						match_max = 5000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.03
+						match_min = 250
+						match_max = 5000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.03
+						match_min = 250
+						match_max = 5000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
 				}
 			}
 		}
@@ -726,6 +700,23 @@ character_event = {
 			modifier = opinion_grateful
 			months = 60
 		}
+				ROOT = {
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = THIS
+						#leader = none
+						match_character = THIS
+						match_mult = 0.025
+						match_min = 100
+						match_max = 3000
+						attrition = 1.0
+						cannot_inherit = yes
+						earmark = tribal_organize_raid
+						is_looter = yes
+						can_toggle_looting = no
+					}
+					}
 	}
 }
 

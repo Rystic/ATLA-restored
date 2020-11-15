@@ -483,6 +483,39 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 			factor = 1
 		}
 	}
+
+	airball_improve_bending = {
+		# ai_check_interval = 12
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {
+			society_member_of = airball_association
+			society_rank >= 3
+			OR = {
+				NOT = { has_character_flag = airball_bending_training_done }
+				had_character_flag = { flag = airball_bending_training_done days = 3650 }
+			}
+		}
+		
+		allow = {
+			prisoner = no
+			NOT = { trait = incapable }
+			has_society_currency_major_trigger = yes
+		}
+		
+		effect = {
+			detract_society_currency_major_effect = yes
+			hidden_effect = { 
+				character_event = { id = AIRBALL.1140 days = 7 }
+				set_character_flag = airball_bending_training_done
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	
 	tes_spiritual_study = {
 		ai_check_interval = 12
@@ -2078,6 +2111,183 @@ targeted_decisions = {
 			}
 		}
 	}
+
+	airball_challenge_fellow_member_to_spar = {
+		is_in_society = yes
+		
+		filter = society
+		ai_target_filter = society
+		
+		potential = {
+			NOT = { trait = incapable }
+			society_member_of = airball_association
+			OR = {
+				NOT = { has_character_flag = recently_refused_spar }
+				had_character_flag = { flag = recently_refused_spar days = 930 }
+			}
+		}
+		
+		from_potential = {
+			NOT = { trait = incapable }
+			society_member_of = airball_association
+		}
+
+		allow = {
+			FROM = {
+				has_society_currency_tiny_trigger = yes
+				prisoner = no
+				custom_tooltip = {
+					text = cannot_challenge_higher_ranked_member
+					hidden_tooltip = {
+						ROOT = {
+							NOT = { higher_tier_than = FROM }
+						}
+					}
+				}
+				custom_tooltip = {
+					text = has_not_sparred_recently
+					hidden_tooltip = {
+						OR = {
+							NOT = { has_character_flag = recent_spar }
+							had_character_flag = { flag = recent_spar days = 730 }
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			FROM = {
+				detract_society_currency_tiny_effect = yes
+				hidden_tooltip = {
+					ROOT = {
+						character_event = { id = AIRBALL.1110 }
+					}
+				}
+			}
+		}
+
+		revoke_allowed = { always = no }
+
+		ai_will_do = {
+			factor = 0.1
+			modifier = {
+				factor = 0.2
+				ROOT = {
+					has_character_flag = recent_spar
+				}
+			}
+			modifier = {
+				factor = 0.5
+			}
+			modifier = {
+				factor = 0.5
+				is_dumb_trigger = yes
+			}
+			modifier = {
+				factor = 0.5
+				trait = content
+			}
+			modifier = {
+				factor = 0.5
+				trait = cynical
+			}
+			modifier = {
+				factor = 1.5
+				trait = ambitious
+			}
+		}
+	}
+
+	airball_challenge_fellow_member_to_play_airball = {
+		is_in_society = yes
+		only_playable = yes
+
+		filter = society
+		ai_target_filter = society
+		
+		potential = {
+			NOT = { trait = incapable }
+			society_member_of = airball_association
+			society_rank >= 2
+			OR = {
+				NOT = { has_character_flag = recently_refused_spar }
+				had_character_flag = { flag = recently_refused_spar days = 930 }
+			}
+		}
+		
+		from_potential = {
+			NOT = { trait = incapable }
+			society_member_of = airball_association
+			society_rank >= 2
+		}
+
+		allow = {
+			FROM = {
+				has_society_currency_tiny_trigger = yes
+				prisoner = no
+				custom_tooltip = {
+					text = cannot_challenge_higher_ranked_member
+					hidden_tooltip = {
+						ROOT = {
+							NOT = { higher_tier_than = FROM }
+						}
+					}
+				}
+				custom_tooltip = {
+					text = has_not_sparred_recently
+					hidden_tooltip = {
+						OR = {
+							NOT = { has_character_flag = recent_spar }
+							had_character_flag = { flag = recent_spar days = 730 }
+						}
+					}
+				}
+			}
+		}
+
+		effect = {
+			FROM = {
+				detract_society_currency_tiny_effect = yes
+				hidden_tooltip = {
+					ROOT = {
+						character_event = { id = AIRBALL.1120 }
+					}
+				}
+			}
+		}
+
+		revoke_allowed = { always = no }
+
+		ai_will_do = {
+			factor = 0.1
+			modifier = {
+				factor = 0.2
+				ROOT = {
+					has_character_flag = recent_spar
+				}
+			}
+			modifier = {
+				factor = 0.5
+			}
+			modifier = {
+				factor = 0.5
+				is_dumb_trigger = yes
+			}
+			modifier = {
+				factor = 0.5
+				trait = content
+			}
+			modifier = {
+				factor = 0.5
+				trait = cynical
+			}
+			modifier = {
+				factor = 1.5
+				trait = ambitious
+			}
+		}
+	}
 	
 	bak_recruit_member = {
 		ai_check_interval = 12
@@ -2179,30 +2389,69 @@ targeted_decisions = {
 			}
 			ROOT = {
 				set_character_flag = received_bak_education_before
-				if = {
-					limit = {
-						trait = powerful_bender
-					}
-					remove_trait = powerful_bender 
-					add_trait = master_bender
-				}
-				if = {
-					limit = {
-						trait = competent_bender
-					}
-					remove_trait = competent_bender 
-					add_trait = powerful_bender
-				}
-				if = {
-					limit = {
-						trait = incompetent_bender
-					}
-					remove_trait = incompetent_bender 
-					add_trait = competent_bender
-				}
+				level_up_bending_effect = yes
 				hidden_tooltip = {
 					character_event = { id = MNSAK.5064 } 
 				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0.1
+			}
+		}
+	}
+
+	airball_instruct_others = {
+		ai_check_interval = 12
+		filter = realm
+		ai_target_filter = home_court
+		is_in_society = yes
+		
+		potential = {
+			NOT = { trait = incapable }
+			is_in_society = no
+			is_adult = no
+			trait = airbender
+			NOT = { has_character_flag = received_airball_education_before }
+			NOR = { 
+				trait = legendary_bender
+				trait = master_bender
+			}
+		}
+		
+		from_potential = {
+			society_rank >= 4 # coach
+			society_member_of = airball_association
+			is_adult = yes
+			trait = airbender
+			NOT = { trait = incapable }
+		}
+		
+		allow = {
+			FROM = {
+				has_society_currency_major_trigger = yes	###requires 150SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+		
+		revoke_allowed = {
+			always = no
+		}
+		
+		effect = {
+			FROM = {
+				detract_society_currency_major_effect = yes	###lose 150SocCur
+			}
+			ROOT = {
+				set_character_flag = received_airball_education_before
+				level_up_bending_effect = yes
 			}
 		}
 		

@@ -14,6 +14,7 @@ character_event = {
 	id = REP.100
 	hide_window = yes
 	
+	min_age = 16
 	ai = yes
 	is_patrician = yes
 	capable_only = yes
@@ -22,7 +23,6 @@ character_event = {
 	trigger = {
 		has_dlc = "The Republic"
 		liege = { is_merchant_republic = yes }
-		age = 16
 		in_command = no
 		OR = {
 			liege = { 
@@ -35,7 +35,7 @@ character_event = {
 				NOT = { reverse_opinion = { who = ROOT value = 0 } }
 				NOT = { has_dynasty_flag = the_victims }
 				NOT = { has_character_flag = the_grand_ball }
-				NOT = { trait = in_hiding }
+				NOT = { is_inaccessible_trigger = yes }
 			}
 			liege = {
 				any_vassal = {
@@ -48,7 +48,7 @@ character_event = {
 					NOT = { trait = incapable }
 					NOT = { has_dynasty_flag = the_victims }
 					NOT = { has_character_flag = the_grand_ball }
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 				}
 			}
 		}
@@ -69,7 +69,7 @@ character_event = {
 						has_dynasty_flag = the_victims
 						any_vassal = { ai = no }
 					}
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 				}
 			}
 			liege = { 
@@ -98,7 +98,7 @@ character_event = {
 						prisoner = no
 						NOT = { reverse_opinion = { who = ROOT value = 0 } }
 						NOT = { has_dynasty_flag = the_victims }
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 					narrative_event = { id = REP.101 }
 					set_character_flag = the_grand_ball
@@ -106,17 +106,13 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # The Great Ball (Player)
 narrative_event = {
 	id = REP.101
 	title = EVTNAME_REP_101
-	desc = EVTDESC_REP_101
+	desc = EVTDESC_REP_101
 	picture = GFX_evt_courtiers_talking
 	
 	is_triggered_only = yes
@@ -139,7 +135,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.102
 	title = EVTNAME_REP_102
-	desc = EVTDESC_REP_102
+	desc = EVTDESC_REP_102
 	picture = GFX_evt_scandal
 	
 	hide_from = yes
@@ -165,10 +161,10 @@ character_event = {
 	
 	ai = yes
 	is_patrician = yes
+	has_character_flag = shamed_player_at_ball
 	
 	trigger = {
 		has_dlc = "The Republic"
-		has_character_flag = shamed_player_at_ball
 		liege = { is_merchant_republic = yes }
 		OR = {
 			liege = { 
@@ -237,17 +233,13 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # The Even Greater Ball (Player)
 narrative_event = {
 	id = REP.104
 	title = EVTNAME_REP_104
-	desc = EVTDESC_REP_104
+	desc = EVTDESC_REP_104
 	picture = GFX_evt_courtiers_talking
 	
 	hide_from = yes
@@ -274,7 +266,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.105
 	title = EVTNAME_REP_105
-	desc = EVTDESC_REP_105
+	desc = EVTDESC_REP_105
 	picture = GFX_evt_family_feud_republic
 	
 	hide_from = yes
@@ -421,12 +413,7 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
-
 
 ### Romeo & Juliet
 
@@ -435,15 +422,16 @@ character_event = {
 	id = REP.160
 	hide_window = yes
 	
+	min_age = 15
 	ai = yes
+	only_men = yes
 	capable_only = yes
 	prisoner = no
+	has_dlc = "The Republic"
+	is_married = no
 	
 	trigger = {
-		has_dlc = "The Republic"
-		is_female = no
 		has_dynasty_flag = the_feuders
-		is_married = no
 		in_command = no
 		father = {
 			has_dynasty_flag = the_feuders
@@ -452,9 +440,8 @@ character_event = {
 			prisoner = no
 			in_command = no
 			NOT = { trait = incapable }
-			NOT = { trait = in_hiding }
+			NOT = { is_inaccessible_trigger = yes }
 		}
-		age = 15
 		NOT = { 
 			age = 30 
 			trait = homosexual
@@ -462,7 +449,7 @@ character_event = {
 			trait = incapable
 			trait = eunuch
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 		father = {
 			OR = {
 				liege = { 
@@ -476,7 +463,7 @@ character_event = {
 					NOT = { 
 						trait = incapable
 					}
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 					any_child = {
 						is_female = yes
 						is_married = no
@@ -488,7 +475,7 @@ character_event = {
 							trait = infirm
 							trait = homosexual
 						}
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 				}
 				liege = {
@@ -501,7 +488,7 @@ character_event = {
 						prisoner = no
 						in_command = no
 						NOT = { trait = incapable }
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 						any_child = {
 							is_female = yes
 							is_married = no
@@ -513,7 +500,7 @@ character_event = {
 								trait = infirm
 								trait = homosexual
 							}
-							NOT = { trait = in_hiding }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 					}
 				}
@@ -529,7 +516,7 @@ character_event = {
 						ai = no
 						has_dynasty_flag = the_victims
 						has_dynasty_flag = feud_phase_two
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 				}
 				liege = { 
@@ -544,7 +531,7 @@ character_event = {
 							ai = no
 							has_dynasty_flag = the_victims
 							has_dynasty_flag = feud_phase_two
-							NOT = { trait = in_hiding }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 					}
 				}
@@ -558,7 +545,7 @@ character_event = {
 							prisoner = no
 							in_command = no
 							NOT = { trait = incapable }
-							NOT = { trait = in_hiding }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						narrative_event = { id = REP.161 }
 					}
@@ -571,17 +558,13 @@ character_event = {
 	mean_time_to_happen = {
 		months = 100
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # A Nightly Visit... (Daughter)
 narrative_event = {
 	id = REP.161
 	title = EVTNAME_REP_161
-	desc = EVTDESC_REP_161
+	desc = EVTDESC_REP_161
 	picture = GFX_evt_family_feud_republic
 	
 	is_triggered_only = yes
@@ -654,15 +637,16 @@ character_event = {
 	id = REP.162
 	hide_window = yes
 	
+	min_age = 15
 	ai = yes
+	only_women = yes
 	capable_only = yes
 	prisoner = no
+	has_dlc = "The Republic"
+	is_married = no
 	
 	trigger = {
-		has_dlc = "The Republic"
-		is_female = yes
 		has_dynasty_flag = the_feuders
-		is_married = no
 		father = {
 			has_dynasty_flag = the_feuders
 			liege = { is_merchant_republic = yes }
@@ -670,15 +654,14 @@ character_event = {
 			prisoner = no
 			in_command = no
 			NOT = { trait = incapable }
-			NOT = { trait = in_hiding }
+			NOT = { is_inaccessible_trigger = yes }
 		}
-		age = 15
 		NOT = { 
 			age = 30 
 			trait = homosexual
 			trait = incapable
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 		father = {
 			OR = {
 				liege = { 
@@ -689,7 +672,7 @@ character_event = {
 					prisoner = no
 					in_command = no
 					NOT = { trait = incapable }
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 					any_child = {
 						age = 15
 						is_female = no
@@ -700,7 +683,7 @@ character_event = {
 							trait = incapable
 							trait = eunuch
 						}
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 						prisoner = no
 						is_married = no
 						in_command = no
@@ -716,7 +699,7 @@ character_event = {
 						prisoner = no
 						in_command = no
 						NOT = { trait = incapable }
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 						any_child = {
 							age = 15
 							is_female = no
@@ -727,7 +710,7 @@ character_event = {
 								trait = incapable
 								trait = eunuch
 							}
-							NOT = { trait = in_hiding }
+							NOT = { is_inaccessible_trigger = yes }
 							prisoner = no
 							is_married = no
 							in_command = no
@@ -782,17 +765,13 @@ character_event = {
 	mean_time_to_happen = {
 		months = 100
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # A Nightly Visit... (Son)
 narrative_event = {
 	id = REP.163
 	title = EVTNAME_REP_161
-	desc = EVTDESC_REP_163
+	desc = EVTDESC_REP_163
 	picture = GFX_evt_family_feud_republic
 	
 	is_triggered_only = yes
@@ -868,7 +847,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.164
 	title = EVTNAME_REP_164
-	desc = EVTDESC_REP_164
+	desc = EVTDESC_REP_164
 	picture = GFX_evt_family_feud_republic
 	
 	hide_from = yes
@@ -878,27 +857,27 @@ narrative_event = {
 	option = {
 		name = EVTOPTA_REP_164
 		hidden_tooltip = {
-			narrative_event = { id = REP.167 days = 14 }
+			character_event = { id = REP.167 days = 14 }
 		}
 		set_dynasty_flag = feud_peace_1
 		FROMFROM = {
 			father = { set_dynasty_flag = feud_peace_2 }
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		random_child = {
 			limit = { has_character_flag = julia }
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		custom_tooltip = { text = end_feud_tooltip }
 	}
 	option = {
 		name = EVTOPTB_REP_164
 		FROMFROM = {
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		random_child = {
 			limit = { has_character_flag = julia }
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		custom_tooltip = { text = continue_feud_tooltip }
 	}
@@ -908,7 +887,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.165
 	title = EVTNAME_REP_164
-	desc = EVTDESC_REP_165
+	desc = EVTDESC_REP_165
 	picture = GFX_evt_family_feud_republic
 	
 	hide_from = yes
@@ -918,27 +897,27 @@ narrative_event = {
 	option = {
 		name = EVTOPTA_REP_164
 		hidden_tooltip = {
-			narrative_event = { id = REP.167 days = 14 }
+			character_event = { id = REP.167 days = 14 }
 		}
 		set_dynasty_flag = feud_peace_1
 		FROMFROM = {
 			father = { set_dynasty_flag = feud_peace_2 }
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		random_child = {
 			limit = { has_character_flag = romeo }
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		custom_tooltip = { text = end_feud_tooltip }
 	}
 	option = {
 		name = EVTOPTB_REP_165
 		FROMFROM = {
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		random_child = {
 			limit = { has_character_flag = romeo }
-			death = { death_reason = death_suicide }
+			death = { death_reason = death_suicide_poison }
 		}
 		custom_tooltip = { text = continue_feud_tooltip }
 	}
@@ -948,7 +927,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.166
 	title = EVTNAME_REP_166
-	desc = EVTDESC_REP_166
+	desc = EVTDESC_REP_166
 	picture = GFX_evt_marriage
 	
 	hide_from = yes
@@ -1053,17 +1032,13 @@ character_event = {
 			}
 		}
 	}	
-	
-	option = {
-		name = OK
-	}
 }
 
 # Two Funerals and a Truce (Player)
 narrative_event = {
 	id = REP.168
 	title = EVTNAME_REP_168
-	desc = EVTDESC_REP_168
+	desc = EVTDESC_REP_168
 	picture = GFX_evt_death
 	
 	is_triggered_only = yes
@@ -1090,6 +1065,7 @@ character_event = {
 	id = REP.180
 	hide_window = yes
 	
+	min_age = 30
 	ai = yes
 	is_patrician = yes
 	capable_only = yes
@@ -1100,7 +1076,6 @@ character_event = {
 		has_dynasty_flag = the_feuders
 		liege = { is_merchant_republic = yes }
 		wealth = 200
-		age = 30
 		OR = {
 			liege = { 
 				is_patrician = yes
@@ -1123,7 +1098,7 @@ character_event = {
 						trait = blinded
 						trait = craven
 					}
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 				}
 			}
 			liege = {
@@ -1145,7 +1120,7 @@ character_event = {
 							trait = blinded
 							trait = craven
 						}
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 				}
 			}
@@ -1178,7 +1153,7 @@ character_event = {
 							trait = infirm
 							trait = blinded
 						}
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 					character_event = { id = REP.181 }
 				}
@@ -1214,17 +1189,13 @@ character_event = {
 								trait = infirm
 								trait = blinded
 							}
-							NOT = { trait = in_hiding }
+							NOT = { is_inaccessible_trigger = yes }
 						}
 						character_event = { id = REP.181 }
 					}
 				}
 			}
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -1242,17 +1213,13 @@ character_event = {
 			narrative_event = { id = REP.182 }
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # The Smugglers
 narrative_event = {
 	id = REP.182
 	title = EVTNAME_REP_182
-	desc = EVTDESC_REP_182
+	desc = EVTDESC_REP_182
 	picture = GFX_evt_family_feud_republic
 	
 	is_triggered_only = yes
@@ -1291,10 +1258,6 @@ character_event = {
 			character_event = { id = REP.184 }
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Plan is approved (AI Son)
@@ -1316,17 +1279,13 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # The Only Good Smuggler...
 narrative_event = {
 	id = REP.185
 	title = EVTNAME_REP_185
-	desc = EVTDESC_REP_185
+	desc = EVTDESC_REP_185
 	picture = GFX_evt_family_feud_republic
 	
 	is_triggered_only = yes
@@ -1347,7 +1306,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.186
 	title = EVTNAME_REP_186
-	desc = EVTDESC_REP_186
+	desc = EVTDESC_REP_186
 	picture = GFX_evt_family_feud_republic
 	
 	is_triggered_only = yes
@@ -1363,7 +1322,7 @@ narrative_event = {
 		}
 		FROM = {
 			death = {
-				death_reason = death_murder
+				death_reason = death_murder_beheading
 				killer = FROM
 			}
 		}
@@ -1379,7 +1338,7 @@ narrative_event = {
 		name = EVTOPTC_REP_186
 		FROM = {
 			death = {
-				death_reason = death_murder
+				death_reason = death_murder_beheading
 				killer = FROM
 			}
 		}
@@ -1393,6 +1352,7 @@ character_event = {
 	id = REP.190
 	hide_window = yes
 	
+	min_age = 16
 	ai = yes
 	is_patrician = yes
 	capable_only = yes
@@ -1400,13 +1360,12 @@ character_event = {
 	
 	trigger = {
 		has_dlc = "The Republic"
-		age = 16
 		in_command = no
 		NOT = {
 			trait = infirm
 			trait = blinded
 		}
-		NOT = { trait = in_hiding }
+		NOT = { is_inaccessible_trigger = yes }
 		has_dynasty_flag = the_feuders
 		liege = { is_merchant_republic = yes }
 		OR = {
@@ -1421,7 +1380,7 @@ character_event = {
 					trait = infirm
 					trait = blinded
 				}
-				NOT = { trait = in_hiding }
+				NOT = { is_inaccessible_trigger = yes }
 				has_dynasty_flag = the_victims
 				has_dynasty_flag = feud_phase_two
 				NOT = { has_dynasty_flag = pirate_feud }
@@ -1438,7 +1397,7 @@ character_event = {
 						trait = infirm
 						trait = blinded
 					}
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 					has_dynasty_flag = the_victims
 					has_dynasty_flag = feud_phase_two
 					NOT = { has_dynasty_flag = pirate_feud }
@@ -1459,7 +1418,7 @@ character_event = {
 					has_dynasty_flag = the_victims
 					has_dynasty_flag = feud_phase_two
 					NOT = { has_dynasty_flag = pirate_feud }
-					NOT = { trait = in_hiding }
+					NOT = { is_inaccessible_trigger = yes }
 				}
 			}
 			liege = { 
@@ -1475,7 +1434,7 @@ character_event = {
 						has_dynasty_flag = the_victims
 						has_dynasty_flag = feud_phase_two
 						NOT = { has_dynasty_flag = pirate_feud }
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 				}
 			}
@@ -1487,16 +1446,12 @@ character_event = {
 						has_dynasty_flag = the_victims
 						has_dynasty_flag = feud_phase_two
 						NOT = { has_dynasty_flag = pirate_feud }
-						NOT = { trait = in_hiding }
+						NOT = { is_inaccessible_trigger = yes }
 					}
 					narrative_event = { id = REP.191 }
 				}
 			}
 		}
-	}
-	
-	option = {
-		name = OK
 	}
 }
 
@@ -1504,7 +1459,7 @@ character_event = {
 narrative_event = {
 	id = REP.191
 	title = EVTNAME_REP_191
-	desc = EVTDESC_REP_191
+	desc = EVTDESC_REP_191
 	picture = GFX_evt_busy_trading_dock_republic
 	
 	is_triggered_only = yes
@@ -1534,7 +1489,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.192
 	title = EVTNAME_REP_192
-	desc = EVTDESC_REP_192
+	desc = EVTDESC_REP_192
 	picture = GFX_evt_kraken
 	
 	is_triggered_only = yes
@@ -1566,17 +1521,13 @@ character_event = {
 			narrative_event = { id = REP.194 }
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Days of Toil and Hardship
 narrative_event = {
 	id = REP.194
 	title = EVTNAME_REP_194
-	desc = EVTDESC_REP_194
+	desc = EVTDESC_REP_194
 	picture = GFX_evt_trade_post_republic
 	
 	is_triggered_only = yes
@@ -1603,7 +1554,7 @@ narrative_event = {
 narrative_event = {
 	id = REP.195
 	title = EVTNAME_REP_195
-	desc = EVTDESC_REP_195
+	desc = EVTDESC_REP_195
 	picture = GFX_evt_merchant_ship_at_sea_republic
 	
 	is_triggered_only = yes
@@ -1633,6 +1584,7 @@ character_event = {
 	id = REP.200
 	hide_window = yes
 	
+	min_age = 16
 	ai = yes
 	is_patrician = yes
 	prisoner = no
@@ -1640,7 +1592,6 @@ character_event = {
 	
 	trigger = {
 		has_dlc = "The Republic"
-		age = 16
 		has_dynasty_flag = the_feuders
 		is_merchant_republic = yes
 		any_vassal = {
@@ -1666,17 +1617,13 @@ character_event = {
 			narrative_event = { id = REP.201 }
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Rival Dynasty Rules the Republic
 narrative_event = {
 	id = REP.201
 	title = EVTNAME_REP_201
-	desc = EVTDESC_REP_201
+	desc = EVTDESC_REP_201
 	picture = GFX_evt_doge_republic
 	
 	is_triggered_only = yes
@@ -1726,17 +1673,13 @@ character_event = {
 			narrative_event = { id = REP.203 }
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Player Dynasty Rules the Republic
 narrative_event = {
 	id = REP.203
 	title = EVTNAME_REP_201
-	desc = EVTDESC_REP_203
+	desc = EVTDESC_REP_203
 	picture = GFX_evt_doge_republic
 	
 	is_triggered_only = yes
@@ -1820,17 +1763,13 @@ character_event = {
 			}
 		}
 	}
-	
-	option = {
-		name = OK
-	}
 }
 
 # Riots
 narrative_event = {
 	id = REP.206
 	title = EVTNAME_REP_206
-	desc = EVTDESC_REP_206
+	desc = EVTDESC_REP_206
 	picture = GFX_evt_family_feud_republic
 	
 	is_triggered_only = yes
