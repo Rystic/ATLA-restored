@@ -1,0 +1,125 @@
+# new avatar engine
+# ---------------------
+# for future generations,
+# why did I do this new avatar engine?
+# because the old avatar cycle system is borked
+# ---------------------
+# written by unLomTrois
+
+# called in avatar's death event
+create_new_avatar_effect = {
+
+    if = { # sefety control
+        limit = {
+            has_global_flag = avatar_dead
+        }
+        
+        new_avatar_cycle_effect = yes # switch cycle
+
+        trigger_switch = {
+            on_trigger = has_global_flag
+            avatar_fire = { create_new_fire_avatar_effect = yes }    
+            avatar_air = { create_new_fire_avatar_effect = yes }    
+            avatar_water = { create_new_fire_avatar_effect = yes }    
+            avatar_earth = { create_new_fire_avatar_effect = yes }    
+        }
+    }
+
+    set_player_character = event_target:new_avatar
+
+    clear_event_target = new_avatar
+}
+
+# must be called from new avatar character scope
+new_avatar_cycle_effect = {
+    clr_global_flag = avatar_dead
+
+    trigger_switch = {
+        on_trigger = has_global_flag
+        avatar_water = { clr_global_flag = avatar_water set_global_flag = avatar_earth }
+        avatar_earth = { clr_global_flag = avatar_earth set_global_flag = avatar_fire }
+        avatar_fire = { clr_global_flag = avatar_fire set_global_flag = avatar_air }
+        avatar_air = { clr_global_flag = avatar_air set_global_flag = avatar_water }
+    }
+}
+
+make_new_avatar_unrevealed_effect = {
+    set_character_flag = avatar_unrevealed
+    set_global_flag = avatar_unrevealed
+
+    add_trait = unrevealedavatar # to make them not to die in childhood
+
+    save_event_target_as = new_avatar
+    d_avatar_unrevealed = {
+        grant_title = event_target:new_avatar
+    }
+}
+
+find_suitable_family_for_avatar_effect = {
+    random_character = { # find a mother for an avatar
+        limit = {
+            is_suitable_mother_of_avatar_trigger = yes
+        }
+
+        save_global_event_target_as = mother_of_avatar
+
+        spouse_even_if_dead = { # find a father for the avatar
+            save_global_event_target_as = father_of_avatar
+        }
+
+        any_liege = { # find a teacher for the avatar
+            random_courtier_or_vassal = {
+                limit = {
+                    is_suitable_teacher_of_avatar_trigger = yes
+                }
+
+                save_global_event_target_as = teacher_of_avatar
+            }
+        }
+    }
+}
+
+create_new_fire_avatar_effect = {
+    find_suitable_family_for_avatar_effect = yes
+
+    create_character = {
+        dynasty = event_target:father_of_avatar
+        culture = event_target:mother_of_avatar
+        religion = event_target:mother_of_avatar
+        female = random
+        age = 0
+
+        genetic_mother = event_target:mother_of_avatar
+        genetic_father = event_target:father_of_avatar
+    }
+    new_character = {
+        set_mother = event_target:mother_of_avatar
+        set_father = event_target:father_of_avatar
+        set_guardian = event_target:teacher_of_avatar
+
+        make_new_avatar_unrevealed_effect = yes
+
+        # canon roku
+        # if = {
+        #     limit = {
+        #         NOT = { has_global_flag = Roku }
+        #         is_female = no
+        #     }
+        #     set_name = "Roku"
+        #     set_global_flag = Roku
+        #     add_trait = canon_character
+        #     set_character_flag = is_roku
+        # }
+    }
+
+    
+
+    clear_global_avatar_event_targets_effect = yes
+}
+
+clear_global_avatar_event_targets_effect = {
+    clear_global_event_target = mother_of_avatar
+    clear_global_event_target = father_of_avatar
+    clear_global_event_target = teacher_of_avatar
+}
+
