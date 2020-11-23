@@ -1,8 +1,8 @@
 # new avatar engine
 # ---------------------
 # for future generations,
-# why did I do this new avatar engine?
-# because the old avatar cycle system is borked
+# why did I make this new avatar engine?
+# because the old one was broken-down
 # ---------------------
 # written by unLomTrois
 
@@ -14,23 +14,37 @@ create_new_avatar_effect = {
             has_global_flag = avatar_dead
         }
         
-        new_avatar_cycle_effect = yes # switch cycle
+        # switch cycle
+        new_avatar_cycle_effect = yes
 
+        # generate new avatar
         trigger_switch = {
             on_trigger = has_global_flag
-            avatar_fire = { create_new_fire_avatar_effect = yes }    
-            avatar_air = { create_new_fire_avatar_effect = yes }    
             avatar_water = { create_new_fire_avatar_effect = yes }    
             avatar_earth = { create_new_fire_avatar_effect = yes }    
+            avatar_fire = { create_new_fire_avatar_effect = yes }    
+            avatar_air = { create_new_air_avatar_effect = yes }    
         }
+
+        set_global_flag = avatar_unrevealed
+
+        if = { # safety control, switching the character you play
+            limit = {
+                ai = no
+                event_target:new_avatar = {
+                    ai = yes
+                    is_alive = yes
+                }
+            }
+            
+            set_player_character = event_target:new_avatar
+        }
+
+        clear_global_avatar_event_targets_effect = yes
     }
-
-    set_player_character = event_target:new_avatar
-
-    clear_event_target = new_avatar
 }
 
-# must be called from new avatar character scope
+# change the element in the cycle to next: water, earth, fire, air, water ...
 new_avatar_cycle_effect = {
     clr_global_flag = avatar_dead
 
@@ -43,45 +57,49 @@ new_avatar_cycle_effect = {
     }
 }
 
-make_new_avatar_unrevealed_effect = {
-    set_character_flag = avatar_unrevealed
-    set_global_flag = avatar_unrevealed
-
-    add_trait = unrevealedavatar # to make them not to die in childhood
-
-    save_event_target_as = new_avatar
-    d_avatar_unrevealed = {
-        grant_title = event_target:new_avatar
-    }
-}
-
-find_suitable_family_for_avatar_effect = {
-    random_character = { # find a mother for an avatar
-        limit = {
-            is_suitable_mother_of_avatar_trigger = yes
-        }
-
-        save_global_event_target_as = mother_of_avatar
-
-        spouse_even_if_dead = { # find a father for the avatar
-            save_global_event_target_as = father_of_avatar
-        }
-
-        any_liege = { # find a teacher for the avatar
-            random_courtier_or_vassal = {
-                limit = {
-                    is_suitable_teacher_of_avatar_trigger = yes
-                }
-
-                save_global_event_target_as = teacher_of_avatar
-            }
-        }
-    }
-}
+# CREATE NEW AVATARS
 
 create_new_fire_avatar_effect = {
-    find_suitable_family_for_avatar_effect = yes
 
+    # Roku part
+    if = {
+        limit = {
+            has_global_flag = avatar_fire
+            has_global_flag = Kyoshi
+            NOT = { has_global_flag = Roku }
+            year >= 740
+        }
+        generate_avatar_roku_effect = yes
+        set_global_flag = Roku
+    }
+    else = {
+        generate_new_avatar_effect = yes
+    }
+}
+
+create_new_air_avatar_effect = {
+
+    # Aang part
+    if = {
+        limit = {
+            has_global_flag = avatar_air
+            has_global_flag = Roku
+            NOT = { has_global_flag = Aang }
+            year >= 800
+        }
+        generate_avatar_aang_effect = yes
+        set_global_flag = Aang
+    }
+    else = {
+        generate_new_air_avatar_effect = yes
+    }
+}
+
+# GENERATION
+
+generate_new_avatar_effect = {
+    find_suitable_family_for_avatar_effect = yes
+    
     create_character = {
         dynasty = event_target:father_of_avatar
         culture = event_target:mother_of_avatar
@@ -91,35 +109,301 @@ create_new_fire_avatar_effect = {
 
         genetic_mother = event_target:mother_of_avatar
         genetic_father = event_target:father_of_avatar
+
+        flag = avatar_unrevealed
+        add_trait = unrevealedavatar # to make them not to die in childhood
     }
     new_character = {
+        # avatar effects
+        save_event_target_as = new_avatar
+
+        # family effects
         set_mother = event_target:mother_of_avatar
         set_father = event_target:father_of_avatar
         set_guardian = event_target:teacher_of_avatar
 
-        make_new_avatar_unrevealed_effect = yes
+        # add titular duchy to avatar
+        c_avatar_unrevealed = {
+            grant_title = event_target:new_avatar
+        }
 
-        # canon roku
-        # if = {
-        #     limit = {
-        #         NOT = { has_global_flag = Roku }
-        #         is_female = no
-        #     }
-        #     set_name = "Roku"
-        #     set_global_flag = Roku
-        #     add_trait = canon_character
-        #     set_character_flag = is_roku
-        # }
+        set_defacto_liege = event_target:liege_of_avatar_family
+    }
+}
+
+generate_new_air_avatar_effect = {
+    create_character = {
+        dynasty = none
+        culture = southern_air_nomad # setting culture for name
+        religion = air_spirituality
+        female = random
+        age = 0
+
+        flag = avatar_unrevealed
+        add_trait = unrevealedavatar # to make them not to die in childhood
+    }
+    new_character = {
+        # avatar effects
+        save_event_target_as = new_avatar
+
+        find_suitable_liege_for_air_avatar_effect = yes
+
+        culture = event_target:liege_of_air_avatar # setting actual culture
+        set_guardian = event_target:liege_of_air_avatar
+
+        # add titular duchy to avatar
+        c_avatar_unrevealed = {
+            grant_title = event_target:new_avatar
+        }
+
+        set_defacto_liege = event_target:liege_of_air_avatar
+    }
+}
+
+# FIND suitable family, liege and teacher
+
+find_suitable_family_for_avatar_effect = {
+    if = {
+        any_character = {
+            limit = {
+                is_suitable_mother_of_avatar_trigger = yes
+            }
+
+            count > 0
+        }
+
+        random_character = { # find a mother for an avatar
+            limit = {
+                is_suitable_mother_of_avatar_trigger = yes
+            }
+
+            save_global_event_target_as = mother_of_avatar
+
+            spouse_even_if_dead = { # find a father for the avatar
+                save_global_event_target_as = father_of_avatar
+            }
+        }
     }
 
+    find_suitable_liege_for_avatar_effect = yes
     
+    find_suitable_teacher_for_avatar_effect = yes
+}
 
-    clear_global_avatar_event_targets_effect = yes
+find_suitable_liege_for_avatar_effect = {
+    event_target:mother_of_avatar = {
+        if = {
+            limit = {
+                liege = {
+                    higher_real_tier_than = COUNT
+                }
+            }
+            liege = {
+                save_event_target_as = liege_of_avatar_family
+            }
+        }
+        else = {
+            top_liege = {
+                save_event_target_as = liege_of_avatar_family
+            }
+        }
+    }
+}
+
+find_suitable_liege_for_air_avatar_effect = {
+    if = {
+        limit = {
+            event_target:new_avatar = {
+                is_female = yes
+            }
+        }
+        random_list = {
+            50 = {
+                k_eastern_air_temple = {
+                    holder_scope = {
+                        save_event_target_as = liege_of_air_avatar
+                    }
+                }
+            }
+            50 = {
+                k_western_air_temple = {
+                    holder_scope = {
+                        save_event_target_as = liege_of_air_avatar
+                    }
+                }
+            }
+        }
+    }
+    else = {
+        random_list = {
+            50 = {
+                k_southern_air_temple = {
+                    holder_scope = {
+                        save_event_target_as = liege_of_air_avatar
+                    }
+                }
+            }
+            50 = {
+                k_northern_air_temple = {
+                    holder_scope = {
+                        save_event_target_as = liege_of_air_avatar
+                    }
+                }
+            }
+        }
+    }
+}
+
+find_suitable_teacher_for_avatar_effect = {
+    event_target:liege_of_avatar_family = {
+        random_courtier_or_vassal = {
+            limit = {
+                is_suitable_teacher_of_avatar_trigger = yes
+            }
+            save_global_event_target_as = teacher_of_avatar
+        }
+    }
 }
 
 clear_global_avatar_event_targets_effect = {
     clear_global_event_target = mother_of_avatar
     clear_global_event_target = father_of_avatar
     clear_global_event_target = teacher_of_avatar
+    clear_event_target = new_avatar
+    clear_event_target = liege_of_avatar_family
+    clear_event_target = liege_of_air_avatar
 }
 
+# Roku effects
+
+generate_avatar_roku_effect = {
+    generate_family_for_roku_effect = yes
+
+    create_character = {
+        name = "Roku"
+        dynasty = 536
+        religion = "fire_spirituality"
+        culture = "fire_islander"
+        dna = "000000a0b00"
+        age = 0
+
+        add_trait = canon_character
+        add_trait = unrevealedavatar # to make them not to die in childhood
+        
+        flag = is_roku
+        flag = avatar_unrevealed
+    }
+    new_character = {
+        save_event_target_as = new_avatar
+
+        set_mother = event_target:mother_of_avatar
+        set_father = event_target:father_of_avatar
+
+        # add titular duchy to avatar
+        c_avatar_unrevealed = {
+            grant_title = event_target:new_avatar
+        }
+
+        set_defacto_liege = event_target:liege_of_avatar_family
+        set_guardian = event_target:teacher_of_avatar
+    }
+}
+
+generate_family_for_roku_effect = {
+    find_suitable_liege_for_avatar_roku_effect = yes
+
+    find_suitable_teacher_for_avatar_effect = yes
+    
+    event_target:liege_of_avatar_family = {
+        # father of Roku
+        create_random_soldier = {
+            dynasty = 536
+            religion = "fire_spirituality"
+            culture = "fire_islander"
+            random_traits = yes
+            female = no
+
+            add_trait = firebender
+            add_trait = competent_bender
+        }
+        new_character = {
+            save_event_target_as = father_of_avatar
+        }
+        
+        # mother of Roku
+        create_random_soldier = {
+            dynasty = random
+            religion = "fire_spirituality"
+            culture = "fire_islander"
+            random_traits = yes
+            female = yes
+
+            add_trait = firebender
+            add_trait = competent_bender
+        }
+        new_character = {
+            save_event_target_as = mother_of_avatar
+        }
+
+        # marry them
+        event_target:father_of_avatar = {
+            add_spouse = event_target:mother_of_avatar
+        }
+    }
+}
+
+find_suitable_liege_for_avatar_roku_effect = {
+    random_character = {
+        limit = {
+            is_landed = yes
+            # culture = fire_islander
+
+            # primary_title = {
+            #     region = world_fire_isles
+            # }
+
+            tier = DUKE
+        }
+
+        save_event_target_as = liege_of_avatar_family
+    }
+}
+
+# AANG 
+
+generate_avatar_aang_effect = {
+
+    k_southern_air_temple = {
+        holder_scope = {
+            save_event_target_as = liege_of_air_avatar
+        }
+    }
+
+    create_character = {
+        name = "Aang"
+        dynasty = 1504
+        religion = "air_spirituality"
+        culture = "customPortrait_aang"
+        age = 0
+        female = no
+
+        add_trait = canon_character
+        add_trait = unrevealedavatar # to make them not to die in childhood
+        
+        flag = is_aang
+        flag = avatar_unrevealed
+    }
+    new_character = {
+        save_event_target_as = new_avatar
+
+        culture = southern_air_nomad
+
+        # add titular duchy to avatar
+        c_avatar_unrevealed = {
+            grant_title = event_target:new_avatar
+        }
+
+        set_defacto_liege = event_target:liege_of_air_avatar
+        set_guardian = event_target:liege_of_air_avatar
+    }
+}
