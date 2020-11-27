@@ -1,0 +1,260 @@
+# new avatar engine - fire avatar
+# ---------------------
+# flavor events about strange relationships between fire avatar and fire sages
+# how was Avatar Roku planted into fire royal court?
+# can you uncover the secrets of the fire sages?
+# ---------------------
+# written by unlomtrois
+
+namespace = new_avatar_fire_sages
+
+# FIRE SAGES PLANTING CHAIN
+
+# A messenger came to your parents with a letter from the fire lord palace
+# Your father and his family was invited to fire lord's royal court
+# He respectfully accepted this invitation ...
+character_event = {
+    id = new_avatar_fire_sages.1
+    title = EVTTITLE_new_avatar_fire_sages_1_invitation # The Invitation
+    desc = EVTDESC_new_avatar_fire_sages_1
+    picture = GFX_evt_fire_nation_inn
+    is_triggered_only = yes
+
+    trigger = {
+        has_global_flag = avatar_fire
+        has_character_flag = avatar_unrevealed
+        age >= 12
+        NOT = {
+            has_character_flag = fire_sages_moved_avatar_to_royal_court
+        }
+        father = {
+            is_alive = yes
+        }
+    }
+
+    immediate = {
+        set_character_flag = fire_sages_moved_avatar_to_royal_court
+    }
+
+    option = {
+        name = EVTOPT_new_avatar_fire_sages_1 # I can not wait!
+
+        trigger = {
+            NOT = { has_focus = focus_ed_intrigue }
+        }
+    }
+
+    option = { # Young avatar was educated with focus on intrigue, and suspects something
+        name = EVTOPT_new_avatar_fire_sages_1_intrigue # Strange... 
+        tooltip_info = intrigue
+
+        trigger = {
+            has_focus = focus_ed_intrigue
+        }
+
+        set_character_flag = young_fire_avatar_suspects_something
+    }
+
+    after = {
+        narrative_event = {
+            id = new_avatar_fire_sages.2
+            days = 10
+            tooltip = EVTTOOLTIP_new_avatar_fire_sages_2 # You and your parents started packing
+        }
+    }
+}
+
+
+# (common)
+# A couple of days later, a carriage procession drove up to your house. 
+# There were a lot of guards and dragonmoose.
+
+# (intrigue)
+# In addition to our carriage, there were a dozen others
+# Apparently noble and important persons were always transported in groups.
+
+# (common)
+# The door opened and an elderly man asked us to get into the carriage
+# You and your parents got into the carriage and the procession moved to the capital
+narrative_event = {
+    id = new_avatar_fire_sages.2
+
+    title = EVTTITLE_new_avatar_fire_sages_2_carriage # The Carriage
+    desc = { # only common parts
+        trigger = {
+            NOT = { has_focus = focus_ed_intrigue }
+        }
+        text = EVTDESC_new_avatar_fire_sages_2_normal
+    }
+    desc = { # 1st common part + intrigue part + 2nd common part
+        trigger = {
+            has_focus = focus_ed_intrigue
+        }
+        text = EVTDESC_new_avatar_fire_sages_2_intrigue
+    }
+    picture = GFX_evt_fire_nation_carriage
+    is_triggered_only = yes
+
+    option = {
+        name = EVTOPT_new_avatar_fire_sages_2 # What a large splendid carriage! There's even a pai sho table!
+
+        trigger = {
+            NOT = { has_focus = focus_ed_intrigue }
+        }
+    }
+
+    option = { # Young avatar was educated with focus on intrigue, and suspects something
+        name = EVTOPT_new_avatar_fire_sages_2_intrigue # Who are these people in tall red hats in other carriages? ...
+        tooltip_info = intrigue
+
+        trigger = {
+            has_focus = focus_ed_intrigue
+
+            # maybe add need in curious trait
+        }
+    }
+
+    after = {
+        narrative_event = {
+            id = new_avatar_fire_sages.3
+            days = 10
+            tooltip = EVTTOOLTIP_new_avatar_fire_sages_3 # This is how our journey to the capital began
+        }
+    }
+}
+
+
+# (common)
+# During the trip, the carriage passed by a beautiful village near a waterfall.
+
+# (normal part)
+# The attendant talked about customs in the palace and at the court.
+# We played pai sho, exchanged pleasantries. 
+# A cold breeze beat through the window, you could see the waters beat against the rocks
+
+# (intrigue part)
+# You ask your father and the guide who are these people in tall red hats.
+# Father said that they are fire sages, they serve the nation of fire and protect us from evil spirits.
+
+# (szeto part)
+# The guide added that they are returning to the capital to prepare for the Szeto festival.
+
+# (avatar part)
+# The guide added that it is their responsibility to find a new Avatar. 
+narrative_event = {
+    id = new_avatar_fire_sages.3
+    
+    title = EVTTITLE_new_avatar_fire_sages_3_travel # The Travel
+    desc = { # normal desc = common + normal part
+        trigger = {
+            NOT = { has_focus = focus_ed_intrigue }
+        }
+        text = EVTDESC_new_avatar_fire_sages_3_normal
+    }
+    desc = { # desc about Szeto Festival = common + intrigue part + szeto part
+        trigger = {
+            has_character_flag = show_desk_about_szeto_festival
+        }
+        text = EVTDESC_new_avatar_fire_sages_3_szeto_festival
+    }
+    desc = { # desc about a new Avatar = common + intrigue part + avatar part
+        trigger = {
+            has_character_flag = show_desk_about_new_avatar
+        }
+        text = EVTDESC_new_avatar_fire_sages_3_new_avatar
+    }
+    picture = GFX_evt_fire_county
+    is_triggered_only = yes
+
+    immediate = {
+        # Show randomly one of two intrigue descriptions
+        random_list = {
+            75 = {
+                set_character_flag = show_desk_about_szeto_festival
+            }
+            25 = {
+                set_character_flag = show_desk_about_new_avatar
+            }
+        }
+    }
+
+    option = {
+        name = EVTOPT_new_avatar_fire_sages_3 # (When will we finally arrive...?)
+
+        trigger = {
+            NOT = { has_character_flag = show_desk_about_new_avatar }
+        }
+    }
+
+    option = { # Young avatar was educated with focus on intrigue, and suspects something
+        name = EVTOPT_new_avatar_fire_sages_3_intrigue # A new Avatar? ...
+        tooltip_info = intrigue
+
+        trigger = {
+            has_character_flag = show_desk_about_new_avatar
+        }
+    }
+
+    after = {
+        clr_character_flag = show_desk_about_new_avatar
+        clr_character_flag = show_desk_about_szeto_festival
+
+        narrative_event = {
+            id = new_avatar_fire_sages.4
+            days = 10
+            tooltip = EVTTOOLTIP_new_avatar_fire_sages_4 # The convoy turned towards the Harbor City.
+        }
+    }
+}
+
+
+# The carriage crossed the gates of The Harbor City.
+# We passed the checkpoint, were met by another protection squad sent straight from the capital.
+# We were asked to show documents and an invitation from the Fire Lord.
+# The squad let us through. and we went out on the road to the capital, to the Caldera City.
+narrative_event = {
+    id = new_avatar_fire_sages.4
+    title = EVTTITLE_new_avatar_fire_sages_4_harbor # The Harbor
+    desc = EVTDESC_new_avatar_fire_sages_4
+    picture = GFX_evt_fire_nation_capital_path
+    is_triggered_only = yes
+
+    option = {
+        name = EVTOPT_new_avatar_fire_sages_4 # I wonder how it is up there?
+    }
+
+    after = {
+        narrative_event = {
+            id = new_avatar_fire_sages.5
+            days = 5
+            tooltip = EVTTOOLTIP_new_avatar_fire_sages_5 # A long ascent awaits us
+        }
+    }
+}
+
+
+# We drove to the top for about three hours.
+# At the checkpoint, we were again asked to show permission to enter the capital.
+# The crews of aristocrats, fire sages and ours parted in different directions.
+# There was a wonderful view from above.
+narrative_event = {
+    id = new_avatar_fire_sages.5
+    title = EVTTITLE_new_avatar_fire_sages_5_caldera # The Caldera
+    desc = EVTDESC_new_avatar_fire_sages_5
+    picture = GFX_evt_fire_nation
+    is_triggered_only = yes
+
+    option = {
+        name = EVTOPT_new_avatar_fire_sages_5 # How beautiful it is ...
+    }
+
+    after = {
+        narrative_event = {
+            id = new_avatar_fire_sages.6
+            days = 5
+            tooltip = EVTTOOLTIP_new_avatar_fire_sages_6 # To the palace!
+        }
+    }
+}
+
+
