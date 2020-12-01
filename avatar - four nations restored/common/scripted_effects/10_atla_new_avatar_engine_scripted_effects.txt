@@ -316,10 +316,10 @@ generate_family_for_roku_effect = {
     
     event_target:liege_of_avatar_family = {
         # father of Roku
-        create_random_soldier = {
+        create_character = {
             dynasty = 536
-            religion = "fire_spirituality"
-            culture = "fire_islander"
+            religion = event_target:liege_of_avatar_family
+            culture = event_target:liege_of_avatar_family
             random_traits = yes
             female = no
 
@@ -328,13 +328,18 @@ generate_family_for_roku_effect = {
         }
         new_character = {
             save_event_target_as = father_of_avatar
+            random_list = {
+                20 = { add_trait = brilliant_strategist }
+                30 = { add_trait = tough_soldier }
+                50 = { add_trait = skilled_tactician }
+            }
         }
         
         # mother of Roku
-        create_random_soldier = {
+        create_character = {
             dynasty = random
-            religion = "fire_spirituality"
-            culture = "fire_islander"
+            religion = event_target:liege_of_avatar_family
+            culture = event_target:liege_of_avatar_family
             random_traits = yes
             female = yes
 
@@ -356,7 +361,7 @@ find_suitable_liege_for_avatar_roku_effect = {
     random_character = {
         limit = {
             is_landed = yes
-            # culture = fire_islander
+            culture_group = fire_nation_culture
 
             # primary_title = {
             #     region = world_fire_isles
@@ -407,3 +412,64 @@ generate_avatar_aang_effect = {
         set_guardian = event_target:liege_of_air_avatar
     }
 }
+
+
+
+###################################
+# new avatar engine - fire avatar #
+###################################
+
+
+find_fire_lord_effect = {
+    if = {
+        limit = {
+            e_fire_nation = {
+                owner = {
+                    is_fire_lord_trigger = yes
+                }
+            }
+        }
+        e_fire_nation = {
+            owner = {
+                save_event_target_as = firelord
+            }
+        }
+        # break = yes
+    }
+    if = {
+        limit = {
+            k_fire_nation = {
+                owner = {
+                    is_fire_lord_trigger = yes
+                }
+            }
+        }
+        k_fire_nation = {
+            owner = {
+                save_event_target_as = firelord
+            }
+        }
+        # break = yes
+    }
+    if = {
+        limit = {
+            c_fire_capital = {
+                owner = {
+                    is_fire_lord_trigger = yes
+                }
+            }
+        }
+        c_fire_capital = {
+            owner = {
+                save_event_target_as = firelord
+            }
+        }
+        # break = yes
+    }
+}
+
+
+
+
+
+
