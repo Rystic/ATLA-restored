@@ -1,9 +1,14 @@
 # new avatar engine - fire avatar
-# ---------------------
+# -------------------------------
 # flavor events about strange relationships between fire avatar and fire sages
 # how was Avatar Roku planted into fire royal court?
 # can you uncover the secrets of the fire sages?
-# ---------------------
+# -------------------------------
+# Reserved event ids
+# 1-99 - events for new avatar
+# 100-199 - events for fire lord
+# 200-299 - events for fire sages
+# -------------------------------
 # written by unlomtrois
 
 namespace = new_avatar_fire_sages
@@ -34,6 +39,16 @@ character_event = {
 
     immediate = {
         set_character_flag = fire_sages_moved_avatar_to_royal_court
+
+        if = {
+            limit = {
+                location = { region = world_fire_mainland }
+            }
+            set_character_flag = way_overland
+        } 
+        else = {
+            set_character_flag = way_by_sea
+        }
     }
 
     option = {
@@ -56,7 +71,7 @@ character_event = {
     }
 
     after = {
-        narrative_event = {
+        character_event = {
             id = new_avatar_fire_sages.2
             days = 10
             tooltip = EVTTOOLTIP_new_avatar_fire_sages_2 # You and your parents started packing
@@ -76,7 +91,7 @@ character_event = {
 # (common)
 # The door opened and an elderly man asked us to get into the carriage
 # You and your parents got into the carriage and the procession moved to the capital
-narrative_event = {
+character_event = {
     id = new_avatar_fire_sages.2
 
     title = EVTTITLE_new_avatar_fire_sages_2_carriage # The Carriage
@@ -115,7 +130,7 @@ narrative_event = {
     }
 
     after = {
-        narrative_event = {
+        character_event = {
             id = new_avatar_fire_sages.3
             days = 10
             tooltip = EVTTOOLTIP_new_avatar_fire_sages_3 # This is how our journey to the capital began
@@ -127,10 +142,16 @@ narrative_event = {
 # (common)
 # During the trip, the carriage passed by a beautiful village near a waterfall.
 
+# (common by sea part)
+# Soon the carriage reached the port, the procession plunged into a ship.
+
 # (normal part)
-# The attendant talked about customs in the palace and at the court.
 # We played pai sho, exchanged pleasantries. 
 # A cold breeze beat through the window, you could see the waters beat against the rocks
+
+# (normal by sea part)
+# We played pai sho, exchanged pleasantries. 
+# I was a little seasick, They say we'll only arrive at the harbor in a couple of days.
 
 # (intrigue part)
 # You ask your father and the guide who are these people in tall red hats.
@@ -141,29 +162,80 @@ narrative_event = {
 
 # (avatar part)
 # The guide added that it is their responsibility to find a new Avatar. 
-narrative_event = {
+character_event = {
     id = new_avatar_fire_sages.3
     
-    title = EVTTITLE_new_avatar_fire_sages_3_travel # The Travel
+    title = { # The Travel
+		trigger = {
+			has_character_flag = way_overland
+		}
+		text = EVTTITLE_new_avatar_fire_sages_3_travel_overland
+	}
+    title = { # The Travel Overseas
+		trigger = {
+			has_character_flag = way_by_sea
+		}
+		text = EVTTITLE_new_avatar_fire_sages_3_travel_by_sea
+	}
+
     desc = { # normal desc = common + normal part
         trigger = {
+            has_character_flag = way_overland
             NOT = { has_focus = focus_ed_intrigue }
         }
         text = EVTDESC_new_avatar_fire_sages_3_normal
     }
     desc = { # desc about Szeto Festival = common + intrigue part + szeto part
         trigger = {
+            has_character_flag = way_overland
             has_character_flag = show_desk_about_szeto_festival
         }
         text = EVTDESC_new_avatar_fire_sages_3_szeto_festival
     }
     desc = { # desc about a new Avatar = common + intrigue part + avatar part
         trigger = {
+            has_character_flag = way_overland
             has_character_flag = show_desk_about_new_avatar
         }
         text = EVTDESC_new_avatar_fire_sages_3_new_avatar
     }
-    picture = GFX_evt_fire_county
+
+    # By Sea
+    desc = { # normal desc = common by sea part + normal by_sea part
+        trigger = {
+            has_character_flag = way_by_sea
+            NOT = { has_focus = focus_ed_intrigue }
+        }
+        text = EVTDESC_new_avatar_fire_sages_3_normal_by_sea
+    }
+    desc = { # desc about Szeto Festival = common by sea part + intrigue part + szeto part
+        trigger = {
+            has_character_flag = way_by_sea
+            has_character_flag = show_desk_about_szeto_festival
+        }
+        text = EVTDESC_new_avatar_fire_sages_3_szeto_festival_by_sea
+    }
+    desc = { # desc about a new Avatar = common by sea part + intrigue part + avatar part
+        trigger = {
+            has_character_flag = way_by_sea
+            has_character_flag = show_desk_about_new_avatar
+        }
+        text = EVTDESC_new_avatar_fire_sages_3_new_avatar_by_sea
+    }
+    
+    picture = {
+        trigger = {
+            has_character_flag = way_overland
+        }
+        picture = GFX_evt_fire_county
+    }
+    picture = {
+        trigger = {
+            has_character_flag = way_by_sea
+        }
+        picture = GFX_evt_fire_nation_junk
+    }
+
     is_triggered_only = yes
 
     immediate = {
@@ -199,7 +271,10 @@ narrative_event = {
         clr_character_flag = show_desk_about_new_avatar
         clr_character_flag = show_desk_about_szeto_festival
 
-        narrative_event = {
+        clr_character_flag = way_by_sea
+        clr_character_flag = way_overland
+
+        character_event = {
             id = new_avatar_fire_sages.4
             days = 10
             tooltip = EVTTOOLTIP_new_avatar_fire_sages_4 # The convoy turned towards the Harbor City.
@@ -208,11 +283,11 @@ narrative_event = {
 }
 
 
-# The carriage crossed the gates of The Harbor City.
+# We arrived to The Harbor City.
 # We passed the checkpoint, were met by another protection squad sent straight from the capital.
 # We were asked to show documents and an invitation from the Fire Lord.
 # The squad let us through. and we went out on the road to the capital, to the Caldera City.
-narrative_event = {
+character_event = {
     id = new_avatar_fire_sages.4
     title = EVTTITLE_new_avatar_fire_sages_4_harbor # The Harbor
     desc = EVTDESC_new_avatar_fire_sages_4
@@ -224,7 +299,7 @@ narrative_event = {
     }
 
     after = {
-        narrative_event = {
+        character_event = {
             id = new_avatar_fire_sages.5
             days = 5
             tooltip = EVTTOOLTIP_new_avatar_fire_sages_5 # A long ascent awaits us
@@ -237,7 +312,7 @@ narrative_event = {
 # At the checkpoint, we were again asked to show permission to enter the capital.
 # The crews of aristocrats, fire sages and ours parted in different directions.
 # There was a wonderful view from above.
-narrative_event = {
+character_event = {
     id = new_avatar_fire_sages.5
     title = EVTTITLE_new_avatar_fire_sages_5_caldera # The Caldera
     desc = EVTDESC_new_avatar_fire_sages_5
@@ -249,12 +324,134 @@ narrative_event = {
     }
 
     after = {
-        narrative_event = {
+        character_event = {
             id = new_avatar_fire_sages.6
             days = 5
             tooltip = EVTTOOLTIP_new_avatar_fire_sages_6 # To the palace!
         }
     }
 }
+
+
+# Just a ping event for "from"
+character_event = {
+    id = new_avatar_fire_sages.6
+    is_triggered_only = yes
+    hide_window = yes
+
+    immediate = {
+        find_fire_lord_effect = yes
+
+        event_target:firelord = {
+            random_courtier = {
+                limit = {
+                    has_job_title = yes
+                }
+                save_event_target_as = councillor_of_firelord
+            }
+        }
+
+        event_target:councillor_of_firelord = {
+            character_event = {
+                id = new_avatar_fire_sages.7
+                days = 1
+            }
+        }
+    }
+}
+
+# Just a ping event for "from"
+character_event = {
+    id = new_avatar_fire_sages.7
+    is_triggered_only = yes
+    hide_window = yes
+
+    immediate = {
+        FROM = {
+            narrative_event = {
+                id = new_avatar_fire_sages.8
+                days = 1
+            }
+        }
+    }
+}
+
+# We arrived at the palace. At the entrance we were met by an advisor [put their name here] 
+# He told us about customs in the palace and at the court.
+# As he said, the Fire Lord is now very busy with state affairs, and cannot meet my father personnaly.
+# Finally, he said what position my father was hired for.
+# "They say that someone at court heard about your military talents, someone very close to the royal family. 
+# While you are being appointed as a junior strategist. Your seal for access to the council of war will soon be ready. 
+# Not everyone at court will be kind to you, and many consider you an upstart. So I recommend that you be careful. "
+# Soon we left the palace, and he showed us our new apartments within a couple of streets to the palace, in the courtyard zone.
+# "See you, strategist"
+narrative_event = {
+    id = new_avatar_fire_sages.8
+    title = EVTTITLE_new_avatar_fire_sages_8_palace # The Palace
+    desc = EVTDESC_new_avatar_fire_sages_8
+    picture = GFX_evt_fire_palace
+    is_triggered_only = yes
+
+    option = {
+        name = EVTOPT_new_avatar_fire_sages_8 # Very exciting ...
+
+        set_defacto_liege = event_target:firelord
+        move_character = event_target:firelord
+
+        father = {
+            # force_host = event_target:firelord
+            move_character = event_target:firelord
+            if = {
+                limit = {
+                    is_landed = no
+                    is_patrician = no
+                }
+                set_defacto_liege = event_target:firelord
+                
+                unsafe_give_minor_title = title_commander
+            }
+        }
+        mother = {
+            # force_host = event_target:firelord
+            move_character = event_target:firelord
+        }
+    }
+
+    # after = {
+    #     narrative_event = {
+    #         id = new_avatar_fire_sages.9
+    #         days = 5
+    #         tooltip = EVTTOOLTIP_new_avatar_fire_sages_9 # A new life begins!
+    #     }
+    # }
+}
+
+
+
+# character_event = {
+#     id = new_avatar_fire_sages.9
+#     picture = GFX_evt_fire_nation
+#     is_triggered_only = yes
+
+#     trigger = {
+#         is_child_of = event_target:firelord
+#     }
+    
+
+#     option = {
+#         name = EVTOPT_new_avatar_fire_sages_9 # How beautiful it is ...
+#     }
+# }
+
+
+
+
+
+
+
+
+
+
+
 
 
