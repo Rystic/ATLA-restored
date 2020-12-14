@@ -188,7 +188,6 @@ apply_any_applicable_harsh_penalties_effect = {
 	                }
 	            }
 	            is_priest = yes #They are a priest
-	            NOT = { event_target:combatant_1 = { religion_group = pagan_group } } #Attacker is NOT pagan
 			}
 			custom_tooltip = { text = dueling_inappropriate_target_tt }
 			# Instead of blocking the action completely...
@@ -405,7 +404,7 @@ evaluate_extra_duel_result_score_effect = { # [SPECIAL CIRCUMSTANCES - OPTIONAL]
 	# 1. BONUSES ADDED:	adds to the score...
 	################################################################
 	if = {
-		limit = { religion_group = pagan_group }
+		limit = { religion_group = outlaw_group }
 		change_variable = {
 			which = duel_result_score #(50 + X) - Y
 			value = 3
@@ -476,7 +475,7 @@ evaluate_extra_duel_result_score_effect = { # [SPECIAL CIRCUMSTANCES - OPTIONAL]
 		}
 	}
 	if = {
-		limit = { event_target:combatant_2 = { religion_group = pagan_group } }
+		limit = { event_target:combatant_2 = { religion_group = outlaw_group } }
 		subtract_variable = {
 			which = duel_result_score #(50 + X) - Y
 			value = 3
@@ -2719,171 +2718,171 @@ clean_up_after_duel_effect = { #Runs for both combatant_1 and 2
 	clr_duel_flags_effect = yes
 }
 
-# clr_duel_missions_effect = {
-	# ### For warrior lodge mission duels...
-	# if = {
-		# limit = { has_character_flag = failed_mission }
-		# detract_society_currency_medium_effect = yes
-		# clr_quest = { id = quest_warrior_lodge_duel_deadly failure = yes }
-		# clr_character_flag = failed_mission
-	# }
-	# else = { #means you succeeded your mission!
-		# if = {
-			# limit = { event_target:combatant_1 = { character = PREV } } #if you are the attacker...
-			# if = {
-				# limit = {
-	                # has_quest = quest_warrior_lodge_duel_honor
-	                # quest_target = { character = event_target:combatant_2 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# add_society_currency_medium_effect = yes
-				# }
-				# else = {
-					# add_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_honor
-			# }
-			# else_if = {
-				# limit = {
-					# has_quest = quest_warrior_lodge_duel_deadly
-	                # quest_target = { character = event_target:combatant_2 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# if = { #this missions gives more reward for deadly outcomes...
-						# limit = { has_character_flag = someone_died }
-						# add_society_currency_major_effect = yes	 
-					# }
-					# else = {
-						# add_society_currency_medium_effect = yes
-					# }
-				# }
-				# else = {
-					# detract_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_deadly
-			# }
-		# }
-		# else = { #Means you are player 2/defender...
-			# if = {
-				# limit = {
-	                # has_quest = quest_warrior_lodge_duel_honor
-	                # quest_target = { character = event_target:combatant_1 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# add_society_currency_medium_effect = yes
-				# }
-				# else = {
-					# add_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_honor
-			# }
-			# else_if = {
-				# limit = {
-					# has_quest = quest_warrior_lodge_duel_deadly
-	                # quest_target = { character = event_target:combatant_1 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# if = { #this missions gives more reward for deadly outcomes...
-						# limit = { has_character_flag = someone_died }
-						# add_society_currency_major_effect = yes	 
-					# }
-					# else = {
-						# add_society_currency_medium_effect = yes
-					# }				
-				# }
-				# else = {
-					# detract_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_deadly
-			# }
-		# }
-	# }
-# }
+clr_duel_missions_effect = {
+	### For warrior lodge mission duels...
+	if = {
+		limit = { has_character_flag = failed_mission }
+		detract_society_currency_medium_effect = yes
+		clr_quest = { id = quest_warrior_lodge_duel_deadly failure = yes }
+		clr_character_flag = failed_mission
+	}
+	else = { #means you succeeded your mission!
+		if = {
+			limit = { event_target:combatant_1 = { character = PREV } } #if you are the attacker...
+			if = {
+				limit = {
+	                has_quest = quest_warrior_lodge_duel_honor
+	                quest_target = { character = event_target:combatant_2 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					add_society_currency_medium_effect = yes
+				}
+				else = {
+					add_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_honor
+			}
+			else_if = {
+				limit = {
+					has_quest = quest_warrior_lodge_duel_deadly
+	                quest_target = { character = event_target:combatant_2 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					if = { #this missions gives more reward for deadly outcomes...
+						limit = { has_character_flag = someone_died }
+						add_society_currency_major_effect = yes	 
+					}
+					else = {
+						add_society_currency_medium_effect = yes
+					}
+				}
+				else = {
+					detract_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_deadly
+			}
+		}
+		else = { #Means you are player 2/defender...
+			if = {
+				limit = {
+	                has_quest = quest_warrior_lodge_duel_honor
+	                quest_target = { character = event_target:combatant_1 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					add_society_currency_medium_effect = yes
+				}
+				else = {
+					add_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_honor
+			}
+			else_if = {
+				limit = {
+					has_quest = quest_warrior_lodge_duel_deadly
+	                quest_target = { character = event_target:combatant_1 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					if = { #this missions gives more reward for deadly outcomes...
+						limit = { has_character_flag = someone_died }
+						add_society_currency_major_effect = yes	 
+					}
+					else = {
+						add_society_currency_medium_effect = yes
+					}				
+				}
+				else = {
+					detract_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_deadly
+			}
+		}
+	}
+}
 
-# rank_up_to_hero_level_effect = {
-	# ### For warrior lodge rank-up duels...
-	# if = {
-		# limit = { has_character_flag = fighting_to_rank_up } #ensures it only runs for the player...
-		# if = {
-			# limit = {
-				# OR = {
-					# has_character_flag = is_victorious_attacker
-					# has_character_flag = is_victorious_defender
-				# }
-			# }
-			# if = { #If the target is still alive...
-				# limit = { event_target:combatant_2 = { is_alive = yes } }
-				# event_target:combatant_2 = {
-					# set_character_flag = may_join_society
-					# character_event = { id = HF.10061 } #Send outcome ping to the duel target...
-				# }
-			# }
-			# else = {
-				# event_target:my_society = { #choose a hero target to deliver the news instead...
-		            # any_society_member = {
-		                # limit = { 
-		                    # society_rank == 4
-		                # }
-		                # score_value = { #Prioritizes selecting some kind of warrior...
-		                    # value = 10
-		                    # good_soldier_outcome_score = yes
-		                # }
-		                # save_event_target_as = hero_character
-		                # set_character_flag = may_join_society
-		                # character_event = { id = HF.10061 } #Send outcome...
-		            # }
-		        # }
-			# }
-		# }
-		# else = {
-			# if = { #If the target is still alive...
-				# limit = { event_target:combatant_2 = { is_alive = yes } }
-				# event_target:combatant_2 = {
-					# character_event = { id = HF.10061 } #Send outcome ping to the duel target...
-				# }
-			# }
-			# else = {
-				# event_target:my_society = { #choose a hero target to deliver the news instead...
-		            # any_society_member = {
-		                # limit = { 
-		                    # society_rank == 4
-		                # }
-		                # score_value = { #Prioritizes selecting some kind of warrior...
-		                    # value = 10
-		                    # good_soldier_outcome_score = yes
-		                # }
-		                # save_event_target_as = hero_character
-		                # character_event = { id = HF.10061 } #Send outcome...
-		            # }
-		        # }
-			# }
-		# }
-	# }
-# }
+rank_up_to_hero_level_effect = {
+	### For warrior lodge rank-up duels...
+	if = {
+		limit = { has_character_flag = fighting_to_rank_up } #ensures it only runs for the player...
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = is_victorious_attacker
+					has_character_flag = is_victorious_defender
+				}
+			}
+			if = { #If the target is still alive...
+				limit = { event_target:combatant_2 = { is_alive = yes } }
+				event_target:combatant_2 = {
+					set_character_flag = may_join_society
+					character_event = { id = HF.10061 } #Send outcome ping to the duel target...
+				}
+			}
+			else = {
+				event_target:my_society = { #choose a hero target to deliver the news instead...
+		            any_society_member = {
+		                limit = { 
+		                    society_rank == 4
+		                }
+		                score_value = { #Prioritizes selecting some kind of warrior...
+		                    value = 10
+		                    good_soldier_outcome_score = yes
+		                }
+		                save_event_target_as = hero_character
+		                set_character_flag = may_join_society
+		                character_event = { id = HF.10061 } #Send outcome...
+		            }
+		        }
+			}
+		}
+		else = {
+			if = { #If the target is still alive...
+				limit = { event_target:combatant_2 = { is_alive = yes } }
+				event_target:combatant_2 = {
+					character_event = { id = HF.10061 } #Send outcome ping to the duel target...
+				}
+			}
+			else = {
+				event_target:my_society = { #choose a hero target to deliver the news instead...
+		            any_society_member = {
+		                limit = { 
+		                    society_rank == 4
+		                }
+		                score_value = { #Prioritizes selecting some kind of warrior...
+		                    value = 10
+		                    good_soldier_outcome_score = yes
+		                }
+		                save_event_target_as = hero_character
+		                character_event = { id = HF.10061 } #Send outcome...
+		            }
+		        }
+			}
+		}
+	}
+}
 
 send_notifications_after_champion_stand_in_effect = {
 	if = {
