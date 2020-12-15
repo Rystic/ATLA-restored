@@ -203,49 +203,25 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 
 		effect = {
 			society = { save_event_target_as = my_society }
-			if = { # Special handling for warrior lodge rank 3 members (in a society with enough Heroes already)...
-				limit = {
-					ai = no
-					# is_member_of_any_warrior_lodge_trigger = yes
-					society_rank == 3
-					society = {
-	                    any_society_member = { #make sure there is someone you can duel for the spot.
-	                    	NOT = { has_character_flag = call_to_legend_active }
-		                    ai = yes
-		                    prisoner = no
-		                    society_rank == 4
-		                }
-		                any_society_member = { #make sure there are already 4 other Heroes (rank is full).
-		                	count = 4
-		                    society_rank == 4
-		                }
-					}
-				}
-				set_character_flag = has_sent_request_to_rank_up
-				character_event = { id = HF.10060 } #sends event presenting choice: to duel a current Hero or nah?
+			#Rank up cost
+			if = {
+				limit = { society_rank == 1 }
+				change_society_currency = -750
+			}
+			if = {
+				limit = { society_rank == 2 }
+				change_society_currency = -1000
+			}
+			if = {
+				limit = { society_rank == 3 }
+				change_society_currency = -2000
 			}
 
-			else = { #For everyone else...
-				#Rank up cost
-				if = {
-					limit = { society_rank == 1 }
-					change_society_currency = -750
-				}
-				if = {
-					limit = { society_rank == 2 }
-					change_society_currency = -1000
-				}
-				if = {
-					limit = { society_rank == 3 }
-					change_society_currency = -2000
-				}
-
-				#Perform rank up
-				hidden_tooltip = {
-					save_event_target_as = rank_up_target
-					set_character_flag = has_sent_request_to_rank_up
-					character_event = { id = MNSAK.3000 days = 20 random = 10 } # sends hidden delayed event to self, which then sends request to Leader of the society
-				}
+			#Perform rank up
+			hidden_tooltip = {
+				save_event_target_as = rank_up_target
+				set_character_flag = has_sent_request_to_rank_up
+				character_event = { id = MNSAK.3000 days = 20 random = 10 } # sends hidden delayed event to self, which then sends request to Leader of the society
 			}
 		}
 
