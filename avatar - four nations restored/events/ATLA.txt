@@ -1279,7 +1279,7 @@ character_event = { # Earth Kingdom settings
 			limit = {
 				NOT = { year < 603 }
 				year = 600
-				#is_title_active = e_earth_kingdom
+				has_landed_title = e_earth_kingdom
 			}
 			if = {
 				limit = {
@@ -1318,17 +1318,98 @@ character_event = { # Earth Kingdom settings
 					}
 				}
 			}
+			if = { #assign Territories Tributes
+				limit = {
+					NOT = { year < 630}
+					year = 600
+					#is_title_active = e_earth_kingdom
+				}
+				if = {
+					limit = {
+						culture_group = earth_kingdom_culture
+						NOT = { culture = eastern_earth }
+						mercenary = no
+						holy_order = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						NOT = { religion = way_of_chin }
+						capital_scope = {
+								OR = {
+									region = world_southern_earth_kingdom
+									region = world_earth_islands
+									region = world_eastern_coast
+									region = world_si_wong_fringe
+								}
+							}
+						}
+					suzerain = {
+						remove_tributary = PREV
+					}
+					e_earth_kingdom = {
+						owner = {
+							make_tributary = {
+								who = ROOT
+								percentage = 0.12
+								tributary_type = earth_kingdom_territory_tributary
+							}
+						}
+					}
+				}
+			}
+			if = { # Assign Outpost tributes
+				limit = {
+					NOT = { year < 603 }
+					year = 600
+					#is_title_active = e_earth_kingdom
+				}
+				if = {
+					limit = {
+						OR = {
+							culture = barbarians
+							culture = sandbender
+						}
+						mercenary = no
+						holy_order = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						capital_scope = {
+							OR = {
+								region = world_si_wong
+								region = world_western_earth_kingdom
+								region = world_north_east_earth_kingdom
+							}
+						}	
+					}
+					suzerain = {
+						remove_tributary = PREV
+					}
+					e_earth_kingdom = {
+						owner = {
+							make_tributary = {
+								who = ROOT
+								percentage = 0.1
+								tributary_type = earth_kingdom_outpost_tributary
+							}
+						}
+					}
+				}
+			}
+			break = yes
 		}
-		if = { #assign Territories Tributes
+		if = {	#assign province tributes
 			limit = {
-				NOT = { year < 630}
+				NOT = { year < 603 }
 				year = 600
-				#is_title_active = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
 			}
 			if = {
 				limit = {
 					culture_group = earth_kingdom_culture
-					NOT = { culture = eastern_earth }
+					NOR = { 
+						culture = sandbender
+						culture = southern_earth
+						culture = barbarians	
+					}
 					mercenary = no
 					holy_order = no
 					rebel = no
@@ -1336,65 +1417,106 @@ character_event = { # Earth Kingdom settings
 					NOT = { religion = way_of_chin }
 					capital_scope = {
 							OR = {
-								region = world_southern_earth_kingdom
-								region = world_earth_islands
+								region = world_north_west_kingdom
+								region = world_north_east_earth_kingdom
+								region = world_central_desert
+								region = world_western_earth_kingdom
 								region = world_eastern_coast
-								region = world_si_wong_fringe
+							}
+							
+					}
+				}
+				suzerain = {
+					remove_tributary = PREV
+				}
+				k_earth_kingdom = {
+					owner = {
+						make_tributary = {
+							who = ROOT
+							percentage = 0.16
+							tributary_type = earth_kingdom_province_tributary
+						}
+					}
+				}
+			}
+			if = { #assign Territories Tributes
+				limit = {
+					NOT = { year < 630}
+					year = 600
+					#is_title_active = e_earth_kingdom
+				}
+				if = {
+					limit = {
+						culture_group = earth_kingdom_culture
+						NOT = { culture = eastern_earth }
+						mercenary = no
+						holy_order = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						NOT = { religion = way_of_chin }
+						capital_scope = {
+								OR = {
+									region = world_southern_earth_kingdom
+									region = world_earth_islands
+									region = world_eastern_coast
+									region = world_si_wong_fringe
+								}
+							}
+						}
+					suzerain = {
+						remove_tributary = PREV
+					}
+					k_earth_kingdom = {
+						owner = {
+							make_tributary = {
+								who = ROOT
+								percentage = 0.12
+								tributary_type = earth_kingdom_territory_tributary
 							}
 						}
 					}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				e_earth_kingdom = {
-					owner = {
-						make_tributary = {
-							who = ROOT
-							percentage = 0.12
-							tributary_type = earth_kingdom_territory_tributary
-						}
-					}
 				}
 			}
-		}
-		if = { # Assign Outpost tributes
-			limit = {
-				NOT = { year < 603 }
-				year = 600
-				#is_title_active = e_earth_kingdom
-			}
-			if = {
+			if = { # Assign Outpost tributes
 				limit = {
-					OR = {
-						culture = barbarians
-						culture = sandbender
-					}
-					mercenary = no
-					holy_order = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					capital_scope = {
+					NOT = { year < 603 }
+					year = 600
+					#is_title_active = e_earth_kingdom
+				}
+				if = {
+					limit = {
 						OR = {
-							region = world_si_wong
-							region = world_western_earth_kingdom
-							region = world_north_east_earth_kingdom
+							culture = barbarians
+							culture = sandbender
 						}
-					}	
-				}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				e_earth_kingdom = {
-					owner = {
-						make_tributary = {
-							who = ROOT
-							percentage = 0.1
-							tributary_type = earth_kingdom_outpost_tributary
+						mercenary = no
+						holy_order = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						capital_scope = {
+							OR = {
+								region = world_si_wong
+								region = world_western_earth_kingdom
+								region = world_north_east_earth_kingdom
+							}
+						}	
+					}
+					suzerain = {
+						remove_tributary = PREV
+					}
+					k_earth_kingdom = {
+						owner = {
+							make_tributary = {
+								who = ROOT
+								percentage = 0.1
+								tributary_type = earth_kingdom_outpost_tributary
+							}
 						}
 					}
 				}
 			}
-		}
+			break = yes
+		}		
 	}
 }
 
@@ -1658,13 +1780,20 @@ character_event = {
 				# value = canon
 			# }
 		# }
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}		
 	}
 	
 	
 	immediate = {
 		if = {
 			limit = {
-				has_landed_title = e_earth_kingdom
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
+				}
 				#has_landed_title = c_royal_earth_palace
 			}
 			if = {
@@ -1712,11 +1841,14 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-					has_landed_title = e_earth_kingdom
+					OR = {
+						has_landed_title = e_earth_kingdom
+						has_landed_title = k_earth_kingdom
+					}
 					has_landed_title = c_royal_earth_palace
 			}
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
-			e_earth_kingdom = {
+			primary_title = {
 				if = {
 					limit = {
 						year < 610
@@ -1797,7 +1929,10 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-				has_landed_title = e_earth_kingdom
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
+				}
 				has_landed_title = c_royal_earth_palace
 			}
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }

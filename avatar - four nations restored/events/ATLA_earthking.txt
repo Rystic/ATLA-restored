@@ -8,7 +8,10 @@ character_event = {
 	
 	trigger = {
 		primary_title = {
-			title = e_earth_kingdom
+			OR = {
+				title = e_earth_kingdom
+				title = k_earth_kingdom
+			}
 		}
 		NOR = {
 			trait = earthkingpuppet
@@ -75,7 +78,7 @@ character_event = {
 						title = e_earth_kingdom
 					}
 					primary_title = {
-						title = k_ba_sing_se
+						title = k_earth_kingdom
 					}
 				}
 				independent = yes
@@ -2023,7 +2026,10 @@ character_event = {
 	
 	trigger = {
 		primary_title = {
-			title = e_earth_kingdom
+			OR = {
+				title = e_earth_kingdom
+				title = k_earth_kingdom
+			}
 		}
 	}
 	
@@ -2512,11 +2518,19 @@ narrative_event = { # Disbandment of the Earth Kingdom
 	
 	immediate = {
 		if = {
-			limit = { has_landed_title = e_earth_kingdom }
+			limit = { 
+				OR = {
+					has_landed_title = e_earth_kingdom 
+					has_landed_title = k_earth_kingdom
+				}
+			}
 			subtract_variable = { which = global_royalAuthority value = 100 }
 			any_independent_ruler = {
 				limit = {
-					pays_tribute_to = e_earth_kingdom
+					OR = {
+						pays_tribute_to = e_earth_kingdom
+						pays_tribute_to = k_earth_kingdom
+					}
 				}
 				remove_tributary = FROM
 			}
@@ -2526,7 +2540,10 @@ narrative_event = { # Disbandment of the Earth Kingdom
 	option = {
 		name = EVTOPTA_EK_60
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_60_TOOLTIP
@@ -2536,7 +2553,10 @@ narrative_event = { # Disbandment of the Earth Kingdom
 	option = {
 		name = EVTOPTB_EK_60
 		trigger = {
-			pays_tribute_to = e_earth_kingdom
+			OR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_60B_TOOLTIP
@@ -2558,18 +2578,27 @@ character_event = { # Law Change - Event Server
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 	}
 	
 	option = {
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					has_law = ek_unity_0
-					NOT = { has_title_flag = ek_ra_set_unity_0 }
+				OR = {
+					e_earth_kingdom = {
+						has_law = ek_unity_0
+						NOT = { has_title_flag = ek_ra_set_unity_0 }
+					}
+					e_earth_kingdom = {
+						has_law = ek_unity_0
+						NOT = { has_title_flag = ek_ra_set_unity_0 }
+					}
 				}
 			}
-			e_earth_kingdom = {
+			primary_title = {
 				set_title_flag = ek_ra_set_unity_0
 				clr_title_flag = ek_ra_set_unity_1
 				clr_title_flag = ek_ra_set_unity_2
@@ -2583,12 +2612,18 @@ character_event = { # Law Change - Event Server
 		}
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					has_law = ek_unity_outposts
-					NOT = { has_title_flag = ek_ra_set_unity_outposts }
+				OR = {
+					e_earth_kingdom = {
+						has_law = ek_unity_outposts
+						NOT = { has_title_flag = ek_ra_set_unity_outposts }
+					}
+					k_earth_kingdom = {
+						has_law = ek_unity_outposts
+						NOT = { has_title_flag = ek_ra_set_unity_outposts }
+					}
 				}
 			}
-			e_earth_kingdom = {
+			primary_title = {
 				set_title_flag = ek_ra_set_unity_outposts
 				clr_title_flag = ek_ra_set_unity_0
 				clr_title_flag = ek_ra_set_unity_1
@@ -2602,12 +2637,18 @@ character_event = { # Law Change - Event Server
 		}
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					has_law = ek_unity_1
-					NOT = { has_title_flag = ek_ra_set_unity_1 }
+				OR = {
+					e_earth_kingdom = {
+						has_law = ek_unity_1
+						NOT = { has_title_flag = ek_ra_set_unity_1 }
+					}
+					k_earth_kingdom = {
+						has_law = ek_unity_1
+						NOT = { has_title_flag = ek_ra_set_unity_1 }
+					}					
 				}
 			}
-			e_earth_kingdom = {
+			primary_title = {
 				clr_title_flag = ek_ra_set_unity_outposts
 				set_title_flag = ek_ra_set_unity_1
 				clr_title_flag = ek_ra_set_unity_0
@@ -2621,12 +2662,18 @@ character_event = { # Law Change - Event Server
 		}
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					has_law = ek_unity_2
-					NOT = { has_title_flag = ek_ra_set_unity_2 }
+				OR = {
+					e_earth_kingdom = {
+						has_law = ek_unity_2
+						NOT = { has_title_flag = ek_ra_set_unity_2 }
+					}
+					k_earth_kingdom = {
+						has_law = ek_unity_2
+						NOT = { has_title_flag = ek_ra_set_unity_2 }
+					}					
 				}
 			}
-			e_earth_kingdom = {
+			primary_title = {
 				clr_title_flag = ek_ra_set_unity_outposts
 				set_title_flag = ek_ra_set_unity_2
 				clr_title_flag = ek_ra_set_unity_0
@@ -2640,12 +2687,18 @@ character_event = { # Law Change - Event Server
 		}
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					has_law = ek_unity_3
-					NOT = { has_title_flag = ek_ra_set_unity_3 }
+				OR = {
+					e_earth_kingdom = {
+						has_law = ek_unity_3
+						NOT = { has_title_flag = ek_ra_set_unity_3 }
+					}
+					k_earth_kingdom = {
+						has_law = ek_unity_3
+						NOT = { has_title_flag = ek_ra_set_unity_3 }
+					}					
 				}
 			}
-			e_earth_kingdom = {
+			primary_title = {
 				clr_title_flag = ek_ra_set_unity_outposts
 				set_title_flag = ek_ra_set_unity_3
 				clr_title_flag = ek_ra_set_unity_0
@@ -2659,12 +2712,14 @@ character_event = { # Law Change - Event Server
 		}
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					has_law = ze_admin_central
-					NOT = { has_title_flag = ek_central_admin }
+				OR = {
+					e_earth_kingdom = {
+						has_law = ze_admin_central
+						NOT = { has_title_flag = ek_central_admin }
+					}
 				}
 			}
-			e_earth_kingdom = {
+			primary_title = {
 				set_title_flag = ek_central_admin
 				holder_scope = {
 					narrative_event = { id = earthking.66 }
@@ -2686,13 +2741,19 @@ narrative_event = { # Territories Law
 	
 	immediate = {
 		if = {
-			limit = { has_landed_title = e_earth_kingdom }
+			limit = { 
+				has_landed_title = e_earth_kingdom 
+				has_landed_title = k_earth_kingdom 
+			}
 			subtract_variable = { which = global_royalAuthority value = 100 }
 			any_independent_ruler = {
 				limit = {
 					OR = {
 						culture_group = earth_kingdom_culture
-						pays_tribute_to = e_earth_kingdom
+						OR = {
+							pays_tribute_to = e_earth_kingdom
+							pays_tribute_to = k_earth_kingdom
+						}
 					}
 				}
 			if = {
@@ -2789,7 +2850,10 @@ narrative_event = { # Territories Law
 	option = {
 		name = EVTOPTA_EK_62
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_62_TOOLTIP
@@ -2799,7 +2863,10 @@ narrative_event = { # Territories Law
 	option = {
 		name = EVTOPTB_EK_62
 		trigger = {
-			pays_tribute_to = e_earth_kingdom
+			OR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_62B_TOOLTIP
@@ -2810,7 +2877,10 @@ narrative_event = { # Territories Law
 		name = EVTOPTC_EK_62
 		trigger = {
 			NOT = { pays_tribute_to = e_earth_kingdom }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 	}
 }
@@ -2826,13 +2896,21 @@ narrative_event = { # States Law
 	
 	immediate = {
 		if = {
-			limit = { has_landed_title = e_earth_kingdom }
+			limit = { 
+				OR = {
+					has_landed_title = e_earth_kingdom 
+					has_landed_title = k_earth_kingdom
+				}
+			}
 			subtract_variable = { which = global_royalAuthority value = 100 }
 			any_independent_ruler = {
 				limit = {
 					OR = {
 						culture_group = earth_kingdom_culture
-						pays_tribute_to = e_earth_kingdom
+						OR = {
+							pays_tribute_to = e_earth_kingdom
+							pays_tribute_to = k_earth_kingdom
+						}
 					}
 				}
 			if = {
@@ -2929,7 +3007,10 @@ narrative_event = { # States Law
 	option = {
 		name = EVTOPTA_EK_63
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_63_TOOLTIP
@@ -2939,7 +3020,10 @@ narrative_event = { # States Law
 	option = {
 		name = EVTOPTB_EK_63
 		trigger = {
-			pays_tribute_to = e_earth_kingdom
+			OR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_63B_TOOLTIP
@@ -2949,8 +3033,14 @@ narrative_event = { # States Law
 	option = {
 		name = EVTOPTC_EK_63
 		trigger = {
-			NOT = { pays_tribute_to = e_earth_kingdom }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
+			NOR = { 
+				has_landed_title = e_earth_kingdom 
+				has_landed_title = k_earth_kingdom
+			}
 		}
 	}
 }
@@ -2966,7 +3056,12 @@ narrative_event = { # Monarch Law
 	
 	immediate = {
 		if = {
-			limit = { has_landed_title = e_earth_kingdom }
+			limit = { 
+				OR = {
+					has_landed_title = e_earth_kingdom 
+					has_landed_title = k_earth_kingdom
+				}
+			}
 			subtract_variable = { which = global_royalAuthority value = 100 }
 		}
 	}
@@ -2974,7 +3069,10 @@ narrative_event = { # Monarch Law
 	option = {
 		name = EVTOPTA_EK_64
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_64_TOOLTIP
@@ -2984,7 +3082,10 @@ narrative_event = { # Monarch Law
 	option = {
 		name = EVTOPTB_EK_64
 		trigger = {
-			pays_tribute_to = e_earth_kingdom
+			OR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 	}
 	
@@ -2992,8 +3093,14 @@ narrative_event = { # Monarch Law
 	option = {
 		name = EVTOPTC_EK_64
 		trigger = {
-			NOT = { pays_tribute_to = e_earth_kingdom }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = { 
+				has_landed_title = e_earth_kingdom 
+				has_landed_title = k_earth_kingdom
+			}
+			NOR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 	}
 }
@@ -3009,13 +3116,21 @@ narrative_event = { # Outposts Law
 	
 	immediate = {
 		if = {
-			limit = { has_landed_title = e_earth_kingdom }
+			limit = { 
+				OR = {
+					has_landed_title = e_earth_kingdom 
+					has_landed_title = k_earth_kingdom
+				}
+			}
 			subtract_variable = { which = global_royalAuthority value = 100 }
 			any_independent_ruler = {
 				limit = {
 					OR = {
 						culture_group = earth_kingdom_culture
-						pays_tribute_to = e_earth_kingdom
+						OR = {
+							pays_tribute_to = e_earth_kingdom
+							pays_tribute_to = k_earth_kingdom
+						}
 					}
 				}
 			if = {
@@ -3055,7 +3170,10 @@ narrative_event = { # Outposts Law
 		option = {
 		name = EVTOPTA_EK_62
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_62_TOOLTIP
@@ -3065,7 +3183,10 @@ narrative_event = { # Outposts Law
 	option = {
 		name = EVTOPTB_EK_62
 		trigger = {
-			pays_tribute_to = e_earth_kingdom
+			OR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_62B_TOOLTIP
@@ -3075,8 +3196,14 @@ narrative_event = { # Outposts Law
 	option = {
 		name = EVTOPTC_EK_62
 		trigger = {
-			NOT = { pays_tribute_to = e_earth_kingdom }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
+			NOR = {
+				pays_tribute_to = e_earth_kingdom
+				pays_tribute_to = k_earth_kingdom
+			}			
 		}
 	}
 }
@@ -3087,17 +3214,25 @@ narrative_event = {
 	title = EVTNAMEEK.64
 	desc = EVTDESCEK.64
 	border = GFX_event_narrative_frame_war
-	is_triggered_only = yes
+	is_triggered_only = yes	
 	major = yes
 	
 	immediate = {
-		ROOT = {
-			any_tributary = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					#de_jure_liege = e_earth_kingdom
+		if = {
+			limit = {
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
 				}
-			set_defacto_liege = e_earth_kingdom
+			}
+			THIS = {
+				any_tributary = {
+					limit = {
+						culture_group = earth_kingdom_culture
+						#de_jure_liege = e_earth_kingdom
+					}
+					set_defacto_liege = PREV
+				}
 			}
 		}
 	}
@@ -3106,21 +3241,30 @@ narrative_event = {
 		name = EVTOPTC_EK_66a
 		trigger = {
 			culture_group = earth_kingdom_culture
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}	
 	}
 	option = {
 		name = EVTOPTC_EK_66b
 		trigger = {
 			culture_group = earth_kingdom_culture
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 	}
 	option = {
 		name = EVTOPTC_EK_66c
 		trigger = {
 			NOT = { culture_group = earth_kingdom_culture }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}		
 	}
 }
