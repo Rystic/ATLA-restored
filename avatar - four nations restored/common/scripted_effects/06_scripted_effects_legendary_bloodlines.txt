@@ -147,11 +147,11 @@ evaluate_legendary_progress_effect = {
 	}
 }
 
-send_legendary_tombola_effect = {
-	#For testing, use the following line (and comment out the other one):
-	#character_event = { id = HF.12003 days = 1 random = 5 } #Tombola...
-	character_event = { id = HF.12003 days = 10 random = 15 } #Tombola...
-}
+# send_legendary_tombola_effect = {
+	# #For testing, use the following line (and comment out the other one):
+	# #character_event = { id = HF.12003 days = 1 random = 5 } #Tombola...
+	# character_event = { id = HF.12003 days = 10 random = 15 } #Tombola...
+# }
 
 save_fellow_member_effect = {
 	#Find someone to talk to...
@@ -207,70 +207,70 @@ duel_someone_effect = {
 	}
 }
 
-resolve_legendary_duel_effect = {
-	if = {
-		limit = { has_character_flag = is_legendary_duel }
+# resolve_legendary_duel_effect = {
+	# if = {
+		# limit = { has_character_flag = is_legendary_duel }
 		
-		if = { #You died!
-			limit = { is_dying = yes }
-			if = {
-				limit = { check_variable = { which = legendary_event_progress value = 15 } }
-				set_character_flag = call_it_a_day
-			}
-			character_event = { id = HF.12003 } #Send tombola instantly, in case of death...
-		}
+		# if = { #You died!
+			# limit = { is_dying = yes }
+			# if = {
+				# limit = { check_variable = { which = legendary_event_progress value = 15 } }
+				# set_character_flag = call_it_a_day
+			# }
+			# character_event = { id = HF.12003 } #Send tombola instantly, in case of death...
+		# }
 
-		else = { #You are still standing...!
-			evaluate_legendary_progress_effect = yes #evalutate status of progress flags, as usual...
-			send_legendary_tombola_effect = yes
-		}
-	}
-}
+		# else = { #You are still standing...!
+			# evaluate_legendary_progress_effect = yes #evalutate status of progress flags, as usual...
+			# send_legendary_tombola_effect = yes
+		# }
+	# }
+# }
 
-died_before_achieveing_greatness_effect = {
-	#send news of death to other heroes/society members
-	current_heir = {
-		character_event = { id = HF.12103 days = 1 } #send event of what happened...
-	}
-	any_society_member = {
-        limit = {
-            same_society_as = PREV
-            NOT = { character = PREV }
-        }
-		character_event = { id = HF.12103 days = 1 } #our fellow adventurer died (and achieved nothing)...
-	}
-}
+# died_before_achieveing_greatness_effect = {
+	# #send news of death to other heroes/society members
+	# current_heir = {
+		# character_event = { id = HF.12103 days = 1 } #send event of what happened...
+	# }
+	# any_society_member = {
+        # limit = {
+            # same_society_as = PREV
+            # NOT = { character = PREV }
+        # }
+		# character_event = { id = HF.12103 days = 1 } #our fellow adventurer died (and achieved nothing)...
+	# }
+# }
 
-died_founding_a_bloodline_effect = { #for the main heir
-	#send news of death to other heroes/society members?
-	save_event_target_as = bloodline_founder
-	found_a_legendary_bloodline_effect = yes
+# died_founding_a_bloodline_effect = { #for the main heir
+	# #send news of death to other heroes/society members?
+	# save_event_target_as = bloodline_founder
+	# found_a_legendary_bloodline_effect = yes
 	
-	if = {
-        limit = { ai = no }
-        #Adding flag to player and new player char, for safety...
-        set_character_flag = achievement_zero_to_hero
-        current_heir = { set_character_flag = achievement_zero_to_hero }
+	# if = {
+        # limit = { ai = no }
+        # #Adding flag to player and new player char, for safety...
+        # set_character_flag = achievement_zero_to_hero
+        # current_heir = { set_character_flag = achievement_zero_to_hero }
 
-        if = {
-        	limit = { current_heir = { NOT = { dynasty = PREV } } } # in case of game over...
-        	set_global_flag = achievement_zero_to_hero
-        }
-    }
+        # if = {
+        	# limit = { current_heir = { NOT = { dynasty = PREV } } } # in case of game over...
+        	# set_global_flag = achievement_zero_to_hero
+        # }
+    # }
 
-	current_heir = {
-		save_event_target_as = new_story_owner
-		character_event = { id = HF.12301 days = 1 } #send event of what happened...
-	}
-	any_society_member = {
-        limit = {
-            same_society_as = ROOT
-            NOT = { character = ROOT }
-            current_heir = { NOT = { character = PREV } }
-        }
-        narrative_event = { id = HF.12302 days = 3 } #News event to fellow society members...
-    }
-}
+	# current_heir = {
+		# save_event_target_as = new_story_owner
+		# character_event = { id = HF.12301 days = 1 } #send event of what happened...
+	# }
+	# any_society_member = {
+        # limit = {
+            # same_society_as = ROOT
+            # NOT = { character = ROOT }
+            # current_heir = { NOT = { character = PREV } }
+        # }
+        # narrative_event = { id = HF.12302 days = 3 } #News event to fellow society members...
+    # }
+# }
 
 stop_slow_AIs_effect = {
 	hidden_effect = {
@@ -340,31 +340,31 @@ stop_slow_AIs_effect = {
 	}
 }
 
-found_a_bloodline_effect = { #for alive hero
-	if = {
-		limit = {
-			has_killed_at_least_1_trigger = yes
-			has_killed_at_least_3_trigger = no
-		}
-		set_character_flag = bloodline_quality_1
-	}
-	else_if = {
-		limit = {
-			has_killed_at_least_3_trigger = yes
-			has_killed_at_least_5_trigger = no
-		}
-		set_character_flag = bloodline_quality_2
-	}
-	else_if = {
-		limit = {
-			has_killed_at_least_5_trigger = yes
-		}
-		set_character_flag = bloodline_quality_3
-	}
-	save_event_target_as = bloodline_founder
-	narrative_event = { id = HF.12300 days = 3 }
-	clr_XYZ_desc_flag_effect = yes
-}
+# found_a_bloodline_effect = { #for alive hero
+	# if = {
+		# limit = {
+			# has_killed_at_least_1_trigger = yes
+			# has_killed_at_least_3_trigger = no
+		# }
+		# set_character_flag = bloodline_quality_1
+	# }
+	# else_if = {
+		# limit = {
+			# has_killed_at_least_3_trigger = yes
+			# has_killed_at_least_5_trigger = no
+		# }
+		# set_character_flag = bloodline_quality_2
+	# }
+	# else_if = {
+		# limit = {
+			# has_killed_at_least_5_trigger = yes
+		# }
+		# set_character_flag = bloodline_quality_3
+	# }
+	# save_event_target_as = bloodline_founder
+	# narrative_event = { id = HF.12300 days = 3 }
+	# clr_XYZ_desc_flag_effect = yes
+# }
 
 found_a_legendary_bloodline_effect = { #For any hero
 	custom_tooltip = {
