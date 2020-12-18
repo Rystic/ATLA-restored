@@ -634,16 +634,10 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 	
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = admin_anarchy_tooltip
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#custom_tooltip = {
-			#text = admin_anarchy_tooltip
+			log = "RA law passed id = ze_admin_anarchy current RA: [global_royalAuthority.GetValue]"
 			hidden_effect = {
 				revoke_law = ze_admin_province
 				revoke_law = ze_admin_territories 
@@ -684,16 +678,10 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 	
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = admin_territories_tooltip
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-		#custom_tooltip = {
-		#	text = admin_territories_tooltip			
+			log = "RA law passed id = ze_admin_territories current RA: [global_royalAuthority.GetValue]"		
 			hidden_effect = {
 				revoke_law = ze_admin_anarchy
 				revoke_law = ze_admin_province
@@ -701,15 +689,23 @@ laws = {
 				revoke_law = ze_admin_slight_central
 				revoke_law = ze_admin_central
 				subtract_variable = { which = global_royalAuthority value = 20 }
-				}
 			}
-		#}
+		}
 		
 		demesne_size = -2
 		earth_kingdom_culture_opinion = -5
 
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = ze_admin_anarchy
+				check_variable = { which = global_royalAuthority value >= 40 }
+			}
+			modifier = {
+				factor = 0
+				has_law = ze_admin_province
+			}			
 		}
 	}	
 
@@ -742,16 +738,10 @@ laws = {
 		always = no
 	}
 	
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-			#text = ze_admin_province_tooltip
-			#}
-		}
+	pass_effect = { }
 
 	effect = {
-		#custom_tooltip = {
-			#text = ze_admin_province_tooltip
+			log = "RA law passed id = ze_admin_province current RA: [global_royalAuthority.GetValue]
 			hidden_effect = {
 				revoke_law = ze_admin_territories 
 				revoke_law = ze_admin_balance
@@ -759,14 +749,22 @@ laws = {
 				revoke_law = ze_admin_central
 				revoke_law = ze_admin_anarchy
 				subtract_variable = { which = global_royalAuthority value = 40 }
-				}
-			#}
+			}
 		}
 		
 		demesne_size = -1
 
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = ze_admin_territories
+				check_variable = { which = global_royalAuthority value >= 60 }
+			}
+			modifier = {
+				factor = 0
+				has_law = ze_admin_balance
+			}				
 		}
 	}
 
@@ -794,15 +792,10 @@ laws = {
 		always = no
 	}
 	
-	pass_effect = {
-		#custom_tooltip = {
-			#text = ze_admin_balance_tooltip
-			#}
-		}
-
+	pass_effect = { }
+	
 	effect = {
-		#custom_tooltip = {
-		#	text = ze_admin_balance_tooltip
+			log = "RA law passed id = ze_admin_balance current RA: [global_royalAuthority.GetValue]
 			hidden_effect = {
 				revoke_law = ze_admin_territories 
 				revoke_law = ze_admin_balance
@@ -818,7 +811,16 @@ laws = {
 		earth_kingdom_culture_opinion = 5
 		
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = ze_admin_territories
+				check_variable = { which = global_royalAuthority value >= 80 }
+			}
+			modifier = {
+				factor = 0
+				has_law = ze_admin_slight_central
+			}			
 		}
 	}
 	
@@ -846,33 +848,34 @@ laws = {
 		always = no
 	}
 	
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-			#text = ze_admin_slight_central_tooltip
-			#}
-		}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-			#custom_tooltip = {
-				#text = ze_admin_slight_central_tooltip
-				hidden_effect = {
+			log = "RA law passed id = ze_admin_slight_central current RA: [global_royalAuthority.GetValue]
+			hidden_effect = {
 				revoke_law = ze_admin_territories 
 				revoke_law = ze_admin_balance
 				revoke_law = ze_admin_central
 				revoke_law = ze_admin_anarchy
 				revoke_law = ze_admin_province
 				subtract_variable = { which = global_royalAuthority value = 80 }
-				}
-			#}
+			}
 		}
 		
 		earth_kingdom_culture_opinion = 10
 		demesne_size = 2
 
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = ze_admin_slight_central
+				check_variable = { which = global_royalAuthority value >= 90 }
+			}
+			modifier = {
+				factor = 0
+				has_law = ze_admin_central
+			}				
 		}
 	}
 	
@@ -895,7 +898,7 @@ laws = {
 		custom_tooltip = {
 			text = has_RA_for_law_change_100
 			hidden_tooltip = {
-				check_variable = { which = global_royalAuthority value = 100 }
+				check_variable = { which = global_royalAuthority value == 100 }
 			}
 		}
 	}
@@ -908,30 +911,29 @@ laws = {
 		always = no
 	}
 	
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = ze_admin_central_tooltip
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#custom_tooltip = {
-			#text = ze_admin_central_tooltip
+			log = "RA law passed id = ze_admin_central current RA: [global_royalAuthority.GetValue]
 			hidden_effect = {
 				revoke_law = ze_admin_territories 
 				revoke_law = ze_admin_balance
 				revoke_law = ze_admin_slight_central
 				revoke_law = ze_admin_anarchy
 				revoke_law = ze_admin_province
-				subtract_variable = { which = global_royalAuthority value = 100 }
-				}
+				subtract_variable = { which = global_royalAuthority value = 100 }	
 			}
-		#}
+		}
 		earth_kingdom_culture_opinion = 15
 		demesne_size = 4
+		
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = ze_admin_slight_central
+				check_variable = { which = global_royalAuthority value == 100 }
+			}	
 		}
 	}
 
@@ -946,14 +948,10 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 	
-	pass_effect = {
-	}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-			#custom_tooltip = {
-			#	text = bureaucracy_anarchy
-			#}
+			log = "RA law passed id = bureaucracy_anarchy current RA: [global_royalAuthority.GetValue]
 			hidden_effect = {
 				revoke_law = underfunded_bureaucracy
 				revoke_law = balanced_bureaucracy
@@ -966,7 +964,7 @@ laws = {
 		vassal_limit = -80
 
 		ai_will_do = {
-			factor = 1000
+			factor = 0		
 		}
 	}
 	
@@ -987,18 +985,10 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 	
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = underfunded_bureaucracy
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-			#custom_tooltip = {
-			#	text = underfunded_bureaucracy
-			#}
+			log = "RA law passed id = underfunded_bureaucracy current RA: [global_royalAuthority.GetValue]
 			hidden_effect = {
 				revoke_law = balanced_bureaucracy
 				revoke_law = good_bureaucracy
@@ -1012,7 +1002,16 @@ laws = {
 		vassal_limit = -40
 
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = bureaucracy_anarchy
+				check_variable = { which = global_royalAuthority value >= 40 }
+			}
+			modifier = {
+				factor = 0
+				has_law = balanced_bureaucracy
+			}			
 		}
 	}
 	
@@ -1036,19 +1035,11 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = good_bureaucracy
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-		#	custom_tooltip = {
-		#		text = good_bureaucracy
-		#	}
-			hidden_effect = {
+		log = "RA law passed id = balanced_bureaucracy current RA: [global_royalAuthority.GetValue]
+		hidden_effect = {
 				revoke_law = underfunded_bureaucracy
 				revoke_law = good_bureaucracy
 				revoke_law = slight_bureaucratic_dominance
@@ -1059,7 +1050,16 @@ laws = {
 		}
 
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = underfunded_bureaucracy
+				check_variable = { which = global_royalAuthority value >= 40 }
+			}
+			modifier = {
+				factor = 0
+				has_law = good_bureaucracy
+			}			
 		}
 	}
 
@@ -1083,19 +1083,11 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = good_bureaucracy
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-			#custom_tooltip = {
-			#	text = good_bureaucracy
-			#}
-			hidden_effect = {
+		log = "RA law passed id = good_bureaucracy current RA: [global_royalAuthority.GetValue]
+		hidden_effect = {
 				revoke_law = underfunded_bureaucracy
 				revoke_law = balanced_bureaucracy
 				revoke_law = slight_bureaucratic_dominance
@@ -1108,7 +1100,16 @@ laws = {
 		vassal_limit = 10
 		
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
+			modifier = {
+				factor = 0.1
+				has_law = underfunded_bureaucracy
+				check_variable = { which = global_royalAuthority value >= 40 }
+			}
+			modifier = {
+				factor = 0
+				has_law = slight_bureaucratic_dominance
+			}			
 		}
 	}
 	
@@ -1132,19 +1133,11 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = slight_bureaucratic_dominance
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-		#	custom_tooltip = {
-		#		text = slight_bureaucratic_dominance
-		#	}
-			hidden_effect = {
+		log = "RA law passed id = slight_bureaucratic_dominance current RA: [global_royalAuthority.GetValue]
+		hidden_effect = {
 				revoke_law = underfunded_bureaucracy
 				revoke_law = balanced_bureaucracy
 				revoke_law = good_bureaucracy
@@ -1157,7 +1150,7 @@ laws = {
 		vassal_limit = 30
 		
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
 		}
 	}
 	
@@ -1178,19 +1171,11 @@ laws = {
 		holder_scope = { government = chinese_imperial_government }
 	}
 
-	pass_effect = {
-		#log = "slavery_legal pass ([This.GetFullBaseName])"
-		#custom_tooltip = {
-		#	text = bureaucratic_dominance
-		#	}
-		}
+	pass_effect = { }
 
 	effect = {
-			#log = "slavery_legal ([This.GetFullBaseName])"
-		#	custom_tooltip = {
-		#		text = bureaucratic_dominance
-		#	}
-			hidden_effect = {
+		log = "RA law passed id = bureaucratic_dominance current RA: [global_royalAuthority.GetValue]
+		hidden_effect = {
 				revoke_law = underfunded_bureaucracy
 				revoke_law = balanced_bureaucracy
 				revoke_law = good_bureaucracy
@@ -1203,7 +1188,7 @@ laws = {
 		vassal_limit = 60
 		
 		ai_will_do = {
-			factor = 1000
+			factor = 0.01
 		}
 	}
 }
