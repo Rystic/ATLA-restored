@@ -1099,7 +1099,61 @@ decisions = {
 			}
 		}
 	}
-				
+	
+	form_earth_empire_ek = {
+		is_high_prio = yes
+		only_playable = yes
+		potential = {
+			has_landed_title = k_earth_kingdom
+		}
+		allow = {
+			completely_controls_region = world_north_east_earth_kingdom
+			completely_controls_region = world_north_west_kingdom
+			completely_controls_region = world_western_earth_kingdom
+			completely_controls_region = world_central_desert
+			NOT = { is_title_active = e_earth_kingdom }
+			NOT = { trait = earthkingpuppet }
+			treasury = 1500
+			prestige = 3000
+			piety = 1500
+			ruled_years >= 10
+			age >= 18
+		}
+		effect = {
+			e_earth_kingdom = {
+				activate_title = { title = THIS status = yes } # Otherwise grant_title doesn't work
+				grant_title = ROOT
+				copy_title_laws = PREVPREV
+				hidden_tooltip = {
+					make_primary_title = yes # Automatic for AI, but more friendly/visible for the player
+				}
+				#narrative_event = { id = earthking.67 }
+			}		
+			any_title = {
+				limit = {
+					tier = king
+					OR = {
+						region = world_western_earth_kingdom
+						region = world_central_desert					
+						region = world_north_east_earth_kingdom
+						region = world_north_west_kingdom
+					}
+				}
+				de_jure_liege = e_earth_kingdom
+			}
+			random_list = {
+				18 = { change_variable = { which = global_royalAuthority value = 1 } }
+				18 = { change_variable = { which = global_royalAuthority value = 5 } }
+				18 = { change_variable = { which = global_royalAuthority value = 8 } }
+				18 = { change_variable = { which = global_royalAuthority value = 10 } }
+				18 = { change_variable = { which = global_royalAuthority value = 12 } }
+			}
+			any_playable_ruler = {
+				narrative_event = { id = earthking.68 }
+			}	
+		}
+	}
+	
 	restoration_ambitions_0 = { # Beginning of Focus Trees
 		is_high_prio = yes
 		only_playable = yes
