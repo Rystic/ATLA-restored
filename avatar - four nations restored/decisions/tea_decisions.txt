@@ -1,0 +1,425 @@
+decisions = {
+	construct_tea_garden = {
+		is_high_prio = yes
+		
+		potential = {
+			is_ruler = yes
+			society_member_of = tea_enthusiasts
+			capital_holding = {
+				NOT = { has_building = tea_plantation_1 }
+			}
+			NOT = { has_character_flag = has_built_generational_tea_garden }
+		}
+	
+		effect = {
+			character_event = { id = TEA.10000 days = 120 random = 30}		
+			set_character_flag = has_built_generational_tea_garden
+		}
+
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	become_tea_master = {
+		is_high_prio = yes
+		
+		potential = {
+			is_ruler = yes
+			society_member_of = tea_enthusiasts
+			society_rank >= 4
+			NOT = { trait = tea_master }
+			has_character_flag = tea_chose_self
+		}
+		
+		allow = {
+			society_currency >= 1000
+		}
+	
+		effect = {
+			add_trait = tea_master
+		}
+
+		ai_will_do = {
+			factor = 10000
+		}
+	}
+	
+	drink_chi_enhancing_tea = {
+		is_high_prio = yes
+		
+		potential = {
+			is_ruler = yes
+			society_member_of = tea_enthusiasts
+			society_rank >= 4
+			NOT = { has_character_flag = had_chi_enhancing_tea }
+			OR = {
+				trait = incompetent_bender
+				trait = competent_bender
+				trait = powerful_bender
+			}
+			has_character_flag = tea_chose_spirits
+		}
+		
+		allow = {
+			society_currency >= 1000
+		}
+	
+		effect = {
+			change_society_currency = -1000
+			set_character_flag = had_chi_enhancing_tea
+			custom_tooltip = {
+				text = improve_bending_tea
+				hidden_tooltip = {
+					trigger_switch = {
+						on_trigger = trait
+						incompetent_bender = {
+							remove_trait = incompetent_bender
+							add_trait = competent_bender
+						}
+						competent_bender = {
+							remove_trait = competent_bender
+							add_trait = powerful_bender
+						}
+						powerful_bender = {
+							remove_trait = powerful_bender
+							add_trait = master_bender
+						}
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 10000
+		}
+	}	
+}
+
+targetted_decisions = {
+
+	share_tea = {
+		ai_check_interval = 12
+		is_in_society = yes
+	
+		from_potential = {
+			same_realm = ROOT
+			society_member_of = tea_enthusiasts
+			society_rank >= 1
+		}
+		
+		allow = {
+			FROM = { society_currency >= 100 }
+		}
+		
+		effect = {
+			
+			FROM = { 
+				save_event_target_as = tea_friend 
+				change_society_currency = -100
+			}
+			ROOT = { letter_event = { id = TEA.100 } }
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOR = {	
+					trait = wroth
+					trait = stressed
+				}
+			}			
+			modifier = {
+				factor = 100
+				trait = wroth
+			}
+			modifier = {
+				factor = 100
+				trait = stressed
+			}
+		}
+	}
+	
+	brew_enlightening_tea = {
+		ai_check_interval = 12
+		is_in_society = yes
+	
+		from_potential = {
+			same_realm = ROOT
+			society_rank >= 2
+			society_member_of = tea_enthusiasts
+			has_character_flag = tea_chose_self
+		}
+		
+		allow = {
+			FROM = { society_currency >= 200 }
+		}
+		
+		effect = {
+			FROM = { 
+				save_event_target_as = tea_friend 
+				change_society_currency = -200
+			}
+			ROOT = { letter_event = { id = TEA.101 } }
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				AND = {
+					trait = kind
+					NOR = {	
+						trait = wroth
+						trait = envious
+					}
+				}
+			}			
+			modifier = {
+				factor = 100
+				trait = wroth
+			}
+			modifier = {
+				factor = 100
+				trait = envious
+			}
+			modifier = {
+				factor = 10000
+				NOR = {	
+					trait = wroth
+					trait = envious
+					trait = kind
+				}
+			}
+		}
+	}
+	
+	brew_spiritual_tea = {
+		ai_check_interval = 12
+		is_in_society = yes
+	
+		from_potential = {
+			same_realm = ROOT
+			society_member_of = tea_enthusiasts
+			society_rank >= 2
+			has_character_flag = tea_chose_spirits
+		}
+		
+		allow = {
+			FROM = { society_currency >= 200 }
+		}
+		
+		effect = {
+			
+			FROM = { 
+				save_event_target_as = tea_friend 
+				change_society_currency = -200
+			}
+			ROOT = { letter_event = { id = TEA.102 } }
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOR = {	
+					trait = possessed
+					trait = depressed
+					trait = insane
+				}
+			}			
+			modifier = {
+				factor = 100
+				trait = possessed
+			}
+			modifier = {
+				factor = 100
+				trait = depressed
+			}
+			modifier = {
+				factor = 100
+				trait = insane
+			}
+		}
+	}
+	
+	tea_educate = {
+		ai_check_interval = 12
+		is_in_society = yes
+	
+		from_potential = {
+			same_realm = ROOT
+			society_member_of = tea_enthusiasts
+			society_rank >= 3
+			has_character_flag = tea_chose_self
+		}
+		
+		allow = {
+			FROM = { society_currency >= 750 }
+			custom_tooltip = {
+				text = education_must_be_better
+				hidden_tooltip = {
+					OR = {
+					
+						AND = {
+							ROOT = {
+								OR = {
+									trait = amateurish_plotter
+									trait = naive_appeaser
+									trait = indulgent_wastrel
+									trait = misguided_warrior
+									trait = detached_priest
+								}
+							}
+							FROM = {
+								NOR = {
+									trait = amateurish_plotter
+									trait = naive_appeaser
+									trait = indulgent_wastrel
+									trait = misguided_warrior
+									trait = detached_priest
+								}
+							}
+						}
+						
+						AND = {
+							ROOT = {
+								OR = {
+									trait = flamboyant_schemer
+									trait = underhanded_rogue
+									trait = thrifty_clerk
+									trait = tough_soldier
+									trait = martial_cleric
+								}
+							}
+							FROM = {
+								NOR = {
+									trait = amateurish_plotter
+									trait = naive_appeaser
+									trait = indulgent_wastrel
+									trait = misguided_warrior
+									trait = detached_priest
+									trait = flamboyant_schemer
+									trait = underhanded_rogue
+									trait = thrifty_clerk
+									trait = tough_soldier
+									trait = martial_cleric
+								}
+							}
+						}
+						
+						AND = {
+							ROOT = {
+								OR = {
+									trait = intricate_webweaver
+									trait = charismatic_negotiator
+									trait = fortune_builder
+									trait = skilled_tactician
+									trait = scholarly_theologian
+								}
+							}
+							FROM = {
+								OR = {
+									trait = elusive_shadow
+									trait = grey_eminence
+									trait = midas_touched
+									trait = brilliant_strategist
+									trait = mastermind_theologian
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		effect = {
+			FROM = { change_society_currency = -750 }
+			ROOT = { letter_event = { id = TEA.103 } }
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	brew_herbal_tea = {
+		ai_check_interval = 12
+		is_in_society = yes
+	
+		from_potential = {
+			same_realm = ROOT
+			society_member_of = tea_enthusiasts
+			society_rank >= 3
+			has_character_flag = tea_chose_spirits
+		}
+		
+		allow = {
+			FROM = {
+				society_currency >= 250
+			}
+		}
+		
+		effect = {
+			
+			FROM = { 
+				save_event_target_as = tea_friend 
+				change_society_currency = -250
+			}
+			ROOT = { letter_event = { id = TEA.104 } }
+		}
+		
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				poorly_treated_for_disease_trigger = no
+			}			
+			modifier = {
+				factor = 10000
+				poorly_treated_for_disease_trigger = yes
+			}
+		}
+	}
+	
+	brew_chi_enhancing_tea = {
+		ai_check_interval = 12
+		is_in_society = yes
+	
+		from_potential = {
+			same_realm = ROOT
+			society_member_of = tea_enthusiasts
+			society_rank >= 4
+			has_character_flag = tea_chose_spirits
+		}
+		
+		allow = {
+			FROM = {
+				society_currency >= 1000
+			}
+		}
+		
+		effect = {
+			change_society_currency = -1000
+			FROM = { 
+				save_event_target_as = tea_friend 
+				change_society_currency = -1000
+			}
+			ROOT = { letter_event = { id = TEA.105 } }
+		}
+		
+		ai_will_do = {
+			factor = 10000
+			modifier = {
+				factor = 0
+				NOR = {	
+					trait = airbender
+					trait = earthbender
+					trait = firebender
+					trait = waterbender
+				}
+			}
+		}
+	}
+}
