@@ -1492,6 +1492,10 @@ character_event = {
 						trait = fussy
 					}
 				}
+				modifier = {
+					factor = 0.25
+					religion = fortune_telling
+				}
 				set_character_flag = education_outcome_level_1
 			}
 			10 = {
@@ -1502,6 +1506,10 @@ character_event = {
 						trait = imbecile
 						trait = inbred
 					}
+				}
+								modifier = {
+					factor = 0.5
+					religion = fortune_telling
 				}
 				set_character_flag = education_outcome_level_2
 			}
@@ -1664,6 +1672,10 @@ character_event = {
 						has_character_flag = was_fussy
 						trait = fussy
 					}
+				}
+				modifier = {
+					factor = 1.25
+					religion = fortune_telling
 				}
 				set_character_flag = education_outcome_level_4
 			}
@@ -2343,18 +2355,35 @@ character_event = {
 		educator = { save_event_target_as = education_outcome_educator }
 		random_list = {
 			10 = {
+				modifier = {
+					factor = 0
+					religion = fortune_telling
+				}
 				set_character_flag = education_diplomacy
 			}
 			10 = {
+				modifier = {
+					factor = 0
+					religion = fortune_telling
+				}
 				set_character_flag = education_martial
 			}
 			10 = {
+				modifier = {
+					factor = 0
+					religion = fortune_telling
+				}
 				set_character_flag = education_stewardship
 			}
 			10 = {
+
 				set_character_flag = education_intrigue
 			}
 			10 = {
+				modifier = {
+					factor = 0
+					religion = fortune_telling
+				}
 				set_character_flag = education_learning
 			}
 		}
@@ -2403,7 +2432,92 @@ character_event = {
 		trigger = {
 			has_character_flag = education_intrigue
 		}
-		add_trait = amateurish_plotter
+		if = {
+			limit = {
+				religion = fortune_telling
+			}
+			if = {
+				limit = {
+					is_ruler = yes
+				}
+				ROOT = { save_event_target_as = current_court }
+			}
+			else = {
+				host = { save_event_target_as = current_court }
+			}
+			
+			event_target:current_court = {
+				capital_scope = {
+					if = {
+						limit = { 
+							has_building = fortune_telling_building_4
+						}
+						ROOT = {
+							random_list = {
+								5 = { 
+									add_trait = elusive_shadow 
+									change_intrigue = 2
+								}
+								10 = { add_trait = intricate_webweaver }
+								10 = { add_trait = flamboyant_schemer }
+							}
+							change_intrigue = 2
+						}
+					}
+					else_if = {
+						limit = { 
+							has_building = fortune_telling_building_3
+						}
+						ROOT = {
+							random_list = {
+								5 = { add_trait = amateurish_plotter }
+								10 = { 
+									add_trait = intricate_webweaver 
+									change_intrigue = 1
+								}
+								10 = { add_trait = flamboyant_schemer }
+							}
+							change_intrigue = 2
+						}
+					}
+					else_if = {
+						limit = { 
+							has_building = fortune_telling_building_2
+						}
+						ROOT = {
+							random_list = {
+								5 = { 
+									add_trait = intricate_webweaver 
+									change_intrigue = 1
+								}
+								10 = { add_trait = flamboyant_schemer }
+								10 = { add_trait = amateurish_plotter }
+							}
+							change_intrigue = 1
+						}
+					}
+					else_if = {
+						limit = { 
+							has_building = fortune_telling_building_1
+						}
+						ROOT = {
+							random_list = {
+								1 = { add_trait = intricate_webweaver }
+								10 = { add_trait = flamboyant_schemer }
+								10 = { add_trait = amateurish_plotter }
+							}
+							change_intrigue = 1
+						}
+					}
+					else = {
+						add_trait = amateurish_plotter
+					}
+				}
+			}
+		}
+		else = {
+			add_trait = amateurish_plotter
+		}
 		clr_character_flag = education_intrigue
 	}
 	option = {
@@ -2416,9 +2530,20 @@ character_event = {
 	}
 
 	after = {
+		clr_character_flag = is_being_graded
 		hidden_tooltip = { 
 			# Notify educator
-			event_target:education_outcome_educator = { character_event = { id = ZE.14710 } } 
+			if = {
+				limit = {
+					ROOT = {
+						religion = fortune_telling
+					}
+				}
+				event_target:education_outcome_educator = { character_event = { id = ZE.14410 } } 
+			}
+			else = {
+				event_target:education_outcome_educator = { character_event = { id = ZE.14710 } } 
+			}
 			if = {
 				limit = { # Notify mother if primary heir
 					mother = {
@@ -2430,8 +2555,16 @@ character_event = {
 						}
 					}
 				}
-				mother = {
-					character_event = { id = ZE.14710 }
+				if = {
+					limit = {
+						ROOT = {
+							religion = fortune_telling
+						}
+					}
+					mother = { character_event = { id = ZE.14410 } } 
+				}
+				else = {
+					mother = { character_event = { id = ZE.14710 } } 
 				}
 			}
 			if = {
@@ -2445,8 +2578,16 @@ character_event = {
 						}
 					} 
 				}
-				father = {
-					character_event = { id = ZE.14710 }
+				if = {
+					limit = {
+						ROOT = {
+							religion = fortune_telling
+						}
+					}
+					father = { character_event = { id = ZE.14410 } } 
+				}
+				else = {
+					father = { character_event = { id = ZE.14710 } } 
 				}
 			}
 		}

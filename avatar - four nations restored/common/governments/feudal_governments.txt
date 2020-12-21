@@ -18,7 +18,7 @@ feudal_governments = {
 		potential = {
 			OR = {
 				religion = piracy
-				religion = piracy_reformed
+				# religion = piracy_reformed
 				culture = pirate
 			}
 		}
@@ -59,7 +59,7 @@ feudal_governments = {
 		potential = {
 			OR = {
 				religion = piracy
-				religion = piracy_reformed
+				# religion = piracy_reformed
 				culture = pirate
 			}
 		}
@@ -158,7 +158,10 @@ feudal_governments = {
 			NOT = {	religion = piracy }
 			NOT = { is_government_potential = water_tribe_government }
 			NOT = { is_government_potential = order_government }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = { 
+				has_landed_title = e_earth_kingdom 
+				has_landed_title = k_earth_kingdom 
+			}
 			is_patrician = no
 		}
 		
@@ -197,11 +200,12 @@ feudal_governments = {
 		}
 		frame_suffix = "_chineseimperial"
 		potential = {
-			tier = EMPEROR
+			primary_title = {
+				higher_tier_than = duke
+			}
 			OR = {
 				has_landed_title = e_earth_kingdom
-				trait = earthking
-				trait = earthkingpuppet
+				has_landed_title = k_earth_kingdom
 			}
 			is_patrician = no
 		}
@@ -357,7 +361,7 @@ feudal_governments = {
 			CITY
 			TRIBAL
 			FORT
-			HOSPITAL
+			# HOSPITAL
 		}
 		allowed_holdings_culture = { # Will not get the wrong government type penalty for tribes of the same culture
 			TRIBAL
@@ -370,11 +374,18 @@ feudal_governments = {
 		
 		uses_piety_for_law_change = yes
 		color = { 255 162 0 }
+
 		can_build_tribal = no
+		can_build_city = no
+		can_build_castle = no
+		can_build_forts = no
+		can_build_temple = yes
+		can_build_hospitals = no
+
 		allow_looting = no
 		can_change_to_nomad_on_start = yes
 		can_grant_kingdoms_and_empires_to_other_government = yes
-		capital_move_delay = 600
+		capital_move_delay = 36500 # to make it impossible
 
 		## Modifiers
 		court_size_modifier = 10

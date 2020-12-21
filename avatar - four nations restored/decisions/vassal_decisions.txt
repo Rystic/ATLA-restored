@@ -1,7 +1,6 @@
-
-# Targetted decisions are possible vs _all_ other characters and shown are in the Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
+# Targeted decisions are possible vs _all_ other characters and shown are in the Diplomacy View, not the Intrigue View. The taker is in the FROM scope.
 #
-# filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] ('self' MUST be set for decisions targetting only the taker, the other filter types can be set to lessen CPU load)
+# filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] ('self' MUST be set for decisions targeting only the taker, the other filter types can be set to lessen CPU load)
 # ai_target_filter = [self/court/home_court/vassals/sub_realm/realm/dynasty/all] (which characters for which the AI evaluates the decision.)
 #	court: all characters in the AI's host court, including prisoners, and characters currently away (wards, prisoners, etc)
 #	home_court: all characters in the AI's home court, including prisoners, and characters currently away (wards, prisoners, etc)
@@ -16,128 +15,167 @@
 
 targetted_decisions = {
 
-	# force_vassal_to_develop = {
-		# filter = vassals
-		# ai_target_filter = vassals
-		
-		# from_potential = {
-			# is_ruler = yes
-			# OR = {
-				# is_feudal = yes
-				# is_republic = yes
-				# is_theocracy = yes
-			# }
-			# OR = {
-				# is_independent = yes
-				# liege = {
-					# OR = {
-						# is_feudal = yes
-						# is_republic = yes
-						# is_theocracy = yes
-					# }
-				# }
-			# }
-		# }
-		
-		# potential = {
-			# is_ruler = yes
-			# is_tribal = yes
-		# }
-		
-		# allow = {
-			# war = no
-			# FROM = { wealth = 200 }
-			# FROM = { prestige = 300 }
-		# }
-		
-		# effect = {
-			# FROM = {
-				# wealth = -200
-				# prestige = -300
-			# }
-			# if = {
-				# limit = {
-					# ai = no
-				# }
-				# chronicle = {
-					# entry = CHRONICLE_ADOPTED_FEUDALISM
-					# picture = GFX_evt_castle_construction
-				# }
-			# }
-			# set_government_type = feudal_government
-			# hidden_tooltip = {
-				# any_demesne_title = {
-					# limit = {
-						# tier = baron
-						# holding_type = tribal
-					# }
-					# convert_to = CASTLE
-					# refill_holding_levy = yes
-					
-					# if = {
-						# limit = {
-							# dejure_liege_title = {
-								# holder = ROOT
-								# location = {
-									# num_of_empty_holdings = 2
-								# }
-								# NOT = {
-									# any_direct_de_jure_vassal_title = {
-										# holding_type = city
-									# }
-								# }
-							# }
-						# }
-						# location = {
-							# build_holding = {
-								# type = city
-							# }
-						# }
-					# }
-					# if = {
-						# limit = {
-							# dejure_liege_title = {
-								# holder = ROOT
-								# location = {
-									# num_of_empty_holdings = 2
-								# }
-								# NOT = {
-									# any_direct_de_jure_vassal_title = {
-										# holding_type = temple
-									# }
-								# }
-							# }
-						# }
-						# location = {
-							# build_holding = {
-								# type = temple
-							# }
-						# }
-					# }
-				# }
-				
-				# liege = {
-					# character_event = { id = 55100 } # Notify Liege
-				# }
-			# }
-		# }
-		
-		# ai_will_do = {
-			# factor = 1
-			# modifier = {
-				# factor = 0.001
-				# NOT = { religion_group = ROOT }
-			# }
-			# modifier = {
-				# factor = 0.01
-				# NOT = { culture_group = ROOT }
-			# }
-		# }
-	# }
+	vassal_castrate_decision = {
+		only_playable = yes
+		filter = court
+		ai_target_filter = court
+		ai_check_interval = 6
+
+		from_potential = {
+			has_dlc = "Legacy of Rome"
+			is_playable = yes
+			OR = {
+				culture_group = earth_kingdom_culture
+				any_owned_bloodline = {
+					has_bloodline_flag = bloodline_castration
+				}
+			}
+		}
+	
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+			is_female = no
+			NOT = { trait = eunuch }
+		}
+		allow = {
+			prisoner = yes
+		}
+		effect = {
+			hidden_tooltip = {
+				if = {
+					limit = { age = 16}
+					FROM = {
+						character_event = { id = LoR.832 }
+					}
+				}
+				if = {
+					limit = { NOT = { age = 16 } }
+					FROM = {
+						character_event = { id = LoR.834 }
+					}
+				}
+				character_event = { id = LoR.833 tooltip = "EVTTOOLTIPLoR.833" }
+			}
+			add_trait = eunuch
+			if = {
+				limit = { 
+					has_game_rule = {
+						name = punishment_release_prisoner
+						value = on
+					}
+				}
+				prisoner = no
+			}
+			opinion = {
+				modifier = opinion_castrated_me
+				who = FROM
+			}
+			FROM = {
+				if = {
+					limit = { NOT = { trait = cruel } }
+					custom_tooltip = {
+						text = cruel_imprisoner_trait_chance_TT
+						random = {
+							chance = 25
+							add_trait = cruel
+							hidden_tooltip = {
+								character_event = { id = 38259 }
+							}
+						}
+					}
+				}
+				piety = -50
+			}
+			hidden_tooltip = {
+				mother = {
+					opinion = {
+						modifier = opinion_castrated_close_kin
+						who = FROM
+					}
+				}
+				father = {
+					opinion = {
+						modifier = opinion_castrated_close_kin
+						who = FROM
+					}
+				}
+				spouse = {
+					opinion = {
+						modifier = opinion_castrated_close_kin
+						who = FROM
+					}
+				}
+				any_child = {
+					opinion = {
+						modifier = opinion_castrated_close_kin
+						who = FROM
+					}
+				}
+				if = {
+					limit = {
+						FROM = {
+							NOT = { dynasty = ROOT }
+							NOT = { sibling = ROOT }
+						}
+					}
+					any_sibling = {
+						opinion = {
+							modifier = opinion_castrated_close_kin
+							who = FROM
+						}
+					}
+					any_dynasty_member = {
+						opinion = {
+							modifier = opinion_castrated_family
+							who = FROM
+						}
+					}
+				}
+				FROM = {
+					remove_opinion = { who = ROOT modifier = opinion_traitor }
+					remove_opinion = { who = ROOT modifier = opinion_rebel_traitor }
+					remove_opinion = { who = ROOT modifier = opinion_dishonorable }
+				}
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+			
+			modifier = {
+				factor = 0
+				OR = {
+					reverse_opinion = { who = FROM value = 40 }
+					FROM = { NOT = { piety = 100 } }
+					FROM = { LIEGE = { dynasty = ROOT } }
+				}
+			}
+			modifier = {
+				factor = 0
+				FROM = { trait = kind }
+			}
+			modifier = {
+				factor = 0.5 # Less likely to do it
+			}
+			modifier = {
+				factor = 1.2
+				FROM = {
+					OR = {
+						trait = cruel
+						trait = impaler
+					}
+				}
+			}
+		}
+	}
 	
 	prisoner_to_oubilette = {
 		filter = court
 		ai_target_filter = court
+		ai_check_interval = 24
 
 		from_potential = {
 			ai = no
@@ -174,6 +212,7 @@ targetted_decisions = {
 	prisoner_to_dungeon = {
 		filter = court
 		ai_target_filter = court
+		ai_check_interval = 36
 
 		from_potential = {
 			ai = no
@@ -213,6 +252,7 @@ targetted_decisions = {
 	prisoner_to_suite = {
 		filter = court
 		ai_target_filter = court
+		ai_check_interval = 36
 
 		from_potential = {
 			ai = no
@@ -245,6 +285,5 @@ targetted_decisions = {
 		ai_will_do = {
 			factor = 0
 		}
-	}
-	
+	}	
 }

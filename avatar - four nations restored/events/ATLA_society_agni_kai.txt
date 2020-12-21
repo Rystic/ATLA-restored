@@ -176,11 +176,18 @@ character_event = {
 	picture = GFX_evt_avatar_shrine_fire
 	desc = EVTDESC_4403
 	border = GFX_event_normal_frame_religion
+
 	is_triggered_only = yes
 
 	option = {
-		name = EVTOPTA_MNM_4403_NOGOD
-
+		name = {
+			trigger = {
+				society_member_of = monastic_order_elder_council
+			}
+			text = EVTOPTA_MNM_4403_NOGOD
+		}
+		lose_weight_small_effect = yes
+		weight_trait_check_effect = yes
 		hidden_effect = {
 			set_variable = { which = holy_seclusion_points value = 0 }
 			set_character_flag = holy_seclusion_timer
@@ -244,6 +251,7 @@ character_event = {
 							trait = temperate
 							trait = charitable
 							trait = diligent
+							trait = lustful
 						}
 						modifier = {
 							factor = 0
@@ -251,6 +259,10 @@ character_event = {
 						}
 						set_character_flag = holy_seclusion_struggled_with_vice
 						random_list = {
+							10 = { 
+								modifier = { factor = 0 trait = lustful }
+								set_character_flag = holy_seclusion_lustful
+							}
 							10 = { 
 								modifier = { factor = 0 trait = temperate }
 								set_character_flag = holy_seclusion_gluttonous
@@ -421,6 +433,141 @@ character_event = {
 
 	hide_from = yes
 
+	immediate = {
+		trigger_switch = {
+			on_trigger = has_character_flag
+			holy_seclusion_lustful = {
+				if = {
+					limit = {
+						any_artifact = {
+							OR = {
+								has_artifact_flag = about_religion
+								artifact_type = the_confessions_of_root
+							}
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							OR = {
+								has_artifact_flag = about_religion
+								artifact_type = the_confessions_of_root
+							}
+							is_artifact_equipped = yes
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+			holy_seclusion_gluttonous = {
+				if = {
+					limit = {
+						any_artifact = {
+							has_artifact_flag = cooking
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							has_artifact_flag = cooking
+							is_artifact_equipped = yes
+							NOT = { artifact_type = gastronomic_tonics } #Not really about food
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+			holy_seclusion_greedy = {
+				if = {
+					limit = {
+						any_artifact = {
+							OR = {
+								artifact_type = the_confessions_of_root
+								has_artifact_flag = about_diplomacy
+							}
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							OR = {
+								artifact_type = the_confessions_of_root
+								has_artifact_flag = about_diplomacy
+							}
+							is_artifact_equipped = yes
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+			holy_seclusion_slothful = {
+				if = {
+					limit = {
+						any_artifact = {
+							OR = {
+								AND = {
+									has_artifact_flag = about_dynasty
+									original_owner = { NOT = { character = ROOT } }
+								}
+								has_artifact_flag = poetry
+							}
+							is_artifact_equipped = yes
+						}
+					}
+					random_artifact = {
+						limit = {
+							OR = {
+								AND = {
+									has_artifact_flag = about_dynasty
+									original_owner = { NOT = { character = ROOT } }
+								}
+								has_artifact_flag = poetry
+							}
+							is_artifact_equipped = yes
+						}
+						preferred_limit = {
+							quality = 3
+						}
+						preferred_limit = {
+							quality = 2
+						}
+						preferred_limit = {
+							quality = 1
+						}
+						save_event_target_as = book_target
+					}
+				}
+			}
+		}
+	}
+
 	desc = {
 		trigger = { has_character_flag = holy_seclusion_lustful }
 		text = EVTDESC_4405_LUSTFUL
@@ -460,6 +607,11 @@ character_event = {
 			trigger = { has_character_flag = holy_seclusion_slothful }
 			text = EVTOPTA_4405_SLOTHFUL
 		}
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			gain_weight_small_effect = yes
+			weight_trait_check_effect = yes
+		}
 
 		random_list = {
 			65 = { 
@@ -474,6 +626,54 @@ character_event = {
 					character_event = { id = MNSAK.3012 days = 3 }
 				}
 			}
+		}
+	}
+
+	#Fight it  (with reading from your library!)
+	option = {
+		name = {
+			trigger = { has_character_flag = holy_seclusion_lustful }
+			text = EVTOPTB_4405_LUSTFUL_book
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_gluttonous }
+			text = EVTOPTB_4405_GLUTTONOUS_book
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_greedy }
+			text = EVTOPTB_4405_GREEDY_book
+		}
+		name = {
+			trigger = { has_character_flag = holy_seclusion_slothful }
+			text = EVTOPTB_4405_SLOTHFUL_book
+		}
+
+		tooltip_info_custom = available_because_books_tt
+
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			lose_weight_small_effect = yes
+			weight_trait_check_effect = yes
+		}
+
+		set_character_flag = used_a_book
+
+		random_list = {
+			70 = { 
+				custom_tooltip = { 
+					text = EVTOPTB_MNM_4405_tt_success
+					character_event = { id = MNSAK.3013 days = 14 }
+				}
+			}
+			30 = {
+				custom_tooltip = { 
+					text = EVTOPTB_MNM_4405_tt_fail
+					character_event = { id = MNSAK.3014 days = 14 }
+				}
+			}
+		}
+		trigger = {
+			event_target:book_target = { always = yes }
 		}
 	}
 
@@ -499,6 +699,11 @@ character_event = {
 		if = {
 			limit = { has_character_flag = holy_seclusion_greedy }
 			scaled_wealth = { value = -0.5 min = -50 }
+		}
+		if = {
+			limit = { has_character_flag = holy_seclusion_gluttonous }
+			lose_weight_small_effect = yes
+			weight_trait_check_effect = yes
 		}
 
 		random_list = {
@@ -714,20 +919,45 @@ character_event = {
 	}
 
 	desc = {
-		trigger = { has_character_flag = holy_seclusion_lustful }
+		trigger = {
+			has_character_flag = holy_seclusion_lustful
+		}
 		text = EVTDESC_4408_LUSTFUL
 	}
 	desc = {
-		trigger = { has_character_flag = holy_seclusion_gluttonous }
+		trigger = {
+			has_character_flag = holy_seclusion_gluttonous
+		}
 		text = EVTDESC_4408_GLUTTONOUS
 	}
 	desc = {
-		trigger = { has_character_flag = holy_seclusion_greedy }
+		trigger = {
+			has_character_flag = holy_seclusion_greedy
+			NOT = { has_character_flag = used_a_book }
+		}
 		text = EVTDESC_4408_GREEDY
 	}
 	desc = {
-		trigger = { has_character_flag = holy_seclusion_slothful }
+		trigger = {
+			has_character_flag = holy_seclusion_slothful
+			NOT = { has_character_flag = used_a_book }
+
+		}
 		text = EVTDESC_4408_SLOTHFUL
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_greedy
+			has_character_flag = used_a_book
+		}
+		text = EVTDESC_4408_GREEDY_book
+	}
+	desc = {
+		trigger = {
+			has_character_flag = holy_seclusion_slothful
+			has_character_flag = used_a_book
+		}
+		text = EVTDESC_4408_SLOTHFUL_book
 	}
 
 
@@ -832,6 +1062,7 @@ character_event = {
 			clr_character_flag = holy_seclusion_gluttonous
 			clr_character_flag = holy_seclusion_greedy
 			clr_character_flag = holy_seclusion_slothful
+			clr_character_flag = used_a_book
 		}
 	}
 }
@@ -944,11 +1175,22 @@ character_event = {
 			}
 		}
 
+		if = {
+			limit = { 
+				society_member_of = monastic_order_elder_council
+			}
+			add_character_modifier = {
+				name = rampant_sinner_dharmic
+				years = 3
+			}
+		}
+
 		hidden_effect = {
 			clr_character_flag = holy_seclusion_lustful
 			clr_character_flag = holy_seclusion_gluttonous
 			clr_character_flag = holy_seclusion_greedy
 			clr_character_flag = holy_seclusion_slothful
+			clr_character_flag = used_a_book
 		}
 	}
 }
@@ -1241,7 +1483,9 @@ character_event = {
 	}
 
 	option = {
-		name = EVTOPTA_MNM_4415_B
+		name = {
+			text = EVTOPTA_MNM_4415_B
+		}
 		custom_tooltip = { text = EVTOPTA_MNM_4414_TOOLTIP_SUCCESS }
 		hidden_effect = { change_variable = { which = holy_seclusion_points value = 2 } }
 		hidden_effect = { monastic_order_purity_effect = yes }
@@ -1274,7 +1518,9 @@ character_event = {
 	}
 
 	option = {
-		name = EVTOPTA_MNM_4416_B
+		name = {
+			text = EVTOPTA_MNM_4416_B
+		}
 		custom_tooltip = { text = EVTOPTA_MNM_4414_TOOLTIP_FAILURE }
 	}
 }
@@ -1297,7 +1543,9 @@ character_event = {
 	}
 
 	option = {
-		name = EVTOPTA_MNM_4415_B
+		name = {
+			text = EVTOPTA_MNM_4415_B
+		}
 		custom_tooltip = { text = EVTOPTB_MNM_4414_TOOLTIP_SUCCESS }
 		hidden_effect = { change_variable = { which = holy_seclusion_points value = 1 } }
 	}
@@ -1734,7 +1982,9 @@ character_event = {
 	}
 
 	option = {
-		name = EVTOPTA_MNM_4426_NOGOD
+		name = {
+			text = EVTOPTA_MNM_4426_NOGOD
+		}
 		custom_tooltip = { text = EVTOPTA_4406_TOOLTIP }
 
 		hidden_effect = {
@@ -1773,8 +2023,10 @@ letter_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		society_member_of = monastic_order_elder_council
-		has_quest = quest_monastic_order_meditation
+		OR = {
+			society_member_of = monastic_order_elder_council
+			has_quest = quest_monastic_order_meditation
+		}
 	}
 
 	option = {
@@ -1786,8 +2038,19 @@ letter_event = {
 			sound_effect = monastic_orders_meditate_in_seclusion
 			remove_character_modifier = in_meditation
 		}
-		add_society_currency_medium_effect = yes
-		hidden_effect = {
+		if = {
+			limit = {
+				any_owned_bloodline = {
+					has_bloodline_flag = monastic_saintly_bloodline
+				}
+			}
+			add_society_currency_major_effect = yes
+		}
+		else = {
+			add_society_currency_medium_effect = yes
+		}
+		hidden_effect = { 
+			monastic_order_purity_effect = yes 
 			clr_character_flag = success_seculison_desc_A #Flags from 4426
 			clr_character_flag = success_seculison_desc_B
 			clr_character_flag = success_seculison_desc_C
@@ -1808,8 +2071,10 @@ letter_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		society_member_of = monastic_order_elder_council
-		has_quest = quest_monastic_order_meditation
+		OR = {
+			society_member_of = monastic_order_elder_council
+			has_quest = quest_monastic_order_meditation
+		}
 	}
 
 	option = {
@@ -1988,7 +2253,7 @@ character_event = {
 			#Set some interesting traits 
 
 			#Nun/monk traits
-			add_ascetic_trait_effect = yes
+			# add_ascetic_trait_effect = yes
 			add_trait = celibate
 			add_trait = zealous
 			remove_trait = cynical
@@ -2049,6 +2314,8 @@ character_event = {
 			random = {
 				chance = 10
 				add_trait = temperate
+				lose_weight_small_effect = yes
+				weight_trait_check_effect = yes
 			}
 			random = {
 				chance = 5
@@ -2069,6 +2336,7 @@ character_event = {
 			#Misc traits
 			remove_trait = deceitful
 			remove_trait = arbitrary
+			remove_trait = cynical
 			random = {
 				chance = 10
 				add_trait = honest
@@ -6162,7 +6430,7 @@ character_event = {
 	}
 	
 	option = { # Begin Duel
-		name = EVTOPTA_MNSAK_5048
+		name = EVTOPTA_MNSAK_5049
 		set_character_flag = duel_spar
 		FROM = {
 			set_character_flag = duel_spar
@@ -7293,15 +7561,15 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 	
-	option = { # Befriend the Spirits(Grace)
-		name = EVTOPTA_MNSAK_5092
-		custom_tooltip = {
-			text = MNSAK5092_Grace
-			hidden_tooltip = { 
-				character_event = { id = MNSAK.5093 days = 21 }
-			}
-		}
-	}
+	# option = { # Befriend the Spirits(Grace)
+		# name = EVTOPTA_MNSAK_5092
+		# custom_tooltip = {
+			# text = MNSAK5092_Grace
+			# hidden_tooltip = { 
+				# character_event = { id = MNSAK.5093 days = 21 }
+			# }
+		# }
+	# }
 	option = { # Increase Learning
 		name = EVTOPTB_MNSAK_5092
 		custom_tooltip = {
@@ -7326,27 +7594,27 @@ character_event = {
 }
 
 # Enlightend - Gain Grace
-character_event = {
-	id = MNSAK.5093
-	desc = EVTDESC_MNSAK_5093
-	picture = GFX_evt_library
-	border = GFX_event_normal_frame_war
-	is_triggered_only = yes
+# character_event = {
+	# id = MNSAK.5093
+	# desc = EVTDESC_MNSAK_5093
+	# picture = GFX_evt_library
+	# border = GFX_event_normal_frame_war
+	# is_triggered_only = yes
 	
-	option = { # Befriend the Spirits(Grace)
-		name = EVTOPTA_MNSAK_5093
-		hidden_tooltip = {
-			if = {
-				limit = { has_quest = quest_tes_study }
-				character_event = { id = MNSAK.5139 }
-			}
-		}
-		add_offmap_currency = {
-			offmap = offmap_spirit_world
-			value = 200
-		}
-	}
-}
+	# option = { # Befriend the Spirits(Grace)
+		# name = EVTOPTA_MNSAK_5093
+		# hidden_tooltip = {
+			# if = {
+				# limit = { has_quest = quest_tes_study }
+				# character_event = { id = MNSAK.5139 }
+			# }
+		# }
+		# add_offmap_currency = {
+			# offmap = offmap_spirit_world
+			# value = 200
+		# }
+	# }
+# }
 
 # Enlightend - Gain Learning
 character_event = {
@@ -10350,12 +10618,12 @@ character_event = {
 		character_event = { id = MNSAK.5253 days = 8 }
 	}
 	
-	option = { # Gain Grace
-		name = EVTOPTA_MNSAK_5207
-		hidden_tooltip = {
-			character_event = { id = MNSAK.5208 days = 7 }
-		}
-	}
+	# option = { # Gain Grace
+		# name = EVTOPTA_MNSAK_5207
+		# hidden_tooltip = {
+			# character_event = { id = MNSAK.5208 days = 7 }
+		# }
+	# }
 	option = { # Gain Learning
 		name = EVTOPTB_MNSAK_5207
 		hidden_tooltip = {
@@ -10377,21 +10645,21 @@ character_event = {
 }
 
 # White Lotus - Gain Grace
-character_event = {
-	id = MNSAK.5208
-	desc = EVTDESC_MNSAK_5208
-	picture = GFX_evt_library
-	border = GFX_event_normal_frame_war
-	is_triggered_only = yes
+# character_event = {
+	# id = MNSAK.5208
+	# desc = EVTDESC_MNSAK_5208
+	# picture = GFX_evt_library
+	# border = GFX_event_normal_frame_war
+	# is_triggered_only = yes
 	
-	option = { # Befriend the Spirits(Grace)
-		name = EVTOPTA_MNSAK_5208
-		add_offmap_currency = {
-			offmap = offmap_spirit_world
-			value = 250
-		}
-	}
-}
+	# option = { # Befriend the Spirits(Grace)
+		# name = EVTOPTA_MNSAK_5208
+		# add_offmap_currency = {
+			# offmap = offmap_spirit_world
+			# value = 250
+		# }
+	# }
+# }
 
 # White Lotus - Gain Learning
 character_event = {

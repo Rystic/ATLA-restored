@@ -4,6 +4,7 @@ healing_hut_north = { # The Healing Hut
 	opinion_per_rank_above = +10
 	sound = monastic_orders_interface
 	society_ranks_gfx = monk_ranks
+	society_influence = no
 	non_interference = {
 		always = yes
 	}
@@ -105,7 +106,7 @@ healing_hut_north = { # The Healing Hut
 	}
 	
 	monthly_currency_gain = {
-		name = currency_name_healing_hut_north
+		name = healing_hut_north_currency
     	
     	per_attribute = {
     		name = learning
@@ -256,3 +257,452 @@ healing_hut_north = { # The Healing Hut
 		}
 	}
 }
+
+dai_li = { #Grand Secretariat of Ba Sing Se
+	primary_attribute = intrigue
+	#is_secret = yes
+	opinion_to_other_members = +15
+	opinion_per_rank_above = +5
+	sound = monastic_orders_interface
+	society_ranks_gfx = monk_ranks
+	
+	active = {
+		#year = 603
+		NOT = { has_global_flag = dai_li_disbanded }
+	}
+	
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = dai_li
+					rank = 1
+				}
+			}
+		}
+		age = 18
+		trait = earthbender
+		more_experienced_incompetent_trigger = yes
+		culture = ba_sing_se
+		NOT = { has_landed_title = e_earth_kingdom }
+	}
+	show_society = {
+		religion_group = earth_religions
+	}
+	potential = {
+		culture = ba_sing_se
+	}
+	
+	society_rank = { # Agent
+		level = 1
+		limit = 100 
+		startup_limit = 10
+		modifier = {
+			monthly_character_piety = 0.05
+			intrigue = 1
+		}
+		decisions = {
+			daili_train_bending
+		}
+	}
+	
+	society_rank = { # Dai Li Sergeant
+		level = 2
+		limit = 50
+		startup_limit = 6
+		modifier = { 
+			monthly_character_piety = 0.1
+			intrigue = 2
+		}
+		decisions = {
+			daili_train_bending
+			daili_kill_dissident
+		}
+	}
+	
+	society_rank = { # Dai Li Inspector
+		level = 3
+		limit = 5 
+		startup_limit = 3
+		modifier = {
+			intrigue = 3
+			diplomacy = 1
+		}
+		decisions = {
+			daili_train_subterfuge
+		}
+	}
+
+	society_rank = { # Secretariat
+		level = 4
+		limit = 3
+		startup_limit = 3
+		modifier = { 
+			intrigue = 4
+			diplomacy = 2
+		}
+		decisions = {
+			daili_raise_unrest
+			daili_learn_subbending
+			# daili_
+		}
+	}
+	
+	monthly_currency_gain = {
+		name = currency_name_daili
+    	
+    	per_attribute = {
+    		name = intrigue
+    		value = 1
+    	}
+		has_trait = {
+			trait = legendary_bender
+			value = 10
+		}
+		has_trait = {
+			trait = master_bender
+			value = 5
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		has_trait = {
+			trait = deceitful
+			value = 2
+		}
+		has_trait = {
+			trait = shrewd
+			value = 2
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		has_trait = {
+		trait = patient
+		value = 2
+		}
+		has_trait = {
+		trait = diligent
+		value = 2
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+		society_rank = {
+			rank = 3
+			value = 5
+		}
+		society_rank = {
+			rank = 3
+			value = 10
+		}
+		society_rank = {
+			rank = 1
+			value = 2
+		}
+	}
+	
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+	
+	member_score = {
+		value = 10
+		modifier = {
+			trait = legendary_bender
+			factor = 5
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.3
+		}
+    	modifier = {
+			trait = competent_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.3
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.3
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = kind
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = negative_jing
+			factor = 1.1
+		}
+		modifier = {
+			trait = incompetent_bender
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			culture = ba_sing_se
+			age = 18
+			trait = earthbender
+			NOT = { trait = incompetent_bender }
+			is_in_society = no
+		}
+	}
+}
+
+royal_court = { #Royal court of ba sing se
+	primary_attribute = diplomacy # or stewardship
+	#is_secret = yes
+	opinion_to_other_members = +15
+	opinion_per_rank_above = +5
+	sound = monastic_orders_interface
+	society_ranks_gfx = monk_ranks
+	
+	active = {
+		OR = {
+			is_title_active = e_earth_kingdom
+			is_title_active = k_ba_sing_se
+		}
+	}
+	
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = royal_court
+					rank = 1
+				}
+			}
+		}
+		age = 18
+		culture = ba_sing_se
+		NOT = { has_landed_title = e_earth_kingdom }
+	}
+	show_society = {
+		religion_group = earth_religions
+	}
+	potential = {
+		culture = ba_sing_se
+	}
+	
+	society_rank = { # Courtier
+		level = 1
+		limit = 100 
+		startup_limit = 10
+		modifier = {
+			monthly_character_piety = 0.05
+			intrigue = 1
+		}
+		decisions = {
+			daili_train_bending
+		}
+	}
+	
+	society_rank = { # Faction Member
+		level = 2
+		limit = 50
+		startup_limit = 6
+		modifier = { 
+			monthly_character_piety = 0.1
+			intrigue = 2
+		}
+		decisions = {
+			daili_train_bending
+			daili_kill_dissident
+		}
+	}
+
+	society_rank = { # Faction Veteran
+		level = 3
+		limit = 16 # 4 for every faction
+		startup_limit = 3
+		modifier = {
+			intrigue = 3
+			diplomacy = 1
+		}
+		decisions = {
+			daili_train_subterfuge
+		}
+	}
+
+	society_rank = { # Faction Leader
+		level = 4
+		limit = 4 #1 for every faction leader
+		startup_limit = 4
+		modifier = { 
+			intrigue = 4
+			diplomacy = 2
+		}
+		decisions = {
+			daili_raise_unrest
+			daili_learn_subbending
+			# daili_
+		}
+	}
+	
+	monthly_currency_gain = {
+		name = currency_name_rc
+    	
+    	per_attribute = {
+    		name = intrigue
+    		value = 1
+    	}
+		has_trait = {
+			trait = legendary_bender
+			value = 10
+		}
+		has_trait = {
+			trait = master_bender
+			value = 5
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		has_trait = {
+			trait = deceitful
+			value = 2
+		}
+		has_trait = {
+			trait = shrewd
+			value = 2
+		}
+		has_trait = {
+			trait = charitable
+			value = 1
+		}
+		has_trait = {
+		trait = patient
+		value = 2
+		}
+		has_trait = {
+		trait = diligent
+		value = 2
+		}
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+		society_rank = {
+			rank = 3
+			value = 5
+		}
+		society_rank = {
+			rank = 3
+			value = 10
+		}
+		society_rank = {
+			rank = 1
+			value = 2
+		}
+	}
+	
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+	
+	member_score = {
+		value = 10
+		modifier = {
+			trait = legendary_bender
+			factor = 5
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.3
+		}
+    	modifier = {
+			trait = competent_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.3
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.3
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = kind
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = negative_jing
+			factor = 1.1
+		}
+		modifier = {
+			trait = incompetent_bender
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			culture = ba_sing_se
+			age = 18
+			trait = earthbender
+			NOT = { trait = incompetent_bender }
+			is_in_society = no
+		}
+	}
+}
+	
