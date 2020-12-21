@@ -177,9 +177,7 @@ character_event = {
 		has_any_quest = no
 		NOT = { is_inaccessible_trigger = yes }
 		NOT = { has_character_modifier = quest_cooldown_timer }
-		NOT = {
-			society_rank = 2
-		}
+		society_rank == 1
 	}
 
 	immediate = {
@@ -207,7 +205,7 @@ character_event = {
 					trait = dust_fighter
 					trait = crag_climber
 					trait = slab_smasher
-					trait = facebending
+					trait = facebender
 				}
 				set_character_flag = erb_quest_pick_gimmick
 			}
@@ -219,7 +217,7 @@ character_event = {
 #Tombola Ping Event
 character_event = {
 	id = ERB.5001
-	hide_window = no
+	hide_window = yes
 	is_triggered_only = yes
 
 	immediate = {
@@ -233,7 +231,7 @@ character_event = {
 	}
 }
 
-#QUEST: Do penance/meditate
+#QUEST: Gimmick Promoter Event 
 society_quest_event = {
   id = ERB.5002
   desc = ERB_RANK_1_PROMOTER
@@ -285,7 +283,11 @@ character_event = {
 	option = {
 		name = ERB_RANK_1_TOMBOLA_OPT_5004
 		hidden_effect = {
-			clr_character_flag = erb_failed_dust_fighter_kid
+			if = {
+				limit = { age = 16 }
+				clr_character_flag = erb_failed_dust_fighter_kid
+				clr_character_flag = erb_failed_facebender_kid
+			}
 			character_event = { id = ERB.5005 days = 1 } 
 		}
 	}
@@ -358,8 +360,57 @@ character_event = {
 					}
 					character_event = { id = ERB.10000 days = 1 random = 7 }
 				}
-				#10 = {
-				#}
+				30 = { #facebender
+					modifier = { 
+						factor = 2
+						trait = feeble
+					}
+					modifier = { 
+						factor = 2
+						trait = sickly
+					}
+					modifier = { 
+						factor = 2
+						trait = one_legged
+					}
+					modifier = { 
+						factor = 2
+						trait = one_handed
+					}
+					modifier = { 
+						factor = 2
+						trait = mangled
+					}
+					modifier = { 
+						factor = 2
+						trait = severely_injured
+					}
+					modifier = { 
+						factor = 2
+						trait = diligent
+					}
+					modifier = { 
+						factor = 2
+						trait = temperate
+					}
+					modifier = { 
+						factor = 2
+						trait = is_malnourished
+					}
+					modifier = { 
+						factor = 2
+						trait = pregnant
+					}
+					modifier = {
+						factor = 10
+						trait = paraplegic
+					}
+					modifier = {
+						factor = 0
+						has_character_flag = erb_failed_facebender
+					}
+					character_event = { id = ERB.11000 days = 1 random = 7 }
+				}
 			}
 		}
 	}
@@ -443,6 +494,10 @@ character_event = {
 						factor = 0
 						has_character_flag = erb_dusty_skirmish
 					}
+					modifier = {
+						factor = 0.5
+						trait = shy
+					}
 					set_character_flag = erb_dusty_skirmish
 					narrative_event = { id = ERB.10040 days = 1 random = 7 }
 				}
@@ -459,6 +514,7 @@ character_event = {
 	}
 }
 
+#Dust Fighter Default Event
 character_event = {
 	id = ERB.10010
 	border = GFX_event_normal_frame_war
@@ -472,7 +528,7 @@ character_event = {
 	}
 }
 
-character_event = {
+character_event = { 
 	id = ERB.10011
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
@@ -491,7 +547,8 @@ character_event = {
 	}
 }
 
-character_event = {
+#Dust Fighter Pillar Training
+character_event = { 
 	id = ERB.10020
 	is_triggered_only = yes
 	hide_from = yes
@@ -565,7 +622,7 @@ character_event = {
 	option = {
 		name = ERB_PILLAR_TRAINING_OPTB
 		random_list = {
-			50 = {
+			30 = {
 				modifier = {
 					factor = 1.5
 					trait = deceitful
@@ -643,7 +700,7 @@ character_event = {
 					text = ERB_DUST_FIGHTING_PASS_DESC
 				}
 			}
-			50 = {
+			70 = {
 				modifier = {
 					factor = 2
 					trait = incompetent_bender
@@ -651,6 +708,10 @@ character_event = {
 				modifier = {
 					factor = 1.5
 					trait = competent_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = shy
 				}
 				character_event = { id = ERB.10024 }
 				custom_tooltip = {
@@ -834,7 +895,8 @@ character_event = {
 	}
 }
 
-narrative_event = { 
+#Dust Figher Fight Mickey
+narrative_event = {
 	id = ERB.10030
 	is_triggered_only = yes
 	hide_from = yes
@@ -1201,7 +1263,8 @@ character_event = {
 	}
 }
 
-narrative_event = { 
+#Dust Fighter Dusty Skirmish
+narrative_event = {
 	id = ERB.10040
 	is_triggered_only = yes
 	hide_from = yes
@@ -1210,7 +1273,7 @@ narrative_event = {
 	option = {
 		name = ERB_WARZONE_DUST_CLOUD_OPTA
 		random_list = {
-			10 = {
+			70 = {
 				modifier = {
 					factor = 1.5
 					trait = deceitful
@@ -1296,7 +1359,7 @@ narrative_event = {
 					text = ERB_DUST_FIGHTING_PASS_DESC
 				}
 			}
-			10000 = {
+			30 = {
 				modifier = {
 					factor = 1.5
 					trait = incompetent_bender
@@ -1327,10 +1390,6 @@ narrative_event = {
 				modifier = {
 					factor = 1.5
 					trait = craven
-				}
-				modifier = {
-					factor = 1.5
-					trait = paranoid
 				}
 				modifier = {
 					factor = 1.5
@@ -1395,8 +1454,12 @@ narrative_event = {
 			}
 			40 = {
 				modifier = {
-					factor = 1.5
+					factor = 2
 					trait = incompetent_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = competent_bender
 				}
 				character_event = { id = ERB.10044 }
 				custom_tooltip = {
@@ -1409,14 +1472,6 @@ narrative_event = {
 		name = ERB_WARZONE_DUST_CLOUD_OPTC
 		random_list = {
 			50 = {
-				modifier = {
-					factor = 1.5
-					trait = deceitful
-				}
-				modifier = {
-					factor = 1.5
-					trait = craven
-				}
 				modifier = {
 					factor = 1.5
 					trait = playful
@@ -1458,20 +1513,8 @@ narrative_event = {
 					has_focus = family
 				}
 				modifier = {
-					factor = 1.5
-					trait = amateurish_plotter
-				}
-				modifier = {
-					factor = 1.5
-					trait = flamboyant_schemer
-				}
-				modifier = {
 					factor = 2
-					trait = intricate_webweaver
-				}
-				modifier = {
-					factor = 2
-					trait = elusive_shadow
+					trait = just
 				}
 				modifier = {
 					factor = 2
@@ -1486,7 +1529,7 @@ narrative_event = {
 					text = ERB_DUST_FIGHTING_PASS_DESC
 				}
 			}
-			50 = {
+			70 = {
 				modifier = {
 					factor = 2
 					trait = incompetent_bender
@@ -1494,6 +1537,10 @@ narrative_event = {
 				modifier = {
 					factor = 1.5
 					trait = competent_bender
+				}
+				modifier = {
+					factor = 3
+					trait = shy
 				}
 				character_event = { id = ERB.10046 }
 				custom_tooltip = {
@@ -1579,15 +1626,15 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 	hide_from = yes
-	desc = ERB_FIGHT_MICKEY_DUST_OPTC_FAIL
+	desc = ERB_WARZONE_DUST_CLOUD_OPTC_FAIL
 	
 	option = {
 		name = ERB_DUST_FIGHTER_NEG_OPT
-		change_variable = { which = earth_rumble_points value = -1 }
 		character_event = { id = ERB.10001 }
 	}
 }
 
+#Dust fighter Locker Room Rubble
 character_event = { 
 	id = ERB.10050
 	is_triggered_only = yes
@@ -1823,6 +1870,690 @@ letter_event = {
 		if = {
 			limit = { NOT = { age = 16 } }
 			set_character_flag = erb_failed_dust_fighter_kid
+		}
+		hidden_effect = {
+			clr_character_flag = earth_gimmick_timer
+		}
+	}
+}
+
+character_event = {
+	id = ERB.11000
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_FACEBENDER_DESC
+	
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+	}
+	
+	option = {
+		name = ERB_FACEBENDER_OPT_DESC
+		character_event = { id = ERB.11001 }
+	}
+}
+
+#Promoter Training - Facebender
+character_event = {
+	id = ERB.11001
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+	}
+
+	immediate = {
+	#Check to see if event is going to come to an end
+		if = { 
+			limit = {
+				OR = {
+					check_variable = { which = earth_rumble_points value = 3 }
+					NOT = { check_variable = { which = earth_rumble_points value = -2 } }
+				}
+			}
+			# success/fail became facebender
+			clr_character_flag = erb_cliff_training
+			clr_character_flag = erb_locker_room_ambush
+			clr_character_flag = erb_escort_mission
+			clr_character_flag = erb_spider_flies
+			character_event = { id = ERB.11002 } #Mission success/fail
+			break = yes
+		}
+		#run the tombola
+		if = {
+			limit = { 
+				has_quest = quest_erb_gimmick
+				has_character_flag = earth_gimmick_timer
+			}
+			random_list = { 
+				5 = {
+					modifier = { 
+						factor = 0
+						trait = one_legged
+					}
+					modifier = { 
+						factor = 0
+						trait = one_handed
+					}
+					modifier = { 
+						factor = 0
+						trait = mangled
+					}
+					modifier = { 
+						factor = 0
+						trait = severely_injured
+					}
+					modifier = { 
+						factor = 0
+						trait = clubfooted
+					}
+					modifier = { 
+						factor = 0
+						trait = pregnant
+					}
+					narrative_event = { id = ERB.11010 days = 1 random = 7 }
+				}
+				5 = {
+					modifier = { 
+						factor = 1.5
+						trait = one_legged
+					}
+					modifier = { 
+						factor = 1.5
+						trait = one_handed
+					}
+					modifier = { 
+						factor = 1.5
+						trait = mangled
+					}
+					modifier = { 
+						factor = 1.5
+						trait = severely_injured
+					}
+					modifier = { 
+						factor = 1.5
+						trait = clubfooted
+					}
+					modifier = { 
+						factor = 3
+						trait = pregnant
+					}
+					narrative_event = { id = ERB.11020 days = 1 random = 7 }
+				}
+				20 = {
+					modifier = {
+						factor = 0
+						has_character_flag = erb_cliff_training
+					}
+					set_character_flag = erb_cliff_training
+					character_event = { id = ERB.11030 days = 1 random = 7 }
+				}
+				20 = {
+					modifier = {
+						factor = 0
+						has_character_flag = erb_locker_room_ambush
+					}
+					set_character_flag = erb_locker_room_ambush
+					character_event = { id = ERB.11040 days = 1 random = 7 }
+				}
+				20 = {
+					modifier = {
+						factor = 0
+						has_character_flag = erb_escort_mission
+					}
+					set_character_flag = erb_escort_mission
+					narrative_event = { id = ERB.11050 days = 1 random = 7 }
+				}
+				#20 = {
+				#	modifier = {
+				#		factor = 0
+				#		has_character_flag = erb_spider_flies
+				#	}
+				#	set_character_flag = erb_spider_flies
+				#	character_event = { id = ERB.11060 days = 1 random = 7 }
+				#}
+			}
+		}
+	}
+}
+
+#Facebender Default Event
+narrative_event = {
+	id = ERB.11010
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_SUSPENDED_FROM_CEILING
+	
+	option = {
+		name = ERB_SUSPENDED_FROM_CEILING_OPT
+		character_event = { id = ERB.11011 }
+	}
+}
+
+character_event = { 
+	id = ERB.11011
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_SUSPENDED_FROM_CEILING_PASS_DESC
+	
+	option = {
+		name = ERB_SUSPENDED_FROM_CEILING_PASS_OPT
+		custom_tooltip = {
+			text = ERB_FACEBENDER_PASS_DESC
+			hidden_tooltip = {
+				change_variable = { which = earth_rumble_points value = 1 }
+			}
+		 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+#Facebender Default Disabled Event
+narrative_event = {
+	id = ERB.11020
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_FANCY_PARTY_FACEBEND
+	
+	option = {
+		name = ERB_FANCY_PARTY_FACEBEND_OPT
+		character_event = { id = ERB.11021 }
+	}
+}
+
+character_event = { 
+	id = ERB.11021
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_FANCY_PARTY_FACEBEND_PASS_DESC
+	
+	option = {
+		name = ERB_FANCY_PARTY_FACEBEND_PASS_OPT
+		custom_tooltip = {
+			text = ERB_FACEBENDER_PASS_DESC
+			hidden_tooltip = {
+				change_variable = { which = earth_rumble_points value = 1 }
+			}
+		 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+#Facebender Cliff Training
+character_event = { 
+	id = ERB.11030
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_CLIFF_TRAINING_DESC
+	
+	option = {
+		name = ERB_CLIFF_TRAINING_OPTA
+		random_list = {
+			40 = {
+				modifier = {
+					factor = 2
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = legendary_bender
+				}
+				character_event = { id = ERB.11031 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_PASS_DESC
+				}
+			}
+			60 = {
+				modifier = {
+					factor = 1.5
+					trait = incompetent_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = competent_bender
+				}
+				character_event = { id = ERB.11032 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_FAIL_DESC
+				}
+			}
+		}
+	}
+	option = {
+		name = ERB_CLIFF_TRAINING_OPTB
+		random_list = {
+			30 = {
+				modifier = {
+					factor = 1.5
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 2
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = legendary_bender
+				}
+				character_event = { id = ERB.11033 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_PASS_DESC
+				}
+			}
+			70 = {
+				modifier = {
+					factor = 2
+					trait = incompetent_bender
+				}
+				character_event = { id = ERB.11034 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_FAIL_DESC
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = ERB.11031
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_CLIFF_TRAINING_OPTA_PASS
+	
+	option = {
+		name = ERB_FACEBENDER_POS_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11032
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_CLIFF_TRAINING_OPTA_FAIL
+	
+	option = {
+		name = ERB_FACEBENDER_NEG_OPT
+		change_variable = { which = earth_rumble_points value = -1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11033
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_CLIFF_TRAINING_OPTB_PASS
+	
+	option = {
+		name = ERB_FACEBENDER_POS_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11034
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_CLIFF_TRAINING_OPTB_FAIL
+	
+	option = {
+		name = ERB_FACEBENDER_NEG_OPT
+		change_variable = { which = earth_rumble_points value = -1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+#Facebender Locker Room Ambush
+character_event = { 
+	id = ERB.11040
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_LOCKER_ROOM_AMBUSH_DESC
+	
+	option = {
+		name = ERB_LOCKER_ROOM_AMBUSH_OPTA
+		random_list = {
+			40 = {
+				modifier = {
+					factor = 2
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = legendary_bender
+				}
+				character_event = { id = ERB.11041 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_PASS_DESC
+				}
+			}
+			60 = {
+				modifier = {
+					factor = 1.5
+					trait = incompetent_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = competent_bender
+				}
+				character_event = { id = ERB.11042 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_FAIL_DESC
+				}
+			}
+		}
+	}
+	option = {
+		name = ERB_LOCKER_ROOM_AMBUSH_OPTB
+		random_list = {
+			30 = {
+				modifier = {
+					factor = 1.5
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 2
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = legendary_bender
+				}
+				character_event = { id = ERB.11043 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_PASS_DESC
+				}
+			}
+			70 = {
+				modifier = {
+					factor = 2
+					trait = incompetent_bender
+				}
+				character_event = { id = ERB.11044 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_FAIL_DESC
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = ERB.11041
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_LOCKER_ROOM_AMBUSH_OPTA_PASS
+	
+	option = {
+		name = ERB_FACEBENDER_POS_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11042
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_LOCKER_ROOM_AMBUSH_OPTA_FAIL
+	
+	option = {
+		name = ERB_FACEBENDER_NEG_OPT
+		change_variable = { which = earth_rumble_points value = -1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11043
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_LOCKER_ROOM_AMBUSH_OPTB_PASS
+	
+	option = {
+		name = ERB_FACEBENDER_POS_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11044
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_LOCKER_ROOM_AMBUSH_OPTB_FAIL
+	
+	option = {
+		name = ERB_FACEBENDER_NEG_OPT
+		change_variable = { which = earth_rumble_points value = -1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+#Facebender Escort Mission
+character_event = { 
+	id = ERB.11050
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_ESCORT_MISSION_DESC
+	
+	option = {
+		name = ERB_ESCORT_MISSION_OPTA
+		random_list = {
+			40 = {
+				modifier = {
+					factor = 2
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = legendary_bender
+				}
+				character_event = { id = ERB.11051 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_PASS_DESC
+				}
+			}
+			60 = {
+				modifier = {
+					factor = 1.5
+					trait = incompetent_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = competent_bender
+				}
+				character_event = { id = ERB.11052 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_FAIL_DESC
+				}
+			}
+		}
+	}
+	option = {
+		name = ERB_ESCORT_MISSION_OPTB
+		random_list = {
+			30 = {
+				modifier = {
+					factor = 1.5
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 2
+					trait = master_bender
+				}
+				modifier = {
+					factor = 3
+					trait = legendary_bender
+				}
+				character_event = { id = ERB.11053 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_PASS_DESC
+				}
+			}
+			70 = {
+				modifier = {
+					factor = 2
+					trait = incompetent_bender
+				}
+				character_event = { id = ERB.11054 }
+				custom_tooltip = {
+					text = ERB_FACEBENDER_FAIL_DESC
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = ERB.11051
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_ESCORT_MISSION_OPTA_PASS
+	
+	option = {
+		name = ERB_FACEBENDER_POS_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11052
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_ESCORT_MISSION_OPTA_FAIL
+	
+	option = {
+		name = ERB_FACEBENDER_NEG_OPT
+		change_variable = { which = earth_rumble_points value = -1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11053
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_ESCORT_MISSION_OPTB_PASS
+	
+	option = {
+		name = ERB_FACEBENDER_POS_OPT
+		change_variable = { which = earth_rumble_points value = 1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+character_event = {
+	id = ERB.11054
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	hide_from = yes
+	desc = ERB_ESCORT_MISSION_OPTB_FAIL
+	
+	option = {
+		name = ERB_FACEBENDER_NEG_OPT
+		change_variable = { which = earth_rumble_points value = -1 }
+		character_event = { id = ERB.11001 }
+	}
+}
+
+#Fail/success evaluation for earth rumble gimmick - facebender
+character_event = {
+	id = ERB.11002
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { FROM = { check_variable = { which = earth_rumble_points value = 3 } } }
+			FROM = { letter_event = { id = ERB.11003 } }
+		}
+		if = {
+			limit = { FROM = { NOT = { check_variable = { which = earth_rumble_points value = -2 } } } }
+			FROM = { letter_event = { id = ERB.11004 } }
+		}
+	}
+}
+
+# Earth Rumble Gimmick - Facebender success
+letter_event = {
+	id = ERB.11003
+	border = GFX_event_letter_frame_religion
+	desc = ERB_SUCCESSFUL_FACEBENDER
+	is_triggered_only = yes
+	
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+	}
+
+	option = {
+		name = ERB_FACEBENDER_SUCCESS
+		add_trait = facebender
+		if = {
+			limit = { has_quest = quest_erb_gimmick }
+			clr_quest = quest_erb_gimmick
+			remove_character_modifier = erb_working_with_promoter
+		}
+		else = {
+			add_society_currency_medium_effect = yes
+		}
+		hidden_effect = { 
+			clr_character_flag = earth_gimmick_timer
+		}
+	}
+}
+
+#Earth Rumble Gimmick - Facebender failure
+letter_event = {
+	id = ERB.11004
+	desc = ERB_FACEBENDER_FAILURE
+	is_triggered_only = yes
+
+	trigger = {
+		society_member_of = earth_rumble
+		has_quest = quest_erb_gimmick
+	}
+
+	option = {
+		name = ERB_FACEBENDER_FAILURE_OPT
+
+		if = {
+			limit = { has_quest = quest_erb_gimmick }
+			clr_quest = { id = quest_erb_gimmick failure = yes }
+			remove_character_modifier = erb_working_with_promoter
+		}
+		if = {
+			limit = { age = 16 }
+			set_character_flag = erb_failed_facebender
+		}
+		if = {
+			limit = { NOT = { age = 16 } }
+			set_character_flag = erb_failed_facebender_kid
 		}
 		hidden_effect = {
 			clr_character_flag = earth_gimmick_timer
