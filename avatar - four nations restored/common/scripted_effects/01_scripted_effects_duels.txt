@@ -188,7 +188,6 @@ apply_any_applicable_harsh_penalties_effect = {
 	                }
 	            }
 	            is_priest = yes #They are a priest
-	            NOT = { event_target:combatant_1 = { religion_group = pagan_group } } #Attacker is NOT pagan
 			}
 			custom_tooltip = { text = dueling_inappropriate_target_tt }
 			# Instead of blocking the action completely...
@@ -405,7 +404,7 @@ evaluate_extra_duel_result_score_effect = { # [SPECIAL CIRCUMSTANCES - OPTIONAL]
 	# 1. BONUSES ADDED:	adds to the score...
 	################################################################
 	if = {
-		limit = { religion_group = pagan_group }
+		limit = { religion_group = outlaw_religions }
 		change_variable = {
 			which = duel_result_score #(50 + X) - Y
 			value = 3
@@ -476,7 +475,7 @@ evaluate_extra_duel_result_score_effect = { # [SPECIAL CIRCUMSTANCES - OPTIONAL]
 		}
 	}
 	if = {
-		limit = { event_target:combatant_2 = { religion_group = pagan_group } }
+		limit = { event_target:combatant_2 = { religion_group = outlaw_religions } }
 		subtract_variable = {
 			which = duel_result_score #(50 + X) - Y
 			value = 3
@@ -1099,25 +1098,25 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				}
 			}
 			
-			if = {
-				limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
-				clr_character_flag = notify_instigating_hero
-				if = {
-					limit = {
-						has_character_flag = mildly_injured
-					}
-					set_character_flag = notify_mild_injury
-				}
-				if = {
-					limit = {
-						has_character_flag = severely_injured
-					}
-					set_character_flag = notify_severely_injured
-				}
-				event_target:hero_instigating_duel = {
-					character_event = { id = HFP.501 days = 7}
-				}
-			}
+			# if = {
+				# limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
+				# clr_character_flag = notify_instigating_hero
+				# if = {
+					# limit = {
+						# has_character_flag = mildly_injured
+					# }
+					# set_character_flag = notify_mild_injury
+				# }
+				# if = {
+					# limit = {
+						# has_character_flag = severely_injured
+					# }
+					# set_character_flag = notify_severely_injured
+				# }
+				# event_target:hero_instigating_duel = {
+					# character_event = { id = HFP.501 days = 7}
+				# }
+			# }
 			
 			if = {
 				limit = { has_character_flag = mock_duel } #Room for future variation :)
@@ -1221,25 +1220,25 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				}
 			}
 			
-			if = {
-				limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
-				clr_character_flag = notify_instigating_hero
-				if = {
-					limit = {
-						has_character_flag = mildly_injured
-					}
-					set_character_flag = notify_mild_injury
-				}
-				if = {
-					limit = {
-						has_character_flag = severely_injured
-					}
-					set_character_flag = notify_severely_injured
-				}
-				event_target:hero_instigating_duel = {
-					character_event = { id = HFP.502 days = 7}
-				}
-			}
+			# if = {
+				# limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
+				# clr_character_flag = notify_instigating_hero
+				# if = {
+					# limit = {
+						# has_character_flag = mildly_injured
+					# }
+					# set_character_flag = notify_mild_injury
+				# }
+				# if = {
+					# limit = {
+						# has_character_flag = severely_injured
+					# }
+					# set_character_flag = notify_severely_injured
+				# }
+				# event_target:hero_instigating_duel = {
+					# character_event = { id = HFP.502 days = 7}
+				# }
+			# }
 			
 			event_target:combatant_2 = { character_event = { id = HFP.10105 } } #"I wounded someone" event
 		}
@@ -1275,42 +1274,42 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				value = 10
 			}
 			
-			if = {
-				limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
-				clr_character_flag = notify_instigating_hero
-				if = {
-					limit = {
-						has_character_flag = mildly_injured
-					}
-					set_character_flag = notify_mild_injury
-				}
-				if = {
-					limit = {
-						has_character_flag = severely_injured
-					}
-					set_character_flag = notify_severely_injured
-				}
-				event_target:hero_instigating_duel = {
-					character_event = { id = HFP.503 days = 7}
-				}
-			}
+			# if = {
+				# limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
+				# clr_character_flag = notify_instigating_hero
+				# if = {
+					# limit = {
+						# has_character_flag = mildly_injured
+					# }
+					# set_character_flag = notify_mild_injury
+				# }
+				# if = {
+					# limit = {
+						# has_character_flag = severely_injured
+					# }
+					# set_character_flag = notify_severely_injured
+				# }
+				# event_target:hero_instigating_duel = {
+					# character_event = { id = HFP.503 days = 7}
+				# }
+			# }
 			
-			if = {
-				limit = {
-					has_character_flag = is_legendary_duel #(special edition events)
-					has_dlc = "Holy Fury"
-				}
-				character_event = { id = HF.12202 } #"They ran away - I won!" event (special edition)
-				event_target:combatant_2 = { character_event = { id = HF.12203 days = 1 } } #"I ran away and - I lost" event (special edition)
-			}
-			else = {
-				if = { #If this was a Claim Duel (tribals only)...
-					limit = { has_character_flag = claim_duel@event_target:combatant_2 }
-					set_character_flag = use_tribal_victory_pic
-				}
-				character_event = { id = HFP.10107 } #"They ran away - I won!" event
-				event_target:combatant_2 = { character_event = { id = HFP.10108 days = 1 } } #"I ran away and - I lost" event
-			}
+			# if = {
+				# limit = {
+					# has_character_flag = is_legendary_duel #(special edition events)
+					# has_dlc = "Holy Fury"
+				# }
+				# character_event = { id = HF.12202 } #"They ran away - I won!" event (special edition)
+				# event_target:combatant_2 = { character_event = { id = HF.12203 days = 1 } } #"I ran away and - I lost" event (special edition)
+			# }
+			# else = {
+				# if = { #If this was a Claim Duel (tribals only)...
+					# limit = { has_character_flag = claim_duel@event_target:combatant_2 }
+					# set_character_flag = use_tribal_victory_pic
+				# }
+				# character_event = { id = HFP.10107 } #"They ran away - I won!" event
+				# event_target:combatant_2 = { character_event = { id = HFP.10108 days = 1 } } #"I ran away and - I lost" event
+			# }
 		}
 		
 		10 = { # ROOT (attacker) runs away...
@@ -1339,25 +1338,25 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				value = 10
 			}
 			
-			if = {
-				limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
-				clr_character_flag = notify_instigating_hero
-				if = {
-					limit = {
-						has_character_flag = mildly_injured
-					}
-					set_character_flag = notify_mild_injury
-				}
-				if = {
-					limit = {
-						has_character_flag = severely_injured
-					}
-					set_character_flag = notify_severely_injured
-				}
-				event_target:hero_instigating_duel = {
-					character_event = { id = HFP.504 days = 7}
-				}
-			}
+			# if = {
+				# limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
+				# clr_character_flag = notify_instigating_hero
+				# if = {
+					# limit = {
+						# has_character_flag = mildly_injured
+					# }
+					# set_character_flag = notify_mild_injury
+				# }
+				# if = {
+					# limit = {
+						# has_character_flag = severely_injured
+					# }
+					# set_character_flag = notify_severely_injured
+				# }
+				# event_target:hero_instigating_duel = {
+					# character_event = { id = HFP.504 days = 7}
+				# }
+			# }
 			
 			event_target:combatant_2 = {
 				if = { #If this was a Claim Duel (tribals only)...
@@ -1470,25 +1469,25 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				}
 			}
 			
-			if = {
-				limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
-				clr_character_flag = notify_instigating_hero
-				if = {
-					limit = {
-						has_character_flag = mildly_injured
-					}
-					set_character_flag = notify_mild_injury
-				}
-				if = {
-					limit = {
-						has_character_flag = severely_injured
-					}
-					set_character_flag = notify_severely_injured
-				}
-				event_target:hero_instigating_duel = {
-					character_event = { id = HFP.505 days = 7}
-				}
-			}
+			# if = {
+				# limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
+				# clr_character_flag = notify_instigating_hero
+				# if = {
+					# limit = {
+						# has_character_flag = mildly_injured
+					# }
+					# set_character_flag = notify_mild_injury
+				# }
+				# if = {
+					# limit = {
+						# has_character_flag = severely_injured
+					# }
+					# set_character_flag = notify_severely_injured
+				# }
+				# event_target:hero_instigating_duel = {
+					# character_event = { id = HFP.505 days = 7}
+				# }
+			# }
 			
 			character_event = { id = HFP.10109 } #"Both wounded - I won!" event
 		}
@@ -1564,25 +1563,25 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				}
 			}
 			
-			if = {
-				limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
-				clr_character_flag = notify_instigating_hero
-				if = {
-					limit = {
-						has_character_flag = mildly_injured
-					}
-					set_character_flag = notify_mild_injury
-				}
-				if = {
-					limit = {
-						has_character_flag = severely_injured
-					}
-					set_character_flag = notify_severely_injured
-				}
-				event_target:hero_instigating_duel = {
-					character_event = { id = HFP.506 days = 7}
-				}
-			}
+			# if = {
+				# limit = { has_character_flag = notify_instigating_hero } # Send a notification event to the Hero that instigated the fight, if there was one
+				# clr_character_flag = notify_instigating_hero
+				# if = {
+					# limit = {
+						# has_character_flag = mildly_injured
+					# }
+					# set_character_flag = notify_mild_injury
+				# }
+				# if = {
+					# limit = {
+						# has_character_flag = severely_injured
+					# }
+					# set_character_flag = notify_severely_injured
+				# }
+				# event_target:hero_instigating_duel = {
+					# character_event = { id = HFP.506 days = 7}
+				# }
+			# }
 			
 			event_target:combatant_2 = { character_event = { id = HFP.10109 days = 1 } } #"Both wounded - I won!" event
 		}
@@ -1706,12 +1705,12 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				clr_XYZ_desc_flag_effect = yes
 			}
 
-			else = { # Most cases: the target definitely still lives...
-				event_target:combatant_2 = {
-					set_character_flag = someone_died
-					character_event = { id = HF.12200 days = 1 } #"I killed the enemy!" event sent to winner...
-				}
-			}
+			# else = { # Most cases: the target definitely still lives...
+				# event_target:combatant_2 = {
+					# set_character_flag = someone_died
+					# character_event = { id = HF.12200 days = 1 } #"I killed the enemy!" event sent to winner...
+				# }
+			# }
 		}
 
 		10 = { #LEGENDARY BLOODLINES: LETHAL for defender...
@@ -1793,10 +1792,10 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				clr_XYZ_desc_flag_effect = yes
 			}
 
-			else = { # Most cases: the target definitely still lives...
-				set_character_flag = someone_died
-				character_event = { id = HF.12200 } #"I killed the enemy!" event sent to winner...
-			}
+			# else = { # Most cases: the target definitely still lives...
+				# set_character_flag = someone_died
+				# character_event = { id = HF.12200 } #"I killed the enemy!" event sent to winner...
+			# }
 
 		}
 		1 = { #LEGENDARY BLOODLINES: LETHAL for both...
@@ -1858,8 +1857,8 @@ send_duel_result_event_effect = { # Runs via the attacker/combatant_1
 				set_character_flag = injury_kills
 			}
 
-			character_event = { id = HF.12204 } #double death event (attacker)
-			event_target:combatant_2 = { character_event = { id = HF.12205 days = 1 } } #double death event (defender)
+			#character_event = { id = HF.12204 } #double death event (attacker)
+			#event_target:combatant_2 = { character_event = { id = HF.12205 days = 1 } } #double death event (defender)
 		}
 		#10 = {
 			#OTHER OUTCOMES? ADD HERE!
@@ -2100,7 +2099,7 @@ apply_generic_duel_victory_effect = {
 			modifier = recent_duel_victory
 			months = 12 #also clears upon new duel!
 		}
-		hidden_effect = { character_event = { id = 720 } } # Bring it On achievement check event
+		#hidden_effect = { character_event = { id = 720 } } # Bring it On achievement check event
 	}
 }
 
@@ -2434,74 +2433,74 @@ apply_merciful_modifier_effect = { #For Claim Duels
 
 }
 
-handle_warrior_lodge_induction_effect = { #Will only affect those trying to join warrior lodges...
-	hidden_effect = {
-		if = {
-        	limit = { has_character_flag = awaiting_initiation_trial }
-        	if = {
-        		limit = { has_character_flag = mildly_injured }
-        		set_character_flag = was_mildly_injured
-        	}
-        	if = {
-        		limit = { has_character_flag = actually_injured }
-        		set_character_flag = was_actually_injured
-        	}
-        	if = {
-        		limit = {
-        			OR = {
-						has_character_flag = is_victorious_attacker
-						has_character_flag = is_victorious_defender
-        			}
-        			NOR = {
-        				has_character_flag = stalemate_won
-						has_character_flag = stalemate_lost
-        			}
-        		}
-        		#Medium power boon upon joining
-        		set_character_flag = medium_reward
-				#Small chance of befriending your duel target
-				#Small chance of becoming rivals with your target
-				#Small chance of getting wounded
+# handle_warrior_lodge_induction_effect = { #Will only affect those trying to join warrior lodges...
+	# hidden_effect = {
+		# if = {
+        	# limit = { has_character_flag = awaiting_initiation_trial }
+        	# if = {
+        		# limit = { has_character_flag = mildly_injured }
+        		# set_character_flag = was_mildly_injured
+        	# }
+        	# if = {
+        		# limit = { has_character_flag = actually_injured }
+        		# set_character_flag = was_actually_injured
+        	# }
+        	# if = {
+        		# limit = {
+        			# OR = {
+						# has_character_flag = is_victorious_attacker
+						# has_character_flag = is_victorious_defender
+        			# }
+        			# NOR = {
+        				# has_character_flag = stalemate_won
+						# has_character_flag = stalemate_lost
+        			# }
+        		# }
+        		# #Medium power boon upon joining
+        		# set_character_flag = medium_reward
+				# #Small chance of befriending your duel target
+				# #Small chance of becoming rivals with your target
+				# #Small chance of getting wounded
 
-        	}
-        	if = {
-        		limit = {
-        			OR = {
-						has_character_flag = is_defeated_attacker
-						has_character_flag = is_defeated_defender
-        			}
-					NOR = {
-        				has_character_flag = stalemate_won
-						has_character_flag = stalemate_lost
-        			}
-        		}
-        		#Small chance of befriending your duel target
-				#Small chance of becoming rivals with your target
-				#High chance of getting wounded
+        	# }
+        	# if = {
+        		# limit = {
+        			# OR = {
+						# has_character_flag = is_defeated_attacker
+						# has_character_flag = is_defeated_defender
+        			# }
+					# NOR = {
+        				# has_character_flag = stalemate_won
+						# has_character_flag = stalemate_lost
+        			# }
+        		# }
+        		# #Small chance of befriending your duel target
+				# #Small chance of becoming rivals with your target
+				# #High chance of getting wounded
 
-        	}
-        	if = {
-        		limit = {
-					OR = {
-						has_character_flag = stalemate_won
-						has_character_flag = stalemate_lost
-					}
-        		}
-        		#Low power boon upon joining
-        		set_character_flag = minor_reward
-				#Big chance of befriending your duel target
-				#Big chance of becoming rivals with your target
-				#Medium chance of getting wounded
-        	}
-        	if = {
-        		limit = { has_character_modifier = warrior_lodge_failed_joining_cd }
-        		set_character_flag = duel_fled
-        	}
+        	# }
+        	# if = {
+        		# limit = {
+					# OR = {
+						# has_character_flag = stalemate_won
+						# has_character_flag = stalemate_lost
+					# }
+        		# }
+        		# #Low power boon upon joining
+        		# set_character_flag = minor_reward
+				# #Big chance of befriending your duel target
+				# #Big chance of becoming rivals with your target
+				# #Medium chance of getting wounded
+        	# }
+        	# if = {
+        		# limit = { has_character_modifier = warrior_lodge_failed_joining_cd }
+        		# set_character_flag = duel_fled
+        	# }
 
-        	character_event = { id = HF.10011 days = 10 } #delayed gating event for final outcome...
-        }
-	}
-}
+        	# character_event = { id = HF.10011 days = 10 } #delayed gating event for final outcome...
+        # }
+	# }
+# }
 
 handle_poison_effect = { #shows tooltips, etc
 	if = {
@@ -2667,16 +2666,16 @@ clean_up_after_duel_effect = { #Runs for both combatant_1 and 2
 		increase_duel_exp_modifier_effect = yes
 	}
 	hidden_tooltip = {
-		if = { #Give troops to winner of event-duel.
-			limit = { 
-				has_character_flag = flag_pirate_fighting_mercenary_leader 	
-				OR = {
-					has_character_flag = is_victorious_attacker
-					has_character_flag = is_victorious_defender
-				}
-			} 
-			character_event = { id = HF.23218 } 
-		}
+		# if = { #Give troops to winner of event-duel.
+			# limit = { 
+				# has_character_flag = flag_pirate_fighting_mercenary_leader 	
+				# OR = {
+					# has_character_flag = is_victorious_attacker
+					# has_character_flag = is_victorious_defender
+				# }
+			# } 
+			# character_event = { id = HF.23218 } 
+		# }
 		if = { #Courtier wrestles regency.
 			limit = { 
 				has_character_flag = flag_courtier_challenging_regent 	
@@ -2708,121 +2707,121 @@ clean_up_after_duel_effect = { #Runs for both combatant_1 and 2
 				value = 0 #set to zero so can be cleared on save
 			}
 
-			handle_warrior_lodge_induction_effect = yes
+			#handle_warrior_lodge_induction_effect = yes
 		}
 	}
 
-	resolve_legendary_duel_effect = yes #if this was part of legendary journey (Warrior Lodge only)
+	#resolve_legendary_duel_effect = yes #if this was part of legendary journey (Warrior Lodge only)
 
-	rank_up_to_hero_level_effect = yes
+	#rank_up_to_hero_level_effect = yes
 	clr_duel_missions_effect = yes
 	clr_duel_flags_effect = yes
 }
 
-# clr_duel_missions_effect = {
-	# ### For warrior lodge mission duels...
-	# if = {
-		# limit = { has_character_flag = failed_mission }
-		# detract_society_currency_medium_effect = yes
-		# clr_quest = { id = quest_warrior_lodge_duel_deadly failure = yes }
-		# clr_character_flag = failed_mission
-	# }
-	# else = { #means you succeeded your mission!
-		# if = {
-			# limit = { event_target:combatant_1 = { character = PREV } } #if you are the attacker...
-			# if = {
-				# limit = {
-	                # has_quest = quest_warrior_lodge_duel_honor
-	                # quest_target = { character = event_target:combatant_2 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# add_society_currency_medium_effect = yes
-				# }
-				# else = {
-					# add_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_honor
-			# }
-			# else_if = {
-				# limit = {
-					# has_quest = quest_warrior_lodge_duel_deadly
-	                # quest_target = { character = event_target:combatant_2 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# if = { #this missions gives more reward for deadly outcomes...
-						# limit = { has_character_flag = someone_died }
-						# add_society_currency_major_effect = yes	 
-					# }
-					# else = {
-						# add_society_currency_medium_effect = yes
-					# }
-				# }
-				# else = {
-					# detract_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_deadly
-			# }
-		# }
-		# else = { #Means you are player 2/defender...
-			# if = {
-				# limit = {
-	                # has_quest = quest_warrior_lodge_duel_honor
-	                # quest_target = { character = event_target:combatant_1 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# add_society_currency_medium_effect = yes
-				# }
-				# else = {
-					# add_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_honor
-			# }
-			# else_if = {
-				# limit = {
-					# has_quest = quest_warrior_lodge_duel_deadly
-	                # quest_target = { character = event_target:combatant_1 }
-				# }
-				# if = {
-					# limit = {
-						# OR = {
-							# has_character_flag = is_victorious_attacker
-							# has_character_flag = is_victorious_defender
-						# }
-					# }
-					# if = { #this missions gives more reward for deadly outcomes...
-						# limit = { has_character_flag = someone_died }
-						# add_society_currency_major_effect = yes	 
-					# }
-					# else = {
-						# add_society_currency_medium_effect = yes
-					# }				
-				# }
-				# else = {
-					# detract_society_currency_minor_effect = yes
-				# }
-				# clr_quest = quest_warrior_lodge_duel_deadly
-			# }
-		# }
-	# }
-# }
+clr_duel_missions_effect = {
+	### For warrior lodge mission duels...
+	if = {
+		limit = { has_character_flag = failed_mission }
+		detract_society_currency_medium_effect = yes
+		clr_quest = { id = quest_warrior_lodge_duel_deadly failure = yes }
+		clr_character_flag = failed_mission
+	}
+	else = { #means you succeeded your mission!
+		if = {
+			limit = { event_target:combatant_1 = { character = PREV } } #if you are the attacker...
+			if = {
+				limit = {
+	                has_quest = quest_warrior_lodge_duel_honor
+	                quest_target = { character = event_target:combatant_2 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					add_society_currency_medium_effect = yes
+				}
+				else = {
+					add_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_honor
+			}
+			else_if = {
+				limit = {
+					has_quest = quest_warrior_lodge_duel_deadly
+	                quest_target = { character = event_target:combatant_2 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					if = { #this missions gives more reward for deadly outcomes...
+						limit = { has_character_flag = someone_died }
+						add_society_currency_major_effect = yes	 
+					}
+					else = {
+						add_society_currency_medium_effect = yes
+					}
+				}
+				else = {
+					detract_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_deadly
+			}
+		}
+		else = { #Means you are player 2/defender...
+			if = {
+				limit = {
+	                has_quest = quest_warrior_lodge_duel_honor
+	                quest_target = { character = event_target:combatant_1 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					add_society_currency_medium_effect = yes
+				}
+				else = {
+					add_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_honor
+			}
+			else_if = {
+				limit = {
+					has_quest = quest_warrior_lodge_duel_deadly
+	                quest_target = { character = event_target:combatant_1 }
+				}
+				if = {
+					limit = {
+						OR = {
+							has_character_flag = is_victorious_attacker
+							has_character_flag = is_victorious_defender
+						}
+					}
+					if = { #this missions gives more reward for deadly outcomes...
+						limit = { has_character_flag = someone_died }
+						add_society_currency_major_effect = yes	 
+					}
+					else = {
+						add_society_currency_medium_effect = yes
+					}				
+				}
+				else = {
+					detract_society_currency_minor_effect = yes
+				}
+				clr_quest = quest_warrior_lodge_duel_deadly
+			}
+		}
+	}
+}
 
 # rank_up_to_hero_level_effect = {
 	# ### For warrior lodge rank-up duels...
