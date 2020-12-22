@@ -1,25 +1,42 @@
 decisions = {
-	construct_tea_garden = {
+	
+	take_an_afternoon_off = {
 		is_high_prio = yes
 		
 		potential = {
-			is_ruler = yes
 			society_member_of = tea_enthusiasts
-			capital_holding = {
-				NOT = { has_building = tea_plantation_1 }
-			}
-			NOT = { has_character_flag = has_built_generational_tea_garden }
+			has_quest = quest_relaxing_afternoon
+			NOT = { has_character_flag = relaxing_afternoon }
 		}
 	
 		effect = {
-			character_event = { id = TEA.10000 days = 120 random = 30}		
-			set_character_flag = has_built_generational_tea_garden
+			set_character_flag = relaxing_afternoon
+			character_event = { id = TEA.10000 }		
 		}
-
-		ai_will_do = {
-			factor = 1000
-		}
+		
 	}
+	
+	# construct_tea_garden = {
+		# is_high_prio = yes
+		
+		# potential = {
+			# is_ruler = yes
+			# society_member_of = tea_enthusiasts
+			# capital_holding = {
+				# NOT = { has_building = tea_plantation_1 }
+			# }
+			# NOT = { has_character_flag = has_built_generational_tea_garden }
+		# }
+	
+		# effect = {
+			# character_event = { id = TEA.10001 days = 120 random = 30}		
+			# set_character_flag = has_built_generational_tea_garden
+		# }
+
+		# ai_will_do = {
+			# factor = 1000
+		# }
+	# }
 	
 	become_tea_master = {
 		is_high_prio = yes
@@ -192,6 +209,12 @@ targetted_decisions = {
 					trait = kind
 				}
 			}
+			modifier = {
+				factor = 10000
+				FROM = {
+					has_quest = quest_teach_kindness
+				}
+			}
 		}
 	}
 	
@@ -335,7 +358,10 @@ targetted_decisions = {
 		}
 		
 		effect = {
-			FROM = { change_society_currency = -750 }
+			FROM = { 
+				save_event_target_as = tea_friend 
+				change_society_currency = -750 
+			}
 			ROOT = { letter_event = { id = TEA.103 } }
 		}
 		
