@@ -2023,6 +2023,8 @@ character_event = { # Avatar offers solution : Acceptable
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
 
+	trigger = { always = no }
+
 	option = { # Refuse
 		name = EVTDESCavatarA.180
 		opinion = { modifier = avatar_refused_aid who = FROM years = 5 }
@@ -2042,14 +2044,17 @@ character_event = { # Avatar offers solution : Acceptable
 
 	option = { # Accept
 		name = EVTDESCavatarB.180
+		log = "avatar.180 might invalidated rebelion, that cunt"		
 		any_realm_province = {
 			add_province_modifier = { name = lowered_taxes duration = 1240 }
 		}
-		any_war = {
-			limit = {
-				using_cb = peasant_revolt
+		ROOT = {
+			any_war = {
+				limit = {
+					using_cb = peasant_revolt
+				}
+				end_war = invalid
 			}
-			end_war = invalid
 		}
 		clr_character_flag = avatar_aid
 	}
@@ -2074,14 +2079,17 @@ character_event = { # Avatar offers solution : Preferble
 
 	option = { # Accept
 		name = EVTOPTCavatar.182
+		log = "avatar.182 might invalidated rebelion, that cunt"			
 		any_realm_province = {
 			add_province_modifier = { name = lowered_taxes duration = 640 }
 		}
-		any_war = {
-			limit = {
-				using_cb = peasant_revolt
+		ROOT = {
+			any_war = {
+				limit = {
+					using_cb = peasant_revolt
+				}
+				end_war = invalid
 			}
-			end_war = invalid
 		}
 		clr_character_flag = avatar_aid
 	}
@@ -2094,17 +2102,20 @@ character_event = { # Avatar offers solution : Forced
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_firelord
 
-	option = { # Refuse
+	option = { # Refuse	
 		name = EVTOPTCavatar.183
+		log = "avatar.183 might invalidated rebelion, that cunt"
 		any_realm_province = {
 			add_province_modifier = { name = lowered_taxes duration = 2480 }
 		}
 		opinion = { modifier = avatar_refused_aid who = FROM years = 5 }
-		any_war = {
-			limit = {
-				using_cb = peasant_revolt
+		ROOT = {
+			any_war = {
+				limit = {
+					using_cb = peasant_revolt
+				}
+				end_war = invalid
 			}
-			end_war = invalid
 		}
 		clr_character_flag = avatar_aid
 	}
@@ -2254,59 +2265,6 @@ character_event = { # Avatar takes action - Launch Invasion
 
 }
 
-character_event = { # Descendent leaves Court for family
-	id = avatar.190
-	desc = EVTDESCavatar.190
-	is_triggered_only = yes
-	picture = GFX_evt_fire_wedding
-	ai = yes
-	min_age = 18
-
-	trigger = {
-		is_married = no
-		trait = directdescendantavatar
-	}
-
-	option = { # Alright
-		name = EVTOPTCavatar.190
-		random_playable_ruler = {
-			limit = {
-				any_courtier = {
-					is_betrothed = no
-					is_married = no
-					has_lover = no
-					prisoner = no
-					is_ill = no
-					NOT = { same_sex = ROOT }
-					NOT = { age_diff = {who = ROOT years = 4 } }
-					has_unpleasant_trait_trigger = no
-					has_unattractive_trait_trigger = no
-					NOT = { religion = fire_nation_imperialism }
-					NOT = { religion = way_of_chin }
-					culture_group = ROOT
-				}
-			}
-			random_courtier = {
-				limit = {
-					is_betrothed = no
-					is_married = no
-					has_lover = no
-					prisoner = no
-					is_ill = no
-					NOT = { same_sex = ROOT }
-					NOT = { age_diff = {who = ROOT years = 4 } }
-					has_unpleasant_trait_trigger = no
-					has_unattractive_trait_trigger = no
-					NOT = { religion = fire_nation_imperialism }
-					NOT = { religion = way_of_chin }
-					culture_group = ROOT
-				}
-				character_event = { id = avatar.195 }
-			}
-		}
-	}
-
-}
 
 #character_event = { # Descendent leaves Court for fame
 #	id = avatar.191
@@ -2371,7 +2329,7 @@ character_event = { # Avatar marries
 					prisoner = no
 					is_ill = no
 					NOT = { same_sex = ROOT }
-					NOT = { age_diff = {who = ROOT years = 5 } }
+					NOT = { age_diff = { who = ROOT years = 5 } }
 					has_unpleasant_trait_trigger = no
 					has_unattractive_trait_trigger = no
 					NOT = { religion = fire_nation_imperialism }
@@ -2397,8 +2355,9 @@ character_event = { # Is asked
 				is_landed = yes
 			}
 			if = {
-				limit = {
+				limit = { #old devs wtf
 					FROM = { is_female = no }
+					ROOT = { is_female = yes }					
 				}
 				add_spouse = FROM
 				add_lover = FROM
@@ -2406,6 +2365,7 @@ character_event = { # Is asked
 			if = {
 				limit = {
 					FROM = { is_female = yes }
+					ROOT = { is_female = no }
 				}
 				add_spouse_matrilineal = FROM
 				add_lover = FROM
@@ -2445,6 +2405,7 @@ character_event = { # Liege is asked
 		if = {
 			limit = {
 				FROMFROM = { is_female = no }
+				FROM = { is_female = yes }
 			}
 			FROM = { add_spouse = FROMFROM }
 			hidden_tooltip = {
@@ -2454,6 +2415,7 @@ character_event = { # Liege is asked
 		if = {
 			limit = {
 				FROMFROM = { is_female = yes }
+				FROM = { is_female = no }				
 			}
 			FROM = { add_spouse_matrilineal = FROMFROM }
 			hidden_tooltip = {
@@ -2475,84 +2437,6 @@ character_event = { # Liege is asked
 
 }
 
-character_event = { # Asks
-	id = avatar.195
-	desc = EVTDESCavatar.193
-	is_triggered_only = yes
-	picture = GFX_evt_fire_wedding
-
-	option = { # Yes
-		name = EVTOPTCavatarA.193
-		if = { # If landed, marry
-			limit = {
-				is_landed = yes
-			}
-			add_spouse = FROM
-			hidden_tooltip = {
-				add_lover = FROM
-			}
-		}
-		if = { # If landed, ask liege
-			limit = {
-				is_landed = no
-			}
-			liege = {
-				character_event = { id = avatar.196 }
-			}
-		}
-		ai_chance = {
-			factor = 1
-		}
-	}
-
-	option = { # No
-		name = EVTOPTCavatarB.196
-		ai_chance = {
-			factor = 0
-		}
-	}
-
-}
-
-character_event = { # Liege Asks
-	id = avatar.196
-	desc = EVTDESCavatar.194
-	is_triggered_only = yes
-	picture = GFX_evt_fire_wedding
-
-	option = { # Yes
-		name = EVTOPTCavatarA.194
-		if = {
-			limit = {
-				FROMFROM = { is_female = no }
-			}
-			FROM = { add_spouse = FROMFROM }
-			hidden_tooltip = {
-				FROM = { add_lover = FROMFROM }
-			}
-		}
-		if = {
-			limit = {
-				FROMFROM = { is_female = yes }
-			}
-			FROM = { add_spouse_matrilineal = FROMFROM }
-			hidden_tooltip = {
-				FROM = { add_lover = FROMFROM }
-			}
-		}
-		ai_chance = {
-			factor = 1
-		}
-	}
-
-	option = { # No
-		name = EVTOPTCavatarB.194
-		ai_chance = {
-			factor = 0
-		}
-	}
-
-}
 
 #character_event = { # Descendent leaves Court for fame - New Liege is asked
 #	id = avatar.197
@@ -2930,31 +2814,31 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 			}
 		}
 		hidden_tooltip = {
-		if = {
-			limit = {
-				FROMFROM = {
-					is_consort = yes
-				}
-			}
-			any_consort = {
-				remove_consort = ROOT
-				move_character = FROM
-			}
-		}
-		if = {
-			limit = {
-				FROMFROM = {
-					prisoner = yes
-				}
-			}
-			any_courtier = {
+			if = {
 				limit = {
-					prisoner = yes
+					FROMFROM = {
+						is_consort = yes
+					}
 				}
-				prisoner = no
-				move_character = FROM
+				any_consort = {
+					remove_consort = ROOT
+					move_character = FROM
+				}
 			}
-		}
+			if = {
+				limit = {
+					FROMFROM = {
+						prisoner = yes
+					}
+				}
+				any_courtier = {
+					limit = {
+						prisoner = yes
+					}
+					prisoner = no
+					move_character = FROM
+				}
+			}
 		}
 	}
 
@@ -2965,31 +2849,31 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 		}
 		death = { death_reason = death_battle killer = FROM }
 		hidden_tooltip = {
-		if = {
-			limit = {
-				FROMFROM = {
-					is_consort = yes
-				}
-			}
-			any_consort = {
-				remove_consort = ROOT
-				move_character = FROM
-			}
-		}
-		if = {
-			limit = {
-				FROMFROM = {
-					prisoner = yes
-				}
-			}
-			any_courtier = {
+			if = {
 				limit = {
-					prisoner = yes
+					FROMFROM = {
+						is_consort = yes
+					}
 				}
-				prisoner = no
-				move_character = FROM
+				any_consort = {
+					remove_consort = ROOT
+					move_character = FROM
+				}
 			}
-		}
+			if = {
+				limit = {
+					FROMFROM = {
+						prisoner = yes
+					}
+				}
+				any_courtier = {
+					limit = {
+						prisoner = yes
+					}
+					prisoner = no
+					move_character = FROM
+				}
+			}
 		}
 	}
 
@@ -3000,32 +2884,31 @@ character_event = { # Avatar's Wrath - Abduction - FROM
 		}
 		death = { death_reason = death_battle killer = FROM }
 		hidden_tooltip = {
-		if = {
-			limit = {
-				FROMFROM = {
-					is_consort = yes
-				}
-			}
-			any_consort = {
-				remove_consort = ROOT
-				move_character = FROM
-			}
-		}
-		if = {
-			limit = {
-				FROMFROM = {
-					prisoner = yes
-				}
-			}
-			any_courtier = {
+			if = {
 				limit = {
-					prisoner = yes
+					FROMFROM = {
+						is_consort = yes
+					}
 				}
-				prisoner = no
-				move_character = FROM
+				any_consort = {
+					remove_consort = ROOT
+					move_character = FROM
+				}
 			}
-		}
+			if = {
+				limit = {
+					FROMFROM = {
+						prisoner = yes
+					}
+				}
+				any_courtier = {
+					limit = {
+						prisoner = yes
+					}
+					prisoner = no
+					move_character = FROM
+				}
+			}
 		}
 	}
-
 }
