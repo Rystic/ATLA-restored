@@ -17,96 +17,229 @@ character_event = {
 	}
 	
 	immediate = {
-			royal_court = {
-				any_society_member = {
+		royal_court = {
+			any_society_member = {
+				
+				export_to_variable = { which = bc_member_steward value = stewardship }
+				export_to_variable = { which = bc_member_diplo value = diplomacy }
+				export_to_variable = { which = bc_member_intrigue value = intrigue }
+				export_to_variable = { which = bc_member_martial value = martial }
+				export_to_variable = { which = bc_member_learn value = learning }				
+				
+				#check dominant ai attribute
+				if = {
+					limit = {
+						ai = yes					
+						check_variable = { which = bc_member_diplo which > bc_member_steward }
+						check_variable = { which = bc_member_diplo which > bc_member_intrigue }
+						check_variable = { which = bc_member_diplo which > bc_member_martial }
+						check_variable = { which = bc_member_diplo which > bc_member_learn }
+						NOT = { society_rank = 4 }
+						
+					}
+					add_trait = NobleFactMember
+				}
+				
+				if = {
+					limit = {
+						ai = yes					
+						check_variable = { which = bc_member_steward which > bc_member_diplo }
+						check_variable = { which = bc_member_steward which > bc_member_intrigue }
+						check_variable = { which = bc_member_steward which > bc_member_martial }
+						check_variable = { which = bc_member_steward which > bc_member_learn }
+						NOT = { society_rank = 4 }
+					}
+					add_trait = AdminFactMember
+				}
+
+				if = {
+					limit = {
+						ai = yes					
+						check_variable = { which = bc_member_intrigue which > bc_member_steward }
+						check_variable = { which = bc_member_intrigue which > bc_member_diplo }
+						check_variable = { which = bc_member_intrigue which > bc_member_martial }
+						check_variable = { which = bc_member_intrigue which > bc_member_learn }
+						NOT = { society_rank = 4 }
+					}
+					add_trait = DaiLiFactMember
+				}
+
+				if = {
+					limit = {
+						ai = yes					
+						check_variable = { which = bc_member_martial which > bc_member_steward }
+						check_variable = { which = bc_member_martial which > bc_member_intrigue }
+						check_variable = { which = bc_member_martial which > bc_member_diplo }
+						check_variable = { which = bc_member_martial which > bc_member_learn }
+						NOT = { society_rank = 4 }
+					}
+					add_trait = MilitaristFactMember
+				}
+
+				if = {
+					limit = {
+						ai = yes					
+						check_variable = { which = bc_member_learn which > bc_member_steward }
+						check_variable = { which = bc_member_learn which > bc_member_intrigue }
+						check_variable = { which = bc_member_learn which > bc_member_martial }
+						check_variable = { which = bc_member_learn which > bc_member_diplo }
+						NOT = { society_rank = 4 }
+					}
+					add_trait = RoyalFactMember
+				}				
+				
+				#Special Case number 1
+				if = {
+					limit = {
+						ai = yes
+						OR = {
+							check_variable = { which = bc_member_diplo which = bc_member_steward }
+							check_variable = { which = bc_member_diplo which = bc_member_intrigue }
+							check_variable = { which = bc_member_diplo which = bc_member_martial }
+							check_variable = { which = bc_member_diplo which = bc_member_learn }
+						}
+						NOT = { society_rank = 4 }
+					}
+					
+					trigger_switch = {
+					on_trigger = trait
+					
+						naive_appeaser = { add_trait = NobleFactMember }
+						underhanded_rogue = { add_trait = NobleFactMember }
+						charismatic_negotiator = { add_trait = NobleFactMember }
+						grey_eminence = { add_trait = NobleFactMember }
+						
+						misguided_warrior = { add_trait = MilitaristFactMember }
+						tough_soldier = { add_trait = MilitaristFactMember }
+						skilled_tactician = { add_trait = MilitaristFactMember }
+						brilliant_strategist = { add_trait = MilitaristFactMember }
+						
+						indulgent_wastrel = { add_trait = AdminFactMember }
+						thrifty_clerk = { add_trait = AdminFactMember }
+						fortune_builder = { add_trait = AdminFactMember }
+						midas_touched = { add_trait = AdminFactMember }
+						
+						amateurish_plotter = { add_trait = DaiLiFactMember }
+						flamboyant_schemer = { add_trait = DaiLiFactMember }
+						intricate_webweaver = { add_trait = DaiLiFactMember }
+						elusive_shadow = { add_trait = DaiLiFactMember }
+						
+						detached_priest = { add_trait = RoyalFactMember }
+						martial_cleric = { add_trait = RoyalFactMember }
+						scholarly_theologian = { add_trait = RoyalFactMember }
+						mastermind_theologian = { add_trait = RoyalFactMember }
+					
+					}
+				}
+				
+				if = {
+					limit = {
+						ai = yes
+						society_rank = 4
+					}
 					if = {
 						limit = {
 							NOR = {
-								trait = DaiLiFactMember
-								trait = AdminFactMember
+								trait = NobleFactMember 
 								trait = MilitaristFactMember
-								trait = NobleFactMember
+								trait = AdminFactMember
+								trait = DaiLiFactMember
+								trait = RoyalFactMember
 							}
 						}
-						if = {
-							limit = { 
-								NOT = { has_global_flag = dai_li_disbanded }
-								society_rank = {
-									society = royal_court
-									rank >= 1
-								}								
-							}
-							random_list = {
-							
-							25 = { add_trait = DaiLiFactMember }
-							25 = { add_trait = AdminFactMember }
-							25 = { add_trait = MilitaristFactMember }
-							25 = { add_trait = NobleFactMember }
-							}
-						}
-						else_if = {
-							limit = {
-								society_rank = {
-									society = royal_court
-									rank >= 1
+						random_list = {
+							20 = {
+								trigger = {
+									NOT = { 
+										any_society_member = {
+											limit = {
+												society_rank == 4
+											}
+											trait = NobleFactMember
+										}
+									}
 								}
+								add_trait = NobleFactMember
 							}	
-							random_list = {
-								
-							33 = { add_trait = AdminFactMember }
-							33 = { add_trait = MilitaristFactMember }
-							33 = { add_trait = NobleFactMember }
+							20 = {
+								trigger = {
+									NOT = { 
+										any_society_member = {
+											limit = {
+												society_rank == 4
+											}
+											trait = MilitaristFactMember
+										}
+									}
+								}
+								add_trait = MilitaristFactMember
+							}
+							20 = {
+								trigger = {
+									NOT = { 
+										any_society_member = {
+											limit = {
+												society_rank == 4
+											}
+											trait = AdminFactMember
+										}
+									}
+								}
+								add_trait = AdminFactMember
 							}	
-						}
-					}
-					else_if = {
-						limit = {
-							society_rank = {
-								society = royal_court
-								rank = 4
+							20 = {
+								trigger = {
+									NOT = { 
+										any_society_member = {
+											limit = {
+												society_rank == 4
+											}
+											trait = DaiLiFactMember
+										}
+									}
+								}
+								add_trait = DaiLiFactMember
+							}	
+							20 = {
+								trigger = {
+									NOT = { 
+										any_society_member = {
+											limit = {
+												society_rank == 4
+											}
+											trait = RoyalFactMember
+										}
+									}
+								}
+								add_trait = RoyalFactMember
 							}
-							NOR = {
-								trait = DaiLiFactLeader
-								trait = AdminFactLeader
-								trait = MilitaristFactLeader
-								trait = NobleFactLeader
-							}
-						}
-						trigger_switch = {
-						on_trigger = trait 
-						
-						DaiLiFactMember = { add_trait = DaiLiFactLeader }
-						AdminFactMember = { add_trait = AdminFactLeader }
-						MilitaristFactMember = { add_trait = MilitaristFactLeader }
-						NobleFactMember = { add_trait = NobleFactLeader }
-						
 						}
 					}
 				}
 			}
+		}
 	}
 }
 
-#Calculate relative factions power on startup
+#Calculate relative factions power
 #I dont like using sooo many variables but game is forcing my hand here - TypicalCrusader
 character_event = {
 	id = RCevents.2
 	is_triggered_only = yes
 	hide_window = yes
-	# is_save_game = no
 	
 	trigger = {
 		OR = {
 			is_title_active = e_earth_kingdom 
 			AND = {
-				is_title_active = k_ba_sing_se
+				is_title_active = k_earth_kingdom
 				NOT = { is_title_active = e_earth_kingdom }
 			}
 		}
 		NOT = { has_global_flag = ek_deposed_peasant_rep }
 		OR = {
 			has_landed_title = e_earth_kingdom
-			has_landed_title = k_ba_sing_se
+			has_landed_title = k_earth_kingdom
 		}
 	}
 	
@@ -139,17 +272,12 @@ character_event = {
 				trait = NobleFactMember
 			}
 		}
-		change_variable = { which = global_RoyalCourtMembers value = 1 }
+		change_variable = { which = global_RoyalCourtMembers value = 1 }		
 		if = {
 			limit = {
-				NOT = { has_global_flag = dai_li_disbanded }
-			}		
-			if = {
-				limit = {
-					trait = DaiLiFactMember
-				}
-				change_variable = { which = global_RCDaiLiMembers value = 1 }
+				trait = DaiLiFactMember
 			}
+			change_variable = { which = global_RCDaiLiMembers value = 1 }
 		}
 		if = {
 			limit = {
@@ -224,57 +352,53 @@ character_event = {
 		
 		holder_scope = {
 		
+			trigger_switch = {
+			on_trigger = trait
+		
+				earthkingpuppet = { 
+					change_variable = { which = global_DaiLiFactYearlyGain value = 3.6 }
+					change_variable = { which = global_NobleFactYearlyGain value = -1.8 } 
+					change_variable = { which = global_AdminFactYearlyGain value = -1.8 } 
+				}					
+				earthking = { 
+					change_variable = { which = global_DaiLiFactYearlyGain value = 0.6 } 
+					change_variable = { which = global_NobleFactYearlyGain value = -0.3 } 
+					change_variable = { which = global_AdminFactYearlyGain value = -0.3 } 
+				}
+			}
+			
 			if = {
 				limit = {
-					NOT = { has_global_flag = dai_li_disbanded }
-				}
-				trigger_switch = {
-				on_trigger = trait
-		
-					earthkingpuppet = { 
-						change_variable = { which = global_DaiLiFactYearlyGain value = 3.6 }
-						change_variable = { which = global_NobleFactYearlyGain value = -1.8 } 
-						change_variable = { which = global_AdminFactYearlyGain value = -1.8 } 
-					}					
-					earthking = { 
-						change_variable = { which = global_DaiLiFactYearlyGain value = 0.6 } 
-						change_variable = { which = global_NobleFactYearlyGain value = -0.3 } 
-						change_variable = { which = global_AdminFactYearlyGain value = -0.3 } 
+					has_instances_of_character_modifier = {
+					name = dai_li_inf_mod
+					amount == 1
 					}
-				}	
-				if = {
-					limit = {
-						has_instances_of_character_modifier = {
-						name = dai_li_inf_mod
-						amount == 1
-						}
-					}
-					change_variable = { which = global_DaiLiFactYearlyGain value = 5 } 
-					change_variable = { which = global_NobleFactYearlyGain value = -2.5 } 
-					change_variable = { which = global_AdminFactYearlyGain value = -2.5 }			
 				}
-				else_if = {
-					limit = {
-						has_instances_of_character_modifier = {
-						name = dai_li_inf_mod
-						amount == 2
-						}
+				change_variable = { which = global_DaiLiFactYearlyGain value = 5 } 
+				change_variable = { which = global_NobleFactYearlyGain value = -2.5 } 
+				change_variable = { which = global_AdminFactYearlyGain value = -2.5 }			
+			}
+			else_if = {
+				limit = {
+					has_instances_of_character_modifier = {
+					name = dai_li_inf_mod
+					amount == 2
 					}
-					change_variable = { which = global_DaiLiFactYearlyGain value = 10 } 
-					change_variable = { which = global_NobleFactYearlyGain value = -5 } 
-					change_variable = { which = global_AdminFactYearlyGain value = -5 }			
 				}
-				else_if = {
-					limit = {
-						has_instances_of_character_modifier = {
-						name = dai_li_inf_mod
-						amount >= 3
-						}
+				change_variable = { which = global_DaiLiFactYearlyGain value = 10 } 
+				change_variable = { which = global_NobleFactYearlyGain value = -5 } 
+				change_variable = { which = global_AdminFactYearlyGain value = -5 }			
+			}
+			else_if = {
+				limit = {
+					has_instances_of_character_modifier = {
+					name = dai_li_inf_mod
+					amount >= 3
 					}
-					change_variable = { which = global_DaiLiFactYearlyGain value = 15 } 
-					change_variable = { which = global_NobleFactYearlyGain value = -7.5 } 
-					change_variable = { which = global_AdminFactYearlyGain value = -7.5 }			
 				}
+				change_variable = { which = global_DaiLiFactYearlyGain value = 15 } 
+				change_variable = { which = global_NobleFactYearlyGain value = -7.5 } 
+				change_variable = { which = global_AdminFactYearlyGain value = -7.5 }			
 			}
 			if = {
 				limit = {
@@ -430,11 +554,7 @@ character_event = {
 	set_variable = { which = global_RCNobleFactionPower which = global_RCNobleMembers }
 	
 	
-	ROOT = {
-	if = {
-		limit = {
-			NOT = { has_global_flag = dai_li_disbanded }
-		}		
+	ROOT = {	
 		if = {
 			limit = {
 				check_variable = { which = global_RCDaiLiFactionPower which > global_RCAdminFactionPower }
@@ -444,58 +564,349 @@ character_event = {
 			trigger_switch = {
 			on_trigger = trait
 
-				earthking = { offmap_ek = { set_status = daili_faction_absolute } }
-				earthkingconstitution = { offmap_ek = { set_status = daili_faction_parliament } }
-				earthkingpuppet = { offmap_ek = { set_status = daili_faction_puppet } }
+				earthking = { set_global_flag = bagdermole_council_heritage_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_heritage_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_heritage_puppet } 
 		
 			}
 		}
-	}
-	if = {
-		limit = {
-			check_variable = { which = global_RCAdminFactionPower which > global_RCDaiLiFactionPower }
-			check_variable = { which = global_RCAdminFactionPower which > global_RCMilitaryFactionPower }
-			check_variable = { which = global_RCAdminFactionPower which > global_RCNobleFactionPower }	
-		}
-		trigger_switch = {
-		on_trigger = trait
+		if = {
+			limit = {
+				check_variable = { which = global_RCAdminFactionPower which > global_RCDaiLiFactionPower }
+				check_variable = { which = global_RCAdminFactionPower which > global_RCMilitaryFactionPower }
+				check_variable = { which = global_RCAdminFactionPower which > global_RCNobleFactionPower }	
+			}
+			trigger_switch = {
+			on_trigger = trait
 
-			earthking = { offmap_ek = { set_status = bureaucratic_faction_absolute } }
-			earthkingconstitution = { offmap_ek = { set_status = bureaucratic_faction_parliament } }
-			earthkingpuppet = { offmap_ek = { set_status = bureaucratic_faction_puppet } }
-		
+				earthking = { set_global_flag = bagdermole_council_admin_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_admin_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_admin_puppet } 
+			
+			}
 		}
-	}
-	if = {
-		limit = {
-			check_variable = { which = global_RCMilitaryFactionPower which > global_RCDaiLiFactionPower }
-			check_variable = { which = global_RCMilitaryFactionPower which > global_RCAdminFactionPower }
-			check_variable = { which = global_RCMilitaryFactionPower which > global_RCNobleFactionPower }	
-		}		
-		trigger_switch = {
-		on_trigger = trait
+		if = {
+			limit = {
+				check_variable = { which = global_RCMilitaryFactionPower which > global_RCDaiLiFactionPower }
+				check_variable = { which = global_RCMilitaryFactionPower which > global_RCAdminFactionPower }
+				check_variable = { which = global_RCMilitaryFactionPower which > global_RCNobleFactionPower }	
+			}		
+			trigger_switch = {
+			on_trigger = trait
 
-			earthking = { offmap_ek = { set_status = military_faction_absolute } }
-			earthkingconstitution = { offmap_ek = { set_status = military_faction_parliament } }
-			earthkingpuppet = { offmap_ek = { set_status = military_faction_puppet } }
-		
+				earthking = { set_global_flag = bagdermole_council_military_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_military_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_military_puppet } 
+			
+			}
 		}
-	}
-	if = {
-		limit = {
-			check_variable = { which = global_RCNobleFactionPower which > global_RCDaiLiFactionPower }
-			check_variable = { which = global_RCNobleFactionPower which > global_RCAdminFactionPower }
-			check_variable = { which = global_RCNobleFactionPower which > global_RCMilitaryFactionPower }	
-		}	
-		trigger_switch = {
-		on_trigger = trait
+		if = {
+			limit = {
+				check_variable = { which = global_RCNobleFactionPower which > global_RCDaiLiFactionPower }
+				check_variable = { which = global_RCNobleFactionPower which > global_RCAdminFactionPower }
+				check_variable = { which = global_RCNobleFactionPower which > global_RCMilitaryFactionPower }	
+			}	
+			trigger_switch = {
+			on_trigger = trait
 
-			earthking = { offmap_ek = { set_status = noble_faction_absolute } }
-			earthkingconstitution = { offmap_ek = { set_status = noble_faction_parliament } }
-			earthkingpuppet = { offmap_ek = { set_status = noble_faction_puppet } }
-		
+				earthking = { set_global_flag = bagdermole_council_noble_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_noble_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_noble_puppet } 
+			
 				}
 			}
+		}
+	}
+}
+
+character_event = {
+	id = RCevents.11
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		OR = {
+			has_landed_title = e_earth_kingdom
+			AND = {
+				has_landed_title = k_ba_sing_se
+				NOT = { is_title_active = e_earth_kingdom }
+			}
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				offmap_ek = {
+					has_status = daili_faction_puppet
+				}
+			}
+			add_character_modifier = {
+				name = daili_puppet_mod
+				duration = -1
+				#hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = daili_faction_absolute
+				}
+			}
+			add_character_modifier = {
+				name = daili_abs_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod	
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = daili_faction_parliament
+				}
+			}
+			add_character_modifier = {
+				name = daili_const_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod	
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		if = {
+			limit = {
+				offmap_ek = {
+					has_status = bureaucratic_faction_puppet
+				}
+			}
+			add_character_modifier = {
+				name = admin_puppet_mod 
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = bureaucratic_faction_absolute
+				}
+			}
+			add_character_modifier = {
+				name = admin_abs_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod	
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = bureaucratic_faction_parliament
+				}
+			}
+			add_character_modifier = {
+				name = admin_const_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod	
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		if = {
+			limit = {
+				offmap_ek = {
+					has_status = military_faction_puppet
+				}
+			}
+			add_character_modifier = {
+				name = military_puppet_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = military_faction_absolute
+				}
+			}
+			add_character_modifier = {
+				name = military_abs_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_puppet_mod	
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = military_faction_parliament
+				}
+			}
+			add_character_modifier = {
+				name = military_const_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_puppet_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		if = {
+			limit = {
+				offmap_ek = {
+					has_status = noble_faction_puppet
+				}
+			}
+			add_character_modifier = {
+				name = noble_puppet_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_abs_mod
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = noble_faction_absolute
+				}
+			}
+			add_character_modifier = {
+				name = noble_abs_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_const_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod	
+			remove_character_modifier = noble_const_mod
+			remove_character_modifier = noble_puppet_mod			
+		}
+		else_if = {
+			limit = {
+				offmap_ek = {
+					has_status = noble_faction_parliament
+				}
+			}
+			add_character_modifier = {
+				name = noble_const_mod
+				duration = -1
+				hidden = yes
+			}
+			remove_character_modifier = daili_abs_mod
+			remove_character_modifier = daili_puppet_mod
+			remove_character_modifier = admin_const_mod
+			remove_character_modifier = admin_abs_mod
+			remove_character_modifier = admin_puppet_mod
+			remove_character_modifier = military_const_mod
+			remove_character_modifier = military_abs_mod
+			remove_character_modifier = military_puppet_mod		
+			remove_character_modifier = noble_abs_mod
+			remove_character_modifier = noble_puppet_mod			
 		}
 	}
 }	
@@ -511,14 +922,14 @@ character_event = {
 		OR = {
 			is_title_active = e_earth_kingdom 
 			AND = {
-				is_title_active = k_ba_sing_se
+				is_title_active = k_earth_kingdom
 				NOT = { is_title_active = e_earth_kingdom }
 			}
 		}
 		NOT = { has_global_flag = ek_deposed_peasant_rep }
 		OR = {
 			has_landed_title = e_earth_kingdom
-			has_landed_title = k_ba_sing_se
+			has_landed_title = k_earth_kingdom
 		}
 	}
 	
@@ -551,17 +962,12 @@ character_event = {
 				trait = NobleFactMember
 			}
 		}
-		change_variable = { which = global_RoyalCourtMembers value = 1 }
+		change_variable = { which = global_RoyalCourtMembers value = 1 }		
 		if = {
 			limit = {
-				NOT = { has_global_flag = dai_li_disbanded }
-			}		
-			if = {
-				limit = {
-					trait = DaiLiFactMember
-				}
-				change_variable = { which = global_RCDaiLiMembers value = 1 }
+				trait = DaiLiFactMember
 			}
+			change_variable = { which = global_RCDaiLiMembers value = 1 }
 		}
 		if = {
 			limit = {
@@ -636,57 +1042,53 @@ character_event = {
 		
 		holder_scope = {
 		
+			trigger_switch = {
+			on_trigger = trait
+		
+				earthkingpuppet = { 
+					change_variable = { which = global_DaiLiFactYearlyGain value = 3.6 }
+					change_variable = { which = global_NobleFactYearlyGain value = -1.8 } 
+					change_variable = { which = global_AdminFactYearlyGain value = -1.8 } 
+				}					
+				earthking = { 
+					change_variable = { which = global_DaiLiFactYearlyGain value = 0.6 } 
+					change_variable = { which = global_NobleFactYearlyGain value = -0.3 } 
+					change_variable = { which = global_AdminFactYearlyGain value = -0.3 } 
+				}
+			}
+			
 			if = {
 				limit = {
-					NOT = { has_global_flag = dai_li_disbanded }
-				}
-				trigger_switch = {
-				on_trigger = trait
-		
-					earthkingpuppet = { 
-						change_variable = { which = global_DaiLiFactYearlyGain value = 3.6 }
-						change_variable = { which = global_NobleFactYearlyGain value = -1.8 } 
-						change_variable = { which = global_AdminFactYearlyGain value = -1.8 } 
-					}					
-					earthking = { 
-						change_variable = { which = global_DaiLiFactYearlyGain value = 0.6 } 
-						change_variable = { which = global_NobleFactYearlyGain value = -0.3 } 
-						change_variable = { which = global_AdminFactYearlyGain value = -0.3 } 
+					has_instances_of_character_modifier = {
+					name = dai_li_inf_mod
+					amount == 1
 					}
-				}	
-				if = {
-					limit = {
-						has_instances_of_character_modifier = {
-						name = dai_li_inf_mod
-						amount == 1
-						}
-					}
-					change_variable = { which = global_DaiLiFactYearlyGain value = 5 } 
-					change_variable = { which = global_NobleFactYearlyGain value = -2.5 } 
-					change_variable = { which = global_AdminFactYearlyGain value = -2.5 }			
 				}
-				else_if = {
-					limit = {
-						has_instances_of_character_modifier = {
-						name = dai_li_inf_mod
-						amount == 2
-						}
+				change_variable = { which = global_DaiLiFactYearlyGain value = 5 } 
+				change_variable = { which = global_NobleFactYearlyGain value = -2.5 } 
+				change_variable = { which = global_AdminFactYearlyGain value = -2.5 }			
+			}
+			else_if = {
+				limit = {
+					has_instances_of_character_modifier = {
+					name = dai_li_inf_mod
+					amount == 2
 					}
-					change_variable = { which = global_DaiLiFactYearlyGain value = 10 } 
-					change_variable = { which = global_NobleFactYearlyGain value = -5 } 
-					change_variable = { which = global_AdminFactYearlyGain value = -5 }			
 				}
-				else_if = {
-					limit = {
-						has_instances_of_character_modifier = {
-						name = dai_li_inf_mod
-						amount >= 3
-						}
+				change_variable = { which = global_DaiLiFactYearlyGain value = 10 } 
+				change_variable = { which = global_NobleFactYearlyGain value = -5 } 
+				change_variable = { which = global_AdminFactYearlyGain value = -5 }			
+			}
+			else_if = {
+				limit = {
+					has_instances_of_character_modifier = {
+					name = dai_li_inf_mod
+					amount >= 3
 					}
-					change_variable = { which = global_DaiLiFactYearlyGain value = 15 } 
-					change_variable = { which = global_NobleFactYearlyGain value = -7.5 } 
-					change_variable = { which = global_AdminFactYearlyGain value = -7.5 }			
 				}
+				change_variable = { which = global_DaiLiFactYearlyGain value = 15 } 
+				change_variable = { which = global_NobleFactYearlyGain value = -7.5 } 
+				change_variable = { which = global_AdminFactYearlyGain value = -7.5 }			
 			}
 			if = {
 				limit = {
@@ -842,11 +1244,7 @@ character_event = {
 	set_variable = { which = global_RCNobleFactionPower which = global_RCNobleMembers }
 	
 	
-	ROOT = {
-	if = {
-		limit = {
-			NOT = { has_global_flag = dai_li_disbanded }
-		}		
+	ROOT = {	
 		if = {
 			limit = {
 				check_variable = { which = global_RCDaiLiFactionPower which > global_RCAdminFactionPower }
@@ -856,56 +1254,55 @@ character_event = {
 			trigger_switch = {
 			on_trigger = trait
 
-				earthking = { offmap_ek = { set_status = daili_faction_absolute } }
-				earthkingconstitution = { offmap_ek = { set_status = daili_faction_parliament } }
-				earthkingpuppet = { offmap_ek = { set_status = daili_faction_puppet } }
+				earthking = { set_global_flag = bagdermole_council_heritage_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_heritage_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_heritage_puppet } 
 		
 			}
 		}
-	}
-	if = {
-		limit = {
-			check_variable = { which = global_RCAdminFactionPower which > global_RCDaiLiFactionPower }
-			check_variable = { which = global_RCAdminFactionPower which > global_RCMilitaryFactionPower }
-			check_variable = { which = global_RCAdminFactionPower which > global_RCNobleFactionPower }	
-		}
-		trigger_switch = {
-		on_trigger = trait
+		if = {
+			limit = {
+				check_variable = { which = global_RCAdminFactionPower which > global_RCDaiLiFactionPower }
+				check_variable = { which = global_RCAdminFactionPower which > global_RCMilitaryFactionPower }
+				check_variable = { which = global_RCAdminFactionPower which > global_RCNobleFactionPower }	
+			}
+			trigger_switch = {
+			on_trigger = trait
 
-			earthking = { offmap_ek = { set_status = bureaucratic_faction_absolute } }
-			earthkingconstitution = { offmap_ek = { set_status = bureaucratic_faction_parliament } }
-			earthkingpuppet = { offmap_ek = { set_status = bureaucratic_faction_puppet } }
-		
+				earthking = { set_global_flag = bagdermole_council_admin_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_admin_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_admin_puppet } 
+			
+			}
 		}
-	}
-	if = {
-		limit = {
-			check_variable = { which = global_RCMilitaryFactionPower which > global_RCDaiLiFactionPower }
-			check_variable = { which = global_RCMilitaryFactionPower which > global_RCAdminFactionPower }
-			check_variable = { which = global_RCMilitaryFactionPower which > global_RCNobleFactionPower }	
-		}		
-		trigger_switch = {
-		on_trigger = trait
+		if = {
+			limit = {
+				check_variable = { which = global_RCMilitaryFactionPower which > global_RCDaiLiFactionPower }
+				check_variable = { which = global_RCMilitaryFactionPower which > global_RCAdminFactionPower }
+				check_variable = { which = global_RCMilitaryFactionPower which > global_RCNobleFactionPower }	
+			}		
+			trigger_switch = {
+			on_trigger = trait
 
-			earthking = { offmap_ek = { set_status = military_faction_absolute } }
-			earthkingconstitution = { offmap_ek = { set_status = military_faction_parliament } }
-			earthkingpuppet = { offmap_ek = { set_status = military_faction_puppet } }
-		
+				earthking = { set_global_flag = bagdermole_council_military_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_military_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_military_puppet } 
+			
+			}
 		}
-	}
-	if = {
-		limit = {
-			check_variable = { which = global_RCNobleFactionPower which > global_RCDaiLiFactionPower }
-			check_variable = { which = global_RCNobleFactionPower which > global_RCAdminFactionPower }
-			check_variable = { which = global_RCNobleFactionPower which > global_RCMilitaryFactionPower }	
-		}	
-		trigger_switch = {
-		on_trigger = trait
+		if = {
+			limit = {
+				check_variable = { which = global_RCNobleFactionPower which > global_RCDaiLiFactionPower }
+				check_variable = { which = global_RCNobleFactionPower which > global_RCAdminFactionPower }
+				check_variable = { which = global_RCNobleFactionPower which > global_RCMilitaryFactionPower }	
+			}	
+			trigger_switch = {
+			on_trigger = trait
 
-			earthking = { offmap_ek = { set_status = noble_faction_absolute } }
-			earthkingconstitution = { offmap_ek = { set_status = noble_faction_parliament } }
-			earthkingpuppet = { offmap_ek = { set_status = noble_faction_puppet } }
-		
+				earthking = { set_global_flag = bagdermole_council_noble_absolute }
+				earthkingconstitution = { set_global_flag = bagdermole_council_noble_constitution } 
+				earthkingpuppet = { set_global_flag = bagdermole_council_noble_puppet } 
+			
 				}
 			}
 		}
