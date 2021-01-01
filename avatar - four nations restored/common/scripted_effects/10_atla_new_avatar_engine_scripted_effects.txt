@@ -121,7 +121,7 @@ generate_new_avatar_effect = {
     }
     new_character = {
         # avatar effects
-        save_global_event_target_as = new_avatar
+        save_event_target_as = new_avatar
 
         # family effects
         set_mother = event_target:mother_of_avatar
@@ -132,15 +132,15 @@ generate_new_avatar_effect = {
         d_avatar_unrevealed = {
             grant_title = event_target:new_avatar
         }
-
-        set_defacto_liege = event_target:liege_of_avatar_family
+    
+        set_defacto_liege = THIS
     }
 }
 
 generate_new_air_avatar_effect = {
     create_character = {
         dynasty = none
-        culture = southern_air_nomad # setting culture for name
+        culture = southern_air_nomad # set the culture for name
         religion = air_spirituality
         female = random
         age = 0
@@ -154,7 +154,7 @@ generate_new_air_avatar_effect = {
 
         find_suitable_liege_for_air_avatar_effect = yes
 
-        culture = event_target:liege_of_air_avatar # setting actual culture
+        culture = event_target:liege_of_air_avatar # set the actual culture
         set_guardian = event_target:liege_of_air_avatar
 
         # add titular duchy to avatar
@@ -183,10 +183,10 @@ find_suitable_family_for_avatar_effect = {
                 is_suitable_mother_of_avatar_trigger = yes
             }
 
-            save_global_event_target_as = mother_of_avatar
+            save_event_target_as = mother_of_avatar
 
             spouse_even_if_dead = { # find a father for the avatar
-                save_global_event_target_as = father_of_avatar
+                save_event_target_as = father_of_avatar
             }
         }
     }
@@ -198,20 +198,8 @@ find_suitable_family_for_avatar_effect = {
 
 find_suitable_liege_for_avatar_effect = {
     event_target:mother_of_avatar = {
-        if = {
-            limit = {
-                liege = {
-                    higher_real_tier_than = COUNT
-                }
-            }
-            liege = {
-                save_event_target_as = liege_of_avatar_family
-            }
-        }
-        else = {
-            top_liege = {
-                save_event_target_as = liege_of_avatar_family
-            }
+        top_liege = {
+            save_event_target_as = liege_of_avatar_family
         }
     }
 }
@@ -261,20 +249,32 @@ find_suitable_liege_for_air_avatar_effect = {
 }
 
 find_suitable_teacher_for_avatar_effect = {
-    event_target:liege_of_avatar_family = {
-        random_courtier_or_vassal = {
-            limit = {
+    if = {
+        limit = {
+            event_target:father_of_avatar = {
                 is_suitable_teacher_of_avatar_trigger = yes
             }
-            save_global_event_target_as = teacher_of_avatar
+        }
+        event_target:father_of_avatar = {
+            save_event_target_as = teacher_of_avatar
+        }
+    }
+    if = {
+        limit = {
+            event_target:mother_of_avatar = {
+                is_suitable_teacher_of_avatar_trigger = yes
+            }
+        }
+        event_target:mother_of_avatar = {
+            save_event_target_as = teacher_of_avatar
         }
     }
 }
 
 clear_global_avatar_event_targets_effect = {
-    clear_global_event_target = mother_of_avatar
-    clear_global_event_target = father_of_avatar
-    clear_global_event_target = teacher_of_avatar
+    clear_event_target = mother_of_avatar
+    clear_event_target = father_of_avatar
+    clear_event_target = teacher_of_avatar
     clear_event_target = liege_of_avatar_family
     clear_event_target = liege_of_air_avatar
 }
@@ -309,22 +309,20 @@ generate_avatar_roku_effect = {
             grant_title = event_target:new_avatar
         }
 
-        set_defacto_liege = event_target:liege_of_avatar_family
+        set_defacto_liege = THIS
         set_guardian = event_target:teacher_of_avatar
     }
 }
 
 generate_family_for_roku_effect = {
     find_suitable_liege_for_avatar_roku_effect = yes
-
-    find_suitable_teacher_for_avatar_effect = yes
     
-    event_target:liege_of_avatar_family = {
+    event_target:liege_of_avatar_roku_family = {
         # father of Roku
         create_character = {
             dynasty = 536
-            religion = event_target:liege_of_avatar_family
-            culture = event_target:liege_of_avatar_family
+            religion = event_target:liege_of_avatar_roku_family
+            culture = event_target:liege_of_avatar_roku_family
             random_traits = yes
             female = no
 
@@ -333,6 +331,7 @@ generate_family_for_roku_effect = {
         }
         new_character = {
             save_event_target_as = father_of_avatar
+            save_event_target_as = teacher_of_avatar
             random_list = {
                 20 = { add_trait = brilliant_strategist }
                 30 = { add_trait = tough_soldier }
@@ -343,8 +342,8 @@ generate_family_for_roku_effect = {
         # mother of Roku
         create_character = {
             dynasty = random
-            religion = event_target:liege_of_avatar_family
-            culture = event_target:liege_of_avatar_family
+            religion = event_target:liege_of_avatar_roku_family
+            culture = event_target:liege_of_avatar_roku_family
             random_traits = yes
             female = yes
 
@@ -368,14 +367,14 @@ find_suitable_liege_for_avatar_roku_effect = {
             is_landed = yes
             culture_group = fire_nation_culture
 
-            # primary_title = {
-            #     region = world_fire_isles
-            # }
+            primary_title = {
+                region = world_fire_isles
+            }
 
             tier = DUKE
         }
 
-        save_event_target_as = liege_of_avatar_family
+        save_event_target_as = liege_of_avatar_roku_family
     }
 }
 
