@@ -373,6 +373,7 @@ letter_event = {
 					10 = {
 						modifier = { has_character_flag = removed_negative_trait factor = 3 }
 						modifier = { event_target:tea_friend = { has_quest = quest_remove_negative_trait } factor = 3 }
+						modifier = { event_target:tea_friend = { has_quest = quest_heal_a_broken_mind } factor = 3 }
 						modifier = { event_target:tea_friend = { trait = tea_master } factor = 3 }
 						save_event_target_as = helped_tea_friend
 						event_target:tea_friend = { letter_event = { id = TEA.110 days = 3 } }
@@ -388,6 +389,13 @@ letter_event = {
 			}
 			event_target:tea_friend = { character_event = { id = TEA.1101 } }
 		}
+		if = {
+			limit = {
+				has_character_flag = removed_negative_trait
+				event_target:tea_friend = { has_quest = quest_heal_a_broken_mind }
+			}
+			event_target:tea_friend = { character_event = { id = TEA.1107 } }
+		}
 	}
 	
 	option = {
@@ -398,6 +406,7 @@ letter_event = {
 	}
 }
 
+#Educate -- Upgrade Trait
 letter_event = {
 	id = TEA.103
 	is_triggered_only = yes
@@ -550,6 +559,16 @@ letter_event = {
 			}
 			event_target:tea_friend = { character_event = { id = TEA.1101 } }
 		}
+		
+		if = {
+			limit = {
+				has_children = no
+				is_married = yes
+				event_target:tea_friend = { has_quest = quest_help_with_fertility }
+			}
+			trait = lust
+			event_target:tea_friend = { character_event = { id = TEA.1108 } }
+		}
 	}
 	
 	option = {
@@ -673,12 +692,18 @@ character_event = {
 			random_list = {
 				10 = { # Share Tea
 					modifier = {
-						factor = 2
-						society_rank == 1
+						factor = 0
+						OR = {
+							has_character_flag = tea_chose_self
+							has_character_flag = tea_chose_spirits
+						}
 					}				
 					character_event = { id = TEA.1001 }
 				}
-				10 = { # Rest for an Afternoon
+				
+				# PATH OF SELF
+				
+				50 = { # Rest for an Afternoon
 					modifier = {
 						factor = 0
 						NOT = { has_character_flag = tea_chose_self }
@@ -724,7 +749,7 @@ character_event = {
 					}
 					modifier = {
 						factor = 0
-						society_rank < 3
+						society_rank >= 3
 					}	
 					character_event = { id = TEA.1004 }
 				}
@@ -734,10 +759,98 @@ character_event = {
 						NOT = { has_character_flag = tea_chose_self }
 					}
 					modifier = {
+						factor = 0
+						has_focus = focus_family
+					}
+					modifier = {
 						factor = 10
 						NOT = { has_focus = focus_family }
 					}
 					character_event = { id = TEA.1005 }
+				}
+				
+				# PATH OF SPIRITS
+
+				50 = { # Take Tea Near the Spirits
+					modifier = {
+						factor = 0
+						NOT = { has_character_flag = tea_chose_spirits }
+					}
+					modifier = {
+						factor = 0
+						OR = {
+							AND = {
+								society_rank == 2
+								OR = {
+									trait = martial_cleric
+									trait = scholarly_theologian
+									trait = mastermind_theologian
+								}
+							}
+							AND = {
+								society_rank == 3
+								OR = {
+									trait = scholarly_theologian
+									trait = mastermind_theologian
+								}
+							}
+							AND = {
+								society_rank == 4
+								trait = mastermind_theologian
+							}
+						}
+					}
+					character_event = { id = TEA.1006 }
+				}
+				
+				10 = { # Heal a Broken Mind
+					modifier = {
+						factor = 0
+						NOT = { has_character_flag = tea_chose_spirits }
+					}
+					
+					character_event = { id = TEA.1007 }
+				}
+				10 = { # Help Someone With Fertility
+					modifier = {
+						factor = 0
+						NOT = { has_character_flag = tea_chose_spirits }
+					}
+					modifier = {
+						factor = 0
+						society_rank >= 3
+					}	
+					character_event = { id = TEA.1008 }
+				}				
+				10 = { # Take the Theology Focus
+					modifier = {
+						factor = 0
+						NOT = { has_character_flag = tea_chose_spirits }
+					}
+					modifier = {
+						factor = 0
+						has_focus = focus_theology
+					}
+					modifier = {
+						factor = 10
+						NOT = { has_focus = focus_theology }
+					}
+					character_event = { id = TEA.1009 }
+				}
+				10 = { # Have A Cup of Tea IRL
+					modifier = {
+						factor = 0
+						NOT = { society_rank == 4 }
+					}
+					modifier = {
+						factor = 0
+						ai = yes
+					}
+					modifier = {
+						factor = 0
+						has_global_flag = asked_to_make_tea_irl
+					}
+					character_event = { id = TEA.1010 }
 				}
 			}
 		}
@@ -1090,82 +1203,322 @@ letter_event = {
 	}
 }
 
-# society_quest_event = {
-	# id = TEA.1003
-	# desc = quest_family_focus_event
-	# border = GFX_event_letter_frame_diplomacy
+#Take Tea Near the Spirits
+society_quest_event = {
+	id = TEA.1006
+	desc = quest_tea_near_the_spirits_event
+	border = GFX_event_letter_frame_religion
 
-	# is_triggered_only = yes
+	is_triggered_only = yes
 
-	# option = {
-		# name = ACCEPT
-		# set_quest = quest_family_focus
-	# }
-	# option = {
-		# name = DECLINE
-		# custom_tooltip = { text = decline_quest_tooltip }
+	option = {
+		name = ACCEPT
+		set_quest = quest_tea_near_the_spirits
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
 
-		# add_character_modifier = {
-			# name = quest_cooldown_timer
-			# hidden = yes
-			# days = 1000
-		# }
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
 
-		# ai_chance = { factor = 0 }
-	# }
-# }
+		ai_chance = { factor = 0 }
+	}
+}
 
-# society_quest_event = {
-	# id = TEA.1004
-	# desc = quest_build_tea_shop_event
-	# border = GFX_event_letter_frame_diplomacy
+character_event = {
+	id = TEA.1106
 
-	# is_triggered_only = yes
+	hide_window = yes 
+	is_triggered_only = yes
+	
+	immediate = {
+		random_society_member = {
+			limit = {
+				is_society_grandmaster = yes
+				same_society_as = ROOT
+			}
+			save_event_target_as = grandmaster
+		}
+		
+		event_target:grandmaster = { character_event = { id = TEA.1206 } }	
+	}
+}
 
-	# option = {
-		# name = ACCEPT
-		# set_quest = quest_build_tea_shop
-	# }
-	# option = {
-		# name = DECLINE
-		# custom_tooltip = { text = decline_quest_tooltip }
+character_event = {
+	id = TEA.1206
+	
+	hide_window = yes 
+	is_triggered_only = yes
 
-		# add_character_modifier = {
-			# name = quest_cooldown_timer
-			# hidden = yes
-			# days = 1000
-		# }
+	immediate = {
+		FROM = { letter_event = { id = TEA.1306 } }
+	}
+}
 
-		# ai_chance = { factor = 0 }
-	# }
-# }
+letter_event = {
+	id = TEA.1306
+	desc = quest_relaxing_afternoon_success
+	border = GFX_event_letter_frame_religion
+	is_triggered_only = yes
+	
+	option = {
+		name = quest_tea_near_the_spirits_option_learning
+		clr_quest = quest_tea_near_the_spirits
+		change_society_currency = 100
+		change_learning = 1
+		clr_character_flag = tea_near_the_spirits
+	}
+	
+	option = {
+		name = quest_tea_near_the_spirits_option_piety
+		clr_quest = quest_tea_near_the_spirits
+		change_society_currency = 100
+		piety = 100
+		clr_character_flag = tea_near_the_spirits
+	}
+}
 
-# society_quest_event = {
-	# id = TEA.1005
-	# desc = quest_have_a_cup_of_tea_event
-	# border = GFX_event_letter_frame_diplomacy
+#Heal a Broken Mind
+society_quest_event = {
+	id = TEA.1007
+	desc = quest_heal_broken_mind_event
+	border = GFX_event_letter_frame_religion
 
-	# is_triggered_only = yes
+	is_triggered_only = yes
 
-	# option = {
-		# name = ACCEPT
-		# set_quest = quest_have_a_cup_of_tea
-	# }
-	# option = {
-		# name = DECLINE
-		# custom_tooltip = { text = decline_quest_tooltip }
+	option = {
+		name = ACCEPT
+		set_quest = quest_heal_a_broken_mind
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
 
-		# add_character_modifier = {
-			# name = quest_cooldown_timer
-			# hidden = yes
-			# days = 1000
-		# }
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
 
-		# ai_chance = { factor = 0 }
-	# }
-# }
+		ai_chance = { factor = 0 }
+	}
+}
+
+character_event = {
+	id = TEA.1107
+
+	hide_window = yes 
+	is_triggered_only = yes
+	
+	immediate = {
+		random_society_member = {
+			limit = {
+				is_society_grandmaster = yes
+				same_society_as = ROOT
+			}
+			save_event_target_as = grandmaster
+		}
+		
+		event_target:grandmaster = { character_event = { id = TEA.1207 } }	
+	}
+}
+
+character_event = {
+	id = TEA.1207
+	
+	hide_window = yes 
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { letter_event = { id = TEA.1307 } }
+	}
+}
+
+letter_event = {
+	id = TEA.1307
+	desc = quest_heal_broken_mind_success
+	border = GFX_event_letter_frame_religion
+	is_triggered_only = yes
+	
+	option = {
+		name = quest_heal_broken_mind_success_option
+		clr_quest = quest_heal_a_broken_mind
+		change_society_currency = 400
+		trait = kind
+	}
+}
+
+#Help Someone With Fertility
+society_quest_event = {
+	id = TEA.1008
+	desc = quest_help_with_fertility_event
+	border = GFX_event_letter_frame_religion
+
+	is_triggered_only = yes
+
+	option = {
+		name = ACCEPT
+		set_quest = quest_help_with_fertility
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
+
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
+
+		ai_chance = { factor = 0 }
+	}
+}
+
+character_event = {
+	id = TEA.1108
+
+	hide_window = yes 
+	is_triggered_only = yes
+	
+	immediate = {
+		random_society_member = {
+			limit = {
+				is_society_grandmaster = yes
+				same_society_as = ROOT
+			}
+			save_event_target_as = grandmaster
+		}
+		
+		event_target:grandmaster = { character_event = { id = TEA.1208 } }	
+	}
+}
+
+character_event = {
+	id = TEA.1208
+	
+	hide_window = yes 
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { letter_event = { id = TEA.1308 } }
+	}
+}
+
+letter_event = {
+	id = TEA.1308
+	desc = quest_help_with_fertility_success
+	border = GFX_event_letter_frame_religion
+	is_triggered_only = yes
+	
+	option = {
+		name = quest_help_with_fertility_success_option
+		clr_quest = quest_help_with_fertility
+		change_society_currency = 400
+	}
+}
+
+#Take the Theology Focus
+society_quest_event = {
+	id = TEA.1009
+	desc = quest_theology_focus_event
+	border = GFX_event_letter_frame_religion
+
+	is_triggered_only = yes
+
+	option = {
+		name = ACCEPT
+		set_quest = quest_theology_focus
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
+
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
+
+		ai_chance = { factor = 0 }
+	}
+}
+
+character_event = {
+	id = TEA.1109
+
+	hide_window = yes 
+	is_triggered_only = yes
+	
+	immediate = {
+		random_society_member = {
+			limit = {
+				is_society_grandmaster = yes
+				same_society_as = ROOT
+			}
+			save_event_target_as = grandmaster
+		}
+		
+		event_target:grandmaster = { character_event = { id = TEA.1209 } }	
+	}
+}
+
+character_event = {
+	id = TEA.1209
+	
+	hide_window = yes 
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = { letter_event = { id = TEA.1309 } }
+	}
+}
+
+letter_event = {
+	id = TEA.1309
+	desc = quest_theology_focus_success
+	border = GFX_event_letter_frame_diplomacy
+	is_triggered_only = yes
+	
+	option = {
+		name = quest_theology_focus_success_option
+		clr_quest = quest_take_theology_focus
+		change_society_currency = 100
+	}
+}
+
+#Share Tea with Someone in Pain
+society_quest_event = {
+	id = TEA.1010
+	desc = quest_have_a_cup_of_tea_event
+	border = GFX_event_letter_frame_diplomacy
+
+	is_triggered_only = yes
+
+	option = {
+		name = ACCEPT
+		set_quest = quest_have_a_cup_of_tea
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
+
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
+
+		ai_chance = { factor = 0 }
+	}
+}
 
 # DECISION EVENTS
+
+# Relaxing Afternoon
 character_event = {
 	id = TEA.10000
 	desc = relaxing_afternoon_event
@@ -1183,9 +1536,8 @@ character_event = {
 			}
 		}
 	
-		name = relaxing_afternoon_event_get_diplo_education
 		custom_tooltip = {
-			text = relaxing_afternoon_replace_with_diplo
+			text = tea_society_remove_education
 			hidden_tooltip = {
 				character_event = { id = TEA.10010 }
 			}
@@ -1293,6 +1645,7 @@ character_event = {
 	}
 }
 
+#Remove all educations
 character_event = {
 	id = TEA.10010
 	hide_window = yes
@@ -1324,6 +1677,216 @@ character_event = {
 
 character_event = {
 	id = TEA.10001
+	desc = tea_near_the_spirits_event
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+
+	option = {
+		name = tea_near_the_spirits_event_get_learning_education
+		trigger = {
+			NOR = {
+				trait = detached_priest
+				trait = martial_cleric
+				trait = scholarly_theologian
+				trait = mastermind_theologian			
+			}
+		}
+	
+		custom_tooltip = {
+			text = tea_society_remove_education
+			hidden_tooltip = {
+				character_event = { id = TEA.10010 }
+			}
+		}
+		add_trait = detached_priest
+		character_event = { id = TEA.1106 }
+	}
+	
+	option = {
+		name = tea_near_the_spirits_event_improve_learning_education
+		trigger = {
+			OR = {
+				trait = detached_priest
+				trait = martial_cleric
+				trait = scholarly_theologian
+			}
+		}	
+		trigger_switch = {
+			on_trigger = trait
+			detached_priest = {
+				remove_trait = detached_priest
+				add_trait = martial_cleric
+			}
+			martial_cleric = {
+				remove_trait = martial_cleric
+				add_trait = scholarly_theologian
+			}
+			scholarly_theologian = {
+				remove_trait = scholarly_theologian
+				add_trait = mastermind_theologian
+			}
+		}
+		character_event = { id = TEA.1106 }
+	}
+	
+	option = {
+		name = tea_near_the_spirits_event_improve_diplomacy_education
+		trigger = {
+			OR = {
+				trait = detached_priest
+				trait = martial_cleric
+				trait = scholarly_theologian
+			}
+		}
+		
+		random_list = {
+			25 = {}
+			75 = {
+				trigger = {
+					OR = {
+						trait = naive_appeaser
+						trait = underhanded_rogue
+						trait = charismatic_negotiator
+					}
+				}	
+				trigger_switch = {
+					on_trigger = trait
+					naive_appeaser = {
+						remove_trait = naive_appeaser
+						add_trait = underhanded_rogue
+					}
+					underhanded_rogue = {
+						remove_trait = underhanded_rogue
+						add_trait = charismatic_negotiator
+					}
+					charismatic_negotiator = {
+						remove_trait = charismatic_negotiator
+						add_trait = grey_eminence
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.1106 }
+	}
+
+	option = {
+		name = tea_near_the_spirits_event_improve_intrigue_education
+		trigger = {
+			OR = {
+				trait = amateurish_plotter
+				trait = flamboyant_schemer
+				trait = intricate_webweaver
+			}
+		}
+		
+		random_list = {
+			75 = {}
+			25 = {
+				trigger_switch = {
+					on_trigger = trait
+					amateurish_plotter = {
+						remove_trait = amateurish_plotter
+						add_trait = flamboyant_schemer
+					}
+					flamboyant_schemer = {
+						remove_trait = flamboyant_schemer
+						add_trait = intricate_webweaver
+					}
+					intricate_webweaver = {
+						remove_trait = intricate_webweaver
+						add_trait = elusive_shadow
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.1106 }
+	}
+	
+	option = {
+		name = tea_near_the_spirits_event_no_change
+		character_event = { id = TEA.1106 }
+	}
+}
+
+character_event = {
+	id = TEA.10010
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		remove_trait = amateurish_plotter
+		remove_trait = flamboyant_schemer
+		remove_trait = intricate_webweaver
+		remove_trait = elusive_shadow
+		remove_trait = naive_appeaser
+		remove_trait = underhanded_rogue
+		remove_trait = charismatic_negotiator
+		remove_trait = grey_eminence
+		remove_trait = indulgent_wastrel
+		remove_trait = thrifty_clerk
+		remove_trait = fortune_builder
+		remove_trait = midas_touched
+		remove_trait = misguided_warrior
+		remove_trait = tough_soldier
+		remove_trait = skilled_tactician
+		remove_trait = brilliant_strategist
+		remove_trait = detached_priest
+		remove_trait = martial_cleric
+		remove_trait = scholarly_theologian
+		remove_trait = mastermind_theologian
+	}
+}
+
+character_event = {
+	id = TEA.10002
+	desc = quest_have_a_cup_of_tea_success
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	option = {
+		name = quest_have_a_cup_of_tea_made
+		character_event = { id = TEA.11002 }
+	}
+	
+	option = {
+		name = quest_have_a_cup_of_tea_not_made
+		character_event = { id = TEA.12002 }
+	}
+}
+
+character_event = {
+	id = TEA.11002
+	desc = quest_have_a_cup_of_tea_made_event
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	option = {
+		name = quest_have_a_cup_of_tea_made_option
+		change_society_currency = 300
+		clr_quest = quest_have_a_cup_of_tea
+		clr_character_flag = made_tea_irl
+		set_global_flag = asked_to_make_tea_irl
+	}
+}
+
+character_event = {
+	id = TEA.11002
+	desc = quest_have_a_cup_of_tea_not_made_event
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	option = {
+		name = quest_have_a_cup_of_tea_not_made_option
+		change_society_currency = 100
+		trait = honest
+		clr_quest = quest_have_a_cup_of_tea
+		clr_character_flag = made_tea_irl
+		set_global_flag = asked_to_make_tea_irl
+	}
+}
+
+character_event = {
+	id = TEA.10003
 	desc = tea_build_plantation_1
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
