@@ -482,9 +482,8 @@ dai_li = { #Grand Secretariat of Ba Sing Se
 	}
 }
 
-royal_court = { #Royal court of ba sing se
-	primary_attribute = diplomacy # or stewardship
-	#is_secret = yes
+royal_court = { #Badgermole Council
+	primary_attribute = diplomacy 
 	opinion_to_other_members = +15
 	opinion_per_rank_above = +5
 	sound = monastic_orders_interface
@@ -493,10 +492,11 @@ royal_court = { #Royal court of ba sing se
 	active = {
 		OR = {
 			is_title_active = e_earth_kingdom
-			is_title_active = k_ba_sing_se
+			is_title_active = k_earth_kingdom
 		}
 	}
 	
+	#TODO:When add laws gib here additional block
 	can_join_society = {
 		hidden_trigger = {
 			NAND = {
@@ -507,69 +507,85 @@ royal_court = { #Royal court of ba sing se
 				}
 			}
 		}
-		age = 18
-		culture = ba_sing_se
-		NOT = { has_landed_title = e_earth_kingdom }
+		NOR = {
+			has_landed_title = e_earth_kingdom 
+			has_landed_title = k_earth_kingdom
+		}
+		culture_group = earth_kingdom_culture
+		OR = {
+			AND = {
+				higher_tier_than = count
+				prestige >= 500
+				age > 18
+				NOT = { culture = ba_sing_se }
+			}
+			AND = {
+				culture = ba_sing_se
+				OR = {
+					diplomacy > 10
+					stewardship > 10
+					intrigue > 10
+					martial > 10
+					learning > 10
+				}
+				age > 18
+			}
+		}
 	}
+	
 	show_society = {
-		religion_group = earth_religions
+		culture_group = earth_kingdom_culture
 	}
+	
 	potential = {
-		culture = ba_sing_se
+		culture_group = earth_kingdom_culture
 	}
 	
 	society_rank = { # Courtier
 		level = 1
-		limit = 100 
-		startup_limit = 10
+		limit = 43
+		startup_limit = 12
 		modifier = {
 			monthly_character_piety = 0.05
 			intrigue = 1
 		}
 		decisions = {
-			daili_train_bending
 		}
 	}
 	
 	society_rank = { # Faction Member
 		level = 2
-		limit = 50
-		startup_limit = 6
+		limit = 27
+		startup_limit = 10
 		modifier = { 
 			monthly_character_piety = 0.1
-			intrigue = 2
+			diplomacy = 2
 		}
 		decisions = {
-			daili_train_bending
-			daili_kill_dissident
 		}
 	}
 
 	society_rank = { # Faction Veteran
 		level = 3
-		limit = 16 # 4 for every faction
-		startup_limit = 3
+		limit = 10 # 2 for every faction
+		startup_limit = 5
 		modifier = {
-			intrigue = 3
-			diplomacy = 1
+			intrigue = 1
+			diplomacy = 3
 		}
 		decisions = {
-			daili_train_subterfuge
 		}
 	}
 
 	society_rank = { # Faction Leader
 		level = 4
-		limit = 4 #1 for every faction leader
-		startup_limit = 4
+		limit = 5 #1 for every faction leader
+		startup_limit = 5
 		modifier = { 
-			intrigue = 4
-			diplomacy = 2
+			intrigue = 2
+			diplomacy = 4
 		}
 		decisions = {
-			daili_raise_unrest
-			daili_learn_subbending
-			# daili_
 		}
 	}
 	
@@ -577,45 +593,135 @@ royal_court = { #Royal court of ba sing se
 		name = currency_name_rc
     	
     	per_attribute = {
-    		name = intrigue
+    		name = diplomacy
     		value = 1
     	}
+    	per_attribute = {
+    		name = stewardship
+    		value = 1
+    	}
+    	per_attribute = {
+    		name = martial
+    		value = 1
+    	}
+    	per_attribute = {
+    		name = intrigue
+    		value = 1
+    	}		
+		
 		has_trait = {
-			trait = legendary_bender
+			trait = strategist
 			value = 10
 		}
 		has_trait = {
-			trait = master_bender
+			trait = administrator 
+			value = 10
+		}
+		has_trait = {
+			trait = schemer 
+			value = 10
+		}
+		has_trait = {
+			trait = socializer 
+			value = 10
+		}
+		has_trait = {
+			trait = shrewd 
+			value = 10
+		}
+		has_trait = {
+			trait = scholar 
+			value = 10
+		}
+		has_trait = {
+			trait = theologian
+			value = 10
+		}		
+		
+		has_trait = {
+			trait = diligent 
 			value = 5
 		}
 		has_trait = {
-			trait = powerful_bender
-			value = 3
+			trait = greedy 
+			value = 5
 		}
 		has_trait = {
-			trait = competent_bender
-			value = 2
+			trait = patient 
+			value = 5
 		}
 		has_trait = {
-			trait = deceitful
-			value = 2
+			trait = temperate 
+			value = 5
 		}
 		has_trait = {
-			trait = shrewd
-			value = 2
+			trait = gregarious
+			value = 5
+		}
+		has_trait = {
+			trait = paranoid
+			value = 5
+		}
+		has_trait = {
+			trait = proud
+			value = 5
+		}
+		
+		has_trait = {
+			trait = craven
+			value = -2
+		}
+		has_trait = {
+			trait = honest 
+			value = -2
+		}
+		has_trait = {
+			trait = uncouth 
+			value = -2
+		}
+		
+		has_trait = {
+			trait = gluttonous
+			value = -5
 		}
 		has_trait = {
 			trait = charitable
-			value = 1
+			value = -5
 		}
 		has_trait = {
-		trait = patient
-		value = 2
+			trait = slothful
+			value = -5
 		}
 		has_trait = {
-		trait = diligent
-		value = 2
+			trait = kind  
+			value = -5
 		}
+		has_trait = {
+			trait = content 
+			value = -5
+		}
+		has_trait = {
+			trait = honest 
+			value = -5
+		}
+		
+		has_trait = {
+			trait = shy
+			value = -10
+		}
+		has_trait = {
+			trait = trusting
+			value = -10
+		}
+		has_trait = {
+			trait = dull
+			value = -10
+		}
+		has_trait = {
+			trait = cruel 
+			value = -10
+		}
+
 		society_rank = {
 			rank = 4
 			value = 10
@@ -625,8 +731,8 @@ royal_court = { #Royal court of ba sing se
 			value = 5
 		}
 		society_rank = {
-			rank = 3
-			value = 10
+			rank = 2
+			value = 3
 		}
 		society_rank = {
 			rank = 1
@@ -697,10 +803,25 @@ royal_court = { #Royal court of ba sing se
 	    trigger = {
 			ai = yes
 	    	controls_religion = no
-			culture = ba_sing_se
-			age = 18
-			trait = earthbender
-			NOT = { trait = incompetent_bender }
+			OR = {
+				AND = {
+					higher_tier_than = count
+					prestige >= 500
+					age > 18
+					NOT = { culture = ba_sing_se }
+				}
+				AND = {
+					culture = ba_sing_se
+					OR = {
+						diplomacy > 10
+						stewardship > 10
+						intrigue > 10
+						martial > 10
+						learning > 10
+					}
+					age > 18
+				}
+			}
 			is_in_society = no
 		}
 	}
