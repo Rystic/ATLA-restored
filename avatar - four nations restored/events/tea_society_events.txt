@@ -1734,22 +1734,16 @@ character_event = {
 		name = tea_near_the_spirits_event_improve_diplomacy_education
 		trigger = {
 			OR = {
-				trait = detached_priest
-				trait = martial_cleric
-				trait = scholarly_theologian
+				trait = naive_appeaser
+				trait = underhanded_rogue
+				trait = charismatic_negotiator
 			}
-		}
+		}	
 		
 		random_list = {
 			25 = {}
 			75 = {
-				trigger = {
-					OR = {
-						trait = naive_appeaser
-						trait = underhanded_rogue
-						trait = charismatic_negotiator
-					}
-				}	
+
 				trigger_switch = {
 					on_trigger = trait
 					naive_appeaser = {
@@ -1888,12 +1882,53 @@ character_event = {
 
 character_event = {
 	id = TEA.10003
-	desc = tea_build_plantation_1
+	desc = tea_build_plantation_1_start
 	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_garden
 	is_triggered_only = yes
 
 	option = {
-		name = tea_build_plantation_1_option
+		name = tea_build_plantation_1_start_option_gold_1
+		wealth = -100
+		custom_tooltip = { text = tea_build_plantation_1_perfect_success_tooltip }
+		character_event = { id = TEA.11003 days = 360 random = 30 }		
+	}
+	option = {
+		name = tea_build_plantation_1_start_option_gold_2
+		wealth = -50
+		custom_tooltip = { 
+			text = tea_build_plantation_1_high_success_tooltip 
+			hidden_tooltip = {
+				random_list = {
+					10 = { character_event = { id = TEA.12003 days = 548 random = 60 } }
+					90 = { character_event = { id = TEA.11003 days = 548 random = 60 } }
+				}
+			}
+		}	
+	}
+	option = {
+		name = tea_build_plantation_1_start_option_gold_3
+		custom_tooltip = { 
+			text = tea_build_plantation_1_medium_success_tooltip 
+			hidden_tooltip = {
+				random_list = {
+					50 = { character_event = { id = TEA.12003 days = 720 random = 90 } }
+					50 = { character_event = { id = TEA.11003 days = 720 random = 90 } }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.11003
+	desc = tea_build_plantation_1_finish
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_garden
+	is_triggered_only = yes
+
+	option = {
+		name = tea_build_plantation_1_finish_option
 		remove_trait = stressed
 		capital_holding = {
 			add_building = tea_plantation_1
@@ -1905,19 +1940,169 @@ character_event = {
 }
 
 character_event = {
+	id = TEA.12003
+	desc = tea_build_plantation_1_fail
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_garden
+	is_triggered_only = yes
+
+	option = {
+		name = tea_build_plantation_1_fail_option
+		custom_tooltip = {
+			text = tea_currency_refunded
+			hidden_tooltip = {
+				change_society_currency = 1000
+			}
+		}
+	}
+}
+
+character_event = {
 	id = TEA.10004
 	desc = tea_build_plantation_2
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
 	option = {
-		name = tea_build_plantation_2_option
-		remove_trait = stressed
+		name = tea_build_plantation_2_start_option_gold
+		wealth = -200
+		custom_tooltip = { 
+			text = tea_build_plantation_2_high_success_tooltip 
+			hidden_tooltip = {
+				random_list = {
+					10 = { character_event = { id = TEA.12004 days = 548 random = 60 } }
+					90 = { character_event = { id = TEA.11004 days = 548 random = 60 } }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = tea_build_plantation_2_start_option_self
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = { 
+			text = tea_build_plantation_2_high_success_self_tooltip 
+			prestige = -300
+			hidden_tooltip = {
+				random_list = {
+					10 = { character_event = { id = TEA.12004 days = 548 random = 60 } }
+					90 = { character_event = { id = TEA.11004 days = 548 random = 60 } }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = tea_build_plantation_2_start_option_spirits
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		custom_tooltip = { 
+			text = tea_build_plantation_2_high_success_spirits_tooltip 
+			piety = -200
+			hidden_tooltip = {
+				random_list = {
+					10 = { character_event = { id = TEA.12004 days = 548 random = 60 } }
+					90 = { character_event = { id = TEA.11004 days = 548 random = 60 } }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = tea_build_plantation_2_start_option_free
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = { 
+			text = tea_build_plantation_2_low_success_free_tooltip 
+			piety = -200
+			hidden_tooltip = {
+				random_list = {
+					70 = { character_event = { id = TEA.12004 days = 548 random = 60 } }
+					30 = { character_event = { id = TEA.11004 days = 548 random = 60 } }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = tea_build_plantation_2_start_option_bail
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = { 
+			text = tea_currency_refunded 
+			hidden_tooltip = {
+				change_society_currency = 1500
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.11004
+	desc = tea_build_plantation_2_finish
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	option = {
+		name = tea_build_plantation_2_finish_option_self
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		trait = gardener
 		capital_holding = {
 			add_building = tea_plantation_2
 		}
 		custom_tooltip = {
 			text = can_build_tea_shop_2
+		}
+	}
+	
+	option = {
+		name = tea_build_plantation_2_finish_option_spirits
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		trait = mystic
+		capital_holding = {
+			add_building = tea_plantation_2
+		}
+		custom_tooltip = {
+			text = can_build_tea_shop_2
+		}
+	}
+}
+
+character_event = {
+	id = TEA.12004
+	desc = tea_build_plantation_2_fail
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_garden
+	is_triggered_only = yes
+
+	option = {
+		name = tea_build_plantation_2_fail_option
+		custom_tooltip = {
+			text = tea_currency_refunded
+			hidden_tooltip = {
+				change_society_currency = 1500
+			}
 		}
 	}
 }
