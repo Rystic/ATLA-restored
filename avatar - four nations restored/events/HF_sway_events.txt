@@ -111,6 +111,10 @@ character_event = {
 						trait = sympathy_modern_religions
 						ROOT = { NOT = { religion_group = modern_religions } }
 					}
+					event_target:potential_antagonized = { 
+						trait = sympathy_outlaw_religions
+						ROOT = { NOT = { religion_group = outlaw_religions } }
+					}
 				}
 			}
 			#Trait compatibility modifiers - Already so much in common, why fight?
@@ -456,6 +460,10 @@ character_event = {
 					AND = {
 						ROOT = { trait = sympathy_modern_religions }
 						religion_group = modern_religions
+					}
+					AND = {
+						ROOT = { trait = sympathy_outlaw_religions }
+						religion_group = outlaw_religions
 					}
 				}
 				NOR = {
@@ -7012,6 +7020,10 @@ character_event = {
 						FROM = { religion_group = modern_religions }
 						NOT = { trait = sympathy_modern_religions } 
 					}
+					AND = { 
+						FROM = { religion_group = outlaw_religions }
+						NOT = { trait = sympathy_outlaw_religions } 
+					}
 				}
 			} 
 			custom_tooltip = { text = tooltip_21076_sympathy } 
@@ -7164,6 +7176,15 @@ character_event = {
 				FROM = { has_character_flag = flag_appease_kind_religion }
 			} 
 			random = { chance = 30 add_trait = sympathy_modern_religions }
+		}
+		if = { 
+			limit = { 
+				NOT = { religion_group = FROM } 
+				NOT = { trait = sympathy_outlaw_religions }
+				FROM = { religion_group = outlaw_religions }
+				FROM = { has_character_flag = flag_appease_kind_religion }
+			} 
+			random = { chance = 30 add_trait = sympathy_outlaw_religions }
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.21078 days = 10 } } }
 		ai_chance = { 
@@ -7391,6 +7412,14 @@ character_event = {
 				FROM = { religion_group = modern_religions }
 			} 
 			random = { chance = 30 add_trait = sympathy_modern_religions }
+		}
+		if = { 
+			limit = { 
+				NOT = { religion_group = FROM } 
+				NOT = { trait = sympathy_outlaw_religions }
+				FROM = { religion_group = outlaw_religions }
+			} 
+			random = { chance = 30 add_trait = sympathy_outlaw_religions }
 		}
 		clr_character_flag = flag_appease_kind_approach
 		clr_character_flag = flag_appease_kind_health
