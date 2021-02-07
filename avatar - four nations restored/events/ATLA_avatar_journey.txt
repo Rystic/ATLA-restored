@@ -1,0 +1,290 @@
+# new avatar engine - avatar journey events
+# -------------------------------
+# overhaul of borked avatar events from "ATLA_avatar.txt" file
+# -------------------------------
+# instead of simple master-based wait-and-win old events,
+# the new ones will focus on the journey
+# instead of random-based progress, 
+# the new ones will consider lifestyle, vice and virtue traits
+# -------------------------------
+# Reserved event ids:
+# 1-99 - common avatar events (disasters & flavours)
+# 100-199 - waterbending journey
+# 200-299 - earthbending journey
+# 300-399 - firebending journey
+# 400-499 - airbending journey
+# 500-599 - avatar state control trainings
+# -------------------------------
+# written by unlomtrois
+
+namespace = new_avatar_journey
+
+#Avatar packs up and leaves
+# (fire)
+# The Fire Sages told me about the Avatar's trainings.
+# I have to leave my home, my Nation, my parents and friends, 
+# to see the World, to master all four elements, to become the True Avatar, 
+# to keep the balance in the Universe
+narrative_event = {
+	id = new_avatar_journey.1
+	title = EVTTITLE_new_avatar_journey_1_the_leaving # The Leaving
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_water }
+	# 	text = EVTDESC_new_avatar_journey_1_water
+	# }
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_earth }
+	# 	text = EVTDESC_new_avatar_journey_1_earth
+	# }
+	desc = {
+		trigger = { has_global_flag = avatar_fire }
+		text = EVTDESC_new_avatar_journey_1_fire
+	}
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_air }
+	# 	text = EVTDESC_new_avatar_journey_1_air
+	# }
+	is_triggered_only = yes
+	picture = GFX_evt_world_map
+
+	immediate = {
+		start_avatar_journey_effect = yes
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_1_water # I'll travel to Water Tribes
+		trigger = { has_character_flag = avatar_journey_to_water_tribes }
+		character_event = { id = new_avatar_journey.100 days = 10 }
+	}
+	option = {
+		name = EVTOPT_new_avatar_journey_1_earth # I'll travel to Earth Kingdom
+		trigger = { has_character_flag = avatar_journey_to_earth_kingdom }
+		character_event = { id = new_avatar_journey.200 days = 10 }
+	}
+	option = {
+		name = EVTOPT_new_avatar_journey_1_fire # I'll travel to Fire Nation
+		trigger = { has_character_flag = avatar_journey_to_fire_nation }
+		character_event = { id = new_avatar_journey.300 days = 10 }
+	}
+	option = {
+		name = EVTOPT_new_avatar_journey_1_air # I'll travel to Air Nomads
+		trigger = { has_character_flag = avatar_journey_to_air_nomads }
+		character_event = { id = new_avatar_journey.400 days = 10 }
+	}
+
+	after = {
+		add_trait = on_journey
+		character_event = { id = new_avatar_journey.2 days = 4 }
+	}
+}
+
+# (fire) 
+# I was already starting to pack my things, 
+# but soon the fire sages came and told me that I wouldn't need worldly things anymore.
+# Before they left, they left a gift, a basket of fruit and a stack of knife-shaped coins.
+# That should be enough for the journey and supplies.
+character_event = {
+	id = new_avatar_journey.2
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_water }
+	# 	text = EVTDESC_new_avatar_journey_2_water
+	# }
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_earth }
+	# 	text = EVTDESC_new_avatar_journey_2_earth
+	# }
+	desc = {
+		trigger = { has_global_flag = avatar_fire }
+		text = EVTDESC_new_avatar_journey_2_fire
+	}
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_air }
+	# 	text = EVTDESC_new_avatar_journey_2_air
+	# }
+	picture = {
+       	trigger = { has_global_flag = avatar_fire }
+        picture = GFX_evt_fire_nation_inn
+    }
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_2_thanks # I appreciate it
+		wealth = 50
+	}
+	option = {
+		name = EVTOPT_new_avatar_2_asceticism # I am very grateful, but as you said, I will no longer need worldly things.
+		add_trait = charitable
+		clear_wealth = yes
+	}
+	option = {
+		name = EVTOPT_new_avatar_2_greed # I beg your pardon, shouldn't the Avatar be treated with more reverence?
+		tooltip_info = intrigue
+		trigger = {
+			OR = { 
+				has_education_intrigue_trigger = yes
+				has_focus = focus_ed_intrigue
+				has_focus = focus_intrigue
+			}
+		}
+		add_trait = proud
+		add_trait = greedy
+		piety = -100
+		wealth = 200
+	}
+
+	after = {
+		character_event = { id = new_avatar_journey.3 days = 3 }
+	}
+}
+
+# (fire) 
+# A couple of days later, the fire sages came again. 
+# There wasn't much time left, and soon it would be time me to leave.
+# They said there was a whole line of barges and junks lined up at the port. 
+# Simple fishermen, merchants, aristocrats, and even Firelord himself, 
+# wish to provide ships for the Avatar's voyage to other lands.
+character_event = {
+	id = new_avatar_journey.3
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_water }
+	# 	text = EVTDESC_new_avatar_journey_3_water
+	# }
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_earth }
+	# 	text = EVTDESC_new_avatar_journey_3_earth
+	# }
+	desc = {
+		trigger = { has_global_flag = avatar_fire }
+		text = EVTDESC_new_avatar_journey_3_fire
+	}
+	# desc = {
+	# 	trigger = { has_global_flag = avatar_air }
+	# 	text = EVTDESC_new_avatar_journey_3_air
+	# }
+	picture = {
+       	trigger = { has_global_flag = avatar_fire }
+        picture = GFX_evt_fire_nation_harbor
+    }
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_3_fishing_boat # Fishing Boat
+		add_trait = humble
+		custom_tooltip = {
+			text = new_avatar_3_tooltip_fishing_boat # Slow but practical
+		}
+	}
+	option = {
+		name = EVTOPT_new_avatar_3_merchant_ship # Mechant Ships
+		add_trait = patient
+		wealth = -15
+		custom_tooltip = {
+			text = new_avatar_3_tooltip_merchant_ship # Fast and maneuverable
+		}
+	}
+	option = {
+		name = EVTOPT_new_avatar_3_nobleman_ship # Nobleman's ship
+		add_trait = proud
+		wealth = -25
+		custom_tooltip = {
+			text = new_avatar_3_tooltip_nobleman_ship # Luxury and fast
+		}
+	}
+	option = {
+		name = EVTOPT_new_avatar_3_firelord_junk # One of the Fire Lord's personal ships
+		tooltip_info_custom = available_because_fire_lord_tt
+		trigger = {
+			OR = {
+				top_liege = {
+					is_fire_lord_trigger = yes
+				}
+				suzerain = {
+					is_fire_lord_trigger = yes
+				}
+			}
+		}
+		add_trait = proud
+		add_trait = ambitious
+		find_fire_lord_effect = yes
+		add_favor = event_target:firelord
+		custom_tooltip = {
+			text = new_avatar_3_tooltip_firelord_junk # The best of the best
+		}
+	}
+}
+
+# Travel to Air Nomads
+# On the path of the Avatar, 
+# the journey to one of the Four Air Temples was always one of the most difficult challenges.
+# The Air Nomads live in isolation, their major centers located on four edges of the world: 
+# In the mountains, high above the sky, and under the cliffs, where they cannot be seen from the ground.
+# Sometimes they can be seen in the foothill towns or on islands like Kyoshi,
+# where they ask for alms, or trade, buy food, and fly away. 
+# They would welcome a fellow traveler, 
+# It would not be out of place to say that once Avatar is nominated, they are among the first to send ambassadors, 
+# they treat teaching Avatar as one of their main goals in life.
+# "By ship or by foot, always move against the Wind, to the places where it is born." - was the last thing I was told.
+narrative_event = {
+	id = new_avatar_journey.400
+	title = EVTTITLE_new_avatar_journey_400_travel_air_nomads # Travel to Air Nomads
+	desc = EVTDESC_new_avatar_journey_400_travel_air_nomads
+	picture = GFX_evt_all_four_air_temples
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_400_southern_temple # I'll go to the Southern Temple, the greatest temple
+		set_character_flag = travel_to_southern_air_temple
+		character_event = { id = new_avatar_journey.401 days = 60 }
+
+		ai_chance = {
+			factor = 25 
+			modifier = {
+				factor = 100
+				has_character_flag = is_roku
+			}
+		}
+	}
+	option = {
+		name = EVTOPT_new_avatar_journey_400_eastern_temple # to the Eastern Temple, to the places of the first airbenders
+		set_character_flag = travel_to_eastern_air_temple
+		ai_chance = {
+			factor = 25
+		}
+	}
+	option = {
+		name = EVTOPT_new_avatar_journey_400_northern_temple # to the Northern Temple, where Guru Laghima was living
+		set_character_flag = travel_to_northern_air_temple
+		ai_chance = {
+			factor = 25
+		}
+	}
+	option = {
+		name = EVTOPT_new_avatar_journey_400_western_temple # to the Western Temple, where Great Yangchen was born
+		set_character_flag = travel_to_western_air_temple
+		ai_chance = {
+			factor = 25
+		}
+	}
+}
+
+
+# Arrival on Whaletail
+# The first point on the way to the Southern Air Temple was a small settlement on the coast of the Whaletail island.
+# Although the air nomads do not like to settle on the coast, preferring the mountains and cliffs, the island was sacred to them.
+# The island has a tradition of fasting, they believe that this place is saturated with a special spiritual universal energy.
+# Every summer hundreds and thousands of air nomads go on pilgrimage to this island, to the place where Monk Tang Xu fasted for 98 days.
+narrative_event = {
+	id = new_avatar_journey.401
+	title = EVTTITLE_new_avatar_journey_401_arrival_on_whaletail # Arrival on Whaletail
+	desc = EVTDESC_new_avatar_journey_401_arrival_on_whaletail
+	picture = GFX_evt_whaletail
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_400_southern_temple # Here, I think I will find fellow travelers for the flight to the Southern Air Temple.
+	}
+
+	after = {
+		# character_event = { id = new_avatar_journey.401 days = 1 }
+	}
+}
