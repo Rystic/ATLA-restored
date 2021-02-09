@@ -715,8 +715,8 @@ character_event = {
 	immediate = {
 		FROM = {
 			random_list = {
-				30 = {}
-				10 = { # Share Tea
+				40 = {}
+				30 = { # Share Tea
 					modifier = {
 						factor = 0
 						OR = {
@@ -726,6 +726,32 @@ character_event = {
 					}				
 					character_event = { id = TEA.1001 }
 				}
+				
+				200000 = { # Gather tea ingredients
+					modifier = {
+						factor = 0
+						OR = {
+							has_character_flag = can_make_green_tea
+							has_character_flag = can_make_white_dragon
+							has_character_flag = can_make_jasmine_tea
+							has_character_flag = can_make_ginger_root_tea
+						}
+					}				
+					character_event = { id = TEA.1011 }
+				}
+				
+				# 20 = { # Host a tea party
+					# modifier = {
+						# factor = 0
+						# NOR = {
+							# has_character_flag = can_make_green_tea
+							# has_character_flag = can_make_white_dragon
+							# has_character_flag = can_make_jasmine_tea
+							# has_character_flag = can_make_ginger_root_tea
+						# }
+					# }				
+					# character_event = { id = TEA.1012 }
+				# }
 				
 				# PATH OF SELF
 				
@@ -1516,7 +1542,7 @@ letter_event = {
 	}
 }
 
-#Share Tea with Someone in Pain
+#Have a cup of tea IRL
 society_quest_event = {
 	id = TEA.1010
 	desc = quest_have_a_cup_of_tea_event
@@ -1541,6 +1567,34 @@ society_quest_event = {
 		ai_chance = { factor = 0 }
 	}
 }
+
+#gather tea ingredients
+society_quest_event = {
+	id = TEA.1011
+	desc = quest_gather_tea_ingredients_event
+	border = GFX_event_letter_frame_diplomacy
+
+	is_triggered_only = yes
+
+	option = {
+		name = ACCEPT
+		clr_character_flag = gathering_tea_ingredients
+		set_quest = quest_gather_tea_ingredients
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
+
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
+
+		ai_chance = { factor = 0 }
+	}
+}
+
 
 # DECISION EVENTS
 
@@ -2597,12 +2651,17 @@ character_event = {
 	option = {
 		name = white_jade_found_bad
 		custom_tooltip = {
+			text = white_jade_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_white_dragon
+			}
+		}
+		custom_tooltip = {
 			text = white_jade_randomness_tooltip
 			hidden_tooltip = {
 				random_list = {
 					50 = { 
 						change_variable = { which = tea_quality value = 2 }
-						set_character_flag = can_make_white_dragon
 					}
 					50 = { 
 						subtract_variable = { which = tea_quality value = 5 }
@@ -2640,6 +2699,9 @@ character_event = {
 	
 	option = {
 		name = white_jade_found_ignore
+		custom_tooltip = {
+			text = search_for_leaves_elsewhere_tooltip
+		}
 		character_event = { id = TEA.21001 days = 7 }
 	}
 }
@@ -2669,6 +2731,9 @@ character_event = {
 	is_triggered_only = yes
 
 	option = {
+		custom_tooltip = {
+			text = search_for_leaves_elsewhere_tooltip
+		}
 		name = white_jade_found_safe_fail_option
 	}
 }
@@ -2696,6 +2761,10 @@ character_event = {
 	
 	option = {
 		name = badger_spirit_start_wait
+		custom_tooltip = {
+			text = bagder_spirit_wait_tooltip
+		}
+		character_event = { id = TEA.21025 }
 		character_event = { id = TEA.21001 days = 7 }
 	}
 }
@@ -2712,10 +2781,6 @@ character_event = {
 			text = green_tea_tooltip
 			hidden_tooltip = {
 				set_character_flag = can_make_green_tea
-				random_list = {
-					50 = {}
-					50 = { set_character_flag = badger_visitor }
-				}
 			}
 		}
 		
@@ -2723,6 +2788,16 @@ character_event = {
 			text = improves_tea_quality_tooltip
 			hidden_tooltip = {
 				change_variable = { which = tea_quality value = 6 }
+			}
+		}
+		
+		custom_tooltip = {
+			text = special_visiter_tooltip
+			hidden_tooltip = {
+				random_list = {
+					50 = {}
+					50 = { set_character_flag = badger_visitor }
+				}
 			}
 		}
 	}
@@ -2751,6 +2826,17 @@ character_event = {
 			}
 		}
 	}
+	
+	option = {
+		name = badger_spirit_wait_leaves
+		
+		custom_tooltip = {
+			text = green_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_green_tea
+			}
+		}
+	}
 }
 
 character_event = {
@@ -2765,6 +2851,13 @@ character_event = {
 		trigger = {
 			has_character_flag = can_make_green_tea
 		}
+		
+		custom_tooltip = {
+			text = serve_green_tea_tooltip
+		}
+		
+		clr_quest = quest_gather_tea_ingredients
+		change_society_currency = 200
 		clr_character_flag = can_make_white_dragon		
 	}
 	
@@ -2774,6 +2867,12 @@ character_event = {
 		trigger = {
 			has_character_flag = can_make_white_dragon
 		}
+		
+		custom_tooltip = {
+			text = serve_white_dragon_tea_tooltip
+		}
+		clr_quest = quest_gather_tea_ingredients
+		change_society_currency = 400
 		clr_character_flag = can_make_green_tea
 	}
 	#pickle
@@ -2787,12 +2886,20 @@ character_event = {
 
 	option = {
 		name = forest_tea_leaves_fail_option
+		custom_tooltip = {
+			text = no_tea_to_serve_tooltip
+		}
+		custom_tooltip = {
+			text = gather_leaves_quest_failed
+		}
+		hidden_tooltip = {
+			clr_quest = quest_gather_tea_ingredients
+		}
 	}
 #pickle
 }
 
 #ask friends start
-# search forest -- start
 character_event = {
 	id = TEA.22000
 	is_triggered_only = yes
@@ -2965,6 +3072,11 @@ character_event = {
 
 	option = {
 		name = early_guest_start_bad
+
+		custom_tooltip = {
+			text = early_guest_rejected_tooltip
+		}
+		
 		character_event = { id = TEA.22013 days = 7 }
 		character_event = { id = TEA.22001 days = 7 }
 	}
@@ -2977,7 +3089,11 @@ character_event = {
 		trigger = {
 			diplomacy = 14
 		}
-		
+
+		custom_tooltip = {
+			text = early_guest_welcomed_tooltip
+		}
+
 		character_event = { id = TEA.22023 days = 7 }
 		character_event = { id = TEA.22001 days = 7 }
 	}
@@ -3006,6 +3122,10 @@ character_event = {
 	
 		trigger = {
 			diplomacy = 12
+		}
+		
+		custom_tooltip = {
+			text = early_guest_rejected_good_tooltip
 		}
 		
 		character_event = { id = TEA.22113 days = 7 }
@@ -3077,12 +3197,22 @@ character_event = {
 
 	option = {
 		name = find_physician_continue
+
+		custom_tooltip = {
+			text = find_physician_continue_tooltip
+		}
+
 		character_event = { id = TEA.22015 }
 		character_event = { id = TEA.22001 days = 7 }
 	}
 	
 	option = {
 		name = find_physician_ignore
+		
+		custom_tooltip = {
+			text = ignore_physician_tooltip
+		}
+		
 		character_event = { id = TEA.22025 }
 		character_event = { id = TEA.22001 days = 7 }
 	}
@@ -3097,6 +3227,10 @@ character_event = {
 
 	option = {
 		name = find_physician_meeting_bad
+		custom_tooltip = {
+			text = find_physician_meeting_bad_tooltip
+		}
+		
 		character_event = { id = TEA.22115 }
 	}
 	
@@ -3111,6 +3245,11 @@ character_event = {
 		custom_tooltip = {
 			text = path_of_self_tooltip
 		}
+		
+		custom_tooltip = {
+			text = find_physician_meeting_medium_good_tooltip
+		}
+		
 		character_event = { id = TEA.22215 }
 	}
 	
@@ -3119,13 +3258,17 @@ character_event = {
 		
 		trigger = {
 			has_character_flag = tea_chose_self
-			diplomacy = 16
+			diplomacy = 14
 		}
 		
 		tooltip_info = diplomacy
 		
 		custom_tooltip = {
 			text = path_of_self_tooltip
+		}
+		
+		custom_tooltip = {
+			text = find_physician_meeting_medium_good_tooltip
 		}
 		
 		character_event = { id = TEA.22315 }
@@ -3192,10 +3335,13 @@ character_event = {
 				change_variable = { which = tea_quality value = 2 }
 			}
 		}
-		hidden_tooltip = {
-			random_list = {
-				50 = { }
-				50 = { set_character_flag = physician_visitor }
+		custom_tooltip = {
+			text = special_visiter_tooltip
+			hidden_tooltip = {
+				random_list = {
+					50 = { }
+					50 = { set_character_flag = physician_visitor }
+				}
 			}
 		}
 	}
@@ -3243,6 +3389,12 @@ character_event = {
 		trigger = {
 			has_character_flag = can_make_jasmine_tea
 		}
+		
+		custom_tooltip = {
+			text = serve_jasmine_tea_tooltip
+		}
+		clr_quest = quest_gather_tea_ingredients
+		change_society_currency = 200
 		clr_character_flag = can_make_ginger_root_tea	
 	}
 	
@@ -3252,6 +3404,12 @@ character_event = {
 		trigger = {
 			has_character_flag = can_make_ginger_root_tea
 		}
+		
+		custom_tooltip = {
+			text = serve_ginger_root_tea_tooltip
+		}
+		clr_quest = quest_gather_tea_ingredients
+		change_society_currency = 400
 		clr_character_flag = can_make_jasmine_tea
 	}
 	#pickle
@@ -3265,6 +3423,18 @@ character_event = {
 
 	option = {
 		name = ask_friends_fail_option
+		
+		custom_tooltip = {
+			text = no_tea_to_serve_tooltip
+		}
+		
+		custom_tooltip = {
+			text = gather_leaves_quest_failed
+		}
+		
+		hidden_tooltip = {
+			clr_quest = quest_gather_tea_ingredients
+		}
 	}
 #pickle
 }
