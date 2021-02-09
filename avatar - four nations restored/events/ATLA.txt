@@ -573,6 +573,8 @@ character_event = { #triggers on avatars untimely death
 	}
 
 	immediate = {
+		set_global_flag = avatar_dead
+
 		d_avatar = {
 			unsafe_destroy_landed_title = d_avatar #yes
 		}
@@ -587,6 +589,17 @@ character_event = { #triggers on avatars untimely death
 				grant_title = PREV
 			}
 		}
+
+		if = {
+			limit = {
+				has_game_rule = {
+					name = avatar_system
+					value = new
+				}
+			}
+
+			create_new_avatar_effect = yes
+		}
 	}
 
 	option = {
@@ -596,8 +609,8 @@ character_event = { #triggers on avatars untimely death
 			}
 			narrative_event = { id = ATLA.3 }
 		}
+		
 		clr_character_flag = avatar_revealed
-		set_global_flag = avatar_dead
 		clr_global_flag = avatar_revealed
 	}
 }
@@ -1065,188 +1078,330 @@ character_event = {
 			trait = airbender_master
 			trait = airbender_legendary
 		}
+		OR = {
+			trait = blueflames_rd
+			trait = innerflame_rd 
+			trait = levitation_rd
+			trait = voidbender_rd 
+			trait = lavabender_rd
+			trait = sandbender_rd
+			trait = metalbender_rd
+			trait = seismicsense_rd
+			trait = bloodbender_rd
+			trait = healer_rd
+			trait = lightningbender_rd
+			trait = smokebender_rd
+			trait = combustionbender_rd
+		}
 	}
 	option = {
+	
+		trigger_switch = {
+		on_trigger = trait	
+			waterbender_novice = {
+				remove_trait = waterbender_novice
+				add_trait = waterbender
+				add_trait = incompetent_bender
+			}
+			waterbender_trained = {
+				remove_trait = waterbender_trained
+				add_trait = waterbender
+				add_trait = competent_bender
+			}
+			waterbender_powerful = {
+				remove_trait = waterbender_powerful
+				add_trait = waterbender
+				add_trait = powerful_bender
+			}
+			waterbender_master = {
+				remove_trait = waterbender_master
+				add_trait = waterbender
+				add_trait = master_bender
+			}
+			waterbender_legendary = {
+				remove_trait = waterbender_legendary
+				add_trait = waterbender
+				add_trait = legendary_bender
+			}
+			firebender_novice = {
+				remove_trait = firebender_novice
+				add_trait = firebender
+				add_trait = incompetent_bender
+			}
+			firebender_trained = {
+				remove_trait = firebender_trained
+				add_trait = firebender
+				add_trait = competent_bender
+			}
+			firebender_powerful = {
+				remove_trait = firebender_powerful
+				add_trait = firebender
+				add_trait = powerful_bender
+			}
+			firebender_master = {
+				remove_trait = firebender_master
+				add_trait = firebender
+				add_trait = master_bender
+			}
+			firebender_legendary = { 
+				remove_trait = firebender_legendary 
+				add_trait = firebender 
+				add_trait = legendary_bender 
+			}
+			earthbender_novice = {
+				remove_trait = earthbender_novice
+				add_trait = earthbender
+				add_trait = incompetent_bender
+			}
+			earthbender_trained = {
+				remove_trait = earthbender_trained
+				add_trait = earthbender
+				add_trait = competent_bender
+			}
+			earthbender_powerful = {
+				remove_trait = earthbender_powerful
+				add_trait = earthbender
+				add_trait = powerful_bender
+			}
+			earthbender_master = {
+				remove_trait = earthbender_master
+				add_trait = earthbender
+				add_trait = master_bender
+			}
+			earthbender_legendary = {
+				remove_trait = earthbender_legendary
+				add_trait = earthbender
+				add_trait = legendary_bender
+			}
+			airbender_novice = {
+				remove_trait = airbender_novice
+				add_trait = airbender
+				add_trait = incompetent_bender
+			}
+			airbender_trained = {
+				remove_trait = airbender_trained
+				add_trait = airbender
+				add_trait = competent_bender
+			}
+			airbender_powerful = {
+				remove_trait = airbender_powerful
+				add_trait = airbender
+				add_trait = powerful_bender
+			}
+			airbender_master = {
+				remove_trait = airbender_master
+				add_trait = airbender
+				add_trait = master_bender
+			}
+			airbender_legendary = {
+				remove_trait = airbender_legendary
+				add_trait = airbender
+				add_trait = legendary_bender
+			}
+		}
+		
 		if = {
 			limit = {
-				trait = waterbender_novice
+				trait = blueflames_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_novice
-			add_trait = waterbender
-			add_trait = incompetent_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = blueflames_rd
+			}
+			else = {
+				remove_trait = blueflames_rd
+				add_trait = blueflames
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_trained
+				trait = innerflame_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_trained
-			add_trait = waterbender
-			add_trait = competent_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = innerflame_rd
+			}
+			else = {
+				remove_trait = innerflame_rd
+				add_trait = innerflame
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_powerful
+				trait = lightningbender_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_powerful
-			add_trait = waterbender
-			add_trait = powerful_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = lightningbender_rd
+			}
+			else = {
+				remove_trait = lightningbender_rd
+				add_trait = lightningbender
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_master
+				trait = smokebender_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_master
-			add_trait = waterbender
-			add_trait = master_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = smokebender_rd
+			}
+			else = {
+				remove_trait = smokebender_rd
+				add_trait = smokebender
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_legendary
+				trait = combustionbender_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_legendary
-			add_trait = waterbender
-			add_trait = legendary_bender
-			break = yes
+			if = {
+				limit = {
+					OR = {	
+						trait = lightningbender_rd
+						trait = innerflame_rd
+						trait = blueflames_rd
+						trait = smokebender_rd
+					}
+				}
+				remove_trait = lightningbender_rd
+				remove_trait = innerflame_rd
+				remove_trait = blueflames_rd
+				remove_trait = smokebender_rd
+				remove_trait = combustionbender_rd
+			}
+			else = {
+				remove_trait = combustionbender_rd
+				add_trait = combustionbender
+			}
+		}
+
+		if = {
+			limit = {
+				trait = lavabender_rd
+				trait = earthbender
+			}
+			remove_trait = lavabender_rd
+			add_trait = lavabender
 		}
 		if = {
 			limit = {
-				trait = firebender_novice
+				trait = sandbender_rd
+				trait = earthbender
 			}
-			remove_trait = firebender_novice
-			add_trait = firebender
-			add_trait = incompetent_bender
-			break = yes
+			remove_trait = sandbender_rd
+			add_trait = sandbender
+		}	
+		if = {
+			limit = {
+				trait = seismicsense_rd
+				trait = earthbender
+			}
+			if = {
+				limit = {
+					OR = {
+						trait = blind
+						trait = blinded
+					}
+				}
+				remove_trait = seismicsense_rd
+				add_trait = seismicsense
+			}
+			else = {
+				remove_trait = seismicsense_rd
+				add_trait = seismicsense_nonblind
+			}
 		}
 		if = {
 			limit = {
-				trait = firebender_trained
+				trait = metalbender_rd
+				trait = earthbender
 			}
-			remove_trait = firebender_trained
-			add_trait = firebender
-			add_trait = competent_bender
-			break = yes
+			if = {
+				limit = {
+					trait = seismicsense
+				}
+				remove_trait = metalbender_rd
+				add_trait = metalbender
+			}
+			else_if = {
+				limit = {
+					trait = seismicsense_nonblind
+				}
+				remove_trait = metalbender_rd
+				add_trait = metalbender
+			}
+			else = {
+				remove_trait = metalbender_rd
+			}
+		}
+
+		if = {
+			limit = {
+				trait = bloodbender_rd
+				trait = waterbender
+			}
+			remove_trait = bloodbender_rd
+			add_trait = bloodbender
 		}
 		if = {
 			limit = {
-				trait = firebender_powerful
+				trait = healer_rd
+				trait = waterbender
+				is_female = yes
 			}
-			remove_trait = firebender_powerful
-			add_trait = firebender
-			add_trait = powerful_bender
-			break = yes
+			remove_trait = healer_rd
+			add_trait = healer
+		}
+		
+		if = {
+			limit = {
+				trait = levitation_rd
+				religion = air_spirituality
+				trait = airbender
+			}
+			remove_trait = levitation_rd
+			add_trait = levitation
+			if = {
+				limit = {
+					NOT = { religion = air_spirituality }
+				}
+				remove_trait = levitation_rd
+			}			
 		}
 		if = {
 			limit = {
-				trait = firebender_master
+				trait = voidbender_rd
+				religion = nomadic_nihilism
+				trait = airbender
 			}
-			remove_trait = firebender_master
-			add_trait = firebender
-			add_trait = master_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = firebender_legendary
+			remove_trait = voidbender_rd
+			add_trait = voidbender
+			if = {
+				limit = {
+					NOT = { religion = nomadic_nihilism }
+				}
+				remove_trait = voidbender_rd
 			}
-			remove_trait = firebender_legendary
-			add_trait = firebender
-			add_trait = legendary_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_novice
-			}
-			remove_trait = earthbender_novice
-			add_trait = earthbender
-			add_trait = incompetent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_trained
-			}
-			remove_trait = earthbender_trained
-			add_trait = earthbender
-			add_trait = competent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_powerful
-			}
-			remove_trait = earthbender_powerful
-			add_trait = earthbender
-			add_trait = powerful_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_master
-			}
-			remove_trait = earthbender_master
-			add_trait = earthbender
-			add_trait = master_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_legendary
-			}
-			remove_trait = earthbender_legendary
-			add_trait = earthbender
-			add_trait = legendary_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_novice
-			}
-			remove_trait = airbender_novice
-			add_trait = airbender
-			add_trait = incompetent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_trained
-			}
-			remove_trait = airbender_trained
-			add_trait = airbender
-			add_trait = competent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_powerful
-			}
-			remove_trait = airbender_powerful
-			add_trait = airbender
-			add_trait = powerful_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_master
-			}
-			remove_trait = airbender_master
-			add_trait = airbender
-			add_trait = master_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_legendary
-			}
-			remove_trait = airbender_legendary
-			add_trait = airbender
-			add_trait = legendary_bender
-			break = yes
-		}
+		}		
 	}
 }
 

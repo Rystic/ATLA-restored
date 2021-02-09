@@ -5,10 +5,18 @@ targetted_decisions = {
 		filter = independent_rulers
 		ai_target_filter = independent_rulers
 		from_potential = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 			prisoner = no
-			e_earth_kingdom = {
-				NOT = { has_law = ek_unity_0 }
+			OR = {
+				e_earth_kingdom = {
+					NOT = { has_law = ek_unity_0 }
+				}
+				k_earth_kingdom = {
+					NOT = { has_law = ek_unity_0 }
+				}				
 			}
 		}
 		
@@ -135,15 +143,28 @@ targetted_decisions = {
 		filter = independent_rulers
 		ai_target_filter = independent_rulers
 		from_potential = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom				
+			}
 			prisoner = no
-			e_earth_kingdom = {
-				OR = {
-					has_law = ek_unity_1
-					has_law = ek_unity_2
-					has_law = ek_unity_3
+			OR = {
+				e_earth_kingdom = {
+					OR = {
+						has_law = ek_unity_1
+						has_law = ek_unity_2
+						has_law = ek_unity_3
+					}
+					has_law = ze_admin_slight_central
 				}
-				has_law = ze_admin_slight_central
+				k_earth_kingdom = {
+					OR = {
+						has_law = ek_unity_1
+						has_law = ek_unity_2
+						has_law = ek_unity_3
+					}
+					has_law = ze_admin_slight_central
+				}
 			}
 		}
 		
@@ -200,8 +221,13 @@ targetted_decisions = {
 		effect = {
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law =  ek_unity_1
+					OR = {
+						e_earth_kingdom = {
+							has_law =  ek_unity_1
+						}
+						e_earth_kingdom = {
+							has_law =  ek_unity_1
+						}	
 					}
 				}
 			ROOT = {
@@ -267,10 +293,18 @@ targetted_decisions = {
 			}
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						OR = {
-							has_law =  ek_unity_2
-							has_law =  ek_unity_3
+					OR = {
+						e_earth_kingdom = {
+							OR = {
+								has_law =  ek_unity_2
+								has_law =  ek_unity_3
+							}
+						}
+						k_earth_kingdom = {
+							OR = {
+								has_law =  ek_unity_2
+								has_law =  ek_unity_3
+							}
 						}
 					}
 				}
@@ -496,16 +530,19 @@ title_decisions = {
 		ai_check_interval = 12
 		
 		from_potential = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom				
+			}
 			religion = earth_monarchism
-			e_earth_kingdom = {
+			primary_title = {
 				has_law = ek_unity_3
 			}
 		}
 			
 		potential = {
 			tier = COUNT
-			de_jure_liege_or_above = e_earth_kingdom
+			culture_group = earth_kingdom_culture
 		}
 		
 		allow = {
@@ -551,7 +588,10 @@ decisions = {
 		ai_check_interval = 12
 		
 		potential = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom				
+			}
 		}
 		allow = {
 			prisoner = no
@@ -591,9 +631,12 @@ decisions = {
 		only_playable = yes
 		ai_check_interval = 12
 		potential = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom				
+			}
 			NOT = { religion = earth_monarchism }
-			e_earth_kingdom = {
+			primary_title = {
 				has_law = ek_unity_3
 			}
 		}
@@ -653,14 +696,23 @@ decisions = {
 				tier = EMPEROR
 			}
 			is_adult = yes
-			e_earth_kingdom = {
-				owner = {
-					ROOT = {
-						pays_tribute_to = PREVPREV
+			OR = {
+				e_earth_kingdom = {
+					owner = {
+						ROOT = {
+							pays_tribute_to = PREVPREV
+						}
+					}
+				}
+				k_earth_kingdom = {
+					owner = {
+						ROOT = {
+							pays_tribute_to = PREVPREV
+						}
 					}
 				}
 			}
-		}
+		}	
 		allow = {
 			prisoner = no
 		}
@@ -676,7 +728,7 @@ decisions = {
 				}
 				any_independent_ruler = {
 					limit = {
-						de_jure_liege_or_above = e_earth_kingdom
+						culture_group = earth_kingdom_culture
 						is_tributary = yes
 					}
 					character_event = { id = ATLAE.210 }
@@ -771,6 +823,10 @@ decisions = {
 			culture_group = earth_kingdom_culture
 			NOT = { has_character_flag = earth_kingdom_rebel }
 			NOT = { tier = EMPEROR }
+			NOR = { 
+				has_landed_title = k_earth_kingdom 
+				has_landed_title = e_earth_kingdom 
+			}
 		}
 		allow = {
 			prisoner = no
@@ -778,7 +834,7 @@ decisions = {
 		}
 		effect = {
 			hidden_tooltip = {
-				e_earth_kingdom = {
+				k_earth_kingdom = {
 					owner = {
 						make_tributary = {
 							who = ROOT
@@ -1059,6 +1115,7 @@ decisions = {
 			capital_scope = {
 				region = world_north_east_earth_kingdom
 			}
+			completely_controls_region = world_north_east_earth_kingdom
 			has_landed_title = k_ba_sing_se
 			has_landed_title = c_royal_earth_palace
 		}

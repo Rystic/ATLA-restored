@@ -2,10 +2,9 @@ e_rebels = {
 	rebel = yes
 	landless = yes
 	primary = yes
-
+	
 	culture = pirate
 	religion = piracy
-
 	tribe = yes
 
 	color={ 0 0 0 }
@@ -369,20 +368,52 @@ d_avatar = {
 	independent = yes
 	primary = yes
 	
-	title = title_avatar
-	title_female = title_avatar
+	# add custom titles
+	title = "AVATAR_TITLE"
+	title_female = "AVATAR_TITLE"
+	foa = "AVATAR_FOA" # The bridge between the worlds
+
+	gain_effect = {
+		if = {
+			limit = {
+				owner = {
+					is_avatar_trigger = no
+				}
+			}
+			unsafe_destroy_landed_title = d_avatar
+		}
+	}
+}
+
+
+d_avatar_unrevealed = {
+	color = { 255 255 255 }
+	color2 = { 255 255 255 }
+	allow = {
+		always = no
+	}
+	
+	# capital = 228
+	dynasty_title_names = yes
+	landless = yes
+	short_name = yes
+	# independent = yes
+	# primary = yes
+	
+	# title = "UNREVEALED_AVATAR"
+	# title_female = "UNREVEALED_AVATAR"
 	
 	gain_effect = {
 		if = {
 			limit = {
 				owner = {
-					AND = {
-						NOT = { trait = avatar }
-						NOT = { trait = fullyrealisedavatar }
+					OR = {
+						NOT = { has_character_flag = avatar_unrevealed }
+						has_character_flag = avatar_revealed
 					}
 				}
 			}
-			unsafe_destroy_landed_title = d_avatar
+			unsafe_destroy_landed_title = d_avatar_unrevealed
 		}
 	}
 }

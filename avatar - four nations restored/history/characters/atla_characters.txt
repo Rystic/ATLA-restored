@@ -114,6 +114,7 @@
 		birth = yes
 		effect = {
 			set_character_flag = is_sozin
+			set_global_flag = sozin_exists # for new avatar engine
 		}
 	}
 	756.3.13 = {
@@ -214,11 +215,12 @@
 		death = yes
 	}
 }
+# Need to write more roku history
 3 = {
 	name = "Roku"
 	dynasty = 536
 	religion = "fire_spirituality"
-	culture = "fire_nation"
+	culture = customPortrait_roku_and_ta_min
 	dna = "000000a0b00"
 	properties = "ki0fcg00000000"
 	disallow_random_traits = yes
@@ -227,6 +229,7 @@
 	trait = canon_character
 	748.6.6 = {
 		birth = yes
+		culture = "fire_nation"
 		effect = {
 			set_character_flag = avatar_unrevealed
 			clr_global_flag = avatar_earth
@@ -234,6 +237,17 @@
 			set_global_flag = avatar_fire
 			set_global_flag = avatar_unrevealed
 			set_character_flag = is_roku
+			set_global_flag = Roku
+
+			activate_title = { title = d_avatar_unrevealed status = yes }
+			d_avatar_unrevealed = {
+				grant_title = 3
+			}
+		}
+	}
+	756.3.13 = {
+		effect = {
+			add_friend = 2
 		}
 	}
 	764.6.6 = {
@@ -242,18 +256,62 @@
 			clr_character_flag = avatar_unrevealed
 			clr_global_flag = avatar_unrevealed
 			set_global_flag = avatar_revealed
-			add_friend = 2
+	
+			add_trait = on_journey
 			add_trait = avatar
 			add_trait = just
 			add_trait = temperate
 			add_trait = mastermind_theologian
+
+			set_character_flag = avatar_journey
+	
+			activate_title = { title = d_avatar status = yes }
+			activate_title = { title = d_avatar_unrevealed status = no }
+			unsafe_destroy_landed_title = d_avatar_unrevealed
+			d_avatar = {
+				grant_title = 3
+			}
+			
+			set_character_flag = avatar_learning_airbending
 		}
 	}
-	772.3.31 = {
-		employer = 2 # Employed by Sozin when Sozin gets his titles
+	767.1.15 = { # 3 years to master airbending
+		effect = {
+			add_trait = avatar_airbender
+			add_friend = 7 # Gyatso
+			clr_character_flag = avatar_learning_airbending
+			set_character_flag = avatar_learning_waterbending
+		}
 	}
-	784.2.13 = {
-		add_spouse = 5
+	# Now he has d_avatar
+	# 772.3.31 = { 
+	# 	employer = 2 # Employed by Sozin when Sozin gets his titles
+	# }
+	772.3.21 = { # 5 years to master waterbending
+		effect = {
+			add_trait = avatar_waterbender
+			clr_character_flag = avatar_learning_waterbending
+			set_character_flag = avatar_learning_earthbending
+		}
+	}
+	775.8.4 = { # 3 years to master earthbending
+		effect = {
+			add_friend = 6 # Sud
+			add_trait = avatar_earthbender
+			clr_character_flag = avatar_learning_earthbending
+		}
+	}
+	776.10.21 = { # mastering avatar state
+		effect = {
+			remove_trait = avatar
+			add_trait = fullyrealisedavatar
+			
+			remove_trait = on_journey
+			clr_character_flag = avatar_journey
+		}
+	}
+	777.1.4 = {
+		add_spouse = 5 # Ta Min
 	}
 	818.7.14 = {
 		death = {
@@ -279,13 +337,14 @@
 	female = yes
 	dynasty =  495
 	religion = "fire_spirituality"
-	culture = "fire_nation"
+	culture = customPortrait_roku_and_ta_min
 	trait = fair
 	trait = uninterested
 	748.2.5 = {
 		birth = yes
+		culture = "fire_nation"
 		effect = {
-			set_character_flag = Ta_Min
+			set_character_flag = is_ta_min
 		}
 	}
 	#765.4.4 = {
@@ -308,6 +367,11 @@
 	744.2.5 = {
 		birth = yes
 	}
+	775.8.4 = {
+		effect = {
+			add_friend = 3 # Roku
+		}
+	}
 	823.2.5 = {
 		death = yes
 	}
@@ -328,6 +392,11 @@
 		birth = yes
 		effect = {
 			set_character_flag = is_gyatso
+		}
+	}
+	767.1.15 = {
+		effect = {
+			add_friend = 3 # Gyatso
 		}
 	}
 	830.2.13 = {
@@ -1128,6 +1197,8 @@
 			set_global_flag = avatar_earth
 			set_character_flag = avatar_revealed
 			set_global_flag = avatar_revealed
+
+			set_global_flag = Kyoshi
 		}
 		culture = earth_islander
 	}
@@ -1959,7 +2030,7 @@
 	dynasty = 1504
 	religion = air_spirituality
 	culture = southern_air_nomad
-	father = 7
+	# father = 7
 	disallow_random_traits = yes
 	trait = airbender
 	trait = powerful_bender

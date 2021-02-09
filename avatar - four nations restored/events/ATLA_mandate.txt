@@ -54,23 +54,26 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		check_variable = { which = global_royalAuthority value <= -11 }
 		NOT = { has_character_modifier = ek_law_low_mandate_change }
-		e_earth_kingdon = {
-			NOT = { has_law = ze_admin_anarchy }
+		OR = {
+			e_earth_kingdon = {
+				NOT = { has_law = ze_admin_anarchy }
 			}
+		}
 	}
 	
 	option = {
 		name = mandate.1
-		e_earth_kingdom = {
+		primary_title = {
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = ze_admin_territories
-						}
-					}
+					has_law = ze_admin_territories
+				}
 				revoke_law = ze_admin_territories
 				add_law = ze_admin_anarchy
 				set_variable = { which = global_royalAuthority value = -10 }
@@ -81,10 +84,8 @@ character_event = {
 				}
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = ze_admin_province
-						}
-					}
+					has_law = ze_admin_province
+				}
 				revoke_law = ze_admin_province
 				add_law = ze_admin_territories
 				set_variable = { which = global_royalAuthority value = -10 }	
@@ -95,10 +96,8 @@ character_event = {
 				}				
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = ze_admin_balance
-						}
-					}
+					has_law = ze_admin_balance
+				}
 				revoke_law = ze_admin_balance
 				add_law = ze_admin_province	
 				set_variable = { which = global_royalAuthority value = -10 }
@@ -109,10 +108,8 @@ character_event = {
 				}
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = ze_admin_slight_central
-						}
-					}
+					has_law = ze_admin_slight_central
+				}
 				revoke_law = ze_admin_slight_central
 				add_law = ze_admin_balance	
 				set_variable = { which = global_royalAuthority value = -10 }	
@@ -148,7 +145,9 @@ character_event = { #make rebelion leader
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+		}
 		OR = {
 			check_variable = { which = global_royalAuthority value <= -100 } #should not happen but still i would rather made it lower or equal
 			AND = {
@@ -223,7 +222,9 @@ narrative_event = {
 	is_triggered_only = yes
 	
 	trigger = { 
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+		}
 		OR = {
 			has_character_flag = ek_conqueror
 			NOR = { #just to be sure that it will not fire for already existing dynasty
@@ -280,7 +281,7 @@ narrative_event = {
 	option = { #Duan
 		name = mandate_dyn_duan
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_duan }
 			}
 			has_character_flag = ek_dyn_choose_site_1
@@ -302,7 +303,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_1
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_duan
 		}
 		random_list = {
@@ -318,7 +319,7 @@ narrative_event = {
 	option = { #Murong
 		name = mandate_dyn_murong
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_murong }
 			}
 			has_character_flag = ek_dyn_choose_site_1
@@ -340,7 +341,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_1
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_murong
 		}
 		random_list = {
@@ -356,7 +357,7 @@ narrative_event = {
 	option = { #Tuoba
 		name = mandate_dyn_tuoba
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_tuoba }
 			}
 			has_character_flag = ek_dyn_choose_site_1
@@ -378,7 +379,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_1
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_tuoba
 		}
 		random_list = {
@@ -404,7 +405,7 @@ narrative_event = {
 	option = { #Cuijuk
 		name = mandate_dyn_cuijuk
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_cuijuk }
 			}
 			has_character_flag = ek_dyn_choose_site_2
@@ -426,7 +427,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_2
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_cuijuk
 		}
 		random_list = {
@@ -442,7 +443,7 @@ narrative_event = {
 	option = { #Duyar
 		name = mandate_dyn_duyar
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_duyar }
 			}
 			has_character_flag = ek_dyn_choose_site_2
@@ -464,7 +465,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_2
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_duyar
 		}
 		random_list = {
@@ -480,7 +481,7 @@ narrative_event = {
 	option = { #Uushin
 		name = mandate_dyn_uushin
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_uushin }
 			}
 			has_character_flag = ek_dyn_choose_site_2
@@ -502,7 +503,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_2
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_uushin
 		}
 		random_list = {
@@ -528,7 +529,7 @@ narrative_event = {
 	option = { #Gorlos
 		name = mandate_dyn_gorlos
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_gorlos }
 			}
 			has_character_flag = ek_dyn_choose_site_3
@@ -550,7 +551,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_3
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_gorlos
 		}
 		random_list = {
@@ -606,7 +607,10 @@ narrative_event = {
 	is_triggered_only = yes
 	
 	trigger = { 
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		AND  = {
 			has_character_flag = ek_conqueror
 			NOR = { #just to be sure that it will not fire for already existing dynasty
@@ -633,7 +637,7 @@ narrative_event = {
 				dynasty = 3997	
 			}
 		}
-		e_earth_kingdom = { #it makes sure that if all dynasties does not exist if all of them exist event wont fire
+		primary_title = { #it makes sure that if all dynasties does not exist if all of them exist event wont fire
 			NAND = {
 				has_title_flag = dynasty_wu
 				has_title_flag = dynasty_shu
@@ -667,7 +671,7 @@ narrative_event = {
 	option = { #Wu
 		name = mandate_dyn_wu
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_wu }
 			}
 			has_character_flag = ek_dyn_choose_site_1
@@ -689,7 +693,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_1
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_wu
 		}
 		random_list = {
@@ -704,7 +708,7 @@ narrative_event = {
 	option = { #Shu
 		name = mandate_dyn_shu
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_shu }
 			}
 			has_character_flag = ek_dyn_choose_site_1
@@ -726,7 +730,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_1
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_shu
 		}
 		random_list = {
@@ -741,7 +745,7 @@ narrative_event = {
 	option = { #Wei
 		name = mandate_dyn_wei
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_wei }
 			}
 			has_character_flag = ek_dyn_choose_site_1
@@ -763,7 +767,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_1
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_wei
 		}
 		random_list = {
@@ -788,7 +792,7 @@ narrative_event = {
 	option = { #Qin
 		name = mandate_dyn_qin
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_qin }
 			}
 			has_character_flag = ek_dyn_choose_site_2
@@ -810,7 +814,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_2
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_qin
 		}
 		random_list = {
@@ -825,7 +829,7 @@ narrative_event = {
 	option = { #Zhou
 		name = mandate_dyn_zhou
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_zhou }
 			}
 			has_character_flag = ek_dyn_choose_site_2
@@ -847,7 +851,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_2
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_zhou
 		}
 		random_list = {
@@ -862,7 +866,7 @@ narrative_event = {
 	option = { #Wang
 		name = mandate_dyn_wang
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_wang }
 			}
 			has_character_flag = ek_dyn_choose_site_2
@@ -884,7 +888,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_2
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_wang
 		}
 		random_list = {
@@ -908,7 +912,7 @@ narrative_event = {
 	option = { #Xian
 		name = mandate_dyn_xian
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_xian }
 			}
 			has_character_flag = ek_dyn_choose_site_3
@@ -930,7 +934,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_3
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_xian
 		}
 		random_list = {
@@ -945,7 +949,7 @@ narrative_event = {
 	option = { #Tao
 		name = mandate_dyn_tao
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_tao }
 			}
 			has_character_flag = ek_dyn_choose_site_3
@@ -967,7 +971,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_3
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_tao
 		}
 		random_list = {
@@ -982,7 +986,7 @@ narrative_event = {
 	option = { #Se
 		name = mandate_dyn_se
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_se }
 			}
 			has_character_flag = ek_dyn_choose_site_3
@@ -1004,7 +1008,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_3
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_se
 		}
 		random_list = {
@@ -1029,7 +1033,7 @@ narrative_event = {
 	option = { #Jin
 		name = mandate_dyn_jin
 		trigger = {	
-			e_earth_kingdom = {
+			primary_title = {
 				NOT = { has_title_flag = dynasty_jin }
 			}
 			has_character_flag = ek_dyn_choose_site_4
@@ -1051,7 +1055,7 @@ narrative_event = {
 		}
 		clr_character_flag = ek_conqueror
 		clr_character_flag = ek_dyn_choose_site_3
-		e_earth_kingdom = {
+		primary_title = {
 			set_title_flag = dynasty_jin
 		}
 		random_list = {
@@ -1176,23 +1180,24 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		check_variable = { which = global_royalAuthority value <= -11 }
 		NOT = { has_character_modifier = ek_law_low_mandate_change }
-		e_earth_kingdon = {
+		primary_title = {
 			NOT = { has_law = bureaucracy_anarchy }
 		}
 	}
 	
 	option = {
 		name = mandate.6
-		e_earth_kingdom = {
+		primary_title = {
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = underfunded_bureaucracy
-						}
-					}
+					has_law = underfunded_bureaucracy
+				}
 				revoke_law = underfunded_bureaucracy
 				add_law = bureaucracy_anarchy
 				set_variable = { which = global_royalAuthority value = -10 }
@@ -1203,10 +1208,8 @@ character_event = {
 				}
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = balanced_bureaucracy
-						}
-					}
+					has_law = balanced_bureaucracy
+				}
 				revoke_law = balanced_bureaucracy
 				add_law = underfunded_bureaucracy
 				set_variable = { which = global_royalAuthority value = -10 }	
@@ -1217,10 +1220,8 @@ character_event = {
 				}				
 			if = {
 				limit = {
-					e_earth_kingdom = {
-						has_law = slight_bureaucratic_dominance
-						}
-					}
+					has_law = slight_bureaucratic_dominance
+				}
 				revoke_law = slight_bureaucratic_dominance
 				add_law = good_bureaucracy
 				set_variable = { which = global_royalAuthority value = -10 }
@@ -1262,7 +1263,7 @@ character_event = {
 		if = {
 			limit = {
 				OR = {
-					has_landed_title = k_ba_sing_se
+					has_landed_title = k_earth_kingdom
 					has_landed_title = e_earth_kingdom
 				}
 			}
@@ -1593,7 +1594,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		stewardship >= 15
 		NOT = { is_adult = no }
 	}
@@ -1633,7 +1637,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		diplomacy >= 15
 		NOT = { is_adult = no }
 	}
@@ -1673,7 +1680,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		learning >= 15
 		NOT = { is_adult = no }
 		religion = earth_monarchism
@@ -1714,7 +1724,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = just
 	}
 	
@@ -1753,7 +1766,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = arbitrary
 	}
 	
@@ -1792,7 +1808,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = ambitious
 	}
 	
@@ -1831,7 +1850,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = slothful
 	}
 	
@@ -1870,7 +1892,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = diligent
 	}
 	
@@ -1909,7 +1934,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = content
 	}
 	
@@ -1947,7 +1975,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = gregarious
 	}
 	
@@ -1986,7 +2017,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = shy
 	}
 	
@@ -2026,7 +2060,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = stutter
 	}
 	
@@ -2065,7 +2102,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = lisp
 	}
 	
@@ -2110,7 +2150,10 @@ character_event = {
 	picture = GFX_evt_tribal_shrine_cm
 
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = kind
 	}
 	
@@ -2149,7 +2192,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = cruel
 	}
 	
@@ -2188,7 +2234,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = trusting
 	}
 	
@@ -2227,7 +2276,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = paranoid
 	}
 	
@@ -2272,7 +2324,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = flirtatious
 	}
 	
@@ -2311,7 +2366,10 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		trait = apathetic
 	}
 	
@@ -2358,8 +2416,8 @@ character_event = {
 				is_title_active = e_earth_kingdom 
 			#}
 			AND = {
-				#k_ba_sing_se = {
-					is_title_active = k_ba_sing_se
+				#k_earth_kingdom = {
+					is_title_active = k_earth_kingdom
 				#}
 				#e_earth_kingdom = {
 					NOT = { is_title_active = e_earth_kingdom }
@@ -2368,7 +2426,7 @@ character_event = {
 		}
 		NOR = {
 			has_landed_title = e_earth_kingdom
-			has_landed_title = k_ba_sing_se
+			has_landed_title = k_earth_kingdom
 		}
 	}
 	
@@ -2395,12 +2453,12 @@ character_event = {
 			}
 		}
 		else = {
-			k_ba_sing_se = {
+			k_earth_kingdom = {
 				holder_scope = {
 					reverse_unsafe_war = {
 						target = FROM
 						casus_belli = mandate_revolt
-						thirdparty_title = k_ba_sing_se
+						thirdparty_title = k_earth_kingdom
 					}
 				}
 			}
@@ -2430,12 +2488,12 @@ character_event = {
 			}
 		}
 		else = {
-			k_ba_sing_se = {
+			k_earth_kingdom = {
 				holder_scope = {
 					reverse_unsafe_war = {
 						target = FROM #FROM
 						casus_belli = mandate_revolt
-						thirdparty_title = k_ba_sing_se
+						thirdparty_title = k_earth_kingdom
 					}
 				}
 			}
@@ -2450,7 +2508,10 @@ narrative_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 		OR = {
 			has_character_flag = noble_pretender
 			has_character_flag = peasant_leader
@@ -2471,9 +2532,9 @@ narrative_event = {
 	option = {
 		name = mandatebcbasingking
 		set_variable = { which = global_royalAuthority value = 0 }
-		k_ba_sing_se = {
+		k_earth_kingdom = {
 			grant_title = ROOT
-			activate_title = { title = k_ba_sing_se status = yes }
+			activate_title = { title = k_earth_kingdom status = yes }
 			copy_title_history = PREV
 			copy_title_laws = PREV
 			make_primary_title = yes
@@ -2513,7 +2574,10 @@ narrative_event = {
 	
 	option = {
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		name = mandate.31a
 		clr_character_flag = noble_pretender
@@ -2544,8 +2608,8 @@ narrative_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_title_active = k_ba_sing_se
-		k_ba_sing_se = {
+		is_title_active = k_earth_kingdom
+		k_earth_kingdom = {
 			holder_scope = { 
 				OR = {
 					has_character_flag = noble_pretender
@@ -2557,7 +2621,7 @@ narrative_event = {
 	
 	option = {
 		trigger = {
-			has_landed_title = k_ba_sing_se
+			has_landed_title = k_earth_kingdom
 		}
 		name = mandate.32a
 		clr_character_flag = noble_pretender
@@ -2567,7 +2631,7 @@ narrative_event = {
 	option = {
 		trigger = {
 			culture_group = earth_kingdom_culture
-			NOT = { has_landed_title = k_ba_sing_se }
+			NOT = { has_landed_title = k_earth_kingdom }
 		}
 		name = mandate.32b
 	}
@@ -2575,7 +2639,7 @@ narrative_event = {
 	option = {
 		trigger = {
 			NOT = { culture_group = earth_kingdom_culture }
-			NOT = { has_landed_title = k_ba_sing_se }
+			NOT = { has_landed_title = k_earth_kingdom }
 		}
 		name = mandate.32c
 	}	

@@ -89,6 +89,11 @@
 #GetMandatePower
 #GetRootMandateModifier
 #GetExistingRCFactions
+#GetQuanHolderTitleName (aka bastardised flavorisation)
+#GetColorClanAuthority
+#GetAgeGeneral
+#GetBaRulerStylingLoc
+#GetBaTitleTierLoc
 
 ###RELATIONSHIPS###
 defined_text = {
@@ -5152,4 +5157,313 @@ defined_text = {
 			has_global_flag = dai_li_disbanded
 		}
 	}
+}
+
+defined_text = {
+	name = GetQuanHolderTitleName
+	fallback_text = {
+		localisation_key = GetQuanHolderTitleName_fallback
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_ImpBlood
+		trigger = {
+			ROOT = { 
+				is_female = no
+				any_owned_bloodline = {
+					has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+				}
+			}
+		}
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_ImpBlood_female
+		trigger = {
+			ROOT = { 
+				is_female = yes
+				any_owned_bloodline = {
+					has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+				}
+			}
+		}
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_GrandDuke
+		trigger = {
+			ROOT = { 
+				is_female = no
+				NOT = {
+					any_owned_bloodline = {
+						has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+					}
+				}
+			}
+		}
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_GrandDuke_female
+		trigger = {
+			ROOT = { 
+				is_female = yes
+				NOT = {
+					any_owned_bloodline = {
+						has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+					}
+				}
+			}
+		}
+	}	
+}
+
+defined_text = {
+	name = GetColorClanAuthority
+
+	text = {
+		localisation_key = GetColorClanAuthority_green
+		trigger = {
+			check_variable = { which = global_Clanauthority value > 60 }
+		}
+	}
+	text = {
+		localisation_key = GetColorClanAuthority_yellow
+		trigger = {
+			check_variable = { which = global_Clanauthority value >= 40 }
+			check_variable = { which = global_Clanauthority value <= 60 }
+		}
+	}
+	text = {
+		localisation_key = GetColorClanAuthority_red
+		trigger = {
+			trigger = {
+				check_variable = { which = global_Clanauthority value < 40 }
+			}
+		}
+	}
+}
+
+defined_text = {
+	name = GetAgeGeneral
+	
+	text = {
+		localisation_key = GetAgeGeneral_child
+		trigger = {
+			ROOT = {
+				is_adult = no
+			}
+		}
+	}
+	text = {
+		localisation_key = GetAgeGeneral_young
+		trigger = {	
+			ROOT = {
+				age >= 16
+				age <= 35
+			}
+		}
+	}
+	text = {
+		localisation_key = GetAgeGeneral_middleaged
+		trigger = {	
+			ROOT = {
+				age >= 36
+				age <= 55
+			}
+		}
+	}
+	text = {
+		localisation_key = GetAgeGeneral_old
+		trigger = {	
+			ROOT = {
+				age >= 56
+			}
+		}
+	}
+}
+
+defined_text = {
+	name = GetBaRulerStylingLoc
+	
+	use_first_valid = yes
+	
+	text = {
+		localisation_key = GetBaRulerStylingLoc_city_baron
+		trigger = {
+			ROOT = {
+				tier = BARON
+				#primary_title = {
+					location = {
+						region = world_ba_sing_se
+					}
+				#}
+			}
+		}
+	}
+	
+	text = {
+		localisation_key = GetBaRulerStylingLoc_city_count
+		trigger = {
+			ROOT = {
+				tier = COUNT
+				#primary_title = {
+					location = {
+						region = world_ba_sing_se
+					}
+				#}
+			}
+		}
+	}
+
+	text = {
+		localisation_key = GetBaRulerStylingLoc_city_duke
+		trigger = {
+			ROOT = {
+				tier = DUKE
+				#primary_title = {
+					location = {
+						region = world_ba_sing_se
+					}
+				#}
+			}
+		}
+	}	
+	
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_baron
+		trigger = {
+			ROOT = {
+				tier = BARON
+				is_female = no
+				is_feudal = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_fem_baron
+		trigger = {
+			ROOT = {
+				tier = BARON
+				is_female = yes
+				is_feudal = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+	
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_count
+		trigger = {
+			ROOT = {
+				tier = COUNT
+				is_feudal = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_duke
+		trigger = {
+			ROOT = {
+				tier = DUKE
+				is_feudal = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_rep_baron
+		trigger = {
+			ROOT = {
+				tier = BARON
+				is_republic = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+	
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_rep_count
+		trigger = {
+			ROOT = {
+				tier = COUNT
+				is_republic = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+	
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_rep_duke
+		trigger = {
+			ROOT = {
+				tier = DUKE
+				is_republic = yes
+				is_female = no
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+
+	text = {
+		localisation_key = GetBaRulerStylingLoc_normal_rep_fem_duke
+		trigger = {
+			ROOT = {
+				tier = DUKE
+				is_republic = yes
+				is_female = yes
+				#primary_title = {
+					NOT = {
+						location = {
+							region = world_ba_sing_se
+						}
+					}
+				#}
+			}
+		}
+	}
+	
 }
