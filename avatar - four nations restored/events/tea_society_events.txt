@@ -715,7 +715,7 @@ character_event = {
 	immediate = {
 		FROM = {
 			random_list = {
-				20 = {}
+				30 = {}
 				10 = { # Share Tea
 					modifier = {
 						factor = 0
@@ -2366,3 +2366,911 @@ character_event = {
 		}
 	}
 }
+
+### EVERYTHING RELATING TO THROWING A TEA PARTY
+
+# Decide -- forest, or friends
+character_event = {
+	id = TEA.20000
+	desc = search_for_tea_leaves_event_desc
+	picture = GFX_evt_relaxed_ruler
+	is_triggered_only = yes
+
+	immediate = {
+		character_event = { id = TEA.20001 } # remove all flags/variables relating to the tea party event chain.
+	}
+
+	option = {
+		name = search_for_tea_leaves_forest_option
+		custom_tooltip = {
+			text = search_for_tea_leaves_forest_option_tooltip
+		}
+		character_event = { id = TEA.21000 days = 7 }
+	}
+	
+	option = {
+		name = search_for_tea_leaves_friends_option
+		custom_tooltip = {
+			text = search_for_tea_leaves_friends_option_tooltip
+		}
+		character_event = { id = TEA.22000 days = 7 }
+	}
+}
+
+#CLEAR ALL TEA FLAGS
+character_event = {
+	id = TEA.20001
+	is_triggered_only = yes
+	hide_window = yes
+	
+	option = {
+		set_variable = { which = tea_quality value = 0 }
+		clr_character_flag = found_white_jade
+		clr_character_flag = found_badger_spirit
+		clr_character_flag = found_physician
+		clr_character_flag = found_early_guest
+		
+		clr_character_flag = can_make_green_tea
+		clr_character_flag = can_make_white_dragon
+		clr_character_flag = can_make_jasmine_tea
+		clr_character_flag = can_make_ginger_root_tea
+		
+		clr_character_flag = has_bacui_berries
+		clr_character_flag = has_hotspring_water
+		
+		clr_character_flag = has_biscuits
+		clr_character_flag = has_extra_guests
+		
+		clr_character_flag = badger_visitor
+		clr_character_flag = physician_visitor
+	}
+}
+
+# search forest -- start
+character_event = {
+	id = TEA.21000
+	is_triggered_only = yes
+	hide_window = yes
+
+	option = {
+		if = {
+			limit = {
+				has_character_flag = tea_chose_spirits
+			}
+			change_variable = { which = local_remaining_events value = 4 }
+		}
+		else = {
+			change_variable = { which = local_remaining_events value = 3 }
+		}
+		character_event = { id = TEA.21001 } # start forest search roulette
+	}
+}
+
+character_event = {
+	id = TEA.21001
+	is_triggered_only = yes
+	hide_window = yes
+
+	option = {
+		if = {
+			limit = {
+				check_variable = { which = local_remaining_events value == 0 }
+			}
+			if = {
+				limit = {
+					OR = {
+						has_character_flag = can_make_green_tea
+						has_character_flag = can_make_white_dragon
+					}
+				}
+				character_event = { id = TEA.21006 days = 3 }
+			}
+			else = {
+				character_event = { id = TEA.21007 days = 3 }
+			}
+		}
+		else = {
+			subtract_variable = { which = local_remaining_events value = 1 }
+			random_list = {
+				30 = { 
+					modifier = { factor = 1.5 NOT = { learning = 10 } }
+					modifier = { factor = 0.5 learning = 12 }
+					character_event = { id = TEA.21002 days = 3 }
+				}
+				20 = { 
+					modifier = { factor = 0.5 learning = 14 }
+					character_event = { id = TEA.21003 days = 5 }
+				}
+				10 = {
+					modifier = { factor = 1.5 learning = 16}
+					modifier = { factor = 0.0 has_character_flag = found_white_jade}
+					set_character_flag = found_white_jade
+					character_event = { id = TEA.21004 days = 14 }
+				}
+				5 = {
+					modifier = { factor = 1.5 learning = 18}
+					modifier = { factor = 0.5 NOT = { learning = 10 } }
+					modifier = { factor = 0.0 has_character_flag = found_badger_spirit}
+					set_character_flag = found_badger_spirit
+					character_event = { id = TEA.21005 days = 14 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.21002
+	desc = forest_scrounge_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = forest_scrounge_option_bad
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = improves_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = { 
+				custom_tooltip = {
+					text = decreases_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = forest_scrounge_option_good
+		
+		trigger = {
+			learning = 14
+		}
+		
+		tooltip_info = learning
+		
+		custom_tooltip = {
+			text = green_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_green_tea
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.21003
+	desc = collect_berries_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = collect_berries_do_collect
+		custom_tooltip = {
+			text = berries_tooltip
+			hidden_tooltip = {
+				set_character_flag = has_bacui_berries
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = collect_berries_no_collect
+		custom_tooltip = {
+			text = green_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_green_tea
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.21004
+	desc = white_jade_found_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = white_jade_found_bad
+		custom_tooltip = {
+			text = white_jade_randomness_tooltip
+			hidden_tooltip = {
+				random_list = {
+					50 = { 
+						change_variable = { which = tea_quality value = 2 }
+						set_character_flag = can_make_white_dragon
+					}
+					50 = { 
+						subtract_variable = { which = tea_quality value = 5 }
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = white_jade_found_safe
+		
+		trigger = {
+			learning = 14
+		}
+		
+		tooltip_info = learning
+		
+		custom_tooltip = {
+			text = white_jade_identify_tooltip
+			hidden_tooltip = {
+				random_list = {
+					50 = { 
+						character_event = { id = TEA.21014 }
+					}
+					50 = {
+						character_event = { id = TEA.21024 }
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = white_jade_found_ignore
+		character_event = { id = TEA.21001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.21014
+	desc = white_jade_found_safe_success_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = white_jade_found_safe_success_option
+		custom_tooltip = {
+			text = white_jade_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 6 }
+				set_character_flag = can_make_white_dragon
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.21024
+	desc = white_jade_found_safe_fail_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = white_jade_found_safe_fail_option
+	}
+}
+
+character_event = {
+	id = TEA.21005
+	desc = badger_spirit_start_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = badger_spirit_start_join
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		custom_tooltip = {
+			text = path_of_spirits_tooltip
+		}
+		
+		character_event = { id = TEA.21015 }
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = badger_spirit_start_wait
+		character_event = { id = TEA.21001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.21015
+	desc = badger_spirit_join_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = badger_spirit_join_option
+		custom_tooltip = {
+			text = green_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_green_tea
+				random_list = {
+					50 = {}
+					50 = { set_character_flag = badger_visitor }
+				}
+			}
+		}
+		
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 6 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.21025
+	desc = badger_spirit_wait_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = badger_spirit_wait_hot_water
+		
+		custom_tooltip = {
+			text = hotspring_tooltip
+			hidden_tooltip = {
+				set_character_flag = has_hotspring_water
+			}
+		}		
+		
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.21006
+	desc = forest_tea_leaves_success_desc
+	picture = GFX_evt_relaxed_ruler
+	is_triggered_only = yes
+
+	option = {
+		name = forest_tea_leaves_success_green_tea
+		
+		trigger = {
+			has_character_flag = can_make_green_tea
+		}
+		clr_character_flag = can_make_white_dragon		
+	}
+	
+	option = {
+		name = forest_tea_leaves_success_white_dragon
+		
+		trigger = {
+			has_character_flag = can_make_white_dragon
+		}
+		clr_character_flag = can_make_green_tea
+	}
+	#pickle
+}
+
+character_event = {
+	id = TEA.21007
+	desc = forest_tea_leaves_fail_desc
+	picture = GFX_evt_bad_news
+	is_triggered_only = yes
+
+	option = {
+		name = forest_tea_leaves_fail_option
+	}
+#pickle
+}
+
+#ask friends start
+# search forest -- start
+character_event = {
+	id = TEA.22000
+	is_triggered_only = yes
+	hide_window = yes
+
+	option = {
+		if = {
+			limit = {
+				has_character_flag = tea_chose_self
+			}
+			change_variable = { which = local_remaining_events value = 4 }
+		}
+		else = {
+			change_variable = { which = local_remaining_events value = 3 }
+		}
+		character_event = { id = TEA.22001 } # start forest search roulette
+	}
+}
+
+character_event = {
+	id = TEA.22001
+	is_triggered_only = yes
+	hide_window = yes
+
+	option = {
+		if = {
+			limit = {
+				check_variable = { which = local_remaining_events value == 0 }
+			}
+			if = {
+				limit = {
+					OR = {
+						has_character_flag = can_make_jasmine_tea
+						has_character_flag = can_make_ginger_root_tea
+					}
+				}
+				character_event = { id = TEA.22006 days = 3 }
+			}
+			else = {
+				character_event = { id = TEA.22007 days = 3 }
+			}
+		}
+		else = {
+			subtract_variable = { which = local_remaining_events value = 1 }
+			random_list = {
+				30 = {
+					modifier = { factor = 2.0 has_character_flag = tea_chose_spirits}
+					modifier = { factor = 1.25 NOT = {diplomacy = 10 } }
+					character_event = { id = TEA.22002 days = 3 }
+				}
+				20 = {
+					modifier = { factor = 0.5 NOT = {diplomacy = 10 } }
+					modifier = { factor = 1.5 has_character_flag = tea_chose_self}
+					character_event = { id = TEA.22003 days = 5 }
+				}
+				10 = {
+					modifier = { factor = 0 has_character_flag = found_early_stranger }
+					modifier = { factor = 0.5 NOT = {diplomacy = 10 } }					
+					set_character_flag = found_early_stranger
+					character_event = { id = TEA.22004 days = 14 }
+				}
+				5 = {
+					modifier = { factor = 0 has_character_flag = found_physician }
+					modifier = { factor = 1.25 diplomacy = 16}
+					modifier = { factor = 1.25 diplomacy = 12}
+					modifier = { factor = 0.25 NOT = {diplomacy = 10 } }
+					set_character_flag = found_physician
+					character_event = { id = TEA.22005 days = 14 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22002
+	desc = beg_friends_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = beg_friends_bad
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = improves_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = { 
+				custom_tooltip = {
+					text = decreases_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = beg_friends_good
+		
+		trigger = {
+			diplomacy = 14
+		}
+		
+		tooltip_info = diplomacy
+
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.22003
+	desc = invite_extra_guests_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = invite_extra_guests_rumors
+		prestige = 100
+		custom_tooltip = {
+			text = extra_guests_tooltip
+			hidden_tooltip = {
+				set_character_flag = has_extra_guests
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = invite_extra_guests_leaves
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.22003
+	desc = early_guest_start_desc
+	picture = GFX_evt_feast
+	is_triggered_only = yes	
+
+	option = {
+		name = early_guest_start_bad
+		character_event = { id = TEA.22013 days = 7 }
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = early_guest_start_good
+	
+		tooltip_info = diplomacy
+	
+		trigger = {
+			diplomacy = 14
+		}
+		
+		character_event = { id = TEA.22023 days = 7 }
+		character_event = { id = TEA.22001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.22013
+	desc = early_guest_no_party_desc
+	picture = GFX_evt_feast
+	is_triggered_only = yes	
+	
+	option = {
+		name = early_guest_no_party_bad
+		custom_tooltip = {
+			text = decreases_tea_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_quality value = 1 }
+			}
+		}
+	}
+	
+	option = {
+		name = early_guest_no_party_good
+
+		tooltip_info = diplomacy
+	
+		trigger = {
+			diplomacy = 12
+		}
+		
+		character_event = { id = TEA.22113 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.22113
+	desc = early_guest_recovery_desc
+	picture = GFX_evt_feast
+	is_triggered_only = yes	
+	
+	option = {
+		name = early_guest_recovery_option
+		custom_tooltip = {
+			text = biscuits_tooltip
+			hidden_tooltip = {
+				set_character_flag = has_biscuits
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22023
+	desc = early_guest_planning_desc
+	picture = GFX_evt_feast
+	is_triggered_only = yes	
+	
+	option = {
+		name = early_guest_planning_biscuits
+		prestige = 25
+		custom_tooltip = {
+			text = biscuits_tooltip
+			hidden_tooltip = {
+				set_character_flag = has_biscuits
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+	}
+	
+	option = {
+		name = invite_extra_guests_leaves
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22005
+	desc = find_physician_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = find_physician_continue
+		character_event = { id = TEA.22015 }
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = find_physician_ignore
+		character_event = { id = TEA.22025 }
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+}
+
+character_event = {
+	id = TEA.22015
+	desc = find_physician_meeting_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = find_physician_meeting_bad
+		character_event = { id = TEA.22115 }
+	}
+	
+	option = {
+		name = find_physician_meeting_medium
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+			NOT = { diplomacy = 14 }
+		}
+		
+		custom_tooltip = {
+			text = path_of_self_tooltip
+		}
+		character_event = { id = TEA.22215 }
+	}
+	
+	option = {
+		name = find_physician_meeting_good
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+			diplomacy = 16
+		}
+		
+		tooltip_info = diplomacy
+		
+		custom_tooltip = {
+			text = path_of_self_tooltip
+		}
+		
+		character_event = { id = TEA.22315 }
+	}
+}
+
+character_event = {
+	id = TEA.22115
+	desc = find_physician_meeting_bad_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+	
+	option = {
+		name = find_physician_meeting_bad
+		custom_tooltip = {
+			text = decreases_tea_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_quality value = 1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22215
+	desc = find_physician_meeting_medium_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+	
+	option = {
+		name = find_physician_meeting_medium_good_option
+		custom_tooltip = {
+			text = ginger_root_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_ginger_root_tea
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22315
+	desc = find_physician_meeting_good_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+	
+	option = {
+		name = find_physician_meeting_medium_good_option
+		custom_tooltip = {
+			text = ginger_root_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_ginger_root_tea
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 2 }
+			}
+		}
+		hidden_tooltip = {
+			random_list = {
+				50 = { }
+				50 = { set_character_flag = physician_visitor }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22025
+	desc = find_physician_market_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = find_physician_market_option
+		wealth = -10
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = improves_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = { 
+				custom_tooltip = {
+					text = decreases_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.22006
+	desc = ask_friends_success_desc
+	picture = GFX_evt_relaxed_ruler
+	is_triggered_only = yes
+
+	option = {
+		name = ask_friends_success_jasmine_tea
+		
+		trigger = {
+			has_character_flag = can_make_jasmine_tea
+		}
+		clr_character_flag = can_make_ginger_root_tea	
+	}
+	
+	option = {
+		name = ask_friends_success_ginger_root_tea
+		
+		trigger = {
+			has_character_flag = can_make_ginger_root_tea
+		}
+		clr_character_flag = can_make_jasmine_tea
+	}
+	#pickle
+}
+
+character_event = {
+	id = TEA.22007
+	desc = ask_friends_fail_desc
+	picture = GFX_evt_bad_news
+	is_triggered_only = yes
+
+	option = {
+		name = ask_friends_fail_option
+	}
+#pickle
+}
+
+#22025
+#GFX_evt_mysterious_forest
+#GFX_evt_market
+#GFX_evt_feast
+#GFX_evt_dancing
