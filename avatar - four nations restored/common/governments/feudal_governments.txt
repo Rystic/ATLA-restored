@@ -39,6 +39,57 @@ feudal_governments = {
 		vassal_limit = -30
 		court_size_modifier = 5
 	}
+
+	avatar_team_government = {
+		preferred_holdings = { }
+		allowed_holdings = { }
+		accepts_liege_governments = {
+			feudal_government
+			feudal_government_earth_kingdom
+			fire_feudal_government
+			fire_imperial_government
+			feudal_government_air_nomad
+			#feudal_government_city
+			feudal_government_temple
+			theocracy_government
+		}
+		free_revoke_on_governments = { }
+		free_revoke_on_tiers = { }
+
+		forced_contract = { }
+
+		frame_suffix = "_avatar"
+		title_prefix = "avatar_"
+
+		potential = {
+			primary_title = {
+				OR = {
+					title = d_avatar
+					title = d_avatar_unrevealed
+				}
+			}
+		}
+
+		color = { 169 169 169 }
+
+		can_build_tribal = no
+		can_build_city = no
+		can_build_castle = no
+		can_build_forts = no
+		can_build_temple = no
+		can_build_hospitals = no
+
+		have_gender_laws = no
+		can_create_kingdoms = no
+		can_create_empires = no
+		can_imprison_without_reason = no
+		can_revoke_without_reason = no
+		dukes_called_kings = no
+		can_usurp_kingdoms_and_empires = no
+		can_grant_kingdoms_and_empires_to_other_government = no
+		can_be_granted_kingdoms_and_empires_by_other_government = no
+		can_inherit = no
+	}
 	
 	pirate_cartel = {
 		preferred_holdings = { CASTLE }
@@ -144,7 +195,7 @@ feudal_governments = {
 			feudal_government
 			#feudal_government_military
 		}
-		frame_suffix = _earth
+		frame_suffix = "_earth"
 		potential = {
 			OR = {
 				culture_group = earth_kingdom_culture
@@ -198,7 +249,7 @@ feudal_governments = {
 			tribal_government
 			desert_tribal_government
 		}
-		frame_suffix = "_chineseimperial"
+		frame_suffix = "_earth"
 		potential = {
 			primary_title = {
 				higher_tier_than = duke
@@ -258,27 +309,28 @@ feudal_governments = {
 			feudal_government_earth_kingdom
 			#feudal_government_military
 		}
-		frame_suffix = _fire
+		frame_suffix = "_fire"
+		title_prefix = "fire_"
 		potential = {
-				AND = {
-				religion_group = fire_religions
+			AND = {
 				culture_group = fire_nation_culture
 				is_patrician = no
 				is_tribal = no
 				is_theocracy = no
-				NOR = {
-						e_fire_nation = { has_law = ze_fire_administration_laws_2 } 
-						primary_title = { has_law = ze_fire_administration_laws_2 }
-						primary_title = { has_law = fire_imperial_administration }
-						e_fire_nation = { has_law = fire_imperial_administration }
+				NOT = {
+					primary_title = {
+						OR = {
+							has_title_flag = GLOBSTATE_imperial_adopted_@THIS
+							has_title_flag = GLOBSTATE_FN_imperial_adopted
+						}
+					}
 				}
 				NOT = { culture = sun_warrior }
-				}
+			}
 			NOT = { culture_group = earth_kingdom_culture }
 			NOT = {	religion_group = air_religions }
 			NOT = { culture_group = water_tribe_culture }
 			NOT = { is_government_potential = order_government }
-			#is_patrician = no
 		}
 		
 		color = { 250 0 0 }
@@ -325,10 +377,11 @@ feudal_governments = {
 			#feudal_government_military
 		}
 		frame_suffix = "_DT"
+		title_prefix = "DT_"
 		potential = {
 			OR = {
-			culture = sun_warrior
-			culture = sandbender
+				culture = sun_warrior
+				culture = sandbender
 			}
 			NOT = {	religion_group = air_religions }
 			NOR = { culture = fire_nation
@@ -390,6 +443,7 @@ feudal_governments = {
 		## Modifiers
 		court_size_modifier = 10
 	}
+	
 	fire_imperial_government = {
 		preferred_holdings = { CASTLE }
 		allowed_holdings = {
@@ -402,7 +456,7 @@ feudal_governments = {
 			TRIBAL
 		}
 		accepts_liege_governments = { # Gets the wrong religion modifier instead
-			feudal_government
+			fire_feudal_government
 			republic_government
 			merchant_republic_government
 		}
@@ -412,30 +466,28 @@ feudal_governments = {
 		frame_suffix = "_fire_imperial"
 		potential = {
 			OR = { 
-				AND = { 
-					NOT = { culture = sun_warrior }
-					is_save_game = no
+				AND = {
 					has_game_started = no
 					culture_group = fire_nation_culture
-					religion_group = fire_religions
-					is_theocracy = no
-					is_tribal = no
-					is_patrician = no
-					
-				}
-				AND = {
-					culture_group = fire_nation_culture
-					religion_group = fire_religions
 					NOT = { culture = sun_warrior }
-					OR = {
-						primary_title = { has_law = ze_fire_administration_laws_2 }
-						e_fire_nation = { has_law = ze_fire_administration_laws_2 }
-						e_fire_nation = { has_law = fire_imperial_administration }
-						primary_title = { has_law = fire_imperial_administration }
-						is_theocracy = no
-						is_tribal = no
-						is_patrician = no
+					NOR = {
+						e_fire_nation = {
+							has_law = ze_fire_administration_laws_2
+							has_law = fire_imperial_administration 
+						}
 					}	
+				}
+				OR = {
+					has_landed_title = e_fire_nation
+					primary_title = {
+						tier >= king
+						has_law = ze_fire_administration_laws_2
+						has_law = fire_imperial_administration
+						holder_scope = {
+							culture_group = fire_nation_culture
+							NOT = { culture = sun_warrior }
+						}
+					}
 				}
 			}
 			is_theocracy = no
