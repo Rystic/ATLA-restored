@@ -47,6 +47,7 @@ narrative_event = {
 	title = choose_self_or_spirit_title
 	desc = choose_self_or_spirit_desc
 	border = GFX_event_narrative_frame_diplomacy
+	picture = GFX_evt_garden
 	is_triggered_only = yes
 	
 	trigger = { 
@@ -727,7 +728,7 @@ character_event = {
 					character_event = { id = TEA.1001 }
 				}
 				
-				200000 = { # Gather tea ingredients
+				100000  = { # Gather tea ingredients
 					modifier = {
 						factor = 0
 						OR = {
@@ -740,18 +741,18 @@ character_event = {
 					character_event = { id = TEA.1011 }
 				}
 				
-				# 20 = { # Host a tea party
-					# modifier = {
-						# factor = 0
-						# NOR = {
-							# has_character_flag = can_make_green_tea
-							# has_character_flag = can_make_white_dragon
-							# has_character_flag = can_make_jasmine_tea
-							# has_character_flag = can_make_ginger_root_tea
-						# }
-					# }				
-					# character_event = { id = TEA.1012 }
-				# }
+				10000 = { # Host a tea party
+					modifier = {
+						factor = 0
+						NOR = {
+							has_character_flag = can_make_green_tea
+							has_character_flag = can_make_white_dragon
+							has_character_flag = can_make_jasmine_tea
+							has_character_flag = can_make_ginger_root_tea
+						}
+					}				
+					character_event = { id = TEA.1012 }
+				}
 				
 				# PATH OF SELF
 				
@@ -1580,6 +1581,33 @@ society_quest_event = {
 		name = ACCEPT
 		clr_character_flag = gathering_tea_ingredients
 		set_quest = quest_gather_tea_ingredients
+	}
+	option = {
+		name = DECLINE
+		custom_tooltip = { text = decline_quest_tooltip }
+
+		add_character_modifier = {
+			name = quest_cooldown_timer
+			hidden = yes
+			days = 1000
+		}
+
+		ai_chance = { factor = 0 }
+	}
+}
+
+#gather tea ingredients
+society_quest_event = {
+	id = TEA.1012
+	desc = quest_host_tea_party_event
+	border = GFX_event_letter_frame_diplomacy
+
+	is_triggered_only = yes
+
+	option = {
+		name = ACCEPT
+		clr_character_flag = hosting_tea_party
+		set_quest = quest_host_tea_party
 	}
 	option = {
 		name = DECLINE
@@ -2459,6 +2487,7 @@ character_event = {
 	
 	option = {
 		set_variable = { which = tea_quality value = 0 }
+		clr_character_flag = found_white_jade_bad
 		clr_character_flag = found_white_jade
 		clr_character_flag = found_badger_spirit
 		clr_character_flag = found_physician
@@ -2474,6 +2503,8 @@ character_event = {
 		
 		clr_character_flag = has_biscuits
 		clr_character_flag = has_extra_guests
+		
+		clr_character_flag = has_fire_flakes
 		
 		clr_character_flag = badger_visitor
 		clr_character_flag = physician_visitor
@@ -2665,6 +2696,7 @@ character_event = {
 					}
 					50 = { 
 						subtract_variable = { which = tea_quality value = 5 }
+						set_character_flag = found_white_jade_bad
 					}
 				}
 			}
@@ -2855,7 +2887,13 @@ character_event = {
 		custom_tooltip = {
 			text = serve_green_tea_tooltip
 		}
-		
+		if = {
+			limit = {
+				has_character_flag = found_white_jade_bad
+			}
+			clr_characer_flag = found_white_jade_bad
+			change_variable = { which = tea_quality value = 5 }
+		}
 		clr_quest = quest_gather_tea_ingredients
 		change_society_currency = 200
 		clr_character_flag = can_make_white_dragon		
@@ -2875,7 +2913,6 @@ character_event = {
 		change_society_currency = 400
 		clr_character_flag = can_make_green_tea
 	}
-	#pickle
 }
 
 character_event = {
@@ -2896,7 +2933,6 @@ character_event = {
 			clr_quest = quest_gather_tea_ingredients
 		}
 	}
-#pickle
 }
 
 #ask friends start
@@ -3412,7 +3448,6 @@ character_event = {
 		change_society_currency = 400
 		clr_character_flag = can_make_jasmine_tea
 	}
-	#pickle
 }
 
 character_event = {
@@ -3436,11 +3471,2117 @@ character_event = {
 			clr_quest = quest_gather_tea_ingredients
 		}
 	}
-#pickle
 }
+
+# THE TEA PARTY
+
+character_event = {
+	id = TEA.30000
+	desc = guests_arrive_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = { which = tea_party_score value = 0 }
+	}
+
+	option = {
+		name = guests_arrive_option_neutral
+		
+		trigger = {
+			NOR = {
+				has_character_flag = tea_chose_self
+				has_character_flag = tea_chose_spirits			
+			}
+		}
+		
+		custom_tooltip = {
+			text = guests_arrive_option_neutral_tooltip
+		}
+		character_event = { id = TEA.30010 days = 3 }
+	}
+	
+	option = {
+		name = guests_arrive_option_self
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+				
+		custom_tooltip = {
+			text = guests_arrive_option_self_tooltip
+		}
+		
+		custom_tooltip = {
+			text = path_of_self_tooltip
+		}		
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30010 days = 3 }
+	}
+
+	option = {
+		name = guests_arrive_option_spirits
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		custom_tooltip = {
+			text = guests_arrive_option_spirits_tooltip
+		}
+		
+		custom_tooltip = {
+			text = path_of_spirits_tooltip
+		}				
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30010 days = 3 }
+	}		
+}
+
+#extra guest check
+character_event = {
+	id = TEA.30010
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		if = {
+			limit = {
+				has_character_flag = has_extra_guests
+			}
+			character_event = { id = TEA.30011 days = 3 }
+		}
+		else = {
+			character_event = { id = TEA.30002 days = 3 }
+		}
+	}
+}
+
+#extra guests arrive
+character_event = {
+	id = TEA.30011
+	desc = extra_guests_event_desc
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = extra_guests_option_low_diplomacy
+		
+		trigger = {
+			NOT = { diplomacy = 12 }
+		}
+		
+		custom_tooltip = {
+			text = extra_guests_option_tooltip
+		}
+		character_event = { id = TEA.30002 days = 3 } # special guest arrives
+	}
+	
+	option = {
+		name = extra_guests_option_high_diplomacy
+		
+		trigger = {
+			diplomacy = 12
+		}
+		
+		custom_tooltip = {
+			text = extra_guests_option_tooltip
+		}
+		
+		prestige = 100
+		
+		tooltip_info = diplomacy
+		
+
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		
+		character_event = { id = TEA.30002 days = 3 } # special guest arrives
+	}
+}
+
+#unexpected guest check
+character_event = {
+	id = TEA.30002
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		if = {
+			limit = {
+				has_character_flag = badger_visitor
+			}
+			character_event = { id = TEA.30012 days = 3 }
+		}
+		else = {
+			if = {
+				limit = {
+					has_character_flag = physician_visitor
+				}
+				character_event = { id = TEA.30022 days = 3 }
+			}
+			else = {
+				character_event = { id = TEA.30003 days = 3 }
+			}
+		}
+	}
+}
+
+#badger visitor
+character_event = {
+	id = TEA.30012
+	desc = special_visitor_badger_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = special_visitor_badger_option
+		
+		custom_tooltip = {
+			text = special_visitor_badger_option_tooltip
+		}
+		character_event = { id = TEA.30003 days = 3 }
+	}
+}
+
+#physician visitor
+character_event = {
+	id = TEA.30012
+	desc = special_visitor_physician_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = special_visitor_physician_option
+		
+		custom_tooltip = {
+			text = special_visitor_physician_option_tooltip
+		}
+		character_event = { id = TEA.30003 days = 3 }
+	}
+}
+
+#pre-tea event check
+character_event = {
+	id = TEA.30003
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		random_list = {
+			1 = { character_event = { id = TEA.30013 days = 3 }}
+			1 = { character_event = { id = TEA.30023 days = 3 }}
+			1 = { character_event = { id = TEA.30033 days = 3 }}
+		}
+	}
+}
+
+#pre-tea event: spicy gossip
+character_event = {
+	id = TEA.30013
+	desc = spicy_gossip_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+	
+		name = spicy_gossip_option_neutral
+	
+		trigger = {
+			NOT = { has_character_flag = tea_chose_self }
+			NOT = { has_character_flag = tea_chose_spirits }
+		}
+		
+		custom_tooltip = {
+			text = spicy_gossip_option_neutral_tooltip
+		}		
+		
+		prestige = -25
+
+		character_event = { id = TEA.30004 days = 3 }
+	}
+	
+	option = {
+		name = spicy_gossip_option_self_1
+	
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = {
+			text = spicy_gossip_option_self_1_tooltip
+		}
+		
+		prestige = -25
+		add_trait = deceitful
+		
+		random_list = {
+			50 = {	
+				modifier = { factor = 1.5 diplomacy = 12 }
+				modifier = { factor = 1.5 diplomacy = 14 }
+				modifier = { factor = 1.5 diplomacy = 16 }
+				modifier = { factor = 1.5 diplomacy = 18 }
+				custom_tooltip = {
+					text = improves_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_party_score value = 1 }
+					}
+				}
+			}
+			75 = {
+				custom_tooltip = {
+					text = decreases_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_party_score value = 1 }
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+	
+	option = {
+		name = spicy_gossip_option_self_2
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = {
+			text = spicy_gossip_option_self_2_tooltip
+		}
+		
+		add_trait = gregarious
+		prestige = 50
+		random_list = {
+			10 = {	
+				modifier = { factor = 1.5 diplomacy = 12 }
+				modifier = { factor = 1.5 diplomacy = 14 }
+				modifier = { factor = 1.5 diplomacy = 16 }
+				modifier = { factor = 1.5 diplomacy = 18 }
+				custom_tooltip = {
+					text = improves_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_party_score value = 1 }
+					}
+				}
+			}
+			90 = {
+			}
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+	
+	option = {
+		name = spicy_gossip_option_spirits_1
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		custom_tooltip = {
+			text = spicy_gossip_option_spirits_1_tooltip
+		}
+		
+		add_trait = trusting
+		piety = 50
+		
+		random_list = {
+			30 = {	
+				modifier = { factor = 1.5 learning = 12 }
+				modifier = { factor = 1.5 learning = 14 }
+				modifier = { factor = 1.5 learning = 16 }
+				modifier = { factor = 1.5 learning = 18 }
+				custom_tooltip = {
+					text = improves_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_party_score value = 1 }
+					}
+				}
+			}
+			90 = {
+			}
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+	
+	option = {
+		name = spicy_gossip_option_spirits_2
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		custom_tooltip = {
+			text = spicy_gossip_option_spirits_2_tooltip
+		}
+		
+		add_trait = kind
+		piety = 100
+		character_event = { id = TEA.30004 days = 3 }
+	}
+}
+
+#pre-tea event: older man brings a date
+character_event = {
+	id = TEA.30023
+	desc = guest_brings_date_start_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = guest_brings_date_start_option_low_diplomacy
+		
+		trigger = {
+			NOT = { diplomacy = 14 }
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_date_start_option_low_diplomacy_tooltip
+		}
+		character_event = { id = TEA.30123 days = 3 }
+	}
+	
+	option = {
+		name = guest_brings_date_start_option_high_diplomacy
+		
+		trigger = {
+			diplomacy = 14
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_date_start_option_high_diplomacy_tooltip
+		}
+		
+		tooltip_info = diplomacy
+		
+		character_event = { id = TEA.30223 days = 3 }
+	}
+	
+	option = {
+		name = guest_brings_date_start_option_low_learning
+		
+		trigger = {
+			NOT = { learning = 14 }
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_date_start_option_low_learning_tooltip
+		}
+		character_event = { id = TEA.30323 days = 3 }
+	}
+	
+	option = {
+		name = guest_brings_date_start_option_high_learning
+		
+		trigger = {
+			learning = 14
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_date_start_option_high_learning_tooltip
+		}
+		
+		tooltip_info = learning
+		
+		character_event = { id = TEA.30423 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30123
+	desc = guest_brings_date_low_diplomacy_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = guest_brings_date_low_diplomacy_option
+		
+		custom_tooltip = {
+			text = guest_brings_date_low_diplomacy_option_tooltip
+		}
+		custom_tooltip = {
+			text = decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30223
+	desc = guest_brings_date_high_diplomacy_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = guest_brings_date_high_diplomacy_option
+		
+		custom_tooltip = {
+			text = guest_brings_date_high_diplomacy_option_tooltip
+		}
+		
+		change_diplomacy = 1
+		prestige = 50
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		
+		character_event = { id = TEA.30004 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30323
+	desc = guest_brings_date_low_learning_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = guest_brings_date_low_learning_option
+		
+		custom_tooltip = {
+			text = guest_brings_date_low_learning_option_tooltip
+		}
+		custom_tooltip = {
+			text = decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30423
+	desc = guest_brings_date_high_learning_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = guest_brings_date_high_learning_option
+		
+		custom_tooltip = {
+			text = guest_brings_date_high_learning_option_tooltip
+		}
+	
+		change_learning = 1
+		prestige = 25
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+}
+
+#pre-tea event: guest brings snacks
+character_event = {
+	id = TEA.30033
+	desc = guest_brings_snack_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	immediate = {
+		set_character_flag = has_fire_flakes
+	}
+	
+	option = {
+		name = guest_brings_snack_no_snacks_option
+		
+		trigger = {
+			NOT = { has_character_flag = has_bacui_berries }
+			NOT = { has_character_flag = has_biscuits }
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_snack_no_snacks_option_tooltip
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+	
+	option = {
+		name = guest_brings_snack_biscuits_option
+		
+		trigger = {
+			has_character_flag = has_biscuits
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_snack_biscuits_option_tooltip
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+	
+	option = {
+		name = guest_brings_snack_berries_option
+		
+		trigger = {
+			has_character_flag = has_bacui_berries
+		}
+		
+		custom_tooltip = {
+			text = guest_brings_snack_berries_option_tooltip
+		}
+		character_event = { id = TEA.30004 days = 3 }
+	}
+}
+
+#snack check
+character_event = {
+	id = TEA.30004
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		if = {
+			limit = { has_character_flag = has_biscuits }
+			if = {
+				limit = { has_character_flag = has_fire_flakes }
+				character_event = { id = TEA.30014 days = 3 }
+			}
+			else = {
+				character_event = { id = TEA.30024 days = 3 }
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = has_bacui_berries }
+			if = {
+				limit = { has_character_flag = has_fire_flakes }
+				character_event = { id = TEA.30014 days = 3 }
+			}
+			else = {
+				character_event = { id = TEA.30034 days = 3 }
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = has_fire_flakes }
+			character_event = { id = TEA.30044 days = 3 }
+		}
+		else = {
+			character_event = { id = TEA.30054 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30014
+	desc = multiple_snacks_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = multiple_snacks_served_option
+		custom_tooltip = {
+			text = snacks_served_tooltip
+		}
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30024
+	desc = biscuits_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = biscuits_served_option_normal
+		
+		trigger = {
+			NOT = { has_character_flag = can_make_ginger_root_tea }
+		}
+		
+		custom_tooltip = {
+			text = snacks_served_tooltip
+		}
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+
+	option = {
+		name = biscuits_served_option_ginger_root
+		
+		trigger = {
+			has_character_flag = can_make_ginger_root_tea
+		}
+		
+		custom_tooltip = {
+			text = snacks_served_tooltip
+		}
+		
+		prestige = 25
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30034
+	desc = berries_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = berries_served_option_normal
+		
+		trigger = {
+			NOT = { has_character_flag = can_make_ginger_root_tea }
+		}
+		
+		custom_tooltip = {
+			text = snacks_served_tooltip
+		}
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+
+	option = {
+		name = berries_served_option_white_dragon
+		
+		trigger = {
+			has_character_flag = can_make_white_dragon
+		}
+		
+		custom_tooltip = {
+			text = snacks_served_tooltip
+		}
+		
+		prestige = 25
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30044
+	desc = fire_flakes_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = fire_flakes_served_option_normal
+		custom_tooltip = {
+			text = snacks_served_tooltip
+		}
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30054
+	desc = no_snacks_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = no_snacks_served_option
+		custom_tooltip = {
+			text = no_snacks_served_tooltip
+		}
+		custom_tooltip = {
+			text = decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30005 days = 3 }
+	}
+}
+
+# Serve the tea!
+character_event = {
+	id = TEA.30005
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_time_announcement_option
+		custom_tooltip = {
+			text = tea_time_announcement_tooltip
+		}
+
+		if = {
+			limit = {
+				has_character_flag = can_make_green_tea
+			}
+			character_event = { id = TEA.30015 days = 3 }
+		}
+		else_if = {
+			limit = {
+				has_character_flag = can_make_white_dragon
+			}
+			character_event = { id = TEA.30025 days = 3 }
+		}
+		else_if = {
+			limit = {
+				has_character_flag = can_make_jasmine_tea
+			}
+			character_event = { id = TEA.30035 days = 3 }
+		}
+		else_if = {
+			limit = {
+				has_character_flag = can_make_ginger_root_tea
+			}
+			character_event = { id = TEA.30045 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30015
+	desc = green_tea_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = green_tea_served_option
+		custom_tooltip = {
+			text = green_tea_served_option_tooltip
+		}
+		if = {
+			limit = {
+				check_variable = { which = tea_quality value = 3 }
+			}
+			character_event = { id = TEA.30115 days = 3 }
+		} else_if = {
+			limit = {
+				check_variable = { which = tea_quality value = 2 }
+			}
+			character_event = { id = TEA.30215 days = 3 }
+		} else = {
+			character_event = { id = TEA.30315 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30115
+	desc = green_tea_served_good_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_good_option
+		custom_tooltip = {
+			text = tea_good_option_tooltip
+		}
+		character_event = { id = TEA.30006 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30215
+	desc = green_tea_served_medium_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_medium_option
+		custom_tooltip = {
+			text = tea_medium_option_tooltip
+		}
+		character_event = { id = TEA.30016 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30315
+	desc = green_tea_served_bad_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_bad_option
+		custom_tooltip = {
+			text = tea_bad_option_tooltip
+		}
+		character_event = { id = TEA.30026 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30025
+	desc = white_dragon_tea_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = white_dragon_tea_served_option
+		custom_tooltip = {
+			text = white_dragon_tea_served_option_tooltip
+		}
+		if = {
+			limit = {
+				check_variable = { which = tea_quality value = 2 }
+				character_event = { id = TEA.30125 days = 3 }
+			}
+		} else = {
+			character_event = { id = TEA.30225 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30125
+	desc = white_dragon_tea_served_good_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_good_option
+		custom_tooltip = {
+			text = tea_good_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 3 }
+			}
+		}
+		character_event = { id = TEA.30006 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30225
+	desc = white_dragon_tea_served_bad_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = white_dragon_tea_option_bad_bad
+		custom_tooltip = {
+			text = white_dragon_tea_option_bad_bad_tooltip
+		}
+		
+		character_event = { id = TEA.30325 days = 3 }
+	}
+	
+	option = {
+		name = white_dragon_tea_option_bad_good
+		custom_tooltip = {
+			text = white_dragon_tea_option_bad_good_tooltip
+		}
+		
+		character_event = { id = TEA.30425 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30325
+	desc = white_dragon_tea_served_bad_bad_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = white_dragon_tea_served_bad_bad_followup_option
+		custom_tooltip = {
+			text = white_dragon_tea_served_bad_bad_followup_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = greatly_decreases_tea_party_quality_tooltip
+		}
+		
+		character_event = { id = TEA.31013 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30425
+	desc = white_dragon_tea_served_bad_good_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = white_dragon_tea_served_bad_good_followup_option
+		custom_tooltip = {
+			text = white_dragon_tea_served_bad_good_followup_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = greatly_decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 3 }
+			}
+		}
+		
+		character_event = { id = TEA.30026 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30035
+	desc = jasmine_tea_served_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = jasmine_tea_served_option
+		custom_tooltip = {
+			text = jasmine_tea_served_option_tooltip
+		}
+		if = {
+			limit = {
+				check_variable = { which = tea_quality value = 3 }
+			}
+			character_event = { id = TEA.30135 days = 3 }
+		} else_if = {
+			limit = {
+				check_variable = { which = tea_quality value >= 2 }
+			}
+			character_event = { id = TEA.30235 days = 3 }
+		} else = {
+			character_event = { id = TEA.30335 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30135
+	desc = jasmine_tea_served_good_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_good_option
+		custom_tooltip = {
+			text = tea_good_option_tooltip
+		}
+		character_event = { id = TEA.30006 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30235
+	desc = jasmine_tea_served_medium_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_medium_option
+		custom_tooltip = {
+			text = tea_medium_option_tooltip
+		}
+		character_event = { id = TEA.30016 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30335
+	desc = jasmine_tea_served_bad_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_bad_option
+		custom_tooltip = {
+			text = tea_bad_option_tooltip
+		}
+		character_event = { id = TEA.30026 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30045
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			has_character_flag = physician_visitor
+		}
+		text = ginger_root_served_with_special_guest_event
+	}
+	
+	desc = {
+		trigger = {
+			NOT = { has_character_flag = physician_visitor }
+		}
+		text = ginger_root_served_without_special_guest_event
+	}
+	
+	option = {
+		name = ginger_root_served_option
+		custom_tooltip = {
+			text = ginger_root__served_option_tooltip
+		}
+		if = {
+			limit = {
+				check_variable = { which = tea_quality value = 3 }
+			}
+			character_event = { id = TEA.30145 days = 3 }
+		} else_if = {
+			limit = {
+				check_variable = { which = tea_quality value = 2 }
+			}
+			character_event = { id = TEA.30245 days = 3 }
+		} else = {
+			character_event = { id = TEA.30345 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30145
+	desc = ginger_root_served_good_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_good_option
+		custom_tooltip = {
+			text = tea_good_option_tooltip
+		}
+		character_event = { id = TEA.30006 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30245
+	desc = ginger_root_served_medium_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_medium_option
+		custom_tooltip = {
+			text = tea_medium_option_tooltip
+		}
+		character_event = { id = TEA.30016 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30345
+	desc = ginger_root_served_bad_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_bad_option
+		custom_tooltip = {
+			text = tea_bad_option_tooltip
+		}
+		character_event = { id = TEA.30026 days = 3 }
+	}
+}
+
+# post-tea evalutation
+character_event = {
+	id = TEA.30006
+	desc = post_tea_good_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_good_option
+		custom_tooltip = {
+			text = post_tea_good_option_tooltip
+		}
+		
+		prestige = 100
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.30007 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30016
+	desc = post_tea_medium_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_medium_option
+		custom_tooltip = {
+			text = post_tea_medium_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30007 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30026
+	desc = post_tea_bad_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_bad_option
+		custom_tooltip = {
+			text = post_tea_bad_option_tooltip
+		}
+		
+		prestige = -50
+		
+		custom_tooltip = {
+			text = decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30007 days = 3 }
+	}
+}
+
+#post-tea determined event (hot spring water/extra guests evaluate)
+character_event = {
+	id = TEA.30007
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		if = {
+			limit = {
+				has_character_flag = has_hotspring_water
+			}
+			character_event = { id = TEA.30017 days = 3 }
+		} else_if = {
+			limit = {
+				has_character_flag = has_extra_guests
+			}
+			character_event = { id = TEA.30027 days = 3 }
+		} else = {
+			character_event = { id = TEA.30008 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30017
+	desc = hot_spring_water_tea_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = hot_spring_water_tea_bad_option
+		
+		custom_tooltip = {
+			text = hot_spring_water_tea_bad_option_tooltip
+		}
+		
+		piety = 25
+		character_event = { id = TEA.30008 days = 3 }
+	}
+	
+	option = {
+		name = hot_spring_water_tea_good_option
+		
+		custom_tooltip = {
+			text = hot_spring_water_tea_good_option_tooltip
+		}
+		
+		piety = 100
+		add_trait = zealous
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+
+		custom_tooltip = {
+			text = path_of_spirits_tooltip
+		}
+		
+		character_event = { id = TEA.30008 days = 3 }
+	}
+}	
+
+
+character_event = {
+	id = TEA.30027
+	desc = extra_guests_evaluation_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = extra_guests_evaluation_good_option
+		trigger = {
+			check_variable = { which = tea_party_score value > 3 }
+		}
+		custom_tooltip = {
+			text = extra_guests_evaluation_tooltip
+		}
+		
+		prestige = 50
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.30008 days = 3 }
+	}
+	
+	option = {
+		name = extra_guests_evaluation_medium_option
+		trigger = {
+			check_variable = { which = tea_party_score value > 1 }
+			NOT = { check_variable = { which = tea_party_score value > 3 } }
+		}
+		custom_tooltip = {
+			text = extra_guests_evaluation_tooltip
+		}
+		
+		prestige = 25
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30008 days = 3 }
+	}
+	
+	option = {
+		name = extra_guests_evaluation_bad_option
+		trigger = {
+			NOT = { check_variable = { which = tea_party_score value > 1 } }
+			NOT = { diplomacy = 16 }
+		}
+		custom_tooltip = {
+			text = extra_guests_evaluation_tooltip
+		}
+		
+		custom_tooltip = {
+			text = decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30008 days = 3 }
+	}
+	
+	option = {
+		name = extra_guests_evaluation_high_diplomacy_option
+		trigger = {
+			NOT = { check_variable = { which = tea_party_score value > 1 } }
+			diplomacy = 16
+		}
+		
+		tooltip_info = diplomacy
+		
+		custom_tooltip = {
+			text = extra_guests_evaluation_tooltip
+		}
+		
+		prestige = 25
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}	
+	}
+	character_event = { id = TEA.30008 days = 3 }
+}
+
+#post-tea determined event (physician/badger)
+character_event = {
+	id = TEA.30008
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		if = {
+			limit = {
+				has_character_flag = badger_visitor
+			}
+			character_event = { id = TEA.30018 days = 3 }
+		} else_if = {
+			limit = {
+				has_character_flag = physician_visitor
+			}
+			character_event = { id = TEA.30028 days = 3 }
+		} else = {
+			character_event = { id = TEA.30009 days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30018
+	desc = badger_plays_pai_sho_events
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = badger_plays_pai_sho_other_challenge_option
+		custom_tooltip = {
+			text = badger_plays_pai_sho_other_challenge_option_tooltip
+		}
+		character_event = { id = TEA.30118 days = 3 }
+	}
+	
+	option = {
+		name = badger_plays_pai_sho_self_challenge_option
+		
+		trigger = {
+			NOT = { learning = 12 }
+		}
+		
+		custom_tooltip = {
+			text = badger_plays_pai_sho_self_challenge_option_tooltip
+		}
+		character_event = { id = TEA.30218 days = 3 }
+	}
+	
+	option = {
+		name = badger_plays_pai_sho_wary_option
+		
+		trigger = {
+			learning = 12
+		}
+		
+		custom_tooltip = {
+			text = badger_plays_pai_sho_wary_option_tooltip
+		}
+		
+		tooltip_info = learning
+		
+		character_event = { id = TEA.30318 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30118
+	desc = badger_plays_pai_sho_other_challenge_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = badger_plays_pai_sho_other_challenge_followup_option
+		custom_tooltip = {
+			text = badger_plays_pai_sho_other_challenge_followup_option_tooltip
+		}		
+		prestige = 200
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30009 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30218
+	desc = badger_plays_pai_sho_self_challenge_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = badger_plays_pai_sho_self_challenge_followup_option
+		custom_tooltip = {
+			text = badger_plays_pai_sho_self_challenge_followup_option_tooltip
+		}		
+		prestige = 50
+		change_learning = 1
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30009 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30318
+	desc = badger_plays_pai_sho_wary_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = badger_plays_pai_sho_wary_followup_option
+		custom_tooltip = {
+			text = badger_plays_pai_sho_wary_followup_option_tooltip
+		}		
+		character_event = { id = TEA.31318 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.31318
+	desc = badger_plays_pai_sho_wary_followup_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = badger_plays_pai_sho_wary_followup_followup_option
+		custom_tooltip = {
+			text = badger_plays_pai_sho_wary_followup_followup_option_tooltip
+		}		
+		prestige = 50
+		change_learning = 1
+		add_trait = paisho
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.30009 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30028
+	desc = doctor_is_waterbender_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = doctor_is_waterbender_culture_option
+		trigger = {
+			OR = {
+				culture = northern_water
+				trait = waterbender
+			}
+		}
+		custom_tooltip = {
+			text = doctor_is_waterbender_culture_option_tooltip
+		}
+		character_event = { id = TEA.30128 days = 3 }
+	}
+	
+	option = {
+		name = doctor_is_waterbender_low_diplomacy_option
+		trigger = {
+			diplomacy = 12
+		}
+		custom_tooltip = {
+			text = doctor_is_waterbender_low_diplomacy_option_tooltip
+		}
+		
+		tooltip_info = diplomacy
+		
+		character_event = { id = TEA.30228 days = 3 }
+	}
+	
+	option = {
+		name = doctor_is_waterbender_low_diplomacy_option
+		trigger = {
+			NOT = { diplomacy = 12 }
+		}
+		custom_tooltip = {
+			text = doctor_is_waterbender_low_diplomacy_option_tooltip
+		}
+		character_event = { id = TEA.30328 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30128
+	desc = doctor_is_waterbender_culture_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = doctor_is_waterbender_culture_follwoup_teach_option
+		trigger = {
+			trait = waterbender
+			has_trait = healer
+		}
+
+		custom_tooltip = {
+			text = doctor_is_waterbender_culture_followup_teach_option_tooltip
+		}
+		tooltip_info = waterbender
+		add_trait = healer
+
+		character_event = { id = TEA.30009 days = 3 }
+	}
+
+	option = {
+		name = doctor_is_waterbender_culture_followup_normal_option
+
+		custom_tooltip = {
+			text = doctor_is_waterbender_culture_followup_normal_option_tooltip
+		}	
+	
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.30009 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30228
+	desc = doctor_is_waterbender_high_diplomacy_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = doctor_is_waterbender_high_diplomacy_followup_option
+
+		custom_tooltip = {
+			text = doctor_is_waterbender_high_diplomacy_followup_option_tooltip
+		}
+		
+		prestige = 100
+		change_diplomacy = 1
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+
+		character_event = { id = TEA.30009 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30228
+	desc = doctor_is_waterbender_low_diplomacy_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = doctor_is_waterbender_low_diplomacy_followup_option
+
+		custom_tooltip = {
+			text = doctor_is_waterbender_low_diplomacy_followup_option_tooltip
+		}
+		
+		prestige = 50
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+
+		character_event = { id = TEA.30009 days = 3 }
+	}
+}
+
+#post-tea event check
+character_event = {
+	id = TEA.30009
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		random_list = {
+			1 = { character_event = { id = TEA.30019 days = 3 }}
+			1 = { character_event = { id = TEA.30029 days = 3 }}
+			1 = { character_event = { id = TEA.30039 days = 3 }}
+		}
+	}
+}
+
+character_event = {
+	id = TEA.30019
+	desc = post_tea_pai_sho_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_pai_sho_tired_option
+
+		trigger = {
+			NOT = { diplomacy = 12 }
+		}
+		
+		prestige = -25
+
+		custom_tooltip = {
+			text = post_tea_pai_sho_tired_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = decreases_tea_party_quality_tooltip
+			hidden_tooltip = {
+				subtract_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_pai_sho_self_option
+
+		trigger = {
+			diplomacy = 12
+		}
+		
+		tooltip_info = diplomacy
+
+		custom_tooltip = {
+			text = post_tea_pai_sho_self_option_tooltip
+		}		
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		
+		character_event = { id = TEA.31010 days = 3 }
+	}
+
+	option = {
+		name = post_tea_pai_sho_badger_option
+
+		trigger = {
+			has_character_flag = badger_visitor
+		}
+
+		custom_tooltip = {
+			text = post_tea_pai_sho_badger_option_tooltip
+		}		
+		character_event = { id = TEA.30119 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30119
+	desc = post_tea_pai_sho_badger_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_pai_sho_badger_followup_option
+		
+		custom_tooltip = {
+			text = post_tea_pai_sho_badger_followup_option_tooltip
+		}
+		
+		gold = 100
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30029
+	desc = post_tea_guest_asleep_in_bed_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+
+	option = {
+		name = post_tea_guest_asleep_in_bed_no_extra_guests_option
+		
+		trigger = {
+			NOT = { has_character_flag = has_extra_guests }
+		}
+		
+		custom_tooltip = {
+			text = post_tea_guest_asleep_in_bed_no_extra_guests_option_tooltip
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_guest_asleep_in_bed_extra_guests_option
+		
+		trigger = {
+			has_character_flag = has_extra_guests
+		}
+		
+		custom_tooltip = {
+			text = post_tea_guest_asleep_in_bed_extra_guests_tooltip
+		}
+		character_event = { id = TEA.30129 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_guest_asleep_in_bed_self_option
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = {
+			text = post_tea_guest_asleep_in_bed_self_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = path_of_self_tooltip
+		}
+		
+		add_trait = charitable
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_guest_asleep_in_bed_spirit_option
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = {
+			text = post_tea_guest_asleep_in_bed_spirit_option_tooltip
+		}
+		
+		custom_tooltip = {
+			text = path_of_spirit_tooltip
+		}
+		
+		add_trait = kind
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		
+		character_event = { id = TEA.31010 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30129
+	desc = post_tea_guest_asleep_in_bed_extra_guests_followup_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_guest_asleep_in_bed_extra_guests_followup_option
+		custom_tooltip = {
+			text = post_tea_guest_asleep_in_bed_extra_guests_followup_option_tooltip
+		}
+		add_trait = temperate
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		
+		character_event = { id = TEA.31010 days = 3 }
+	}
+}
+
+character_event = {
+	id = TEA.30039
+	desc = post_tea_play_instruments_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = post_tea_play_instruments_normal_option
+		custom_tooltip = {
+			text = post_tea_play_instruments_tooltip
+		}
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_play_instruments_insane_option
+		
+		trigger = {
+			trait = insane
+		}
+		
+		custom_tooltip = {
+			text = post_tea_play_instruments_tooltip
+		}
+		
+		tooltip_info = insane
+		
+		random_list = {
+			50 = {
+				custom_tooltip = {
+					text = greatly_improves_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_party_score value = 2 }
+					}
+				}
+			}
+			50 = {
+				custom_tooltip = {
+					text = decreases_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_party_score value = 1 }
+					}
+				}
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_play_instruments_depressed_option
+		custom_tooltip = {
+			text = post_tea_play_instruments_tooltip
+		}
+		
+		add_trait = depressed
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 2 }
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_play_instruments_self_option
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		custom_tooltip = {
+			text = post_tea_play_instruments_tooltip
+		}
+		
+		custom_tooltip = {
+			text = path_of_self_tooltip
+		}
+		
+		prestige = 50
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+	
+	option = {
+		name = post_tea_play_instruments_spirits_option
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+		}
+		
+		custom_tooltip = {
+			text = post_tea_play_instruments_tooltip
+		}
+		
+		custom_tooltip = {
+			text = path_of_spirits_tooltip
+		}
+		
+		piety = 50
+		
+		custom_tooltip = {
+			text = improves_tea_party_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_party_score value = 1 }
+			}
+		}
+		character_event = { id = TEA.31010 days = 3 }
+	}
+}
+
+# final evaluation
+character_event = {
+	id = TEA.31010
+	hide_window = yes
+	is_triggered_only = yes
+	option = {
+		if = {
+			limit = {
+				check_variable = { which = tea_party_score value > 4 }
+			}
+			character_event = { id = TEA.31011 days = 3 }
+		} else_if = {
+			limit = {
+				check_variable = { which = tea_party_score value > 2 }
+			}
+			character_event = { id = TEA.31012 days = 3 }
+		} else = {
+			character_event = { id = TEA.31013 days = 3 }
+		}
+	}
+}
+
+
+character_event = {
+	id = TEA.31011
+	desc = tea_evaluation_good_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_evaluation_good_option
+		random_society_member = {
+			limit = {
+				society_member_of = tea_enthusiasts		
+				ai = yes
+			}
+			add_friend = ROOT
+		}
+		random_society_member = {
+			limit = {
+				society_member_of = tea_enthusiasts
+				ai = yes
+			}
+			add_friend = ROOT
+		}
+		random_society_member = {
+			limit = {
+				society_member_of = tea_enthusiasts		
+				ai = yes
+			}
+			add_friend = ROOT
+		}	
+		change_society_currency = 1000
+		clr_quest = quest_host_tea_party
+		character_event = { id = TEA.20001 }
+	}
+}
+
+character_event = {
+	id = TEA.31012
+	desc = tea_evaluation_medium_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_evaluation_medium_option
+		random_society_member = {
+			limit = {
+				society_member_of = tea_enthusiasts		
+				ai = yes
+			}
+			add_friend = ROOT
+		}	
+		change_society_currency = 500
+		clr_quest = quest_host_tea_party
+		character_event = { id = TEA.20001 }
+	}
+}
+
+character_event = {
+	id = TEA.31013
+	desc = tea_evaluation_bad_event
+	picture = GFX_evt_feast
+	is_triggered_only = yes
+	
+	option = {
+		name = tea_evaluation_bad_option
+		change_society_currency = 100
+		clr_quest = quest_host_tea_party
+		character_event = { id = TEA.20001 }
+	}
+}
+
+
 
 #22025
 #GFX_evt_mysterious_forest
 #GFX_evt_market
 #GFX_evt_feast
-#GFX_evt_dancing
+#GFX_evt_dancing 0-2 bad, 2-5 medium, 6+ is good
+#tooltip_info = diplomacy
