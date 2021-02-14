@@ -79,6 +79,7 @@ character_event = {
 	id = TEA.10
 	desc = tea_remove_envious_and_wroth_event
 	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_relaxed_ruler
 
 	is_in_society = yes
 	only_capable = yes
@@ -129,6 +130,7 @@ character_event = {
 	id = TEA.11
 	desc = tea_remove_stressed
 	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_relaxed_ruler
 
 	is_in_society = yes
 	only_capable = yes
@@ -163,39 +165,105 @@ character_event = {
 
 character_event = {
 	id = TEA.12
-	desc = tea_add_diplomacy
+	desc = tea_way_of_self_boon_event
 	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_evt_relaxed_ruler
 
 	is_in_society = yes
 	only_capable = yes
 	
 	trigger = {
 		society_member_of = tea_enthusiasts
-		NOT = { diplomacy = 16 }
+		has_character_flag = tea_chose_self
 	}
+	picture = GFX_evt_relaxed_ruler
 	
 	mean_time_to_happen = {
 		months = 1000
 		
 		modifier = {
-			factor = 0.75
-			NOT = { diplomacy = 12 }
-		}
-		modifier = {
-			factor = 0.75
-			NOT = { diplomacy = 14 }
-		}
-		modifier = {
-			factor = 0.75
+			factor = 0.50
 			age = 50
 		}
 	}
 	
 	option = {
-		name = tea_add_diplomacy_option
-		change_diplomacy = 1
+		name = tea_way_of_self_boon_option_diplomacy
+		random_list = {
+			75 = {}
+			25 = { change_diplomacy = 1} 
+		}
 	}
+	
+	option = {
+		name = tea_way_of_self_boon_option_gossip
+		trigger = {
+			NOT = { trait = gregarious }
+		}
+		add_trait = gregarious
+	}
+	
+	option = {
+		name = tea_way_of_self_boon_option_friend
+		random_society_member = {
+			limit = {
+				society_member_of = tea_enthusiasts		
+				ai = yes
+			}
+			add_friend = ROOT
+		}	
+	}	
 }
+
+character_event = {
+	id = TEA.13
+	desc = tea_way_of_spirits_boon_event
+	border = GFX_event_normal_frame_religion
+	picture = GFX_evt_relaxed_ruler
+
+	is_in_society = yes
+	only_capable = yes
+	
+	trigger = {
+		society_member_of = tea_enthusiasts
+		has_character_flag = tea_chose_spirits
+	}
+	picture = GFX_evt_relaxed_ruler
+	
+	mean_time_to_happen = {
+		months = 1000
+		
+		modifier = {
+			factor = 0.50
+			age = 50
+		}
+	}
+	
+	option = {
+		name = tea_way_of_spirits_boon_option_learning
+		random_list = {
+			75 = {}
+			25 = { change_learning = 1} 
+		}
+	}
+	
+	option = {
+		name = tea_way_of_spirits_boon_option_books
+		trigger = {
+			NOT = { trait = gregarious }
+		}
+		add_trait = erudite
+	}
+	
+	option = {
+		name = tea_way_of_spirits_boon_option_herbal
+		add_character_modifier = {
+			name = had_herbal_tea
+			days = 1825
+		}	
+	}	
+}
+
 #100 -> DECISION EVENTS
 #Share Tea
 letter_event = {
