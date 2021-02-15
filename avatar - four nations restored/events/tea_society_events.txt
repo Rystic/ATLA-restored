@@ -795,7 +795,7 @@ character_event = {
 					character_event = { id = TEA.1001 }
 				}
 				
-				30  = { # Gather tea ingredients
+				30 = { # Gather tea ingredients
 					modifier = {
 						factor = 0
 						OR = {
@@ -2626,10 +2626,20 @@ character_event = {
 		else = {
 			subtract_variable = { which = local_remaining_events value = 1 }
 			random_list = {
-				30 = { 
+				10 = { 
 					modifier = { factor = 1.5 NOT = { learning = 10 } }
 					modifier = { factor = 0.5 learning = 12 }
 					character_event = { id = TEA.21002 days = 3 }
+				}
+				10 = { 
+					modifier = { factor = 1.5 NOT = { learning = 10 } }
+					modifier = { factor = 0.5 learning = 12 }
+					character_event = { id = TEA.21008 days = 3 }
+				}
+				10 = { 
+					modifier = { factor = 1.5 NOT = { learning = 10 } }
+					modifier = { factor = 0.5 learning = 12 }
+					character_event = { id = TEA.21009 days = 3 }
 				}
 				20 = { 
 					modifier = { factor = 0.5 learning = 14 }
@@ -2886,7 +2896,7 @@ character_event = {
 		}
 		
 		custom_tooltip = {
-			text = improves_tea_quality_tooltip
+			text = greatly_improves_tea_quality_tooltip
 			hidden_tooltip = {
 				change_variable = { which = tea_quality value = 6 }
 			}
@@ -2921,9 +2931,9 @@ character_event = {
 		}		
 		
 		custom_tooltip = {
-			text = improves_tea_quality_tooltip
+			text = greatly_improves_tea_quality_tooltip
 			hidden_tooltip = {
-				change_variable = { which = tea_quality value = 1 }
+				change_variable = { which = tea_quality value = 2 }
 			}
 		}
 	}
@@ -3004,6 +3014,144 @@ character_event = {
 	}
 }
 
+# hidden grove
+character_event = {
+	id = TEA.21008
+	desc = hidden_grove_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = hidden_grove_run
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = green_tea_random_list_tooltip
+					hidden_tooltip = {
+						set_character_flag = can_make_green_tea
+					}
+				}			
+			}
+			50 = { }
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = hidden_grove_berries
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = berries_random_list_tooltip
+					hidden_tooltip = {
+						set_character_flag = has_bacui_berries
+					}
+				}			
+			}
+			50 = { }
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = hidden_grove_spirits
+		
+		custom_tooltip = {
+			text = path_of_spirits_tooltip
+		}
+
+		trigger = {
+			has_character_flag = tea_chose_spirits
+			piety = 150
+		}
+		
+		piety = -150
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 2 }
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.21009
+	desc = sickly_bush_desc
+	picture = GFX_evt_mysterious_forest
+	is_triggered_only = yes
+
+	option = {
+		name = sickly_bush_option_leaves
+		custom_tooltip = {
+			text = green_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_green_tea
+			}
+		}
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = decreases_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_quality value = 1 }
+					}
+				}			
+			}
+			50 = { }
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = sickly_bush_option_quality
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = improves_tea_party_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_quality value = 1 }
+					}
+				}			
+			}
+			50 = { }
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+	
+	option = {
+		name = sickly_bush_option_spirits
+		
+		custom_tooltip = {
+			text = path_of_spirits_tooltip
+		}
+		
+		trigger = {
+			has_character_flag = tea_chose_spirits
+			piety = 100
+		}
+		
+		piety = -100
+
+		custom_tooltip = {
+			text = green_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_green_tea
+			}
+		}
+		
+		custom_tooltip = {
+			text = improves_tea_quality_tooltip
+			hidden_tooltip = {
+				change_variable = { which = tea_quality value = 1 }
+			}
+		}
+		character_event = { id = TEA.21001 days = 7 }
+	}
+}
+
 #ask friends start
 character_event = {
 	id = TEA.22000
@@ -3050,10 +3198,20 @@ character_event = {
 		else = {
 			subtract_variable = { which = local_remaining_events value = 1 }
 			random_list = {
-				30 = {
+				10 = {
 					modifier = { factor = 2.0 has_character_flag = tea_chose_spirits}
 					modifier = { factor = 1.25 NOT = {diplomacy = 10 } }
 					character_event = { id = TEA.22002 days = 3 }
+				}
+				10 = {
+					modifier = { factor = 2.0 has_character_flag = tea_chose_spirits}
+					modifier = { factor = 1.25 NOT = {diplomacy = 10 } }
+					character_event = { id = TEA.22008 days = 3 }
+				}
+				10 = {
+					modifier = { factor = 2.0 has_character_flag = tea_chose_spirits}
+					modifier = { factor = 1.25 NOT = {diplomacy = 10 } }
+					character_event = { id = TEA.22009 days = 3 }
 				}
 				20 = {
 					modifier = { factor = 0.5 NOT = {diplomacy = 10 } }
@@ -3542,6 +3700,194 @@ character_event = {
 		hidden_tooltip = {
 			clr_quest = quest_gather_tea_ingredients
 		}
+	}
+}
+
+character_event = {
+	id = TEA.22008
+	desc = beg_for_leaves_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = beg_for_leaves_option_bad
+		prestige = -100
+		
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+		
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = decreases_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = {}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = beg_for_leaves_option_high_diplomacy
+		
+		trigger = {
+			diplomacy = 14
+		}
+		
+		tooltip_info = diplomacy
+
+		prestige = -25
+
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = improves_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = {}
+		}
+
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = beg_for_leaves_option_self
+		
+		trigger = {
+			has_character_flag = tea_chose_self
+		}
+		
+		prestige = -25
+
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+		custom_tooltip = {
+			text = improves_tea_quality_random_list_tooltip
+			hidden_tooltip = {
+			change_variable = { which = tea_quality value = 1 }
+			}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = beg_for_leaves_option_ignore
+		
+		custom_tooltip = {
+			text = search_for_leaves_elsewhere_tooltip
+		}
+		
+		character_event = { id = TEA.22001 days = 7 }
+	}
+}
+
+character_event = {
+	id = TEA.22009
+	desc = buying_tea_leaves_desc
+	picture = GFX_evt_market
+	is_triggered_only = yes
+
+	option = {
+		name = buying_tea_leaves_option_high
+		gold = -200
+		
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+		
+		custom_tooltip = {
+			text = greatly_improves_tea_quality_random_list_tooltip
+			hidden_tooltip = {
+			change_variable = { which = tea_quality value = 2 }
+			}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = buying_tea_leaves_option_middle
+		
+		gold = -100
+
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = improves_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						change_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = {}
+		}
+
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = buying_tea_leaves_option_low
+		prestige = -100
+		
+		custom_tooltip = {
+			text = jasmine_tea_tooltip
+			hidden_tooltip = {
+				set_character_flag = can_make_jasmine_tea
+			}
+		}
+		
+		random_list = {
+			50 = { 
+				custom_tooltip = {
+					text = decreases_tea_quality_random_list_tooltip
+					hidden_tooltip = {
+						subtract_variable = { which = tea_quality value = 1 }
+					}
+				}
+			}
+			50 = {}
+		}
+		character_event = { id = TEA.22001 days = 7 }
+	}
+	
+	option = {
+		name = buying_tea_leaves_option_ignore
+		
+		custom_tooltip = {
+			text = search_for_leaves_elsewhere_tooltip
+		}
+		
+		character_event = { id = TEA.22001 days = 7 }
 	}
 }
 
