@@ -7,6 +7,7 @@
 # Elder Council = Air Nomads
 ### Earth Kingdom
 # Five-Seven-Fiver = Five-Seven-Fiver
+# The Sand Sailer Racers = Sandbenders
 ### Water Tribe
 # Enlightend = Vautuism
 ### OTHER
@@ -2197,3 +2198,213 @@ the_white_lotus = { # The White Lotus
 		}
 	}
 }
+#The Sand Sailer Racers
+sand_sailer_racers = {
+	primary_attribute = martial
+	society_ranks_gfx = generic_ranks
+	opinion_to_other_members = -10
+	opinion_per_rank_above = +10
+	society_rank_up_decision = request_to_rank_up_within_society
+
+	is_secret = no
+	criminal = no
+	is_religious = no
+	devil_worshipper = no
+	society_influence = no
+	non_interference = { 
+		always = no
+	}
+
+	active = {
+		always = yes
+	}
+
+	indestructible = yes
+
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = {
+					society = sand_sailer_racers
+					rank = 1
+				}
+			}
+		}
+		hidden_trigger = {NOT = { has_character_flag = society_join_block }}
+		NOT = { trait = incapable }
+		age = 16
+		NOT = { age > 45}
+		culture = sandbender
+		trait = earthbender
+		trait = sandbender
+	}
+
+	show_society = { #society will appear in the list if these are met
+		age = 16
+		NOT = { age > 45}
+		culture = sandbender
+		trait = earthbender			#To tease people into introducing bending into their family genes :)
+		trait = sandbender
+	}
+
+	potential = { #will kick from society if these are no longer met
+		age = 16
+		NOT = { age > 45 }
+		culture = sandbender
+		trait = earthbender
+		trait = sandbender
+	}
+
+	society_rank = {
+		level = 1
+		limit = 15
+		startup_limit = 15
+		modifier = {
+         martial = 1
+		 health = 0.5
+		}
+		# decisions = {
+			# solo_ptp
+		# }
+	}
+
+	society_rank = {
+		level = 2
+		limit = 10
+		startup_limit = 8
+		modifier = {
+			martial = 2
+			health = 1
+		}
+		# decisions = {
+			# exhibition_race_w_friend
+		# }
+	}
+
+	society_rank = {
+		level = 3
+		limit = 5
+		startup_limit = 3
+		modifier = {
+			martial = 3
+			health = 1
+			combat_rating = 5
+		}
+		# decisions = {
+			# compete_in_race
+		# }
+	}
+
+	society_rank = {
+		level = 4
+		limit = 2
+		startup_limit = 1
+		modifier = {
+			martial = 4
+			health = 1
+			combat_rating = 10
+		}
+		# decisions = {
+			# championship_race
+			# duel_race
+		# }
+	}
+
+	plots = {
+	}
+
+	monthly_currency_gain = {
+		name = sand_sailer_racers_currency
+		per_attribute = {
+    		name = martial
+    		value = 0.5
+    	}
+
+		has_trait = { #BASED on traits
+			value = 1
+			trait = strong
+		}
+		has_trait = {
+			value = -1
+			trait = weak
+		}
+		has_trait = {
+			trait = incompetent_bender
+			value = 1
+		}
+		has_trait = {
+			trait = competent_bender
+			value = 2
+		}
+		has_trait = {
+			trait = powerful_bender
+			value = 3
+		}
+		has_trait = {
+			trait = master_bender
+			value = 5
+		}
+		has_trait = {
+			trait = legendary_bender
+			value = 4
+		}
+
+		society_rank = { #based on the rank
+			rank = 4
+			value = 10
+		}
+
+	}
+
+	member_score_per_attribute = 3 #scores, mostly about who will be the bext leader
+	member_score_per_rank = 100
+
+	member_score = {
+		value = 10
+
+		modifier = {
+			factor = 3
+			trait = strong
+		}
+		modifier = {
+			factor = -3
+			trait = weak
+		}
+		modifier = {
+			factor = 2
+			trait = competent_bender
+		}
+		modifier = {
+			factor = 3
+			trait = powerful_bender
+		}
+		modifier = {
+			factor = 4
+			trait = master_bender
+		}
+		modifier = {
+			factor = 4
+			trait = legendary_bender
+		}
+		modifier = {
+			factor = 2
+			martial = 16
+		}
+	}
+
+	startup_populate = { #trigger for who can be  the start-up population
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			is_in_society = no
+			NOT = { trait = incapable }
+			age = 16
+			NOT = { age > 35}
+			culture = sandbender
+			trait = earthbender
+			trait = sandbender
+		}
+	}
+}
+
