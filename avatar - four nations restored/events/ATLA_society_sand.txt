@@ -142,7 +142,7 @@ character_event = {
     	random_list = {
 			25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1001 days = 7 } } } #will send the quest to the quest_collaborator, which will then offer it back to you
 
-			#25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1002 days = 7 } } }
+			25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1002 days = 7 } } }
 
 			#25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1003 days = 7 } } }
 
@@ -277,7 +277,7 @@ character_event = {  #completion is sent to grandmaster---Final events of all qu
 	}
 }
 
-character_event = {  #letter is sent to the player, also the completion hub for all quests
+character_event = {   #the completion hub for all quests
 	id = SANDR.1012
 	is_triggered_only = yes
 	hide_window = yes
@@ -294,7 +294,7 @@ character_event = {  #letter is sent to the player, also the completion hub for 
 			limit = {
 				FROM = {has_quest = sand_quest_sailer}
 			}
-			FROM = {letter_event = {id = SANDR.1031}}
+			ROOT = { character_event = {id = SANDR.1031} }
 		}
 		# if = {
 			# limit = {
@@ -757,37 +757,156 @@ society_quest_event = {  #Sailer Maintain quest proposal letter
 	}
 }
 
-letter_event = {   #Completion letter for maintain sand sailer quest
+character_event = { #mission completion hub
 	id = SANDR.1031
-	desc = EVTDESC_SANDR_1031
-	#picture =
-	border = GFX_event_letter_frame_war
-
 	is_triggered_only = yes
-
-	trigger = { has_quest = sand_quest_sailer }
-
+	hide_window = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				FROMFROM = {
+					OR = {
+						has_character_flag = WOOD
+						has_character_flag = SAIL
+					}
+				}
+			}
+			FROMFROM = {letter_event = { id = SANDR.1032 days = 2 }}
+		}
+		if = {
+			limit = {
+				FROMFROM = {
+					has_character_flag = ROPE
+				}
+			}
+			FROMFROM = {letter_event = { id = SANDR.1033 days = 2 }}
+		}
+		if = {
+			limit = {
+				FROMFROM = {
+					has_character_flag = COMPASS
+				}
+			}
+			FROMFROM = {letter_event = { id = SANDR.1034 days = 2 }}
+		}
+	}
+}
+letter_event = { #completion letter for wood/sail
+	id = SANDR.1032
+	desc = EVTDESC_SANDR.1032
+	border = GFX_event_letter_frame_war
+	is_triggered_only = yes
+	
+	trigger = {
+	}
 	option = {
-		name = EVTOPTA_SANDR_1031
+		name = EVTOPTA_SANDR.1032
 		clr_quest = sand_quest_sailer
 		add_society_currency_minor_effect = yes
+		clr_character_flag = WOOD
+		clr_character_flag = SAIL
 	}
 }
 
-letter_event = {   #FAILURE LETTER for maintain sand sailer quest
-	id = SANDR.1032
-	desc = EVTDESC_SANDR.1032
-	border = GFX_event_normal_frame_war
+letter_event = { # comp letter for rope
+	id = SANDR.1033
+	desc = EVTDESC_SANDR.1033
+	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
-
-	trigger = { has_quest = sand_quest_sailer }
-
+	
+	trigger = {
+	}
 	option = {
-	name = EVTOPTA_SANDR.1032
-		if = {
-			limit = { has_quest = sand_quest_sailer }
-		clr_quest = { id = sand_quest_sailer failure = yes}
+		name = EVTOPTA_SANDR.1033
+		clr_quest = sand_quest_sailer
+		add_society_currency_minor_effect = yes
+		clr_character_flag = ROPE
+	}
+}
+
+letter_event = { # comp letter for compass
+	id = SANDR.1034
+	desc = EVTDESC_SANDR.1034
+	border = GFX_event_letter_frame_war
+	is_triggered_only = yes
+	
+	trigger = {
+	}
+	option = {
+		name = EVTOPTA_SANDR.1034
+		clr_quest = sand_quest_sailer
+		add_society_currency_minor_effect = yes
+		clr_character_flag = COMPASS
+	}
+}
+character_event = { #grandmaster ping event for failures
+	id = SANDR.1135
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		random_society_member = {
+			limit = {
+				same_society_as = ROOT
+				is_society_grandmaster = yes
+			}
+			character_event = {
+				id = SANDR.1136
+			}
 		}
+	}
+}
+character_event = {
+	id = SANDR.1136
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				FROM = {
+					OR = {
+						has_character_flag = WOOD
+						has_character_flag = SAIL
+					}
+				}
+			}
+			FROM = {letter_event = { id = SANDR.1137 days = 2 }}
+		}
+		if = {
+			limit = {
+				FROM = {
+					has_character_flag = COMPASS
+				}
+			}
+			FROM = {letter_event = { id = SANDR.1 days = 2 }}
+		}
+	}
+}
+letter_event = { #wood/sail failure
+	id = SANDR.1137
+	desc = EVTDESC_SANDR.1137
+	border = GFX_event_letter_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1137
+		clr_quest = { id = sand_quest_sailer failure = yes }
+		clr_character_flag = WOOD
+		clr_character_flag = SAIL
+	}
+}
+letter_event = {
+	id = SANDR.1138
+	desc = EVTDESC_SANDR.1138
+	border = GFX_event_letter_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1138
+		clr_quest = { id = sand_quest_sailer failure = yes }
+		clr_character_flag = COMPASS
 	}
 }
 
@@ -808,14 +927,14 @@ character_event = {  #Very Beginning of maintain sailer quest line/choose your p
 			set_character_flag = WOOD
 		}
 	}
-	# option = {
-		# name = EVTOPTB_SANDR.1035
-		# custom_tooltip = {
-			# text = ROPE_CHAIN
-			# character_event = { id = SANDR. days = 5 }   #Replace- rigging chain
-			# # set_character_flag = ROPE
-		# }
-	# }
+	option = {
+		name = EVTOPTB_SANDR.1035
+		custom_tooltip = {
+			text = ROPE_CHAIN
+			character_event = { id = SANDR.1056 days = 5 }   #Replace- rigging chain
+			set_character_flag = ROPE
+		}
+	}
 	# option = {
 		# name = EVTOPTC_SANDR.1035
 		# custom_tooltip = {
@@ -1694,7 +1813,6 @@ character_event = {  #fires after completing all challenges
 		clr_character_flag = did_rock_canyon
 		clr_character_flag = did_sand_stretch
 		clr_character_flag = did_razor_rock_stretch
-		clr_character_flag = WOOD
 		clr_character_flag = has_expensive_frame
 		clr_character_flag = has_pricey_frame
 		clr_character_flag = has_cheap_frame
@@ -1702,7 +1820,7 @@ character_event = {  #fires after completing all challenges
 		clr_character_flag = sand_stretch
 		clr_character_flag = razor_rock_stretch
 		clr_character_flag = wood_test_run
-		character_event = { id = SANDR.1031 days = 3 }
+		character_event = { id = SANDR.1011 days = 3 }
 	}
 }
 
@@ -1712,10 +1830,10 @@ character_event = {  #character goes to local village
 	picture = GFX_evt_market_byzantine
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
-	
+
 	trigger = {
 	}
-	
+
 	option = { #moderate frame
 		name = EVTOPTA_SANDR.1054
 		wealth = -30
@@ -1757,18 +1875,17 @@ character_event = {  #character goes to local village
 character_event = { #Challenge failure event
 	id = SANDR.1055
 	desc = EVTDESC_SANDR.1055
-	#picture = 
+	#picture =
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
-	
+
 	trigger = {
 	}
-	
+
 	immediate = {
 		clr_character_flag = did_rock_canyon
 		clr_character_flag = did_sand_stretch
 		clr_character_flag = did_razor_rock_stretch
-		clr_character_flag = WOOD
 		clr_character_flag = has_expensive_frame
 		clr_character_flag = has_pricey_frame
 		clr_character_flag = has_cheap_frame
@@ -1779,6 +1896,81 @@ character_event = { #Challenge failure event
 	}
 	option = {
 		name = EVTOPTA_SANDR.1055
-		character_event = { id = SANDR.1032 days = 4 }
+		character_event = { id = SANDR.1135 days = 4 }
 	}
 }
+
+character_event = {  #start of rope rigging quest chain
+	id = SANDR.1056
+	desc = EVTDESC_SANDR.1056
+	#picture =
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	trigger = {
+		has_character_flag = ROPE
+	}
+	option = {  #track down trade caravan
+		name = EVTOPTA_SANDR.1056
+		character_event = { id = SANDR.1057 days = 2 }
+	}
+	option = {  #contact splinter Sand Sailers
+		name = EVTOPTB_SANDR.1056
+		custom_tooltip = {
+			text = contact
+			character_event = { id = SANDR. days = 3 }
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1057
+	desc = EVTDESC_SANDR.1057
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	trigger = {
+	}
+	option = {
+		name = EVTOPTA_SANDR.1057
+		hidden_tooltip = {
+			random_list = {
+				75 = {
+					character_event = { id = SANDR.1058 days = 5 }
+				}
+				25 = {
+					character_event = { id = SANDR. days = 5 }
+				}
+			}
+		}
+	}
+}
+
+character_event = { #character finds in tact caravan, can buy rope then and there or ride along and get it for free.
+	id = SANDR.1058
+	desc = EVTDESC_SANDR.1058
+	#picture = 
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes 
+	
+	trigger = {
+	}
+	
+	option = {
+		character_event = {id = SANDR.1059 days = 1 }
+	}
+	option = {
+		character_event = { id = SANDR. days = 1 }
+	}
+}
+
+# character_event = {
+	# id = SANDR.1059
+	# desc = EVTDESC_SANDR.1058
+	# #picture = 
+	# border = GFX_event_normal_frame_diplomacy
+	# is_triggered_only = yes
+	
+	# immediate = {
+		
