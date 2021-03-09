@@ -319,6 +319,7 @@ letter_event = {   #Completion letter for sand sailer practice
 		clr_quest = sand_quest_race_training
 		hidden_tooltip = {
 			remove_trait = stressed
+			remove_trait = travelling
 			clr_character_flag = good_manuever
 		}
 		add_society_currency_minor_effect = yes
@@ -360,6 +361,7 @@ character_event = {    #Very Beginning of race training chain
 		hidden_tooltip = {
 			character_event = { id = SANDR.1022 months = 1 } # Next stage in quest
 		}
+		add_trait = travelling
 	}
 }
 
@@ -761,7 +763,7 @@ character_event = { #mission completion hub
 	id = SANDR.1031
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	immediate = {
 		if = {
 			limit = {
@@ -797,7 +799,7 @@ letter_event = { #completion letter for wood/sail
 	desc = EVTDESC_SANDR.1032
 	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
-	
+
 	trigger = {
 	}
 	option = {
@@ -806,6 +808,7 @@ letter_event = { #completion letter for wood/sail
 		add_society_currency_minor_effect = yes
 		clr_character_flag = WOOD
 		clr_character_flag = SAIL
+		remove_trait = travelling
 	}
 }
 
@@ -814,7 +817,7 @@ letter_event = { # comp letter for rope
 	desc = EVTDESC_SANDR.1033
 	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
-	
+
 	trigger = {
 	}
 	option = {
@@ -822,6 +825,7 @@ letter_event = { # comp letter for rope
 		clr_quest = sand_quest_sailer
 		add_society_currency_minor_effect = yes
 		clr_character_flag = ROPE
+		remove_trait = travelling
 	}
 }
 
@@ -830,7 +834,7 @@ letter_event = { # comp letter for compass
 	desc = EVTDESC_SANDR.1034
 	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
-	
+
 	trigger = {
 	}
 	option = {
@@ -844,7 +848,7 @@ character_event = { #grandmaster ping event for failures
 	id = SANDR.1135
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	immediate = {
 		random_society_member = {
 			limit = {
@@ -861,7 +865,7 @@ character_event = {
 	id = SANDR.1136
 	is_triggered_only = yes
 	hide_window = yes
-	
+
 	immediate = {
 		if = {
 			limit = {
@@ -889,7 +893,7 @@ letter_event = { #wood/sail failure
 	desc = EVTDESC_SANDR.1137
 	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
-	
+
 	option = {
 		name = EVTOPTA_SANDR.1137
 		clr_quest = { id = sand_quest_sailer failure = yes }
@@ -902,7 +906,7 @@ letter_event = {
 	desc = EVTDESC_SANDR.1138
 	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
-	
+
 	option = {
 		name = EVTOPTA_SANDR.1138
 		clr_quest = { id = sand_quest_sailer failure = yes }
@@ -1913,13 +1917,7 @@ character_event = {  #start of rope rigging quest chain
 	option = {  #track down trade caravan
 		name = EVTOPTA_SANDR.1056
 		character_event = { id = SANDR.1057 days = 2 }
-	}
-	option = {  #contact splinter Sand Sailers
-		name = EVTOPTB_SANDR.1056
-		custom_tooltip = {
-			text = contact
-			character_event = { id = SANDR. days = 3 }
-		}
+		add_trait = travelling
 	}
 }
 
@@ -1940,7 +1938,7 @@ character_event = {
 					character_event = { id = SANDR.1058 days = 5 }
 				}
 				25 = {
-					character_event = { id = SANDR. days = 5 }
+					character_event = { id = SANDR.1070 days = 5 }
 				}
 			}
 		}
@@ -1950,27 +1948,464 @@ character_event = {
 character_event = { #character finds in tact caravan, can buy rope then and there or ride along and get it for free.
 	id = SANDR.1058
 	desc = EVTDESC_SANDR.1058
-	#picture = 
+	#picture =
 	border = GFX_event_normal_frame_diplomacy
-	is_triggered_only = yes 
-	
+	is_triggered_only = yes
+
 	trigger = {
 	}
-	
+
 	option = {
+		name = EVTOPTA_SANDR.1058
 		character_event = {id = SANDR.1059 days = 1 }
 	}
 	option = {
-		character_event = { id = SANDR. days = 1 }
+		name = EVTOPTB_SANDR.1058
+		character_event = { id = SANDR.1061 days = 1 }
 	}
 }
 
-# character_event = {
-	# id = SANDR.1059
-	# desc = EVTDESC_SANDR.1058
-	# #picture = 
-	# border = GFX_event_normal_frame_diplomacy
-	# is_triggered_only = yes
-	
-	# immediate = {
+character_event = { #character rejects offer, buys rope
+	id = SANDR.1059
+	desc = EVTDESC_SANDR.1058
+	#picture =
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1059
+		wealth = -20
+		character_event = { id = SANDR.1060 days = 2 }
+	}
+	option = {  #change your mind option
+		name = EVTOPTB_SANDR.1059
+		character_event = { id = SANDR.1058 days = 1 }
+	}
+}
+
+character_event = {
+	id = SANDR.1060
+	desc = EVTDESC_SANDR.1060
+	picture = GFX_evt_wanshi_desert
+	border = GFX_event_normal_frame_diplomacy
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1060
+		character_event = {id = SANDR.1011 days = 4 }
+	}
+}
+
+character_event = {  #character tags along
+	id = SANDR.1061
+	desc = EVTDESC_SANDR.1061
+	#picture =
+	border = GFX_event_normal_frame_martial
+	is_triggered_only = yes
+
+	immediate = {
+		random_list = {
+			ROOT = {
+				75 = { set_character_flag = caravan_safe }
+				25 = { set_character_flag = caravan_attacked }
+			}
+		}
+	}
+	option = {
+		name = EVTOPTA_SANDR.1061
+		character_event = { id = SANDR.1062 days = 2 }
+	}
+}
+
+character_event = { #switchboard event
+	id = SANDR.1062
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = caravan_safe
+			}
+			character_event = { id = SANDR.1063 days = 15 }
+		}
+		if = {
+			limit = {
+				has_character_flag = caravan_attacked
+			}
+			character_event = { id = SANDR.1064 days = 5 }
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1063
+	desc = EVTDESC_SANDR.1063
+	#picture =
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1063
+		character_event = { id = SANDR.1011 days = 2 }
+	}
+}
+character_event = { #thug charges
+	id = SANDR.1064
+	desc = EVTDESC_SANDR.1064
+	#picture =
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+
+	option = { #attack
+		name = EVTOPTA_SANDR.1064
+		random_list = {
+			65 = {
+				modifier = {
+					factor = 2.0
+					martial > 15
+				}
+				modifier = {
+					factor = 1.2
+					combat_rating >= 10
+				}
+				modifier = {
+					factor = 1.2
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = master_bender
+				}
+				modifier = {
+					factor = 4.0
+					trait = legendary_bender
+				}
+				random_character = {
+					limit = {
+						culture = sandbender
+						trait = sandbender
+						is_adult = yes
+						is_landed = no
+						is_in_society = no
+						is_councillor = no
+					}
+					death = {
+						death_reason = death_battle
+						killer = ROOT
+					}
+				}
+				character_event = { id = SANDR.1068 days = 1 }
+			}
+			35 = {  #you get beat up
+				modifier = {
+					factor = 1.5
+					combat_rating = < 10
+				}
+				ROOT = {
+					character_event = { id = SANDR.1067 }
+					add_trait = wounded
+				}
+			}
+		}
+	}
+	option = {  #special option
+		name = EVTOPTB_SANDR.1064
+		tooltip_info = combat_rating
+		trigger = {
+			combat_rating > 15
+		}
+		random_character = {
+			limit = {
+				culture = sandbender
+				trait = sandbender
+				is_adult = yes
+				is_landed = no
+				is_in_society = no
+				is_councillor = no
+				martial < 10
+				combat_rating < 10
+			}
+			death = {
+				death_reason = death_battle
+				killer = ROOT
+			}
+		}
+		character_event = { id = SANDR.1068 }
+	}
+	option = { #wait for opening
+		name = EVTOPTC_SANDR.1064
 		
+		set_character_flag = waited
+		random_list = {
+			50 = { #thug hurts player
+				character_event = { id = SANDR.1065 }
+			}
+			50 = { #thug misses
+				character_event = { id = SANDR.1066 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1065
+	desc = EVTDESC_SANDR.1065
+	#picture = 
+	border = GFX_event_normal_frame_martial
+	is_triggered_only = yes
+	
+	# trigger = {
+		# has_character_flag = waited
+	# }
+	
+	option = {
+		name = EVTOPTA_SANDR.1065
+		random_list = {
+			75 = {
+				modifier = {
+					factor = 2.0
+					martial > 15
+				}
+				modifier = {
+					factor = 1.2
+					combat_rating >= 10
+				}
+				modifier = {
+					factor = 1.2
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = master_bender
+				}
+				modifier = {
+					factor = 4.0
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 2.5
+					has_character_flag = waited
+				}
+				random_character = {
+					limit = {
+						culture = sandbender
+						trait = sandbender
+						is_adult = yes
+						is_landed = no
+						is_in_society = no
+						is_councillor = no
+					}
+					death = {
+						death_reason = death_battle
+						killer = ROOT
+					}
+				}
+				character_event = { id = SANDR.1068 days = 1 }
+			}
+			25 = {  #you get beat up
+				modifier = {
+					factor = 2.0
+					combat_rating = < 10
+				}
+				ROOT = {
+					character_event = { id = SANDR.1067 }
+					add_trait = wounded
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1066
+	desc = EVTDESC_SANDR.1066
+	#picture = 
+	border = GFX_event_normal_frame_martial
+	is_triggered_only = yes
+	
+	# trigger = {
+		# has_character_flag = waited
+	# }
+	
+	option = {
+		name = EVTOPTA_SANDR.1066
+		random_list = {
+			75 = {
+				modifier = {
+					factor = 2.0
+					martial > 15
+				}
+				modifier = {
+					factor = 1.2
+					combat_rating >= 10
+				}
+				modifier = {
+					factor = 1.2
+					trait = powerful_bender
+				}
+				modifier = {
+					factor = 1.5
+					trait = master_bender
+				}
+				modifier = {
+					factor = 4.0
+					trait = legendary_bender
+				}
+				modifier = {
+					factor = 2.5
+					has_character_flag = waited
+				}
+				random_character = {
+					limit = {
+						culture = sandbender
+						trait = sandbender
+						is_adult = yes
+						is_landed = no
+						is_in_society = no
+						is_councillor = no
+					}
+					death = {
+						death_reason = death_battle
+						killer = ROOT
+					}
+				}
+				character_event = { id = SANDR.1068 days = 1 }
+			}
+			25 = {  #you get beat up
+				modifier = {
+					factor = 2.0
+					combat_rating = < 10
+				}
+				ROOT = {
+					character_event = { id = SANDR.1067 }
+					add_trait = wounded
+				}
+			}
+		}
+	}
+}
+
+character_event = {  #character is saved by a caravan member
+	id = SANDR.1067
+	desc = EVTDESC_SANDR.1067
+	#picture = 
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1067
+		random_character = {
+			limit = {
+				culture = sandbender
+				trait = sandbender
+				is_adult = yes
+				is_landed = no
+				is_in_society = no
+				is_councillor = no
+			}
+			ROOT = {
+				opinion = {
+					modifier = saved_on_battlefield
+					who = PREV
+				}
+			}
+		}
+		character_event = { id = SANDR.1069 days = 1 }
+		prestige = 10
+		martial = 1
+	}
+}
+
+character_event = { #character kills attacker
+	id = SANDR.1068
+	desc = EVTDESC_SANDR.1068
+	#picture = 
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1068
+		prestige = 15
+		martial = 1
+		character_event = { id = SANDR.1069 days = 5 }
+	}
+	option = {
+		name = EVTOPTB_SANDR.1068
+		random = {
+			chance = 30
+			add_trait = wroth
+		}
+		prestige = 15
+		martial = 2
+		character_event = { id = SANDR.1069 days = 5 }
+	}
+}
+character_event = { #end of chain
+	id = SANDR.1069
+	desc = EVTDESC_SANDR.1069
+	#picture = 
+	is_triggered_only = yes
+	
+	immediate = {
+		clr_character_flag = caravan_safe
+		clr_character_flag = carvan_attacked
+	}
+	
+	option = {
+		name = EVTOPTA_SANDR.1069
+		character_event = { id = SANDR.1011 days = 2 }
+	}
+}
+
+character_event = { #character searches for caravan
+	id = SANDR.1070
+	desc = EVTDESC_SANDR.1070
+	#picture = 
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1070
+		character_event = { id = SANDR.1071 days = 6 }
+	}
+}
+character_event = { #character sees something on the horizon
+	id = SANDR.1071
+	desc = EVTDESC_SANDR.1071
+	#picture = 
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1071
+		character_event = { id = SANDR.1072 days = 1 }
+	}
+}
+character_event = { #character finds wrecked caravan with some rope left behind
+	id = SANDR.1072
+	desc = EVTDESC_SANDR.1072
+	#picture = 
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1072
+		random = {
+			chance = 30
+			modifier = {
+				factor = 2.0
+				trait = craven
+			}
+			add_trait = depressed
+		}
+		character_event = { id = SANDR.1011 days = 2 }
+	}
+	option = {
+		name = EVTOPTB_SANDR.1072
+		random = {
+			chance = 30
+			modifier = {
+				factor = 2.0
+				trait = craven
+			}
+			add_trait = depressed
+		}
+		character_event = { id = SANDR.1011 days = 2 }
+	}
+}
+	
