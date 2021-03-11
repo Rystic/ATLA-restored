@@ -144,7 +144,9 @@ character_event = {
 
 			25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1002 days = 7 } } }
 
-			#25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1003 days = 7 } } }
+			25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1003 days = 7 } } }
+
+			#25 = { event_target:quest_collaborator = { character_event = { id = SANDR.1004 days = 7 } } }
 
 			50 = { # AI bypasses missions at times and goes directly to success/failure, increase the 50% if you add more mission to balance or you could delete this whole { } if you want the AI to do real missions
 				modifier = {
@@ -219,15 +221,29 @@ character_event = {
 	}
 }
 
+character_event = {
+	id = SANDR.1003
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = {
+			society_quest_event = {
+			id = SANDR.1073 days = 7           #Donation to society (cheap, i know)
+			}
+		}
+	}
+}
+
 # character_event = {
-	# id = SANDR.1003
+	# id = SANDR.1004
 	# hide_window = yes
 	# is_triggered_only = yes
 
 	# immediate = {
 		# FROM = {
 			# society_quest_event = {
-			# id = SANDR.1060 days = 7           #Exhibition (practice) race  sand_quest_practice_race
+			# id = SANDR days = 7           #exhibition race quest
 			# }
 		# }
 	# }
@@ -277,7 +293,7 @@ character_event = {  #completion is sent to grandmaster---Final events of all qu
 	}
 }
 
-character_event = {   #the completion hub for all quests
+character_event = {   #the completion hub for all quests  (note to self: don't link them here, do it above but edit below for new quests.)
 	id = SANDR.1012
 	is_triggered_only = yes
 	hide_window = yes
@@ -296,9 +312,15 @@ character_event = {   #the completion hub for all quests
 			}
 			ROOT = { character_event = {id = SANDR.1031} }
 		}
+		if = {
+			limit = {
+				FROM = {has_quest = donate_to_society}
+			}
+			FROM = {letter_event = {id = SANDR.1074}}
+		}
 		# if = {
 			# limit = {
-				# FROM = {has_quest = sand_quest_practice_race}
+				# FROM = {has_quest = exhibition_race}
 			# }
 			# FROM = {letter_event = {id = SANDR.}}
 		# }
@@ -1810,7 +1832,7 @@ character_event = { #Challenge completed segway event
 		}
 		text = EVTDESC_CASE4_SANDR.1048
 	}
-	
+
 	option = {
 		name = EVTOPTA_SANDR.1048
 		name = {
@@ -1908,6 +1930,7 @@ character_event = {  #fires after completing all challenges
 		clr_character_flag = razor_rock_stretch
 		clr_character_flag = wood_test_run
 		character_event = { id = SANDR.1011 days = 3 }
+		prestige = 20
 	}
 }
 
@@ -2501,5 +2524,83 @@ character_event = { #character finds wrecked caravan with some rope left behind
 			add_trait = stressed
 		}
 		character_event = { id = SANDR.1011 days = 2 }
+	}
+}
+############################DONATE TO SOCIETY QUEST##############################
+society_quest_event = {
+	id = SANDR.1073
+	desc = EVTDESC_SANDR.1073
+	border = GFX_event_letter_frame_war
+
+	is_triggered_only = yes
+
+	option = {
+		name = ACCEPT
+		set_quest = donate_to_society
+		set_character_flag = donation_quest
+	}
+
+	option = {
+		name = DECLINE
+		hidden_effect = {
+			add_character_modifier = {
+				name = quest_cooldown_timer
+				hidden = yes
+				days = 1040
+			}
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+letter_event = {  #comp letter
+	id = SANDR.1074
+	desc = EVTDESC_SANDR.1074
+	border = GFX_event_letter_frame_war
+
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1074
+		clr_quest = donation_quest
+		add_society_currency_tiny_effect = yes
+		prestige = 25
+		random = {
+			chance = 20
+			add_trait = charitable
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1075
+	desc = EVTDESC_SANDR.1075
+	picture = GFX_evt_relaxed_ruler
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1075
+		wealth = -25
+		character_event = { id = SANDR.1011 days = 5 }
+	}
+	option = {
+		name = EVTOPTB_SANDR.1075
+		wealth = -25
+		character_event = { id = SANDR.1011 days = 5 }
+	}
+	option = {
+		name = EVTOPTC_SANDR.1075
+		wealth = -25
+		character_event = { id = SANDR.1011 days = 5 }
+	}
+	option = {
+		name = EVTOPTD_SANDR.1075
+		trigger = {
+			ROOT = {
+				NOT = { is_society_grandmaster = yes }
+			}
+		}
+		wealth = -25
+		character_event = { id = SANDR.1011 days = 5 }
 	}
 }
