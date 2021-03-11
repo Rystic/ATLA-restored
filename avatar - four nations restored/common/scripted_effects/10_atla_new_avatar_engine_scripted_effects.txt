@@ -494,4 +494,79 @@ start_avatar_journey_effect = {
     # }
 }
 
+find_avatar_effect = {
+    if = {
+        limit = {
+            d_avatar = {
+                owner = {
+                    is_avatar_trigger = yes
+                }
+            }
+        }
+        d_avatar = {
+            owner = {
+                save_event_target_as = avatar
+            }
+        }
+    }
+    if = {
+        limit = {
+            d_avatar_unrevealed = {
+                owner = {
+                    is_avatar_trigger = yes
+                }
+            }
+        }
+        d_avatar_unrevealed = {
+            owner = {
+                save_event_target_as = avatar
+            }
+        }
+    }
+}
 
+clr_avatar_target_effect = {
+    clear_event_target = avatar
+}
+
+# "moving" works via tributary
+# PREV becomes liege for avatar
+# <scope> = {
+#    move_avatar_effect = yes
+# }
+move_avatar_effect = {
+    # remove previous avatar's suzerain
+    event_target:avatar = {
+        suzerain = {
+            remove_tributary = PREV
+        }
+    }
+    # make a new suzerain
+    if = {
+        limit = {
+            event_target:avatar = {
+                has_character_flag = avatar_revealed
+            }
+        }
+        make_tributary = {
+            who = event_target:avatar
+            percentage = 0.01
+            tributary_type = avatar_tributary
+        }
+    }
+    else = {
+        make_tributary = {
+            who = event_target:avatar
+            percentage = 0.01
+            tributary_type = unrevealed_avatar_tributary
+        }
+    }
+    # move de-jure capital of avatar's title
+    capital_scope = {
+        event_target:avatar = {
+            primary_title = {
+                set_preferred_capital = PREVPREV
+            }
+        }
+    }
+}

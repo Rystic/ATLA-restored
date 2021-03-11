@@ -269,10 +269,15 @@ narrative_event = {
 
 
 # Arrival on Whaletail
-# The first point on the way to the Southern Air Temple was a small settlement on the coast of the Whaletail island.
-# Although the air nomads do not like to settle on the coast, preferring the mountains and cliffs, the island was sacred to them.
-# The island has a tradition of fasting, they believe that this place is saturated with a special spiritual universal energy.
-# Every summer hundreds and thousands of air nomads go on pilgrimage to this island, to the place where Monk Tang Xu fasted for 98 days.
+# After months of sailing, the ship entered the foggy waters of Whaletail Island.
+# The island was always surrounded by fogs, the air here was cold from the fast sea currents of the South Sea,
+# and only high towers of temples on the hills saved ships from eternal wandering in frosty oblivion to the inevitable crash on the reefs.
+# It was rumored that the fogs were created here by waterbenders to prevent ships of other nations from fishing here.
+# Others considered this a manifestation of ancient spirits, like the Spirit of Mist, as ancient as the Spirits of the Moon and the Ocean
+# Although the air nomads do not like to settle on the coast, the fogs protected them as well as mountains and cliffs.
+# The island has a tradition of fasting, 
+# and every summer hundreds and thousands of air nomads go on pilgrimage to this island, to the place where Monk Tang Xu fasted for 98 days.
+# Here, I think I'll find fellow travelers to the Southern Air Temple.
 narrative_event = {
 	id = new_avatar_journey.401
 	title = EVTTITLE_new_avatar_journey_401_arrival_on_whaletail # Arrival on Whaletail
@@ -281,10 +286,454 @@ narrative_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = EVTOPT_new_avatar_400_southern_temple # Here, I think I will find fellow travelers for the flight to the Southern Air Temple.
+		name = EVTOPT_new_avatar_journey_401 # Let's find them!
+		custom_tooltip = {
+			text = EVTTOOLTIP_new_avatar_journey_401_move_to_whaletail
+			find_avatar_effect = yes
+			c_whaletail_island = {
+				owner = {
+					move_avatar_effect = yes
+				}
+			}
+		}
 	}
 
 	after = {
-		# character_event = { id = new_avatar_journey.401 days = 1 }
+		clr_avatar_target_effect = yes
+		character_event = { id = new_avatar_journey.402 }
 	}
 }
+
+# Whaletail Temple
+# Hidden in the misty hills, a giant wooden temple was visible.
+# A tall pagoda towered over the mist, indicating to skybison the location of the temple.
+# Near the temple there were hundreds of living quarters on stilts. Skybison spept beneath them.
+# There was a smell of incense everywhere, the fog held the smell in the air for many hours.
+# The temple seemed to be divided into two parts, connected by high bridges.
+# Like the temple, there seemed to be two types of people. 
+# Some in the typical yellow-orange outfits of air nomads, 
+# and others completely in dark red, they stayed away from each other.
+# There was a vast market square around the pagoda, where nomads from all over the world exchanged goods
+# It was difficult to measure because of the fog, 
+# it seemed that this is the most densely populated place of airnomads in the world.
+narrative_event = {
+	id = new_avatar_journey.402
+	title = EVTTITLE_new_avatar_journey_402_whaletail_temple # Whaletail Temple
+	desc = EVTDESC_new_avatar_journey_402_whaletail_temple
+	picture = GFX_evt_whaletail_air_temple
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_402 # Very impressive...
+	}
+
+	after = {
+		character_event = { 
+			id = new_avatar_journey.403
+			# I'll take a walk down to the market square
+			tooltip = EVTTOOLTIP_new_avatar_journey_402_go_to_market_square
+		}
+	}
+}
+
+# Whaletail Market
+# Here, they traded goods from all over the world. 
+# Famous fruit pies, whale and walrus bones, silk, paintings, oil, paper, scrolls and books. 
+# Moreover, coins of all four nations were used in the exchange. 
+# Currency exchange shops were especially successful. Natural exchange was also often used.
+# It turned out that many air nomads traded here on behalf of the Beifong house,
+# Here was the postal center of air nomads,
+# from ancient times, the Earth Kings hired them as messengers.
+# No one could imagine that without air nomads, the world trade would end...
+long_character_event = {
+	id = new_avatar_journey.403
+	title = EVTTITLE_new_avatar_journey_403_whaletail_market # Whaletail Market
+	desc = EVTDESC_new_avatar_journey_403_whaletail_market
+	picture = GFX_evt_whaletail_market
+	is_triggered_only = yes
+
+	# here we need to write market options
+	option = {
+		name = EVTOPT_new_avatar_journey_403 # It's very easy to get lost here
+	}
+
+	after = {
+		character_event = { 
+			id = new_avatar_journey.404
+			# (In the future, there will be market options instead)
+			tooltip = EVTTOOLTIP_new_avatar_journey_403
+		}
+	}
+}
+
+# 404 Welcome to Whaletail - avatar meets a monk and gets a room to stay over
+# I was as if intoxicated by this hazy picture.
+# Suddenly, a monk patted me on the shoulder.
+# It was a young monk, a messenger from the Temple. 
+# They were notified of my arrival and took a long time to find me...
+# On the way to the temple the messenger often stopped and showed me the sights around the temple.
+# Great cave vaporarium, jade statue of Tang Xu, spring and autumn fasting square.
+# We were warmly welcomed at the temple by a group of five elders, and the messanger left.
+# We talked about the duties of an Avatar and my training. 
+# I was offered to stay for a couple of days to see the Tang Xu Festival, 
+# but wouldn't it be better to fly to the Southern Temple as soon as possible?
+narrative_event = {
+	id = new_avatar_journey.404
+	title = EVTTITLE_new_avatar_journey_404_welcome_to_whaletail # Welcome to Whaletail
+	desc = EVTDESC_new_avatar_journey_404_welcome_to_whaletail
+	picture = GFX_evt_welcome_to_whaletail
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_404_stay_for_festival # Yes, I will stay for the festival
+		character_event = { 
+			id = new_avatar_journey.405 days = 3
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_404_fly_to_temple # I have to fly away
+		character_event = { 
+			id = new_avatar_journey.410 days = 3
+			# 
+			tooltip = EVTTOOLTIP_new_avatar_journey_405
+		}
+	}
+}
+
+# 405 Tang Xu fast - chance to find a fellow traveler
+# (ask him/her about Whaletail customs may result in 406)
+# (or in 410 if just ask help to head to Southern Air Temple)
+# The Tang Xu Festival was much different from anything I could have imagined.
+# Usually at festivals there is a lot of food, sound and activity.
+# But here you were able to listen only gong banging and eat lean food.
+# Many people still were playing pai-sho. And a lot were seating around the pagoda meditating.
+# One monk called me to his pai-sho table, offered to play.
+# "You're not from here, right?"
+# "I also see that you are not an airbender. 
+# Or is it no longer customary in the 'free' commune to shave your head?"
+# The game went on while I was telling him my story.
+narrative_event = {
+	id = new_avatar_journey.405
+	title = EVTTITLE_new_avatar_journey_405_tang_xu_fast # Tang Xu Fast
+	desc = EVTDESC_new_avatar_journey_405_tang_xu_fast
+	picture = GFX_evt_whaletail_air_temple
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_405_i_want_to_know # I want to know more about those "free" people
+		character_event = { 
+			id = new_avatar_journey.406 days = 3
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_405_can_we_already_leave # Are you going to the Southern Air Temple by any chance?
+		character_event = { 
+			id = new_avatar_journey.410 days = 3
+		}
+	}
+}
+
+
+# 406 Whaletail Customs - avatar is told about the difference between pacific and nihilistic air nomads
+# (may result in 407 if decide to stay one night)
+# (or in 410 if to hurry up)
+# "Long ago, when airbenders flew not on skybison and gliders, 
+# but walked on the clouds, when our nation was young and proud, 
+# and the first statue of Wang had not yet been carved, 
+# there were those who did not hesitate to encroach on someone else's life. 
+# They worshiped hungry spirits in exchange for knowledge.
+# Millennia later, after a long wandering in the spirit world, Guru Liu Xi recorded the history of air nomads.
+# Guru Laghima, Shoken, and Liu Xi's historical notes have inspired a new generation of "free" folks,
+# and the monk Tang Xu, without knowing it, found them a shelter here.
+# They eat meat and fish for Giant Koi for lamp oil.
+# Our temple is divided into two parts, and the bridge between them will soon rot, which no one will notice.
+# There are rumors of screams on the night of the Tang Xu festival, you won't be staying the night, are you?"
+narrative_event = {
+	id = new_avatar_journey.406
+	title = EVTTITLE_new_avatar_journey_406_whaletail_customs # Whaletail Customs
+	desc = EVTDESC_new_avatar_journey_406_whaletail_customs
+	picture = GFX_evt_pai_sho
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_406_stay_the_night # Thanks for warning, I'm leaving tomorrow.
+		character_event = { 
+			id = new_avatar_journey.407
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_406_ask_help # Are you going to the Southern Air Temple by any chance?
+		character_event = { 
+			id = new_avatar_journey.410 days = 3
+		}
+	}
+}
+
+
+# 407 Whaletail Customs: Night - at night, avatar wakes up from gong banging sounds from the opposite (nihilistic) temple...
+# (may result in 408 if to go to see what's going on)
+# (or in 410 if continue sleeping)
+# In the middle of the night, something interrupted my sleep.
+# After the monk's story, I already had a restless dream.
+# The wind could be heard blowing through the wooden walls.
+# But all this was drowned out by the sound of the banging on a gong.
+# The sound pulsed in my ears, although it was relaxing, and seemed to move away.
+character_event = {
+	id = new_avatar_journey.407
+	title = EVTTITLE_new_avatar_journey_407_whaletail_customs_night # Whaletail Customs: Night
+	desc = EVTDESC_new_avatar_journey_407_whaletail_customs_night
+	picture = GFX_evt_whaletail_night_window
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_407_see_whats_going_on # Let's see what's going on there
+		character_event = {
+			id = new_avatar_journey.408
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_407_continue_sleeping # Continue sleeping
+		character_event = {
+			id = new_avatar_journey.410 days = 3
+		}
+	}
+}
+
+# 408 The Fog over Whaletail ( XDDD ) - avatar can participate in night prayer (or sacrifice?) (to Spirit of Mist?)
+# (meaning become nihilist or cynic, that will strengthen them and weaken pacifists, reduces piety)
+# I quickly and quietly dressed, left the house standing on the pillars. 
+# Hazy skies in the distance was painted red and yellow glow
+# The smell of incense was emitted in the same direction.
+# The light shone in the direction of the "Free" commune
+# The streets were empty, was I the only one who was awakened by this?
+# Coming closer, the gong began to complement the sonorous voices of prayers in a strange language.
+# Not understanding the words, one could feel their antiquity, that these words were definitely not from this era.
+# Following the sound, I went out to the square near the eastern part of the temple.
+# Hundreds of monks in red robes sat and with closed eyes recited the mantra melodiously.
+# "Would you like to join, wanderer?" said the same monk I spoke to during the day.
+# "Soon the time of sacrifice will come, and whose voices This does not hear, they will be taken by This"
+narrative_event = {
+	id = new_avatar_journey.408
+	title = EVTTITLE_new_avatar_journey_408_fog_over_whaletail # The Fog over Whaletail
+	desc = EVTDESC_new_avatar_journey_408_fog_over_whaletail
+	picture = GFX_evt_whaletail_night_pray
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_408_restore_order # Restore the order
+		tooltip_info = ambitious
+		trigger = {
+			OR = {
+				has_game_rule = {
+					name = supernatural_events
+					value = on
+				}
+				has_game_rule = {
+					name = supernatural_events
+					value = unrestricted
+				}
+			}
+			OR = {
+				trait = ambitious
+				OR = {
+					trait = charismatic_negotiator
+					trait = grey_eminence
+					
+					trait = skilled_tactician
+					trait = brilliant_strategist
+					
+					# trait = scholarly_theologian
+					# trait = mastermind_theologian
+				}
+			}
+		}
+		show_trait = ambitious
+		custom_tooltip = {
+			text = tooltip_may_lead_to_whailtail_conversion
+		}
+		character_event = {
+			id = new_avatar_journey.409
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_408_join_sacrifice # Join sacrifice
+		
+		set_secret_religion = nomadic_nihilism
+		add_trait = cynical
+		show_trait = cynical
+		
+		character_event = {
+			id = new_avatar_journey.410 days = 1
+		}
+	}
+	
+	option = {
+		name = EVTOPT_new_avatar_journey_408_join_prayer # Join prayer
+		
+		add_trait = cynical
+		show_trait = cynical
+		
+		character_event = {
+			id = new_avatar_journey.410 days = 1
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_408_reject_prayer # Reject prayer
+		random = {
+			chance = 50
+			add_trait = craven
+		}
+		show_trait = craven
+		
+		character_event = {
+			id = new_avatar_journey.410 days = 1
+		}
+	}
+}
+
+# 409 Whaletail Penance - if avatar is ambitious and has high diplomacy or(and) learning, he can reconcile nihilists and pacifists
+# (meaning posibility to convert whole Whaletail to pacifism that will strengthen them and weaken nihilists, adds a lot of prestige and piety)
+# I don't know why, but I froze. I heard, through the prayers and the gong, the monk was saying something, his lips were moving, but I heard only This.
+# As through the fog, as through the water, something was moving.
+# I just noticed that the monk was talking with his eyes closed.
+# Suddenly, he gave up his attempts, and sat down in his place, repeating the words of the ancients.
+# The sound of movement grew more and more, and a flying fish swam out of the forest.
+# I felt a look on me, heavy and light at the same time.
+# What am I doing here? What should I do? Is it a spirit? What kind of sacrifice?
+# So many thoughts were running through my head.
+# And something unlimited seemed to take control over me, something so familiar that it didn't take words to describe it.
+# This was the first Avatar State.
+narrative_event = {
+	id = new_avatar_journey.409
+	title = EVTTITLE_new_avatar_journey_409_spirit_of_mist # Something that floats
+	desc = EVTDESC_new_avatar_journey_409_spirit_of_mist
+	picture = GFX_evt_whaletail_mist_spirit
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_409_stop_the_madness # Time to stop the madness
+		tooltip_info = martial
+		trigger = {
+			OR = {
+				trait = skilled_tactician
+				trait = brilliant_strategist
+				trait = powerful_bender
+			}
+		}
+		random_list = {
+			20 = {
+				prestige = 1000
+				piety = -1000
+				level_up_bending_effect = yes
+				give_nickname = nick_spirit_slayer
+				remove_trait = kind
+				remove_trait = just
+				add_trait = cruel
+				add_trait = arbitrary
+				
+				add_trait = ambitious
+				character_event = {
+					id = new_avatar_journey.410 days = 1
+				}
+			}
+			80 = {
+				death = {
+					death_reason = death_murder_spirit
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_409_talk_to_this # Talk to This
+		tooltip_info = diplomacy
+		trigger = {
+			OR = {
+				trait = charismatic_negotiator
+				trait = grey_eminence
+			}
+		}
+		piety = 500
+		prestige = 1000
+		add_trait = just
+		add_trait = ambitious
+		character_event = {
+			id = new_avatar_journey.410 days = 1
+		}
+		custom_tooltip = {
+			text = tooltip_whaletail_spirit_talk
+		}
+	}
+}
+# 410 Flying away to Southern Air Temple (FINALLY)
+# Today we fly to the Southern Air Temple
+# We packed in a bison saddle, and I took one last look at the foggy hills of Whaletail Island.
+# [fellow_traveler.GetFirstName] took the reins, and said yip-yip.
+# His skybison [GetSkybisonName] kicked off the ground with its tail and we soared into the air.
+# Very quickly we emerged from the blinding vapours, turns out they were not just fogs bug fallen clouds.
+# Fog look so soft from here, like you could just jump down and you'd land in a big, soft, cottony heap.
+# There where the clouds dropped to the ground, and seemed like fogs, I missed the Sun so much.
+# Signal tower and lighthouses sweep below, soon the blue of the sea began to be seen, and I calmed down
+# The waters were calm too.
+narrative_event = {
+	id = new_avatar_journey.410
+	title = EVTTITLE_new_avatar_journey_410_towards_the_wind # Towards the wind
+	desc = EVTDESC_new_avatar_journey_410_towards_the_wind
+	picture = GFX_evt_nomad_wander
+	is_triggered_only = yes
+
+	immediate = {
+		c_whaletail_island = {
+			owner = {
+				create_random_priest = {
+					religion = nomadic_pacifism
+					culture = southern_air_nomad
+					dynasty = random
+					random_traits = yes
+					female = no
+					age = 16
+
+					add_trait = airbender
+					add_trait = airnomad
+					add_trait = competent_bender
+				}
+				new_character = {
+					save_event_target_as = fellow_traveler
+				}
+			}
+		}
+	}
+
+	option = {
+		name = EVTOPT_new_avatar_journey_410 # To Southern Air Temple!
+		character_event = { 
+			id = new_avatar_journey.411 days = 3
+		}
+	}
+}
+
+
+# 411 Arrival to Southern Air Temple
+
+# narrative_event = {
+# 	id = new_avatar_journey.410
+# 	title = EVTTITLE_new_avatar_journey_410_southern_air_temple # Southern Air Temple
+# 	desc = EVTDESC_new_avatar_journey_410_southern_air_temple
+# 	picture = GFX_evt_whaletail_air_temple
+# 	is_triggered_only = yes
+
+# 	option = {
+# 		name = EVTOPT_new_avatar_journey_402 # Very impressive, and odd...
+# 	}
+
+# 	after = {
+# 		# character_event = { id = new_avatar_journey.401 days = 1 }
+# 	}
+# }
+
