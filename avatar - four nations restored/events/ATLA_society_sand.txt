@@ -1297,12 +1297,19 @@ character_event = { #Prof help
 	}
 }
 
-character_event = {  #Start of test run chain for wood
+character_event = {  #Start of test run chain for wood/ gauntlet power decision
 	id = SANDR.1044
 	desc = EVTDESC_SANDR.1044
 	#picture =
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			has_character_flag = running_gauntlet
+		}
+		text = gauntlet_intro_desc
+	}
 
 	immediate = {
 		set_character_flag = wood_test_run
@@ -1407,6 +1414,12 @@ character_event = {  #Rock Canyon challenge
 					martial < 5
 				}
 				character_event = {id = SANDR.1055 days = 1}
+				if = {
+					limit = {
+						has_character_flag = running_gauntlet
+					}
+					character_event = { id = sand.13 days = 1 }
+				}
 			}
 		}
 		prestige = 50
@@ -1559,6 +1572,12 @@ character_event = { #Sand Stretch Challenge
 					martial < 5
 				}
 				character_event = {id = SANDR.1055 days = 1}
+				if = {
+					limit = {
+						has_character_flag = running_gauntlet
+					}
+					character_event = { id = sand.13 days = 1 }
+				}
 			}
 		}
 		prestige = 50
@@ -1711,7 +1730,18 @@ character_event = { #Razor Rock Challenge
 					factor = 2.0
 					martial < 5
 				}
-				character_event = {id = SANDR.1055 days = 1 }
+				if = {
+					limit = {
+						NOT = { has_character_flag = running_gauntlet }
+					}
+					character_event = {id = SANDR.1055 days = 1 }
+				}
+				if = {
+					limit = {
+						has_character_flag = running_gauntlet
+					}
+					character_event = { id = sand.13 days = 1 }
+				}
 			}
 		}
 		prestige = 50
@@ -1907,6 +1937,13 @@ character_event = {  #fires after completing all challenges
 	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			has_character_flag = running_gauntlet
+		}
+		text = finished_gauntlet
+	}
 
 	trigger = {
 		ROOT = {
@@ -1919,6 +1956,9 @@ character_event = {  #fires after completing all challenges
 	}
 	option = {
 		name = EVTOPTA_SANDR.1049
+		trigger = {
+			NOT = { has_character_flag = running_gauntlet }
+		}
 		clr_character_flag = did_rock_canyon
 		clr_character_flag = did_sand_stretch
 		clr_character_flag = did_razor_rock_stretch
@@ -1931,6 +1971,13 @@ character_event = {  #fires after completing all challenges
 		clr_character_flag = wood_test_run
 		character_event = { id = SANDR.1011 days = 3 }
 		prestige = 20
+	}
+	option = {
+		name = gauntlet_over
+		trigger = {
+			has_character_flag = running_gauntlet
+		}
+		character_event = { id = sand.12 days = 2 }
 	}
 }
 
@@ -2234,7 +2281,7 @@ character_event = { #thug charges
 		name = EVTOPTB_SANDR.1064
 		tooltip_info = combat_rating
 		trigger = {
-			combat_rating > 15
+			combat_rating > 55
 		}
 		random_character = {
 			limit = {
@@ -2467,7 +2514,8 @@ character_event = { #end of chain
 
 	immediate = {
 		clr_character_flag = caravan_safe
-		clr_character_flag = carvan_attacked
+		clr_character_flag = caravan_attacked
+		clr_character_flag = waited
 	}
 
 	option = {
@@ -2601,6 +2649,13 @@ character_event = {
 			}
 		}
 		wealth = -25
+		any_society_member = {
+			limit = {
+				society = sand_sailer_racers
+				is_society_grandmaster = yes
+			}
+			wealth = 150
+		}
 		character_event = { id = SANDR.1011 days = 5 }
 	}
 }

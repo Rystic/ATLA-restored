@@ -39,10 +39,10 @@ decisions = {
 			clr_character_flag = sand_quest_sailer
 		}
 	}
-	
+
 	donate_to_society = { #quest decision
 		is_high_prio = yes
-		
+
 		potential = {
 			has_quest = donate_to_society
 			has_character_flag = donation_quest
@@ -58,5 +58,143 @@ decisions = {
 			clr_character_flag = donation_quest
 		}
 	}
+
+	run_gauntlet = {
+		is_high_prio = no
+		ai_check_interval = 5
+
+		potential = {
+			ROOT = {
+				society_rank = {
+					society = sand_sailer_racers
+					rank = 1
+				}
+				
+			}
+		}
+		allow = {
+			ROOT = {
+				NOR = {
+					has_character_modifier = gauntlet_cd
+					has_quest = sand_quest_sailer
+					has_character_flag = gauntlet_minor_cd
+				}
+				has_any_quest = no
+			}
+		}
+		effect = {
+			set_character_flag = gauntlet_minor_cd
+			character_event = { id = sand.10 days = 1 }
+		}
+		ai_will_do = {
+			factor = 5
+		}
+	}
+}
+targeted_decisions = {
+
+	talk_shop = {
+		is_high_prio = no
+		ai_check_interval = 5
+		filter = society
+		ai_target_filter = society
+
+		from_potential = {
+			society_rank = {
+				society = sand_sailer_racers
+				rank = 1
+			}
+		}
+		potential = {
+			society_member_of = sand_sailer_racers
+		}
+		allow = {
+			custom_tooltip = {
+				text = talk_shop_cd_tt
+				FROM = {
+					NOT = {has_character_modifier = talk_shop_cd}
+				}
+			}
+			has_society_currency_minor_trigger = yes
+		}
+		effect = {
+			ROOT = {
+				opinion = {
+					modifier = opinion_talked_about_society
+					who = FROM
+				}
+			}
+			FROM = {
+				detract_society_currency_minor_effect = yes
+				add_character_modifier = {
+					name = talk_shop_cd
+					months = 3
+					hidden = yes
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 8
+		}
+	}
 }
 
+title_decisions = {
+
+	fervor = {
+		ai_check_interval = 5
+		filter = owned
+		ai_target_filter = owned
+
+		from_potential = {
+			society_rank = {
+				society = sand_sailer_racers
+				rank = 3
+			}
+			is_landed = yes
+		}
+
+		potential = {
+			tier = COUNT
+			location = {
+				NOT = {has_province_modifier = fervor_modifier}
+			}
+			holder_scope = {
+				OR = {
+					is_liege_or_above = FROM
+					character = FROM
+				}
+			}
+		}
+
+		allow = {
+			custom_tooltip = {
+				text = fervor_cd_tt
+				FROM = {
+					NOT = {has_character_modifier = fervor_cd}
+				}
+			}
+		}
+
+		effect = {
+			location = {
+				add_province_modifier = {
+					name = fervor_modifier
+					months = 3
+					hidden = no
+				}
+			}
+			FROM = {
+				society_currency = -350
+				add_character_modifier = {
+					name = fervor_cd
+					years = 1
+					hidden = yes
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 5
+		}
+	}
+}
