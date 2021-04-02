@@ -6,36 +6,79 @@ decisions = {
 		is_high_prio = yes
 		only_independent = yes
 		potential = {
-			government = pirate_cartel
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+			e_fifth_nation = {
+				has_holder = no
+			}
+			NOT = { has_global_flag = fifth_nation_restored }
+		}
+		
+		allow = {
 			primary_title = {
 				tier = KING
 			}
-			is_in_society = the_black_market
-		}
-		allow = {
-			has_law = slavery_legal
-			society_rank = {
-				society = the_black_market
-				rank == 4
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					has_law = slavery_legal
+				}
 			}
+			custom_tooltip = {
+				text = needs_max_black_market_rank
+				hidden_tooltip = {
+					society_rank = {
+						society = the_black_market
+						rank == 4
+					}
+				}
+			}
+
 			religion_authority = 0.6
-			OR = {
-				has_character_flag = sung_pirate_shanty
-				ai = yes
+			piety = 4000
+		}
+		
+		effect = {
+			piety = -4000
+			narrative_event = { id = PRT.20000 }
+			set_global_flag = fifth_nation_restored
+			hidden_tooltip = {
+				primary_title = {
+					create_title = {
+						tier = EMPEROR
+						landless = no
+						temporary = no
+						name = e_fifth_nation
+						culture = ROOT
+						holder = ROOT
+						copy_title_laws = yes
+						base_title = THIS
+						ruler = e_fifth_nation_ruler
+						ruler_female = e_fifth_nation_ruler_female
+					}
+					new_title = {
+						set_coa = e_fifth_nation
+						# color = { 170 0 0 }
+						# color2 = { 255 255 20 }
+					}
+				}
+			}
+			custom_tooltip = {
+				text = restore_the_fifth_nation_create_title
+			}
+			custom_tooltip = {
+				text = can_establish_slave_colony
+			}
+			religion_authority = {
+				modifier = fifth_nation_restored_MA
+				years = -1
 			}
 		}
-		effect = {
-			create_title = {
-				tier = EMPEROR
-				landless = no
-				temporary = no
-				name = e_fifth_nation
-				holder = ROOT
-				base_title = THIS
-				copy_title_laws = yes
-				ruler = e_fifth_nation_ruler
-				ruler_female = e_fifth_nation_ruler_female
-			}
+		
+		ai_will_do = {
+			factor = 1000
 		}
 	}
 
@@ -58,8 +101,8 @@ decisions = {
 						check_variable = { which = pirate_tributary_count value = 8 }
 					}
 				}
-				religion_authority = .4
 			}
+			religion_authority = .4
 			prestige = 1000
 			higher_tier_than = COUNT
 		}
@@ -75,9 +118,6 @@ decisions = {
 				text = plunder_changes_culture
 			}
 			custom_tooltip = {
-				text = can_establish_slave_colony
-			}
-			custom_tooltip = {
 				text = all_tribs_join_realm
 			}
 			hidden_tooltip = {
@@ -87,7 +127,9 @@ decisions = {
 				any_tributary = {
 					if = {
 						limit = {
-							tributary_type = pirate_tributary
+							is_tributary = {
+								type = pirate_tributary
+							}			
 							tier = COUNT
 						}
 					}
@@ -161,6 +203,7 @@ decisions = {
 			}
 			religion_authority = {
 				modifier = reinstated_slavery
+				years = -1
 			}
 		}
 		ai_will_do = {
@@ -310,10 +353,12 @@ decisions = {
 					narrative_event = { id = PRT.20280 }
 				}
 			}
+			religion_authority = {
+				modifier = black_market_established
+				years = 50
+			}
 		}
-		religion_authority = {
-			modifier = black_market_established
-		}
+
 		ai_will_do = {
 			factor = 1000
 		}
@@ -357,15 +402,15 @@ decisions = {
 					narrative_event = { id =  PRT.20302 }
 				}
 			}
-		}
 
-		if = {
-			limit = {
-				NOT = { trait = pirate_trait}
-			}
-			random_list = {
-				75 = {}
-				25 = { character_event = {id = 40200 } }
+			if = {
+				limit = {
+					NOT = { trait = pirate_trait}
+				}
+				random_list = {
+					75 = {}
+					25 = { character_event = {id = 40200 } }
+				}
 			}
 		}
 

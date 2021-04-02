@@ -12,7 +12,7 @@ avatar = {
 	cannot_marry = yes
 	monthly_character_prestige = 0.75
 	random = no
-	immortal = yes
+	health = 20.0
 	opposite_opinion = 15 #makes him/her like the avatar more than they already do because they're close friends
 	general_opinion = 15
 	combat_rating = 30
@@ -21,6 +21,7 @@ avatar = {
 	tolerates_air_religions = yes
 	tolerates_water_religions = yes
 	tolerates_modern_religions = yes
+	way_of_chin_opinion = -200
 	opposites = {
 		fullyrealisedavatar
 	}
@@ -35,7 +36,7 @@ fullyrealisedavatar = {
 	monthly_character_piety = 1.0
 	monthly_character_prestige = 1.5
 	random = no
-	immortal = yes
+	health = 20.0
 	opposite_opinion = 15 #makes him/her like the avatar more than they already do because they're close friends
 	general_opinion = 15
 	combat_rating = 50
@@ -44,9 +45,16 @@ fullyrealisedavatar = {
 	tolerates_air_religions = yes
 	tolerates_water_religions = yes
 	tolerates_modern_religions = yes
+	way_of_chin_opinion = -200
 	opposites = {
 		avatar
 	}
+}
+
+unrevealedavatar = { # to make young unrevealed avatars not to die in their childhood
+	customizer = no
+	hidden = yes
+	health = 20.0
 }
 
 # This character is a first generation, direct descendant of the Avatar. Some of their powerful blood might still run in their veins.
@@ -60,6 +68,7 @@ directdescendantavatar = {
 	same_opinion = 10
 	opposite_opinion = 10
 	general_opinion = 10
+	way_of_chin_opinion = -200
 	opposites = {
 		descendantavatar
 		avatar
@@ -93,7 +102,7 @@ descendantavatar = {
 #	avatar
 #	fullyrealisedavatar
 #	}
-#	cached = yes    # Keep a cache of all trait holders, to use with the corresponding event #trigger 
+#	cached = yes    # Keep a cache of all trait holders, to use with the corresponding event #trigger
 #}
 
 # Waterbender placeholder trait, for reference
@@ -173,7 +182,7 @@ airbender = {
 	customizer = no
 }
 
-exbender = { 
+exbender = {
 	monthly_character_prestige = -3.0
 	customizer = no
 	random = no
@@ -269,18 +278,6 @@ agnikaiburnt = {
 	same_religion_opinion = -20
 }
 
-# Guru/Spiritual Mentor
-#has to be modifier
-#guru = {
-#	monthly_character_piety = 3.0
-#	learning = 6
-#	random = no
-#	opposites = {
-#		cynical
-#		greedy
-#	}
-#}
-
 # This character has regained his honor after losing an Agni Kai. While still disfigured, they lost most of the negativities associated with it.
 agnikaihonor = {
 	monthly_character_prestige = 3.5 # Cumulative with the -3.0 from original trait
@@ -317,7 +314,7 @@ whitelotus = {
 	potential = {
 		trait = paisho #All Order members were avid Pai Sho players
 	}
-	
+
 	learning = 3
 	random = no
 	same_opinion = 30
@@ -337,7 +334,7 @@ grandlotus = {
 # This character is the Earth King, officially King over all Kings in the Earth Kingdom, but serves as a puppet.
 earthkingpuppet = {
 	random = no
-	incapacitating = yes #will give the earth king a regent
+	pilgrimage = yes    # Will need a regent, but can still be guardian to children
 	stewardship = 2
 	ai_honor = 10
 	vassal_opinion = 10
@@ -345,10 +342,26 @@ earthkingpuppet = {
 	customizer = no
 	opposites = {
 		earthking
+		earthkingconstitution
 	}
 }
 
-# This character is the Earth King, and overthrew his puppeteers.
+# This character is the Earth King, and overthrew his puppeteers and choosed the give some of his power.
+earthkingconstitution = {
+	random = no
+	stewardship = 2
+	diplomacy = 1
+	ai_honor = 10
+	ai_rationality = 15
+	customizer = no
+	vassal_opinion = 20
+	opposites = {
+		earthkingpuppet
+		earthking
+	}
+}
+
+# This character is the Earth King, and overthrew his puppeteers and choosed the ABSOLUTE POWAH.
 earthking = {
 	random = no
 	stewardship = 3
@@ -358,6 +371,7 @@ earthking = {
 	customizer = no
 	opposites = {
 		earthkingpuppet
+		earthkingconstitution
 	}
 }
 
@@ -373,6 +387,9 @@ firelord = {
 	ai_rationality = -20
 	vassal_opinion = 10
 	customizer = no
+	opposites = {
+		bad_king_fire
+	}
 }
 
 # This character is the head of the Dai Li in Ba Sing Se.
@@ -424,6 +441,18 @@ airnomad = {
 		airelder
 	}
 }
+airnomad_tattoos = {
+	random = no
+	customizer = no
+	ai_honor = 15
+	ai_zeal = 15
+	monthly_character_piety = 0.5
+	air_religions_opinion = 10
+	opposites = {
+		airinitiate
+	}
+}
+
 airelder = {
 	random = no
 	customizer = no
@@ -459,36 +488,9 @@ yuyan = {
 	ai_zeal = 10
 	martial = 1
 	intrigue = 2
-	
+
 	command_modifier = {
 		archers = 0.4
-	}
-}
-
-# Where not particularly gifted in bending, this character makes up for with pure wits.
-#modifier
-ingenious = {
-	potential = {
-		NOT = {
-			trait = waterbender
-			trait = firebender
-			trait = earthbender
-			trait = airbender
-			trait = avatar
-		}
-		learning = 8
-	}
-	ai_rationality = 25
-	diplomacy = 1
-	martial = 1
-	intrigue = 2
-	stewardship = 1
-	learning = 2
-	
-
-	command_modifier = {
-		morale_defence = 0.4
-		defence = 0.2
 	}
 }
 
@@ -523,467 +525,31 @@ spirit = {
 	ai_rationality = -25
 }
 
-# This character is a member of the Foggy Swamp Tribe. While not renowned for their wits, they are excellent benders and are close to nature.
-#modifier
-#foggyswamptribe = {
-#	potential = {
-#		#religion = water_spirit
-#		culture = foggy_swamp_culture
-#	}
-#	random = no
-#	diplomacy = -1
-#	martial = 3
-#	learning = 1
-#	monthly_character_piety = 2.0
-#}
-
-# This character is a Sun Warrior, part of a remote civilization who are said to have been the first human firebenders.
-#modifier
-#sunwarrior = {
-#	potential = {
-#		culture = sun_warrior
-#		#religion = fire_spirit # Assuming once they become the warlike version, they no longer have the unique "no need for inner flame"-thing.
-#	}
-#	random = no
-#	diplomacy = -2 # Due to remoteness
-#	learning = -1
-#	martial = 2
-#	monthly_character_piety = 0.75
-#}
-
-
-###animal friends###
-
-#this character has a pet fireferret. Fireferre are popular pets in the industrial parts of the ATLA world.
-fireferret = {
-	martial = 1
-	random = no
-	opposites = {
-		bear
-		wingedlemur
-		cat
-		dog
-		goatgorilla
-		dragonflybunny_spirit
-	}
-}
-
-#this character has a pet wingedlemur. Wingedlemurs are not typically pets and only air nomads can have them.
-wingedlemur = {
-	random = no
-	learning = 1
-	opposites = {
-		bear
-		fireferret
-		cat
-		dog
-		goatgorilla
-		dragonflybunny_spirit
-	}
-}
-
-#this character has a pet dog. This pet is native to the Si Wong Desert area but are found in ba sing se as well. 
-dog = {
-	stewardship = 1
-	opposites = {
-		bear
-		fireferret
-		wingedlemur
-		cat
-		goatgorilla
-		dragonflybunny_spirit
-	}
-}
-
-#this character has a pet cat. This pet does what it wants and occasionally knocks things over.
-cat = {
-	intrigue = 1
-	opposites = {
-		bear
-		fireferret
-		wingedlemur
-		dog
-		goatgorilla
-		dragonflybunny_spirit
-	}
-}
-
-#this character has a pet goatgorilla. Only eccentic characters can have this pet. #flopsie
-goatgorilla = { 
-	random = no
-	diplomacy = 1
-	opposites = {
-		fireferret
-		wingedlemur
-		cat
-		dog
-		bear
-		dragonflybunny_spirit
-	}
-}
-
-#this character has a pet bear. Only Earth King Kuei can have this pet.
-bear = {
-	random = no
-	monthly_character_prestige = 1.0
-	opposites = {
-		fireferret
-		wingedlemur
-		cat
-		dog
-		goatgorilla
-		dragonflybunny_spirit
-	}
-}
-
-#this character has a pet dragonflybunnyspirit. Only very spiritual characers and bumi 2 can have this pet. 
-dragonflybunny_spirit = {
-	random = no
-	monthly_character_piety = 1.0
-	opposites = {
-		fireferret
-		wingedlemur
-		cat
-		dog
-		goatgorilla
-	}
-}
-
-#this character rides a komodo rihno and is part of the rough rhinos.
-komodorhino = {
-	random = no
-
-	command_modifier = {
-		speed = 0.3
-		retreat = 0.2
-		cavalry = 0.1
-		pursue = 0.1
-	}
-
-	opposites = {
-		ostrichhorse
-		eelhound
-		dragon
-		skybison
-		buffaloyak
-		rhinocerosbeetle
-		polarbeardog
-		arcticcamel
-		catdeer
-	}
-}
-
-#this character rides an arctic camel, a common form of transportation in the Southern Water Tribe.
-arcticcamel = {
-	random = no
-
-	command_modifier = {
-		speed = 0.1
-		retreat = 0.1
-		cavalry = 0.1
-	}
-
-	opposites = {
-		ostrichhorse
-		eelhound
-		dragon
-		skybison
-		buffaloyak
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		catdeer
-	}
-}
-
-# this character rides a rhinoceros beetle, a common form of transportation among the habitants of si wong desert
-rhinocerosbeetle = {
-	random = no
-
-	command_modifier = {
-		speed = 0.2
-		retreat = 0.1
-		cavalry = 0.1
-	}
-
-	opposites = {
-		ostrichhorse
-		eelhound
-		dragon
-		skybison
-		arcticcamel
-		buffaloyak
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		catdeer
-	}
-}
-
-# This character rides a buffalo yak, a common form of transportation in the Northern Water Tribe.
-buffaloyak = {
-	random = no
-
-	command_modifier = {
-		speed = 0.3
-		retreat = 0.2
-		cavalry = 0.1
-	}
-
-	opposites = {
-		ostrichhorse
-		eelhound
-		dragon
-		skybison
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		catdeer
-	}
-}
-
-# This character rides an eel hound, said to be the fastest known creature on both land and sea. Very rare mount only for the fire nation and earth kingdom. Bad characters should be more likely to get one.
-eelhound = {
-	random = no
-
-	command_modifier = {
-		speed = 0.4
-		retreat = 0.2
-		pursue = 0.2
-	}
-
-	opposites = {
-		ostrichhorse
-		buffaloyak
-		dragon
-		skybison
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		catdeer
-	}
-}
-
-# This character rides an ostrich horse, a common and versatile mount often found in the Earth Kingdom. 
-ostrichhorse = {
-	random = no
-
-	command_modifier = {
-		speed = 0.1
-		retreat = 0.1
-		cavalry = 0.2
-	}
-
-	opposites = {
-		eelhound
-		buffaloyak
-		dragon
-		skybison
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		catdeer
-	}
-}
-
-# This character is a Dragon
-dragon = {
-	customizer = no
-	random = no
-	martial = 5
-	cannot_inherit = yes
-	cannot_marry = yes
-	monthly_character_prestige = 2.75
-	immortal = yes
-	general_opinion = 10
-	combat_rating = 3
-	command_modifier = {
-		siege = 0.5
-		speed = 0.4
-		retreat = 0.15
-		morale_offence = 0.4
-	}
-}
-
-# This character rides a polar-bear-dog. Only korra is known to have ever tamed one.
-
-polarbeardog = {
-	customizer = no
-	random = no
-
-	command_modifier = {
-		speed = 0.2
-		retreat = 0.1
-		morale_defence = 0.2
-	}
-
-	opposites = {
-		eelhound
-		buffaloyak
-		ostrichhorse
-		dragon
-		arcticcamel
-		rhinocerosbeetle
-		skybison
-		komodorhino
-		catdeer
-	}
-}
-
-# This character rides a huge sky bison, according to Air Nomads, a friend for life. Every Air nomad has one at some point in their life. 
-skybison = {
-	random = no
-
-	command_modifier = {
-		speed = 0.3
-		retreat = 0.2
-		morale_defence = 0.4
-	}
-
-	opposites = {
-		eelhound
-		buffaloyak
-		ostrichhorse
-		dragon
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		catdeer
-	}
-}
-
-#this character rides a catdeer, only wan is known to have done so
-catdeer = {
-	random = no
-
-	command_modifier = {
-		speed = 0.3
-		retreat = 0.2
-		morale_defence = 0.4
-	}
-
-	opposites = {
-		eelhound
-		buffaloyak
-		ostrichhorse
-		dragon
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		skybison
-	}
-}
-
-##Vehicles##
-
-#this character owns a satomobile. These are only available a few years after ATLA. 
-satomobile = {
-	random = no
-	customizer = no
-	command_modifier = {
-		speed = 0.5
-		retreat = 0.3
-		morale_defence = 0.1
-	}
-
-	opposites = {
-		eelhound
-		buffaloyak
-		ostrichhorse
-		dragon
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		skybison
-	}
-}
-
-#this character owns a cabbagecar. These are only available a few years after ATLA.
-cabbagecar = {
-	random = no
-	customizer = no
-	command_modifier = {
-		speed = 0.3
-		retreat = 0.1
-	}
-
-	opposites = {
-		eelhound
-		buffaloyak
-		ostrichhorse
-		dragon
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		skybison
-	}
-}
-
-#this character owns a snowmobile. These are only available a few years after ATLA and only for the water tribes.
-snowmobile = {
-	random = no
-	customizer = no
-	command_modifier = {
-		winter_supply = 1
-		winter_combat = 0.5
-	}	
-
-	opposites = {
-		eelhound
-		buffaloyak
-		ostrichhorse
-		dragon
-		arcticcamel
-		rhinocerosbeetle
-		polarbeardog
-		komodorhino
-		skybison
-	}
-}
-
 #This character has been blinded through natural ways, likely born blind.
 blind = {
 	sex_appeal_opinion = -5
 	martial = -6
 	stewardship = -2
 	intrigue = -2
-	
+
 	blinding = yes
 }
 
 #what zuko and iroh got from the dragons
 innerflame = {
+	potential = {
+		trait = firebender
+	}
 	opposites = {
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
+		combustionbender
 	}
 	martial = 3
 	learning = 1
 	diplomacy = 1
 	combat_rating = 1
 	random = no
+	customizer = no
 	monthly_character_piety = 1.5
-	
 }
 
 #what zuko had hunting the avatar
@@ -994,7 +560,7 @@ innerflame = {
 #	diplomacy = -1
 #	monthly_character_piety = -0.5
 #	church_opinion = -15
-#	
+#
 #	opposites =  {
 #		apathetic
 #	}
@@ -1019,7 +585,7 @@ innerflame = {
 #		}
 #	}
 #}
-	
+
 
 #This is what Iroh did when he studied waterbenders to redirect lightning.
 #modifier
@@ -1028,7 +594,7 @@ innerflame = {
 #	learning = 3
 #	leader = yes
 #	random = yes
-#	
+#
 #	potential = {
 #		NOT = {
 #			trait = non_bender
@@ -1048,25 +614,28 @@ innerflame = {
 #	customizer = no
 #	opposite_opinion = -50
 #	random = no
-#	
+#
 #	opposites = {
 #		is_human
 #	}
 #}
 
 #This character is a human, a people most despised by spirits
-is_human = {
-	#Mainly just to provide a fluff trait to oppose the hates_humans trait
-	potential = {
-		NOT = {trait = spirit}
-	}
-	customizer = no
-	opposite_opinion = -50
-	random = no
-	opposites = {
-		hates_humans
-	}
-}
+# is_human = {
+# 	#Mainly just to provide a fluff trait to oppose the hates_humans trait
+# 	potential = {
+# 		NOT = {
+# 			trait = spirit
+# 		}
+# 	}
+# 	customizer = no
+# 	opposite_opinion = -50
+# 	random = no
+# 	opposites = { # COMMENTED BECAUSE TRAIT AND OPPOSITES ARE COMMENTED
+# 		hates_humans -- COMMENTED BECAUSE TRAIT IS COMMENTED
+# 	}
+# }
+
 #this character can bend about as much as sokka
 non_bender = {
 	opposites = {
@@ -1077,81 +646,34 @@ non_bender = {
 		exbender
 	}
 	random = no
-	customizer = no #(Typical) Original creator forgot to add this 
+	customizer = no #(Typical) Original creator forgot to add this
 }
 
 #special bending traits
 combustionbender = {
 	potential = {
+		trait = firebender
 	}
 	opposites = {
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		healer
-		master_healer
-		bloodbender
-		seismicsense
-		seismicsense_nonblind
-		sandbender
-		metalbender
-		lavabender
-		voidbender
-		levitation 
-		spiritual_projection
+		smokebender
+		lightningbender
+		blueflames
 	}
 	martial = 3
 	command_modifier = {
 		damage = 0.3
 		siege = 0.4
 	}
-	random = no
-	customizer = yes
+	customizer = no
 	ruler_designer_cost = 30
 }
 
 smokebender = {
 	potential = {
+		trait = firebender
 	}
 	opposites = {
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		healer
-		master_healer
-		bloodbender
-		seismicsense
-		seismicsense_nonblind
-		sandbender
-		metalbender
-		lavabender
-		voidbender
-		levitation 
-		spiritual_projection
+		combustionbender
 	}
 	martial = 2
 	command_modifier = {
@@ -1159,42 +681,17 @@ smokebender = {
 		flank = 0.2
 		retreat = 0.3
 	}
-	random = no
-	customizer = yes
+	customizer = no
 	ruler_designer_cost = 30
 	hidden_from_others = yes
 }
 
 lightningbender = {
 	potential = {
+		trait = firebender
 	}
 	opposites = {
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		healer
-		master_healer
-		bloodbender
-		seismicsense
-		seismicsense_nonblind
-		sandbender
-		metalbender
-		lavabender
-		voidbender
-		levitation 
-		spiritual_projection
+		combustionbender
 	}
 	martial = 3
 	monthly_character_prestige = 0.2
@@ -1202,41 +699,16 @@ lightningbender = {
 		damage = 0.3
 	}
 	random = no
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 }
 
 healer = {
 	potential = {
+		trait = waterbender
+		is_female = yes
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		seismicsense
-		seismicsense_nonblind
-		sandbender
-		metalbender
-		voidbender
-		lavabender
-		levitation 
-		spiritual_projection
-		master_healer
+		bloodbender
 	}
 	learning = 1
 	health = 1.0
@@ -1245,41 +717,16 @@ healer = {
 		morale_defence = 0.1
 	}
 	random = no
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 }
 
 master_healer = {
 	potential = {
+		trait = waterbender
+		is_female = yes
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		seismicsense
-		seismicsense_nonblind
-		sandbender
-		metalbender
-		voidbender
-		lavabender
-		levitation 
-		spiritual_projection
-		healer
+		bloodbender
 	}
 	learning = 8
 	health = 6.0
@@ -1292,10 +739,6 @@ master_healer = {
 }
 
 spirit_healed = {
-	potential = {
-	}
-	opposites = {
-	}
 	learning = 1
 	health = 4.0
 	random = no
@@ -1304,34 +747,11 @@ spirit_healed = {
 
 bloodbender = {
 	potential = {
+		trait = waterbender
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		seismicsense
-		seismicsense_nonblind
-		sandbender
-		metalbender
-		lavabender
-		voidbender
-		levitation 
-		spiritual_projection
+		healer
+		master_healer
 	}
 	martial = 4
 	combat_rating = 2
@@ -1341,8 +761,7 @@ bloodbender = {
 		morale_offence = 0.3
 		pursue = 0.4
 	}
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 	hidden_from_others = yes
 }
 
@@ -1353,41 +772,19 @@ seismicsense = {
 	diplomacy = 1
 	customizer = no
 	random = no
-	
+
 	potential = {
+		trait = earthbender
 		OR = {
 			trait = blind
 			trait = blinded
 		}
+
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
 		seismicsense_nonblind
-		voidbender
-		levitation 
-		spiritual_projection
-		bloodbender
-		healer
-		master_healer
 	}
-	
+
 	command_modifier = {
 		defence = 0.1
 	}
@@ -1398,40 +795,16 @@ seismicsense_nonblind = {
 	martial = 3
 	intrigue = 1
 	diplomacy = 1
-	customizer = yes
-	ruler_designer_cost = 20
+	customizer = no
 	random = no
-	
+
 	potential = {
+		trait = earthbender
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
 		seismicsense
-		voidbender
-		levitation 
-		spiritual_projection
-		bloodbender
-		healer
-		master_healer
 	}
-	
+
 	command_modifier = {
 		defence = 0.1
 	}
@@ -1439,38 +812,12 @@ seismicsense_nonblind = {
 
 metalbender = {
 	potential = {
-	}
-	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		voidbender
-		levitation 
-		bloodbender
-		healer
-		master_healer
-		spiritual_projection
+		trait = earthbender
 	}
 	monthly_character_prestige = 0.2
 	martial = 3
 	random = no
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 	command_modifier = {
 		defence = 0.3
 		siege = 0.4
@@ -1480,37 +827,10 @@ metalbender = {
 
 sandbender = {
 	potential = {
-	}
-	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		airbender_novice
-		airbender_trained
-		airbender_powerful
-		airbender_master
-		airbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		bloodbender
-		healer
-		master_healer
-		lavabender
-		voidbender
-		levitation 
-		spiritual_projection
+		trait = earthbender
 	}
 	random = no
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 	command_modifier = {
 		terrain = desert
 	}
@@ -1542,14 +862,13 @@ lavabender = {
 		healer
 		master_healer
 		voidbender
-		levitation 
+		levitation
 		spiritual_projection
 	}
 	random = no
 	monthly_character_prestige = 0.2
 	martial = 4
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 	command_modifier = {
 		defence = 0.1
 		siege = 0.8
@@ -1559,41 +878,17 @@ lavabender = {
 
 voidbender = {
 	potential = {
+		trait = airbender
+		religion = nomadic_nihilism
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		seismicsense
-		sandbender
-		metalbender
-		seismicsense_nonblind
-		bloodbender
-		healer
-		master_healer
-		spiritual_projection
+		levitation
 	}
 	random = no
 	monthly_character_prestige = -0.1
 	martial = 1
 	intrigue = 2
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 	command_modifier = {
 		defence = 0.1
 		damage = 0.3
@@ -1602,40 +897,16 @@ voidbender = {
 
 levitation = {
 	potential = {
+		trait = airbender
+		religion = air_spirituality
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		bloodbender
-		healer
-		master_healer
-		seismicsense
-		sandbender
-		metalbender
-		seismicsense_nonblind
-		spiritual_projection
+		voidbender
 	}
 	random = no
 	monthly_character_prestige = 0.2
 	martial = 3
-	customizer = yes
-	ruler_designer_cost = 30
+	customizer = no
 	command_modifier = {
 		defence = 0.2
 		damage = 0.2
@@ -1647,37 +918,13 @@ levitation = {
 spiritual_projection = {
 	potential = {
 		trait = enlightened
+		trait = airbender
 	}
 	opposites = {
-		firebender_novice
-		firebender_trained
-		firebender_powerful
-		firebender_master
-		firebender_legendary
-		waterbender_novice
-		waterbender_trained
-		waterbender_powerful
-		waterbender_master
-		waterbender_legendary
-		earthbender_novice
-		earthbender_trained
-		earthbender_powerful
-		earthbender_master
-		earthbender_legendary
-		lightningbender
-		combustionbender
-		smokebender
-		bloodbender
-		seismicsense
-		sandbender
-		metalbender
-		seismicsense_nonblind
-		levitation 
-		spiritual_projection
 	}
 	random = no
 	customizer = no
-	ruler_designer_cost = 30
+	#ruler_designer_cost = 30 lol trait has customiser = no yet has a rc cost
 	monthly_character_prestige = 0.01
 	intrigue = 5
 	learning = 2
@@ -1686,6 +933,7 @@ spiritual_projection = {
 		defence = 0.05
 	}
 }
+
 #the following are bending levels
 #this person can barely bend and will probably just end up splashing sokka.
 incompetent_bender = {
@@ -1729,7 +977,7 @@ powerful_bender = {
 		non_bender
 	}
 	combat_rating = 60
-	
+
 }
 
 #zhao level bending
@@ -1791,7 +1039,6 @@ weapon_master = {
 	ai_honor = 5
 	monthly_character_prestige = 0.5
 	opposites = {
-		weapon_expert
 		incompetent_bender
 		competent_bender
 		powerful_bender
@@ -1850,47 +1097,6 @@ chi_blocker = {
 	combat_rating = 20
 }
 
-#special weapons and artifacts
-boomerang = {
-	random = no
-	martial = 1
-	opposites = {
-		waterbender
-		airbender
-		firebender
-		earthbender
-	}
-	inherit_chance = 75
-}
-
-space_sword = {
-	customizer = no
-	martial = 3
-	random = no
-	opposites = {
-		waterbender
-		airbender
-		firebender
-		earthbender
-		wind_sword
-	}
-	inherit_chance = 50
-}
-
-glider = {
-	random = no
-	opposites = {
-		waterbender
-		earthbender
-		firebender
-		non_bender
-	}
-	command_modifier = {
-		speed = 0.1
-		retreat = 0.1
-	}
-}
-
 meteorite_braclet = {
 	customizer = no
 	monthly_character_prestige = 0.1
@@ -1899,34 +1105,6 @@ meteorite_braclet = {
 		waterbender
 		airbender
 		firebender
-	}
-}
-
-#as seen on aang in book 3 chapter 4, sokkas master
-super_shiny_killer_dragon_armor = {
-	customizer = no
-	random = no
-	martial = -4
-	intrigue = -4
-	diplomacy = 1
-	monthly_character_prestige = 1.0
-	ai_ambition = 15
-}
-
-#as seen on aang in book 3 chapter 4, sokkas master
-wind_sword = {
-	customizer = no
-	potential = {
-		#religion = air_spirit
-	}
-	random = no
-	martial = 1
-	opposites = {
-		waterbender
-		earthbender
-		firebender
-		space_sword
-		non_bender
 	}
 }
 
@@ -1941,7 +1119,7 @@ rock_gloves = {
 	}
 }
 
-Electrified_glove = {
+electrified_glove = {
 	customizer = no
 	martial = 2
 	random = no
@@ -1957,7 +1135,7 @@ Electrified_glove = {
 positive_jing = {
 	leader = yes
 	combat_rating = 20
-	
+
 	command_modifier = {
 		pursue = 0.1
 		damage = 0.1
@@ -1970,7 +1148,7 @@ positive_jing = {
 negative_jing = {
 	leader = yes
 	combat_rating = 20
-	
+
 	command_modifier = {
 		speed = 0.1
 		retreat = 0.1
@@ -1983,7 +1161,7 @@ negative_jing = {
 neutral_jing = {
 	leader = yes
 	combat_rating = 20
-	
+
 	command_modifier = {
 		center = 0.1
 		defence = 0.1
@@ -2001,7 +1179,10 @@ cactusaddict = {
 }
 
 tea_master = {
+	diplomacy = 6
 	learning = 2
+	health = 1
+	vassal_opinion = 10
 }
 
 master_liar = {
@@ -2020,7 +1201,7 @@ musician = {
 		apathetic
 	}
 	learning = 1
-	
+
 	same_opinion = 20
 }
 
@@ -2057,7 +1238,7 @@ chef = {
 		apathetic
 	}
 	diplomacy = 1
-	
+
 	same_opinion = 20
 }
 
@@ -2067,7 +1248,7 @@ fisher = {
 		apathetic
 	}
 	diplomacy = 1
-	
+
 	same_opinion = 20
 }
 
@@ -2077,25 +1258,25 @@ astrologer = {
 		apathetic
 	}
 	learning = 1
-	
+
 	same_opinion = 20
 }
 
 playwright = {
 	lifestyle = yes
-	
+
 	learning = 1
 	opposites =  {
 		apathetic
 	}
 	monthly_character_prestige = 0.4
-	
+
 	same_opinion = -5
 }
 
 inventor = {
 	lifestyle = yes
-	
+
 	learning = 5
 	opposites =  {
 		apathetic
@@ -2103,7 +1284,7 @@ inventor = {
 	same_opinion = 20
 }
 
-thief = { 
+thief = {
 	customizer = no
 	potential = {
 		is_ruler = no #unlanded only
@@ -2158,14 +1339,14 @@ paraplegic = {
 monstrous = {
 	birth = 10
 	inherit_chance = 20
-	
+
 	sex_appeal_opinion = -50
-	
+
 	opposites =  {
 		fair
 		ugly
 	}
-	
+
 	diplomacy = -4
 	martial = -2
 }
@@ -2177,9 +1358,9 @@ flirtatious = {
 		lustful
 	}
 	fertility = 0.1
-	
+
 	monthly_character_piety = -0.05
-	
+
 }
 
 apathetic = { #the idea is you'll lose some bad traits but also a lot of good traits because you just don't care.
@@ -2208,7 +1389,7 @@ apathetic = { #the idea is you'll lose some bad traits but also a lot of good tr
 		musician
 		gambler
 		chef
-		driven
+		#driven -- COMMENTED BECAUSE THE TRAIT IS COMMENTED
 	}
 	vassal_opinion = 15 #they like the freedom to do what they want
 	ai_zeal = -100
@@ -2219,7 +1400,7 @@ apathetic = { #the idea is you'll lose some bad traits but also a lot of good tr
 on_journey = {
 	monthly_character_piety = 0.1
 	same_religion_opinion = 5
-	
+
 	pilgrimage = yes    # Will need a regent, but can still be guardian to children
 	customizer = no
 	random = no
@@ -2933,7 +2114,6 @@ airbender_legendary = {
 
 canon_character = {
 	health = 20.0
-	immortal = yes
 	hidden = yes
 	random = no
 	customizer = no
@@ -2949,25 +2129,25 @@ honourable = {
 		irredeemable
 		cruel
 	}
-	
+
 	random = no
 	customizer = no
-	
+
 	culture_flex = -0.75
 	religion_flex = -0.75
-	
+
 	global_revolt_risk = -0.05
-	
+
 	general_opinion = 10
 	opposite_opinion = -50
 	same_opinion = 25
-	
+
 	ai_rationality = 50
 	ai_honor = 50
 	ai_ambition = -30
 	ai_greed = -30
 	ai_zeal = -30
-	
+
 	male_compliment_adj = COMPL_JUST
 	female_compliment_adj = COMPL_JUST
 }
@@ -2981,25 +2161,25 @@ virtuous = {
 		irredeemable
 		cruel
 	}
-	
+
 	random = no
 	customizer = no
-	
+
 	culture_flex = -0.5
 	religion_flex = -0.5
-	
+
 	global_revolt_risk = -0.01
-	
+
 	general_opinion = 5
 	opposite_opinion = -25
 	same_opinion = 10
-	
+
 	ai_rationality = 25
 	ai_honor = 25
 	ai_ambition = -15
 	ai_greed = -15
 	ai_zeal = -15
-	
+
 	male_compliment_adj = COMPL_JUST
 	female_compliment_adj = COMPL_JUST
 }
@@ -3011,13 +2191,13 @@ unjust = {
 		kind
 		just
 	}
-	
+
 	random = no
 	customizer = no
-	
+
 	culture_flex = 0.25
 	religion_flex = 0.25
-	
+
 	infidel_opinion = -5
 	opposite_opinion = -10
 	monthly_character_prestige = 0.1
@@ -3027,11 +2207,24 @@ unjust = {
 	ai_zeal = 10
 	ai_rationality = -10
 	ai_ambition = 10
-	
+
 	male_insult = INSULT_BRUTE
 	female_insult = INSULT_FIEND
 	male_insult_adj = INSULT_CRUEL
 	female_insult_adj = INSULT_CALLOUS
+}
+
+blueflames = {
+	potential = {
+		trait = firebender
+	}
+	opposites = {
+		combustionbender
+	}
+	martial = 2
+	combat_rating = 35
+	random = no
+	customizer = no
 }
 
 dishonourable = {
@@ -3041,13 +2234,13 @@ dishonourable = {
 		kind
 		just
 	}
-	
+
 	random = no
 	customizer = no
-	
+
 	culture_flex = 0.3
 	religion_flex = 0.3
-	
+
 	infidel_opinion = -7
 	opposite_opinion = -20
 	monthly_character_prestige = 0.2
@@ -3057,11 +2250,11 @@ dishonourable = {
 	ai_zeal = 20
 	ai_rationality = -20
 	ai_ambition = 20
-	
+
 	command_modifier = {
 		morale_offence = 0.02
 	}
-	
+
 	male_insult = INSULT_BRUTE
 	female_insult = INSULT_FIEND
 	male_insult_adj = INSULT_CRUEL
@@ -3075,15 +2268,15 @@ conqueror = {
 		kind
 		just
 	}
-	
+
 	random = no
 	customizer = no
 	diplomacy = -1
 	martial = 1
-	
+
 	culture_flex = 0.5
 	religion_flex = 0.5
-	
+
 	infidel_opinion = -10
 	opposite_opinion = -40
 	monthly_character_prestige = 0.3
@@ -3093,11 +2286,11 @@ conqueror = {
 	ai_zeal = 40
 	ai_rationality = -30
 	ai_ambition = 40
-	
+
 	command_modifier = {
 		morale_offence = 0.05
 	}
-	
+
 	male_insult = INSULT_BRUTE
 	female_insult = INSULT_FIEND
 	male_insult_adj = INSULT_CRUEL
@@ -3111,15 +2304,15 @@ tyrannical = {
 		kind
 		just
 	}
-	
+
 	random = no
 	customizer = no
 	diplomacy = -2
 	martial = 1
-	
+
 	culture_flex = 0.75
 	religion_flex = 0.75
-	
+
 	infidel_opinion = -20
 	opposite_opinion = -60
 	monthly_character_prestige = 0.4
@@ -3129,11 +2322,11 @@ tyrannical = {
 	ai_zeal = 60
 	ai_rationality = -40
 	ai_ambition = 60
-	
+
 	command_modifier = {
 		morale_offence = 0.1
 	}
-	
+
 	male_insult = INSULT_BRUTE
 	female_insult = INSULT_FIEND
 	male_insult_adj = INSULT_CRUEL
@@ -3147,15 +2340,15 @@ irredeemable = {
 		kind
 		just
 	}
-	
+
 	random = no
 	customizer = no
 	diplomacy = -2
 	martial = 1
-	
+
 	culture_flex = 1
 	religion_flex = 1
-	
+
 	infidel_opinion = -30
 	opposite_opinion = -100
 	monthly_character_prestige = 0.6
@@ -3165,11 +2358,11 @@ irredeemable = {
 	ai_zeal = 100
 	ai_rationality = -75
 	ai_ambition = 100
-	
+
 	command_modifier = {
 		morale_offence = 0.2
 	}
-	
+
 	male_insult = INSULT_BRUTE
 	female_insult = INSULT_FIEND
 	male_insult_adj = INSULT_CRUEL
@@ -3188,9 +2381,9 @@ peasant_upstart = {
 	random = no
 	religious = yes
 	customizer = yes
-	
+
 	ai_honor = 20
-	
+
 	male_insult = INSULT_PEASANT
 	male_insult_adj = INSULT_LOWBORN
 	female_insult = INSULT_PEASANT_WOMAN
@@ -3205,4 +2398,261 @@ hyw_veteran = {
 
 	random = no
 	customizer = no
+}
+
+#Wip Traits
+
+patriotic = {
+	general_opinion = 20
+	monthly_character_prestige = 0.1
+	martial = 1
+
+	random = no
+	customizer = no
+}
+
+fortuneteller = {
+	same_religion_opinion = 5
+	monthly_character_piety = 0.5
+	learning = 4
+	intrigue = 2
+
+	religious = yes
+
+	random = no
+	customizer = no
+}
+
+swamp_inbred = {
+	inherit_chance = 35
+	both_parent_has_trait_inherit_chance = 60
+
+	fertility = 0.25
+	martial = 2
+	diplomacy = 1
+	stewardship = 1
+	learning = -1
+
+	dynasty_opinion = 40
+
+	ai_rationality = -40
+
+	male_insult = INSULT_ABOMINATION
+	female_insult = INSULT_FREAK
+	child_insult = INSULT_TROLL
+	male_insult_adj = INSULT_MONSTROUS
+	female_insult_adj = INSULT_HIDEOUS
+	child_insult_adj = INSULT_UGLY
+}
+DaiLiFactMember = {
+	opposites = {
+		AdminFactMember
+		MilitaristFactMember
+		NobleFactMember
+		MilitaristFactLeader
+		NobleFactLeader
+		AdminFactLeader
+	}
+	random = no
+	customizer = no
+
+	intrigue = 1
+	general_opinion = 5
+	opposite_opinion = -15
+}
+
+AdminFactMember = {
+	opposites = {
+		DaiLiFactMember
+		MilitaristFactMember
+		NobleFactMember
+		MilitaristFactLeader
+		NobleFactLeader
+		DaiLiFactLeader
+	}
+	random = no
+	customizer = no
+
+	stewardship = 1
+	general_opinion = 5
+	opposite_opinion = -15
+}
+
+MilitaristFactMember = {
+	opposites = {
+		DaiLiFactMember
+		AdminFactMember
+		NobleFactMember
+		AdminFactLeader
+		NobleFactLeader
+		DaiLiFactLeader
+	}
+	random = no
+	customizer = no
+
+	martial = 1
+	general_opinion = 5
+	opposite_opinion = -15
+}
+
+NobleFactMember = {
+	opposites = {
+		DaiLiFactMember
+		AdminFactMember
+		MilitaristFactMember
+		AdminFactLeader
+		MilitaristFactLeader
+		DaiLiFactLeader
+	}
+	random = no
+	customizer = no
+
+	diplomacy = 1
+	general_opinion = 5
+	opposite_opinion = -15
+}
+
+DaiLiFactLeader = {
+	potential = {
+		trait = DaiLiFactMember
+	}
+	opposites = {
+		AdminFactMember
+		MilitaristFactMember
+		NobleFactMember
+		MilitaristFactLeader
+		NobleFactLeader
+		AdminFactLeader
+	}
+	random = no
+	customizer = no
+
+	intrigue = 2
+	general_opinion = 15
+	opposite_opinion = -25
+}
+
+AdminFactLeader = {
+	potential = {
+		trait = AdminFactMember
+	}
+	opposites = {
+		DaiLiFactMember
+		MilitaristFactMember
+		NobleFactMember
+		MilitaristFactLeader
+		NobleFactLeader
+		DaiLiFactLeader
+	}
+	random = no
+	customizer = no
+
+	stewardship = 2
+	general_opinion = 15
+	opposite_opinion = -25
+}
+
+MilitaristFactLeader = {
+	potential = {
+		trait = MilitaristFactMember
+	}
+	opposites = {
+		DaiLiFactMember
+		AdminFactMember
+		NobleFactMember
+		AdminFactLeader
+		NobleFactLeader
+		DaiLiFactLeader
+	}
+	random = no
+	customizer = no
+
+	martial = 2
+	general_opinion = 15
+	opposite_opinion = -25
+}
+
+NobleFactLeader = {
+	potential = {
+		trait = NobleFactMember
+	}
+	opposites = {
+		DaiLiFactMember
+		AdminFactMember
+		MilitaristFactMember
+		AdminFactLeader
+		MilitaristFactLeader
+		DaiLiFactLeader
+	}
+	random = no
+	customizer = no
+
+	diplomacy = 2
+	general_opinion = 15
+	opposite_opinion = -25
+}
+
+#I  H A T E  P A R A D O X  T R A I T S
+
+ek_claimant = {
+	customizer = no
+	random = no
+	hidden = yes
+}
+
+warlord_of_chin = {
+	customizer = no
+	random = no
+	religious = yes
+}
+
+# for members of airball association society
+airball_player = {
+	potential = {
+		trait = airbender
+	}
+
+	random = no
+	customizer = no
+
+	martial = 1
+	combat_rating = 5
+	monthly_character_prestige = 0.1
+
+	same_opinion = 15
+	air_religions_opinion = 10
+}
+
+# Generic for sandbenders/different from sand racer trait coming later
+sand_sailer = {
+	potential = {
+		culture = sandbender
+		age >= 16
+		# OR = {
+			# trait = sandbender_rd
+			# trait = sandbender
+		# }
+	}
+	opposites = {
+		firebender_novice
+		firebender_trained
+		firebender_powerful
+		firebender_master
+		firebender_legendary
+		waterbender_novice
+		waterbender_trained
+		waterbender_powerful
+		waterbender_master
+		waterbender_legendary
+		airbender_novice
+		airbender_trained
+		airbender_powerful
+		airbender_master
+		airbender_legendary
+	}
+	random = yes
+	ruler_designer_cost = 0
+	combat_rating = 3
+	monthly_character_prestige = 0.1
+	same_opinion = 25
 }

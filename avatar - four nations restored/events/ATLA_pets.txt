@@ -95,7 +95,7 @@ narrative_event = {
         name = "EVTOPTApets.1"
         trigger = {
             wealth = 300
-            primary_title = {
+            capital_scope = {
                 region = world_fire_isles
             }
             NOT = {
@@ -112,7 +112,7 @@ narrative_event = {
         name = "EVTOPTBpets.1"
         trigger = {
             wealth = 300
-            primary_title = {
+            capital_scope = {
                 OR = {
                     region = world_greater_earth_kingdom
                     region = world_fire_isles
@@ -132,11 +132,11 @@ narrative_event = {
         name = "EVTOPTCpets.1"
         trigger = {
             wealth = 100
-            primary_title = {
+            capital_scope = {
                 region = world_central_earth_kingdom
             }
             NOR = {
-                primary_title = {
+                capital_scope = {
                     region = world_si_wong
                 }
                 any_artifact = {
@@ -151,7 +151,7 @@ narrative_event = {
         name = "EVTOPTDpets.1"
         trigger = {
             wealth = 300
-            primary_title = {
+            capital_scope = {
                 region = world_north_west_kingdom
             }
             NOT = {
@@ -167,7 +167,7 @@ narrative_event = {
         name = "EVTOPTEpets.1"
         trigger = {
             wealth = 300
-            primary_title = {
+            capital_scope = {
                 region = world_north_east_earth_kingdom
             }
             NOT = {
@@ -183,7 +183,7 @@ narrative_event = {
         name = "EVTOPTFpets.1"
         trigger = {
             wealth = 300
-            primary_title = {
+            capital_scope = {
                 region = world_western_earth_kingdom
             }
             NOT = {
@@ -193,13 +193,13 @@ narrative_event = {
             }
         }
         wealth = -300
-        add_artifact = petCatbug
+        add_artifact = petSpidercat
     }
     option = { # Giant Rhinoceros Beetle
         name = "EVTOPTGpets.1"
         trigger = {
             wealth = 500
-            primary_title = {
+            capital_scope = {
                 region = world_si_wong
             }
             NOT = {
@@ -215,7 +215,7 @@ narrative_event = {
         name = "EVTOPTHpets.1"
         trigger = {
             wealth = 500
-            primary_title = {
+            capital_scope = {
                 region = world_the_swamp
             }
             NOT = {
@@ -231,14 +231,14 @@ narrative_event = {
         name = "EVTOPTIpets.1"
         trigger = {
             wealth = 500
-            primary_title = {
+            capital_scope = {
                 region = world_southern_earth_kingdom
             }
             NOR = {
                 any_artifact = {
                     has_artifact_flag = pet
                 }
-                primary_title = {
+                capital_scope = {
                     region = world_the_swamp
                 }
             }
@@ -251,7 +251,7 @@ narrative_event = {
         name = "EVTOPTJpets.1"
         trigger = {
             wealth = 500
-            primary_title = {
+            capital_scope = {
                 region = world_southern_waters
             }
             NOT = {
@@ -267,7 +267,7 @@ narrative_event = {
         name = "EVTOPTKpets.1"
         trigger = {
             wealth = 300
-            primary_title = {
+            capital_scope = {
                 region = world_southern_waters
             }
             NOT = {
@@ -284,7 +284,7 @@ narrative_event = {
         name = "EVTOPTLpets.1"
         trigger = {
             wealth = 500
-            primary_title = {
+            capital_scope = {
                 region = world_northern_waters
             }
             NOT = {
@@ -301,7 +301,7 @@ narrative_event = {
         name = "EVTOPTMpets.1"
         trigger = {
             wealth = 100
-            primary_title = {
+            capital_scope = {
                 region = world_air_temples
             }
             NOT = {
@@ -317,7 +317,7 @@ narrative_event = {
         name = "EVTOPTNpets.1"
         trigger = {
             wealth = 500
-            primary_title = {
+            capital_scope = {
                 region = world_air_temples
             }
             NOT = {
@@ -335,7 +335,7 @@ narrative_event = {
         trigger = {
             wealth = 2000
             intrigue >= 20
-            primary_title = {
+            capital_scope = {
                 region = world_greater_earth_kingdom
                 tier = EMPEROR
             }
@@ -353,7 +353,7 @@ narrative_event = {
         name = "EVTOPTPpets.1"
         trigger = {
             wealth = 2000
-            primary_title = {
+            capital_scope = {
                 region = world_fire_isles
                 OR = {
                     tier = DUKE
@@ -380,7 +380,7 @@ narrative_event = {
             intrigue >= 20
             learning >= 20 # Do you even know this should exist?
             NOR = {
-                primary_title = {
+                capital_scope = {
                     OR = {
                         region = world_fire_isles
                         region = world_greater_earth_kingdom
@@ -425,10 +425,13 @@ narrative_event = { # Dealer needs to hunt down a rare pet
 
 character_event = { # Dealer lets user know they haven't found the pet yet
     id = pets.3
-    is_triggered_only = yes
-    desc = EVTDESCpets.3
     border = GFX_event_normal_frame_diplomacy
+    picture = GFX_hl_market
+    desc = EVTDESCpets.3
+
+    is_triggered_only = yes
     is_friendly = yes
+
     option = {
         trigger = {
             has_character_flag = looking_for_pet_dragon
@@ -475,11 +478,13 @@ character_event = { # Dealer lets user know they haven't found the pet yet
 
 narrative_event = { # Dealer finds pet
     id = pets.4
-    is_triggered_only = yes
     title = EVTTITLEpets.4
     desc = EVTDESCpets.4
     border = GFX_event_narrative_frame_diplomacy
+
+    is_triggered_only = yes
     is_friendly = yes
+
     option = {
         trigger = {
             has_character_flag = looking_for_pet_dragon
@@ -518,9 +523,15 @@ character_event = { # Pet Owner Dies & heir holds onto the pet for a bit
                 has_artifact_flag = pet
             }
         }
-        current_heir = {
-            character_event = { id=pets.6 days=100 random=200 }
+        any_artifact = {
+            limit = {
+                has_artifact_flag = pet
+            }
+            destroy_artifact = yes
         }
+        #current_heir = {
+        #    character_event = { id=pets.6 days=100 random=200 }
+        #}
     }
     option = {
         trigger = {
@@ -535,9 +546,11 @@ character_event = { # Pet Owner Dies & heir holds onto the pet for a bit
 
 character_event = { # Pet dies
     id = pets.6
-    is_triggered_only = yes
     desc = EVTDESCpets.6
     border = GFX_event_normal_frame_diplomacy
+    picture = GFX_evt_death
+
+    is_triggered_only = yes
 
     option = { # Bury pet personally
         name = "EVTOPTApets.6"

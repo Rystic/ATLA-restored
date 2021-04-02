@@ -8,24 +8,886 @@
 
 namespace = MNM
 
-# I don't know what all we want to do with societies, and all the stuff being in other files 
-# than this, but included the secret religion part so at least that can work for now.
-# societies are a mess - tsf4
+# Force join AI characters to societies
+character_event = {
+	id = MNM.10030
+	hide_window = yes
+
+	only_rulers = yes
+	is_triggered_only = yes
+
+	has_dlc = "Mystics"
+
+	immediate = {
+		if = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = yes
+				society_rank < 3
+				society_can_rank_up = yes
+			}
+			random_list = {
+				75 = {}
+				25 = {
+					society_rank_up = 1
+				}
+			}
+		}
+		if = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_adult = yes
+				is_in_society = no
+				controls_religion = no
+				block_general_event_trigger = no
+			}
+			character_event = { id = MNM.10031 }
+		}
+		any_courtier = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_in_society = yes
+				society_rank < 3
+				society_can_rank_up = yes
+			}
+			random_list = {
+				75 = {}
+				25 = {
+					society_rank_up = 1
+				}
+			}
+		}
+		any_courtier = {
+			limit = {
+				ai = yes
+				prisoner = no
+				NOT = { trait = incapable }
+				is_adult = yes
+				is_in_society = no
+				controls_religion = no
+				block_general_event_trigger = no
+			}
+			character_event = { id = MNM.10031 }
+		}
+	}
+}
+
+character_event = {
+	id = MNM.10031
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		random_list = {
+			95 = { # do nothing
+			}
+			5 = { # try to join a society
+				modifier = {
+					factor = 2
+					higher_tier_than = BARON
+				}
+
+				random_list = {
+					700 = { } # Fall back dead weight
+					100 = {
+						trigger = {
+                            can_join_society = five_seven_fiver_society
+                        }
+                        modifier = {
+                            factor = 3
+                            is_smart_trigger = yes
+                        }
+                        modifier = {
+                            factor = 25
+                            trait = poet
+                        }
+                        modifier = {
+                            factor = 3
+                            diplomacy = 12
+                        }
+                        modifier = {
+                            factor = 10
+                            diplomacy = 16
+                        }
+                        modifier = {
+                            factor = 10
+                            five_seven_fiver_society = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 10
+                            five_seven_fiver_society = { num_of_society_members < 15 }
+                        }
+                        join_society = five_seven_fiver_society
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+					}
+                    100 = {
+                        trigger = {
+                            can_join_society = healing_hut_north
+                        }
+                        modifier = {
+                            factor = 3
+                            is_smart_trigger = yes
+                        }
+                        modifier = {
+                            factor = 5
+                            is_benevolent_trigger = yes
+                        }
+                        modifier = {
+                            factor = 5
+                            learning = 12
+                        }
+                        modifier = {
+                            factor = 5
+                            healing_hut_north = { num_of_society_members < 15 }
+                        }
+                        modifier = {
+                            factor = 5
+                            healing_hut_north = { num_of_society_members < 10 }
+                        }
+                        modifier = {
+                            factor = 0
+                            is_female = no
+                        }
+                        join_society = healing_hut_north
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+                    100 = {
+                        trigger = {
+                            can_join_society = the_black_market
+                        }
+                        modifier = {
+                            factor = 3
+                            OR = {
+                                trait = wroth
+                                trait = greedy
+                                intrigue = 12
+                            }
+                        }
+                        modifier = {
+                            factor = 10
+                            trait = pirate_trait
+                        }
+                        modifier = {
+                            factor = 2
+                            the_black_market = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 2
+                            the_black_market = { num_of_society_members < 15 }
+                        }
+                        join_society = the_black_market
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+                    100 = {
+                        trigger = {
+                            can_join_society = tea_enthusiasts
+                        }
+                        modifier = {
+                            factor = 3
+                            OR = {
+                                trait = patient
+                                trait = kind
+                                diplomacy = 10
+                            }
+                        }
+                        modifier = {
+                            factor = 3
+                            diplomacy = 15
+                        }
+                        modifier = {
+                            factor = 2
+                            tea_enthusiasts = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 2
+                            tea_enthusiasts = { num_of_society_members < 15 }
+                        }
+                        join_society = tea_enthusiasts
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+                    100 = {
+                        trigger = {
+                            can_join_society = the_enlightened
+                        }
+                        modifier = {
+                            factor = 3
+                            is_smart_trigger = yes
+                        }
+                        modifier = {
+                            factor = 5
+                            is_benevolent_trigger = no
+                        }
+                        modifier = {
+                            factor = 3
+                            intrigue = 12
+                        }
+                        modifier = {
+                            factor = 10
+                            intrigue = 16
+                        }
+                        modifier = {
+                            factor = 2
+                            the_enlightened = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 2
+                            the_enlightened = { num_of_society_members < 15 }
+                        }
+                        modifier = {
+                            factor = 0.01
+                            the_enlightened = { num_of_society_members > 50 }
+                        }
+                        join_society = the_enlightened
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+                    100 = {
+                        trigger = {
+                            can_join_society = the_white_lotus
+                        }
+                        modifier = {
+                            factor = 3
+                            is_smart_trigger = yes
+                        }
+                        modifier = {
+                            factor = 5
+                            is_benevolent_trigger = yes
+                        }
+                        modifier = {
+                            factor = 3
+                            learning = 12
+                        }
+                        modifier = {
+                            factor = 10
+                            learning = 16
+                        }
+                        modifier = {
+                            factor = 2
+                            the_white_lotus = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 2
+                            the_white_lotus = { num_of_society_members < 15 }
+                        }
+                        join_society = the_white_lotus
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+                    100 = {
+                        trigger = {
+                            can_join_society = brotherhood_of_agni_kai
+                        }
+                        modifier = {
+                            factor = 3
+                            trait = competent_bender
+                        }
+                        modifier = {
+                            factor = 5
+                            trait = powerful_bender
+                        }
+                        modifier = {
+                            factor = 25
+                            trait = legendary_bender
+                        }
+                        modifier = {
+                            factor = 25
+                            trait = duelist
+                        }
+                        # modifier = {
+                            # factor = 10
+                            # trait = aspiring_duelist
+                        # }
+                        # modifier = {
+                            # factor = 25
+                            # trait = master_duelist
+                        # }
+                        modifier = {
+                            factor = 2
+                            martial = 12
+                        }
+                        modifier = {
+                            factor = 2
+                            martial = 16
+                        }
+                        modifier = {
+                            factor = 2
+                            martial = 20
+                        }
+                        modifier = {
+                            factor = 4
+                            brotherhood_of_agni_kai = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 4
+                            brotherhood_of_agni_kai = { num_of_society_members < 15 }
+                        }
+                        join_society = brotherhood_of_agni_kai
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+					100 = {
+                        trigger = {
+                            can_join_society = monastic_order_elder_council
+                        }
+                        modifier = {
+                            factor = 4
+                            monastic_order_elder_council = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 4
+                            monastic_order_elder_council = { num_of_society_members < 15 }
+                        }
+                        join_society = monastic_order_elder_council
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+					100 = {
+                        trigger = {
+                            can_join_society = dai_li
+                        }
+                        modifier = {
+                            factor = 4
+                            dai_li = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 4
+                            dai_li = { num_of_society_members < 15 }
+                        }
+                        join_society = dai_li
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+					100 = {
+                        trigger = {
+                            can_join_society = royal_court
+                        }
+                        modifier = {
+                            factor = 4
+                            royal_court = { num_of_society_members < 25 }
+                        }
+                        modifier = {
+                            factor = 4
+                            royal_court = { num_of_society_members < 15 }
+                        }
+                        join_society = royal_court
+                        random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+					100 = {
+                        trigger = {
+                            can_join_society = sand_sailer_racers
+                        }
+                        modifier = {
+                            factor = 4
+                            sand_sailer_racers = { num_of_society_members < 20 }
+                        }
+                        modifier = {
+                            factor = 4
+                            sand_sailer_racers = { num_of_society_members < 10 }
+                        }
+                        join_society = sand_sailer_racers
+                        if = {
+                            limit = {
+                                NOT = {
+                                    society = {
+                                        any_society_member = {
+                                            is_society_grandmaster = yes
+                                        }
+                                    }
+                                }
+                            }
+                            set_society_grandmaster = yes
+                        }
+                    }
+					200 = {
+						trigger = {
+							can_join_society = secret_religious_society_fire_imperialism
+						}
+						join_society = secret_religious_society_catholic
+						random_list = { # Artificially increase society influence for balance purposes
+							75 = {
+								modifier = {
+									factor = 0
+									society_influence >= 30
+								}
+								add_mission_succeed_influence_effect = yes
+							}
+							25 = {
+							}
+						}
+						if = {
+							limit = {
+								NOT = {
+									society = {
+										any_society_member = {
+											is_society_grandmaster = yes
+										}
+									}
+								}
+							}
+							set_society_grandmaster = yes
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+###Society relationship events###
+
+#Making an enemy
+character_event = {
+    id = MNM.10040
+    hide_window = yes
+    is_triggered_only = yes
+    capable_only = yes
+    trigger = {
+    	society = {
+    		any_society_member = {
+    			NOT = { reverse_opinion = { who = ROOT value = -20 } }
+    			NOT = { opinion = { who = ROOT value = 0 } }
+    			NOT = { is_rival = ROOT }
+    			NOT = { has_character_flag = ineligible_for_society_rivalry }
+    			ai = yes
+    		}
+    	}
+    }
+    immediate = {
+    	society = {
+    		random_society_member = {
+    			limit = {
+    				NOT = { reverse_opinion = { who = ROOT value = -20 } }
+	    			NOT = { opinion = { who = ROOT value = 0 } }
+	    			NOT = { is_rival = ROOT }
+	    			NOT = { has_character_flag = ineligible_for_society_rivalry }
+	    			ai = yes
+    			}
+    			character_event = { id = MNM.10041 }
+    		}
+    	}
+    }
+}
+
+
+character_event = {
+    id = MNM.10041
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = { FROM = { character_event = { id = MNM.10042 } } }
+}
+
+
+character_event = {
+    id = MNM.10042
+    picture = GFX_evt_rival_rulers
+    border = GFX_event_normal_frame_war
+
+    desc = {
+    	text = EVTDESC_MNM_10042
+    	picture = GFX_evt_rival_rulers
+    }
+
+    is_triggered_only = yes
+
+    #Make them enemy
+    option = {
+        name = EVTOPTA_MNM_10042
+        add_rival = FROM
+
+        ai_chance = {
+        	factor = 90
+        	modifier = {
+        		has_evil_trait_trigger = yes
+        		factor = 15
+        	}
+        }
+    }
+
+
+    #Ignore them
+    option = {
+        name = EVTOPTB_MNM_10042
+
+        detract_society_currency_minor_effect = yes
+
+        if = {
+        	limit = { ai = no }
+        	FROM = { set_character_flag = ineligible_for_society_rivalry }
+        }
+
+        ai_chance = {
+        	factor = 10
+        	modifier = {
+        		has_benevolent_trait_trigger = yes
+        		factor = 15
+        	}
+        }
+    }
+}
+
+
+#Making a friend
+character_event = {
+    id = MNM.10043
+    hide_window = yes
+    is_triggered_only = yes
+    capable_only = yes
+    trigger = {
+    	society = {
+    		any_society_member = {
+    			reverse_opinion = { who = ROOT value = 30 }
+    			opinion = { who = ROOT value = 40 }
+    			NOR = {
+	    			is_lover = ROOT
+    				is_friend = ROOT
+    				is_rival = ROOT
+    				is_close_relative = ROOT
+    			}
+    			prisoner = no
+    			NOT = { has_character_flag = ineligible_for_society_friendship }
+    			ai = yes
+    		}
+    	}
+    }
+    immediate = {
+    	society = {
+    		random_society_member = {
+    			limit = {
+    				reverse_opinion = { who = ROOT value = 30 }
+	    			opinion = { who = ROOT value = 40 }
+	    			NOR = {
+	    				is_lover = ROOT
+	    				is_friend = ROOT
+	    				is_rival = ROOT
+	    				is_close_relative = ROOT
+	    			}
+	    			prisoner = no
+	    			NOT = { has_character_flag = ineligible_for_society_friendship }
+	    			ai = yes
+	    		}
+    			character_event = { id = MNM.10044 }
+    		}
+    	}
+    }
+}
+
+character_event = {
+    id = MNM.10044
+    hide_window = yes
+    is_triggered_only = yes
+    immediate = { FROM = { character_event = { id = MNM.10045 } } }
+}
+
+
+character_event = {
+    id = MNM.10045
+    picture = GFX_evt_courtiers_talking
+    border = GFX_event_normal_frame_diplomacy
+
+    desc = {
+    	trigger = {
+    		NOT = {
+    			society_member_of = secret_religious_cult
+    		}
+    	}
+    	text = EVTDESC_MNM_10045
+    	picture = GFX_evt_rival_rulers
+    }
+    desc = {
+    	trigger = { society_member_of = secret_religious_cult }
+    	text = EVTDESC_MNM_10045
+    	picture = GFX_evt_secret_ceremony
+    }
+
+    is_triggered_only = yes
+
+    #Make them friend
+    option = {
+        name = EVTOPTA_MNM_10045
+        add_friend = FROM
+
+        ai_chance = {
+        	factor = 75
+        	modifier = {
+        		has_pleasant_trait_trigger = yes
+        		factor = 15
+        	}
+        }
+    }
+
+    #Love?
+    option = {
+    	trigger = { FROM = { root_attraction_trigger = yes } }
+        name = EVTOPTC_MNM_10045
+        custom_tooltip = { text = EVTOPTB_MNM_6903_TT }
+
+        hidden_effect = { FROM = { character_event = { id = MNM.6906 days = 3 } } }
+
+        if = {
+        	limit = { ai = no }
+        	FROM = { set_character_flag = ineligible_for_society_friendship }
+        }
+
+        ai_chance = {
+        	factor = 25
+        	modifier = {
+        		factor = 0
+        		NOR = {
+        			trait = lustful
+        			AND = {
+        				NOT = { any_lover = { is_alive = yes } }
+        				is_married = yes
+        			}
+        			FROM = { has_attractive_trait_trigger = yes }
+        		}
+        	}
+        }
+    }
+
+    #Nah
+    option = {
+        name = EVTOPTB_MNM_10045
+
+        if = {
+        	limit = { ai = no }
+        	FROM = { set_character_flag = ineligible_for_society_friendship }
+        }
+
+        ai_chance = {
+        	factor = 25
+        	modifier = {
+        		has_unpleasant_trait_trigger = yes
+        		factor = 15
+        	}
+        }
+    }
+}
 
 character_event = { #Save game conversion of secret_traits to secret religions
 	id = MNM.10025
 	hide_window = yes
-	
+
 	is_triggered_only = yes
-	
+
 	ai = no
 	only_playable = yes
-	
+
 	trigger = {
 		is_multiplayer_host_character = yes
 		is_save_game = yes
 	}
-	
+
 	immediate = {
 		any_character = {
 			trigger_switch = {

@@ -828,19 +828,22 @@ character_event = { # Death of Roku - ROKU
 character_event = { # Ta Min
 	id = ATLAE.20
 	hide_window = yes
-	has_character_flag = Ta_Min
-	
+	has_character_flag = is_ta_min
+	is_married = no
+
 	mean_time_to_happen = {
-		days = 72
+		days = 100
 	}
 
 	trigger = {
 		NOT = { year = 795 }
-		NOT = { has_character_flag = married }
 		is_title_active = d_avatar
 		d_avatar = {
 			owner = {
 				has_character_flag = is_roku
+				NOT = {
+					has_character_flag = avatar_journey
+				}
 			}
 		}
 	}
@@ -853,10 +856,8 @@ character_event = { # Ta Min
 					add_spouse = ROOT
 				}
 			}
-			set_character_flag = married
 		}
 	}
-	
 }
 
 character_event = { # Firelord reminded of approaching Comet
@@ -875,7 +876,7 @@ character_event = { # Firelord reminded of approaching Comet
 		}
 	}
 	
-	mean_time_to_happen = {
+	weight_multiplier = {
 		days = 14
 	}
 
@@ -1168,8 +1169,8 @@ narrative_event = { # Victor decides fate of FN
 							region = world_fire_isles
 							region = world_hu_xin_provinces
 						}
+						de_facto_liege = ROOT # ALL THE FILE NEEDS TO BE DESTROYED AND REWRITTEN
 					}
-					de_facto_liege = THIS
 				}
 			}
 		}
@@ -3209,7 +3210,15 @@ character_event = { # HYW - Check Region
 				NOT = { has_global_flag = campaign_hu_xin_provinces_victory }
 				e_fire_nation = {
 					holder_scope = {
-						completely_controls = world_hu_xin_provinces
+						completely_controls = d_yu_dao 
+						completely_controls = d_gangxi 
+						completely_controls = d_haiyang 
+						completely_controls = d_han_tui 
+						completely_controls = d_north_plain 
+						completely_controls = d_riluodi 
+						completely_controls = d_yantai 
+						completely_controls = d_badaji 
+						completely_controls = d_senlin
 					}
 				}
 			}
@@ -4183,7 +4192,12 @@ narrative_event = {
 	
 	option = {
 		name = EVTOPTAhA.112
-		trigger = { has_landed_title = e_earth_kingdom }
+		trigger = { 
+			OR = {
+				has_landed_title = e_earth_kingdom 
+				has_landed_title = k_earth_kingdom
+			}
+		}
 		custom_tooltip = {
 			text = ATLAE112_EARTH_FORCES
 			hidden_tooltip = {
@@ -4244,7 +4258,10 @@ narrative_event = {
 		name = EVTOPTAhD.112
 		trigger = { 
 			NOT = { culture_group = fire_nation_culture }
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = { 
+				has_landed_title = k_earth_kingdom
+				has_landed_title = e_earth_kingdom 
+			}
 		}
 	}
 }
@@ -4375,7 +4392,7 @@ narrative_event = { # SHDS - Ba Sing Se falls!
 			has_landed_title = e_earth_kingdom
 		}
 		destroy_landed_title = e_earth_kingdom
-		destroy_landed_title = e_earth_kingdom
+		#destroy_landed_title = e_earth_kingdom
 	}
 	option = {
 		name = EVTOPTAhD.117
@@ -4384,7 +4401,7 @@ narrative_event = { # SHDS - Ba Sing Se falls!
 		}
 		hidden_tooltip = {
 			destroy_landed_title = e_earth_kingdom
-			destroy_landed_title = e_earth_kingdom
+			#destroy_landed_title = e_earth_kingdom
 			e_fire_nation = {
 				holder_scope = {
 					character_event = { id = ATLAE.132 }
@@ -4509,7 +4526,7 @@ character_event = { # SHDS - Prince's Ambition - Ambitious Prince is denied
 character_event = { # SHDS - Prince's Ambition - Firelord is poisoned
 	id = ATLAE.122
 	desc = "EVTDESCHYW.122"
-	picture = "GFX_evt_night_firepalace"
+	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 	
 	option = {
@@ -4529,7 +4546,7 @@ character_event = { # SHDS - Prince's Ambition - Firelord is poisoned
 character_event = { # SHDS - Prince's Ambition - Ambitious Prince seizes Throne
 	id = ATLAE.123
 	desc = "EVTDESCHYW.123"
-	picture = "GFX_evt_night_firepalace"
+	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 	
 	option = {
@@ -4603,7 +4620,7 @@ character_event = { # SHDS - Start War for Inner Ring
 character_event = { # SHDS - Prince's Ambition - Firelord is murdered
 	id = ATLAE.127
 	desc = "EVTDESCHYW.127"
-	picture = "GFX_evt_night_firepalace"
+	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 	
 	option = {
@@ -4623,7 +4640,7 @@ character_event = { # SHDS - Prince's Ambition - Firelord is murdered
 character_event = { # SHDS - Prince's Ambition - Ambitious Prince seizes Throne
 	id = ATLAE.128
 	desc = "EVTDESCHYW.128"
-	picture = "GFX_evt_night_firepalace"
+	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 	
 	option = {
@@ -4662,7 +4679,7 @@ character_event = { # SHDS - Prince's Ambition - Ambitious Prince is accepted
 character_event = { # SHDS - Prince's Ambition - Firelord is murdered
 	id = ATLAE.130
 	desc = "EVTDESCHYW.127"
-	picture = "GFX_evt_night_firepalace"
+	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 	
 	option = {
@@ -4682,7 +4699,7 @@ character_event = { # SHDS - Prince's Ambition - Firelord is murdered
 character_event = { # SHDS - Prince's Ambition - Ambitious Prince seizes Throne
 	id = ATLAE.131
 	desc = "EVTDESCHYW.128"
-	picture = "GFX_evt_night_firepalace"
+	picture = GFX_evt_night_fire_palace
 	is_triggered_only = yes
 	
 	option = {

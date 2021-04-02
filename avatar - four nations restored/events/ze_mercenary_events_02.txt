@@ -14,6 +14,8 @@ character_event = {
 
 	hide_window = yes
 
+	is_married = no
+	
 	is_triggered_only = yes
 	
 	trigger = {
@@ -21,7 +23,6 @@ character_event = {
 			has_character_flag = mercenary_pondered_marriage
 		}
 		is_lowborn = no
-		is_married = no
 		can_marry = yes
 		mercenary = yes
 		primary_title = {
@@ -34,9 +35,8 @@ character_event = {
 					ai = yes
 
 					NOR = { 
-						trait = ugly
-						trait = slow
-						trait = imbecile
+						has_ugly_trait_trigger = yes
+						is_dumb_trigger = yes
 						trait = dwarf
 						same_sex = ROOT
 						sibling = ROOT
@@ -59,9 +59,8 @@ character_event = {
 						ai = yes
 
 						NOR = { 
-							trait = ugly
-							trait = slow
-							trait = imbecile
+							has_ugly_trait_trigger = yes
+							is_dumb_trigger = yes
 							trait = dwarf
 							same_sex = ROOT
 							sibling = ROOT
@@ -140,8 +139,16 @@ character_event = {
 	
 	trigger = {
 		mercenary = yes
-		NOT = { 
-			has_mercenary_maintenance_modifier = maintaining_mercenary_band_7
+		primary_title = {
+			band_creator = {
+				NOT = {
+					any_demesne_title = {
+						tier = COUNT
+						mercenary = yes
+						has_mercenary_maintenance_modifier = maintaining_mercenary_band_7
+					}
+				}
+			}
 		}
 	}
 
@@ -176,6 +183,7 @@ character_event = {
 				trait = paranoid
 			}
 		}
+		custom_tooltip = { text = EVTTOOLTIP_ZE_11011 }
 		FROM = {
 			primary_title = {
 				increase_mercenary_troop_support_effect = yes
@@ -261,42 +269,64 @@ character_event = {
 		custom_tooltip = {
 			text = EVTOPTA_ZE_11021_TOOLTIP
 		}
-		hidden_tooltip = {
-			random_demesne_province = {
-				limit = {
-					NOT = {
-						has_province_modifier = highway_robber_band
-					}
-				}
-				add_province_modifier = {
-					modifier = highway_robber_band
-					duration = -1
-				}
-			}
-			random_demesne_province = {
-				limit = {
-					NOT = {
-						has_province_modifier = highway_robber_band
-					}
-				}
-				add_province_modifier = {
-					modifier = highway_robber_band
-					duration = -1
-				}
-			}
-			random_demesne_province = {
-				limit = {
-					NOT = {
-						has_province_modifier = highway_robber_band
-					}
-				}
-				add_province_modifier = {
-					modifier = highway_robber_band
-					duration = -1
-				}
-			}
 			FROM = {
-				character_event = { id = ZE.11030} #Flag clearing event for old merc captain
+				show_scope_change = no
+				opinion = { 
+					who = ROOT 
+					modifier = opinion_hate
+					years = 100
+				}
+				set_character_flag = flag_upset_with_band_creator
+			}
+			random_demesne_province = {
+				limit = {
+					NOT = {
+						has_province_modifier = highway_robber_band
+					}
+				}
+				add_province_modifier = {
+					modifier = highway_robber_band
+					duration = -1
+				}
+				hidden_tooltip = {
+					ROOT = {
+						random_demesne_province = {
+							limit = {
+								NOT = {
+									has_province_modifier = highway_robber_band
+								}
+								NOT = {
+									province = PREVPREV
+								}
+							}
+							add_province_modifier = {
+								modifier = highway_robber_band
+								duration = -1
+							}
+							ROOT = {
+								random_demesne_province = {
+									limit = {
+										NOT = {
+											has_province_modifier = highway_robber_band
+										}
+										NOR = {
+											province = PREVPREV
+											province = PREVPREVPREV
+										}
+									}
+									add_province_modifier = {
+										modifier = highway_robber_band
+										duration = -1
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		hidden_tooltip = {
+			FROM = {
+				character_event = { id = ZE.11030 } #Flag clearing event for old merc captain
 			}
 		}
 	}
@@ -314,6 +344,7 @@ character_event = {
 			activate_title = { title = THIS status = no }
 			destroy_landed_title = THIS
 		}
+		clear_wealth = yes
 		clr_character_flag = is_mercenary_leader
 		clr_character_flag = mercenary_ambition_1
 		clr_character_flag = mercenary_ambition_2
@@ -325,6 +356,21 @@ character_event = {
 		clr_character_flag = mercenary_ambition_8
 		clr_character_flag = mercenary_ambition_9
 		clr_character_flag = denied_last_request
+		if = {
+			limit = { has_character_flag = flag_upset_with_band_creator }
+			FROM = { 
+				random_realm_character = { 
+					limit = { 
+						is_ruler = yes 
+						NOT = { character = FROM } 
+					}  
+					ROOT = { 
+						move_character = PREV
+						clr_character_flag = flag_upset_with_band_creator
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -363,6 +409,10 @@ character_event = {
 		event_target:old_captain = {
 			primary_title = {
 				grant_title = event_target:proposed_captain
+			}
+			transfer_scaled_wealth = {
+				to = event_target:proposed_captain
+				value = all
 			}
 		}
 		event_target:proposed_captain = {

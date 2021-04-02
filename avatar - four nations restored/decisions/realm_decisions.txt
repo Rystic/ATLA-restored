@@ -1,37 +1,120 @@
 decisions = {
+
+	hold_a_epic_tournament  = {
+		only_independent = yes
+		is_high_prio = yes
+		ai_check_interval = 24
+		
+		potential = {
+			is_playable = yes
+			NOR = {
+				has_character_modifier = epic_tournament
+				has_character_flag = epic_tournament
+			}
+			independent = yes
+			OR = {
+				gender_equality_trigger = yes
+				NOT = { is_female = yes	}
+			}
+			OR = {
+				tier = king
+				tier = emperor 
+			}
+			location = {
+				owner = { character = ROOT }
+			}
+		}
+		allow = {
+			war = no
+			prisoner = no
+			in_command = no
+			NOT = { is_inaccessible_trigger = yes }
+			age = 16
+			prestige = 500
+			wealth = 200
+			custom_tooltip = {
+				text = is_not_busy_trigger_tooltip
+				hidden_tooltip = { NOT = { has_character_flag = do_not_disturb } }
+			}
+		}
+		effect = {
+			add_character_modifier = {
+				name = epic_tournament
+				years = 100
+				hidden = yes
+			}
+			set_character_flag = do_not_disturb
+			clr_character_flag = tournament_has_ended
+			hidden_tooltip = { character_event = { id = 70999 days = 300 } } # Safety catch flag clearing
+			wealth = -200
+			prestige = 100
+			character_event = { id = 70033 tooltip = "tournament_invite" }
+			hidden_tooltip = {
+				clr_character_flag = tournament_has_ended
+			}
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						wealth = 1000
+						scaled_wealth = 3.0
+					}
+				}
+			}
+		}
+	}
 	
 	demand_liege_title = {
+		only_playable = yes
 		is_high_prio = yes
 		potential = {
-			NOT = { has_character_flag = requested_de_jure_title }
+			ai = no
+			is_playable = yes
+			has_ambition = obj_gain_any_title
 			liege = {
 				NOT = { character = ROOT }
 			}
-			age = 16
+			is_adult = yes
 			prisoner = no
-			is_playable = yes
-			tier = count
 			NOT = { trait = incapable }
 		}
 		allow = {
+			prestige = 60
 			liege = {
-				opinion = {
-					who = ROOT
-					value = 25
-				}
-			}
-			liege = {
+				has_regent = no
+				NOT = { has_opinion_modifier = { who = ROOT modifier = requested_land } }
+				demesne_size = 3
 				any_demesne_title = {
-					tier = duke
-					has_de_jure_pretension = ROOT
 					can_be_given_away = yes
-					lower_tier_than = PREV
+					tier = COUNT
+					NOT = { location = { is_capital = yes } }
 				}
 			}
 		}
 		effect = {
-			set_character_flag = requested_de_jure_title
-			liege = { letter_event = { id = 63041 days = 4 tooltip = "EVTTOOLTIP63041" } } # "vassal_request_events.txt"
+			prestige = -60
+			liege = {
+				opinion = {
+					who = ROOT
+					years = 2
+					modifier = requested_land
+				}
+				random_demesne_title = {
+					limit = {
+						can_be_given_away = yes
+						tier = COUNT
+						NOT = { location = { is_capital = yes } }
+					}
+					save_event_target_as = vassal_wanted_title
+				}
+			}
+			custom_tooltip = {
+				text = demand_liege_title_tooltip
+				hidden_tooltip = { liege = { letter_event = { id = 63041 days = 4 } } } # "vassal_request_events.txt"
+			}
 		}
 		ai_will_do = {
 			factor = 0 # The AI is limited to the similar event 63040
@@ -42,7 +125,10 @@ decisions = {
 		is_high_prio = yes
 		potential = {
 			NOT = { has_landed_title = c_royal_earth_palace }
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 			any_realm_lord = { 
 				AND = {
 					ai = yes
@@ -62,6 +148,7 @@ decisions = {
 					usurp_title_plus_barony_if_unlanded_and_vassals = PREV
 				}
 			}
+			log = "claim_royal_earth_palace fired check it as it might be a reason behind usurp bug"
 		}
 		ai_will_do = {
 			factor = 1
@@ -69,8 +156,11 @@ decisions = {
 	}
 	
 	petition_doge_for_tp = {
+		only_playable = yes
 		is_high_prio = yes
+		ai_check_interval = 6
 		potential = {
+			is_playable = yes
 			is_merchant_republic = no
 			is_patrician = yes
 			liege = { is_merchant_republic = yes }
@@ -116,8 +206,11 @@ decisions = {
 	}
 	
 	usurp_tp = {
+		only_playable = yes
 		is_high_prio = yes
+		ai_check_interval = 6
 		potential = {
+			is_playable = yes
 			is_merchant_republic = yes
 			is_patrician = yes
 			NOT = { has_character_flag = usurp_tp_taken }
@@ -189,13 +282,283 @@ decisions = {
 		}
 	}
 	
-	form_new_empire = {
+	
+	form_new_kingdom = {
+		only_independent = yes
 		is_high_prio = yes
+		ai_check_interval = 24
+		
 		potential = {
-			has_dlc = "Charlemagne"
+			is_playable = yes
+			tier = DUKE
+			NOT = { tier = KING }
+			
+			OR = {
+				has_dlc = "Charlemagne"
+				AND = {
+					is_alternate_start = yes
+					has_alternate_start_parameter = {
+						key = dejure_kingdoms
+						value = none
+					}
+				}
+			}
+			
+			holy_order = no
+			
+			NOT = {
+				has_game_rule = {
+					name = dynamic_realms
+					value = off
+				}
+			}
+			
+			OR = {
+				ai = no
+				AND = {
+					trait = proud
+					prestige = 5000
+				}
+				AND = {
+					trait = ambitious
+					prestige = 5000
+				}
+				AND = {
+					realm_size = 70
+					any_demesne_title = {
+						count = 4
+						tier = DUKE
+					}
+				}
+				prestige = 15000
+				AND = {
+					is_alternate_start = yes
+					has_alternate_start_parameter = {
+						key = dejure_kingdoms
+						value = none
+					}
+				}
+			}
+		}
+		allow = {
+			is_adult = yes
+			prisoner = no
+			NOT = { trait = incapable }
+			independent = yes
+			
+			conditional_tooltip = {
+				trigger = {
+					AND = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_kingdoms
+							value = none
+						}
+					}
+				}
+				prestige = 250
+				wealth = 50
+			}
+			
+			conditional_tooltip = {
+				trigger = {
+					NOT = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_kingdoms
+							value = none
+						}
+					}
+				}
+				prestige = 1000
+				wealth = 300
+			}
+
+			OR = {
+				realm_size = 35
+				custom_tooltip = {
+					text = form_new_kingdom_requirement_tooltip
+					hidden_tooltip = {
+						any_demesne_title = {
+							count = 3
+							tier = DUKE
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			primary_title = {
+				create_title = {
+					tier = KING
+					landless = no
+					temporary = no
+					custom_created = yes
+					culture = ROOT
+					holder = ROOT
+					base_title = THIS
+					copy_title_laws = yes
+				}
+
+				new_title = {
+					copy_title_history = PREV
+				}
+
+				hidden_tooltip = {
+					empire = {
+						ROOT = {
+							primary_title = {
+								de_jure_liege = PREVPREV
+							}
+						}
+					}
+
+					ROOT = {
+						primary_title = {
+							holder_scope = {
+								any_title_under = {
+									limit = {
+										tier = DUKE
+										kingdom = {
+											has_holder = no
+										}
+									}
+									de_jure_liege = PREVPREV
+								}
+								if = {
+									limit = {
+										has_alternate_start_parameter = {
+											key = dejure_kingdoms
+											value = none
+										}
+									}
+									any_title_under = {
+										limit = {
+											tier = DUKE
+										}
+										de_jure_liege = PREVPREV
+									}
+								}
+								any_title_under = {
+									limit = {
+										tier = COUNT
+										location = {
+											duchy = {
+												kingdom = {
+													has_holder = no
+												}
+												
+												NOT = { de_jure_liege_or_above = PREVPREVPREVPREV }
+												ROOT = {
+													completely_controls = PREV
+												}
+											}
+										}
+									}
+									location = {
+										duchy = {
+											de_jure_liege = PREVPREVPREVPREV
+										}
+									}
+								}
+								if = {
+									limit = {
+										has_alternate_start_parameter = {
+											key = dejure_kingdoms
+											value = none
+										}
+									}
+									any_title_under = {
+										limit = {
+											tier = COUNT
+											location = {
+												duchy = {
+													NOT = { de_jure_liege_or_above = PREVPREVPREVPREV }
+													ROOT = {
+														completely_controls = PREV
+													}
+												}
+											}
+										}
+										location = {
+											duchy = {
+												de_jure_liege = PREVPREVPREVPREV
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+			}
+			if = {
+				limit = {
+					AND = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_kingdoms
+							value = none
+						}
+					}
+				}
+				wealth = -50
+			}
+			if = {
+				limit = {
+					NOT = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_kingdoms
+							value = none
+						}
+					}
+				}
+				wealth = -300
+			}
+			custom_tooltip = { text = form_new_kingdom_tooltip }
+			chronicle = {
+				entry = CHRONICLE_FOUNDED_NEW_KINGDOM_OR_EMPIRE
+				portrait = [Root.GetID]
+			}
+		}
+		revoke_allowed = {
+			always = no
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	form_new_empire = {
+		only_independent = yes
+		is_high_prio = yes
+		ai_check_interval = 24
+		
+		potential = {
 			is_playable = yes
 			tier = KING
-			is_nomadic = no
+			
+			OR = {
+				has_dlc = "Charlemagne"
+				AND = {
+					is_alternate_start = yes
+					OR = {
+						has_alternate_start_parameter = {
+							key = dejure_kingdoms
+							value = none
+						}
+						has_alternate_start_parameter = {
+							key = dejure_empires
+							value = none
+						}
+					}
+				}
+			}
+			
+			holy_order = no
+			
 			NOT = { tier = EMPEROR }
 			OR = {
 				ai = no
@@ -208,6 +571,26 @@ decisions = {
 					prestige = 40000
 				}
 				prestige = 120000
+				AND = {
+					is_alternate_start = yes
+					OR = {
+						has_alternate_start_parameter = {
+							key = dejure_kingdoms
+							value = none
+						}
+						has_alternate_start_parameter = {
+							key = dejure_empires
+							value = none
+						}
+					}
+				}
+			}
+			
+			NOT = {
+				has_game_rule = {
+					name = dynamic_realms
+					value = off
+				}
 			}
 		}
 		allow = {
@@ -215,7 +598,35 @@ decisions = {
 			prisoner = no
 			NOT = { trait = incapable }
 			independent = yes
-			prestige = 1000
+			
+			conditional_tooltip = {
+				trigger = {
+					AND = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_empires
+							value = none
+						}
+					}
+				}
+				prestige = 2000
+				wealth = 200
+			}
+			
+			conditional_tooltip = {
+				trigger = {
+					NOT = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_empires
+							value = none
+						}
+					}
+				}
+				prestige = 8000
+				wealth = 1000
+			}
+			
 			OR = {
 				realm_size = 180
 				custom_tooltip = {
@@ -228,7 +639,6 @@ decisions = {
 					}
 				}
 			}
-			wealth = 1000
 		}
 		effect = {
 			primary_title = {
@@ -243,6 +653,10 @@ decisions = {
 					copy_title_laws = yes
 				}
 
+				new_title = {
+					copy_title_history = PREV
+				}
+
 				hidden_tooltip = {
 					ROOT = {
 						primary_title = {
@@ -250,8 +664,8 @@ decisions = {
 								any_title_under = {
 									limit = {
 										tier = KING
-										empire = {
-											has_holder = no
+										NOT = {
+											empire = { has_holder = yes }
 										}
 									}
 									de_jure_liege = PREVPREV
@@ -261,8 +675,8 @@ decisions = {
 										tier = DUKE
 										location = {
 											kingdom = {
-												empire = {
-													has_holder = no
+												NOT = {
+													empire = { has_holder = yes }
 												}
 												
 												NOT = { de_jure_liege_or_above = PREVPREVPREVPREV }
@@ -283,7 +697,32 @@ decisions = {
 					}
 				}
 			}
-			wealth = -1000
+			
+			if = {
+				limit = {
+					AND = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_empires
+							value = none
+						}
+					}
+				}
+				wealth = -200
+			}
+			if = {
+				limit = {
+					NOT = {
+						is_alternate_start = yes
+						has_alternate_start_parameter = {
+							key = dejure_empires
+							value = none
+						}
+					}
+				}
+				wealth = -1000
+			}
+			
 			custom_tooltip = { text = form_new_empire_tooltip }
 			chronicle = {
 				entry = CHRONICLE_FOUNDED_NEW_KINGDOM_OR_EMPIRE
@@ -407,6 +846,7 @@ decisions = {
 	convert_to_earth_feudalism_indep  = {
 		only_independent = yes
 		is_high_prio = yes
+		ai_check_interval = 12
 		
 		potential = {
 			is_playable = yes
@@ -458,7 +898,7 @@ decisions = {
 						tier = baron
 						holding_type = tribal
 					}
-					convert_to = castle
+					convert_to = CASTLE
 					refill_holding_levy = yes
 					
 					if = {
@@ -512,6 +952,7 @@ decisions = {
 	convert_to_fire_feudal_indep  = {
 		only_independent = yes
 		is_high_prio = yes
+		ai_check_interval = 12
 		
 		potential = {
 			is_playable = yes

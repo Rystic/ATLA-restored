@@ -56,6 +56,9 @@ earth_religions = {
 	playable = yes
 	hostile_within_group = yes
 	color = { 0.8 0.4 0.0 }
+	
+	ai_convert_same_group = 2 # always try to convert
+	ai_convert_other_group = 2	# always try to convert
 
 ############### EARTH SPIRITUALITY RELIGIONS ###################################
 
@@ -257,10 +260,15 @@ earth_religions = {
 	}
 
 	the_great_serpent = { # Spiritualist
+		
 		icon = 3
 		heresy_icon = 4
-		reformed = the_great_serpent_reformed
 		color = { 95 163 145 }
+		character_modifier = {
+			religion_flex = 0.1
+			monthly_character_prestige = 0.25
+			demesne_size = 1
+		}
 		scripture_name = THE_LORE
 		priest_title = EARTH_SAGE
 		priests_can_marry = yes
@@ -268,7 +276,7 @@ earth_religions = {
 		can_retire_to_monastery = yes
 		female_temple_holders = yes
 		can_grant_divorce = yes
-		allow_rivermovement = no
+		allow_rivermovement = yes
 		god_names = {
 			GOD_EARTH GOD_THE_EARTH GOD_THE_EARTH_SPIRIT GOD_THE_SPIRITS GOD_THE_SERPENT
 		}
@@ -276,16 +284,19 @@ earth_religions = {
 		evil_god_names = {
 			EVILGOD_THE_DARK_SPIRITS EVILGOD_THE_SERPENT
 		}
+		aggression = 4
 		investiture = no
+		allow_looting = yes
 		can_have_antipopes = no
 		can_excommunicate = no
 		can_call_crusade = no
-		short_reign_opinion_year_mult = 1
-		religious_clothing_head = 4
-		religious_clothing_priest = 1
 		cousin_marriage = no
 		psc_marriage = no
-		piety_name = SPIRITUALITY
+		seafarer = yes
+		short_reign_opinion_year_mult = 3
+		religious_clothing_head = 4
+		religious_clothing_priest = 1
+		piety_name = SPIRITUALITY_SERPENT
 		intermarry = air_acolytism
 		intermarry = neo-nomadism
 		intermarry = earth_spirituality
@@ -617,7 +628,6 @@ earth_religions = {
 	way_of_chin = { # Imperialist
 		icon = 7
 		heresy_icon = 8
-		parent = earth_monarchism
 		color = { 56 101 5 }
 		scripture_name = THE_LORE
 		priest_title = EARTH_SAGE
@@ -931,13 +941,15 @@ earth_religions = {
 		color = { 255 215 0 }
 		scripture_name = THE_DRAGON_BONES
 		priest_title = FORTUNE_TELLER
+		
+		ai_convert_other_group = 2 # always try to convert
 		priests_can_marry = yes
-		feminist = yes # Nullifies the negative opinion modifier that vassals normally get if ruler is female or has female heir
+		feminist = yes
 		can_retire_to_monastery = yes
 		female_temple_holders = yes
-		can_grant_divorce = yes
-		allow_rivermovement = no
-		allow_in_ruler_designer = no		
+		
+		allow_in_ruler_designer = no	
+		
 		god_names = {
 			 GOD_THE_SPIRITS
 		}
@@ -945,6 +957,8 @@ earth_religions = {
 		evil_god_names = {
 			EVILGOD_THE_DARK_SPIRITS EVILGOD_FATHER_GLOWWORM
 		}
+		
+		max_consorts = 3 # Can take concubines
 		investiture = no
 		can_have_antipopes = no
 		can_excommunicate = no
@@ -954,7 +968,14 @@ earth_religions = {
 		religious_clothing_priest = 1
 		cousin_marriage = no
 		psc_marriage = no
+		
+		character_modifier = {
+			fertility = 0.10
+			learning = -4
+		}
+		
 		piety_name = SPIRITUALITY
+		
 		intermarry = air_acolytism
 		intermarry = neo-nomadism
 		intermarry = earth_spirituality
@@ -993,12 +1014,14 @@ earth_religions = {
 		color = { 255 215 0 }
 		scripture_name = THE_DRAGON_BONES
 		priest_title = FORTUNE_TELLER
+		
+		ai_convert_other_group = 2 # always try to convert
+		
 		priests_can_marry = yes
 		feminist = yes # Nullifies the negative opinion modifier that vassals normally get if ruler is female or has female heir
 		can_retire_to_monastery = yes
 		female_temple_holders = yes
-		can_grant_divorce = yes
-		allow_rivermovement = no
+		
 		god_names = {
 			 GOD_THE_SPIRITS
 		}
@@ -1006,6 +1029,8 @@ earth_religions = {
 		evil_god_names = {
 			EVILGOD_THE_DARK_SPIRITS EVILGOD_FATHER_GLOWWORM
 		}
+		
+		max_consorts = 3 # Can take concubines
 		investiture = no
 		can_have_antipopes = no
 		can_excommunicate = no
@@ -1015,6 +1040,12 @@ earth_religions = {
 		religious_clothing_priest = 1
 		cousin_marriage = no
 		psc_marriage = no
+		
+		character_modifier = {
+			fertility = 0.10
+			learning = -4
+		}
+		
 		piety_name = SPIRITUALITY
 		intermarry = air_acolytism
 		intermarry = neo-nomadism
@@ -1288,63 +1319,9 @@ fire_religions = {
 		intermarry = fire_spirituality_reformed
 	}
 
-	fire_nation_imperialism_reformed = { # Imperialist
-		icon = 19
-		heresy_icon = 19
-		color = { 105 12 12 }
-		unit_modifier = {
-			levy_size = 0.3
-			retinuesize_perc = 0.5
-			key = "OFF_RELIGION"
-		}
-		scripture_name = DRAGONBONE_SCROLLS
-		aggression = 2.0
-		has_heir_designation = yes
-		graphical_culture = chinesegfx
-		priest_title = FIRE_SAGE
-		priests_can_marry = yes # As Shyu's grandfather was Roku's mentor
-		feminist = yes # Nullifies the negative opinion modifier that vassals normally get if ruler is female or has female heir
-		can_retire_to_monastery = yes
-		can_grant_divorce = yes
-		allow_rivermovement = no
-		seafarer = no
-		uses_decadence = no
-		short_reign_opinion_year_mult = 0.5
-		allow_in_ruler_designer = no		
-		god_names = {
-			GOD_THE_SUN GOD_THE_FIRE_SPIRIT GOD_THE_SPIRITS GOD_THE_EMBER GOD_THE_PHOENIX
-		}
-		high_god_name = GOD_THE_SUN
-		evil_god_names = {
-			EVILGOD_THE_DARK_SPIRITS
-		}
-		allow_looting = yes
-		investiture = no
-		can_have_antipopes = no
-		can_excommunicate = yes
-		can_call_crusade = no
-		raised_vassal_opinion_loss = no
-		peace_prestige_loss = yes
-		religious_clothing_head = 2
-		religious_clothing_priest = 2
-		cousin_marriage = yes
-		max_consorts = 4
-		landed_kin_prestige_bonus = yes
-		psc_marriage = yes
-		piety_name = HONOUR
-		intermarry = fire_spirituality
-		intermarry = bhanti_spirituality
-		intermarry = the_eternal_flame
-		intermarry = fire_spirituality_reformed
-		intermarry = bhanti_spirituality_reformed
-		intermarry = the_eternal_flame_reformed
-		intermarry = fire_nation_imperialism
-	}
-
 	fire_nation_imperialism = { # Imperialist
 		icon = 19
 		heresy_icon = 19
-		reformed = fire_nation_imperialism_reformed
 		color = { 105 12 12 }
 		unit_modifier = {
 			levy_size = 0.3
@@ -1558,7 +1535,6 @@ air_religions = {
 	color = { 0.8 0.4 0.0 }
 
 	air_spirituality = { # Pacifist
-		graphical_culture = westerngfx
 		icon = 20
 		heresy_icon = 21
 		pacifist = yes
@@ -1669,7 +1645,6 @@ air_religions = {
 	}
 	
 	nomadic_nihilism = { # Imperialist
-		graphical_culture = westerngfx
 		icon = 21
 		heresy_icon = 20
 		parent = air_spirituality
@@ -1768,11 +1743,9 @@ air_religions = {
 		intermarry = anarchism_reformed
 		intermarry = piracy_reformed
 		intermarry = barbarism_reformed
-		intermarry = nomadic_nihilism_reformed
 	}
 
 	air_acolytism = { # Pacifist
-		graphical_culture = westerngfx
 		icon = 22
 		heresy_icon = 22
 		pacifist = yes
@@ -1871,7 +1844,6 @@ air_religions = {
 	}
 
 	neo-nomadism = { # Spiritualist
-		graphical_culture = westerngfx
 		icon = 22
 		heresy_icon = 22
 		parent = air_acolytism
@@ -1976,7 +1948,6 @@ air_religions = {
 }
 
 water_religions = {
-
 	has_coa_on_barony_only = yes
 	graphical_culture = indiangfx
 	playable = yes
@@ -2196,16 +2167,7 @@ water_religions = {
 		heresy_icon = 29
 		reformed = the_great_swamp_reformed
 		color = { 35 229 236 }
-		has_heir_designation = yes
 		priest_title = WATER_SAGE
-		priests_can_marry = yes
-		feminist = yes # Nullifies the negative opinion modifier that vassals normally get if ruler is female or has female heir
-		can_retire_to_monastery = yes
-		female_temple_holders = yes
-		can_grant_divorce = yes
-		allow_rivermovement = yes
-		defensive_attrition = yes
-		#autocephaly = yes
 		short_reign_opinion_year_mult = 0.5
 		god_names = {
 			GOD_THE_MOON GOD_THE_SPIRITS GOD_THE_SWAMP
@@ -2214,44 +2176,91 @@ water_religions = {
 		evil_god_names = {
 			EVILGOD_THE_DARK_SPIRITS
 		}
+		
+		religious_clothing_head = 4
+		religious_clothing_priest = 1
+		
+		priests_can_marry = yes
+
+		feminist = yes
+		female_temple_holders = yes
+		
+		defensive_attrition = yes
+		allow_looting = yes
+		
+		max_wives = 4
+		cousin_marriage = yes
+		psc_marriage = yes
+		bs_marriage = yes
+		
+		hard_to_convert = yes
+		attacking_same_religion_piety_loss = yes
+		ai_convert_same_group = 2
+		ai_convert_other_group = 1
+		
+		peace_piety_gain = 2.0
+		
+		graphical_culture = norsegfx
+
+		piety_name = SPIRITUALITY
+		aggression = 1.5
+	}
+
+	tui_and_la_reformed = { # Dummied Out
+		icon = 25
+		heresy_icon = 26
+		color = { 84 136 215 }
+		scripture_name = INUKSHUK_RUNES
+		has_heir_designation = yes
+		priest_title = WATER_SAGE
+		#investiture = yes
+		#can_have_antipopes = yes
+		priests_can_marry = yes
+		can_retire_to_monastery = yes
+		female_temple_holders = no
+		can_grant_divorce = yes
+		allow_rivermovement = yes
+		matrilineal_marriages = no
+		autocephaly = yes
+		short_reign_opinion_year_mult = 0.5
+		god_names = {
+			GOD_THE_MOON GOD_THE_SPIRITS GOD_THE_OCEAN GOD_SPIRIT_OF_THE_OCEAN GOD_SPIRIT_OF_THE_MOON GOD_TUI_AND_LA
+		}
+		high_god_name = GOD_TUI_AND_LA
+		evil_god_names = {
+			EVILGOD_THE_DARK_SPIRITS EVILGOD_THE_MOONSLAYER
+		}
 		investiture = no
 		seafarer = yes
 		allow_looting = yes
 		can_have_antipopes = no
 		can_excommunicate = no
 		can_call_crusade = no
-		religious_clothing_head = 4
-		religious_clothing_priest = 1
+		religious_clothing_head = 5
+		religious_clothing_priest = 5
 		cousin_marriage = yes
-		psc_marriage = yes
 		max_consorts = 3
-		hard_to_convert = yes
+		psc_marriage = no
 		piety_name = SPIRITUALITY
-		aggression = 1.5
-		intermarry = air_acolytism
-		intermarry = neo-nomadism
-		intermarry = earth_spirituality
-		intermarry = omashuan_ethics
-		intermarry = piracy
-		intermarry = southern_spirituality
 		intermarry = tui_and_la
+		intermarry = the_great_swamp
 		intermarry = witchcraft
-		intermarry = vaatuism
-		intermarry = air_acolytism_reformed
-		intermarry = neo-nomadism_reformed
-		intermarry = earth_spirituality_reformed
-		intermarry = omashuan_ethics_reformed
-		intermarry = piracy_reformed
-		intermarry = southern_spirituality_reformed
-		intermarry = tui_and_la_reformed
 		intermarry = witchcraft_reformed
+		intermarry = vaatuism
 		intermarry = vaatuism_reformed
+		intermarry = air_acolytism
+		intermarry = air_acolytism_reformed
+		intermarry = neo-nomadism
+		intermarry = neo-nomadism_reformed
+		intermarry = southern_spirituality
+		intermarry = southern_spirituality_reformed
 		intermarry = the_great_swamp_reformed
 	}
 
 	tui_and_la = { # Spiritualist
 		icon = 25
 		heresy_icon = 26
+		reformed = tui_and_la_reformed
 		color = { 84 136 215 }
 		scripture_name = INUKSHUK_RUNES
 		has_heir_designation = yes
@@ -2335,7 +2344,6 @@ water_religions = {
 		max_consorts = 4
 		piety_name = SPIRITUALITY
 		aggression = 2
-		allow_in_ruler_designer = no
 		intermarry = southern_spirituality
 		intermarry = the_great_swamp
 		intermarry = tui_and_la
@@ -2629,7 +2637,6 @@ outlaw_religions = {
 		max_consorts = 3
 		piety_name = FREEDOM
 		aggression = 2
-		allow_in_ruler_designer = no
 		intermarry = earth_spirituality
 		intermarry = ba_sing_se_cultural_heritage
 		intermarry = omashuan_ethics
@@ -3018,15 +3025,13 @@ outlaw_religions = {
 	barbarism = { # Barbarism
 		icon = 34
 		heresy_icon = 34
-		reformed = barbarism_reformed
-		pre_reformed = yes
 		color = { 155 23 58 }
 		priest_title = PRIEST
 		priests_can_marry = yes
 		can_retire_to_monastery = no
 		female_temple_holders = no
-		can_grant_divorce = yes
 		allow_rivermovement = no
+		can_grant_divorce = no
 		allow_looting = yes
 		#autocephaly = yes
 		seafarer = yes
@@ -3037,7 +3042,7 @@ outlaw_religions = {
 		evil_god_names = {
 			EVILGOD_THE_DARK_SPIRITS
 		}
-		max_consorts = 1
+		max_consorts = 3
 		investiture = no
 		can_have_antipopes = no
 		can_excommunicate = no
