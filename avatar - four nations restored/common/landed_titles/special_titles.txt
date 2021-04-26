@@ -2,8 +2,9 @@ e_rebels = {
 	rebel = yes
 	landless = yes
 	primary = yes
-
+	
 	culture = pirate
+	religion = piracy
 	tribe = yes
 
 	color={ 0 0 0 }
@@ -16,6 +17,7 @@ e_pirates = {
 	primary = yes
 
 	culture = pirate
+	religion = piracy
 	tribe = yes
 
 	color={ 0 0 0 }
@@ -366,20 +368,52 @@ d_avatar = {
 	independent = yes
 	primary = yes
 	
-	title = title_avatar
-	title_female = title_avatar
+	# add custom titles
+	title = "AVATAR_TITLE"
+	title_female = "AVATAR_TITLE"
+	foa = "AVATAR_FOA" # The bridge between the worlds
+
+	gain_effect = {
+		if = {
+			limit = {
+				owner = {
+					is_avatar_trigger = no
+				}
+			}
+			unsafe_destroy_landed_title = d_avatar
+		}
+	}
+}
+
+
+d_avatar_unrevealed = {
+	color = { 255 255 255 }
+	color2 = { 255 255 255 }
+	allow = {
+		always = no
+	}
+	
+	# capital = 228
+	dynasty_title_names = yes
+	landless = yes
+	short_name = yes
+	# independent = yes
+	# primary = yes
+	
+	# title = "UNREVEALED_AVATAR"
+	# title_female = "UNREVEALED_AVATAR"
 	
 	gain_effect = {
 		if = {
 			limit = {
 				owner = {
-					AND = {
-						NOT = { trait = avatar }
-						NOT = { trait = fullyrealisedavatar }
+					OR = {
+						NOT = { has_character_flag = avatar_unrevealed }
+						has_character_flag = avatar_revealed
 					}
 				}
 			}
-			unsafe_destroy_landed_title = d_avatar
+			unsafe_destroy_landed_title = d_avatar_unrevealed
 		}
 	}
 }
@@ -1096,25 +1130,6 @@ d_goaling_rumblers = {
 #		}
 #	}
 
-e_si_wong = {
-	color = { 108 142 62 }
-	color2 = { 118 130 20 }
-
-	capital = 281
-	location_ruler_title = yes
-	creation_requires_capital = no
-
-	culture = sandbender
-
-	title_prefix = "SAND_EMPIRE"
-	title = "SANDPIRE"
-	title_female = "SANDPIRE_F"
-
-	allow = {
-		always = no
-	}
-}
-
 d_princes_hunt = {
 	color = { 170 0 0 }
 	color2 = { 255 255 20 }
@@ -1394,7 +1409,7 @@ d_si_wong = {
 	dynasty_title_names = no 	# Will not be named "Seljuk", etc.
 }
 
-e_yellow_turbans = {
+k_yellow_turbans = {
 	color = { 168 164 50 }
 	color2 = { 168 164 50 }	
 	
@@ -1413,7 +1428,7 @@ e_yellow_turbans = {
 	dynasty_title_names = no
 }
 
-e_three_rings = {
+k_three_rings = {
 	color = { 52 165 203 }
 	color2 = { 48 135 166 }	
 	capital = 109 #c_royal_earth_palace
@@ -1429,4 +1444,4 @@ e_three_rings = {
 	religion = earth_spirituality
 	
 	dynasty_title_names = no
-}	
+}

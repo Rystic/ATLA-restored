@@ -573,6 +573,8 @@ character_event = { #triggers on avatars untimely death
 	}
 
 	immediate = {
+		set_global_flag = avatar_dead
+
 		d_avatar = {
 			unsafe_destroy_landed_title = d_avatar #yes
 		}
@@ -587,6 +589,17 @@ character_event = { #triggers on avatars untimely death
 				grant_title = PREV
 			}
 		}
+
+		if = {
+			limit = {
+				has_game_rule = {
+					name = avatar_system
+					value = new
+				}
+			}
+
+			create_new_avatar_effect = yes
+		}
 	}
 
 	option = {
@@ -596,8 +609,8 @@ character_event = { #triggers on avatars untimely death
 			}
 			narrative_event = { id = ATLA.3 }
 		}
+		
 		clr_character_flag = avatar_revealed
-		set_global_flag = avatar_dead
 		clr_global_flag = avatar_revealed
 	}
 }
@@ -925,7 +938,7 @@ character_event = { # Avatar Event Handler
 					}
 				}
 				random_list = {
-					50 = {
+					100 = {
 						# Stays
 					}
 					# 25 = { # Leaves (event is commented out, hence commented this out)
@@ -939,17 +952,17 @@ character_event = { # Avatar Event Handler
 							# }
 						# }
 					# }
-					50 = { # Leaves and marries (should be 25 once above is re-added)
-						ROOT = {
-							random_child = {
-								limit = {
-									de_facto_liege = ROOT
-									age = 18
-								}
-								character_event = { id = avatar.190 }
-							}
-						}
-					}
+					# 50 = { # Leaves and marries (should be 25 once above is re-added) (event is not existant)
+						# ROOT = {
+							# random_child = {
+								# limit = {
+									# de_facto_liege = ROOT
+									# age = 18
+								# }
+								# character_event = { id = avatar.190 }
+							# }
+						# }
+					# }
 				}
 			}
 		}
@@ -1065,188 +1078,330 @@ character_event = {
 			trait = airbender_master
 			trait = airbender_legendary
 		}
+		OR = {
+			trait = blueflames_rd
+			trait = innerflame_rd 
+			trait = levitation_rd
+			trait = voidbender_rd 
+			trait = lavabender_rd
+			trait = sandbender_rd
+			trait = metalbender_rd
+			trait = seismicsense_rd
+			trait = bloodbender_rd
+			trait = healer_rd
+			trait = lightningbender_rd
+			trait = smokebender_rd
+			trait = combustionbender_rd
+		}
 	}
 	option = {
+	
+		trigger_switch = {
+		on_trigger = trait	
+			waterbender_novice = {
+				remove_trait = waterbender_novice
+				add_trait = waterbender
+				add_trait = incompetent_bender
+			}
+			waterbender_trained = {
+				remove_trait = waterbender_trained
+				add_trait = waterbender
+				add_trait = competent_bender
+			}
+			waterbender_powerful = {
+				remove_trait = waterbender_powerful
+				add_trait = waterbender
+				add_trait = powerful_bender
+			}
+			waterbender_master = {
+				remove_trait = waterbender_master
+				add_trait = waterbender
+				add_trait = master_bender
+			}
+			waterbender_legendary = {
+				remove_trait = waterbender_legendary
+				add_trait = waterbender
+				add_trait = legendary_bender
+			}
+			firebender_novice = {
+				remove_trait = firebender_novice
+				add_trait = firebender
+				add_trait = incompetent_bender
+			}
+			firebender_trained = {
+				remove_trait = firebender_trained
+				add_trait = firebender
+				add_trait = competent_bender
+			}
+			firebender_powerful = {
+				remove_trait = firebender_powerful
+				add_trait = firebender
+				add_trait = powerful_bender
+			}
+			firebender_master = {
+				remove_trait = firebender_master
+				add_trait = firebender
+				add_trait = master_bender
+			}
+			firebender_legendary = { 
+				remove_trait = firebender_legendary 
+				add_trait = firebender 
+				add_trait = legendary_bender 
+			}
+			earthbender_novice = {
+				remove_trait = earthbender_novice
+				add_trait = earthbender
+				add_trait = incompetent_bender
+			}
+			earthbender_trained = {
+				remove_trait = earthbender_trained
+				add_trait = earthbender
+				add_trait = competent_bender
+			}
+			earthbender_powerful = {
+				remove_trait = earthbender_powerful
+				add_trait = earthbender
+				add_trait = powerful_bender
+			}
+			earthbender_master = {
+				remove_trait = earthbender_master
+				add_trait = earthbender
+				add_trait = master_bender
+			}
+			earthbender_legendary = {
+				remove_trait = earthbender_legendary
+				add_trait = earthbender
+				add_trait = legendary_bender
+			}
+			airbender_novice = {
+				remove_trait = airbender_novice
+				add_trait = airbender
+				add_trait = incompetent_bender
+			}
+			airbender_trained = {
+				remove_trait = airbender_trained
+				add_trait = airbender
+				add_trait = competent_bender
+			}
+			airbender_powerful = {
+				remove_trait = airbender_powerful
+				add_trait = airbender
+				add_trait = powerful_bender
+			}
+			airbender_master = {
+				remove_trait = airbender_master
+				add_trait = airbender
+				add_trait = master_bender
+			}
+			airbender_legendary = {
+				remove_trait = airbender_legendary
+				add_trait = airbender
+				add_trait = legendary_bender
+			}
+		}
+		
 		if = {
 			limit = {
-				trait = waterbender_novice
+				trait = blueflames_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_novice
-			add_trait = waterbender
-			add_trait = incompetent_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = blueflames_rd
+			}
+			else = {
+				remove_trait = blueflames_rd
+				add_trait = blueflames
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_trained
+				trait = innerflame_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_trained
-			add_trait = waterbender
-			add_trait = competent_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = innerflame_rd
+			}
+			else = {
+				remove_trait = innerflame_rd
+				add_trait = innerflame
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_powerful
+				trait = lightningbender_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_powerful
-			add_trait = waterbender
-			add_trait = powerful_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = lightningbender_rd
+			}
+			else = {
+				remove_trait = lightningbender_rd
+				add_trait = lightningbender
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_master
+				trait = smokebender_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_master
-			add_trait = waterbender
-			add_trait = master_bender
-			break = yes
+			if = {
+				limit = {
+					trait = combustionbender_rd
+				}
+				remove_trait = combustionbender_rd
+				remove_trait = smokebender_rd
+			}
+			else = {
+				remove_trait = smokebender_rd
+				add_trait = smokebender
+			}
 		}
 		if = {
 			limit = {
-				trait = waterbender_legendary
+				trait = combustionbender_rd
+				trait = firebender
 			}
-			remove_trait = waterbender_legendary
-			add_trait = waterbender
-			add_trait = legendary_bender
-			break = yes
+			if = {
+				limit = {
+					OR = {	
+						trait = lightningbender_rd
+						trait = innerflame_rd
+						trait = blueflames_rd
+						trait = smokebender_rd
+					}
+				}
+				remove_trait = lightningbender_rd
+				remove_trait = innerflame_rd
+				remove_trait = blueflames_rd
+				remove_trait = smokebender_rd
+				remove_trait = combustionbender_rd
+			}
+			else = {
+				remove_trait = combustionbender_rd
+				add_trait = combustionbender
+			}
+		}
+
+		if = {
+			limit = {
+				trait = lavabender_rd
+				trait = earthbender
+			}
+			remove_trait = lavabender_rd
+			add_trait = lavabender
 		}
 		if = {
 			limit = {
-				trait = firebender_novice
+				trait = sandbender_rd
+				trait = earthbender
 			}
-			remove_trait = firebender_novice
-			add_trait = firebender
-			add_trait = incompetent_bender
-			break = yes
+			remove_trait = sandbender_rd
+			add_trait = sandbender
+		}	
+		if = {
+			limit = {
+				trait = seismicsense_rd
+				trait = earthbender
+			}
+			if = {
+				limit = {
+					OR = {
+						trait = blind
+						trait = blinded
+					}
+				}
+				remove_trait = seismicsense_rd
+				add_trait = seismicsense
+			}
+			else = {
+				remove_trait = seismicsense_rd
+				add_trait = seismicsense_nonblind
+			}
 		}
 		if = {
 			limit = {
-				trait = firebender_trained
+				trait = metalbender_rd
+				trait = earthbender
 			}
-			remove_trait = firebender_trained
-			add_trait = firebender
-			add_trait = competent_bender
-			break = yes
+			if = {
+				limit = {
+					trait = seismicsense
+				}
+				remove_trait = metalbender_rd
+				add_trait = metalbender
+			}
+			else_if = {
+				limit = {
+					trait = seismicsense_nonblind
+				}
+				remove_trait = metalbender_rd
+				add_trait = metalbender
+			}
+			else = {
+				remove_trait = metalbender_rd
+			}
+		}
+
+		if = {
+			limit = {
+				trait = bloodbender_rd
+				trait = waterbender
+			}
+			remove_trait = bloodbender_rd
+			add_trait = bloodbender
 		}
 		if = {
 			limit = {
-				trait = firebender_powerful
+				trait = healer_rd
+				trait = waterbender
+				is_female = yes
 			}
-			remove_trait = firebender_powerful
-			add_trait = firebender
-			add_trait = powerful_bender
-			break = yes
+			remove_trait = healer_rd
+			add_trait = healer
+		}
+		
+		if = {
+			limit = {
+				trait = levitation_rd
+				religion = air_spirituality
+				trait = airbender
+			}
+			remove_trait = levitation_rd
+			add_trait = levitation
+			if = {
+				limit = {
+					NOT = { religion = air_spirituality }
+				}
+				remove_trait = levitation_rd
+			}			
 		}
 		if = {
 			limit = {
-				trait = firebender_master
+				trait = voidbender_rd
+				religion = nomadic_nihilism
+				trait = airbender
 			}
-			remove_trait = firebender_master
-			add_trait = firebender
-			add_trait = master_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = firebender_legendary
+			remove_trait = voidbender_rd
+			add_trait = voidbender
+			if = {
+				limit = {
+					NOT = { religion = nomadic_nihilism }
+				}
+				remove_trait = voidbender_rd
 			}
-			remove_trait = firebender_legendary
-			add_trait = firebender
-			add_trait = legendary_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_novice
-			}
-			remove_trait = earthbender_novice
-			add_trait = earthbender
-			add_trait = incompetent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_trained
-			}
-			remove_trait = earthbender_trained
-			add_trait = earthbender
-			add_trait = competent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_powerful
-			}
-			remove_trait = earthbender_powerful
-			add_trait = earthbender
-			add_trait = powerful_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_master
-			}
-			remove_trait = earthbender_master
-			add_trait = earthbender
-			add_trait = master_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = earthbender_legendary
-			}
-			remove_trait = earthbender_legendary
-			add_trait = earthbender
-			add_trait = legendary_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_novice
-			}
-			remove_trait = airbender_novice
-			add_trait = airbender
-			add_trait = incompetent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_trained
-			}
-			remove_trait = airbender_trained
-			add_trait = airbender
-			add_trait = competent_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_powerful
-			}
-			remove_trait = airbender_powerful
-			add_trait = airbender
-			add_trait = powerful_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_master
-			}
-			remove_trait = airbender_master
-			add_trait = airbender
-			add_trait = master_bender
-			break = yes
-		}
-		if = {
-			limit = {
-				trait = airbender_legendary
-			}
-			remove_trait = airbender_legendary
-			add_trait = airbender
-			add_trait = legendary_bender
-			break = yes
-		}
+		}		
 	}
 }
 
@@ -1258,142 +1413,205 @@ character_event = { # Earth Kingdom settings
 
 	trigger = {
 		is_save_game = no
-		# OR = {
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = united
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = dismantled
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = canon
-			# }
-		# }
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 	}
 
-	option = {
-		if = {	#assign province tributes
+	immediate = {
+		if = {
 			limit = {
-				NOT = { year < 603 }
-				year = 600
-				#is_title_active = e_earth_kingdom
+				year >= 610
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
+				}
 			}
 			if = {
 				limit = {
-					culture_group = earth_kingdom_culture
-					NOR = { 
-						culture = sandbender
-						culture = southern_earth
-						culture = barbarians	
+					has_landed_title = k_earth_kingdom
+				}
+				any_independent_ruler = {
+					limit = {
+						culture_group = earth_kingdom_culture
+						mercenary = no
+						holy_order = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						NOT = { religion = way_of_chin }
 					}
-					mercenary = no
-					holy_order = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOT = { religion = way_of_chin }
-					capital_scope = {
-							OR = {
-								region = world_north_west_kingdom
-								region = world_north_east_earth_kingdom
-								region = world_central_desert
-								region = world_western_earth_kingdom
-								region = world_eastern_coast
+					if = {
+						limit = {
+							NOR = { 
+								culture = sandbender
+								culture = southern_earth
+								culture = barbarians	
+							}				
+							capital_scope = {
+								OR = {
+									region = world_north_west_kingdom
+									region = world_north_east_earth_kingdom
+									region = world_central_desert
+									region = world_western_earth_kingdom
+									region = world_eastern_coast
+								}
+									
 							}
-							
-					}
-				}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				e_earth_kingdom = {
-					owner = {
-						make_tributary = {
-							who = ROOT
-							percentage = 0.16
-							tributary_type = earth_kingdom_province_tributary
 						}
-					}
-				}
-			}
-		}
-		if = { #assign Territories Tributes
-			limit = {
-				NOT = { year < 630}
-				year = 600
-				#is_title_active = e_earth_kingdom
-			}
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					NOT = { culture = eastern_earth }
-					mercenary = no
-					holy_order = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOT = { religion = way_of_chin }
-					capital_scope = {
-							OR = {
-								region = world_southern_earth_kingdom
-								region = world_earth_islands
-								region = world_eastern_coast
-								region = world_si_wong_fringe
+						suzerain = {
+							remove_tributary = PREV
+						}
+						ROOT = {
+							make_tributary = {
+								who = PREV
+								percentage = 0.16
+								tributary_type = earth_kingdom_province_tributary
 							}
 						}
 					}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				e_earth_kingdom = {
-					owner = {
-						make_tributary = {
-							who = ROOT
-							percentage = 0.12
-							tributary_type = earth_kingdom_territory_tributary
+					if = {
+						limit = {
+							capital_scope = {
+								OR = {
+									region = world_southern_earth_kingdom
+									region = world_earth_islands
+									region = world_eastern_coast
+									region = world_si_wong_fringe
+								}
+							}
+						}
+						suzerain = {
+							remove_tributary = PREV
+						}
+						ROOT = {
+							make_tributary = {
+								who = PREV
+								percentage = 0.12
+								tributary_type = earth_kingdom_territory_tributary
+							}
+						}
+					}
+					if = {
+						limit = {
+							OR = {
+								culture = barbarians
+								culture = sandbender
+							}
+							capital_scope = {
+								OR = {
+									region = world_si_wong
+									region = world_western_earth_kingdom
+									region = world_north_east_earth_kingdom
+								}
+							}
+						}
+						suzerain = {
+							remove_tributary = PREV
+						}
+						ROOT = {
+							make_tributary = {
+								who = PREV
+								percentage = 0.1
+								tributary_type = earth_kingdom_outpost_tributary
+							}
 						}
 					}
 				}
+				break = yes
 			}
-		}
-		if = { # Assign Outpost tributes
-			limit = {
-				NOT = { year < 603 }
-				year = 600
-				#is_title_active = e_earth_kingdom
-			}
-			if = {
+			else_if = {
 				limit = {
-					OR = {
-						culture = barbarians
-						culture = sandbender
+					has_landed_title = e_earth_kingdom
+				}
+				any_independent_ruler = {
+					limit = {
+						culture_group = earth_kingdom_culture
+						mercenary = no
+						holy_order = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						NOT = { religion = way_of_chin }
 					}
-					mercenary = no
-					holy_order = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					capital_scope = {
-						OR = {
-							region = world_si_wong
-							region = world_western_earth_kingdom
-							region = world_north_east_earth_kingdom
+					if = {
+						limit = {
+							NOR = { 
+								culture = sandbender
+								culture = southern_earth
+								culture = barbarians	
+							}				
+							capital_scope = {
+								OR = {
+									region = world_north_west_kingdom
+									region = world_north_east_earth_kingdom
+									region = world_central_desert
+									region = world_western_earth_kingdom
+									region = world_eastern_coast
+								}
+									
+							}
 						}
-					}	
-				}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				e_earth_kingdom = {
-					owner = {
-						make_tributary = {
-							who = ROOT
-							percentage = 0.1
-							tributary_type = earth_kingdom_outpost_tributary
+						suzerain = {
+							remove_tributary = PREV
+						}
+						ROOT = {
+							make_tributary = {
+								who = PREV
+								percentage = 0.16
+								tributary_type = earth_kingdom_province_tributary
+							}
+						}
+					}
+					if = {
+						limit = {
+							capital_scope = {
+								OR = {
+									region = world_southern_earth_kingdom
+									region = world_earth_islands
+									region = world_eastern_coast
+									region = world_si_wong_fringe
+								}
+							}
+						}
+						suzerain = {
+							remove_tributary = PREV
+						}
+						ROOT = {
+							make_tributary = {
+								who = PREV
+								percentage = 0.12
+								tributary_type = earth_kingdom_territory_tributary
+							}
+						}
+					}
+					if = {
+						limit = {
+							OR = {
+								culture = barbarians
+								culture = sandbender
+							}
+							capital_scope = {
+								OR = {
+									region = world_si_wong
+									region = world_western_earth_kingdom
+									region = world_north_east_earth_kingdom
+								}
+							}
+						}
+						suzerain = {
+							remove_tributary = PREV
+						}
+						ROOT = {
+							make_tributary = {
+								who = PREV
+								percentage = 0.1
+								tributary_type = earth_kingdom_outpost_tributary
+							}
 						}
 					}
 				}
-			}
+				break = yes
+			}			
 		}
 	}
 }
@@ -1658,13 +1876,20 @@ character_event = {
 				# value = canon
 			# }
 		# }
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}		
 	}
 	
 	
 	immediate = {
 		if = {
 			limit = {
-				has_landed_title = e_earth_kingdom
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
+				}
 				#has_landed_title = c_royal_earth_palace
 			}
 			if = {
@@ -1712,11 +1937,14 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-					has_landed_title = e_earth_kingdom
+					OR = {
+						has_landed_title = e_earth_kingdom
+						has_landed_title = k_earth_kingdom
+					}
 					has_landed_title = c_royal_earth_palace
 			}
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
-			e_earth_kingdom = {
+			primary_title = {
 				if = {
 					limit = {
 						year < 610
@@ -1741,34 +1969,6 @@ character_event = {
 	}
 }
 
-#character_event = {
-#	id = ATLA.11103
-#	is_triggered_only = yes
-#	hide_window = yes
-#	only_independent = yes
-#
-#	trigger = {
-#		OR = {
-#			check_variable = { which = global_royalAuthority value <= -100 }
-#			check_variable = { which = global_royalAuthority value => 100 }
-#		}
-#	}
-#
-#	option = {
-#		if = {
-#			limit = { 
-#				check_variable = { which = global_royalAuthority value <= -100 }
-#			} 
-#			set_variable = { which = global_royalAuthority value = -100 }
-#		}
-#		if = {
-#			limit = { 
-#				check_variable = { which = global_royalAuthority value => 100 }
-#			} 
-#			set_variable = { which = global_royalAuthority value = 100 }
-#		}		
-#	}
-#}
 
 character_event = {
 	id = ATLA.11102
@@ -1797,7 +1997,10 @@ character_event = {
 	option = {
 		if = {
 			limit = {
-				has_landed_title = e_earth_kingdom
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
+				}
 				has_landed_title = c_royal_earth_palace
 			}
 			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }

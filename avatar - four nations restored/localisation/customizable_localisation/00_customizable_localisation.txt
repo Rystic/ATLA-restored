@@ -89,6 +89,11 @@
 #GetMandatePower
 #GetRootMandateModifier
 #GetExistingRCFactions
+#GetQuanHolderTitleName (aka bastardised flavorisation)
+#GetColorClanAuthority
+#GetAgeGeneral
+#GetBaRulerStylingLoc
+#GetBaTitleTierLoc
 
 ###RELATIONSHIPS###
 defined_text = {
@@ -2742,7 +2747,7 @@ defined_text = {
 		trigger = {
 			OR = {
 				religion = tui_and_la
-				# religion = tui_and_la_reformed
+				religion = tui_and_la_reformed
 			}
 		}
 		localisation_key = EVILGOD_THE_MOONSLAYER
@@ -5150,6 +5155,126 @@ defined_text = {
 		localisation_key = GetExistingRCFactions_NoDaiLi
 		trigger = {
 			has_global_flag = dai_li_disbanded
+		}
+	}
+}
+
+defined_text = {
+	name = GetQuanHolderTitleName
+	fallback_text = {
+		localisation_key = GetQuanHolderTitleName_fallback
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_ImpBlood
+		trigger = {
+			ROOT = { 
+				is_female = no
+				any_owned_bloodline = {
+					has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+				}
+			}
+		}
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_ImpBlood_female
+		trigger = {
+			ROOT = { 
+				is_female = yes
+				any_owned_bloodline = {
+					has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+				}
+			}
+		}
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_GrandDuke
+		trigger = {
+			ROOT = { 
+				is_female = no
+				NOT = {
+					any_owned_bloodline = {
+						has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+					}
+				}
+			}
+		}
+	}
+	text = {
+		localisation_key = GetQuanHolderTitleName_GrandDuke_female
+		trigger = {
+			ROOT = { 
+				is_female = yes
+				NOT = {
+					any_owned_bloodline = {
+						has_bloodline_flag = hey_im_ek_succ_bloodline_flag
+					}
+				}
+			}
+		}
+	}	
+}
+
+defined_text = {
+	name = GetColorClanAuthority
+
+	text = {
+		localisation_key = GetColorClanAuthority_green
+		trigger = {
+			check_variable = { which = global_Clanauthority value > 60 }
+		}
+	}
+	text = {
+		localisation_key = GetColorClanAuthority_yellow
+		trigger = {
+			check_variable = { which = global_Clanauthority value >= 40 }
+			check_variable = { which = global_Clanauthority value <= 60 }
+		}
+	}
+	text = {
+		localisation_key = GetColorClanAuthority_red
+		trigger = {
+			trigger = {
+				check_variable = { which = global_Clanauthority value < 40 }
+			}
+		}
+	}
+}
+
+defined_text = {
+	name = GetAgeGeneral
+	
+	text = {
+		localisation_key = GetAgeGeneral_child
+		trigger = {
+			ROOT = {
+				is_adult = no
+			}
+		}
+	}
+	text = {
+		localisation_key = GetAgeGeneral_young
+		trigger = {	
+			ROOT = {
+				age >= 16
+				age <= 35
+			}
+		}
+	}
+	text = {
+		localisation_key = GetAgeGeneral_middleaged
+		trigger = {	
+			ROOT = {
+				age >= 36
+				age <= 55
+			}
+		}
+	}
+	text = {
+		localisation_key = GetAgeGeneral_old
+		trigger = {	
+			ROOT = {
+				age >= 56
+			}
 		}
 	}
 }

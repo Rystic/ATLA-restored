@@ -1,4 +1,71 @@
 decisions = {
+
+	hold_a_epic_tournament  = {
+		only_independent = yes
+		is_high_prio = yes
+		ai_check_interval = 24
+		
+		potential = {
+			is_playable = yes
+			NOR = {
+				has_character_modifier = epic_tournament
+				has_character_flag = epic_tournament
+			}
+			independent = yes
+			OR = {
+				gender_equality_trigger = yes
+				NOT = { is_female = yes	}
+			}
+			OR = {
+				tier = king
+				tier = emperor 
+			}
+			location = {
+				owner = { character = ROOT }
+			}
+		}
+		allow = {
+			war = no
+			prisoner = no
+			in_command = no
+			NOT = { is_inaccessible_trigger = yes }
+			age = 16
+			prestige = 500
+			wealth = 200
+			custom_tooltip = {
+				text = is_not_busy_trigger_tooltip
+				hidden_tooltip = { NOT = { has_character_flag = do_not_disturb } }
+			}
+		}
+		effect = {
+			add_character_modifier = {
+				name = epic_tournament
+				years = 100
+				hidden = yes
+			}
+			set_character_flag = do_not_disturb
+			clr_character_flag = tournament_has_ended
+			hidden_tooltip = { character_event = { id = 70999 days = 300 } } # Safety catch flag clearing
+			wealth = -200
+			prestige = 100
+			character_event = { id = 70033 tooltip = "tournament_invite" }
+			hidden_tooltip = {
+				clr_character_flag = tournament_has_ended
+			}
+		}
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						wealth = 1000
+						scaled_wealth = 3.0
+					}
+				}
+			}
+		}
+	}
 	
 	demand_liege_title = {
 		only_playable = yes
@@ -58,7 +125,10 @@ decisions = {
 		is_high_prio = yes
 		potential = {
 			NOT = { has_landed_title = c_royal_earth_palace }
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 			any_realm_lord = { 
 				AND = {
 					ai = yes
@@ -78,6 +148,7 @@ decisions = {
 					usurp_title_plus_barony_if_unlanded_and_vassals = PREV
 				}
 			}
+			log = "claim_royal_earth_palace fired check it as it might be a reason behind usurp bug"
 		}
 		ai_will_do = {
 			factor = 1

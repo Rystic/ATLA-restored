@@ -1,0 +1,342 @@
+
+
+
+militarist_faction = { #Badgermole Council
+	primary_attribute = martial
+	opinion_to_other_members = +15
+	opinion_per_rank_above = +5
+	sound = warrior_lodge_ambient_01
+	society_ranks_gfx = secret_ranks
+	
+	active = {
+		OR = {
+			is_title_active = e_earth_kingdom
+			is_title_active = k_earth_kingdom
+		}
+	}
+	
+	#TODO:When add laws gib here additional block
+	can_join_society = {
+		hidden_trigger = {
+			NAND = {
+				ai = yes
+				is_society_rank_full = { 
+					society = militarist_faction
+					rank = 1
+				}
+			}
+		}
+		NOR = {
+			has_landed_title = e_earth_kingdom 
+			has_landed_title = k_earth_kingdom
+		}
+		culture_group = earth_kingdom_culture
+		OR = {
+			AND = {
+				higher_tier_than = count
+				prestige >= 500
+				age > 18
+				martial > 5
+				NOT = { culture = ba_sing_se }
+			}
+			AND = {
+				culture = ba_sing_se
+				martial > 10
+				age > 18
+			}
+		}
+	}
+	
+	show_society = {
+		culture_group = earth_kingdom_culture
+	}
+	
+	potential = {
+		culture_group = earth_kingdom_culture
+	}
+	
+	society_rank = { # Courtier
+		level = 1
+		limit = 20
+		startup_limit = 15
+		modifier = {
+			monthly_character_prestige = 0.01
+		}
+		decisions = {
+		}
+	}
+	
+	society_rank = { # Faction Member
+		level = 2
+		limit = 15
+		startup_limit = 5
+		modifier = { 
+			martial = 1
+			monthly_character_prestige = 0.025
+		}
+		decisions = {
+		}
+	}
+
+	society_rank = { # Faction Veteran
+		level = 3
+		limit = 2
+		startup_limit = 2
+		modifier = {
+			martial = 2
+			monthly_character_prestige = 0.05
+		}
+		decisions = {
+		}
+	}
+
+	society_rank = { # Faction Leader
+		level = 4
+		limit = 1
+		startup_limit = 1
+		modifier = { 
+			martial = 3
+			monthly_character_prestige = 0.1
+		}
+		decisions = {
+		}
+	}
+	
+	monthly_currency_gain = {
+		name = currency_name_militarist_faction
+    	
+    	per_attribute = {
+    		name = diplomacy
+    		value = 1
+    	}
+    	per_attribute = {
+    		name = stewardship
+    		value = 1
+    	}
+    	per_attribute = {
+    		name = martial
+    		value = 1
+    	}
+    	per_attribute = {
+    		name = intrigue
+    		value = 1
+    	}		
+		
+		has_trait = {
+			trait = strategist
+			value = 10
+		}
+		has_trait = {
+			trait = administrator 
+			value = 10
+		}
+		has_trait = {
+			trait = schemer 
+			value = 10
+		}
+		has_trait = {
+			trait = socializer 
+			value = 10
+		}
+		has_trait = {
+			trait = shrewd 
+			value = 10
+		}
+		has_trait = {
+			trait = scholar 
+			value = 10
+		}
+		has_trait = {
+			trait = theologian
+			value = 10
+		}		
+		
+		has_trait = {
+			trait = diligent 
+			value = 5
+		}
+		has_trait = {
+			trait = greedy 
+			value = 5
+		}
+		has_trait = {
+			trait = patient 
+			value = 5
+		}
+		has_trait = {
+			trait = temperate 
+			value = 5
+		}
+		has_trait = {
+			trait = gregarious
+			value = 5
+		}
+		has_trait = {
+			trait = paranoid
+			value = 5
+		}
+		has_trait = {
+			trait = proud
+			value = 5
+		}
+		
+		has_trait = {
+			trait = craven
+			value = -2
+		}
+		has_trait = {
+			trait = honest 
+			value = -2
+		}
+		has_trait = {
+			trait = uncouth 
+			value = -2
+		}
+		
+		has_trait = {
+			trait = gluttonous
+			value = -5
+		}
+		has_trait = {
+			trait = charitable
+			value = -5
+		}
+		has_trait = {
+			trait = slothful
+			value = -5
+		}
+		has_trait = {
+			trait = kind  
+			value = -5
+		}
+		has_trait = {
+			trait = content 
+			value = -5
+		}
+		has_trait = {
+			trait = honest 
+			value = -5
+		}
+		
+		has_trait = {
+			trait = shy
+			value = -10
+		}
+		has_trait = {
+			trait = trusting
+			value = -10
+		}
+		has_trait = {
+			trait = dull
+			value = -10
+		}
+		has_trait = {
+			trait = cruel 
+			value = -10
+		}
+
+		society_rank = {
+			rank = 4
+			value = 10
+		}
+		society_rank = {
+			rank = 3
+			value = 5
+		}
+		society_rank = {
+			rank = 2
+			value = 3
+		}
+		society_rank = {
+			rank = 1
+			value = 2
+		}
+	}
+	
+	member_score_per_attribute = 3
+	member_score_per_rank = 100
+	
+	member_score = {
+		value = 10
+		modifier = {
+			trait = legendary_bender
+			factor = 5
+		}
+		modifier = {
+			trait = master_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = powerful_bender
+			factor = 1.3
+		}
+    	modifier = {
+			trait = competent_bender
+			factor = 1.3
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.3
+		}
+		modifier = {
+			trait = diligent
+			factor = 1.3
+		}
+		modifier = {
+			trait = strong
+			factor = 1.1
+		}
+		modifier = {
+			trait = patient
+			factor = 1.1
+		}
+		modifier = {
+			trait = kind
+			factor = 1.1
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.1
+		}
+		modifier = {
+			trait = honest
+			factor = 1.1
+		}
+		modifier = {
+			trait = negative_jing
+			factor = 1.1
+		}
+		modifier = {
+			trait = incompetent_bender
+			factor = 1.1
+		}
+	}
+	
+	startup_populate = {
+	    trigger = {
+			ai = yes
+	    	controls_religion = no
+			OR = {
+				AND = {
+					higher_tier_than = count
+					prestige >= 500
+					age > 18
+					NOT = { culture = ba_sing_se }
+				}
+				AND = {
+					culture = ba_sing_se
+					OR = {
+						diplomacy > 10
+						stewardship > 10
+						intrigue > 10
+						martial > 10
+						learning > 10
+					}
+					age > 18
+				}
+			}
+			is_in_society = no
+		}
+	}
+}
+	
