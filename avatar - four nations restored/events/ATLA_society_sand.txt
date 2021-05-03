@@ -990,12 +990,14 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 
-	immediate = {
-		trigger_switch = {
-			on_trigger = has_character_flag
-			WOOD		={FROM = {letter_event = { id = SANDR.1137 }}}
-			SAIL		={FROM = {letter_event = { id = SANDR.1138 }}}
-			COMPASS		={FROM = {letter_event = { id = SANDR.1139 }}}
+	option = {
+		FROMFROM = {
+			trigger_switch = {
+				on_trigger = has_character_flag
+				WOOD		={FROMFROM = {letter_event = { id = SANDR.1137 }}}
+				SAIL		={FROMFROM = {letter_event = { id = SANDR.1138 }}}
+				COMPASS		={FROMFROM = {letter_event = { id = SANDR.1139 }}}
+			}
 		}
 	}
 }
@@ -3014,8 +3016,8 @@ character_event = { #checks to see if sail maker is still alive, all of this is 
     immediate = {
     	trigger_switch = {
     		on_trigger = has_character_flag
-    		sail_maker_success = { event_target:sail_maker = { character_event = { id = SANDR.1185 } } }
-    		sail_maker_failure = { event_target:sail_maker = { character_event = { id = SANDR.1188 } } }
+    		sail_maker_success = { event_target:sail_maker_employer = { character_event = { id = SANDR.1185 } } }
+    		sail_maker_failure = { event_target:sail_maker_employer = { character_event = { id = SANDR.1188 } } }
 
 		}
 		clr_character_flag = sail_maker_success
@@ -3092,7 +3094,14 @@ character_event = { #expensive sail complete
 		prestige = 10
 	}
 	after = {
-		event_target:sail_maker = {leave_court_and_die_effect = yes}
+		hidden_effect = {
+			event_target:sail_maker = {leave_court_and_die_effect = yes}
+			clr_character_flag = expensive_sail
+			clr_character_flag = moderate_sail
+			clr_character_flag = cheap_sail
+			clr_character_flag = sail_maker_success
+			clr_character_flag = sail_maker_failure
+		}
 	}
 }
 
@@ -3108,7 +3117,14 @@ character_event = { #moderate sail complete
 		prestige = 5
 	}
 	after = {
-		event_target:sail_maker = {leave_court_and_die_effect = yes}
+		hidden_effect = {
+			event_target:sail_maker = {leave_court_and_die_effect = yes}
+			clr_character_flag = expensive_sail
+			clr_character_flag = moderate_sail
+			clr_character_flag = cheap_sail
+			clr_character_flag = sail_maker_success
+			clr_character_flag = sail_maker_failure
+		}
 	}
 }
 
@@ -3124,7 +3140,14 @@ character_event = { #cheap sail complete
 		prestige = 10
 	}
 	after = {
-		event_target:sail_maker = {leave_court_and_die_effect = yes}
+		hidden_effect = {
+			event_target:sail_maker = {leave_court_and_die_effect = yes}
+			clr_character_flag = expensive_sail
+			clr_character_flag = moderate_sail
+			clr_character_flag = cheap_sail
+			clr_character_flag = sail_maker_success
+			clr_character_flag = sail_maker_failure
+		}
 	}
 }
 
