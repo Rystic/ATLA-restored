@@ -893,7 +893,7 @@ letter_event = { #completion letter for wood/sail
 					has_character_flag = cheap_sail
 				}
 			}
-			change_society_currency = 100
+			change_society_currency = 50
 		}
 		clr_quest = sand_quest_sailer
 		clr_character_flag = WOOD
@@ -2713,7 +2713,6 @@ character_event = {
 		character_event = { id = SANDR.1180 }
 		set_character_flag = gave_money
 		wealth = -3
-		prestige = 10
 	}
 	option = {
 		name = EVTOPTB_SANDR.1179
@@ -2752,6 +2751,12 @@ character_event = {
 				has_character_flag = refused
 			}
 		}
+		if = {
+			limit = {
+				has_character_flag = gave_money
+			}
+			prestige = 10
+		}
 		clr_character_flag = gave_money
 		clr_character_flag = refused
 		character_event = { id = SANDR.1011 days = 3 }
@@ -2768,7 +2773,7 @@ character_event = {
 		name = EVTOPTA_SANDR.1181
 		custom_tooltip = {
 			text = search_for_sail
-			character_event = { id = SANDR.1182 days = 14 random = 16 }
+			character_event = { id = SANDR.1182 days = 14 random = 25 }
 		}
 	}
 }
@@ -3001,7 +3006,7 @@ character_event = { #success ping event
 	}
 }
 
-character_event = { #checks to see if sail maker is still alive, all of this is borrowed straight from the vanilla smith event chain of course
+character_event = { #checks to see if sail maker is still alive
 	id = SANDR.1186
     hide_window = yes
 
@@ -3079,6 +3084,9 @@ character_event = { # sail maker fails because she's dumb
 		clr_character_flag = cheap_sail
 		clr_character_flag = sail_maker_success
 		clr_character_flag = sail_maker_failure
+		hidden_effect = {
+			event_target:sail_maker = {leave_court_and_die_effect = yes}
+		}
 	}
 }
 
@@ -3091,7 +3099,7 @@ character_event = { #expensive sail complete
 	option = {
 		name = EVTOPTA_SANDR.1189
 		character_event = { id = SANDR.1011 days = 1 }
-		prestige = 10
+		prestige = 20
 	}
 	after = {
 		hidden_effect = {
@@ -3137,7 +3145,6 @@ character_event = { #cheap sail complete
 	option = {
 		name = EVTOPTA_SANDR.1191
 		character_event = { id = SANDR.1011 days = 1 }
-		prestige = 10
 	}
 	after = {
 		hidden_effect = {
