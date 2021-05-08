@@ -69,6 +69,7 @@ decisions = {
 					society = sand_sailer_racers
 					rank = 1
 				}
+				society_currency = 2500
 				
 			}
 		}
@@ -85,9 +86,33 @@ decisions = {
 		effect = {
 			set_character_flag = gauntlet_minor_cd
 			character_event = { id = sand.10 days = 1 }
+			change_society_currency = -2500
+			
 		}
 		ai_will_do = {
 			factor = 5
+		}
+	}
+	become_legend = {
+		is_high_prio = yes
+		ai_check_interval = 12
+		
+		potential = {
+			society_rank = {
+				society_rank = {
+					society = sand_sailer_racers
+					rank == 4
+				}
+			}
+			NOT = {trait = sand_racer_legend}
+		}
+		allow = {
+			society_currency = 50000
+			NOT = {trait = sand_racer_legend}
+		}
+		effect = {
+			character_event = {id = sand.}
+			change_society_currency = -50000
 		}
 	}
 }
@@ -174,6 +199,7 @@ title_decisions = {
 					NOT = {has_character_modifier = fervor_cd}
 				}
 			}
+			society_currency = 5000
 		}
 
 		effect = {
@@ -185,7 +211,7 @@ title_decisions = {
 				}
 			}
 			FROM = {
-				change_society_currency = -350
+				change_society_currency = -5000
 				add_character_modifier = {
 					name = fervor_cd
 					years = 1
