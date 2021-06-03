@@ -244,27 +244,27 @@ narrative_event = {
             }
         }
     }
-    option = {
-        name = EVTOPT_new_avatar_journey_400_eastern_temple # to the Eastern Temple, to the places of the first airbenders
-        set_character_flag = travel_to_eastern_air_temple
-        ai_chance = {
-            factor = 25
-        }
-    }
-    option = {
-        name = EVTOPT_new_avatar_journey_400_northern_temple # to the Northern Temple, where Guru Laghima was living
-        set_character_flag = travel_to_northern_air_temple
-        ai_chance = {
-            factor = 25
-        }
-    }
-    option = {
-        name = EVTOPT_new_avatar_journey_400_western_temple # to the Western Temple, where Great Yangchen was born
-        set_character_flag = travel_to_western_air_temple
-        ai_chance = {
-            factor = 25
-        }
-    }
+    # option = {
+    #     name = EVTOPT_new_avatar_journey_400_eastern_temple # to the Eastern Temple, to the places of the first airbenders
+    #     set_character_flag = travel_to_eastern_air_temple
+    #     ai_chance = {
+    #         factor = 25
+    #     }
+    # }
+    # option = {
+    #     name = EVTOPT_new_avatar_journey_400_northern_temple # to the Northern Temple, where Guru Laghima was living
+    #     set_character_flag = travel_to_northern_air_temple
+    #     ai_chance = {
+    #         factor = 25
+    #     }
+    # }
+    # option = {
+    #     name = EVTOPT_new_avatar_journey_400_western_temple # to the Western Temple, where Great Yangchen was born
+    #     set_character_flag = travel_to_western_air_temple
+    #     ai_chance = {
+    #         factor = 25
+    #     }
+    # }
 }
 
 
@@ -538,7 +538,7 @@ narrative_event = {
                 }
             }
             OR = {
-                trait = ambitious
+                # trait = ambitious
                 OR = {
                     trait = charismatic_negotiator
                     trait = grey_eminence
@@ -551,7 +551,8 @@ narrative_event = {
                 }
             }
         }
-        show_trait = ambitious
+        show_trait = grey_eminence
+        show_trait = brilliant_strategist
         custom_tooltip = {
             text = tooltip_may_lead_to_whailtail_conversion
         }
@@ -597,7 +598,7 @@ narrative_event = {
     }
 }
 
-# 409 Whaletail Penance - if avatar is ambitious and has high diplomacy or(and) learning, he can reconcile nihilists and pacifists
+# 409 Something that floats - if avatar is ambitious and has high diplomacy or(and) learning, he can reconcile nihilists and pacifists
 # (meaning posibility to convert whole Whaletail to pacifism that will strengthen them and weaken nihilists, adds a lot of prestige and piety)
 # I don't know why, but I froze. I heard, through the prayers and the gong, the monk was saying something, his lips were moving, but I heard only This.
 # As through the fog, as through the water, something was moving.
@@ -627,26 +628,25 @@ narrative_event = {
             }
         }
         random_list = {
-            20 = {
+            90 = {
                 prestige = 1000
-                piety = -1000
+                piety = 1000
                 level_up_bending_effect = yes
                 give_nickname = nick_spirit_slayer
-                remove_trait = kind
-                remove_trait = just
-                add_trait = cruel
-                add_trait = arbitrary
-                
                 add_trait = ambitious
+
                 character_event = {
-                    id = new_avatar_journey.410 days = 1
+                    id = new_avatar_journey.4090
                 }
             }
-            80 = {
-                death = {
-                    death_reason = death_murder_spirit
+            10 = {
+                character_event = {
+                    id = new_avatar_journey.4091
                 }
             }
+        }
+        custom_tooltip = {
+            text = tooltip_whaletail_spirit_fight
         }
     }
 
@@ -671,6 +671,50 @@ narrative_event = {
         }
     }
 }
+
+# 409.0 Whaletail Penance
+# Taking the Thing by surprise, 
+# I unleashed upon him all the power and wrath of the Avatars he once carried away.
+# When I woke up, I saw a destroyed forest.
+# Suddenly, the monks lost hundreds of years ago came out of the fog, 
+# the monks sitting in shock came to their senses and helped their people get out of the forest. 
+# The fog began to dissipate, rise and collect in large clouds. 
+# Soon the clouds flew away in an unknown direction.
+# Even if the spirit is not destroyed, it will not soon disturb these places again.
+narrative_event = {
+    id = new_avatar_journey.4090
+    title = EVTTITLE_new_avatar_journey_4090_whaletail_penance # Whaletail Penance 
+    desc = EVTDESC_new_avatar_journey_4090_fight_with_whaletail_spirit
+    picture = GFX_evt_whaletail_mist_spirit
+    is_triggered_only = yes
+
+    option = {
+        name = EVTOPT_new_avatar_journey_4090_penance # I really want to sleep...
+        character_event = {
+            id = new_avatar_journey.410 days = 1
+        }
+    }
+}
+
+# Hundreds of Avatars have seen this spirit before me. I feel their anger. Spirit feels it too. The fog is thickening, there is pitch darkness. A strong blow, possibly a tail. Dozens of broken tree branches behind. With high speed, it is behind the trunk. Hit. I can't feel the body. Forces go somewhere. The light goes out. Where are you going? Why are you leaving me at the most important moment? Hit.
+narrative_event = {
+    id = new_avatar_journey.4091
+    title = EVTTITLE_new_avatar_journey_4091_whaletail_tragedy # Oblivion
+    desc = EVTDESC_new_avatar_journey_4091_murdered_by_whaletail_spirit
+    picture = GFX_evt_whaletail_mist_spirit
+    is_triggered_only = yes
+
+    option = {
+        name = EVTOPT_new_avatar_journey_4091 # Abandoned even by own past lives ...
+        death = {
+            death_reason = death_murder_spirit
+        }
+        custom_tooltip = {
+            text = tooltip_whaletail_spirit_hit
+        }
+    }
+}
+
 # 410 Flying away to Southern Air Temple (FINALLY)
 # Today we fly to the Southern Air Temple
 # We packed in a bison saddle, and I took one last look at the foggy hills of Whaletail Island.
@@ -720,8 +764,9 @@ narrative_event = {
 
 
 # 411 Arrival to Southern Air Temple
-# We have crossed the Patola ridges and should be arriving at the Southern Air Temple soon.
-
+# We have crossed the Patola ridges and should be arriving at the Southern Air Temple soon. 
+# Mountain peaks began to cut through the clouds, and in the distance could be seen the Great Temple, the Southern Air Temple. 
+# Young monks were flying around, some of them playing air polo
 character_event = {
 	id = new_avatar_journey.411
 	title = EVTTITLE_new_avatar_journey_411_southern_air_temple # Southern Air Temple
@@ -734,7 +779,83 @@ character_event = {
 	}
 
 	after = {
-		# character_event = { id = new_avatar_journey.401 days = 1 }
+        k_southern_air_temple = {
+            owner = { 
+		        character_event = { id = new_avatar_journey.4120 days = 1 }
+            }
+        }
 	}
 }
 
+character_event = {
+	id = new_avatar_journey.4120
+	is_triggered_only = yes
+    hide_window = yes
+
+    immediate = {
+        FROM = {
+		    character_event = { id = new_avatar_journey.412 }
+        }
+	}
+}
+
+# [fellow_traveler.GetFirstName] began to lead the bison to land.
+# As soon as we descended, five elders approached the bison. They bowed and the central one said:
+# "It is a great honor for us to welcome you. We are the elders of this temple.
+# We and our best teachers will teach you the magic of the air and our traditions."
+# Then they escorted me to my monastery cell.
+# After a long flight, I was very tired and fell asleep quickly;
+long_character_event = {
+	id = new_avatar_journey.412
+	title = EVTTITLE_new_avatar_journey_412_landing # Landing
+	desc = EVTDESC_new_avatar_journey_412_landing
+	picture = GFX_evt_air_elders
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_journey_412 # Zzz...
+	}
+
+	after = {
+        clear_event_target = fellow_traveler
+
+        find_avatar_effect = yes
+        k_southern_air_temple = {
+            owner = {
+                move_avatar_effect = yes
+            }
+        }
+        clr_avatar_target_effect = yes
+
+        if = {
+            limit = {
+                has_character_flag = is_roku
+            }
+		    character_event = { id = new_avatar_journey.413 days = 1 }
+        }
+        else = {
+            character_event = { id = new_avatar_journey.414 days = 1 }
+        }
+	}
+}
+
+# Gyatso
+# I lived in the same room with several other monks.
+# Gyatso was the most powerful airbender among us.
+# We quickly hit it off.
+long_character_event = {
+	id = new_avatar_journey.413
+	title = EVTTITLE_new_avatar_journey_413_gyatso # Gyatso
+	desc = EVTDESC_new_avatar_journey_413_gyatso
+	picture = GFX_evt_young_gyatso_and_roku
+	is_triggered_only = yes
+	hide_from = yes
+
+	option = {
+		name = OK
+	}
+
+	after = {
+		character_event = { id = new_avatar_journey.413 days = 1 }
+	}
+}
