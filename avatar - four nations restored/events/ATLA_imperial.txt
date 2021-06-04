@@ -1,188 +1,212 @@
-####								    ####
-## Folowing events were written by Typical##
-####								    ####
-namespace = avimperial
+####											  ####
+##													##
+## 				ATLA_imperial rewrite				##
+##	Created for ATLA-Restored by Typical Crusader	##
+##													##
+####											  ####
+
+namespace = ATLA_imperial
+
 long_character_event = {
-	id = avimperial.0 #Fire Imperial formation
+	id = ATLA_imperial.1
+	
 	desc = EVTDESCAVIMP.0
-	is_triggered_only = yes
-	hide_window = no
-	only_rulers = yes
-	major = yes
 	picture = GFX_evt_fire_nation_army
-
+	
+	is_triggered_only = yes
+	only_rulers = yes
+	
 	trigger = {
-		NOT = { has_global_flag = fire_imperial_founded }
-	}
-	immediate = {
-		set_global_flag = fire_imperial_founded
-	}
-	option = { # fire nation
-		name = EVTOPTAAVIMP.0
-		trigger = {
-			culture_group = fire_nation_culture
-			NOT = { culture = sun_warrior }
-			NOR = {
-				has_landed_title = e_fire_nation
-				primary_title = { has_law = ze_fire_administration_laws_2 }
-			}
-		}
-		any_playable_ruler = {
-			limit = {
-				AND = {
+		OR = {
+			has_landed_title = e_fire_nation
+			primary_title = {
+				NOR = {
+					has_title_flag = GLOBSTATE_imperial_adopted_@THIS
+					has_title_flag = GLOBSTATE_FN_imperial_adopted 
+				}
+				higher_tier_than = duke
+				OR = {
+					has_law = ze_fire_administration_laws_2
+					has_law = fire_imperial_administration
+				}
+				holder_scope = {
 					culture_group = fire_nation_culture
-					OR = {
-						AND = {
-							top_liege = { has_law = ze_fire_administration_laws_2 }
-						}
-						top_liege = { has_landed_title = e_fire_nation }
-					}
 					NOT = { culture = sun_warrior }
-					is_tribal = no
-					is_theocracy = no
-					is_patrician = no
 				}
 			}
 		}
-		set_government_type = fire_imperial_government
 	}
-	option = {
-		name = EVTOPTBAVIMP.0
-		trigger = {
-			culture_group = fire_nation_culture
-			NOT = { culture = sun_warrior }
-			OR = {
-				has_landed_title = e_fire_nation
-				primary_title = { has_law = ze_fire_administration_laws_2 }
-			}
-		}
-	any_playable_ruler = {
-		limit = {
-			OR = {
-				has_landed_title = e_fire_nation
-				primary_title = { has_law = ze_fire_administration_laws_2 }
-				}
-			NOT = { culture = sun_warrior }
-			is_tribal = no
-			is_theocracy = no
-			is_patrician = no
-			}
-		}
-		set_government_type = fire_imperial_government
-
-	}
-	option = { #Sun Bois
-	name = EVTOPTCAVIMP.0
-		trigger = {
-			culture = sun_warrior
-			}
-	}
-
-	option = { # earth kingdom
-		name = EVTOPTDAVIMP.0
-		trigger = {
-			OR = {
-				culture_group = earth_kingdom_culture
-				culture_group = outlaw_culture
-			}
-		}
-	}
-
-	option = { # World
-		name = EVTOPTEAVIMP.0
-		trigger = {
-			NOT = { culture_group = earth_kingdom_culture }
-			NOT = { culture_group = outlaw_culture }
-			NOT = { culture_group = fire_nation_culture }
-		}
-	}
-}
-long_character_event = {
-	id = avimperial.2 #Fire Imperial formation
-	desc = EVTDESCAVIMP.2
-	is_triggered_only = yes
-	hide_window = no
-	only_rulers = yes
-	picture = GFX_evt_fire_nation_army
-
-	trigger = {
-		e_fire_nation = { has_law = fire_imperial_administration }
-		NOT = { has_global_flag = fire_imperial_founded }
-		NOT = { culture = sun_warrior }
-	}
+	
 	immediate = {
-		set_global_flag = fire_imperial_founded
-	}
-	option = { # fire nation
-		name = EVTOPTAAVIMP.2
-		trigger = {
-			culture_group = fire_nation_culture
-			NOT = { culture = sun_warrior }
-			NOR = {
+		if = {
+			limit = {
 				has_landed_title = e_fire_nation
-				primary_title = { has_law = fire_imperial_administration  }
 			}
+			set_title_flag = GLOBSTATE_FN_imperial_adopted 
 		}
-		any_playable_ruler = {
-				limit = {
-						AND = {
-							culture_group = fire_nation_culture
-							OR = {
-								AND = {
-									top_liege = { has_law = fire_imperial_administration }
-									top_liege = { has_landed_title = e_fire_nation }
-								}
-								top_liege = { has_law = fire_imperial_administration }
-							}
-							NOT = { culture = sun_warrior }
-							is_tribal = no
-							is_theocracy = no
-							is_patrician = no
-						}
+		else_if = {
+			limit = {
+				primary_title = {
+					higher_tier_than = duke
+					has_law = ze_fire_administration_laws_2
+					has_law = fire_imperial_administration
+					holder_scope = {
+						culture_group = fire_nation_culture
+						NOT = { culture = sun_warrior }
 					}
-			set_government_type = fire_imperial_government
-		}
-	}
-	option = {
-		name = EVTOPTBAVIMP.2
-	any_playable_ruler = {
-		limit = {
-			OR = {
-				has_landed_title = e_fire_nation
-				primary_title = { has_law = fire_imperial_administration  }
 				}
-			NOT = { culture = sun_warrior }
-			is_tribal = no
-			is_theocracy = no
-			is_patrician = no
+				NOT = { has_landed_title = e_fire_nation }
 			}
-		}
-		set_government_type = fire_imperial_government
-
-	}
-	option = { #Sun Bois
-	name = EVTOPTCAVIMP.2
-		trigger = {
-			culture = sun_warrior
-			}
-	}
-
-	option = { # earth kingdom
-		name = EVTOPTDAVIMP.2
-		trigger = {
-			OR = {
-				culture_group = earth_kingdom_culture
-				culture_group = outlaw_culture
+			primary_title = {
+				set_title_flag = GLOBSTATE_imperial_adopted_@THIS
 			}
 		}
 	}
-
-	option = { # World
-		name = EVTOPTEAVIMP.2
-		trigger = {
-			NOT = { culture_group = earth_kingdom_culture }
-			NOT = { culture_group = outlaw_culture }
-			NOT = { culture_group = fire_nation_culture }
+	
+	option = {
+		name = EVTOPTAAVIMP.0
+		ROOT = {
+			set_government_type = fire_imperial_government
+			save_event_target_as = imperialism_adopter
+			prestige = 500
+			any_playable_ruler = {
+				limit = {
+					OR = { #anti clogger (im thinking forwards)
+						ai = no
+						AND = {
+							multiplayer = yes
+							ai = no
+						}
+						is_local_human_observer = yes
+					}
+				}
+				narrative_event = { id = ATLA_imperial.2 } #News Event
+			}
 		}
 	}
 }
+
+#World news event
+narrative_event = {
+	id = ATLA_imperial.2
+	title = ATLA_imperialTITLE.2
+	picture = GFX_evt_fire_nation_army		
+	is_triggered_only = yes
+	only_rulers = yes
+	
+	#Fire Lord / Adopter
+	desc = {
+		trigger = {
+			primary_title = {
+				OR = {
+					has_title_flag = GLOBSTATE_imperial_adopted_@THIS
+					has_title_flag = GLOBSTATE_FN_imperial_adopted 
+				}
+			}
+			culture_group = fire_nation_culture			
+		}
+		text = ATLA_imperial_2_desc_a
+	}
+	#Fire Nation
+	desc = {
+		trigger = {
+			culture_group = fire_nation_culture
+			primary_title = {
+				NOR = {
+					has_title_flag = GLOBSTATE_imperial_adopted_@THIS
+					has_title_flag = GLOBSTATE_FN_imperial_adopted 
+				}
+			}
+		}
+		text = ATLA_imperial_2_desc_b
+	}
+	#Earth Kingdom
+	desc =	{
+		trigger = {
+			culture_group = earth_kingdom_culture
+		}
+		text = ATLA_imperial_2_desc_c
+	}
+	#Water Tribes
+	desc = {
+		trigger = {
+			culture_group = water_tribe_culture
+		}
+		text = ATLA_imperial_2_desc_d
+	}
+	#Air Nation
+	desc = {
+		trigger = {
+			culture_group = air_nomad_culture
+		}
+		text = ATLA_imperial_2_desc_e
+	}	
+	
+	#FL / Adopter
+	option = {
+		name = ATLA_imperial_2_opt_a
+		trigger = {
+			event_target:imperialism_adopter = {
+				primary_title = {
+					OR = {
+						has_title_flag = GLOBSTATE_imperial_adopted_@THIS
+						has_title_flag = GLOBSTATE_FN_imperial_adopted 
+					}
+				}
+			}
+			culture_group = fire_nation_culture			
+		}
+		event_target:imperialism_adopter = {
+			set_global_flag = GLOBSTATE_age_of_imperialism #Dummy for now
+		}
+	}
+	
+	#FN
+	option = {
+		name = ATLA_imperial_2_opt_b
+		trigger = {
+			NOT = {
+				event_target:imperialism_adopter = {
+					THIS = ROOT
+				}
+			}
+			culture_group = fire_nation_culture			
+		}
+		event_target:imperialism_adopter = {
+			set_global_flag = GLOBSTATE_age_of_imperialism #Dummy for now
+		}
+	}	
+	
+	#Earth Kingdom
+	option = {
+		name = ATLA_imperial_2_opt_c
+		trigger = {
+			culture_group = earth_kingdom_culture
+		}
+		event_target:imperialism_adopter = {
+			set_global_flag = GLOBSTATE_age_of_imperialism #Dummy for now
+		}
+	}
+
+	#Water Tribes 
+	option = {
+		name = ATLA_imperial_2_opt_d
+		trigger = {
+			culture_group = water_tribe_culture
+		}
+		event_target:imperialism_adopter = {
+			set_global_flag = GLOBSTATE_age_of_imperialism #Dummy for now
+		}
+	}	
+	
+	#Air Tribes 
+	option = {
+		name = ATLA_imperial_2_opt_e
+		trigger = {
+			culture_group = air_nomad_culture
+		}
+		event_target:imperialism_adopter = {
+			set_global_flag = GLOBSTATE_age_of_imperialism #Dummy for now
+		}
+	}
+}	

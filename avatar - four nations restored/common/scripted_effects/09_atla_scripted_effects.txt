@@ -1,10 +1,10 @@
 level_up_bending_effect = {
     trigger_switch = {
 		on_trigger = trait
-        incompetent_bender =    { remove_trait = incompetent_bender add_trait = competent_bender }    
-        competent_bender =      { remove_trait = competent_bender add_trait = powerful_bender }    
-        powerful_bender =       { remove_trait = powerful_bender add_trait = master_bender }    
-        master_bender =         { remove_trait = master_bender add_trait = legendary_bender }    
+        incompetent_bender =    { remove_trait = incompetent_bender add_trait = competent_bender }
+        competent_bender =      { remove_trait = competent_bender add_trait = powerful_bender }
+        powerful_bender =       { remove_trait = powerful_bender add_trait = master_bender }
+        master_bender =         { remove_trait = master_bender add_trait = legendary_bender }
     }
 }
 
@@ -120,7 +120,6 @@ set_duel_variables_effect = {
     set_variable = { which = mySTAcha value = 1 } # SET UP STA CHA
     set_variable = { which = myHPcap which = myHP } # SET UP HP CAP
 }
-
 
 set_airball_variables_effect = {
     # SETUP
@@ -247,7 +246,7 @@ set_airball_variables_effect = {
     change_variable = { which = vPAC which = addPAC }
 
     # Setup shooting
-    
+
     export_to_variable = { which = addSHO value = combat_rating }
     divide_variable = { which = addSHO value = 2 }
     change_variable = { which = vSHO which = addSHO }
@@ -259,7 +258,7 @@ set_airball_variables_effect = {
 
     # Setup phy
     export_to_variable = { which = vPHY value = combat_rating }
-    
+
     # final rating
     set_variable = { which = final_rating value = 0 } # pace
 
@@ -290,4 +289,381 @@ clear_airball_variables_effect = {
     set_variable = { which = vSHO value = 0 } # shooting
     set_variable = { which = vDEF value = 0 } # defending
     set_variable = { which = vPHY value = 0 } # physical
+}
+
+calculate_faction_alignment_bc = {
+		militarist_faction = {
+			any_society_member = {
+				set_variable = { which = BC_royalist_stance_points value = 0 }
+				
+				trigger_switch = {
+				on_trigger = trait
+					paranoid = { change_variable = { which = BC_royalist_stance_points value = -20 } }
+					trusting = { change_variable = { which = BC_royalist_stance_points value = 20 } }
+				}
+				
+				trigger_switch = {
+				on_trigger = trait
+					ambitious = { change_variable = { which = BC_royalist_stance_points value = -40 } }
+					content = { change_variable = { which = BC_royalist_stance_points value = 40 } }
+				}		
+
+				trigger_switch = {
+				on_trigger = trait
+					just = { change_variable = { which = BC_royalist_stance_points value = 10 } }
+					arbitrary = { change_variable = { which = BC_royalist_stance_points value = 20 } }
+				}
+				
+				trigger_switch = {
+				on_trigger = trait
+				 	brave = { change_variable = { which = BC_royalist_stance_points value = 10 } }
+					craven = { change_variable = { which = BC_royalist_stance_points value = 20 } }
+				}
+
+				trigger_switch = {
+				on_trigger = trait
+					uncouth = { change_variable = { which = BC_royalist_stance_points value = -10 } }
+					groomed = { change_variable = { which = BC_royalist_stance_points value = 10 } }
+				}
+
+				trigger_switch = {
+				on_trigger = trait
+					shrewd = { change_variable = { which = BC_royalist_stance_points value = -40 } }
+					dull = { change_variable = { which = BC_royalist_stance_points value = 20 } }
+				} 
+
+				trigger_switch = {
+				on_trigger = trait
+					deceitful = { change_variable = { which = BC_royalist_stance_points value = -40 } }
+					honest = { change_variable = { which = BC_royalist_stance_points value = 30 } }
+				}					
+				
+				
+				
+				k_earth_kingdom = { #TODO: Replace this with global event target
+					holder_scope = {
+						trigger_switch = {
+						on_trigger = trait
+							
+							imbecile = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -30 }
+								}
+							}
+							slow = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -20 }
+								}
+							}
+							quick = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 20 }
+								}
+							}
+							genius = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 30 }
+								}
+							}
+						}
+						
+						trigger_switch = {
+						on_trigger = trait
+						
+							fair = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 10 }
+								}
+							}
+							ugly = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -10 }
+								}								
+							}
+						}
+						
+						trigger_switch = {
+						on_trigger = trait
+							born_in_the_purple = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 30 }
+								}
+							}								
+							legit_bastard = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -10 }
+								}
+							}
+							bastard  = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -20 }
+								}								
+							}
+						}
+						
+						trigger_switch = {
+						on_trigger = trait
+							ambitious = { 
+								PREVPREV = {	
+									change_variable = { which = BC_royalist_stance_points value = 40 } 
+								}
+							}
+							content = { 
+								PREVPREV = {	
+									change_variable = { which = BC_royalist_stance_points value = -40 } 
+								}
+							}
+						}		
+
+						trigger_switch = {
+						on_trigger = trait
+							just = { 
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 20 } 
+								}
+							}
+							arbitrary = { 
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -20 } 
+								}
+							}
+						}
+						
+						trigger_switch = {
+						on_trigger = trait
+							brave = { 
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 40 } 
+								}
+							}	
+							craven = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -20 } 
+								}
+							}
+						}
+
+						trigger_switch = {
+						on_trigger = trait
+							uncouth = { 
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -10 } 
+								}
+							}
+							groomed = { 
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 10 } 
+								}
+							}
+						}
+
+						trigger_switch = {
+						on_trigger = trait
+							shrewd = {
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = -40 } 
+								}
+							}
+							dull = { 
+								PREVPREV = {
+									change_variable = { which = BC_royalist_stance_points value = 20 } 
+								}
+							}
+						}						
+						
+						if = {
+							limit = {
+								martial >= 10
+							}
+							PREVPREV = {
+								change_variable = { which = BC_royalist_stance_points value = 20 }
+							}
+						}
+						else = {
+							PREVPREV = {
+								change_variable = { which = BC_royalist_stance_points value = -10 }
+							}
+						}
+					}
+				}
+				
+				trigger_switch = {
+				on_trigger = start_date
+				
+					620.1.1 <= { change_variable = { which = BC_royalist_stance_points value = 10 } }
+					620.1.2 >= { change_variable = { which = BC_royalist_stance_points value = -10 } }
+				}
+				
+				
+				if = {
+					limit = {
+						check_variable = { which = BC_royalist_stance_points value <= 42  }
+					}
+					remove_trait = non_aligned
+					remove_trait = royalist_aligned
+					remove_trait = royalist					
+					remove_trait = anti_royalist_aligned				
+					add_trait = anti_royalist
+					add_character_modifier = {
+						name = two_year_stance_evaluation_done 
+						years = 2
+					}					
+				}
+				if = {
+					limit = {
+						check_variable = { which = BC_royalist_stance_points value > 42  }					
+						check_variable = { which = BC_royalist_stance_points value <= 84 }
+					}
+					remove_trait = non_aligned
+					remove_trait = royalist						
+					remove_trait = royalist_aligned
+					remove_trait = anti_royalist					
+					add_trait = anti_royalist_aligned
+					add_character_modifier = {
+						name = two_year_stance_evaluation_done 
+						years = 2
+					}
+				}
+				if = {
+					limit = {
+						check_variable = { which = BC_royalist_stance_points value > 84  }					
+						check_variable = { which = BC_royalist_stance_points value <= 126 }
+					}
+					remove_trait = anti_royalist_aligned
+					remove_trait = royalist						
+					remove_trait = royalist_aligned
+					remove_trait = anti_royalist			
+					add_trait = non_aligned
+					add_character_modifier = {
+						name = two_year_stance_evaluation_done 
+						years = 2
+					}					
+				}
+				if = {
+					limit = {
+						check_variable = { which = BC_royalist_stance_points value > 126  }					
+						check_variable = { which = BC_royalist_stance_points value <= 168 }
+					}
+					remove_trait = anti_royalist_aligned
+					remove_trait = non_aligned			
+					remove_trait = royalist
+					remove_trait = anti_royalist					
+					add_trait = royalist_aligned
+					add_character_modifier = {
+						name = two_year_stance_evaluation_done 
+						years = 2
+					}					
+				}
+				if = {
+					limit = {
+						check_variable = { which = BC_royalist_stance_points value > 168  }					
+						check_variable = { which = BC_royalist_stance_points value <= 210 }
+					}
+					remove_trait = anti_royalist_aligned
+					remove_trait = non_aligned			
+					remove_trait = royalist_aligned
+					remove_trait = anti_royalist					
+					add_trait = royalist
+					add_character_modifier = {
+						name = two_year_stance_evaluation_done 
+						years = 2
+					}					
+				}				
+			}
+		}
+	}
+    
+set_sand_race_variables_effect = {
+	set_variable = { which = vSTAM value = 40 } #Stamina
+	#set_variable = { which = vSTAM value = 30} #Sailer hull health?
+
+    if = {
+        limit = { trait = avatar }
+        change_variable = { which = vSTAM value = 3 }
+    }
+    if = {
+        limit = { trait = fullyrealisedavatar }
+        change_variable = { which = vSTAM value = 4 }
+    }
+    if = {
+        limit = { trait = incompetent_bender }
+        change_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = competent_bender }
+        change_variable = { which = vSTAM value = 3 }
+    }
+    if = {
+        limit = { trait = powerful_bender }
+        change_variable = { which = vSTAM value = 5 }
+    }
+    if = {
+        limit = { trait = master_bender }
+        change_variable = { which = vSTAM value = 7 }
+    }
+    if = {
+        limit = { trait = legendary_bender }
+        change_variable = { which = vSTAM value = 10 }
+    }
+    if = {
+        limit = { trait = quick }
+        change_variable = { which = vSTAM value = 2 }
+    }
+    if = {
+        limit = { trait = shrewd }
+        change_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = slow }
+        subtract_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = one_legged }
+        subtract_variable = { which = vSTAM value = 3 }
+    }
+    if = {
+        limit = { trait = wounded }
+        subtract_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = weak }
+        subtract_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = maimed }
+        subtract_variable = { which = vSTAM value = 2 }
+    }
+    if = {
+        limit = { trait = ill }
+        subtract_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = one_handed }
+        subtract_variable = { which = vSTAM value = 2 }
+    }
+    if = {
+        limit = { trait = strong }
+        change_variable = { which = vSTAM value = 1 }
+    }
+    if = {
+        limit = { trait = robust }
+        change_variable = { which = vSTAM value = 1 }
+    }
+}
+#Religous Traits
+add_ascetic_trait_effect = {
+	if = {
+		if = {
+			limit = { 
+					NOR = { 
+						religion_group = earth_religions 
+						religion = water_religions
+						religion = air_religions
+						religion = modern_religions
+						religion = outlaw_religions
+					} 
+				}
+				add_trait = fire_sage
+			}
+      }
 }

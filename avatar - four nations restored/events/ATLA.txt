@@ -176,6 +176,13 @@ character_event = { #avatar revealed
 		set_global_flag = avatar_revealed
 		narrative_event = { id = ATLA.5 }
 		character_event = { id = avatar.170 days = 30 random = 90 }
+      activate_title = { title = d_avatar status = yes }
+			d_avatar = {
+				grant_title = ROOT
+			}
+       activate_title = { title = d_avatar_unrevealed status = no }
+         destroy_landed_title = d_avatar_unrevealed
+			
 		hidden_tooltip = {
 			any_independent_ruler = {
 				any_realm_character = {
@@ -946,7 +953,7 @@ character_event = { # Avatar Event Handler
 					}
 				}
 				random_list = {
-					50 = {
+					100 = {
 						# Stays
 					}
 					# 25 = { # Leaves (event is commented out, hence commented this out)
@@ -960,17 +967,17 @@ character_event = { # Avatar Event Handler
 							# }
 						# }
 					# }
-					50 = { # Leaves and marries (should be 25 once above is re-added)
-						ROOT = {
-							random_child = {
-								limit = {
-									de_facto_liege = ROOT
-									age = 18
-								}
-								character_event = { id = avatar.190 }
-							}
-						}
-					}
+					# 50 = { # Leaves and marries (should be 25 once above is re-added) (event is not existant)
+						# ROOT = {
+							# random_child = {
+								# limit = {
+									# de_facto_liege = ROOT
+									# age = 18
+								# }
+								# character_event = { id = avatar.190 }
+							# }
+						# }
+					# }
 				}
 			}
 		}
@@ -1632,7 +1639,7 @@ character_event = {
 
 	option = { # Convert
 		name = EVTOPTATLAA.104
-		religion = FROM
+		religion = FROMFROM
 	}
 
 	option = { # No ( player only )
@@ -1640,7 +1647,11 @@ character_event = {
 		trigger = {
 			ai = no
 		}
-		opinion = { modifier = refused_decision who = ROOT years = 5 }
+		opinion = { 
+			modifier = refused_decision
+			who = FROMFROM
+			years = 5
+		}
 	}
 }
 
@@ -1977,34 +1988,6 @@ character_event = {
 	}
 }
 
-#character_event = {
-#	id = ATLA.11103
-#	is_triggered_only = yes
-#	hide_window = yes
-#	only_independent = yes
-#
-#	trigger = {
-#		OR = {
-#			check_variable = { which = global_royalAuthority value <= -100 }
-#			check_variable = { which = global_royalAuthority value => 100 }
-#		}
-#	}
-#
-#	option = {
-#		if = {
-#			limit = { 
-#				check_variable = { which = global_royalAuthority value <= -100 }
-#			} 
-#			set_variable = { which = global_royalAuthority value = -100 }
-#		}
-#		if = {
-#			limit = { 
-#				check_variable = { which = global_royalAuthority value => 100 }
-#			} 
-#			set_variable = { which = global_royalAuthority value = 100 }
-#		}		
-#	}
-#}
 
 character_event = {
 	id = ATLA.11102
