@@ -161,7 +161,7 @@ character_event = { #avatar revealed
 	desc = "EVTDESCATLA.4"
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
-	min_age = 16
+	# min_age = 16 # was causing event delay
 
 	trigger = {
 		has_character_flag = avatar_unrevealed
@@ -176,12 +176,12 @@ character_event = { #avatar revealed
 		set_global_flag = avatar_revealed
 		narrative_event = { id = ATLA.5 }
 		character_event = { id = avatar.170 days = 30 random = 90 }
-      activate_title = { title = d_avatar status = yes }
-			d_avatar = {
-				grant_title = ROOT
-			}
-       activate_title = { title = d_avatar_unrevealed status = no }
-         destroy_landed_title = d_avatar_unrevealed
+      	activate_title = { title = d_avatar status = yes }
+		d_avatar = {
+			grant_title = ROOT
+		}
+		activavte_title = { title = d_avatar_unrevealed status = no }
+		destroy_landed_title = d_avatar_unrevealed
 			
 		hidden_tooltip = {
 			any_independent_ruler = {
@@ -902,6 +902,7 @@ character_event = { # Avatar Event Handler
 			}
 			if = {
 				limit = {
+					NOT = { trait = on_journey }
 					has_game_rule = { name = avatar_system value = new }
 				}
 				character_event = { id = new_avatar_journey.1 }
