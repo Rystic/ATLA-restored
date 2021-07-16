@@ -2110,3 +2110,78 @@ character_event = { # Raise Shrine - La
 		}
 	}
 }
+
+character_event = {
+	id = ATLAR.763
+	is_triggered_only = yes
+	hide_window = yes
+
+	option = {
+		random_character = {
+			limit = {
+				AND = {
+					has_character_flag = avatar_revealed
+					OR = {
+						trait = avatar
+						trait = fullyrealisedavatar
+					}
+				}
+			}
+			save_global_event_target_as = target_avatar
+		}
+	}
+}
+character_event = {
+	id = ATLAR.764
+	is_triggered_only = yes
+	only_playable = yes
+	picture = GFX_evt_avatar_conflict
+	
+	desc = {
+		text = EVTDESC_CASE1_ATLAR.764
+		trigger = {
+			event_target:target_avatar = {
+				is_alive = no
+			}
+		}
+	}
+	desc = {
+		text = EVTDESC_CASE2_ATLAR.764
+		trigger = {
+			event_target:target_avatar = {
+				is_alive = yes
+			}
+		}
+	}
+	option = {
+		name = EVTOPTA_ATLAR.764
+		trigger = {
+			event_target:target_avatar = {
+				is_alive = yes
+			}
+		}
+		if = {
+			event_target:target_avatar = {
+				limit = {
+					is_alive = yes
+				}
+				hidden_effect = {
+					wealth = 1
+					wealth = -1
+				}
+			}
+		}
+		clr_character_flag = viewing_avatar_status
+	}
+	option = {
+		trigger = {
+			NOT = {
+				event_target:target_avatar = {
+					is_alive = yes
+				}
+			}
+		}
+		name = EVTOPTB_ATLAR.765
+		clr_character_flag = viewing_avatar_status
+	}
+}
