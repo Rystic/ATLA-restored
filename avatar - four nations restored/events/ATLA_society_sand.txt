@@ -118,8 +118,6 @@ letter_event = {
 	}
 }
 
-
-
 ####################SAND SAILER RACERS QUEST TOMBOLA FRAMEWORK##########################
 
 character_event = {
@@ -437,18 +435,18 @@ character_event = {
 						trait = legendary_bender
 					}
 				}
+				35 = {
+					modifier = {
+						factor = 1.5
+						martial < 7
+					}
+					modifier = {
+						factor = -2.0
+						martial > 14
+					}
+					character_event = { id = SANDR.1028 days = 1 }
+				}
 			}
-		}
-		35 = {
-			modifier = {
-				factor = 1.5
-				martial < 7
-			}
-			modifier = {
-				factor = -2.0
-				martial > 14
-			}
-			character_event = { id = SANDR.1028 days = 1 }
 		}
 	}
 	option = {
@@ -975,6 +973,8 @@ letter_event = { # comp letter for compass
 			hidden = yes
 			days = 100
 		}
+		set_character_flag = has_new_compass
+		remove_trait = travelling
 	}
 }
 character_event = { #grandmaster ping event for failures
@@ -1043,6 +1043,7 @@ letter_event = {
 		name = EVTOPTA_SANDR.1139
 		clr_quest = { id = sand_quest_sailer failure = yes }
 		clr_character_flag = COMPASS
+		remove_trait = travelling
 	}
 }
 
@@ -1082,15 +1083,34 @@ character_event = {  #Very Beginning of maintain sailer quest line/choose your p
 			add_trait = travelling
 		}
 	}
-	# option = {
-		# name = EVTOPTD_SANDR.1035
-		# custom_tooltip = {
-			# text = COMPASS_CHAIN
-			# character_event = { id = SANDR. days = 5 }   #Replace- compass chain
-			# # set_character_flag = COMPASS
-			#add_trait = travelling
-		# }
-	# }
+	option = {
+		name = EVTOPTD_SANDR.1035
+		custom_tooltip = {
+			trigger = {
+				NOR = {
+					has_character_flag = has_new_compass
+					has_artifact = oldCompass
+				}
+			}
+			if = {
+				limit = {
+					NOT = {has_character_flag = attempted_compass}
+				}
+				text = COMPASS_CHAIN
+				character_event = { id = SANDR.1192 days = 5 }   #Replace- compass chain
+				set_character_flag = COMPASS
+				add_trait = travelling
+			}
+			if = {
+				limit = {
+					has_character_flag = attempted_compass
+				}
+				character_event = { id = SANDR.1129 days = 5 }
+				set_character_flag = COMPASS
+				add_trait = travelling
+			}
+		}
+	}
  }
 character_event = {         #Start of wood chain
 	id = SANDR.1036
@@ -2574,7 +2594,7 @@ character_event = {  #character is saved by a caravan member
 		}
 		character_event = { id = SANDR.1069 days = 1 }
 		prestige = 10
-		martial = 1
+		change_martial = 1
 	}
 }
 
@@ -2587,7 +2607,7 @@ character_event = { #aftermath
 	option = {
 		name = EVTOPTA_SANDR.1068
 		prestige = 15
-		martial = 1
+		change_martial = 1
 		character_event = { id = SANDR.1069 days = 5 }
 	}
 	option = {
@@ -2597,7 +2617,7 @@ character_event = { #aftermath
 			add_trait = wroth
 		}
 		prestige = 15
-		martial = 2
+		change_martial = 2
 		character_event = { id = SANDR.1069 days = 5 }
 	}
 }
@@ -3167,8 +3187,326 @@ character_event = { #cheap sail complete
 	}
 }
 
+###########################COMPASS QUEST LINE BULLSHIT###########################
 
+character_event = {
+	id = SANDR.1192
+	desc = EVTDESC_SANDR.1192
+	#picture =
+	is_triggered_only = yes
 
+	option = {
+		name = EVTOPTA_SANDR.1192
+		long_character_event = { id = SANDR.1193 days = 1 }
+	}
+}
+
+long_character_event = {
+	id = SANDR.1193
+	desc = EVTDESC_SANDR.1193
+	#picture =
+	is_triggered_only = yes
+
+	option = {  #seek the retired racer
+		name = EVTOPTB_SANDR.1193
+		long_character_event = { id = SANDR.1194 days = 1 }
+	}
+}
+
+long_character_event = {
+	id = SANDR.1194
+	desc = EVTDESC_SANDR.1194
+	#picture =
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1194
+		random_courtier = {
+			character_event = { id = SANDR.1195 days = 1 }
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1195
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		FROM = {
+			character_event = { id = SANDR.1196 days = 2 }
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1196
+	desc = EVTDESC_SANDR.1196
+	#picture =
+	is_triggered_only = yes
+	hide_from = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1196
+		character_event = { id = SANDR.1197 days = 20 random = 30 }
+	}
+}
+
+character_event = {
+	id = SANDR.1197
+	desc = EVTDESC_SANDR.1197
+	picture = GFX_evt_wanshi_desert
+	is_triggered_only = yes
+	hide_from = yes
+	option = {
+		name = EVTOPTA_SANDR.1197
+		character_event = { id = SANDR.1198 days = 10 random = 15 }
+	}
+}
+
+character_event = {
+	id = SANDR.1198
+	desc = EVTDESC_SANDR.1198
+	picture = GFX_evt_moonlit_mountains_hf
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1198
+		custom_tooltip = {
+			text = PRESS_ON
+			long_character_event = { id = SANDR.1199 days = 5 }
+		}
+	}
+}
+
+long_character_event = {
+	id = SANDR.1199
+	desc = EVTDESC_SANDR.1199
+	is_triggered_only = yes
+	picture = GFX_evt_wanshi_desert
+	
+	desc = {
+		trigger = {
+			has_character_flag = attempted_compass
+		}
+		text = EVTDESC_CASE2_SAND.1199
+	}
+	option = {
+		name = EVTOPTA_SANDR.1199
+		add_trait = stressed
+		character_event = { id = SANDR.1120 }
+	}
+}
+
+character_event = {
+	id = SANDR.1120
+	desc = EVTDESC_SANDR.1120
+	picture = GFX_evt_hl_desert
+	is_triggered_only = yes
+	title = THE_SANDSTORM
+	
+	option = {  #try to outrun
+		name = EVTOPTA_SANDR.1120
+		hidden_effect = {
+			random_list = {
+				75 = {
+					character_event = { id = SANDR.1121 days = 1 }  #you make it through the sandstorm and continue to the village
+				}
+				25 = {
+					character_event = { id = SANDR.1126 days = 1 }  #you lose yourself in the sandstorm and are lost
+					modifier = {
+						factor = 1.5
+						martial < 10
+					}
+				}
+			}
+		}
+	}
+	option = { #bunker down
+		name = EVTOPTB_SANDR.1120
+		character_event = { id = SANDR.1127 days = 4 }
+	}
+	option = {  #you're a coward so you lay on the desert floor and hope for the best
+		name = EVTOPTC_SANDR.1120
+		trigger = {
+			trait = craven
+		}
+		custom_tooltip = {
+			text = CRAVEN_TT
+			character_event = { id = SANDR.1125 days = 1 }
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1121
+	desc = EVTDESC_SANDR.1121
+	picture = GFX_evt_wanshi_desert
+	is_triggered_only = yes
+	title = THE_SANDSTORM
+
+	option = {
+		name = EVTOPTA_SANDR.1121
+		long_character_event = { id = SANDR.1122 days = 4 }
+		set_character_flag = outran_sandstorm
+	}
+}
+
+long_character_event = {
+	id = SANDR.1122
+	#picture =
+	is_triggered_only = yes
+	title = THE_SANDSTORM
+
+	desc = {
+		trigger = {
+			has_character_flag = outran_sandstorm
+		}
+		text = EVTDESC_CASE1_SANDR.1122
+	}
+	desc = {
+		trigger = {
+			has_character_flag = found_shelter
+		}
+		text = EVTDESC_CASE2_SANDR.1122
+	}
+	option = {
+		name = EVTOPTA_SANDR.1122
+		hidden_effect = {
+			create_character = {
+				name = "Sotan"
+				age = 65
+				female = no
+				dynasty = none
+				attributes = {
+					stewardship = 3
+				}
+				trait = sand_racer_legend
+			}
+			new_character = {
+				save_event_target_as = retired_racer
+			}
+			event_target:retired_racer = {
+				character_event = { id = SANDR.1123 }
+			}
+		}
+	}
+}
+character_event = {
+	id = SANDR.1123
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		FROM = {
+			long_character_event = { id = SANDR.1124 }
+		}
+	}
+}
+long_character_event = {  #you meet the retired racer
+	id = SANDR.1124
+	title = EVTTITLE_SANDR.1124
+	desc = EVTDESC_SANDR.1124
+	#picture =
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1124
+		long_character_event = { id = SANDR.1128 }
+	}
+}
+character_event = {
+	id = SANDR.1125
+	desc = EVTDESC_SANDR.1125
+	#picture =
+	is_triggered_only = yes
+	title = THE_SANDSTORM
+
+	option = {
+		name = EVTOPTA_SANDR.1125
+		custom_tooltip = {
+			text = CRAVEN2_TT
+			add_trait = wounded
+			character_event = { id = SANDR.1135 days = 1 }
+			set_character_flag = attempted_compass
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1126
+	desc = EVTDESC_SANDR.1126
+	#picture =
+	is_triggered_only = yes
+	title = THE_SANDSTORM
+
+	option = {
+		name = EVTOPTA_SANDR.1126
+		custom_tooltip = {
+			text = compass_failure
+			prestige = -3
+			character_event = { id = SANDR.1135 days = 5 }
+			set_character_flag = attempted_compass
+		}
+	}
+}
+
+character_event = {  #shelter
+	id = SANDR.1127
+	desc = EVTDESC_SANDR.1127
+	#picture =
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTA_SANDR.1127
+		character_event = { id = SANDR.1122 days = 7 }
+	}
+}
+
+long_character_event = {
+	id = SANDR.1128
+	desc = EVTDESC_SANDR.1128
+	#picture = 
+	is_triggered_only = yes
+	title = EVTTITLE_SANDR.1124
+	
+	immediate = {
+		clr_character_flag = outran_sandstorm
+		clr_character_flag = found_shelter
+	}
+	
+	option = {
+		name = EVTOPTA_SANDR.1128
+		prestige = 25
+		wealth = 45
+		character_event = { id = SANDR.1011 days = 5 }
+		add_artifact = oldCompass
+		custom_tooltip = {
+			text = SOTAN_TT
+			hidden_effect = {
+				event_target:retired_racer = {
+					leave_court_and_die_effect = yes
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SANDR.1129
+	desc = EVTDESC_SANDR.1129
+	#picture = 
+	is_triggered_only = yes
+	
+	option = {
+		name = EVTOPTA_SANDR.1129
+		character_event = { id = SANDR.1199 days = 25 random = 30 }
+	}
+	option = {
+		name = EVTOPTB_SANDR.1129
+		character_event = { id = SANDR.1035 days = 1 }
+	}
+}
 ############################DONATE TO SOCIETY QUEST##############################
 society_quest_event = {
 	id = SANDR.1073
@@ -3252,13 +3590,5 @@ character_event = {
                 wealth = 150
             }
         }
-# RadSquirrel made changes here to clear errors, if you blelieve this does not have the same effect, please contact them
-#        random_society_member = {
-#			limit = {
-#				society = sand_sailer_racers
-#				is_society_grandmaster = yes
-#			}
-#			wealth = 150
-#		}
 	}
 }
