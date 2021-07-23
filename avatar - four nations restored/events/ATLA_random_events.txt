@@ -2112,33 +2112,6 @@ character_event = { # Raise Shrine - La
 }
 
 character_event = {
-	id = ATLAR.763
-	is_triggered_only = yes
-	hide_window = yes
-
-	option = {
-		random_character = {
-			limit = {
-				OR = {
-					AND = {
-						has_character_flag = avatar_revealed
-						trait = fullyrealisedavatar
-					}
-					AND = {
-						trait = fullyrealisedavatar
-						OR = {
-							has_character_flag = is_aang
-							has_character_flag = is_korra
-							has_character_flag = is_malu
-						}
-					}
-				}
-			}
-			save_global_event_target_as = target_avatar
-		}
-	}
-}
-character_event = {
 	id = ATLAR.764
 	is_triggered_only = yes
 	only_playable = yes
@@ -2157,6 +2130,37 @@ character_event = {
 		trigger = {
 			event_target:target_avatar = {
 				is_alive = yes
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				NOT = {
+					event_target:target_avatar = {
+						is_alive = yes
+					}
+				}
+			}
+			random_character = {
+				limit = {
+					OR = {
+						AND = {
+							has_character_flag = avatar_revealed
+							trait = fullyrealisedavatar
+						}
+						AND = {                                 #<------------- this is a fallback AND block if something janky causes the first AND block to come back false, pre-made historic avatars can be buggy
+							trait = fullyrealisedavatar
+							OR = {
+								has_character_flag = is_aang
+								has_character_flag = is_korra
+								has_character_flag = is_malu
+								has_character_flag = is_roku
+							}
+						}
+					}
+				}
+				save_global_event_target_as = target_avatar
 			}
 		}
 	}
@@ -2181,7 +2185,7 @@ character_event = {
 		clr_character_flag = viewing_avatar_status
 	}
 	option = {
-		name = EVTOPTB_ATLAR.765
+		name = EVTOPTB_ATLAR.764
 		trigger = {
 			event_target:target_avatar = {
 				is_alive = no
