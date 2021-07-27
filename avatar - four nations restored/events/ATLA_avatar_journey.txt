@@ -140,38 +140,37 @@ character_event = {
 
 # TODO: add an event where Sozin gives his crown to Roku
 
-# (fire) 
-# A couple of days later, the fire sages came again. 
-# There wasn't much time left, and soon it would be time me to leave.
-# They said there was a whole line of barges and junks lined up at the port. 
-# Simple fishermen, merchants, aristocrats, and even Firelord himself, 
-# wish to provide ships for the Avatar's voyage to other lands.
 character_event = {
     id = new_avatar_journey.3
-    # desc = {
-    # 	trigger = { has_global_flag = avatar_water }
-    # 	text = EVTDESC_new_avatar_journey_3_water
-    # }
-    # desc = {
-    # 	trigger = { has_global_flag = avatar_earth }
-    # 	text = EVTDESC_new_avatar_journey_3_earth
-    # }
+    desc = {
+    	trigger = { has_global_flag = avatar_water }
+    	text = EVTDESC_new_avatar_journey_3_water
+    }
+    desc = {
+    	trigger = { has_global_flag = avatar_earth }
+    	text = EVTDESC_new_avatar_journey_3_earth
+    }
+    # TODO: add more descs with ships of Beifongs, Omashu, Earth Kings. 
     desc = {
         trigger = { has_global_flag = avatar_fire }
         text = EVTDESC_new_avatar_journey_3_fire
     }
-    # desc = {
-    # 	trigger = { has_global_flag = avatar_air }
-    # 	text = EVTDESC_new_avatar_journey_3_air
-    # }
+    desc = {
+    	trigger = { has_global_flag = avatar_air }
+    	text = EVTDESC_new_avatar_journey_3_air
+    }
     picture = {
            trigger = { has_global_flag = avatar_fire }
         picture = GFX_evt_fire_nation_harbor
     }
     is_triggered_only = yes
 
+
     option = {
         name = EVTOPT_new_avatar_3_fishing_boat # Fishing Boat
+        trigger = {
+            NOT = { has_global_flag = avatar_air }
+        }
         add_trait = humble
         custom_tooltip = {
             text = new_avatar_3_tooltip_fishing_boat # Slow but practical
@@ -179,6 +178,9 @@ character_event = {
     }
     option = {
         name = EVTOPT_new_avatar_3_merchant_ship # Mechant Ships
+        trigger = {
+            NOT = { has_global_flag = avatar_air }
+        }
         add_trait = patient
         wealth = -15
         custom_tooltip = {
@@ -187,6 +189,9 @@ character_event = {
     }
     option = {
         name = EVTOPT_new_avatar_3_nobleman_ship # Nobleman's ship
+        trigger = {
+            NOT = { has_global_flag = avatar_air }
+        }
         add_trait = proud
         wealth = -25
         custom_tooltip = {
@@ -212,6 +217,14 @@ character_event = {
         add_favor = event_target:firelord
         custom_tooltip = {
             text = new_avatar_3_tooltip_firelord_junk # The best of the best
+        }
+    }
+
+    # airnomad options
+    option = {
+        name = EVTOPT_new_avatar_3_air_escort # OK
+        trigger = {
+            has_global_flag = avatar_air
         }
     }
 }
