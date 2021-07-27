@@ -1,0 +1,120 @@
+# new avatar engine - general avatar content
+# -------------------------------
+# overhaul of borked avatar events from "ATLA.txt" and "ATLA_avatar.txt" files
+# -------------------------------
+# 
+# -------------------------------
+# Reserved event ids:
+# 1-99 - common avatar events
+# -------------------------------
+# written by unlomtrois
+
+namespace = new_avatar_general
+
+# avatar revealed
+# happens on 16th birthday
+character_event = {
+	id = new_avatar_general.1
+	is_triggered_only = yes
+    hide_window = yes
+
+	trigger = {
+		has_character_flag = avatar_unrevealed
+	}
+
+    immediate = {
+        if = {
+            limit = {
+                has_character_flag = is_roku
+            }
+
+            character_event = { id = new_avatar_general.3 }
+        }
+		else = {
+			character_event = { id = new_avatar_general.2 }
+		}
+    }
+}
+
+# general revelation
+narrative_event = {
+	id = new_avatar_general.2
+	title = EVTTITLE_new_avatar_general_2_reveal # The Next Avatar
+	desc = EVTDESC_new_avatar_general_2_reveal
+	picture = GFX_evt_avatar_reveal
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTAATLA.4"
+		add_trait = avatar
+		give_minor_title = title_avatar
+		set_character_flag = avatar_revealed
+		clr_character_flag = avatar_unrevealed
+		clr_global_flag = avatar_unrevealed
+		set_global_flag = avatar_revealed
+		
+      	activate_title = { title = d_avatar status = yes }
+		d_avatar = {
+			grant_title = ROOT
+		}
+		activate_title = { title = d_avatar_unrevealed status = no }
+		destroy_landed_title = d_avatar_unrevealed
+			
+		hidden_tooltip = {
+			any_independent_ruler = {
+				any_realm_character = {
+					if = {
+						limit = {
+							has_character_flag = avatar_hunt
+						}
+						clr_character_flag = avatar_hunt
+						character_event = { id = ATLA.27 }
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		narrative_event = { id = ATLA.5 days = 7 random = 7 }
+		character_event = { id = new_avatar_journey.1 days = 3 random = 3 }
+		character_event = { id = avatar.170 days = 30 random = 90 }
+	}
+}
+
+# Reveal of Roku
+narrative_event = {
+	id = new_avatar_general.3
+	title = EVTTITLE_new_avatar_general_3_reveal_roku # The Next Avatar
+	desc = EVTDESC_new_avatar_general_3_reveal
+	picture = GFX_evt_avatar_reveal_fire_nation_culture
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPT_new_avatar_general_3_reveal
+		
+		add_trait = avatar
+		set_character_flag = avatar_revealed
+		clr_character_flag = avatar_unrevealed
+		clr_global_flag = avatar_unrevealed
+		set_global_flag = avatar_revealed
+		      	
+		give_minor_title = title_avatar
+		activate_title = { title = d_avatar status = yes }
+		d_avatar = {
+			grant_title = ROOT
+		}
+		
+		activate_title = { title = d_avatar_unrevealed status = no }
+		unsafe_destroy_landed_title = d_avatar_unrevealed
+	}
+
+	after = {
+		narrative_event = { id = ATLA.5 days = 7 random = 7 }
+		character_event = { id = new_avatar_journey.1 days = 3 random = 3 }
+		character_event = { id = avatar.170 days = 30 random = 90 }
+	}
+}
+
+# TODO: make a custom event for Aang revelation
