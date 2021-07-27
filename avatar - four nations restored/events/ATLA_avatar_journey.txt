@@ -28,22 +28,22 @@ namespace = new_avatar_journey
 narrative_event = {
     id = new_avatar_journey.1
     title = EVTTITLE_new_avatar_journey_1_the_leaving # The Leaving
-    # desc = {
-    # 	trigger = { has_global_flag = avatar_water }
-    # 	text = EVTDESC_new_avatar_journey_1_water
-    # }
-    # desc = {
-    # 	trigger = { has_global_flag = avatar_earth }
-    # 	text = EVTDESC_new_avatar_journey_1_earth
-    # }
+    desc = {
+    	trigger = { has_global_flag = avatar_water }
+    	text = EVTDESC_new_avatar_journey_1_water
+    }
+    desc = {
+    	trigger = { has_global_flag = avatar_earth }
+    	text = EVTDESC_new_avatar_journey_1_earth
+    }
     desc = {
         trigger = { has_global_flag = avatar_fire }
         text = EVTDESC_new_avatar_journey_1_fire
     }
-    # desc = {
-    # 	trigger = { has_global_flag = avatar_air }
-    # 	text = EVTDESC_new_avatar_journey_1_air
-    # }
+    desc = {
+    	trigger = { has_global_flag = avatar_air }
+    	text = EVTDESC_new_avatar_journey_1_air
+    }
     is_triggered_only = yes
     picture = GFX_evt_world_map
 
@@ -51,21 +51,25 @@ narrative_event = {
         start_avatar_journey_effect = yes
     }
 
-    # option = {
-    #     name = EVTOPT_new_avatar_journey_1_water # I'll travel to Water Tribes
-    #     trigger = { has_character_flag = avatar_journey_to_water_tribes }
-    #     character_event = { id = new_avatar_journey.100 days = 10 }
-    # }
-    # option = {
-    #     name = EVTOPT_new_avatar_journey_1_earth # I'll travel to Earth Kingdom
-    #     trigger = { has_character_flag = avatar_journey_to_earth_kingdom }
-    #     character_event = { id = new_avatar_journey.200 days = 10 }
-    # }
-    # option = {
-    #     name = EVTOPT_new_avatar_journey_1_fire # I'll travel to Fire Nation
-    #     trigger = { has_character_flag = avatar_journey_to_fire_nation }
-    #     character_event = { id = new_avatar_journey.300 days = 10 }
-    # }
+    option = {
+        name = EVTOPT_new_avatar_journey_1_water # I'll travel to Water Tribes
+        trigger = { has_character_flag = avatar_journey_to_water_tribes }
+        character_event = { id = avatar.159 days = 30 random = 60 }
+
+        # character_event = { id = new_avatar_journey.100 days = 10 }
+    }
+    option = {
+        name = EVTOPT_new_avatar_journey_1_earth # I'll travel to Earth Kingdom
+        trigger = { has_character_flag = avatar_journey_to_earth_kingdom }
+        character_event = { id = avatar.159 days = 30 random = 60 }
+        # character_event = { id = new_avatar_journey.200 days = 10 }
+    }
+    option = {
+        name = EVTOPT_new_avatar_journey_1_fire # I'll travel to Fire Nation
+        trigger = { has_character_flag = avatar_journey_to_fire_nation }
+        character_event = { id = avatar.159 days = 30 random = 60 }
+        # character_event = { id = new_avatar_journey.300 days = 10 }
+    }
     option = {
         name = EVTOPT_new_avatar_journey_1_air # I'll travel to Air Nomads
         trigger = { has_character_flag = avatar_journey_to_air_nomads }
@@ -74,6 +78,11 @@ narrative_event = {
 
     after = {
         add_trait = on_journey
+        if = {
+            limit = {
+                has_global_flag = avatar_fire
+            }
+        }
         character_event = { id = new_avatar_journey.2 days = 4 }
     }
 }
