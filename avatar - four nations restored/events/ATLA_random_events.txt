@@ -2122,15 +2122,20 @@ character_event = {
 	desc = {
 		text = EVTDESC_CASE1_ATLAR.764
 		trigger = {
-			event_target:target_avatar = {
-				is_alive = no
+			OR = {
+				event_target:avatar = {
+					is_alive = no
+				}
+				d_avatar = {
+					has_holder = no
+				}
 			}
 		}
 	}
 	desc = {
 		text = EVTDESC_CASE2_ATLAR.764
 		trigger = {
-			event_target:target_avatar = {
+			event_target:avatar = {
 				is_alive = yes
 			}
 		}
@@ -2138,49 +2143,23 @@ character_event = {
 	immediate = {
 		if = {
 			limit = {
-				NOT = {
-					event_target:target_avatar = {
-						is_alive = yes
-					}
+				d_avatar = {
+					has_holder = yes
 				}
 			}
-			random_character = {
-				limit = {
-					OR = {
-						AND = {
-							has_character_flag = avatar_revealed
-							trait = fullyrealisedavatar
-						}
-						AND = {                                 #<------------- this is a fallback AND block if something janky causes the first AND block to come back false, pre-made historic avatars can be buggy
-							trait = fullyrealisedavatar
-							OR = {
-								has_character_flag = is_aang
-								has_character_flag = is_korra
-								has_character_flag = is_malu
-								has_character_flag = is_roku
-							}
-						}
-					}
-				}
-				save_global_event_target_as = target_avatar
-			}
+			find_avatar_effect = yes
 		}
 	}
+	
 	option = {
 		name = EVTOPTA_ATLAR.764
 		trigger = {
-			event_target:target_avatar = {
-				is_alive = yes
-			}
-		}
-		event_target:target_avatar = {
-			if = {
-				limit = {
+			AND = {
+				event_target:avatar = {
 					is_alive = yes
 				}
-				hidden_effect = {
-					wealth = 1
-					wealth = -1
+				d_avatar = {
+					has_holder = yes
 				}
 			}
 		}
@@ -2189,8 +2168,13 @@ character_event = {
 	option = {
 		name = EVTOPTB_ATLAR.764
 		trigger = {
-			event_target:target_avatar = {
-				is_alive = no
+			OR = {
+				event_target:avatar = {
+					is_alive = no
+				}
+				d_avatar = {
+					has_holder = no
+				}
 			}
 		}
 		clr_character_flag = viewing_avatar_status
