@@ -22,17 +22,20 @@ create_new_avatar_effect = {
         # generate new avatar
         trigger_switch = {
             on_trigger = has_global_flag
-            avatar_water = { create_new_fire_avatar_effect = yes }    
-            avatar_earth = { create_new_fire_avatar_effect = yes }    
+            avatar_water = { generate_new_avatar_effect = yes }    
+            avatar_earth = { generate_new_avatar_effect = yes }    
             avatar_fire = { create_new_fire_avatar_effect = yes }    
             avatar_air = { create_new_air_avatar_effect = yes }    
         }
 
         set_global_flag = avatar_unrevealed
 
+        clear_global_event_target = global_avatar
+
         d_avatar_unrevealed = {
             add_law_w_cooldown = succ_avatar_reincarnation
         }
+
 
         if = { # safety control, switching the character you play
             limit = {
@@ -44,6 +47,18 @@ create_new_avatar_effect = {
             }
             
             set_player_character = event_target:new_avatar
+        }
+
+        event_target:new_avatar = {
+            save_global_event_target_as = global_avatar
+            location = {
+                d_avatar_unrevealed = {
+                    set_preferred_capital = PREV
+                }
+                d_avatar = {
+                    set_preferred_capital = PREV
+                }
+            }
         }
 
         clear_global_avatar_event_targets_effect = yes
@@ -417,12 +432,9 @@ generate_avatar_aang_effect = {
     }
 }
 
-
-
 ###################################
 # new avatar engine - fire avatar #
 ###################################
-
 
 find_fire_lord_effect = {
     if = {
@@ -472,8 +484,121 @@ find_fire_lord_effect = {
     }
 }
 
+######################################
+# new avatar engine - avatar journey #
+######################################
 
+start_avatar_journey_effect = {
+    set_character_flag = avatar_journey
 
+    trigger_switch = {
+        on_trigger = has_global_flag
+        avatar_water = { set_character_flag = avatar_journey_to_earth_kingdom }
+        avatar_earth = { set_character_flag = avatar_journey_to_fire_nation }
+        avatar_fire = { set_character_flag = avatar_journey_to_air_nomads }
+        avatar_air = { set_character_flag = avatar_journey_to_water_tribes }
+    }
+}
 
+start_avatar_learning = {
+    trigger_switch = {
+        on_trigger = has_global_flag
+        avatar_water = { add_trait = avatar_learning_earthbending }
+        avatar_earth = { add_trait = avatar_learning_firebending }
+        avatar_fire = { add_trait = avatar_learning_airbending }
+        avatar_air = { add_trait = avatar_learning_waterbending }
+    }
+}
 
+switch_learning_bending = {
+    trigger_switch = {
+        on_trigger = trait
+        avatar_learning_waterbending = { remove_trait = avatar_learning_waterbending add_trait = avatar_learning_earthbending }
+        avatar_learning_earthbending = { remove_trait = avatar_learning_earthbending add_trait = avatar_learning_firebending }
+        avatar_learning_firebending = { remove_trait = avatar_learning_firebending add_trait = avatar_learning_airbending }
+        avatar_learning_airbending = { remove_trait = avatar_learning_airbending add_trait = avatar_learning_waterbending }
+    }
+}
 
+# finding of the avatar
+# SYNTAX:
+# find_avatar_effect = yes
+# event_target:avatar = {
+#   *your staff*
+# }
+find_avatar_effect = {
+    if = {
+        limit = {
+            d_avatar = {
+                owner = {
+                    is_avatar_trigger = yes
+                }
+            }
+        }
+        d_avatar = {
+            owner = {
+                save_event_target_as = avatar
+            }
+        }
+    }
+    if = {
+        limit = {
+            d_avatar_unrevealed = {
+                owner = {
+                    is_avatar_trigger = yes
+                }
+            }
+        }
+        d_avatar_unrevealed = {
+            owner = {
+                save_event_target_as = avatar
+            }
+        }
+    }
+}
+
+clr_avatar_target_effect = {
+    clear_event_target = avatar
+}
+
+# "moving" works via tributary
+# PREV becomes liege for avatar
+# <scope> = {
+#    move_avatar_effect = yes
+# }
+move_avatar_effect = {
+    # remove previous avatar's suzerain
+    event_target:avatar = {
+        suzerain = {
+            remove_tributary = PREV
+        }
+    }
+    # make a new suzerain
+    if = {
+        limit = {
+            event_target:avatar = {
+                has_character_flag = avatar_revealed
+            }
+        }
+        make_tributary = {
+            who = event_target:avatar
+            percentage = 0.01
+            tributary_type = avatar_tributary
+        }
+    }
+    else = {
+        make_tributary = {
+            who = event_target:avatar
+            percentage = 0.01
+            tributary_type = unrevealed_avatar_tributary
+        }
+    }
+    # move de-jure capital of avatar's title
+    capital_scope = {
+        event_target:avatar = {
+            primary_title = {
+                set_preferred_capital = PREVPREV
+            }
+        }
+    }
+}
