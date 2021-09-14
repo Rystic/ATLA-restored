@@ -2306,9 +2306,15 @@ earth_kingdom_reconquest = {
 				text = EARTHKINGDOM_AUTHORITY_SPEND_CB
 				check_variable = { which = global_royalAuthority value > 25 }
 			}
-			custom_tooltip = {
-				text = ek_not_two_used_cbs				
-				NOT = { ROOT = { check_variable = { which = ek_cb_block value = 2 } } }
+			OR = {
+				custom_tooltip = {
+					text = ek_not_two_used_cbs				
+					NOT = { ROOT = { check_variable = { which = ek_cb_block value = 2 } } }
+				}
+				custom_tooltip = {
+					text = ek_choosen_war_in_story
+					has_global_flag = ek_choose_war
+				}
 			}
 		}
 	}
@@ -2409,7 +2415,12 @@ earth_kingdom_reconquest = {
 		hidden_tooltip = {
 			ROOT = {
 				vassalize_or_take_under_title = { title = PREV enemy = FROM }
-				change_variable = { which = ek_cb_block value = 1 }
+				if = {
+					limit = {
+						NOT = { has_global_flag = ek_choose_war }
+					}
+					change_variable = { which = ek_cb_block value = 1 }
+				}
 			}
 		}
 	}

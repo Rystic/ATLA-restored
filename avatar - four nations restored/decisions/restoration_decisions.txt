@@ -172,6 +172,14 @@ targetted_decisions = {
 			pays_tribute_to = FROM
 			shares_realm_border_with = FROM
 			NOT = { tier = EMPEROR }
+			NAND = {
+				FROM = {
+					tier = KING
+				}
+				ROOT = {
+					tier = KING
+				}
+			}
 		}
 		
 		allow = {
@@ -207,7 +215,14 @@ targetted_decisions = {
 					}
 				}
 				conditional_tooltip = {
-					trigger = { ROOT = { tier = KING } }
+					trigger = { 
+						ROOT = { 
+							tier = KING 
+						}
+						FROM = {
+							tier = EMPEROR
+						} 
+					}
 					custom_tooltip = {
 						text = ra_80_tooltip
 						hidden_tooltip = {
@@ -280,6 +295,9 @@ targetted_decisions = {
 					limit = {
 						ROOT = {
 							tier = KING
+						}
+						FROM = {
+							tier = EMPEROR
 						}
 					}
 					custom_tooltip = {
@@ -359,6 +377,9 @@ targetted_decisions = {
 						ROOT = {
 							tier = KING
 						}
+						FROM = {
+							tier = EMPEROR
+						}
 					}
 					custom_tooltip = {
 						text = ra_spend_80_tooltip
@@ -383,10 +404,13 @@ targetted_decisions = {
 		filter = independent_rulers
 		ai_target_filter = independent_rulers
 		from_potential = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 			religion = earth_monarchism
 			prisoner = no
-			e_earth_kingdom = {
+			persistent_event_target:Current_EK_Title = {
 				has_law = ek_unity_3
 			}
 		}

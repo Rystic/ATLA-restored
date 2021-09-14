@@ -61,8 +61,13 @@ character_event = {
 		
 		if = {
 			limit = {
-				k_earth_kingdom = {
-					is_title_active = THIS
+				AND = {
+					k_earth_kingdom = {
+						has_holder = yes
+					}
+					e_earth_kingdom = {
+						has_holder = no
+					}
 				}
 			}
 			k_earth_kingdom = {
@@ -71,11 +76,23 @@ character_event = {
 					scope = THIS
 				}
 			}
-			e_earth_kingdom = {
-					save_persistent_event_target = {
-						name = Current_EK_Title
-						scope = THIS
+		}
+		else_if = {
+			limit = {
+				AND = {
+					k_earth_kingdom = {
+						has_holder = no
 					}
+					e_earth_kingdom = {
+						has_holder = yes
+					}
+				}				
+			}
+			e_earth_kingdom = {
+				save_persistent_event_target = {
+					name = Current_EK_Title
+					scope = THIS
+				}
 			}
 		}
 	}
@@ -93,15 +110,13 @@ character_event = {
 		}
 		NOT = {
 			AND = {
-				OR = {
-					primary_title = {
+				primary_title = {
+					OR = {
 						title = e_earth_kingdom
-					}
-					primary_title = {
 						title = k_earth_kingdom
 					}
 				}
-				independent = yes
+				independent = no
 			}
 		}
 	}
@@ -381,8 +396,11 @@ character_event = { # Royal Authority System - Check Authority
 	only_playable = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
-	}
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
+	}	
 	
 	option = {
 		if = { # Destruction of the Earth Kingdom
@@ -1820,13 +1838,16 @@ narrative_event = {
 	option = {
 		name = EVTOPTA_EK_46
 		trigger = {
-			has_landed_title = e_earth_kingdom
+			OR = {
+				has_landed_title = e_earth_kingdom
+				has_landed_title = k_earth_kingdom
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_46_TOOLTIP
 		}
 		hidden_tooltip = {
-			e_earth_kingdom = { destroy_landed_title = THIS }
+			persistent_event_target:Current_EK_Title = { destroy_landed_title = THIS }
 			if = {
 				limit = {
 					k_ba_sing_se = {
@@ -1836,8 +1857,8 @@ narrative_event = {
 				k_ba_sing_se = {
 					grant_title = ROOT
 				}
-		}
-			destroy_landed_title = e_earth_kingdom
+			}
+			persistent_event_target:Current_EK_Title = { destroy_landed_title = THIS }
 			remove_trait = earthkingpuppet
 			remove_trait = earthking
 		}
@@ -1846,7 +1867,10 @@ narrative_event = {
 	option = {
 		name = EVTOPTB_EK_46
 		trigger = {
-			NOT = { has_landed_title = e_earth_kingdom }
+			NOR = {
+				 has_landed_title = e_earth_kingdom 
+				has_landed_title = k_earth_kingodm
+			}
 		}
 		custom_tooltip = {
 			text = EVTOPTC_EK_46_TOOLTIP
@@ -1861,7 +1885,10 @@ character_event = {
 	only_rulers = yes
 	
 	trigger = {
-		has_landed_title = e_earth_kingdom
+		OR = {
+			has_landed_title = e_earth_kingdom
+			has_landed_title = k_earth_kingdom
+		}
 	}
 	
 	option = {
@@ -1894,7 +1921,7 @@ character_event = {
 					}
 				}
 			}
-			e_earth_kingdom = {
+			persistent_event_target:Current_EK_Title = {
 				owner = {
 					make_tributary = {						
 						who = ROOT							
@@ -1942,7 +1969,7 @@ character_event = {
 					}
 				}
 			}
-			e_earth_kingdom = {
+			persistent_event_target:Current_EK_Title = {
 				owner = {
 					make_tributary = {						
 						who = ROOT							
@@ -1992,7 +2019,7 @@ character_event = {
 					}
 				}
 			}
-			e_earth_kingdom = {
+			persistent_event_target:Current_EK_Title = {
 				owner = {
 					make_tributary = {						
 						who = ROOT							
