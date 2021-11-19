@@ -31,18 +31,56 @@ targeted_decisions = {
 		filter = independent_rulers
         ai = no
 		from_potential = {
-			always = yes
+			is_landed = no
+			is_avatar_trigger = yes
 		}
 		potential = {
-			always = yes
+			is_within_diplo_range = FROM
+			# you're not already a tributary
+			FROM = {
+				NOR = {
+					is_tributary = {
+						type = unrevealed_avatar_tributary
+						suzerain = PREVPREV
+					}
+					is_tributary = {
+						type = avatar_tributary
+						suzerain = PREVPREV
+					}
+				}
+			}
 		}
 		allow = {
-			always = yes
+			opinion = {
+				who = FROM
+				value >= 0
+			}
+			FROM = {
+				NOR = {
+					is_rival = ROOT
+					is_foe = ROOT
+				}		
+			}
+			ROOT = {
+				capital_holding = {
+					FROM = {
+						location = {
+							distance = {
+								who = PREVPREV
+								value <= 500
+							}
+						}
+					}
+				}
+			}
 		}
 		effect = {
-			find_avatar_effect = yes
-			ROOT = {
-    	        move_avatar_effect = yes
+			custom_tooltip = {
+				text = move_avatar_tt
+				find_avatar_effect = yes
+				ROOT = {
+					move_avatar_effect = yes
+				}
 			}
 		}
 		revoke_allowed = {
