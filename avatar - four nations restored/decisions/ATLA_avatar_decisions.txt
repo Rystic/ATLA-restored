@@ -61,25 +61,149 @@ targeted_decisions = {
 					is_foe = ROOT
 				}		
 			}
-			ROOT = {
-				capital_holding = {
-					FROM = {
-						location = {
-							distance = {
-								who = PREVPREV
-								value <= 500
-							}
-						}
-					}
-				}
-			}
 		}
 		effect = {
 			custom_tooltip = {
 				text = move_avatar_tt
 				find_avatar_effect = yes
 				ROOT = {
-					move_avatar_effect = yes
+					save_event_target_as = avatar_journey_target
+					# move_avatar_effect = yes
+				}
+				if = { # a week
+					limit = {
+						ROOT = {
+							capital_holding = {
+								FROM = {
+									location = {
+										distance = {
+											who = PREVPREV
+											value >= 0
+										}
+										distance = {
+											who = PREVPREV
+											value <= 150
+										}
+									}
+								}
+							}
+						}
+					}
+					FROM = {
+						character_event = {
+							id = new_avatar_journey.50
+							days = 1
+							random = 7
+						}
+					}
+				}
+				else_if = { # Few weeks
+					limit = {
+						ROOT = {
+							capital_holding = {
+								FROM = {
+									location = {
+										distance = {
+											who = PREVPREV
+											value >= 151
+										}
+										distance = {
+											who = PREVPREV
+											value <= 300
+										}
+									}
+								}
+							}
+						}
+					}
+					FROM = {
+						character_event = {
+							id = new_avatar_journey.50
+							days = 7
+							random = 30
+						}
+					}
+				}
+				else_if = { # few months
+					limit = {
+						ROOT = {
+							capital_holding = {
+								FROM = {
+									location = {
+										distance = {
+											who = PREVPREV
+											value >= 301
+										}
+										distance = {
+											who = PREVPREV
+											value <= 600
+										}
+									}
+								}
+							}
+						}
+					}
+					FROM = {
+						character_event = {
+							id = new_avatar_journey.50
+							days = 30
+							random = 60
+						}
+					}
+				}
+				else_if = { # months
+					limit = {
+						ROOT = {
+							capital_holding = {
+								FROM = {
+									location = {
+										distance = {
+											who = PREVPREV
+											value >= 601
+										}
+										distance = {
+											who = PREVPREV
+											value <= 1000
+										}
+									}
+								}
+							}
+						}
+					}
+					FROM = {
+						character_event = {
+							id = new_avatar_journey.50
+							days = 60
+							random = 180
+						}
+					}
+				}
+				else_if = { # half a year
+					limit = {
+						ROOT = {
+							capital_holding = {
+								FROM = {
+									location = {
+										distance = {
+											who = PREVPREV
+											value >= 1001
+										}
+										distance = {
+											who = PREVPREV
+											value <= 1600
+										}
+									}
+								}
+							}
+						}
+					}
+					FROM = {
+						character_event = {
+							id = new_avatar_journey.50
+							days = 180
+							random = 90
+						}
+					}
 				}
 			}
 		}
