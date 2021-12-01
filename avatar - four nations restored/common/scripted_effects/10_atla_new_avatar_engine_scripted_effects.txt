@@ -602,3 +602,182 @@ move_avatar_effect = {
         }
     }
 }
+
+# used for calculation of journey time
+avatar_journey_effect = {
+    # find_avatar_effect = yes
+
+    if = { # a week
+        limit = {
+            event_target:avatar_journey_target = {
+                capital_holding = {
+                    ROOT = {
+                        location = {
+                            distance = {
+                                who = PREVPREV
+                                value >= 0
+                            }
+                            distance = {
+                                who = PREVPREV
+                                value <= 150
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        character_event = {
+            id = new_avatar_journey.50
+            days = 1
+            random = 7
+        }
+    }
+    else_if = { # Few weeks
+        limit = {
+            event_target:avatar_journey_target = {
+                capital_holding = {
+                    ROOT = {
+                        location = {
+                            distance = {
+                                who = PREVPREV
+                                value >= 151
+                            }
+                            distance = {
+                                who = PREVPREV
+                                value <= 400
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if = {
+            limit = {
+                has_flying_pet_or_artifact_trigger = yes
+            }
+            character_event = {
+                id = new_avatar_journey.50
+                days = 7
+                random = 14
+            }
+        }
+        else = {
+            character_event = {
+                id = new_avatar_journey.50
+                days = 7
+                random = 30
+            }
+        }
+    }
+    else_if = { # few months
+        limit = {
+            event_target:avatar_journey_target = {
+                capital_holding = {
+                    ROOT = {
+                        location = {
+                            distance = {
+                                who = PREVPREV
+                                value >= 401
+                            }
+                            distance = {
+                                who = PREVPREV
+                                value <= 650
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if = {
+            limit = {
+                has_flying_pet_or_artifact_trigger = yes
+            }
+            character_event = {
+                id = new_avatar_journey.50
+                days = 7
+                random = 30
+            }
+        }
+        else = {
+            character_event = {
+                id = new_avatar_journey.50
+                days = 30
+                random = 60
+            }
+        }
+    }
+    else_if = { # months
+        limit = {
+            event_target:avatar_journey_target = {
+                capital_holding = {
+                    ROOT = {
+                        location = {
+                            distance = {
+                                who = PREVPREV
+                                value >= 650
+                            }
+                            distance = {
+                                who = PREVPREV
+                                value <= 1000
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if = {
+            limit = {
+                has_flying_pet_or_artifact_trigger = yes
+            }
+            character_event = {
+                id = new_avatar_journey.50
+                days = 30
+                random = 30
+            }
+        }
+        else = {
+            character_event = {
+                id = new_avatar_journey.50
+                days = 60
+                random = 180
+            }
+        }
+    }
+    else_if = { # half a year
+        limit = {
+            event_target:avatar_journey_target = {
+                capital_holding = {
+                    ROOT = {
+                        location = {
+                            distance = {
+                                who = PREVPREV
+                                value >= 1001
+                            }
+                            distance = {
+                                who = PREVPREV
+                                value <= 1600
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if = {
+            limit = {
+                has_flying_pet_or_artifact_trigger = yes
+            }
+            character_event = {
+                id = new_avatar_journey.50
+                days = 30
+                random = 60
+            }
+        }
+        else = {
+            character_event = {
+                id = new_avatar_journey.50
+                days = 180
+                random = 90
+            }
+        }
+    }
+}
