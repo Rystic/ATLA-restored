@@ -421,7 +421,7 @@ character_event = {
 					}
 					character_event = {id = SANDR.1025 days = 1}
 					set_character_flag = good_manuever
-					prestige = 100
+					prestige = 25
 					modifier = {
 						factor = 1.5
 						trait = powerful_bender
@@ -473,7 +473,7 @@ character_event = {
 					}
 					character_event = {id = SANDR.1025 days = 1}
 					set_character_flag = good_manuever
-					prestige = 50
+					prestige = 25
 				}
 
 				25 = {
@@ -873,7 +873,7 @@ letter_event = { #completion letter for wood/sail
 			limit = {
 				has_character_flag = WOOD
 			}
-			change_society_currency = 350
+			change_society_currency = 200
 		}
 		if = {
 			limit = {
@@ -882,7 +882,7 @@ letter_event = { #completion letter for wood/sail
 					has_character_flag = expensive_sail
 				}
 			}
-			change_society_currency = 200
+			change_society_currency = 150
 		}
 		if = {
 			limit = {
@@ -891,7 +891,7 @@ letter_event = { #completion letter for wood/sail
 					has_character_flag = moderate_sail
 				}
 			}
-			change_society_currency = 150
+			change_society_currency = 100
 		}
 		if = {
 			limit = {
@@ -1420,7 +1420,18 @@ character_event = {  #Start of test run chain for wood/ gauntlet power decision
 	}
 
 	immediate = {
-		set_character_flag = wood_test_run
+		if = {
+			limit = {
+				has_quest = sand_quest_sailer
+			}
+			set_character_flag = wood_test_run
+		}
+		else_if = {
+			limit = {
+				NOT = { has_quest = sand_quest_sailer }
+			}
+			set_character_flag = running_gauntlet
+		}
 	}
 
 	option = {
@@ -1452,9 +1463,18 @@ character_event = {  #Rock Canyon challenge
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_flag = wood_test_run
-		has_character_flag = rock_canyon
-		NOT = {has_character_flag = did_rock_canyon}
+		OR = {
+			AND = {
+				has_character_flag = wood_test_run
+				has_character_flag = rock_canyon
+				NOT = {has_character_flag = did_rock_canyon}
+			}
+			AND = {
+				has_character_flag = running_gauntlet
+				has_character_flag = rock_canyon
+				NOT = {has_character_flag = did_rock_canyon}
+			}
+		}
 	}
 	option = { #High intensity manuevers
 		name = EVTOPTA_SANDR.1045
@@ -1610,9 +1630,18 @@ character_event = { #Sand Stretch Challenge
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_flag = sand_stretch
-		has_character_flag = wood_test_run
-		NOT = {has_character_flag = did_sand_stretch}
+		OR = {
+			AND = {
+				has_character_flag = wood_test_run
+				has_character_flag = sand_stretch
+				NOT = {has_character_flag = did_sand_stretch}
+			}
+			AND = {
+				has_character_flag = running_gauntlet
+				has_character_flag = sand_stretch
+				NOT = {has_character_flag = did_sand_stretch}
+			}
+		}
 	}
 	option = { #High Speed!
 		name = EVTOPTA_SANDR.1046
@@ -1769,9 +1798,18 @@ character_event = { #Razor Rock Challenge
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_flag = razor_rock_stretch
-		has_character_flag = wood_test_run
-		NOT = {has_character_flag = did_razor_rock_stretch}
+		OR = {
+			AND = {
+				has_character_flag = wood_test_run
+				has_character_flag = razor_rock_stretch
+				NOT = {has_character_flag = did_razor_rock_stretch}
+			}
+			AND = {
+				has_character_flag = running_gauntlet
+				has_character_flag = razor_rock_stretch
+				NOT = {has_character_flag = did_razor_rock_stretch}
+			}
+		}
 	}
 	option = { #Inside pass
 		name = EVTOPTA_SANDR.1047
@@ -1933,9 +1971,20 @@ character_event = { #Challenge completed segway event
 	desc = {
 		trigger = {
 			has_character_flag = did_rock_canyon
-			NOR = {
+			OR = {
+				has_character_flag = did_rock_canyon
 				has_character_flag = did_sand_stretch
+			}
+			OR = {
+				has_character_flag = did_rock_canyon
 				has_character_flag = did_razor_rock_stretch
+			}
+			NOT = {
+				AND = {
+					has_character_flag = did_razor_rock_stretch
+					has_character_flag = did_rock_canyon
+					has_character_flag = did_sand_stretch
+				}
 			}
 		}
 		text = EVTDESC_CASE1_SANDR.1048
@@ -1943,9 +1992,20 @@ character_event = { #Challenge completed segway event
 	desc = {
 		trigger = {
 			has_character_flag = did_sand_stretch
-			NOR = {
-				has_character_flag = did_rock_canyon
+			OR = {
+				has_character_flag = did_sand_stretch
 				has_character_flag = did_razor_rock_stretch
+			}
+			OR = {
+				has_character_flag = did_sand_stretch
+				has_character_flag = did_rock_canyon
+			}
+			NOT = {
+				AND = {
+					has_character_flag = did_razor_rock_stretch
+					has_character_flag = did_rock_canyon
+					has_character_flag = did_sand_stretch
+				}
 			}
 		}
 		text = EVTDESC_CASE2_SANDR.1048
@@ -1953,9 +2013,20 @@ character_event = { #Challenge completed segway event
 	desc = {
 		trigger = {
 			has_character_flag = did_razor_rock_stretch
-			NOR = {
+			OR = {
+				has_character_flag = did_razor_rock_stretch
 				has_character_flag = did_rock_canyon
+			}
+			OR = {
+				has_character_flag = did_razor_rock_stretch
 				has_character_flag = did_sand_stretch
+			}
+			NOT = {
+				AND = {
+					has_character_flag = did_razor_rock_stretch
+					has_character_flag = did_rock_canyon
+					has_character_flag = did_sand_stretch
+				}
 			}
 		}
 		text = EVTDESC_CASE3_SANDR.1048
@@ -1981,6 +2052,7 @@ character_event = { #Challenge completed segway event
 					has_character_flag = did_sand_stretch
 					has_character_flag = did_razor_rock_stretch
 				}
+				NOT = { has_character_flag = running_gauntlet }
 			}
 		}
 		trigger = {
@@ -2015,27 +2087,40 @@ character_event = { #Challenge completed segway event
 						NOT = { has_character_flag = did_rock_canyon }
 					}
 					set_character_flag = rock_canyon
-					character_event = {id = SANDR.1045 days = 2 }
+					character_event = { id = SANDR.1045 }
 				}
 				25 = {
 					trigger = {
 						NOT = { has_character_flag = did_sand_stretch }
 					}
 					set_character_flag = sand_stretch
-					character_event = {id = SANDR.1046 days = 2 }
+					character_event = { id = SANDR.1046 }
 				}
 				25 = {
 					trigger = {
 						NOT = { has_character_flag = did_razor_rock_stretch }
 					}
 					set_character_flag = razor_rock_stretch
-					character_event = {id = SANDR.1047 days = 2 }
+					character_event = { id = SANDR.1047 }
 				}
 				fallback = {
-					character_event = { id = SANDR.1049 days = 3 }
+					character_event = { id = SANDR.1049 }
 				}
 			}
 		}
+	}
+	option = {
+		name = EVTOPTB_SANDR.1048
+		trigger = {
+			AND = {
+				has_character_flag = did_rock_canyon
+				has_character_flag = did_sand_stretch
+				has_character_flag = did_razor_rock_stretch
+				has_character_flag = running_gauntlet
+			}
+			NOT = {has_character_flag = wood_test_run}
+		}
+		character_event = { id = SANDR.1049 }
 	}
 }
 
@@ -2084,7 +2169,7 @@ character_event = {  #fires after completing all challenges
 		clr_character_flag = razor_rock_stretch
 		clr_character_flag = wood_test_run
 		character_event = { id = SANDR.1011 days = 3 }
-		prestige = 20
+		prestige = 10
 	}
 	option = {
 		name = EVTOPTB_SANDR.1049
