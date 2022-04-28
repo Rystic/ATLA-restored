@@ -3431,12 +3431,10 @@ character_event = { # Learn Bending From Educator
 		trigger = {
 			NOT = { trait = incompetent_bender }
 			educator = {
-				AND = {
-					NOT = { trait = firebender }
-					NOT = { trait = earthbender }
-					NOT = { trait = waterbender }
-					NOT = { trait = airbender }
-				}
+				NOT = { trait = firebender }
+				NOT = { trait = earthbender }
+				NOT = { trait = waterbender }
+				NOT = { trait = airbender }
 			}
 		}
 		ai_chance = {
@@ -3539,9 +3537,7 @@ character_event = { # Parent informed - Bender
 				}
 				AND = {
 					FROM = { trait = master_bender }
-					OR = {
-						trait = legendary_bender
-					}
+					trait = legendary_bender
 				}
 			}
 		}
@@ -3564,15 +3560,13 @@ character_event = { # Parent informed - Bender
 
 				if = {
 					limit = {
-						AND = {
+						trait = airbender
+						educator = {
 							trait = airbender
-							educator = {
-								trait = airbender
-							}
+						}
 
-							NOT = {
-								trait = airnomad_tattoos
-							}
+						NOT = {
+							trait = airnomad_tattoos
 						}
 					}
 					
@@ -3608,22 +3602,19 @@ character_event = { # Parent informed - Bender
 		name = EVTOPTAbendingC.163
 		trigger = {
 			OR = {
-				trait = lightningbender
-				AND = {
-					trait = healer
-					NOT = { FROM = { trait = healer } }
-				}
-				trait = bloodbender
-				trait = seismicsense
-				trait = seismicsense_nonblind
-				trait = metalbender
-				trait = lavabender
-				trait = voidbender
+				can_teach_sub_bending_lightning = yes
+				can_teach_sub_bending_lava = yes
+				can_teach_sub_bending_metal = yes
+				can_teach_sub_bending_seismicsense = yes
+				can_teach_sub_bending_seismicsense_nonblind = yes
+				can_teach_sub_bending_blood = yes
+				can_teach_sub_bending_healer = yes
+				can_teach_sub_bending_void = yes
 			}
 		}
 		if = {
 			limit = {
-				trait = lightningbender
+				can_teach_sub_bending_lightning = yes
 			}
 			random_list = {
 				25 = {
@@ -3659,25 +3650,25 @@ character_event = { # Parent informed - Bender
 		}
 		if = {
 			limit = {
-				trait = bloodbender
+				can_teach_sub_bending_blood = yes
 			}
 			FROM = { add_trait = bloodbender }
 		}
 		if = {
 			limit = {
-				trait = healer
+				can_teach_sub_bending_healer = yes
 			}
 			FROM = { add_trait = healer }
 		}
 		if = {
 			limit = {
-				trait = seismicsense
+				can_teach_sub_bending_seismicsense = yes
 			}
 			FROM = { add_trait = seismicsense_nonblind }
 		}
 		if = {
 			limit = {
-				trait = seismicsense_nonblind
+				can_teach_sub_bending_seismicsense_nonblind = yes
 			}
 			random_list = {
 				25 = {
@@ -3690,25 +3681,33 @@ character_event = { # Parent informed - Bender
 		}
 		if = {
 			limit = {
-				trait = metalbender
+				can_teach_sub_bending_metal = yes
 			}
 			FROM = { add_trait = metalbender }
 		}
 		if = {
 			limit = {
-				trait = lavabender
+				can_teach_sub_bending_lava = yes
 			}
 			FROM = { add_trait = lavabender }
 		}
 		if = {
 			limit = {
-				trait = voidbender
+				can_teach_sub_bending_void = yes
 			}
 			FROM = { add_trait = voidbender }
 		}
 		FROM = { character_event = { id = bending.164 } }
 		ai_chance = {
 			factor = 2
+		}
+	}
+
+	option = { # No
+		name = EVTOPTAbendingD.163
+		FROM = { opinion = { modifier = opinion_disappointed who = ROOT years = 5 } }
+		ai_chance = {
+			factor = 0
 		}
 	}
 
