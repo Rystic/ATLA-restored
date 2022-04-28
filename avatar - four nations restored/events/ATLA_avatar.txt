@@ -118,6 +118,7 @@ character_event = { # Master is asked to take avatar under his wing
 					character_event = { id = avatar.151 }
 					break = yes
 				}
+				clr_character_flag = master_found
 				character_event = { id = avatar.159 }
 			}
 		}
@@ -175,6 +176,7 @@ character_event = { #avatar is banished
 				character_event = { id = avatar.151 }
 				break = yes
 			}
+			clr_character_flag = master_found
 			character_event = { id = avatar.159 }
 		}
 	}
@@ -185,6 +187,10 @@ character_event = { # Avatar Training
 	desc = EVTDESCbending.155
 	is_triggered_only = yes
 	picture = GFX_evt_family
+	
+	trigger = {
+		has_character_flag = avatar_journey
+	}
 
 	option = {
 		name = EVTOPTAbending.155
@@ -229,6 +235,10 @@ character_event = { #avatar training - progress
 	desc = EVTDESCbending.156
 	is_triggered_only = yes
 	picture = GFX_evt_family
+	
+	trigger = {
+		has_character_flag = avatar_journey
+	}
 
 	option = {
 		hidden_tooltip = {
@@ -407,7 +417,11 @@ character_event = { #avatar training - regress
 	desc = EVTDESCbending.157
 	is_triggered_only = yes
 	picture = GFX_evt_family
-
+	
+	trigger = {
+		has_character_flag = avatar_journey
+	}
+	
 	option = {
 		hidden_tooltip = {
 			random_list = {
@@ -585,7 +599,10 @@ character_event = { #avatar training - complete
 	desc = EVTDESCbending.158
 	is_triggered_only = yes
 	picture = GFX_evt_family
-
+	
+	trigger = {
+		has_character_flag = avatar_journey
+	}
 	immediate = {
 		clear_event_target = avatar_master
 	}
@@ -669,6 +686,7 @@ character_event = { #avatar training - complete
 		}
 		hidden_tooltip = {
 			clr_character_flag = avatar_first_master
+			clr_character_flag = master_found
 			character_event = { id = avatar.159 }
 		}
 	}
@@ -694,6 +712,14 @@ character_event = { #next master is searched for - fires for avatar
 	desc = EVTDESCbending.159
 	is_triggered_only = yes
 	picture = GFX_evt_family
+	
+	trigger = {
+		has_character_flag = avatar_journey
+		NOR = { 
+			has_character_flag = master_found 
+			has_character_flag = master_searching
+		}
+	}
 
 	option = { #search in the earth kingdoms
 	name = EVTDESCaavatar.159
@@ -710,8 +736,13 @@ character_event = { #next master is searched for - fires for avatar
 					trait = avatar_waterbender
 					NOT = { trait = avatar_earthbender }
 				}
+				AND = {
+					trait = waterbender
+					NOT = { trait = avatar_earthbender }
+				}
 			}
 		}
+		set_character_flag = master_searching
 		character_event = { id = avatar.168 } #earth
 	}
 	option = { #search in among the air Nomads
@@ -731,6 +762,7 @@ character_event = { #next master is searched for - fires for avatar
 				}
 			}
 		}
+		set_character_flag = master_searching
 		character_event = { id = avatar.166} #air
 
 	}
@@ -749,8 +781,13 @@ character_event = { #next master is searched for - fires for avatar
 					trait = avatar_airbender
 					NOT = { trait = avatar_waterbender }
 				}
+				AND = {
+					trait = airbender
+					NOT = { trait = avatar_waterbender }
+				}
 			}
 		}
+		set_character_flag = master_searching
 		character_event = { id = avatar.167 } #water
 	}
 	option = { #search in fire nation
@@ -768,8 +805,13 @@ character_event = { #next master is searched for - fires for avatar
 					trait = avatar_earthbender
 					NOT = { trait = avatar_firebender }
 				}
+				AND = {
+					trait = earthbender
+					NOT = { trait = avatar_firebender }
+				}
 			}
 		}
+		set_character_flag = master_searching
 		character_event = { id = avatar.165 } #fire
 	}
 }
@@ -779,7 +821,11 @@ character_event = { #all training is completed
 	desc = EVTDESCbending.160
 	is_triggered_only = yes
 	picture = GFX_evt_family
-
+	
+	trigger = {
+		has_character_flag = avatar_journey
+	}
+	
 	option = {
 	name = EVTDESCAavatar.160
 		hidden_tooltip = {
@@ -793,6 +839,8 @@ character_event = { #all training is completed
 				add_trait = master_bender
 			}
 			clr_character_flag = avatar_journey
+			clr_character_flag = master_searching
+			clr_character_flag = master_found
 			add_trait = fullyrealisedavatar
 			remove_trait = avatar
 			character_event = { id = avatar.170 days = 60 random = 180 }
@@ -818,10 +866,15 @@ character_event = {
 
 character_event = { #fire
 	id = avatar.165
-	desc = EVTDESCbending.165
+	desc = avatar_firebendingteacher_desc
 	is_triggered_only = yes
 	picture = GFX_evt_family
-
+	
+	trigger = {
+		NOT = { trait = avatar_firebender }
+		has_character_flag = avatar_journey
+	}
+	
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -841,6 +894,8 @@ character_event = { #fire
 			}
 			character_event = { id = avatar.152 days = 50 }
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCBavatar.166
@@ -885,6 +940,8 @@ character_event = { #fire
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCCavatar.165
@@ -931,15 +988,22 @@ character_event = { #fire
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 }
 
 character_event = { #air
 	id = avatar.166
-	desc = EVTDESCbending.165
+	desc = avatar_airbendingteacher_desc
 	is_triggered_only = yes
 	picture = GFX_evt_family
-
+	
+	trigger = {
+		NOT = { trait = avatar_airbender }
+		has_character_flag = avatar_journey
+	}
+	
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -963,6 +1027,8 @@ character_event = { #air
 			}
 			character_event = { id = avatar.152 days = 50 }
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCBavatar.166
@@ -1011,6 +1077,8 @@ character_event = { #air
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCCavatar.165
@@ -1061,14 +1129,22 @@ character_event = { #air
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 }
 
 
 character_event = { #water
 	id = avatar.167
+	desc = avatar_waterbendingteacher_desc
 	is_triggered_only = yes
-
+	
+	trigger = {
+		NOT = { trait = avatar_waterbender }
+		has_character_flag = avatar_journey
+	}
+	
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -1088,6 +1164,8 @@ character_event = { #water
 			}
 			character_event = { id = avatar.152 days = 50 }
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCBavatar.166
@@ -1132,6 +1210,8 @@ character_event = { #water
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCCavatar.165
@@ -1178,13 +1258,20 @@ character_event = { #water
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 }
 
 character_event = { #earth
 	id = avatar.168
-	is_triggered_only = yes
 	desc = avatar_e
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { trait = avatar_earthbender }
+		has_character_flag = avatar_journey
+	}
 
 	option = {
 		name = EVTDESCAavatar.165
@@ -1205,6 +1292,8 @@ character_event = { #earth
 			}
 			character_event = { id = avatar.152 days = 50 }
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCBavatar.166
@@ -1249,6 +1338,8 @@ character_event = { #earth
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 	option = {
 		name = EVTDESCCavatar.165
@@ -1295,6 +1386,8 @@ character_event = { #earth
 				character_event = { id = avatar.152 days = 50 }
 			}
 		}
+		set_character_flag = master_found
+		clr_character_flag = master_searching
 	}
 }
 
