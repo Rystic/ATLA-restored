@@ -1,22 +1,22 @@
 decisions = {
 	play_avatar = {
-        is_high_prio = yes
+		is_high_prio = yes
 		only_playable = yes
-        ai = no
+		ai = no
 		potential = {
 			is_avatar_trigger = no
-            event_target:global_avatar = {
+			event_target:global_avatar = {
 				is_avatar_trigger = yes
 				ai = yes
-            }
-            has_global_flag = playable_avatar
+			}
+			has_global_flag = playable_avatar
 		}
 		allow = {
 			always = yes
 		}
 		effect = {
 			# find_avatar_effect = yes
-            set_player_character = event_target:global_avatar
+			set_player_character = event_target:global_avatar
 		}
 		revoke_allowed = {
 			always = no
@@ -26,10 +26,10 @@ decisions = {
 
 targeted_decisions = {
 	move_avatar = {
-        is_high_prio = yes
+		is_high_prio = yes
 		only_playable = yes
 		filter = independent_rulers
-        ai = no
+		ai = no
 		from_potential = {
 			is_landed = no
 			is_avatar_trigger = yes
@@ -60,7 +60,7 @@ targeted_decisions = {
 				NOR = {
 					is_rival = ROOT
 					is_foe = ROOT
-				}		
+				}
 			}
 			opinion = {
 				who = FROM
@@ -77,11 +77,27 @@ targeted_decisions = {
 					text = is_within_reach_tt
 					ROOT = {
 						capital_holding = {
-							FROM = {
-								location = {
-									distance = {
-										who = PREVPREV
-										value <= 1000
+							OR = {
+								# avatar location is in 1000px range
+								FROM = {
+									location = {
+										distance = {
+											who = PREVPREV
+											value <= 1000
+										}
+									}
+								}
+								# location of avatar's suzerain is in 1000px range
+								FROM = {
+									suzerain = {
+										capital_holding = {
+											location = {
+												distance = {
+													who = PREVPREVPREVPREV
+													value <= 1000
+												}
+											}
+										}
 									}
 								}
 							}
