@@ -36,6 +36,7 @@ targeted_decisions = {
 		}
 		potential = {
 			is_within_diplo_range = FROM
+			is_landed = yes
 			# you're not already a tributary
 			FROM = {
 				NOR = {
@@ -56,18 +57,29 @@ targeted_decisions = {
 				value >= 0
 			}
 			FROM = {
+				NOT = {
+					trait = on_journey
+				}
 				NOR = {
 					is_rival = ROOT
 					is_foe = ROOT
 				}		
 			}
-			ROOT = {
-				capital_holding = {
-					FROM = {
-						location = {
-							distance = {
-								who = PREVPREV
-								value <= 500
+			OR = {
+				FROM = {
+					custom_tooltip = {
+						text = has_flying_pet_or_artifact_tt
+						has_flying_pet_or_artifact_trigger = yes
+					}
+				}
+				ROOT = {
+					capital_holding = {
+						FROM = {
+							location = {
+								distance = {
+									who = PREVPREV
+									value <= 1000
+								}
 							}
 						}
 					}
@@ -77,9 +89,13 @@ targeted_decisions = {
 		effect = {
 			custom_tooltip = {
 				text = move_avatar_tt
-				find_avatar_effect = yes
 				ROOT = {
-					move_avatar_effect = yes
+					save_event_target_as = avatar_journey_target
+				}
+				FROM = {
+					character_event = {
+						id = new_avatar_journey.10
+					}
 				}
 			}
 		}
