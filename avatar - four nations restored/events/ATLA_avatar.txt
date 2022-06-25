@@ -826,6 +826,12 @@ character_event = { #next master is searched for - fires for avatar
 		set_character_flag = master_searching
 		character_event = { id = avatar.165 } #fire
 	}
+
+	after = {
+		hidden_tooltip = {
+			switch_learning_bending = yes
+		}
+	}
 }
 
 character_event = { #all training is completed
@@ -839,21 +845,22 @@ character_event = { #all training is completed
 	}
 	
 	option = {
-	name = EVTDESCAavatar.160
-		hidden_tooltip = {
-			if = {
-				limit = {
-					OR = {
-						trait = competent_bender
-						trait = powerful_bender
-					}
+		name = EVTDESCAavatar.160
+		if = {
+			limit = {
+				OR = {
+					trait = competent_bender
+					trait = powerful_bender
 				}
-				add_trait = master_bender
 			}
+			add_trait = master_bender
+		}
+		add_trait = fullyrealisedavatar
+		hidden_tooltip = {
 			clr_character_flag = avatar_journey
 			clr_character_flag = master_searching
 			clr_character_flag = master_found
-			add_trait = fullyrealisedavatar
+			finish_learning_elements_effect = yes
 			remove_trait = avatar
 			character_event = { id = avatar.170 days = 60 random = 180 }
 			d_the_sages = {
