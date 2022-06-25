@@ -5,531 +5,534 @@
 # because the old one was broken-down
 # ---------------------
 # written by unLomTrois
-
 # called in avatar's death event
 create_new_avatar_effect = {
-
-    if = { # sefety control
-        limit = {
-            has_global_flag = avatar_dead
-        }
-        
-        # switch cycle
-        new_avatar_cycle_effect = yes
-
-        activate_title = { title = d_avatar_unrevealed status = yes }
-
-        # generate new avatar
-        trigger_switch = {
-            on_trigger = has_global_flag
-            avatar_water = { generate_new_avatar_effect = yes }    
-            avatar_earth = { generate_new_avatar_effect = yes }    
-            avatar_fire = { create_new_fire_avatar_effect = yes }    
-            avatar_air = { create_new_air_avatar_effect = yes }    
-        }
-
-        set_global_flag = avatar_unrevealed
-
-        clear_global_event_target = global_avatar
-
-        d_avatar_unrevealed = {
-            add_law_w_cooldown = succ_avatar_reincarnation
-        }
-
-
-        if = { # safety control, switching the character you play
-            limit = {
-                ai = no
-                event_target:new_avatar = {
-                    ai = yes
-                    is_alive = yes
-                }
-            }
-            
-            set_player_character = event_target:new_avatar
-        }
-
-        event_target:new_avatar = {
-            save_global_event_target_as = global_avatar
-            location = {
-                d_avatar_unrevealed = {
-                    set_preferred_capital = PREV
-                }
-                d_avatar = {
-                    set_preferred_capital = PREV
-                }
-            }
-        }
-
-        clear_global_avatar_event_targets_effect = yes
-    }
+	if = {
+		# sefety control
+		limit = {
+			has_global_flag = avatar_dead
+		}
+		# switch cycle
+		new_avatar_cycle_effect = yes
+		activate_title = {
+			title = d_avatar_unrevealed
+			status = yes
+		}
+		# generate new avatar
+		trigger_switch = {
+			on_trigger = has_global_flag
+			avatar_water = {
+				generate_new_avatar_effect = yes
+			}
+			avatar_earth = {
+				generate_new_avatar_effect = yes
+			}
+			avatar_fire = {
+				create_new_fire_avatar_effect = yes
+			}
+			avatar_air = {
+				create_new_air_avatar_effect = yes
+			}
+		}
+		set_global_flag = avatar_unrevealed
+		clear_global_event_target = global_avatar
+		d_avatar_unrevealed = {
+			add_law_w_cooldown = succ_avatar_reincarnation
+		}
+		if = {
+			# safety control, switching the character you play
+			limit = {
+				ai = no
+				event_target:new_avatar = {
+					ai = yes
+					is_alive = yes
+				}
+			}
+			set_player_character = event_target:new_avatar
+		}
+		event_target:new_avatar = {
+			save_global_event_target_as = global_avatar
+			location = {
+				d_avatar_unrevealed = {
+					set_preferred_capital = PREV
+				}
+				d_avatar = {
+					set_preferred_capital = PREV
+				}
+			}
+		}
+		clear_global_avatar_event_targets_effect = yes
+	}
 }
 
 # change the element in the cycle to next: water, earth, fire, air, water ...
 new_avatar_cycle_effect = {
-    clr_global_flag = avatar_dead
-
-    trigger_switch = {
-        on_trigger = has_global_flag
-        avatar_water = { clr_global_flag = avatar_water set_global_flag = avatar_earth }
-        avatar_earth = { clr_global_flag = avatar_earth set_global_flag = avatar_fire }
-        avatar_fire = { clr_global_flag = avatar_fire set_global_flag = avatar_air }
-        avatar_air = { clr_global_flag = avatar_air set_global_flag = avatar_water }
-    }
+	clr_global_flag = avatar_dead
+	trigger_switch = {
+		on_trigger = has_global_flag
+		avatar_water = {
+			clr_global_flag = avatar_water
+			set_global_flag = avatar_earth
+		}
+		avatar_earth = {
+			clr_global_flag = avatar_earth
+			set_global_flag = avatar_fire
+		}
+		avatar_fire = {
+			clr_global_flag = avatar_fire
+			set_global_flag = avatar_air
+		}
+		avatar_air = {
+			clr_global_flag = avatar_air
+			set_global_flag = avatar_water
+		}
+	}
 }
 
 # CREATE NEW AVATARS
-
 create_new_fire_avatar_effect = {
-
-    # Roku part
-    if = {
-        limit = {
-            has_global_flag = avatar_fire
-            has_global_flag = Kyoshi
-            NOT = { has_global_flag = Roku }
-            year >= 740
-        }
-        generate_avatar_roku_effect = yes
-        set_global_flag = Roku
-    }
-    else = {
-        generate_new_avatar_effect = yes
-    }
+	# Roku part
+	if = {
+		limit = {
+			has_global_flag = avatar_fire
+			has_global_flag = Kyoshi
+			NOT = {
+				has_global_flag = Roku
+			}
+			year >= 740
+		}
+		generate_avatar_roku_effect = yes
+		set_global_flag = Roku
+	}
+	else = {
+		generate_new_avatar_effect = yes
+	}
 }
 
 create_new_air_avatar_effect = {
-
-    # Aang part
-    if = {
-        limit = {
-            has_global_flag = avatar_air
-            has_global_flag = Roku
-            NOT = { has_global_flag = Aang }
-            year >= 800
-        }
-        generate_avatar_aang_effect = yes
-        set_global_flag = Aang
-    }
-    else = {
-        generate_new_air_avatar_effect = yes
-    }
+	# Aang part
+	if = {
+		limit = {
+			has_global_flag = avatar_air
+			has_global_flag = Roku
+			NOT = {
+				has_global_flag = Aang
+			}
+			year >= 800
+		}
+		generate_avatar_aang_effect = yes
+		set_global_flag = Aang
+	}
+	else = {
+		generate_new_air_avatar_effect = yes
+	}
 }
 
 # GENERATION
-
 generate_new_avatar_effect = {
-    find_suitable_family_for_avatar_effect = yes
-    
-    create_character = {
-        dynasty = event_target:father_of_avatar
-        culture = event_target:mother_of_avatar
-        religion = event_target:mother_of_avatar
-        female = random
-        age = 0
-
-        genetic_mother = event_target:mother_of_avatar
-        genetic_father = event_target:father_of_avatar
-
-        flag = avatar_unrevealed
-        add_trait = unrevealedavatar # to make them not to die in childhood
-    }
-    new_character = {
-        # avatar effects
-        save_event_target_as = new_avatar
-
-        # family effects
-        set_mother = event_target:mother_of_avatar
-        set_father = event_target:father_of_avatar
-        set_guardian = event_target:teacher_of_avatar
-
-        # add titular duchy to avatar
-        d_avatar_unrevealed = {
-            grant_title = event_target:new_avatar
-        }
-    
-        set_defacto_liege = THIS
-    }
+	find_suitable_family_for_avatar_effect = yes
+	create_character = {
+		dynasty = event_target:father_of_avatar
+		culture = event_target:mother_of_avatar
+		religion = event_target:mother_of_avatar
+		female = random
+		age = 0
+		genetic_mother = event_target:mother_of_avatar
+		genetic_father = event_target:father_of_avatar
+		flag = avatar_unrevealed
+		add_trait = unrevealedavatar		# to make them not to die in childhood
+	}
+	new_character = {
+		# avatar effects
+		save_event_target_as = new_avatar
+		# family effects
+		set_mother = event_target:mother_of_avatar
+		set_father = event_target:father_of_avatar
+		set_guardian = event_target:teacher_of_avatar
+		# add titular duchy to avatar
+		d_avatar_unrevealed = {
+			grant_title = event_target:new_avatar
+		}
+		set_defacto_liege = THIS
+	}
 }
 
 generate_new_air_avatar_effect = {
-    create_character = {
-        dynasty = none
-        culture = southern_air_nomad # set the culture for name
-        religion = air_spirituality
-        female = random
-        age = 0
-
-        flag = avatar_unrevealed
-        add_trait = unrevealedavatar # to make them not to die in childhood
-    }
-    new_character = {
-        # avatar effects
-        save_event_target_as = new_avatar
-
-        find_suitable_liege_for_air_avatar_effect = yes
-
-        culture = event_target:liege_of_air_avatar # set the actual culture
-        set_guardian = event_target:liege_of_air_avatar
-
-        # add titular duchy to avatar
-        d_avatar_unrevealed = {
-            grant_title = event_target:new_avatar
-        }
-
-        set_defacto_liege = event_target:liege_of_air_avatar
-    }
+	create_character = {
+		dynasty = none
+		culture = southern_air_nomad		# set the culture for name
+		religion = air_spirituality
+		female = random
+		age = 0
+		flag = avatar_unrevealed
+		add_trait = unrevealedavatar		# to make them not to die in childhood
+	}
+	new_character = {
+		# avatar effects
+		save_event_target_as = new_avatar
+		find_suitable_liege_for_air_avatar_effect = yes
+		culture = event_target:liege_of_air_avatar		# set the actual culture
+		set_guardian = event_target:liege_of_air_avatar
+		# add titular duchy to avatar
+		d_avatar_unrevealed = {
+			grant_title = event_target:new_avatar
+		}
+		set_defacto_liege = event_target:liege_of_air_avatar
+	}
 }
 
 # FIND suitable family, liege and teacher
-
 find_suitable_family_for_avatar_effect = {
-    if = {
-        any_character = {
-            limit = {
-                is_suitable_mother_of_avatar_trigger = yes
-            }
-
-            count > 0
-        }
-
-        random_character = { # find a mother for an avatar
-            limit = {
-                is_suitable_mother_of_avatar_trigger = yes
-            }
-
-            save_event_target_as = mother_of_avatar
-
-            spouse_even_if_dead = { # find a father for the avatar
-                save_event_target_as = father_of_avatar
-            }
-        }
-    }
-
-    find_suitable_liege_for_avatar_effect = yes
-    
-    find_suitable_teacher_for_avatar_effect = yes
+	if = {
+		any_character = {
+			limit = {
+				is_suitable_mother_of_avatar_trigger = yes
+			}
+			count > 0
+		}
+		random_character = {
+			# find a mother for an avatar
+			limit = {
+				is_suitable_mother_of_avatar_trigger = yes
+			}
+			save_event_target_as = mother_of_avatar
+			spouse_even_if_dead = {
+				# find a father for the avatar
+				save_event_target_as = father_of_avatar
+			}
+		}
+	}
+	find_suitable_liege_for_avatar_effect = yes
+	find_suitable_teacher_for_avatar_effect = yes
 }
 
 find_suitable_liege_for_avatar_effect = {
-    event_target:mother_of_avatar = {
-        top_liege = {
-            save_event_target_as = liege_of_avatar_family
-        }
-    }
+	event_target:mother_of_avatar = {
+		top_liege = {
+			save_event_target_as = liege_of_avatar_family
+		}
+	}
 }
 
 find_suitable_liege_for_air_avatar_effect = {
-    if = {
-        limit = {
-            event_target:new_avatar = {
-                is_female = yes
-            }
-        }
-        random_list = {
-            50 = {
-                k_eastern_air_temple = {
-                    holder_scope = {
-                        save_event_target_as = liege_of_air_avatar
-                    }
-                }
-            }
-            50 = {
-                k_western_air_temple = {
-                    holder_scope = {
-                        save_event_target_as = liege_of_air_avatar
-                    }
-                }
-            }
-        }
-    }
-    else = {
-        random_list = {
-            50 = {
-                k_southern_air_temple = {
-                    holder_scope = {
-                        save_event_target_as = liege_of_air_avatar
-                    }
-                }
-            }
-            50 = {
-                k_northern_air_temple = {
-                    holder_scope = {
-                        save_event_target_as = liege_of_air_avatar
-                    }
-                }
-            }
-        }
-    }
+	if = {
+		limit = {
+			event_target:new_avatar = {
+				is_female = yes
+			}
+		}
+		random_list = {
+			50 = {
+				k_eastern_air_temple = {
+					holder_scope = {
+						save_event_target_as = liege_of_air_avatar
+					}
+				}
+			}
+			50 = {
+				k_western_air_temple = {
+					holder_scope = {
+						save_event_target_as = liege_of_air_avatar
+					}
+				}
+			}
+		}
+	}
+	else = {
+		random_list = {
+			50 = {
+				k_southern_air_temple = {
+					holder_scope = {
+						save_event_target_as = liege_of_air_avatar
+					}
+				}
+			}
+			50 = {
+				k_northern_air_temple = {
+					holder_scope = {
+						save_event_target_as = liege_of_air_avatar
+					}
+				}
+			}
+		}
+	}
 }
 
 find_suitable_teacher_for_avatar_effect = {
-    if = {
-        limit = {
-            event_target:father_of_avatar = {
-                is_suitable_teacher_of_avatar_trigger = yes
-            }
-        }
-        event_target:father_of_avatar = {
-            save_event_target_as = teacher_of_avatar
-        }
-    }
-    if = {
-        limit = {
-            event_target:mother_of_avatar = {
-                is_suitable_teacher_of_avatar_trigger = yes
-            }
-        }
-        event_target:mother_of_avatar = {
-            save_event_target_as = teacher_of_avatar
-        }
-    }
+	if = {
+		limit = {
+			event_target:father_of_avatar = {
+				is_suitable_teacher_of_avatar_trigger = yes
+			}
+		}
+		event_target:father_of_avatar = {
+			save_event_target_as = teacher_of_avatar
+		}
+	}
+	if = {
+		limit = {
+			event_target:mother_of_avatar = {
+				is_suitable_teacher_of_avatar_trigger = yes
+			}
+		}
+		event_target:mother_of_avatar = {
+			save_event_target_as = teacher_of_avatar
+		}
+	}
 }
 
 clear_global_avatar_event_targets_effect = {
-    clear_event_target = mother_of_avatar
-    clear_event_target = father_of_avatar
-    clear_event_target = teacher_of_avatar
-    clear_event_target = liege_of_avatar_family
-    clear_event_target = liege_of_air_avatar
+	clear_event_target = mother_of_avatar
+	clear_event_target = father_of_avatar
+	clear_event_target = teacher_of_avatar
+	clear_event_target = liege_of_avatar_family
+	clear_event_target = liege_of_air_avatar
 }
 
 # Roku effects
-
 generate_avatar_roku_effect = {
-    generate_family_for_roku_effect = yes
-
-    create_character = {
-        name = "Roku"
-        dynasty = 536
-        religion = "fire_spirituality"
-        culture = "fire_islander"
-        dna = "000000a0b00"
-        age = 0
-
-        add_trait = canon_character
-        add_trait = unrevealedavatar # to make them not to die in childhood
-        
-        flag = is_roku
-        flag = avatar_unrevealed
-    }
-    new_character = {
-        save_event_target_as = new_avatar
-
-        set_mother = event_target:mother_of_avatar
-        set_father = event_target:father_of_avatar
-
-        # add titular duchy to avatar
-        d_avatar_unrevealed = {
-            grant_title = event_target:new_avatar
-        }
-
-        set_defacto_liege = THIS
-        set_guardian = event_target:teacher_of_avatar
-    }
+	generate_family_for_roku_effect = yes
+	create_character = {
+		name = "Roku"
+		dynasty = 536
+		religion = "fire_spirituality"
+		culture = "fire_islander"
+		dna = "000000a0b00"
+		age = 0
+		add_trait = canon_character
+		add_trait = unrevealedavatar		# to make them not to die in childhood
+		flag = is_roku
+		flag = avatar_unrevealed
+	}
+	new_character = {
+		save_event_target_as = new_avatar
+		set_mother = event_target:mother_of_avatar
+		set_father = event_target:father_of_avatar
+		# add titular duchy to avatar
+		d_avatar_unrevealed = {
+			grant_title = event_target:new_avatar
+		}
+		set_defacto_liege = THIS
+		set_guardian = event_target:teacher_of_avatar
+	}
 }
 
 generate_family_for_roku_effect = {
-    find_suitable_liege_for_avatar_roku_effect = yes
-    
-    event_target:liege_of_avatar_roku_family = {
-        # father of Roku
-        create_character = {
-            dynasty = 536
-            religion = event_target:liege_of_avatar_roku_family
-            culture = event_target:liege_of_avatar_roku_family
-            random_traits = yes
-            female = no
-
-            add_trait = firebender
-            add_trait = competent_bender
-        }
-        new_character = {
-            save_event_target_as = father_of_avatar
-            save_event_target_as = teacher_of_avatar
-            random_list = {
-                20 = { add_trait = brilliant_strategist }
-                30 = { add_trait = tough_soldier }
-                50 = { add_trait = skilled_tactician }
-            }
-        }
-        
-        # mother of Roku
-        create_character = {
-            dynasty = random
-            religion = event_target:liege_of_avatar_roku_family
-            culture = event_target:liege_of_avatar_roku_family
-            random_traits = yes
-            female = yes
-
-            add_trait = firebender
-            add_trait = competent_bender
-        }
-        new_character = {
-            save_event_target_as = mother_of_avatar
-        }
-
-        # marry them
-        event_target:father_of_avatar = {
-            add_spouse = event_target:mother_of_avatar
-        }
-    }
+	find_suitable_liege_for_avatar_roku_effect = yes
+	event_target:liege_of_avatar_roku_family = {
+		# father of Roku
+		create_character = {
+			dynasty = 536
+			religion = event_target:liege_of_avatar_roku_family
+			culture = event_target:liege_of_avatar_roku_family
+			random_traits = yes
+			female = no
+			add_trait = firebender
+			add_trait = competent_bender
+		}
+		new_character = {
+			save_event_target_as = father_of_avatar
+			save_event_target_as = teacher_of_avatar
+			random_list = {
+				20 = {
+					add_trait = brilliant_strategist
+				}
+				30 = {
+					add_trait = tough_soldier
+				}
+				50 = {
+					add_trait = skilled_tactician
+				}
+			}
+		}
+		# mother of Roku
+		create_character = {
+			dynasty = random
+			religion = event_target:liege_of_avatar_roku_family
+			culture = event_target:liege_of_avatar_roku_family
+			random_traits = yes
+			female = yes
+			add_trait = firebender
+			add_trait = competent_bender
+		}
+		new_character = {
+			save_event_target_as = mother_of_avatar
+		}
+		# marry them
+		event_target:father_of_avatar = {
+			add_spouse = event_target:mother_of_avatar
+		}
+	}
 }
 
 find_suitable_liege_for_avatar_roku_effect = {
-    random_character = {
-        limit = {
-            is_landed = yes
-            culture_group = fire_nation_culture
-
-            primary_title = {
-                region = world_fire_isles
-            }
-
-            tier = DUKE
-        }
-
-        save_event_target_as = liege_of_avatar_roku_family
-    }
+	random_character = {
+		limit = {
+			is_landed = yes
+			culture_group = fire_nation_culture
+			primary_title = {
+				region = world_fire_isles
+			}
+			tier = DUKE
+		}
+		save_event_target_as = liege_of_avatar_roku_family
+	}
 }
 
 # AANG 
-
 generate_avatar_aang_effect = {
-
-    k_southern_air_temple = {
-        holder_scope = {
-            save_event_target_as = liege_of_air_avatar
-        }
-    }
-
-    create_character = {
-        name = "Aang"
-        dynasty = 1504
-        religion = "air_spirituality"
-        culture = "customPortrait_aang"
-        age = 0
-        female = no
-
-        add_trait = canon_character
-        add_trait = unrevealedavatar # to make them not to die in childhood
-        
-        flag = is_aang
-        flag = avatar_unrevealed
-    }
-    new_character = {
-        save_event_target_as = new_avatar
-
-        culture = southern_air_nomad
-
-        # add titular duchy to avatar
-        d_avatar_unrevealed = {
-            grant_title = event_target:new_avatar
-        }
-
-        set_defacto_liege = event_target:liege_of_air_avatar
-        set_guardian = event_target:liege_of_air_avatar
-    }
+	k_southern_air_temple = {
+		holder_scope = {
+			save_event_target_as = liege_of_air_avatar
+		}
+	}
+	create_character = {
+		name = "Aang"
+		dynasty = 1504
+		religion = "air_spirituality"
+		culture = "customPortrait_aang"
+		age = 0
+		female = no
+		add_trait = canon_character
+		add_trait = unrevealedavatar		# to make them not to die in childhood
+		flag = is_aang
+		flag = avatar_unrevealed
+	}
+	new_character = {
+		save_event_target_as = new_avatar
+		culture = southern_air_nomad
+		# add titular duchy to avatar
+		d_avatar_unrevealed = {
+			grant_title = event_target:new_avatar
+		}
+		set_defacto_liege = event_target:liege_of_air_avatar
+		set_guardian = event_target:liege_of_air_avatar
+	}
 }
 
 ###################################
 # new avatar engine - fire avatar #
 ###################################
-
 find_fire_lord_effect = {
-    if = {
-        limit = {
-            e_fire_nation = {
-                owner = {
-                    is_fire_lord_trigger = yes
-                }
-            }
-        }
-        e_fire_nation = {
-            owner = {
-                save_event_target_as = firelord
-            }
-        }
-        # break = yes
-    }
-    if = {
-        limit = {
-            k_fire_nation = {
-                owner = {
-                    is_fire_lord_trigger = yes
-                }
-            }
-        }
-        k_fire_nation = {
-            owner = {
-                save_event_target_as = firelord
-            }
-        }
-        # break = yes
-    }
-    if = {
-        limit = {
-            c_fire_capital = {
-                owner = {
-                    is_fire_lord_trigger = yes
-                }
-            }
-        }
-        c_fire_capital = {
-            owner = {
-                save_event_target_as = firelord
-            }
-        }
-        # break = yes
-    }
+	if = {
+		limit = {
+			e_fire_nation = {
+				owner = {
+					is_fire_lord_trigger = yes
+				}
+			}
+		}
+		e_fire_nation = {
+			owner = {
+				save_event_target_as = firelord
+			}
+		}
+		# break = yes
+	}
+	if = {
+		limit = {
+			k_fire_nation = {
+				owner = {
+					is_fire_lord_trigger = yes
+				}
+			}
+		}
+		k_fire_nation = {
+			owner = {
+				save_event_target_as = firelord
+			}
+		}
+		# break = yes
+	}
+	if = {
+		limit = {
+			c_fire_capital = {
+				owner = {
+					is_fire_lord_trigger = yes
+				}
+			}
+		}
+		c_fire_capital = {
+			owner = {
+				save_event_target_as = firelord
+			}
+		}
+		# break = yes
+	}
 }
 
 ######################################
 # new avatar engine - avatar journey #
 ######################################
-
 start_avatar_journey_effect = {
-    set_character_flag = avatar_journey
-
-    trigger_switch = {
-        on_trigger = has_global_flag
-        avatar_water = { set_character_flag = avatar_journey_to_earth_kingdom }
-        avatar_earth = { set_character_flag = avatar_journey_to_fire_nation }
-        avatar_fire = { set_character_flag = avatar_journey_to_air_nomads }
-        avatar_air = { set_character_flag = avatar_journey_to_water_tribes }
-    }
+	set_character_flag = avatar_journey
+	trigger_switch = {
+		on_trigger = has_global_flag
+		avatar_water = {
+			set_character_flag = avatar_journey_to_earth_kingdom
+		}
+		avatar_earth = {
+			set_character_flag = avatar_journey_to_fire_nation
+		}
+		avatar_fire = {
+			set_character_flag = avatar_journey_to_air_nomads
+		}
+		avatar_air = {
+			set_character_flag = avatar_journey_to_water_tribes
+		}
+	}
 }
 
 finish_learning_airbending_effect = {
-    clr_character_flag = avatar_journey_to_air_nomads
-    clr_character_flag = travel_to_southern_air_temple
+	clr_character_flag = avatar_journey_to_air_nomads
+	clr_character_flag = travel_to_southern_air_temple
 }
 
 finish_learning_elements_effect = {
-    remove_trait = avatar_learning_waterbending
-    remove_trait = avatar_learning_earthbending
-    remove_trait = avatar_learning_firebending
-    remove_trait = avatar_learning_airbending
+	remove_trait = avatar_learning_waterbending
+	remove_trait = avatar_learning_earthbending
+	remove_trait = avatar_learning_firebending
+	remove_trait = avatar_learning_airbending
 }
 
 start_avatar_learning = {
-    trigger_switch = {
-        on_trigger = has_global_flag
-        avatar_water = { add_trait = avatar_learning_earthbending }
-        avatar_earth = { add_trait = avatar_learning_firebending }
-        avatar_fire = { add_trait = avatar_learning_airbending }
-        avatar_air = { add_trait = avatar_learning_waterbending }
-    }
+	trigger_switch = {
+		on_trigger = has_global_flag
+		avatar_water = {
+			add_trait = avatar_learning_earthbending
+		}
+		avatar_earth = {
+			add_trait = avatar_learning_firebending
+		}
+		avatar_fire = {
+			add_trait = avatar_learning_airbending
+		}
+		avatar_air = {
+			add_trait = avatar_learning_waterbending
+		}
+	}
 }
 
 switch_learning_bending = {
-    trigger_switch = {
-        on_trigger = trait
-        avatar_learning_waterbending = { remove_trait = avatar_learning_waterbending add_trait = avatar_learning_earthbending }
-        avatar_learning_earthbending = { remove_trait = avatar_learning_earthbending add_trait = avatar_learning_firebending }
-        avatar_learning_firebending = { remove_trait = avatar_learning_firebending add_trait = avatar_learning_airbending }
-        avatar_learning_airbending = { remove_trait = avatar_learning_airbending add_trait = avatar_learning_waterbending }
-    }
+	trigger_switch = {
+		on_trigger = trait
+		avatar_learning_waterbending = {
+			remove_trait = avatar_learning_waterbending
+			add_trait = avatar_learning_earthbending
+		}
+		avatar_learning_earthbending = {
+			remove_trait = avatar_learning_earthbending
+			add_trait = avatar_learning_firebending
+		}
+		avatar_learning_firebending = {
+			remove_trait = avatar_learning_firebending
+			add_trait = avatar_learning_airbending
+		}
+		avatar_learning_airbending = {
+			remove_trait = avatar_learning_airbending
+			add_trait = avatar_learning_waterbending
+		}
+	}
 }
 
 # finding of the avatar
@@ -539,38 +542,38 @@ switch_learning_bending = {
 #   *your staff*
 # }
 find_avatar_effect = {
-    if = {
-        limit = {
-            d_avatar = {
-                owner = {
-                    is_avatar_trigger = yes
-                }
-            }
-        }
-        d_avatar = {
-            owner = {
-                save_event_target_as = avatar
-            }
-        }
-    }
-    if = {
-        limit = {
-            d_avatar_unrevealed = {
-                owner = {
-                    is_avatar_trigger = yes
-                }
-            }
-        }
-        d_avatar_unrevealed = {
-            owner = {
-                save_event_target_as = avatar
-            }
-        }
-    }
+	if = {
+		limit = {
+			d_avatar = {
+				owner = {
+					is_avatar_trigger = yes
+				}
+			}
+		}
+		d_avatar = {
+			owner = {
+				save_event_target_as = avatar
+			}
+		}
+	}
+	if = {
+		limit = {
+			d_avatar_unrevealed = {
+				owner = {
+					is_avatar_trigger = yes
+				}
+			}
+		}
+		d_avatar_unrevealed = {
+			owner = {
+				save_event_target_as = avatar
+			}
+		}
+	}
 }
 
 clr_avatar_target_effect = {
-    clear_event_target = avatar
+	clear_event_target = avatar
 }
 
 # "moving" works via tributary
@@ -579,218 +582,222 @@ clr_avatar_target_effect = {
 #    move_avatar_effect = yes
 # }
 move_avatar_effect = {
-    # remove previous avatar's suzerain
-    event_target:avatar = {
-        # set_defacto_liege = THIS
-        suzerain = {
-            remove_tributary = PREV
-        }
-    }
-    # make a new suzerain
-    if = {
-        limit = {
-            event_target:avatar = {
-                has_character_flag = avatar_revealed
-            }
-        }
-        make_tributary = {
-            who = event_target:avatar
-            percentage = 0.01
-            tributary_type = avatar_tributary
-        }
-    }
-    else = {
-        make_tributary = {
-            who = event_target:avatar
-            percentage = 0.01
-            tributary_type = unrevealed_avatar_tributary
-        }
-    }
-    # move de-jure capital of avatar's title
-    capital_scope = {
-        event_target:avatar = {
-            primary_title = {
-                set_preferred_capital = PREVPREV
-            }
-        }
-    }
+	# remove previous avatar's suzerain
+	event_target:avatar = {
+		# set_defacto_liege = THIS
+		suzerain = {
+			remove_tributary = PREV
+		}
+	}
+	# make a new suzerain
+	if = {
+		limit = {
+			event_target:avatar = {
+				has_character_flag = avatar_revealed
+			}
+		}
+		make_tributary = {
+			who = event_target:avatar
+			percentage = 0.01
+			tributary_type = avatar_tributary
+		}
+	}
+	else = {
+		make_tributary = {
+			who = event_target:avatar
+			percentage = 0.01
+			tributary_type = unrevealed_avatar_tributary
+		}
+	}
+	# move de-jure capital of avatar's title
+	capital_scope = {
+		event_target:avatar = {
+			primary_title = {
+				set_preferred_capital = PREVPREV
+			}
+		}
+	}
 }
 
 # used for calculation of journey time
 avatar_journey_effect = {
-    # find_avatar_effect = yes
-
-    if = { # a week
-        limit = {
-            event_target:avatar_journey_target = {
-                capital_holding = {
-                    ROOT = {
-                        location = {
-                            distance = {
-                                who = PREVPREV
-                                value >= 0
-                            }
-                            distance = {
-                                who = PREVPREV
-                                value <= 150
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        character_event = {
-            id = new_avatar_journey.50
-            days = 1
-            random = 7
-        }
-    }
-    else_if = { # Few weeks
-        limit = {
-            event_target:avatar_journey_target = {
-                capital_holding = {
-                    ROOT = {
-                        location = {
-                            distance = {
-                                who = PREVPREV
-                                value >= 151
-                            }
-                            distance = {
-                                who = PREVPREV
-                                value <= 400
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if = {
-            limit = {
-                has_flying_pet_or_artifact_trigger = yes
-            }
-            character_event = {
-                id = new_avatar_journey.50
-                days = 14
-                random = 14
-            }
-        }
-        else = {
-            character_event = {
-                id = new_avatar_journey.50
-                days = 14
-                random = 30
-            }
-        }
-    }
-    else_if = { # few months
-        limit = {
-            event_target:avatar_journey_target = {
-                capital_holding = {
-                    ROOT = {
-                        location = {
-                            distance = {
-                                who = PREVPREV
-                                value >= 401
-                            }
-                            distance = {
-                                who = PREVPREV
-                                value <= 650
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if = {
-            limit = {
-                has_flying_pet_or_artifact_trigger = yes
-            }
-            character_event = {
-                id = new_avatar_journey.50
-                days = 14
-                random = 30
-            }
-        }
-        else = {
-            character_event = {
-                id = new_avatar_journey.50
-                days = 30
-                random = 60
-            }
-        }
-    }
-    else_if = { # months
-        limit = {
-            event_target:avatar_journey_target = {
-                capital_holding = {
-                    ROOT = {
-                        location = {
-                            distance = {
-                                who = PREVPREV
-                                value >= 650
-                            }
-                            distance = {
-                                who = PREVPREV
-                                value <= 1000
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if = {
-            limit = {
-                has_flying_pet_or_artifact_trigger = yes
-            }
-            character_event = {
-                id = new_avatar_journey.50
-                days = 30
-                random = 60
-            }
-        }
-        else = {
-            character_event = {
-                id = new_avatar_journey.50
-                days = 60
-                random = 180
-            }
-        }
-    }
-    else_if = { # half a year
-        limit = {
-            event_target:avatar_journey_target = {
-                capital_holding = {
-                    ROOT = {
-                        location = {
-                            distance = {
-                                who = PREVPREV
-                                value >= 1001
-                            }
-                            distance = {
-                                who = PREVPREV
-                                value <= 1600
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if = {
-            limit = {
-                has_flying_pet_or_artifact_trigger = yes
-            }
-            character_event = {
-                id = new_avatar_journey.50
-                days = 60
-                random = 90
-            }
-        }
-        else = {
-            character_event = {
-                id = new_avatar_journey.50
-                days = 180
-                random = 90
-            }
-        }
-    }
+	# find_avatar_effect = yes
+	if = {
+		# a week
+		limit = {
+			event_target:avatar_journey_target = {
+				capital_holding = {
+					ROOT = {
+						location = {
+							distance = {
+								who = PREVPREV
+								value >= 0
+							}
+							distance = {
+								who = PREVPREV
+								value <= 150
+							}
+						}
+					}
+				}
+			}
+		}
+		character_event = {
+			id = new_avatar_journey.50
+			days = 1
+			random = 7
+		}
+	}
+	else_if = {
+		# Few weeks
+		limit = {
+			event_target:avatar_journey_target = {
+				capital_holding = {
+					ROOT = {
+						location = {
+							distance = {
+								who = PREVPREV
+								value >= 151
+							}
+							distance = {
+								who = PREVPREV
+								value <= 400
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_flying_pet_or_artifact_trigger = yes
+			}
+			character_event = {
+				id = new_avatar_journey.50
+				days = 14
+				random = 14
+			}
+		}
+		else = {
+			character_event = {
+				id = new_avatar_journey.50
+				days = 14
+				random = 30
+			}
+		}
+	}
+	else_if = {
+		# few months
+		limit = {
+			event_target:avatar_journey_target = {
+				capital_holding = {
+					ROOT = {
+						location = {
+							distance = {
+								who = PREVPREV
+								value >= 401
+							}
+							distance = {
+								who = PREVPREV
+								value <= 650
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_flying_pet_or_artifact_trigger = yes
+			}
+			character_event = {
+				id = new_avatar_journey.50
+				days = 14
+				random = 30
+			}
+		}
+		else = {
+			character_event = {
+				id = new_avatar_journey.50
+				days = 30
+				random = 60
+			}
+		}
+	}
+	else_if = {
+		# months
+		limit = {
+			event_target:avatar_journey_target = {
+				capital_holding = {
+					ROOT = {
+						location = {
+							distance = {
+								who = PREVPREV
+								value >= 650
+							}
+							distance = {
+								who = PREVPREV
+								value <= 1000
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_flying_pet_or_artifact_trigger = yes
+			}
+			character_event = {
+				id = new_avatar_journey.50
+				days = 30
+				random = 60
+			}
+		}
+		else = {
+			character_event = {
+				id = new_avatar_journey.50
+				days = 60
+				random = 180
+			}
+		}
+	}
+	else_if = {
+		# half a year
+		limit = {
+			event_target:avatar_journey_target = {
+				capital_holding = {
+					ROOT = {
+						location = {
+							distance = {
+								who = PREVPREV
+								value >= 1001
+							}
+							distance = {
+								who = PREVPREV
+								value <= 1600
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_flying_pet_or_artifact_trigger = yes
+			}
+			character_event = {
+				id = new_avatar_journey.50
+				days = 60
+				random = 90
+			}
+		}
+		else = {
+			character_event = {
+				id = new_avatar_journey.50
+				days = 180
+				random = 90
+			}
+		}
+	}
 }
