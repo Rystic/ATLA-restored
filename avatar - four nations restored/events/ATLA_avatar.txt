@@ -101,6 +101,25 @@ character_event = { # Master is asked to take avatar under his wing
 				}
 			}
 			save_event_target_as = avatar_master
+			find_avatar_effect = yes
+			if = {
+				limit = {
+					event_target:avatar_master = {
+						is_landed = yes
+					}
+				}
+				event_target:avatar_master = {
+					move_avatar_effect = yes
+				}
+			} 
+			else = {
+				event_target:avatar_master = {
+					suzerain = {
+						move_avatar_effect = yes
+					}
+				}
+			}
+		
 			FROM = { character_event = { id = avatar.155 days = 10 random = 20 } }
 		}
 	}
@@ -917,7 +936,7 @@ character_event = { #fire
 		clr_character_flag = master_searching
 	}
 	option = {
-		name = EVTDESCBavatar.166
+		name = EVTDESCBavatar.165
 		trigger = {
 			any_independent_ruler = {
 				any_realm_character = {
@@ -987,6 +1006,7 @@ character_event = { #fire
 		random_playable_ruler = {
 			limit = {
 				opinion = { who = ROOT value = 10 }
+				trait = firebender
 			}
 			create_character = {
 				age = 30
@@ -1050,7 +1070,7 @@ character_event = { #air
 		clr_character_flag = master_searching
 	}
 	option = {
-		name = EVTDESCBavatar.166
+		name = EVTDESCBavatar.165
 		trigger = {
 			any_independent_ruler = {
 				any_realm_character = {
@@ -1127,6 +1147,7 @@ character_event = { #air
 		}
 		random_playable_ruler = {
 			limit = {
+				trait = airbender
 				opinion = { who = ROOT value = 10 }
 			}
 			create_character = {
@@ -1164,6 +1185,7 @@ character_event = { #water
 		has_character_flag = avatar_journey
 	}
 	
+	# search for a master among the rulers
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -1186,8 +1208,10 @@ character_event = { #water
 		set_character_flag = master_found
 		clr_character_flag = master_searching
 	}
+
+	# search for a master among the rulers' courts
 	option = {
-		name = EVTDESCBavatar.166
+		name = EVTDESCAavatar.165
 		trigger = {
 			any_independent_ruler = {
 				any_realm_character = {
@@ -1232,8 +1256,10 @@ character_event = { #water
 		set_character_flag = master_found
 		clr_character_flag = master_searching
 	}
+
+	# if we found nothing, just generate yourself a master!
 	option = {
-		name = EVTDESCCavatar.165
+		name = EVTDESCAavatar.165
 		trigger = {
 			NAND = {
 				any_independent_ruler = {
@@ -1256,6 +1282,7 @@ character_event = { #water
 		}
 		random_playable_ruler = {
 			limit = {
+				trait = waterbender
 				opinion = { who = ROOT value = 10 }
 			}
 			create_character = {
@@ -1292,6 +1319,7 @@ character_event = { #earth
 		has_character_flag = avatar_journey
 	}
 
+	# search for a master among the rulers
 	option = {
 		name = EVTDESCAavatar.165
 		trigger = {
@@ -1314,8 +1342,10 @@ character_event = { #earth
 		set_character_flag = master_found
 		clr_character_flag = master_searching
 	}
+
+	# search for a master among the rulers' courts
 	option = {
-		name = EVTDESCBavatar.166
+		name = EVTDESCAavatar.165
 		trigger = {
 			any_independent_ruler = {
 				any_realm_character = {
@@ -1360,6 +1390,8 @@ character_event = { #earth
 		set_character_flag = master_found
 		clr_character_flag = master_searching
 	}
+
+	# if we found nothing, just generate yourself a master!
 	option = {
 		name = EVTDESCCavatar.165
 		trigger = {
@@ -1384,6 +1416,7 @@ character_event = { #earth
 		}
 		random_playable_ruler = {
 			limit = {
+				trait = earthbender
 				opinion = { who = ROOT value = 10 }
 			}
 			create_character = {
