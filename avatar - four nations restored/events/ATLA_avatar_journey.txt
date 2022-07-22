@@ -10,6 +10,8 @@
 # Reserved event ids:
 # 1-99 - common avatar events (disasters & flavours)
 # 100-199 - waterbending journey
+# 101-120 - northern water tribes
+# 121-140 - southern water tribes
 # 200-299 - earthbending journey
 # 300-399 - firebending journey
 # 400-499 - airbending journey
@@ -55,12 +57,7 @@ narrative_event = {
 		trigger = {
 			has_character_flag = avatar_journey_to_water_tribes
 		}
-		character_event = {
-			id = avatar.159
-			days = 30
-			random = 60
-		}
-		# character_event = { id = new_avatar_journey.100 days = 10 }
+		character_event = { id = new_avatar_journey.100 days = 10 }
 	}
 	option = {
 		name = EVTOPT_new_avatar_journey_1_earth		# I'll travel to Earth Kingdom
@@ -477,6 +474,65 @@ letter_event = {
 		clear_event_target = avatar_journey_target
 	}
 }
+
+# * WATER TRIBES
+
+# Journey to Water Tribes
+narrative_event = {
+	id = new_avatar_journey.100
+	title = EVTTITLE_new_avatar_journey_100_to_water_tribes
+	desc = EVTDESC_new_avatar_journey_100_to_water_tribes
+	picture = GFX_evt_northern_water_tribe_wall
+	is_triggered_only = yes
+
+	# northern water tribes
+	option = {
+		name = EVTOPT_new_avatar_journey_100_to_water_tribes_nortern
+		character_event = {
+			id = new_avatar_journey.101
+			days = 60
+		}
+		ai_chance = {
+			factor = 50
+			# todo: female avatars should prefer to travel to the South
+			modifier = {
+				factor = 100
+				has_character_flag = is_roku
+			}
+		}
+	}
+	# todo: add southern water tribe option, female avatars should prefer to travel to the South
+}
+
+# Northen Water Tribe
+character_event = {
+	id = new_avatar_journey.101
+	title = EVTTITLE_new_avatar_journey_101_northern_water_tribe
+	desc = EVTDESC_new_avatar_journey_101_northern_water_tribe
+	picture = GFX_evt_northern_water_tribe_wall
+	is_triggered_only = yes
+
+	# 
+	option = {
+		name = EVTOPT_new_avatar_journey_101_northern_water_tribe
+		character_event = {
+			id = new_avatar_journey.102
+			days = 60
+		}
+		ai_chance = {
+			factor = 50
+			# todo: female avatars should prefer to travel to the South
+			modifier = {
+				factor = 100
+				has_character_flag = is_roku
+			}
+		}
+	}
+}
+
+
+
+# * AIRNOMADS
 
 # Travel to Air Nomads
 narrative_event = {
@@ -961,6 +1017,7 @@ narrative_event = {
 	}
 }
 
+# todo: move the event to a separate "avatar_journey_special" file
 # Gyatso
 character_event = {
 	id = new_avatar_journey.413
@@ -1196,11 +1253,11 @@ character_event = {
 		change_learning = 1
 	}
 	after = {
-		character_event = {
-			id = avatar.159
-		}
+		# character_event = {
+		# 	id = avatar.159
+		# }
 		finish_learning_airbending_effect = yes
-		# character_event = { id = new_avatar_journey.100 days = 30 random = 60 }
+		character_event = { id = new_avatar_journey.100 days = 30 random = 60 }
 	}
 }
 
