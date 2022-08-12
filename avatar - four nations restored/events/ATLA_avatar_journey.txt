@@ -57,7 +57,10 @@ narrative_event = {
 		trigger = {
 			has_character_flag = avatar_journey_to_water_tribes
 		}
-		character_event = { id = new_avatar_journey.100 days = 10 }
+		character_event = {
+			id = new_avatar_journey.100
+			days = 10
+		}
 	}
 	option = {
 		name = EVTOPT_new_avatar_journey_1_earth		# I'll travel to Earth Kingdom
@@ -94,7 +97,7 @@ narrative_event = {
 		}
 	}
 	after = {
-		add_trait = on_journey
+		add_trait = avatar_on_training
 		character_event = {
 			id = new_avatar_journey.2
 			days = 4
@@ -447,7 +450,7 @@ character_event = {
 	is_triggered_only = yes
 	option = {
 		name = EVTOPT_new_avatar_journey_10
-		set_character_flag = on_journey
+		set_character_flag = avatar_on_journey
 		avatar_journey_effect = yes
 	}
 	option = {
@@ -476,7 +479,6 @@ letter_event = {
 }
 
 # * WATER TRIBES
-
 # Journey to Water Tribes
 narrative_event = {
 	id = new_avatar_journey.100
@@ -484,7 +486,6 @@ narrative_event = {
 	desc = EVTDESC_new_avatar_journey_100_to_water_tribes
 	picture = GFX_evt_northern_water_tribe_wall
 	is_triggered_only = yes
-
 	# northern water tribes
 	option = {
 		name = EVTOPT_new_avatar_journey_100_to_water_tribes_nortern
@@ -512,28 +513,391 @@ character_event = {
 	picture = GFX_evt_northern_water_tribe_wall
 	is_triggered_only = yes
 
+	sound = sfx_northern_water_tribe
 	# 
+
+	immediate = {
+		hidden_tooltip = {
+			remove_trait = avatar_learning_airbending
+			add_trait = avatar_learning_waterbending
+		}
+	}
+
 	option = {
 		name = EVTOPT_new_avatar_journey_101_northern_water_tribe
+		# todo: find a northern chief and move avatar to them
+		find_avatar_effect = yes
+		c_northern_water_tribe = {
+			owner = {
+				event_target:avatar = {
+					set_defacto_liege = PREV
+				}
+				capital_scope = {
+					event_target:avatar = {
+						primary_title = {
+							set_preferred_capital = PREVPREV
+						}
+					}
+				}
+			}
+		}
+		# # feast
 		character_event = {
 			id = new_avatar_journey.102
-			days = 60
+			days = 10
 		}
-		ai_chance = {
-			factor = 50
-			# todo: female avatars should prefer to travel to the South
-			modifier = {
-				factor = 100
-				has_character_flag = is_roku
+	}
+}
+
+# Northern Water Tribe's feast invitation
+letter_event = {
+	id = new_avatar_journey.102
+	title = EVTTITLE_new_avatar_journey_102_nwt_feast
+	desc = EVTDESC_new_avatar_journey_102_nwt_feast
+	is_triggered_only = yes
+	portrait = event_target:northern_water_chief
+	immediate = {
+		# we need to get the chief scope
+		c_northern_water_tribe = {
+			owner = {
+				save_event_target_as = northern_water_chief
 			}
+		}
+	}
+	option = {
+		name = new_avatar_journey.102.opt
+		prestige = 50
+		set_character_flag = coming_to_feast
+		event_target:northern_water_chief = {
+			# feast
+			hidden_tooltip = {
+				wealth = -25
+				add_character_modifier = {
+					name = holding_large_feast
+					duration = -1
+				}
+				set_character_flag = recent_minor_decision
+				set_character_flag = do_not_disturb
+				hidden_tooltip = {
+					character_event = {
+						id = 72999
+						days = 150
+					}
+				}
+				# Safety catch flag clearing
+				character_event = {
+					id = 72109
+				}
+				if = {
+					limit = {
+						has_dlc = "Reapers"
+					}
+					custom_tooltip = {
+						text = capital_prospers_custom_tooltip
+						hidden_tooltip = {
+							capital_scope = {
+								change_variable = {
+									which = prosperity_value
+									value = 8
+								}
+							}
+						}
+					}
+				}
+			}
+			# find waterbending master
+			if = {
+				limit = {
+					has_assigned_minor_title = title_waterbending_master
+				}
+				any_courtier_or_vassal = {
+					limit = {
+						has_minor_title = title_waterbending_master
+					}
+					save_event_target_as = waterbending_master
+				}
+			}
+			# or just generate them
+			else = {
+				create_character = {
+					random_traits = yes
+					dynasty = actually_culture
+					religion = event_target:northern_water_chief
+					culture = event_target:northern_water_chief
+					female = no
+					min_age = 40
+					max_age = 60
+					health = 6
+					add_trait = master_bender
+					add_trait = waterbender
+				}
+				new_character = {
+					save_event_target_as = waterbending_master
+					give_minor_title = title_waterbending_master
+				}
+			}
+		}
+	}
+	after = {
+		character_event = {
+			id = new_avatar_journey.103
+			days = 30
+		}
+	}
+}
+
+narrative_event = {
+	id = new_avatar_journey.103
+	desc = new_avatar_journey.103.desc
+	picture = GFX_evt_northern_water_tribe_feast
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	option = {
+		name = new_avatar_journey.103.opt
+		character_event = {
+			id = new_avatar_journey.104
+		}
+	}
+}
+
+# teacher at the feast
+narrative_event = {
+	id = new_avatar_journey.104
+	title = new_avatar_journey_104.title.nwt_teacher
+	desc = new_avatar_journey_104.desc
+	picture = GFX_evt_waterbending_master
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	option = {
+		name = new_avatar_journey_104.opt
+		character_event = {
+			id = new_avatar_journey.105
+			days = 10
+		}
+	}
+}
+
+# next morning - first sparring
+# ! fire avatars should have problems with sparrings
+narrative_event = {
+	id = new_avatar_journey.105
+	desc = {
+		trigger = {
+			has_global_flag = avatar_fire
+		}
+		text = new_avatar_journey.105.desc.fire
+	}
+	desc = {
+		trigger = {
+			OR = {
+				has_global_flag = avatar_earth
+				has_global_flag = avatar_air	
+			}
+		}
+		text = new_avatar_journey.105.desc
+	}
+
+	picture = GFX_evt_northern_water_tribe_palace
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	option = {
+		name = new_avatar_journey.105.opt.1
+		trigger = {
+			NOT = {
+				has_global_flag = avatar_fire
+			}	
+		}
+		character_event = {
+			id = new_avatar_journey.108
+			days = 30
+		}
+	}
+	option = {
+		name = new_avatar_journey.105.opt.2
+		tooltip_info = learning
+		character_event = {
+			id = new_avatar_journey.106
+			days = 30
+		}
+		# todo: add a tooltip about spirit oasis 
+	}
+}
+
+# waterbending theory
+narrative_event = {
+	id = new_avatar_journey.106
+	title = new_avatar_journey.106.title
+	desc = new_avatar_journey.106.desc
+	picture = GFX_evt_yue_talks_about_moon
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	option = {
+		name = new_avatar_journey.106.opt
+		piety = 50
+		change_learning = 1
+
+		character_event = {
+			id = new_avatar_journey.107
+			days = 30
+		}
+	}
+}
+
+# Spirit Oasis
+narrative_event = {
+	id = new_avatar_journey.107
+	title = new_avatar_journey.107.title
+	desc = new_avatar_journey.107.desc
+	picture = GFX_evt_northern_water_tribe_spirit_oasis
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	option = {
+		name = new_avatar_journey.107.opt
+
+		piety = 50
+		change_learning = 1
+
+		character_event = {
+			id = new_avatar_journey.108
+			days = 30
+		}
+	}
+}
+
+# waterbending sparrings
+# * waterbeding training is all about sparrings
+character_event = {
+	id = new_avatar_journey.108
+	desc = new_avatar_journey.108.desc
+	picture = GFX_evt_waterbending_sparring
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+
+	immediate = {
+		set_variable = {
+			which = waterbending_sparrings
+			value = 0
+		}
+	}
+
+	option = {
+		name = new_avatar_journey.108.opt
+
+		waterbending_sparring_effect = yes
+	}
+}
+
+# waterbending sparrings fail
+narrative_event = {
+	id = new_avatar_journey.109
+	title = new_avatar_journey.109.title
+	desc = new_avatar_journey.109.desc
+	picture = GFX_evt_waterbending_sparring_fail
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	# todo: add waterbending battle sound effect
+	sound = duel_lose
+	option = {
+		name = new_avatar_journey.109.opt
+		prestige = -5
+
+		hidden_tooltip = {
+			change_variable = { which = waterbending_sparrings value = 1 }
+		}
+		increase_duel_exp_modifier_legacy_effect = true
+
+		waterbending_sparring_effect = yes
+	}
+}
+
+# waterbending sparrings success
+narrative_event = {
+	id = new_avatar_journey.110
+	title = new_avatar_journey.110.title
+	desc = new_avatar_journey.110.desc
+	picture = GFX_evt_waterbending_sparring_win
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	# todo: add waterbending battle sound effect
+	sound = duel_win
+	option = {
+		name = new_avatar_journey.110.opt
+		tooltip_info = combat_rating
+		prestige = 100
+
+		character_event = {
+			id = new_avatar_journey.111
+			days = 30
+		}
+	}
+}
+
+# "тяни и толкай" после очередного учебного дня вы идёте не к себе в покои, а к морю, и наблюдаете за приливами и отливами, 
+
+# sparring with teacher
+character_event = {
+	id = new_avatar_journey.111
+	desc = new_avatar_journey.111.desc
+	picture = GFX_evt_waterbending_sparring
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+
+	option = {
+		name = new_avatar_journey.111.opt
+
+		waterbending_sparring_with_teacher_effect = yes
+	}
+}
+
+# waterbending sparrings fail
+narrative_event = {
+	id = new_avatar_journey.112
+	title = new_avatar_journey.112.title
+	desc = new_avatar_journey.112.desc
+	picture = GFX_evt_waterbending_sparring_with_teacher_fail
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	# todo: add waterbending battle sound effect
+	sound = duel_lose
+	option = {
+		name = new_avatar_journey.112.opt
+		prestige = -5
+
+		hidden_tooltip = {
+			change_variable = { which = waterbending_sparrings value = 1 }
+		}
+		increase_duel_exp_modifier_legacy_effect = true
+
+		waterbending_sparring_with_teacher_effect = yes
+	}
+}
+
+# waterbending sparrings success
+narrative_event = {
+	id = new_avatar_journey.113
+	title = new_avatar_journey.113.title
+	desc = new_avatar_journey.113.desc
+	picture = GFX_evt_waterbending_sparring_with_teacher_win
+	portrait = event_target:waterbending_master
+	is_triggered_only = yes
+	# todo: add waterbending battle sound effect
+	sound = duel_win
+	option = {
+		name = new_avatar_journey.113.opt
+		tooltip_info = combat_rating
+		add_trait = avatar_waterbender
+		prestige = 200
+
+		character_event = {
+			id = avatar.159
+			days = 30
+			random = 60
 		}
 	}
 }
 
 
-
 # * AIRNOMADS
-
 # Travel to Air Nomads
 narrative_event = {
 	id = new_avatar_journey.400
@@ -1218,7 +1582,7 @@ character_event = {
 	is_triggered_only = yes
 	option = {
 		name = EVTOPT_new_avatar_journey_421		# Hopefully we'll talk soon;
-		change_learning = 1
+		change_learning = 2
 	}
 	after = {
 		character_event = {
@@ -1257,7 +1621,11 @@ character_event = {
 		# 	id = avatar.159
 		# }
 		finish_learning_airbending_effect = yes
-		character_event = { id = new_avatar_journey.100 days = 30 random = 60 }
+		character_event = {
+			id = new_avatar_journey.100
+			days = 30
+			random = 60
+		}
 	}
 }
 
