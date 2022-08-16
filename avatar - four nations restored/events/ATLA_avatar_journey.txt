@@ -175,6 +175,7 @@ character_event = {
 
 # TODO: add an event where Sozin gives his crown to Roku
 # TODO: add other events for sand and swamp benders
+# todo: fix pictures
 character_event = {
 	id = new_avatar_journey.3
 	desc = {
@@ -636,7 +637,7 @@ narrative_event = {
 
 # next morning - first sparring
 # ! fire avatars should have problems with sparrings
-narrative_event = {
+character_event = {
 	id = new_avatar_journey.105
 	desc = {
 		trigger = {
@@ -644,6 +645,7 @@ narrative_event = {
 		}
 		text = new_avatar_journey.105.desc.fire
 	}
+	# todo: add a desc for earthbender, like they also have troubles with waterbending at all
 	desc = {
 		trigger = {
 			OR = {
@@ -661,11 +663,13 @@ narrative_event = {
 		name = new_avatar_journey.105.opt.1
 		trigger = {
 			NOT = {
+				# ?quesiton: maybe we should make this option unavailable for earthbenders too?
 				has_global_flag = avatar_fire
-			}	
+			}
 		}
+		
 		character_event = {
-			id = new_avatar_journey.108
+			id = new_avatar_journey.110
 			days = 30
 		}
 	}
@@ -674,13 +678,12 @@ narrative_event = {
 		tooltip_info = learning
 		character_event = {
 			id = new_avatar_journey.106
-			days = 30
 		}
-		# todo: add a tooltip about spirit oasis 
 	}
 }
 
-# waterbending theory
+# The Legend of Tui and La
+# * Sub-Route for Spirit Oasis
 narrative_event = {
 	id = new_avatar_journey.106
 	title = new_avatar_journey.106.title
@@ -711,12 +714,63 @@ narrative_event = {
 	option = {
 		name = new_avatar_journey.107.opt
 
-		piety = 50
-		change_learning = 1
-
 		character_event = {
 			id = new_avatar_journey.108
-			days = 30
+		}
+	}
+}
+
+# Tui and La, meditation
+narrative_event = {
+	id = new_avatar_journey.108
+	title = new_avatar_journey.108.title
+	desc = new_avatar_journey.108.desc
+	picture = GFX_evt_tui_and_la
+	is_triggered_only = yes
+	sound = sfx_lion_turtle_theme
+
+	option = {
+		name = new_avatar_journey.108.opt
+
+		custom_tooltip = {
+			text = new_avatar_journey.108.tooltip
+		}
+		piety = 100
+		change_learning = 2
+		add_character_modifier = {
+			name = spirit_oasis_wisdom
+			months = 12
+		}
+
+		# ! this event is firebender only
+		# ?question: (and maybe eathbender only too?)
+		# * airbenders cannot see this, because they learn waterbending easily
+		if = {
+			limit = {
+				has_global_flag = avatar_fire
+			}
+			character_event = {
+				id = new_avatar_journey.109
+				days = 30
+			}
+		}
+	}
+}
+
+# ! firebender only
+# finally learning how to waterbend
+narrative_event = {
+	id = new_avatar_journey.109
+	title = new_avatar_journey.109.title
+	desc = new_avatar_journey.109.desc
+	picture = GFX_evt_waterbending_basics
+	is_triggered_only = yes
+
+	option = {
+		name = new_avatar_journey.109.opt
+		character_event = {
+			id = new_avatar_journey.110
+			days = 10
 		}
 	}
 }
@@ -724,8 +778,8 @@ narrative_event = {
 # waterbending sparrings
 # * waterbeding training is all about sparrings
 character_event = {
-	id = new_avatar_journey.108
-	desc = new_avatar_journey.108.desc
+	id = new_avatar_journey.110
+	desc = new_avatar_journey.110.desc
 	picture = GFX_evt_waterbending_sparring
 	portrait = event_target:waterbending_master
 	is_triggered_only = yes
@@ -738,7 +792,7 @@ character_event = {
 	}
 
 	option = {
-		name = new_avatar_journey.108.opt
+		name = new_avatar_journey.110.opt
 
 		waterbending_sparring_effect = yes
 	}
@@ -746,16 +800,16 @@ character_event = {
 
 # waterbending sparrings fail
 narrative_event = {
-	id = new_avatar_journey.109
-	title = new_avatar_journey.109.title
-	desc = new_avatar_journey.109.desc
+	id = new_avatar_journey.111
+	title = new_avatar_journey.111.title
+	desc = new_avatar_journey.111.desc
 	picture = GFX_evt_waterbending_sparring_fail
 	portrait = event_target:waterbending_master
 	is_triggered_only = yes
 	# todo: add waterbending battle sound effect
 	sound = duel_lose
 	option = {
-		name = new_avatar_journey.109.opt
+		name = new_avatar_journey.111.opt
 		prestige = -5
 
 		hidden_tooltip = {
@@ -769,38 +823,38 @@ narrative_event = {
 
 # waterbending sparrings success
 narrative_event = {
-	id = new_avatar_journey.110
-	title = new_avatar_journey.110.title
-	desc = new_avatar_journey.110.desc
+	id = new_avatar_journey.112
+	title = new_avatar_journey.112.title
+	desc = new_avatar_journey.112.desc
 	picture = GFX_evt_waterbending_sparring_win
 	portrait = event_target:waterbending_master
 	is_triggered_only = yes
 	# todo: add waterbending battle sound effect
 	sound = duel_win
 	option = {
-		name = new_avatar_journey.110.opt
+		name = new_avatar_journey.112.opt
 		tooltip_info = combat_rating
 		prestige = 100
 
 		character_event = {
-			id = new_avatar_journey.111
+			id = new_avatar_journey.115
 			days = 30
 		}
 	}
 }
 
-# "тяни и толкай" после очередного учебного дня вы идёте не к себе в покои, а к морю, и наблюдаете за приливами и отливами, 
+# ?question: add more events here?
 
 # sparring with teacher
 character_event = {
-	id = new_avatar_journey.111
-	desc = new_avatar_journey.111.desc
+	id = new_avatar_journey.115
+	desc = new_avatar_journey.115.desc
 	picture = GFX_evt_waterbending_sparring
 	portrait = event_target:waterbending_master
 	is_triggered_only = yes
 
 	option = {
-		name = new_avatar_journey.111.opt
+		name = new_avatar_journey.115.opt
 
 		waterbending_sparring_with_teacher_effect = yes
 	}
@@ -808,16 +862,16 @@ character_event = {
 
 # waterbending sparrings fail
 narrative_event = {
-	id = new_avatar_journey.112
-	title = new_avatar_journey.112.title
-	desc = new_avatar_journey.112.desc
+	id = new_avatar_journey.116
+	title = new_avatar_journey.116.title
+	desc = new_avatar_journey.116.desc
 	picture = GFX_evt_waterbending_sparring_with_teacher_fail
 	portrait = event_target:waterbending_master
 	is_triggered_only = yes
 	# todo: add waterbending battle sound effect
 	sound = duel_lose
 	option = {
-		name = new_avatar_journey.112.opt
+		name = new_avatar_journey.116.opt
 		prestige = -5
 
 		hidden_tooltip = {
@@ -831,16 +885,16 @@ narrative_event = {
 
 # waterbending sparrings success
 narrative_event = {
-	id = new_avatar_journey.113
-	title = new_avatar_journey.113.title
-	desc = new_avatar_journey.113.desc
+	id = new_avatar_journey.117
+	title = new_avatar_journey.117.title
+	desc = new_avatar_journey.117.desc
 	picture = GFX_evt_waterbending_sparring_with_teacher_win
 	portrait = event_target:waterbending_master
 	is_triggered_only = yes
 	# todo: add waterbending battle sound effect
 	sound = duel_win
 	option = {
-		name = new_avatar_journey.113.opt
+		name = new_avatar_journey.117.opt
 		tooltip_info = combat_rating
 		add_trait = avatar_waterbender
 		prestige = 200
