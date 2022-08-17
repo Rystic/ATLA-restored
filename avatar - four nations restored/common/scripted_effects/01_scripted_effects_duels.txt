@@ -2103,27 +2103,6 @@ apply_generic_duel_victory_effect = {
 	}
 }
 
-
-apply_generic_duel_defeat_effect = { #Is this even needed? Might be handled by apply_selected_duel_injury_effect
-	if = {
-    	limit = { has_character_flag = mock_duel }
-    	###Run appropriate effects for joining or not joining the society
-	}
-	if = {
-    	limit = { has_character_flag = someone_died }
-		#"#any effects that might need to be added?
-	}
-	if = {
-		limit = {
-			OR = {
-				has_character_flag = is_defeated_attacker
-				has_character_flag = is_defeated_defender
-			}
-		}
-		##something
-	}
-}
-
 handle_claim_duel_result_effect = {
 	if = { # Only for CLAIM duels...
 		limit = { event_target:combatant_1 = { has_character_flag = claim_duel@event_target:combatant_2 } }
@@ -2985,78 +2964,78 @@ clr_duel_flags_effect = {
 }
 
 
-#increase_duel_exp_modifier_effect = {  #Modifiers gotten at end-states a duel
-#	if = {
-#		limit = { has_duel_exp_modifier_trigger = yes }
-#		custom_tooltip = { text = increase_duel_exp_tt }
-#		hidden_effect = {
-#			trigger_switch = {
-#				on_trigger = has_character_modifier
-#				duel_exp_1 = {
-#					remove_character_modifier = duel_exp_1
-#					add_character_modifier = {
-#			    		name = duel_exp_2
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_2 = {
-#					remove_character_modifier = duel_exp_2
-#					add_character_modifier = {
-#			    		name = duel_exp_3
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_3 = {
-#					remove_character_modifier = duel_exp_3
-#					add_character_modifier = {
-#			    		name = duel_exp_4
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_4 = {
-#					remove_character_modifier = duel_exp_4
-#					add_character_modifier = {
-#			    		name = duel_exp_5
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_5 = {
-#					remove_character_modifier = duel_exp_5
-#					add_character_modifier = {
-#			    		name = duel_exp_6
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_6 = {
-#					remove_character_modifier = duel_exp_6
-#					add_character_modifier = {
-#			    		name = duel_exp_7
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_7 = {
-#					remove_character_modifier = duel_exp_7
-#					add_character_modifier = {
-#			    		name = duel_exp_8
-#			    		duration = 2555
-#			    	}
-#				}
-#				duel_exp_8 = {
-#					add_character_modifier = {
-#			    		name = duel_exp_8
-#			    		duration = 2555
-#			    	}
-#				}
-#			}
-#		}
-#	}
-#	else = {
-#		add_character_modifier = {
-#    		name = duel_exp_1
-#    		duration = 2555
-#    	}
-#	}
-#}
+increase_duel_exp_modifier_legacy_effect = {  #Modifiers gotten at end-states a duel
+	if = {
+		limit = { has_duel_exp_modifier_trigger = yes }
+		custom_tooltip = { text = increase_duel_exp_tt }
+		hidden_effect = {
+			trigger_switch = {
+				on_trigger = has_character_modifier
+				duel_exp_1 = {
+					remove_character_modifier = duel_exp_1
+					add_character_modifier = {
+			    		name = duel_exp_2
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_2 = {
+					remove_character_modifier = duel_exp_2
+					add_character_modifier = {
+			    		name = duel_exp_3
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_3 = {
+					remove_character_modifier = duel_exp_3
+					add_character_modifier = {
+			    		name = duel_exp_4
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_4 = {
+					remove_character_modifier = duel_exp_4
+					add_character_modifier = {
+			    		name = duel_exp_5
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_5 = {
+					remove_character_modifier = duel_exp_5
+					add_character_modifier = {
+			    		name = duel_exp_6
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_6 = {
+					remove_character_modifier = duel_exp_6
+					add_character_modifier = {
+			    		name = duel_exp_7
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_7 = {
+					remove_character_modifier = duel_exp_7
+					add_character_modifier = {
+			    		name = duel_exp_8
+			    		duration = 2555
+			    	}
+				}
+				duel_exp_8 = {
+					add_character_modifier = {
+			    		name = duel_exp_8
+			    		duration = 2555
+			    	}
+				}
+			}
+		}
+	}
+	else = {
+		add_character_modifier = {
+   		name = duel_exp_1
+   		duration = 2555
+   	}
+	}
+}
 
 spread_cowardice_trait_effect = { # Send an event to random subject, where they share in the guilt and shame and might be come Cowards themselves. Or angry, encouraging liege to stop being such a Coward.
 	any_courtier_or_vassal = {

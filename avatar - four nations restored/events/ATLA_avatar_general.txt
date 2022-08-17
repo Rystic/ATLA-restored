@@ -16,24 +16,35 @@ namespace = new_avatar_general
 character_event = {
 	id = new_avatar_general.1
 	is_triggered_only = yes
-    hide_window = yes
+	hide_window = yes
 
 	trigger = {
 		has_character_flag = avatar_unrevealed
+		NOT = {
+			has_character_flag = avatar_revealed
+		}
 	}
 
-    immediate = {
-        if = {
-            limit = {
-                has_character_flag = is_roku
-            }
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = is_roku
+			}
 
-            character_event = { id = new_avatar_general.3 }
-        }
+			character_event = { id = new_avatar_general.3 }
+		}
 		else = {
 			character_event = { id = new_avatar_general.2 }
 		}
-    }
+
+		# avatar should not see this event
+		random_character = {
+			narrative_event = { id = ATLA.5 days = 7 random = 7 } # major, news event
+		}
+		
+		character_event = { id = new_avatar_journey.1 days = 3 random = 3 } # avatar packs up and leaves
+		character_event = { id = avatar.170 days = 30 random = 90 } # avatar gains animal guide
+	}
 }
 
 # general revelation
@@ -44,6 +55,10 @@ narrative_event = {
 	picture = GFX_evt_avatar_reveal
 	is_triggered_only = yes
 
+	immediate = {
+		find_avatar_effect = yes
+	}
+
 	option = {
 		name = "EVTOPTAATLA.4"
 		add_trait = avatar
@@ -53,7 +68,7 @@ narrative_event = {
 		clr_global_flag = avatar_unrevealed
 		set_global_flag = avatar_revealed
 		
-      	activate_title = { title = d_avatar status = yes }
+		activate_title = { title = d_avatar status = yes }
 		d_avatar = {
 			grant_title = ROOT
 		}
@@ -74,18 +89,12 @@ narrative_event = {
 			}
 		}
 	}
-
-	after = {
-		narrative_event = { id = ATLA.5 days = 7 random = 7 }
-		character_event = { id = new_avatar_journey.1 days = 3 random = 3 }
-		character_event = { id = avatar.170 days = 30 random = 90 }
-	}
 }
 
 # Reveal of Roku
 narrative_event = {
 	id = new_avatar_general.3
-	title = EVTTITLE_new_avatar_general_3_reveal_roku # The Next Avatar
+	title = EVTTITLE_new_avatar_general_3_reveal_roku # Avatar Roku
 	desc = EVTDESC_new_avatar_general_3_reveal
 	picture = GFX_evt_avatar_reveal_fire_nation_culture
 	border = GFX_event_narrative_frame_war
@@ -108,12 +117,6 @@ narrative_event = {
 		
 		activate_title = { title = d_avatar_unrevealed status = no }
 		unsafe_destroy_landed_title = d_avatar_unrevealed
-	}
-
-	after = {
-		narrative_event = { id = ATLA.5 days = 7 random = 7 }
-		character_event = { id = new_avatar_journey.1 days = 3 random = 3 }
-		character_event = { id = avatar.170 days = 30 random = 90 }
 	}
 }
 
