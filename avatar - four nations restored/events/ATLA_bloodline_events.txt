@@ -163,9 +163,12 @@ narrative_event = {
 	}
 }
 
+# metalbender founder's descedants get metalbender trait or improve their bending
 character_event = {
 	id = bloodline_events.0003
+	title = EVTTITLEbender_bloodlines.3
 	desc = EVTDESCbender_bloodlines.3
+	picture = GFX_evt_metalbending_discovery
 	min_age = 16
 	trigger = {
 		trait = earthbender
@@ -177,21 +180,35 @@ character_event = {
 			has_bloodline_flag = bloodline_metalbender_founder
 		}
 	}
+	immediate = {
+		any_owned_bloodline = {
+			has_bloodline_flag = bloodline_metalbender_founder
+			save_event_target_as = metalbending_bloodline
+			founder = {
+				save_event_target_as = metalbending_founder_ancestor
+			}
+		}
+	}
 	mean_time_to_happen = {
 		months = 1
 	}
 	option = {
-		name = EVTOPTbender_bloodlines.0003
-		hidden_tooltip = {
-			random_list = {
-				50 = {
-					add_trait = metalbender
-				}
-				50 = {
-				}
+		name = EVTOPTbender_bloodlines.3
+		tooltip_info_custom = because_bloodline_tt
+		random_list = {
+			75 = {
+				add_trait = metalbender
 			}
-			set_flag = metalbender_check
+			25 = {
+				trigger = {
+					NOT = {
+						trait = master_bender
+					}
+				}
+				level_up_bending_effect = yes
+			}
 		}
+		set_character_flag = metalbender_check
 	}
 }
 
