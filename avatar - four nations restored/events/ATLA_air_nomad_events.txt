@@ -25,311 +25,320 @@ namespace = NOMAD
 ##########################
 # On-action event: A child is born
 # Should be hidden?
-character_event = {
-	id = NOMAD.1
-	desc = NOMADEVTDESC1
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-	culture_group = air_nomad_culture
-	trigger = {
-		NOT = {
-			trait = directdescendantavatar
-		}
-		NOT = {
-			trait = descendantavatar
-		}
-	}
-	option = {
-		name = OK
-		remove_trait = bastard
-		add_trait = airinitiate
-		mother = {
-			character_event = {
-				id = NOMAD.6
-			}
-			# The father's reaction
-		}
-		father = {
-			character_event = {
-				id = NOMAD.7
-			}
-			# The mother's reaction
-		}
-	}
-}
+# !!!todo: refactor these birth events
+# !nevercalled
+# character_event = {
+# 	id = NOMAD.1
+# 	desc = NOMADEVTDESC1
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	culture_group = air_nomad_culture
+# 	trigger = {
+# 		NOT = {
+# 			trait = directdescendantavatar
+# 		}
+# 		NOT = {
+# 			trait = descendantavatar
+# 		}
+# 	}
+# 	option = {
+# 		name = OK
+# 		remove_trait = bastard
+# 		add_trait = airinitiate
+# 		mother = {
+# 			character_event = {
+# 				id = NOMAD.6
+# 			}
+# 			# The father's reaction
+# 		}
+# 		father = {
+# 			character_event = {
+# 				id = NOMAD.7
+# 			}
+# 			# The mother's reaction
+# 		}
+# 	}
+# }
 
 # Father reacts - Female
-character_event = {
-	id = NOMAD.2
-	desc = NOMADEVTDESC2
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-	option = {
-		name = EVTOPTANOMAD.2
-	}
-}
+# !depends: NOMAD.6
+# character_event = {
+# 	id = NOMAD.2
+# 	desc = NOMADEVTDESC2
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.2
+# 	}
+# }
 
 # Mother reacts - Female
-character_event = {
-	id = NOMAD.3
-	desc = NOMADEVTDESC3
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-	option = {
-		name = EVTOPTANOMAD.3
-		if = {
-			limit = {
-				is_ruler = yes
-			}
-			FROMFROM = {
-				move_character = ROOT
-			}
-		}
-		if = {
-			limit = {
-				is_ruler = no
-			}
-			liege = {
-				FROMFROM = {
-					move_character = THIS
-				}
-			}
-		}
-		FROMFROM = {
-			dynasty = ROOT
-		}
-	}
-}
+# !depends: NOMAD.7
+# character_event = {
+# 	id = NOMAD.3
+# 	desc = NOMADEVTDESC3
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.3
+# 		if = {
+# 			limit = {
+# 				is_ruler = yes
+# 			}
+# 			FROMFROM = {
+# 				move_character = ROOT
+# 			}
+# 		}
+# 		if = {
+# 			limit = {
+# 				is_ruler = no
+# 			}
+# 			liege = {
+# 				FROMFROM = {
+# 					move_character = THIS
+# 				}
+# 			}
+# 		}
+# 		FROMFROM = {
+# 			dynasty = ROOT
+# 		}
+# 	}
+# }
 
 # Father reacts - Male
-character_event = {
-	id = NOMAD.4
-	desc = NOMADEVTDESC4
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-	option = {
-		name = EVTOPTANOMAD.4
-		if = {
-			limit = {
-				is_ruler = yes
-			}
-			FROMFROM = {
-				move_character = ROOT
-			}
-		}
-		if = {
-			limit = {
-				is_ruler = no
-			}
-			liege = {
-				FROMFROM = {
-					move_character = THIS
-				}
-			}
-		}
-		FROMFROM = {
-			dynasty = ROOT
-		}
-	}
-}
+# !depends: NOMAD.6
+# character_event = {
+# 	id = NOMAD.4
+# 	desc = NOMADEVTDESC4
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.4
+# 		if = {
+# 			limit = {
+# 				is_ruler = yes
+# 			}
+# 			FROMFROM = {
+# 				move_character = ROOT
+# 			}
+# 		}
+# 		if = {
+# 			limit = {
+# 				is_ruler = no
+# 			}
+# 			liege = {
+# 				FROMFROM = {
+# 					move_character = THIS
+# 				}
+# 			}
+# 		}
+# 		FROMFROM = {
+# 			dynasty = ROOT
+# 		}
+# 	}
+# }
 
 # Mother reacts - Male
-character_event = {
-	id = NOMAD.5
-	desc = NOMADEVTDESC5
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-	option = {
-		name = EVTOPTANOMAD.5
-	}
-}
+# !depends: NOMAD.7
+# character_event = {
+# 	id = NOMAD.5
+# 	desc = NOMADEVTDESC5
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.5
+# 	}
+# }
 
 # Ping Father
-character_event = {
-	id = NOMAD.6
-	hide_window = yes
-	is_triggered_only = yes
-	immediate = {
-		FROM = {
-			if = {
-				limit = {
-					is_female = yes
-				}
-				father = {
-					character_event = {
-						id = NOMAD.2
-						days = 1
-					}
-					# The father's reaction - Female
-				}
-			}
-			if = {
-				limit = {
-					is_female = no
-				}
-				father = {
-					character_event = {
-						id = NOMAD.4
-						days = 1
-					}
-					# The father's reaction - Male
-				}
-			}
-		}
-	}
-}
+# character_event = {
+# 	id = NOMAD.6
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	immediate = {
+# 		FROM = {
+# 			if = {
+# 				limit = {
+# 					is_female = yes
+# 				}
+# 				father = {
+# 					character_event = {
+# 						id = NOMAD.2
+# 						days = 1
+# 					}
+# 					# The father's reaction - Female
+# 				}
+# 			}
+# 			if = {
+# 				limit = {
+# 					is_female = no
+# 				}
+# 				father = {
+# 					character_event = {
+# 						id = NOMAD.4
+# 						days = 1
+# 					}
+# 					# The father's reaction - Male
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 # Ping Mother
-character_event = {
-	id = NOMAD.7
-	hide_window = yes
-	is_triggered_only = yes
-	immediate = {
-		FROM = {
-			if = {
-				limit = {
-					is_female = yes
-				}
-				mother = {
-					character_event = {
-						id = NOMAD.3
-						days = 1
-					}
-					# The mother's reaction - Female
-				}
-			}
-			if = {
-				limit = {
-					is_female = no
-				}
-				mother = {
-					character_event = {
-						id = NOMAD.5
-						days = 1
-					}
-					# The mother's reaction - Male
-				}
-			}
-		}
-	}
-}
+# !depends: NOMAD.1
+# character_event = {
+# 	id = NOMAD.7
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	immediate = {
+# 		FROM = {
+# 			if = {
+# 				limit = {
+# 					is_female = yes
+# 				}
+# 				mother = {
+# 					character_event = {
+# 						id = NOMAD.3
+# 						days = 1
+# 					}
+# 					# The mother's reaction - Female
+# 				}
+# 			}
+# 			if = {
+# 				limit = {
+# 					is_female = no
+# 				}
+# 				mother = {
+# 					character_event = {
+# 						id = NOMAD.5
+# 						days = 1
+# 					}
+# 					# The mother's reaction - Male
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 # On-action event: Right Home
-character_event = {
-	id = NOMAD.8
-	hide_window = yes
-	is_triggered_only = yes
-	culture_group = air_nomad_culture
-	ai = yes
-	trigger = {
-		is_ruler = no
-		OR = {
-			AND = {
-				is_female = yes
-				culture = northern_air_nomad
-			}
-			AND = {
-				is_female = yes
-				culture = southern_air_nomad
-			}
-			AND = {
-				is_female = no
-				culture = eastern_air_nomad
-			}
-			AND = {
-				is_female = no
-				culture = western_air_nomad
-			}
-			AND = {
-				is_female = yes
-				liege = {
-					is_female = no
-				}
-			}
-			AND = {
-				is_female = no
-				liege = {
-					is_female = yes
-				}
-			}
-		}
-	}
-	option = {
-		if = {
-			limit = {
-				is_unimportant_trigger = yes
-			}
-			death = {
-				death_reason = death_missing
-			}
-			break = yes
-		}
-		if = {
-			# Female
-			limit = {
-				is_female = yes
-			}
-			random_list = {
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = yes
-							culture = eastern_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = eastern_air_nomad
-						}
-					}
-				}
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = yes
-							culture = western_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = western_air_nomad
-						}
-					}
-				}
-			}
-		}
-		if = {
-			# Male
-			limit = {
-				is_female = no
-			}
-			random_list = {
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = no
-							culture = northern_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = northern_air_nomad
-						}
-					}
-				}
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = no
-							culture = southern_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = southern_air_nomad
-						}
-					}
-				}
-			}
-		}
-	}
-}
+# todo: figure out
+# !nevercalled
+# character_event = {
+# 	id = NOMAD.8
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	culture_group = air_nomad_culture
+# 	ai = yes
+# 	trigger = {
+# 		is_ruler = no
+# 		OR = {
+# 			AND = {
+# 				is_female = yes
+# 				culture = northern_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = yes
+# 				culture = southern_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = no
+# 				culture = eastern_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = no
+# 				culture = western_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = yes
+# 				liege = {
+# 					is_female = no
+# 				}
+# 			}
+# 			AND = {
+# 				is_female = no
+# 				liege = {
+# 					is_female = yes
+# 				}
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		if = {
+# 			limit = {
+# 				is_unimportant_trigger = yes
+# 			}
+# 			death = {
+# 				death_reason = death_missing
+# 			}
+# 			break = yes
+# 		}
+# 		if = {
+# 			# Female
+# 			limit = {
+# 				is_female = yes
+# 			}
+# 			random_list = {
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = yes
+# 							culture = eastern_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = eastern_air_nomad
+# 						}
+# 					}
+# 				}
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = yes
+# 							culture = western_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = western_air_nomad
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		if = {
+# 			# Male
+# 			limit = {
+# 				is_female = no
+# 			}
+# 			random_list = {
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = no
+# 							culture = northern_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = northern_air_nomad
+# 						}
+# 					}
+# 				}
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = no
+# 							culture = southern_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = southern_air_nomad
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 # On-action event: Pregnancy starts showing
 character_event = {
