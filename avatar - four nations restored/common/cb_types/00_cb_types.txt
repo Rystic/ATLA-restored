@@ -11343,243 +11343,245 @@ free_tributary_cb = {
 }
 
 # 59: CB for non-nomads to seize a duchy off a nomad horde
-cb_liberate_nomad_duchy = {
-	name = CB_NAME_LIBERATE_NOMAD
-	war_name = WAR_NAME_LIBERATE_NOMAD
-	sprite = 8
-	truce_days = 3650
-	is_permanent = yes
-	check_de_jure_tier = DUKE # this scans all dejure duchies for the counties which are held by or vassals(or below) of selected character. Only valid if is_permanent = yes
+# todo: figure out
+# *info: since we have no nomads in mod, we also can live without their cbs 
+# cb_liberate_nomad_duchy = {
+# 	name = CB_NAME_LIBERATE_NOMAD
+# 	war_name = WAR_NAME_LIBERATE_NOMAD
+# 	sprite = 8
+# 	truce_days = 3650
+# 	is_permanent = yes
+# 	check_de_jure_tier = DUKE # this scans all dejure duchies for the counties which are held by or vassals(or below) of selected character. Only valid if is_permanent = yes
 
-	allowed_to_target_tributaries = no
+# 	allowed_to_target_tributaries = no
 
-	infamy_modifier = 0.75
+# 	infamy_modifier = 0.75
 	
-	sort_priority = 810
+# 	sort_priority = 810
 	
-	can_use_gui = {
-		# check_if_crusader_trigger = yes
-	}
+# 	can_use_gui = {
+# 		# check_if_crusader_trigger = yes
+# 	}
 
-	can_use = {
-		FROM = {
-			is_nomadic = yes
-		}
-		ROOT = {
-			is_nomadic = no
-			NOT = { pacifist = yes }
-			NOT = { same_realm = FROM }
-			mercenary = no
-		}
-	}
+# 	can_use = {
+# 		FROM = {
+# 			is_nomadic = yes
+# 		}
+# 		ROOT = {
+# 			is_nomadic = no
+# 			NOT = { pacifist = yes }
+# 			NOT = { same_realm = FROM }
+# 			mercenary = no
+# 		}
+# 	}
 	
-	can_use_title = {
-		# The attacker needs at least one county in the target kingdom, or a border, or be only two sea zones away from one of your counties
-		any_direct_de_jure_vassal_title = {
-			OR = {
-				holder_scope = {
-					OR = {
-						character = ROOT
-						is_liege_or_above = ROOT
-					}
-				}
-				location = {
-					any_neighbor_province = {
-						has_owner = yes
-						owner = {
-							OR = {
-								character = ROOT
-								is_liege_or_above = ROOT
-							}
-						}
-					}
-				}
-			}
-		}
+# 	can_use_title = {
+# 		# The attacker needs at least one county in the target kingdom, or a border, or be only two sea zones away from one of your counties
+# 		any_direct_de_jure_vassal_title = {
+# 			OR = {
+# 				holder_scope = {
+# 					OR = {
+# 						character = ROOT
+# 						is_liege_or_above = ROOT
+# 					}
+# 				}
+# 				location = {
+# 					any_neighbor_province = {
+# 						has_owner = yes
+# 						owner = {
+# 							OR = {
+# 								character = ROOT
+# 								is_liege_or_above = ROOT
+# 							}
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
 		
-		any_de_jure_vassal_title = { # Can only liberate Duchies that are either outside of the Steppe region, or contains a Castle/City/Tribe
-			tier = COUNT
-			OR = {
-				holder_scope = {
-					character = FROM
-				}
-				holder_scope = {
-					any_liege = {
-						character = FROM
-					}
-				}
-			}
-			OR = {
-				location = {
-					NOT = {
-						region = world_steppe
-					}
-				}
-				location = {
-					any_province_holding = {
-						OR = {
-							holding_type = city
-							holding_type = castle
-							holding_type = tribal
-						}
-					}
-				}
-			}
-		}
-	}
+# 		any_de_jure_vassal_title = { # Can only liberate Duchies that are either outside of the Steppe region, or contains a Castle/City/Tribe
+# 			tier = COUNT
+# 			OR = {
+# 				holder_scope = {
+# 					character = FROM
+# 				}
+# 				holder_scope = {
+# 					any_liege = {
+# 						character = FROM
+# 					}
+# 				}
+# 			}
+# 			OR = {
+# 				location = {
+# 					NOT = {
+# 						region = world_steppe
+# 					}
+# 				}
+# 				location = {
+# 					any_province_holding = {
+# 						OR = {
+# 							holding_type = city
+# 							holding_type = castle
+# 							holding_type = tribal
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
 
-	is_valid = {
-		FROM = {
-			is_nomadic = yes
-		}
-		ROOT = {
-			is_nomadic = no
-			NOT = { pacifist = yes }
-			NOT = { same_realm = FROM }
-			mercenary = no
-		}
-	}
+# 	is_valid = {
+# 		FROM = {
+# 			is_nomadic = yes
+# 		}
+# 		ROOT = {
+# 			is_nomadic = no
+# 			NOT = { pacifist = yes }
+# 			NOT = { same_realm = FROM }
+# 			mercenary = no
+# 		}
+# 	}
 
-	on_add = {
-	}
+# 	on_add = {
+# 	}
 	
-	on_success = {
-		ROOT = {
-			show_scope_change = no
-			participation_scaled_prestige = 200
-			if = {
-				limit = {
-					uses_decadence = yes
-				}
-				participation_scaled_decadence = -10
-			}
-		}
-		any_attacker = {
-			limit = { NOT = { character = ROOT } }
-			hidden_tooltip = { 
-				participation_scaled_prestige = 200
-				if = {
-					limit = {
-						uses_decadence = yes
-					}
-					participation_scaled_decadence = -10
-				}
-			}
-		}
+# 	on_success = {
+# 		ROOT = {
+# 			show_scope_change = no
+# 			participation_scaled_prestige = 200
+# 			if = {
+# 				limit = {
+# 					uses_decadence = yes
+# 				}
+# 				participation_scaled_decadence = -10
+# 			}
+# 		}
+# 		any_attacker = {
+# 			limit = { NOT = { character = ROOT } }
+# 			hidden_tooltip = { 
+# 				participation_scaled_prestige = 200
+# 				if = {
+# 					limit = {
+# 						uses_decadence = yes
+# 					}
+# 					participation_scaled_decadence = -10
+# 				}
+# 			}
+# 		}
 		
-		FROM = { show_scope_change = no prestige = -200 }
-	}
+# 		FROM = { show_scope_change = no prestige = -200 }
+# 	}
 
-	on_success_title = {
-		custom_tooltip = {
-			text = liberate_nomad_cb_succ_tip
-			hidden_tooltip = {
-				ROOT = {
-					vassalize_or_take_under_title = {
-						title = PREV
-						enemy = FROM
-						anti_nomad = yes # Vassalize non-nomadic rulers
-						type = invasion
-					}
-				}
-			}
-		}
-	}
+# 	on_success_title = {
+# 		custom_tooltip = {
+# 			text = liberate_nomad_cb_succ_tip
+# 			hidden_tooltip = {
+# 				ROOT = {
+# 					vassalize_or_take_under_title = {
+# 						title = PREV
+# 						enemy = FROM
+# 						anti_nomad = yes # Vassalize non-nomadic rulers
+# 						type = invasion
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
 
-	on_fail = {
-		ROOT = {
-			show_scope_change = no
-			prestige = -200
-		}
-	}
+# 	on_fail = {
+# 		ROOT = {
+# 			show_scope_change = no
+# 			prestige = -200
+# 		}
+# 	}
 
-	on_reverse_demand = {
-		ROOT = {
-			show_scope_change = no
-			transfer_scaled_wealth = {
-				to = FROM
-				value = 4.0
-			}
-			prestige = -200
-		}
-		FROM = {
-			participation_scaled_prestige = 300
-			if = {
-				limit = {
-					uses_decadence = yes
-				}
-				participation_scaled_decadence = -10
-			}
-		}
-		any_defender = {
-			limit = { NOT = { character = FROM } }
-			hidden_tooltip = { 
-				participation_scaled_prestige = 300
-				if = {
-					limit = {
-						uses_decadence = yes
-					}
-					participation_scaled_decadence = -10
-				}
-			}
-		}
-	}
+# 	on_reverse_demand = {
+# 		ROOT = {
+# 			show_scope_change = no
+# 			transfer_scaled_wealth = {
+# 				to = FROM
+# 				value = 4.0
+# 			}
+# 			prestige = -200
+# 		}
+# 		FROM = {
+# 			participation_scaled_prestige = 300
+# 			if = {
+# 				limit = {
+# 					uses_decadence = yes
+# 				}
+# 				participation_scaled_decadence = -10
+# 			}
+# 		}
+# 		any_defender = {
+# 			limit = { NOT = { character = FROM } }
+# 			hidden_tooltip = { 
+# 				participation_scaled_prestige = 300
+# 				if = {
+# 					limit = {
+# 						uses_decadence = yes
+# 					}
+# 					participation_scaled_decadence = -10
+# 				}
+# 			}
+# 		}
+# 	}
 
-	attacker_ai_victory_worth = {
-		factor = -1 # always accept
-	}
+# 	attacker_ai_victory_worth = {
+# 		factor = -1 # always accept
+# 	}
 	
-	attacker_ai_defeat_worth = {
-		factor = 100
-	}
+# 	attacker_ai_defeat_worth = {
+# 		factor = 100
+# 	}
 
-	defender_ai_victory_worth = {
-		factor = -1 # always accept
-	}
+# 	defender_ai_victory_worth = {
+# 		factor = -1 # always accept
+# 	}
 	
-	defender_ai_defeat_worth = {
-		factor = 100
-	}
+# 	defender_ai_defeat_worth = {
+# 		factor = 100
+# 	}
 	
-	ai_will_do = {
-		factor = 1
-		modifier = {
-			factor = 0
-			ROOT = {
-				NOT = {
-					is_tribal = yes
-				}
-			}
-			NOT = {
-				any_direct_de_jure_vassal_title = {
-					any_direct_de_jure_vassal_title = {
-						OR = {
-							holding_type = castle
-							holding_type = city
-						}
-					}
-				}
-			}
-		}
-		modifier = {
-			factor = 0
-			ROOT = {
-				is_tribal = yes
-			}
-			NOT = {
-				any_direct_de_jure_vassal_title = {
-					any_direct_de_jure_vassal_title = {
-						OR = {
-							holding_type = castle
-							holding_type = city
-							holding_type = tribal
-						}
-					}
-				}
-			}
-		}
-	}
-}
+# 	ai_will_do = {
+# 		factor = 1
+# 		modifier = {
+# 			factor = 0
+# 			ROOT = {
+# 				NOT = {
+# 					is_tribal = yes
+# 				}
+# 			}
+# 			NOT = {
+# 				any_direct_de_jure_vassal_title = {
+# 					any_direct_de_jure_vassal_title = {
+# 						OR = {
+# 							holding_type = castle
+# 							holding_type = city
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		modifier = {
+# 			factor = 0
+# 			ROOT = {
+# 				is_tribal = yes
+# 			}
+# 			NOT = {
+# 				any_direct_de_jure_vassal_title = {
+# 					any_direct_de_jure_vassal_title = {
+# 						OR = {
+# 							holding_type = castle
+# 							holding_type = city
+# 							holding_type = tribal
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 #64
 increase_council_power_war = { # Started from faction
