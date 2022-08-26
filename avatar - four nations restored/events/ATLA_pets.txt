@@ -595,9 +595,6 @@ character_event = {
 			}
 			destroy_artifact = yes
 		}
-		#current_heir = {
-		#    character_event = { id=pets.6 days=100 random=200 }
-		#}
 	}
 	option = {
 		trigger = {
@@ -613,27 +610,75 @@ character_event = {
 character_event = {
 	# Pet dies
 	id = pets.6
+	title = EVTTITLEpets.6
 	desc = EVTDESCpets.6
-	border = GFX_event_normal_frame_diplomacy
 	picture = GFX_evt_death
 	is_triggered_only = yes
-	option = {
-		# Bury pet personally
-		name = "EVTOPTApets.6"
+	trigger = {
+		has_game_rule = {
+			name = pet_mortality
+			value = mortal
+		}
+		any_artifact = {
+			has_artifact_flag = pet
+			OR = {
+				AND = {
+					has_artifact_flag = lifespan_100
+					artifact_age > 100
+				}
+				AND = {
+					has_artifact_flag = lifespan_50
+					artifact_age > 50
+				}
+				AND = {
+					has_artifact_flag = lifespan_20
+					artifact_age > 20
+				}
+				AND = {
+					has_artifact_flag = lifespan_10
+					artifact_age > 10
+				}
+			}
+		}
+	}
+	immediate = {
 		any_artifact = {
 			limit = {
 				has_artifact_flag = pet
+				OR = {
+					AND = {
+						has_artifact_flag = lifespan_100
+						artifact_age > 100
+					}
+					AND = {
+						has_artifact_flag = lifespan_50
+						artifact_age > 50
+					}
+					AND = {
+						has_artifact_flag = lifespan_20
+						artifact_age > 20
+					}
+					AND = {
+						has_artifact_flag = lifespan_10
+						artifact_age > 10
+					}
+				}
 			}
+			save_event_target_as = dying_pet
+		}
+	}
+	option = {
+		# Bury pet personally
+		name = "EVTOPTApets.6"
+		event_target:dying_pet = {
 			destroy_artifact = yes
 		}
+		clear_event_target = dying_pet
 	}
 	option = {
 		# have servants bury the pet
 		name = "EVTOPTBpets.6"
-		any_artifact = {
-			limit = {
-				has_artifact_flag = pet
-			}
+		event_target:dying_pet = {
 			destroy_artifact = yes
 		}
 	}
