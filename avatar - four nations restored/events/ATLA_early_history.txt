@@ -54,31 +54,49 @@ narrative_event = { # Formation of the Kyoshi Warriors
 	}
 }
 
-long_character_event = { # Fire Nation - Founding
+narrative_event = { # Fire Nation - Founding
 	id = ATLAE.4001
 	desc = EVTDESCTLA.4001
-	picture = "GFX_evt_early_firelord"
-	is_triggered_only = yes
+	title = EVTTITLE.4001
+	picture = GFX_evt_map_fire_nation
 
 	trigger = {
-		NOT = { has_global_flag = founded_FN }
-		year = 640
-		NOT = { year = 700 }
-		has_landed_title = c_fire_palace
-		realm_size = 16
+		NOT = { year = 643 }
 		e_fire_nation = {
 			has_holder = no
 		}
+		NOT = { has_global_flag = founded_FN }
 		NOT = { has_character_flag = refused_to_found_fire_nation }
+		has_landed_title = c_fire_palace
+		has_landed_title = k_fire_nation
+		has_landed_title = k_western_fire_nation
+		realm_size = 16
+	}
+	mean_time_to_happen = {
+		years = 1
+		modifier = {
+			factor = 2
+			treasury = 500
+		}
+		modifier = {
+			factor = 2
+			prestige = 500
+		}
 	}
 
 	option = {
 		name = EVTOPTTLAA.4001
+		set_global_flag = founded_FN
 		e_fire_nation = {
 			grant_title = ROOT
+			copy_title_laws = PREV
+			# Automatic for AI, but more friendly/visible for the player }
+			hidden_tooltip = {
+				make_primary_title = yes
+			}
 		}
-		set_global_flag = founded_FN
-		hidden_tooltip = {
+		custom_tooltip = {
+			text = found_fire_nation_culture_convert
 			ROOT = {
 				culture = fire_nation
 				any_realm_province = {
@@ -109,6 +127,18 @@ long_character_event = { # Fire Nation - Founding
 				}
 			}
 		}
+		add_artifact = crownFirelord
+		prestige = 200
+		if = {
+			limit = {
+				NOT = {
+					has_bloodline_flag = bloodline_rakurai
+				}
+			}
+			create_bloodline = {
+				type = bloodline_firelord
+			}
+		}
 		ai_chance = {
 			factor = 1
 		}
@@ -131,7 +161,7 @@ narrative_event = { # Birth of Sozin
 	desc = EVTDESCTLA.4002
 	border = GFX_event_narrative_frame_war
 	is_triggered_only = yes
-
+	major = yes
 	major_trigger = {
 		culture_group = fire_nation_culture
 	}
