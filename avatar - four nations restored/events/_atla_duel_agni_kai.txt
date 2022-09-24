@@ -2,9 +2,10 @@
 namespace = ADUEL
 namespace = agnikai
 
-# ADUEL.2 - notify target that they are challenged to agnikai
-# ADUEL.7 - notify that challenge to agnikai has accepted
-# ADUEL.8 - target refused to accept challenge
+# agnikai.1 - notify target that they are challenged to agnikai
+# agnikai.2 - notify that challenge to agnikai has accepted
+# agnikai.3 - target refused to accept challenge
+# agnikai.4 - begin a duel 
 
 # Agni Kai - Challenged - Current Scope: Challenged
 character_event = {
@@ -23,8 +24,10 @@ character_event = {
 	option = { # Accept Challenge
 		name = agnikai.1.opt.1
 		event_target:challenger = {
-			character_event = { id = ADUEL.7 days = 3 } # Agni Kai - Accepted
+			character_event = { id = agnikai.2 days = 3 } # Agni Kai - Accepted
 		}
+		# todo: add more ai chance modifiers
+		# !ai
 		ai_chance = {
 			factor = 20
 			modifier = {
@@ -64,8 +67,11 @@ character_event = {
 			duration = 1095
 		}
 		event_target:challenger = {
-			character_event = { id = ADUEL.8 days = 3 } # Agni Kai - Fled
+			character_event = { id = agnikai.3 days = 3 } # Agni Kai - Fled
 		}
+
+		# todo: add more ai chance modifiers
+		# !ai
 		ai_chance = {
 			factor = 1
 		}
@@ -74,7 +80,7 @@ character_event = {
 		name = agnikai.1.opt.3
 		trigger = {
 			is_great_fire_duelist_trigger = yes
-			FROMFROMFROM = {
+			event_target:challenger = {
 				is_great_fire_duelist_trigger = no
 			}
 		}
@@ -86,6 +92,9 @@ character_event = {
 		event_target:challenger = {
 			character_event = { id = ADUEL.9 days = 3 } # Agni Kai - Insulted
 		}
+
+		# todo: add more ai chance modifiers
+		# !ai
 		ai_chance = {
 			factor = 30
 			modifier = {
@@ -102,30 +111,30 @@ character_event = {
 
 # Agni Kai - Challenge Accepted - Current Scope: Challenger
 character_event = {
-	id = ADUEL.7
-	desc = ADUELdesc.7
+	id = agnikai.2
+	desc = agnikai.2.desc
 	picture = GFX_evt_agni_kai
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 	
 	option = { # Begin Duel
-		name = ADUELoptA.7
+		name = agnikai.2.opt
 		FROM = {
-			character_event = { id = ADUEL.11 } # Agni Kai - Begin Duel
+			character_event = { id = agnikai.4 } # Agni Kai - Begin Duel
 		}
 	}
 }
 
 # Agni Kai - Challenge Refused - Current Scope: Challenger
 character_event = {
-	id = ADUEL.8
-	desc = ADUELdesc.8
-	picture = GFX_evt_desert
+	id = agnikai.3
+	desc = agnikai.3.desc
+	picture = GFX_evt_agni_kai
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 	
 	option = { # END
-		name = ADUELoptA.8
+		name = agnikai.3.opt
 		prestige = 100
 		opinion = {
 			modifier = opinion_agni_kai_cowadice
@@ -137,120 +146,120 @@ character_event = {
 
 # Agni Kai - Duel Begin
 character_event = {
-	id = ADUEL.11
+	id = agnikai.4
 	desc = { # Strong / Master
 		trigger = {
-			OR = {
-				trait = strong
-				trait = robust
-			}
 			OR = {
 				trait = master_bender
 				trait = legendary_bender
 			}
+			OR = {
+				trait = strong
+				trait = robust
+			}
 		}
-		text = ADUELdescA.11
+		text = agnikai.4.desc.1
 	}
 	desc = { # Average / Master
 		trigger = {
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
 			NOR = {
 				trait = strong
 				trait = robust
 				trait = feeble
 				trait = weak
 			}
-			OR = {
-				trait = master_bender
-				trait = legendary_bender
-			}
 		}
-		text = ADUELdescB.11
+		text = agnikai.4.desc.2
 	}
 	desc = { # Weak / Master
 		trigger = {
 			OR = {
-				trait = feeble
-				trait = weak
-			}
-			OR = {
 				trait = master_bender
 				trait = legendary_bender
 			}
+			OR = {
+				trait = feeble
+				trait = weak
+			}
 		}
-		text = ADUELdescC.11
+		text = agnikai.4.desc.3
 	}
 	desc = { # Strong / Adept
 		trigger = {
 			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+			OR = {
 				trait = strong
 				trait = robust
 			}
+		}
+		text = agnikai.4.desc.4
+	}
+	desc = { # Average / Adept
+		trigger = {
 			OR = {
 				trait = powerful_bender
 				trait = competent_bender
 			}
-		}
-		text = ADUELdescD.11
-	}
-	desc = { # Average / Adept
-		trigger = {
 			NOR = {
 				trait = strong
 				trait = robust
 				trait = feeble
 				trait = weak
 			}
-			OR = {
-				trait = powerful_bender
-				trait = competent_bender
-			}
 		}
-		text = ADUELdescE.11
+		text = agnikai.4.desc.5
 	}
 	desc = { # Weak / Adept
 		trigger = {
 			OR = {
-				trait = feeble
-				trait = weak
-			}
-			OR = {
 				trait = powerful_bender
 				trait = competent_bender
 			}
+			OR = {
+				trait = feeble
+				trait = weak
+			}
 		}
-		text = ADUELdescF.11
+		text = agnikai.4.desc.6
 	}
 	desc = { # Strong / Unskilled
 		trigger = {
+			trait = incompetent_bender
 			OR = {
 				trait = strong
 				trait = robust
 			}
-			trait = incompetent_bender
 		}
-		text = ADUELdescG.11
+		text = agnikai.4.desc.7
 	}
 	desc = { # Average / Unskilled
 		trigger = {
+			trait = incompetent_bender
 			NOR = {
 				trait = strong
 				trait = robust
 				trait = feeble
 				trait = weak
 			}
-			trait = incompetent_bender
 		}
-		text = ADUELdescH.11
+		text = agnikai.4.desc.8
 	}
 	desc = { # Weak / Unskilled
 		trigger = {
+			trait = incompetent_bender
 			OR = {
 				trait = feeble
 				trait = weak
 			}
-			trait = incompetent_bender
 		}
-		text = ADUELdescI.11
+		text = agnikai.4.desc.9
 	}
 	picture = GFX_evt_agni_kai
 	border = GFX_event_normal_frame_war
@@ -266,7 +275,7 @@ character_event = {
 	}
 	
 	option = { # Begin Duel
-		name = ADUELoptA.7
+		name = agnikai.4.opt
 		trigger = {
 			FROM = { has_character_flag = preparedForDuel }
 		}
@@ -278,13 +287,13 @@ character_event = {
 	}
 	
 	option = { # Ping opponent
-		name = ADUELoptA.7
+		name = agnikai.4.opt
 		save_event_target_as = other_hostile
 		trigger = {
 			FROM = { NOT = { has_character_flag = preparedForDuel } }
 		}
 		FROM = {
-			character_event = { id = ADUEL.11 } # PING
+			character_event = { id = agnikai.4 } # PING
 		}
 	}
 }
