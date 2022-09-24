@@ -1,0 +1,290 @@
+
+namespace = ADUEL
+namespace = agnikai
+
+# ADUEL.2 - notify target that they are challenged to agnikai
+# ADUEL.7 - notify that challenge to agnikai has accepted
+# ADUEL.8 - target refused to accept challenge
+
+# Agni Kai - Challenged - Current Scope: Challenged
+character_event = {
+	id = agnikai.1
+	desc = agnikai.1.desc
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = { 
+		FROMFROMFROM = {
+			save_event_target_as = challenger
+		}
+	}
+	
+	option = { # Accept Challenge
+		name = agnikai.1.opt.1
+		event_target:challenger = {
+			character_event = { id = ADUEL.7 days = 3 } # Agni Kai - Accepted
+		}
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 2
+				trait = proud
+			}
+			modifier = {
+				factor = 0.05
+				trait = craven
+			}
+		}
+	}
+	option = { # Refuse Challenge - Great Dishonor
+		name = agnikai.1.opt.2
+		trigger = {
+			is_great_fire_duelist_trigger = no
+		}
+		if = {
+			limit = { 
+				NOT = { trait = craven }
+				NOT = { trait = brave }
+			}
+			random = {
+				chance = 40
+				add_trait = craven
+			}
+		}
+		if = {
+			limit = {
+				trait = brave
+			}
+			remove_trait = brave
+		}
+		prestige = -100
+		add_character_modifier = {
+			modifier = agni_kai_refused_dishonor
+			duration = 1095
+		}
+		event_target:challenger = {
+			character_event = { id = ADUEL.8 days = 3 } # Agni Kai - Fled
+		}
+		ai_chance = {
+			factor = 1
+		}
+	}
+	option = { # Refuse Challenge - No Dishonor
+		name = agnikai.1.opt.3
+		trigger = {
+			is_great_fire_duelist_trigger = yes
+			FROMFROMFROM = {
+				is_great_fire_duelist_trigger = no
+			}
+		}
+		add_character_modifier = {
+			modifier = duel_refused_freely
+			hidden = yes
+			duration = 1095
+		}
+		event_target:challenger = {
+			character_event = { id = ADUEL.9 days = 3 } # Agni Kai - Insulted
+		}
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				trait = fullyrealisedavatar
+			}
+			modifier = {
+				factor = 2
+				trait = firelord
+			}
+		}
+	}
+}
+
+# Agni Kai - Challenge Accepted - Current Scope: Challenger
+character_event = {
+	id = ADUEL.7
+	desc = ADUELdesc.7
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Begin Duel
+		name = ADUELoptA.7
+		FROM = {
+			character_event = { id = ADUEL.11 } # Agni Kai - Begin Duel
+		}
+	}
+}
+
+# Agni Kai - Challenge Refused - Current Scope: Challenger
+character_event = {
+	id = ADUEL.8
+	desc = ADUELdesc.8
+	picture = GFX_evt_desert
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # END
+		name = ADUELoptA.8
+		prestige = 100
+		opinion = {
+			modifier = opinion_agni_kai_cowadice
+			who = FROM
+			years = 100
+		}
+	}
+}
+
+# Agni Kai - Duel Begin
+character_event = {
+	id = ADUEL.11
+	desc = { # Strong / Master
+		trigger = {
+			OR = {
+				trait = strong
+				trait = robust
+			}
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		text = ADUELdescA.11
+	}
+	desc = { # Average / Master
+		trigger = {
+			NOR = {
+				trait = strong
+				trait = robust
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		text = ADUELdescB.11
+	}
+	desc = { # Weak / Master
+		trigger = {
+			OR = {
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		text = ADUELdescC.11
+	}
+	desc = { # Strong / Adept
+		trigger = {
+			OR = {
+				trait = strong
+				trait = robust
+			}
+			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+		}
+		text = ADUELdescD.11
+	}
+	desc = { # Average / Adept
+		trigger = {
+			NOR = {
+				trait = strong
+				trait = robust
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+		}
+		text = ADUELdescE.11
+	}
+	desc = { # Weak / Adept
+		trigger = {
+			OR = {
+				trait = feeble
+				trait = weak
+			}
+			OR = {
+				trait = powerful_bender
+				trait = competent_bender
+			}
+		}
+		text = ADUELdescF.11
+	}
+	desc = { # Strong / Unskilled
+		trigger = {
+			OR = {
+				trait = strong
+				trait = robust
+			}
+			trait = incompetent_bender
+		}
+		text = ADUELdescG.11
+	}
+	desc = { # Average / Unskilled
+		trigger = {
+			NOR = {
+				trait = strong
+				trait = robust
+				trait = feeble
+				trait = weak
+			}
+			trait = incompetent_bender
+		}
+		text = ADUELdescH.11
+	}
+	desc = { # Weak / Unskilled
+		trigger = {
+			OR = {
+				trait = feeble
+				trait = weak
+			}
+			trait = incompetent_bender
+		}
+		text = ADUELdescI.11
+	}
+	picture = GFX_evt_agni_kai
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	immediate = { # Set up Character Stats
+		set_character_flag = preparedForDuel
+		clr_character_flag = used_earthquake
+		clr_character_flag = has_used_fireball
+		ROOT = {
+			set_duel_variables_effect = yes
+		}
+	}
+	
+	option = { # Begin Duel
+		name = ADUELoptA.7
+		trigger = {
+			FROM = { has_character_flag = preparedForDuel }
+		}
+		clr_character_flag = preparedForDuel
+		FROM = {
+			clr_character_flag = preparedForDuel
+		}
+		character_event = { id = ADUEL.14 } # Duel - First Action
+	}
+	
+	option = { # Ping opponent
+		name = ADUELoptA.7
+		save_event_target_as = other_hostile
+		trigger = {
+			FROM = { NOT = { has_character_flag = preparedForDuel } }
+		}
+		FROM = {
+			character_event = { id = ADUEL.11 } # PING
+		}
+	}
+}
