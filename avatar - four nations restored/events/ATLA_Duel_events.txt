@@ -1,6 +1,6 @@
 ###########################################
 #                                         #
-# ATLA DUEL events		                  #
+# ATLA DUEL events		                    #
 #                                         #
 #                                      	  #
 #                                         #
@@ -20,7 +20,7 @@ character_event = { # START DUEL - Event Handler - Current Scope: Challenged
 				trait = firebender
 			}
 		}
-		character_event = { id = ADUEL.2 days = 3 } # Agni Kai - Challenge
+		character_event = { id = agnikai.1 } # Agni Kai - Challenge
 	}
 	option = { # Duel: Bender v Bender
 		trigger = {
@@ -55,10 +55,10 @@ character_event = { # START DUEL - Event Handler - Current Scope: Challenged
 				is_bender_trait_trigger = yes
 			}
 		}
-		character_event = { id = ADUEL.3 days = 3 } # Nonbender v Bender Battle - Challenge
-		#FROMFROM = {
-			#character_event = { id = ADUEL.4 } # Bender v Nonbender Battle - Challenger (Currently Not Compelte)
-		#}
+		# character_event = { id = ADUEL.3 days = 3 } # Nonbender v Bender Battle - Challenge
+		FROMFROM = {
+			character_event = { id = ADUEL.4 } # Bender v Nonbender Battle - Challenger (Currently Not Compelte)
+		}
 	}
 	option = { # Duel Muggle v Bender
 		trigger = {
@@ -71,99 +71,7 @@ character_event = { # START DUEL - Event Handler - Current Scope: Challenged
 	}
 }
 
-# Agni Kai - Challenged - Current Scope: Challenged
-character_event = {
-	id = ADUEL.2
-	desc = ADUELdesc.2
-	picture = GFX_evt_agni_kai
-	border = GFX_event_normal_frame_war
-	is_triggered_only = yes
-	
-	immediate = { 
-		FROMFROMFROM = {
-			save_event_target_as = challenger
-		}
-	}
-	
-	option = { # Accept Challenge
-		name = ADUELoptA.2
-		event_target:challenger = {
-			character_event = { id = ADUEL.7 days = 3 } # Agni Kai - Accepted
-		}
-		ai_chance = {
-			factor = 20
-			modifier = {
-				factor = 2
-				trait = proud
-			}
-			modifier = {
-				factor = 0.05
-				trait = craven
-			}
-		}
-	}
-	option = { # Refuse Challenge - Great Dishonor
-		name = ADUELoptB.2
-		trigger = {
-			is_great_fire_duelist_trigger = no
-		}
-		if = {
-			limit = { 
-				NOT = { trait = craven }
-				NOT = { trait = brave }
-			}
-			random = {
-				chance = 40
-				add_trait = craven
-			}
-		}
-		if = {
-			limit = {
-				trait = brave
-			}
-			remove_trait = brave
-		}
-		prestige = -100
-		add_character_modifier = {
-			modifier = agni_kai_refused_dishonor
-			duration = 1095
-		}
-		event_target:challenger = {
-			character_event = { id = ADUEL.8 days = 3 } # Agni Kai - Fled
-		}
-		ai_chance = {
-			factor = 1
-		}
-	}
-	option = { # Refuse Challenge - No Dishonor
-		name = ADUELoptC.2
-		trigger = {
-			is_great_fire_duelist_trigger = yes
-			FROMFROMFROM = {
-				is_great_fire_duelist_trigger = no
-			}
-		}
-		add_character_modifier = {
-			modifier = duel_refused_freely
-			hidden = yes
-			duration = 1095
-		}
-		event_target:challenger = {
-			character_event = { id = ADUEL.9 days = 3 } # Agni Kai - Insulted
-		}
-		ai_chance = {
-			factor = 30
-			modifier = {
-				factor = 2
-				trait = fullyrealisedavatar
-			}
-			modifier = {
-				factor = 2
-				trait = firelord
-			}
-		}
-	}
-}
+
 
 # Bender Duel - Challenged - Current Scope: Challenged
 character_event = {
@@ -293,6 +201,7 @@ character_event = {
 	}
 	option = { # Without Bending
 		name = ADUELoptB.4
+		set_character_flag = agreed_to_duel_without_bending
 		FROM = {
 			character_event = { id = ADUEL.6 days = 3 } # Bender Duel - Challenge without Bending
 		}
@@ -418,23 +327,7 @@ character_event = {
 	}
 }
 
-# Agni Kai - Challenge Accepted - Current Scope: Challenger
-character_event = {
-	id = ADUEL.7
-	desc = ADUELdesc.7
-	picture = GFX_evt_agni_kai
-	border = GFX_event_normal_frame_war
-	is_triggered_only = yes
-	
-	option = { # Begin Duel
-		name = ADUELoptA.7
-		FROM = {
-			character_event = { id = ADUEL.11 } # Agni Kai - Begin Duel
-		}
-	}
-}
-
-# Agni Kai - Challenge Refused - Current Scope: Challenger
+# Challenge Refused - Current Scope: Challenger
 character_event = {
 	id = ADUEL.8
 	desc = ADUELdesc.8
@@ -446,6 +339,7 @@ character_event = {
 		name = ADUELoptA.8
 		prestige = 100
 		opinion = {
+			# todo: add modifier without "agnikai" in name
 			modifier = opinion_agni_kai_cowadice
 			who = FROM
 			years = 100
@@ -491,164 +385,13 @@ character_event = {
 	}
 }
 
-# Agni Kai - Duel Begin
-character_event = {
-	id = ADUEL.11
-	desc = { # Strong / Master
-		trigger = {
-			OR = {
-				trait = strong
-				trait = robust
-			}
-			OR = {
-				trait = master_bender
-				trait = legendary_bender
-			}
-		}
-		text = ADUELdescA.11
-	}
-	desc = { # Average / Master
-		trigger = {
-			NOR = {
-				trait = strong
-				trait = robust
-				trait = feeble
-				trait = weak
-			}
-			OR = {
-				trait = master_bender
-				trait = legendary_bender
-			}
-		}
-		text = ADUELdescB.11
-	}
-	desc = { # Weak / Master
-		trigger = {
-			OR = {
-				trait = feeble
-				trait = weak
-			}
-			OR = {
-				trait = master_bender
-				trait = legendary_bender
-			}
-		}
-		text = ADUELdescC.11
-	}
-	desc = { # Strong / Adept
-		trigger = {
-			OR = {
-				trait = strong
-				trait = robust
-			}
-			OR = {
-				trait = powerful_bender
-				trait = competent_bender
-			}
-		}
-		text = ADUELdescD.11
-	}
-	desc = { # Average / Adept
-		trigger = {
-			NOR = {
-				trait = strong
-				trait = robust
-				trait = feeble
-				trait = weak
-			}
-			OR = {
-				trait = powerful_bender
-				trait = competent_bender
-			}
-		}
-		text = ADUELdescE.11
-	}
-	desc = { # Weak / Adept
-		trigger = {
-			OR = {
-				trait = feeble
-				trait = weak
-			}
-			OR = {
-				trait = powerful_bender
-				trait = competent_bender
-			}
-		}
-		text = ADUELdescF.11
-	}
-	desc = { # Strong / Unskilled
-		trigger = {
-			OR = {
-				trait = strong
-				trait = robust
-			}
-			trait = incompetent_bender
-		}
-		text = ADUELdescG.11
-	}
-	desc = { # Average / Unskilled
-		trigger = {
-			NOR = {
-				trait = strong
-				trait = robust
-				trait = feeble
-				trait = weak
-			}
-			trait = incompetent_bender
-		}
-		text = ADUELdescH.11
-	}
-	desc = { # Weak / Unskilled
-		trigger = {
-			OR = {
-				trait = feeble
-				trait = weak
-			}
-			trait = incompetent_bender
-		}
-		text = ADUELdescI.11
-	}
-	picture = GFX_evt_agni_kai
-	border = GFX_event_normal_frame_war
-	is_triggered_only = yes
-	
-	immediate = { # Set up Character Stats
-		set_character_flag = preparedForDuel
-		clr_character_flag = used_earthquake
-		clr_character_flag = has_used_fireball
-		ROOT = {
-			set_duel_variables_effect = yes
-		}
-	}
-	
-	option = { # Begin Duel
-		name = ADUELoptA.7
-		trigger = {
-			FROM = { has_character_flag = preparedForDuel }
-		}
-		clr_character_flag = preparedForDuel
-		FROM = {
-			clr_character_flag = preparedForDuel
-		}
-		character_event = { id = ADUEL.14 } # Duel - First Action
-	}
-	
-	option = { # Ping opponent
-		name = ADUELoptA.7
-		save_event_target_as = other_hostile
-		trigger = {
-			FROM = { NOT = { has_character_flag = preparedForDuel } }
-		}
-		FROM = {
-			character_event = { id = ADUEL.11 } # PING
-		}
-	}
-}
+
 
 # Duel - Challenge Accepted - Current Scope: Challenger
 character_event = {
 	id = ADUEL.12
 	desc = ADUELdesc.12
+	title = aduel12_title
 	picture = GFX_evt_desert
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
@@ -662,7 +405,7 @@ character_event = {
 }
 
 # Duel - Duel Begin
-long_character_event = {
+character_event = {
 	id = ADUEL.13
 	desc = ADUELdesc.13
 	picture = GFX_evt_eartharena
@@ -757,9 +500,7 @@ character_event = {
 			5 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_CRIT_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.16 } # Attack
-					}
+					character_event = { id = ADUEL.16 } # Attack
 				}
 				modifier = {
 					factor = 5
@@ -786,9 +527,7 @@ character_event = {
 			30 = { # Full Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_FULL_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.17 } # Attack
-					}
+					character_event = { id = ADUEL.17 } # Attack
 				}
 				modifier = {
 					factor = 2
@@ -819,25 +558,19 @@ character_event = {
 			30 = { # Half Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_HALF_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.18 } # Attack
-					}
+					character_event = { id = ADUEL.18 } # Attack
 				}
 			}
 			25 = { # Quarter Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_QUARTER_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.19 } # Attack
-					}
+					character_event = { id = ADUEL.19 } # Attack
 				}
 			}
 			10 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_MISS_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.20 } # Attack
-					}
+					character_event = { id = ADUEL.20 } # Attack
 				}
 				modifier = {
 					factor = 5
@@ -891,9 +624,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DEFEND_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.26 } # Defend
-			}
+			character_event = { id = ADUEL.26 } # Defend
 		}
 	}
 	option = { # Ability
@@ -903,38 +634,14 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_ABILITY_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.15 } # Duel - Select Ability
-			}
+			character_event = { id = ADUEL.15 } # Duel - Select Ability
 		}
 		trigger = {
+			can_use_duel_ability_trigger = yes
 			event_target:hostile = {
 				check_variable = { which = myHP value = 1 }
 			}
 			check_variable = { which = mySTA value = 2 }
-			OR = {
-				trait = waterbender
-				trait = earthbender
-				trait = firebender
-				trait = airbender
-				trait = combustionbender
-				trait = lightningbender
-				trait = smokebender
-				trait = healer
-				trait = metalbender
-				trait = seismicsense_nonblind
-				trait = seismicsense
-				trait = sandbender
-				trait = lavabender
-				trait = voidbender
-				trait = chi_blocker
-				trait = poison_expert
-				trait = explosives_expert
-				trait = weapons_expert
-				trait = weapon_master
-				trait = avatar
-				trait = fullyrealisedavatar
-			}
 		}
 	}
 	
@@ -951,10 +658,8 @@ character_event = {
 				NOT = { check_variable = { which = myHP value = 1 } }
 			}
 		}
-		hidden_tooltip = {
-			event_target:hostile = {
-				character_event = { id = ADUEL.31 } # Duel - End - Victory
-			}
+		event_target:hostile = {
+			character_event = { id = ADUEL.31 } # Duel - End - Victory
 		}
 	}
 	
@@ -969,10 +674,8 @@ character_event = {
 		trigger = {
 			NOT = { check_variable = { which = myHP value = 10 } }
 		}
-		hidden_tooltip = {
-			event_target:hostile = {
-				character_event = { id = ADUEL.28 } # Duel - End - Victory
-			}
+		event_target:hostile = {
+			character_event = { id = ADUEL.28 } # Duel - End - Victory
 		}
 	}
 }
@@ -994,9 +697,7 @@ character_event = {
 			5 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_CRIT_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.16 } # Attack
-					}
+					character_event = { id = ADUEL.16 } # Attack
 				}
 				modifier = {
 					factor = 5
@@ -1023,9 +724,7 @@ character_event = {
 			30 = { # Full Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_FULL_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.17 } # Attack
-					}
+					character_event = { id = ADUEL.17 } # Attack
 				}
 				modifier = {
 					factor = 2
@@ -1056,25 +755,19 @@ character_event = {
 			30 = { # Half Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_HALF_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.18 } # Attack
-					}
+					character_event = { id = ADUEL.18 } # Attack
 				}
 			}
 			25 = { # Quarter Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_QUARTER_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.19 } # Attack
-					}
+					character_event = { id = ADUEL.19 } # Attack
 				}
 			}
 			10 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_MISS_TOOLTIP
-					hidden_tooltip = {
-						character_event = { id = ADUEL.20 } # Attack
-					}
+					character_event = { id = ADUEL.20 } # Attack
 				}
 				modifier = {
 					factor = 5
@@ -1119,118 +812,109 @@ character_event = {
 	
 	option = { # Earthbender - Earthquake
 		name = ADUELoptB.15
-		tooltip_info = earthbender
-		show_trait = earthbender
 		trigger = {
 			trait = earthbender
 			NOT = { has_character_flag = used_earthquake }
 		}
+		tooltip_info = earthbender
+		show_trait = earthbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_EARTHBENDER_TOOLTIP
-			hidden_tooltip = {
-				set_character_flag = used_earthquake
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.29 } # Earthquake Attack
-			}
+			set_character_flag = used_earthquake
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.29 } # Earthquake Attack
 		}
 	}
 	option = { # Lightningbender - Lightning Strike
 		name = ADUELoptC.15
-		tooltip_info = lightningbender
-		show_trait = lightningbender
 		trigger = {
 			trait = lightningbender
 		}
+		tooltip_info = lightningbender
+		show_trait = lightningbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_LIGHTNING_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.44 } # Lightning Strike
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.44 } # Lightning Strike
 		}
 	}
 	option = { # Combustionbender - Combustion Blast
 		name = ADUELoptD.15
-		tooltip_info = combustionbender
-		show_trait = combustionbender
 		trigger = {
 			trait = combustionbender
 		}
+		tooltip_info = combustionbender
+		show_trait = combustionbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_COMBUSTION_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.49 } # Combustion Blast
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.49 } # Combustion Blast
 		}
 	}
 	option = { # Smokebender - Smoke Screen
 		name = ADUELoptE.15
-		tooltip_info = smokebender
-		show_trait = smokebender
 		trigger = {
 			trait = smokebender
 			NOT = { has_character_flag = used_smoke_screen }
 		}
+		tooltip_info = smokebender
+		show_trait = smokebender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_SMOKE_TOOLTIP
-			hidden_tooltip = {
-				set_character_flag = used_smoke_screen
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.53 } # Smoke Screen
-			}
+			set_character_flag = used_smoke_screen
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.53 } # Smoke Screen
 		}
 	}
 	option = { # Healer - Restoration
 		name = ADUELoptF.15
-		tooltip_info = healer
-		show_trait = healer
 		trigger = {
 			trait = healer
 		}
+		tooltip_info = healer
+		show_trait = healer
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_RESTORATION_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.55 } # Restoration
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.55 } # Restoration
 		}
 	}
 	option = { # Firebender - Firebolt
 		name = ADUELoptG.15
-		tooltip_info = firebender
-		show_trait = firebender
 		trigger = {
 			trait = firebender
 			NOT = { has_character_flag = has_used_fireball }
 		}
+		tooltip_info = firebender
+		show_trait = firebender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_FIREBENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.57 } # Firebender Attack
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.57 } # Firebender Attack
 		}
 	}
 	option = { # Waterbender - Freeze
 		name = ADUELoptH.15
-		tooltip_info = waterbender
-		show_trait = waterbender
 		trigger = {
 			trait = waterbender
 		}
+		tooltip_info = waterbender
+		show_trait = waterbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_WATERBENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.60 } # Waterbender Attack
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.60 } # Waterbender Attack
 		}
 	}
 	option = { # Airbender - Baffle
 		name = ADUELoptI.15
-		tooltip_info = airbender
-		show_trait = airbender
 		trigger = {
 			trait = airbender
 			OR = {
@@ -1238,93 +922,89 @@ character_event = {
 				NOT = { check_variable = { which = myHP value = 15 } }
 			}
 		}
+		tooltip_info = airbender
+		show_trait = airbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_AIRBENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.63 } # Airbender Retreat
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.63 } # Airbender Retreat
 		}
 	}
 	option = { # Metalbender - Crush
 		name = ADUELoptJ.15
-		tooltip_info = metalbender
-		show_trait = metalbender
 		trigger = {
 			trait = metalbender
 			event_target:hostile = { 
 				NOT = { has_character_flag = been_crushed }
 			}
 		}
+		tooltip_info = metalbender
+		show_trait = metalbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_METALBENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.68 } # Metalbender Attack
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.68 } # Metalbender Attack
 		}
 	}
 	option = { # Earth Sense - Anticipaite
 		name = ADUELoptK.15
-		tooltip_info = seismicsense_nonblind
-		show_trait = seismicsense_nonblind
 		trigger = {
 			OR = {
 				trait = seismicsense_nonblind
 				trait = seismicsense
 			}
 		}
+		tooltip_info = seismicsense_nonblind
+		show_trait = seismicsense_nonblind
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_EARTHSENSE_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.71 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.71 }
 		}
 	}
 	option = { # Sandbender - Erode
 		name = ADUELoptL.15
-		tooltip_info = sandbender
-		show_trait = sandbender
 		trigger = {
 			trait = sandbender
 		}
+		tooltip_info = sandbender
+		show_trait = sandbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_SANDBENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.74 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.74 }
 		}
 	}
 	option = { # Lavabender - Volcano
 		name = ADUELoptM.15
-		tooltip_info = lavabender
-		show_trait = lavabender
 		trigger = {
 			trait = lavabender
 		}
+		tooltip_info = lavabender
+		show_trait = lavabender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_LAVABENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.77 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.77 }
 		}
 	}
 	option = { # Voidbender - Void
 		name = ADUELoptN.15
-		tooltip_info = voidbender
-		show_trait = voidbender
 		trigger = {
 			trait = voidbender
 		}
+		tooltip_info = voidbender
+		show_trait = voidbender
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		custom_tooltip = {
 			text = ADUEL_ATK_VOIDBENDER_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.82 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.82 }
 		}
 	}
 	option = { # Chi-Blocker - Block
@@ -1345,10 +1025,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_ATK_CHIBLOCK_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.87 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.87 }
 		}
 	}
 	option = { # Weapon Master - Power Attack
@@ -1364,10 +1042,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_ATK_WEAPON_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.90 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.90 }
 		}
 	}
 	option = { # Poison Expert - Deadly Toxin
@@ -1379,10 +1055,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_ATK_POISON_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.93 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.93 }
 		}
 	}
 	option = { # Explosive Expert - Explosive Blast
@@ -1394,16 +1068,15 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_ATK_EXPLOSIVE_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.96 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.96 }
 		}
 	}
 	option = { # Avatar - Avatar State
 		name = ADUELoptS.15
 		tooltip_info = avatar
 		show_trait = fullyrealisedavatar
+		check_if_breaking_promiss_not_to_bend_effect = yes
 		trigger = {
 			OR = {
 				trait = avatar
@@ -1412,10 +1085,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_ATK_AVATAR_TOOLTIP
-			hidden_tooltip = {
-				subtract_variable = { which = mySTA value = 2 }
-				character_event = { id = ADUEL.99 }
-			}
+			subtract_variable = { which = mySTA value = 2 }
+			character_event = { id = ADUEL.99 }
 		}
 	}
 }
@@ -1468,10 +1139,8 @@ character_event = {
 		name = ADUELoptA.16
 		custom_tooltip = {
 			text = ADUEL_CRIT_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.21 } # Duel - Attack - Broadcast Crit Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.21 } # Duel - Attack - Broadcast Crit Damage
 			}
 		}
 	}
@@ -1539,10 +1208,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.22 } # Duel - Attack - Broadcast Crit Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.22 } # Duel - Attack - Broadcast Crit Damage
 			}
 		}
 	}
@@ -1556,10 +1223,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_MISS_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
 			}
 		}
 	}
@@ -1628,10 +1293,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.23 } # Duel - Attack - Broadcast Crit Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.23 } # Duel - Attack - Broadcast Crit Damage
 			}
 		}
 	}
@@ -1645,10 +1308,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_MISS_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
 			}
 		}
 	}
@@ -1717,10 +1378,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.24 } # Duel - Attack - Broadcast Crit Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.24 } # Duel - Attack - Broadcast Crit Damage
 			}
 		}
 	}
@@ -1734,10 +1393,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_MISS_DAM_ATK_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss Damage
 			}
 		}
 	}
@@ -1784,10 +1441,8 @@ character_event = {
 		name = ADUELoptA.20
 		custom_tooltip = {
 			text = ADUEL_MISS_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.25 } # Duel - Attack - Broadcast Miss
 			}
 		}
 	}
@@ -1834,9 +1489,7 @@ character_event = {
 		name = ADUELoptA.21
 		custom_tooltip = {
 			text = ADUEL_CRIT_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -1885,9 +1538,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 	
@@ -1898,9 +1549,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_MISS_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -1949,9 +1598,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 	
@@ -1962,9 +1609,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_MISS_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2013,9 +1658,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 	
@@ -2026,9 +1669,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_MISS_DAM_DEF_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2074,10 +1715,8 @@ character_event = {
 		name = ADUELoptA.25
 		custom_tooltip = {
 			text = ADUEL_MISS_DEF_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.14 } # Duel - Attack - Broadcast Miss
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.14 } # Duel - Attack - Broadcast Miss
 			}
 		}
 	}
@@ -2100,10 +1739,8 @@ character_event = {
 		name = ADUELoptA.26
 		custom_tooltip = {
 			text = ADUEL_DEFEND_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.27 } # Duel - Attack - Broadcast Crit Damage
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.27 } # Duel - Attack - Broadcast Crit Damage
 			}
 		}
 	}
@@ -2117,12 +1754,10 @@ character_event = {
 		show_trait = airbender
 		custom_tooltip = {
 			text = ADUEL_COUNTERATTACK_AIR_TOOLTIP
-			hidden_tooltip = {
-				set_variable = { which = global_atk which = myDEF }
-				event_target:hostile = {
-					subtract_variable = { which = myHP which = global_atk }
-					character_event = { id = ADUEL.260 } # Duel - Counterattack - Broadcast Def Damage
-				}
+			set_variable = { which = global_atk which = myDEF }
+			event_target:hostile = {
+				subtract_variable = { which = myHP which = global_atk }
+				character_event = { id = ADUEL.260 } # Duel - Counterattack - Broadcast Def Damage
 			}
 		}
 	}
@@ -2181,10 +1816,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_SPARE_ENEMY
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.35 } # Duel - Spare
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.35 } # Duel - Spare
 			}
 		}
 	}
@@ -2195,10 +1828,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_EXECUTE_ENEMY
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.32 } # Duel - Execute
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.32 } # Duel - Execute
 			}
 		}
 	}
@@ -2212,10 +1843,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_CAPTURE_ENEMY
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.33 } # Duel - Imprison
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.33 } # Duel - Imprison
 			}
 		}
 	}
@@ -2231,10 +1860,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_BURN_ENEMY
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.34 } # Duel - Burn
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.34 } # Duel - Burn
 			}
 		}
 	}
@@ -2245,10 +1872,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_SPAR_ENEMY
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.36 } # Duel - Spar
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.36 } # Duel - Spar
 			}
 		}
 	}
@@ -2290,9 +1915,7 @@ character_event = {
 		name = ADUELoptA.30
 		custom_tooltip = {
 			text = ADUEL_EARTHQUAKE_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2600,10 +2223,8 @@ character_event = {
 			50 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_LIGHTENING_CRIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.45 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.45 } # HIT
 					}
 				}
 				modifier = {
@@ -2622,10 +2243,8 @@ character_event = {
 			50 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_LIGHTENING_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.46 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.46 } # MISS
 					}
 				}
 				modifier = {
@@ -2675,9 +2294,7 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_LIGHTENING_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 	
@@ -2688,10 +2305,8 @@ character_event = {
 		}
 		custom_tooltip = {
 			text = ADUEL_LIGHTENING_REVERSE_TOOLTIP
-			hidden_tooltip = {
-				FROM = { 
-					character_event = { id = ADUEL.47 } 
-				}
+			FROM = { 
+				character_event = { id = ADUEL.47 } 
 			}
 		}
 	}
@@ -2709,9 +2324,7 @@ character_event = {
 		name = ADUELoptA.46
 		custom_tooltip = {
 			text = ADUEL_LIGHTENING_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2764,10 +2377,8 @@ character_event = {
 			33 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_COMBUSTION_CRIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.50 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.50 } # HIT
 					}
 				}
 				modifier = {
@@ -2786,20 +2397,16 @@ character_event = {
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_COMBUSTION_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.51 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.51 } # HIT
 					}
 				}
 			}
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_LIGHTENING_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.52 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.52 } # MISS
 					}
 				}
 				modifier = {
@@ -2846,9 +2453,7 @@ character_event = {
 		name = ADUELoptA.50
 		custom_tooltip = {
 			text = ADUEL_COMBUSTION_GOT_CRIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2881,9 +2486,7 @@ character_event = {
 		name = ADUELoptA.51
 		custom_tooltip = {
 			text = ADUEL_COMBUSTION_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2900,9 +2503,7 @@ character_event = {
 		name = ADUELoptA.52
 		custom_tooltip = {
 			text = ADUEL_COMBUSTION_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2925,10 +2526,8 @@ character_event = {
 		name = ADUELoptA.53
 		custom_tooltip = {
 			text = ADUEL_SMOKESCREEN_USED_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.54 } # Duel - Smoke Screen - Hit
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.54 } # Duel - Smoke Screen - Hit
 			}
 		}
 	}
@@ -2946,9 +2545,7 @@ character_event = {
 		name = ADUELoptA.54
 		custom_tooltip = {
 			text = ADUEL_SMOKESCREEN_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -2977,10 +2574,8 @@ character_event = {
 		name = ADUELoptA.55
 		custom_tooltip = {
 			text = ADUEL_RESTORATION_USED_TOOLTIP
-			hidden_tooltip = {
-				event_target:hostile = {
-					character_event = { id = ADUEL.56 } # Duel - Restoration - Hit
-				}
+			event_target:hostile = {
+				character_event = { id = ADUEL.56 } # Duel - Restoration - Hit
 			}
 		}
 	}
@@ -2998,9 +2593,7 @@ character_event = {
 		name = ADUELoptA.56
 		custom_tooltip = {
 			text = ADUEL_RESOTRATION_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3019,11 +2612,9 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_FIREBOLT_HIT_TOOLTIP
-					hidden_tooltip = {
-						set_character_flag = has_used_fireball
-						event_target:hostile = {
-							character_event = { id = ADUEL.58 } # HIT
-						}
+					set_character_flag = has_used_fireball
+					event_target:hostile = {
+						character_event = { id = ADUEL.58 } # HIT
 					}
 				}
 				modifier = {
@@ -3042,10 +2633,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_FIREBOLT_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.59 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.59 } # MISS
 					}
 				}
 			}
@@ -3078,9 +2667,7 @@ character_event = {
 		name = ADUELoptA.58
 		custom_tooltip = {
 			text = ADUEL_FIREBOLT_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3097,9 +2684,7 @@ character_event = {
 		name = ADUELoptA.59
 		custom_tooltip = {
 			text = ADUEL_FIREBOLT_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3118,10 +2703,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_FREEZE_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.61 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.61 } # HIT
 					}
 				}
 				modifier = {
@@ -3140,10 +2723,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_FREEZE_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.62 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.62 } # MISS
 					}
 				}
 				modifier = {
@@ -3192,9 +2773,7 @@ character_event = {
 		name = ADUELoptA.61
 		custom_tooltip = {
 			text = ADUEL_FREEZE_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3211,9 +2790,7 @@ character_event = {
 		name = ADUELoptA.62
 		custom_tooltip = {
 			text = ADUEL_FREEZE_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3232,10 +2809,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_BAFFLE_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.64 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.64 } # HIT
 					}
 				}
 				modifier = {
@@ -3289,10 +2864,8 @@ character_event = {
 		name = ADUELoptA.64
 		custom_tooltip = {
 			text = ADUEL_BAFFLE_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.65 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.65 }
 			}
 		}
 	}
@@ -3323,10 +2896,8 @@ character_event = {
 		name = ADUELoptA.66
 		custom_tooltip = {
 			text = ADUEL_BAFFLE_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.67 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.67 }
 			}
 		}
 	}
@@ -3364,10 +2935,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_CRUSH_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.69 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.69 } # HIT
 					}
 				}
 				modifier = {
@@ -3386,10 +2955,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_CRUSH_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.70 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.70 } # MISS
 					}
 				}
 				modifier = {
@@ -3428,9 +2995,7 @@ character_event = {
 		name = ADUELoptA.69
 		custom_tooltip = {
 			text = ADUEL_CRUSH_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3447,9 +3012,7 @@ character_event = {
 		name = ADUELoptA.70
 		custom_tooltip = {
 			text = ADUEL_CRUSH_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3468,10 +3031,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_SENSE_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.72 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.72 } # HIT
 					}
 				}
 				modifier = {
@@ -3490,10 +3051,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_SENSE_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.73 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.73 } # MISS
 					}
 				}
 				modifier = {
@@ -3532,9 +3091,7 @@ character_event = {
 		name = ADUELoptA.71
 		custom_tooltip = {
 			text = ADUEL_SENSE_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3551,9 +3108,7 @@ character_event = {
 		name = ADUELoptA.73
 		custom_tooltip = {
 			text = ADUEL_SENSE_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3572,10 +3127,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_ERODE_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.75 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.75 } # HIT
 					}
 				}
 				modifier = {
@@ -3594,10 +3147,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_ERODE_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.76 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.76 } # MISS
 					}
 				}
 			}
@@ -3630,9 +3181,7 @@ character_event = {
 		name = ADUELoptA.75
 		custom_tooltip = {
 			text = ADUEL_ERODE_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3649,9 +3198,7 @@ character_event = {
 		name = ADUELoptA.76
 		custom_tooltip = {
 			text = ADUEL_ERODE_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3670,10 +3217,8 @@ character_event = {
 			33 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_VOLCANO_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.78 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.78 } # HIT
 					}
 				}
 				modifier = {
@@ -3692,10 +3237,8 @@ character_event = {
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_VOLCANO_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.80 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.80 } # MISS
 					}
 				}
 				modifier = {
@@ -3742,10 +3285,8 @@ character_event = {
 		name = ADUELoptA.78
 		custom_tooltip = {
 			text = ADUEL_VOLCANO_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.79 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.79 }
 			}
 		}
 	}
@@ -3761,10 +3302,8 @@ character_event = {
 	
 	option = { # Hit
 		name = ADUELoptA.79
-		hidden_tooltip = {
-			FROM = {
-				character_event = { id = ADUEL.14 }
-			}
+		FROM = {
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -3781,10 +3320,8 @@ character_event = {
 		name = ADUELoptA.80
 		custom_tooltip = {
 			text = ADUEL_VOLCANO_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.81 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.81 }
 			}
 		}
 	}
@@ -3822,10 +3359,8 @@ character_event = {
 			33 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_VOID_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.83 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.83 } # HIT
 					}
 				}
 				modifier = {
@@ -3844,10 +3379,8 @@ character_event = {
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_VOID_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.85 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.85 } # MISS
 					}
 				}
 				modifier = {
@@ -3894,10 +3427,8 @@ character_event = {
 		name = ADUELoptA.83
 		custom_tooltip = {
 			text = ADUEL_VOID_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.84 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.84 }
 			}
 		}
 	}
@@ -3933,10 +3464,8 @@ character_event = {
 		name = ADUELoptA.85
 		custom_tooltip = {
 			text = ADUEL_VOID_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.86 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.86 }
 			}
 		}
 	}
@@ -3974,10 +3503,8 @@ character_event = {
 			33 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_CHI_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.88 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.88 } # HIT
 					}
 				}
 				modifier = {
@@ -3996,10 +3523,8 @@ character_event = {
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_CHI_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.89 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.89 } # MISS
 					}
 				}
 				modifier = {
@@ -4066,9 +3591,7 @@ character_event = {
 		name = ADUELoptA.88
 		custom_tooltip = {
 			text = ADUEL_CHI_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4085,9 +3608,7 @@ character_event = {
 		name = ADUELoptA.89
 		custom_tooltip = {
 			text = ADUEL_CHI_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4106,10 +3627,8 @@ character_event = {
 			33 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_POWER_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.91 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.91 } # HIT
 					}
 				}
 				modifier = {
@@ -4128,10 +3647,8 @@ character_event = {
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_POWER_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.92 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.92 } # MISS
 					}
 				}
 				modifier = {
@@ -4187,9 +3704,7 @@ character_event = {
 		name = ADUELoptA.91
 		custom_tooltip = {
 			text = ADUEL_POWER_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4206,9 +3721,7 @@ character_event = {
 		name = ADUELoptA.92
 		custom_tooltip = {
 			text = ADUEL_POWER_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4227,10 +3740,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_TOXIN_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.94 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.94 } # HIT
 					}
 				}
 				modifier = {
@@ -4249,10 +3760,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_TOXIN_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.95 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.95 } # MISS
 					}
 				}
 			}
@@ -4268,21 +3777,21 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 	
-	immediate = {
-		if = {
-			event_target:hostile = {
-				change_variable = { which = myDEF value = 0 }
-			}
-		}
-	}
+	# todo: figure out
+	# !nolimit
+	# immediate = {
+	# 	if = {
+	# 		event_target:hostile = {
+	# 			change_variable = { which = myDEF value = 0 }
+	# 		}
+	# 	}
+	# }
 	
 	option = { # Hit
 		name = ADUELoptA.94
 		custom_tooltip = {
 			text = ADUEL_TOXIN_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4299,9 +3808,7 @@ character_event = {
 		name = ADUELoptA.95
 		custom_tooltip = {
 			text = ADUEL_TOXIN_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4320,10 +3827,8 @@ character_event = {
 			50 = { # Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_EXPLOSIVE_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.97 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.97 } # HIT
 					}
 				}
 				modifier = {
@@ -4342,10 +3847,8 @@ character_event = {
 			50 = { # Miss
 				custom_tooltip = {
 					text = ADUEL_ATK_EXPLOSIVE_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.98 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.98 } # MISS
 					}
 				}
 			}
@@ -4372,9 +3875,7 @@ character_event = {
 		name = ADUELoptA.97
 		custom_tooltip = {
 			text = ADUEL_EXPLOSIVE_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4391,9 +3892,7 @@ character_event = {
 		name = ADUELoptA.98
 		custom_tooltip = {
 			text = ADUEL_EXPLOSIVE_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				character_event = { id = ADUEL.14 }
-			}
+			character_event = { id = ADUEL.14 }
 		}
 	}
 }
@@ -4412,10 +3911,8 @@ character_event = {
 			66 = { # Crit Hit
 				custom_tooltip = {
 					text = ADUEL_ATK_AVATAR_HIT_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.100 } # HIT
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.100 } # HIT
 					}
 				}
 				modifier = {
@@ -4434,10 +3931,8 @@ character_event = {
 			33 = {
 				custom_tooltip = {
 					text = ADUEL_ATK_AVATAR_MISS_TOOLTIP
-					hidden_tooltip = {
-						event_target:hostile = {
-							character_event = { id = ADUEL.102 } # MISS
-						}
+					event_target:hostile = {
+						character_event = { id = ADUEL.102 } # MISS
 					}
 				}
 				modifier = {
@@ -4484,10 +3979,8 @@ character_event = {
 		name = ADUELoptA.100
 		custom_tooltip = {
 			text = ADUEL_AVATAR_GOT_HIT_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.101 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.101 }
 			}
 		}
 	}
@@ -4523,10 +4016,8 @@ character_event = {
 		name = ADUELoptA.102
 		custom_tooltip = {
 			text = ADUEL_AVATAR_GOT_MISS_TOOLTIP
-			hidden_tooltip = {
-				FROM = {
-					character_event = { id = ADUEL.103 }
-				}
+			FROM = {
+				character_event = { id = ADUEL.103 }
 			}
 		}
 	}
