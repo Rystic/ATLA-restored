@@ -1,0 +1,708 @@
+namespace=REFORM
+
+narrative_event = {
+	id = REFORM.1
+	title = "EVTNAME670"
+	desc = {
+		trigger = {
+			has_dlc = "Holy Fury" 
+			ROOT = { religion_group = water_religions }
+		}
+		text = water_reform
+		sound = pagan_reformation
+	}	
+	desc = {
+		trigger = {
+			has_dlc = "Holy Fury" 
+			ROOT = { religion_group = earth_religions }
+		}
+		text = earth_reform
+		sound = pagan_reformation
+	}
+	desc = {
+		trigger = {
+			has_dlc = "Holy Fury" 
+			ROOT = { religion_group = fire_religions }
+		}
+		text = fire_reform
+		sound = pagan_reformation
+	}
+	desc = {
+		trigger = {
+			has_dlc = "Holy Fury" 
+			ROOT = { religion_group = air_religions }
+		}
+		text = air_reform
+		sound = pagan_reformation
+	}
+	desc = {
+		trigger = {
+			NOT = { has_dlc = "Holy Fury" }
+		}
+		text = EVTDESC670
+		sound = pagan_reformation
+	}
+	picture = { 
+		picture = GFX_evt_hellenic_temple
+	}
+	
+#	picture = { 
+#		trigger = { 
+#			ROOT = { 
+#				OR = { 
+#					religion = west_african_pagan
+#					religion = west_african_pagan_reformed
+#				}
+#			}
+#		} 
+#		picture = GFX_evt_west_african_ruler
+#	}
+	border = "GFX_event_narrative_frame_religion"	
+	
+	is_triggered_only = yes
+	major = yes
+	show_ROOT = yes
+	hide_new = yes
+	
+	only_rulers = yes
+	
+	immediate = {
+		hidden_tooltip = {
+			if = {
+				limit = { #Modifier not applied correctly by pagan reformation screen.
+					ROOT = { has_religion_feature = religion_cosmopolitan }
+				}
+				ROOT = { 	
+					religion_authority = { #TODO kyoshi and chin should never intermarry
+						modifier = cosmopolitan_religion
+						years = 1000
+					}
+					any_playable_ruler = { 
+						limit = { NOT = { distance_from_realm = { who = ROOT value = 200 } } }
+						add_intermarry = ROOT
+						ROOT = { add_intermarry = PREV }
+					}
+					any_neighbor_independent_ruler = { 
+						add_intermarry = ROOT
+						ROOT = { add_intermarry = PREV }
+					}
+				} 
+			}
+			if = {
+				limit = { #Modifier not applied correctly by pagan reformation screen.
+					ROOT = { has_religion_feature = religion_dogmatic }
+				}	
+				ROOT = { 	
+					religion_authority = {
+						modifier = dogmatic_religion
+						years = 1000
+					}
+					#TODO make sure all religions, including reforms, are in this list
+					remove_intermarry = earth_spirituality
+					remove_intermarry = ba_sing_se_cultural_heritage
+					remove_intermarry = omashuan_ethics
+					remove_intermarry = path_of_jin_wei
+					remove_intermarry = path_of_wei_jin
+					remove_intermarry = the_great_serpent
+					remove_intermarry = the_divided
+					remove_intermarry = fortune_telling
+					remove_intermarry = followers_of_kyoshi
+					remove_intermarry = way_of_chin
+					remove_intermarry = unificationism
+					remove_intermarry = earth_monarchism
+					remove_intermarry = children_of_si_wong
+					remove_intermarry = fire_spirituality
+					remove_intermarry = fire_nation_imperialism
+					remove_intermarry = bhanti_spirituality
+					remove_intermarry = the_eternal_flame
+					remove_intermarry = air_spirituality
+					remove_intermarry = nomadic_nihilism
+					remove_intermarry = air_acolytism
+					remove_intermarry = neo-nomadism
+					remove_intermarry = southern_spirituality
+					remove_intermarry = the_great_swamp
+					remove_intermarry = tui_and_la
+					remove_intermarry = witchcraft
+					remove_intermarry = vaatuism
+					remove_intermarry = modernism
+					remove_intermarry = equalism
+					remove_intermarry = anarchism
+					remove_intermarry = piracy
+					remove_intermarry = barbarism
+					remove_intermarry = modernism_reformed
+					remove_intermarry = equalism_reformed
+					remove_intermarry = air_acolytism_reformed
+					remove_intermarry = neo-nomadism_reformed
+					remove_intermarry = ba_sing_se_cultural_heritage_reformed
+					remove_intermarry = omashuan_ethics_reformed
+					remove_intermarry = path_of_jin_wei_reformed
+					remove_intermarry = path_of_wei_jin_reformed
+					remove_intermarry = the_divided_reformed
+					remove_intermarry = fortune_telling_reformed
+					remove_intermarry = way_of_chin_reformed
+					remove_intermarry = followers_of_kyoshi_reformed
+					remove_intermarry = the_great_swamp_reformed
+					remove_intermarry = children_of_si_wong_reformed				
+				} 
+			}
+			if = {
+				limit = { #Switch to matriarchy.
+					ROOT = { 
+						has_religion_feature = religion_matriarchal 
+						NOR = {  
+							is_merchant_republic = yes
+							is_republic = yes
+						}
+					}
+				}
+				ROOT = { 
+					any_demesne_title = { 
+						add_law = {
+							law = enatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = status_of_women_4
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = succ_turkish_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					} 
+					recalc_succession = yes
+				} 
+			}
+			if = {
+				limit = { #Switch to equality.
+					ROOT = { 
+						OR = { 
+							has_religion_feature = religion_equal 
+						}
+						NOR = {  
+							is_merchant_republic = yes
+							is_republic = yes
+						}
+					}
+				}
+				ROOT = { 
+					any_demesne_title = { 
+						add_law = {
+							law = true_cognatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = status_of_women_4
+							cooldown = no
+							opinion_effect = no
+						}
+					}
+				} 
+			}
+			if = {
+				limit = { #Switch to patriarchy.
+					ROOT = { has_religion_feature = religion_patriarchal }
+				}
+				ROOT = { 
+					any_demesne_title = { 
+						add_law = {
+							law = agnatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = status_of_women_0
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = succ_turkish_succession
+							cooldown = no
+							opinion_effect = no
+						}
+					} 
+					recalc_succession = yes
+				}
+			}
+			if = {
+				limit = { #Switch to astrology.
+					ROOT = { has_religion_feature = religion_astrology }
+				}
+				ROOT = { 
+					add_western_zodiac_trait_effect = yes 
+					character_event = { id = HF.23032 days = 5 } 
+				} 
+			}
+			if = {
+				limit = { #Apply default special features if player doesn't have dlc.
+					NOT = { has_dlc = "Holy Fury" } 
+					ROOT = { 
+						OR = {
+							religion = southern_spirituality_reformed 
+							religion = tui_and_la_reformed
+							religion = witchcraft_reformed
+						}
+					}
+				}
+				ROOT = { 
+					set_allow_rivermovement = yes 
+					enable_prepared_invasion = yes
+					set_seafaring = yes
+					make_reformer_head_of_religion = yes
+				} 
+			}
+			if = {
+				limit = { #Apply default special features if player doesn't have dlc.
+					NOT = { has_dlc = "Holy Fury" } 
+					ROOT = { 
+						OR = { 
+							religion = children_of_si_wong_reformed 
+							religion = followers_of_kyoshi_reformed
+						}  
+					} 
+				}
+				ROOT = { 
+					set_unit_modifier = {		
+						garrison_size = 0.2
+						levy_size = 0.2
+						
+						key = "DEF_RELIGION"
+					}
+					set_unit_home_modifier = {
+						land_morale = 0.8
+						light_infantry_defensive = 0.8
+						heavy_infantry_defensive = 0.8
+						pikemen_defensive = 0.8
+						light_cavalry_defensive = 0.8
+						knights_defensive = 0.8
+						archers_defensive = 0.8
+						horse_archers_defensive = 0.8
+						camel_cavalry_defensive = 0.8
+						war_elephants_defensive = 0.8
+						
+						garrison_size = 0.4
+						
+						key = "DEF_RELIGION_HOME_TERRITORY"
+					}
+				} 
+			}
+			if = {
+				limit = { #Apply default special features if player doesn't have dlc.
+					NOT = { has_dlc = "Holy Fury" } 
+					ROOT = { 
+						religion = fire_spirituality_reformed 
+					} 
+				}
+				ROOT = { 
+					set_unit_modifier = {		
+						garrison_size = 0.3
+						levy_size = 0.1
+						
+						key = "DEF_RELIGION"
+					}
+					set_unit_home_modifier = {
+						land_morale = 0.8
+						light_infantry_defensive = 0.8
+						heavy_infantry_defensive = 0.8
+						pikemen_defensive = 0.8
+						light_cavalry_defensive = 0.8
+						knights_defensive = 0.8
+						archers_defensive = 0.8
+						horse_archers_defensive = 0.8
+						camel_cavalry_defensive = 0.8
+						war_elephants_defensive = 0.8
+						
+						garrison_size = 0.4
+						
+						key = "DEF_RELIGION_HOME_TERRITORY"
+					}
+				} 
+			}
+			if = {
+				limit = { #Apply default special features if player doesn't have dlc.
+					NOT = { has_dlc = "Holy Fury" } 
+					ROOT = {
+						OR = { 
+							religion = air_spirituality_reformed 
+						} 
+					} 
+				}
+				ROOT = { 
+					set_unit_modifier = {		
+						garrison_size = 0.4
+					
+						key = "DEF_RELIGION"
+					}
+					set_unit_home_modifier = {
+						land_morale = 0.8
+						light_infantry_defensive = 0.8
+						heavy_infantry_defensive = 0.8
+						pikemen_defensive = 0.8
+						light_cavalry_defensive = 0.8
+						knights_defensive = 0.8
+						archers_defensive = 0.8
+						horse_archers_defensive = 0.8
+						camel_cavalry_defensive = 0.8
+						war_elephants_defensive = 0.8
+						
+						garrison_size = 0.4
+						
+						key = "DEF_RELIGION_HOME_TERRITORY"
+					}
+				} 
+			}
+			any_courtier = {
+				limit = {
+					is_heresy_of = ROOT
+					employer = { character = ROOT }
+				}
+				religion = ROOT
+			}
+			any_dynasty_member = {
+				limit = {
+					is_heresy_of = ROOT
+					is_playable = no
+				}
+				religion = ROOT
+			}
+			any_vassal = {
+				limit = {
+					is_playable = no
+					is_heresy_of = ROOT
+				}
+				religion = ROOT
+			}
+			capital_scope = {
+				if = {
+					limit = { is_heresy_of = ROOT }
+					religion = ROOT
+				}
+			}
+			#if = {
+			#	limit = { 
+			#		OR = {
+			#			NOT = { has_dlc = "Holy Fury" } 
+			#			has_religion_feature = religion_temporal_head 
+			#		} 
+			#		religion = norse_pagan_reformed 
+			#
+			#	}
+			#	add_artifact = crown_fylkir
+			#}
+
+			hidden_effect = { reformation_god_names_changes_effect = yes }
+			#Opinion boost to new religious head (if any) and Reformer.
+			if = {
+				limit = { 
+					has_dlc = "Holy Fury" 
+					OR = {
+						has_religion_feature = religion_theocratic_head
+						has_religion_feature = religion_autocephaly 
+					} 
+
+				}
+				religion_head = { opinion = { who = ROOT modifier = opinion_my_reformer years = 50 } }
+			}
+	#TODO do we need these flags?
+	#		if = {
+	#			limit = { religion = tengri_pagan_reformed }
+	#			set_global_flag = tengri_reformation
+	#		}
+		}
+	}
+
+	option = {
+		name = "EVTOPTA670" # The Reformer
+		trigger = { religion = ROOT }
+		if = {
+			limit = { ai = no }
+			chronicle = {
+				entry = CHRONICLE_PLAYER_REFORMED_RELIGION
+				portrait = [Root.GetID]
+			}
+		}
+		hidden_tooltip = {
+			if = {
+				limit = { 
+					ROOT = { has_religion_feature = religion_matriarchal }
+				}
+				ROOT = { 
+					any_demesne_title = { 
+						add_law = {
+							law = enatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = status_of_women_4
+							cooldown = no
+							opinion_effect = no
+						}
+					} 
+					recalc_succession = yes
+				} 
+			}
+			if = {
+				limit = { 
+					ROOT = { has_religion_feature = religion_patriarchal }
+				}
+				ROOT = { 
+					any_demesne_title = { 
+						add_law = {
+							law = agnatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = status_of_women_0
+							cooldown = no
+							opinion_effect = no
+						}
+					} 
+					recalc_succession = yes
+				} 
+			}
+			if = {
+				limit = { 
+					ROOT = {
+						OR = { 
+							has_religion_feature = religion_equal 
+						}
+					}
+				}
+				ROOT = { 
+					any_demesne_title = { 
+						add_law = {
+							law = true_cognatic_succession
+							cooldown = no
+							opinion_effect = no
+						}
+						add_law = {
+							law = status_of_women_4
+							cooldown = no
+							opinion_effect = no
+						}
+					} 
+					recalc_succession = yes
+				} 
+			}
+			ROOT = {
+				if = {
+					limit = { 
+						has_religion_feature = religion_matriarchal 
+					}
+					any_close_relative = { 
+					limit = { is_female = no }
+						opinion = { 
+							who = ROOT 
+							modifier = bad_succ_law_change
+							years = 100
+						}
+					}
+					any_close_relative = { 
+						limit = { is_female = yes }
+						opinion = { 
+							who = ROOT 
+							modifier = good_succ_law_change
+							years = 100
+						}
+					}
+				}
+				if = {
+					limit = { 
+						has_religion_feature = religion_patriarchal 
+					}
+					any_close_relative = { 
+						limit = { is_female = yes }
+						opinion = { 
+							who = ROOT 
+							modifier = bad_succ_law_change
+							years = 100
+						}
+					}
+					any_close_relative = { 
+						limit = { is_female = no }
+						opinion = { 
+							who = ROOT 
+							modifier = good_succ_law_change
+							years = 100
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB670" # Rulers of the old Faith - Accept
+		trigger = {
+			is_heresy_of = ROOT # The old religion has become a heresy of the Reformed one
+		}
+		if = {
+			limit = { #Offer chance to switch the vassals' succession laws.
+				ROOT = { has_religion_feature = religion_no_leader }
+				ai = yes
+			}		
+			hidden_tooltip = {  
+				character_event = { id = HF.23016 days = 20 random = 20 }
+			}
+		}
+		if = {
+			limit = { #Offer chance to switch the vassals' succession laws.
+				ROOT = { has_religion_feature = religion_matriarchal }
+			}
+			custom_tooltip = { text = tooltip_HF23014_A }
+			hidden_tooltip = { 
+				any_demesne_title = { 
+					add_law = {
+						law = enatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = status_of_women_4
+						cooldown = no
+						opinion_effect = no
+					}
+				} 
+				recalc_succession = yes
+			} 
+		}
+		if = {
+			limit = { #Offer chance to switch the vassals' succession laws.
+				ROOT = { has_religion_feature = religion_patriarchal }
+			}
+			custom_tooltip = { text = tooltip_HF23015_A }
+			hidden_tooltip = { 
+				any_demesne_title = { 
+					add_law = {
+						law = agnatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = status_of_women_0
+						cooldown = no
+						opinion_effect = no
+					}
+				} 
+				recalc_succession = yes
+			} 
+		}
+		if = {
+			limit = { #Offer chance to switch the vassals' succession laws.
+				ROOT = { has_religion_feature = religion_equal }
+			}
+			custom_tooltip = { text = tooltip_HF23016_A }
+			hidden_tooltip = { 
+				any_demesne_title = { 
+					add_law = {
+						law = true_cognatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = status_of_women_4
+						cooldown = no
+						opinion_effect = no
+					}
+				} 
+				recalc_succession = yes
+			} 
+		}
+		if = {
+			limit = { ai = no }
+			chronicle = {
+				entry = CHRONICLE_OTHER_REFORMED_PLAYERS_RELIGION
+				portrait = [Root.GetID]
+			}
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 5
+				any_liege = { religion = ROOT }
+			}
+			modifier = {
+				factor = 2
+				same_realm = ROOT
+			}
+			modifier = {
+				factor = 5
+				trait = cynical
+			}
+			modifier = {
+				factor = 10
+				dynasty = ROOT
+			}
+			modifier = {
+				factor = 0.1
+				trait = zealous
+			}
+			modifier = {
+				factor = 0.5
+				trait = content
+			}
+		}
+		
+		religion = ROOT
+		
+		hidden_tooltip = {
+			any_courtier = {
+				limit = {
+					is_heresy_of = ROOT
+					employer = { character = PREV }
+				}
+				religion = ROOT
+			}
+			any_dynasty_member = {
+				limit = {
+					is_heresy_of = ROOT
+					is_playable = no
+				}
+				religion = ROOT
+			}
+			any_vassal = {
+				limit = {
+					is_playable = no
+					is_heresy_of = ROOT
+				}
+				religion = ROOT
+			}
+			capital_scope = {
+				if = {
+					limit = { is_heresy_of = ROOT }
+					religion = ROOT
+				}
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTC670" # Rulers of the old Faith - Decline
+		trigger = {
+			is_heresy_of = ROOT # The old religion has become a heresy of the Reformed one
+		}
+		if = {
+			limit = { ai = no }
+			chronicle = {
+				entry = CHRONICLE_OTHER_REFORMED_PLAYERS_RELIGION
+				portrait = [Root.GetID]
+			}
+		}
+		ai_chance = {
+			factor = 50
+			post_reformation_ruler_conversion_score = yes
+		}
+		tooltip = { religion = THIS }
+	}
+	option = {
+		name = "EVTOPTD670" # Other playable rulers
+		trigger = {
+			NOT = { religion = ROOT }
+			NOT = { is_heresy_of = ROOT }
+		}
+	}
+}
