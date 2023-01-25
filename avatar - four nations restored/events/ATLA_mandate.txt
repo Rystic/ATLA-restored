@@ -154,14 +154,15 @@ character_event = { #make rebelion leader
 	
 	trigger = {
 		OR = {
+			has_landed_title = k_earth_kingdom
 			has_landed_title = e_earth_kingdom
 		}
 		OR = {
-			check_variable = { which = global_royalAuthority value <= -100 } #should not happen but still i would rather made it lower or equal
+			check_variable = { which = global_royalAuthority value <= -80 }
 			AND = {
 				stewardship <= 3
 				diplomacy <= 3
-				check_variable = { which = global_royalAuthority value <= -50 }
+				check_variable = { which = global_royalAuthority value <= -30 }
 			}
 		}
 		NOT = { has_global_flag = mandate_revolt_prepare }
@@ -169,50 +170,86 @@ character_event = { #make rebelion leader
 	
 	option = {
 		name = mandate.2
+		
+		primary_title = {
+			save_event_target_as = ek_title
+		}
+		
 		random_list = {
 			50 = { #noble
-				create_character = {
-					random_traits = yes
-					religion = ROOT
-					culture = ROOT
-					attributes = {
-						martial = 13
-					}
-					age = 16
-					add_trait = brilliant_strategist
-					add_trait = groomed
-					flag = noble_pretender
+				custom_tooltip = {
+					text = MANDATE_NOBLE_REVOLT
 				}
-				new_character = {
-					k_three_rings = {	
-						activate_title = { title = k_three_rings status = yes }
-						copy_title_laws = k_earth_kingdom
+				hidden_tooltip = {
+					create_character = {
+						random_traits = yes
+						religion = ROOT
+						culture = ROOT
+						attributes = {
+							martial = 13
+						}
+						age = 35
+						add_trait = brilliant_strategist
+						add_trait = groomed
+						flag = noble_pretender
 					}
-					grant_title = k_three_rings
-					character_event = { id = mandate.29 }
+					new_character = {
+						k_three_rings = {	
+							activate_title = { title = k_three_rings status = yes }
+							copy_title_laws = event_target:ek_title
+						}
+						grant_title = k_three_rings
+						
+						if = {
+							limit = { ROOT = { tier = king } }
+							wealth = 1500
+						}
+						if = {
+							limit = { ROOT = { tier = emperor } }
+							wealth = 3000
+						}						
+						
+						character_event = { id = mandate.29 }
+					}
+					
 				}
 			}
 			50 = { #peasant
-				create_character = {
-					random_traits = yes
-					religion = ROOT
-					culture = ROOT
-					attributes = {
-						martial = 13
-					}
-					age = 16
-					add_trait = brilliant_strategist
-					add_trait = uncouth
-					add_trait = peasant_leader
-					flag = peasant_pretender
+				custom_tooltip = {
+					text = MANDATE_PEASANT_REVOLT
 				}
-				new_character = {
-					k_yellow_turbans = {
-						activate_title = { title = k_yellow_turbans status = yes }
-						copy_title_laws = k_earth_kingdom
+				hidden_tooltip = {
+					create_character = {
+						random_traits = yes
+						religion = ROOT
+						culture = ROOT
+						attributes = {
+							martial = 13
+						}
+						age = 16
+						add_trait = brilliant_strategist
+						add_trait = uncouth
+						add_trait = peasant_leader
+						flag = peasant_pretender
 					}
-					grant_title = k_yellow_turbans
-					character_event = { id = mandate.29 }
+					new_character = {
+						k_yellow_turbans = {
+							activate_title = { title = k_yellow_turbans status = yes }
+							copy_title_laws = event_target:ek_title
+						}
+						grant_title = k_yellow_turbans
+						
+						if = {
+							limit = { ROOT = { tier = king } }
+							wealth = 750
+						}
+						if = {
+							limit = { ROOT = { tier = emperor } }
+							wealth = 1500
+						}							
+						
+						character_event = { id = mandate.29 }
+					}
 				}
 			}
 		}
@@ -2409,96 +2446,41 @@ character_event = {
 	desc = EVTDESCMAND6
 	picture = GFX_evt_china_unrest
 	is_triggered_only = yes
-
-	trigger = {
-		OR = {
-			has_landed_title = k_yellow_turbans
-			has_landed_title = k_three_rings
-		}
-		OR = {
-			#e_earth_kingdom = {
-				is_title_active = e_earth_kingdom 
-			#}
-			AND = {
-				#k_earth_kingdom = {
-					is_title_active = k_earth_kingdom
-				#}
-				#e_earth_kingdom = {
-					NOT = { is_title_active = e_earth_kingdom }
-				#}
-			}
-		}
-		NOR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
-	}
 	
 	option = {
-		trigger = {
-			has_character_flag = noble_pretender
+		desc = {
+			name = raisebanners
+			trigger = {
+				has_character_flag = noble_pretender
+			}
 		}
-		name = raisebanners
+		
+		desc = {
+			name = jadeskyisdead
+			trigger = {
+				has_character_flag = peasant_pretender
+			}
+		}		
 		
 		if = {
 			limit = {
-				e_earth_kingdom = {
-					is_title_active = e_earth_kingdom 
-				}
+				is_title_active = e_earth_kingdom
 			}
 			e_earth_kingdom = {
-				holder_scope = {
-					reverse_unsafe_war = {
-						target = PREV #ROOT #FROM
-						casus_belli = mandate_revolt
-						thirdparty_title = e_earth_kingdom
-					}
-				}
+				save_event_target_as = ek_title
+			}
+		} else = {
+			k_earth_kingdom  = {
+				save_event_target_as = ek_title
 			}
 		}
-		else = {
-			k_earth_kingdom = {
-				holder_scope = {
-					reverse_unsafe_war = {
-						target = PREV
-						casus_belli = mandate_revolt
-						thirdparty_title = k_earth_kingdom
-					}
-				}
-			}
-		}
-	}
-	
-	option = {
-		trigger = {
-			has_character_flag = peasant_pretender
-		}
-		name = jadeskyisdead
-		
-		if = {
-			limit = {
-				e_earth_kingdom = {
-					is_title_active = e_earth_kingdom 
-				}
-			}
-			e_earth_kingdom = {
-				holder_scope = {
-					reverse_unsafe_war = {
-						target = PREV #FROM
-						casus_belli = mandate_revolt
-						thirdparty_title = e_earth_kingdom
-					}
-				}
-			}
-		}
-		else = {
-			k_earth_kingdom = {
-				holder_scope = {
-					reverse_unsafe_war = {
-						target = PREV #FROM
-						casus_belli = mandate_revolt
-						thirdparty_title = k_earth_kingdom
-					}
+			
+		event_target:ek_title = {
+			holder_scope = {
+				reverse_unsafe_war = {
+					target = PREV
+					casus_belli = mandate_revolt
+					thirdparty_title = event_target:ek_title
 				}
 			}
 		}
@@ -2510,6 +2492,7 @@ narrative_event = {
 	title = EVTMADTIT30
 	desc = EVTDESCMAND30
 	is_triggered_only = yes
+	picture = GFX_evt_ba_sing_sa
 	
 	trigger = {
 		OR = {
@@ -2563,6 +2546,7 @@ narrative_event = {
 	title = EVTTITMAND31
 	desc = EVTDESCMAND31
 	is_triggered_only = yes
+	picture = GFX_evt_ba_sing_sa
 	
 	trigger = {
 		is_title_active = e_earth_kingdom
@@ -2610,6 +2594,7 @@ narrative_event = {
 	title = EVTTITMAND32
 	desc = EVTDESCMAND32
 	is_triggered_only = yes
+	picture = GFX_evt_ba_sing_sa
 
 	trigger = {
 		is_title_active = k_earth_kingdom

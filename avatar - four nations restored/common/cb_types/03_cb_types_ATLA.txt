@@ -4216,7 +4216,6 @@ ba_sing_se_siege_cb = {
 	}
 }
 
-#Commented for now, somehow causes Royal Earth Palace usurp bug
 mandate_revolt = {
 	name = CB_NAME_MANDATE
 	war_name = WAR_NAME_DEC_MANDATE
@@ -4227,69 +4226,51 @@ mandate_revolt = {
 	is_revolt_cb = yes
 	allow_whitepeace = no
 
-	on_add = {
-		log = "mandate_revolt somehow fucking fired it might be a reason behind usurp bug"
-	}
-
 	on_success = {
 		
 		ROOT = {
 			prestige = 200
 			piety = 100
-			c_royal_earth_palace = { usurp_title = ROOT }
-			FROM = {
-				primary_title = { usurp_title = ROOT }
-			}
 			give_nickname = nick_the_conqueror
 			participation_scaled_prestige = 200
 			participation_scaled_piety = 100
 			imprison = FROM
+			primary_title = {
+				save_event_target_as = revolt_title
+			}
+			c_royal_earth_palace = { usurp_title = ROOT }
+			
+			FROM = {
+				primary_title = { usurp_title = ROOT }
+			}
+			
 			if = {
 				limit = {
-					has_landed_title = e_yellow_turbans
+					is_title_active = k_yellow_turbans
 				}
-				e_yellow_turbans = { 
-					holder_scope = {
-						narrative_event = { id = mandate.30 }
-					}
-				}
-				e_yellow_turbans = { destroy_landed_title = THIS }
-				activate_title = { title = e_yellow_turbans status = no }
-				hidden_tooltip = {
-					e_yellow_turbans = { destroy_landed_title = THIS }
-					activate_title = { title = e_yellow_turbans status = no }
-				}
-			}
-			else_if = {
-				limit = {
-					has_landed_title = e_three_rings
-				}
-				k_yellow_turbans = { 
-					holder_scope = {
-						narrative_event = { id = mandate.4 }
-					}
-				}
-				k_three_rings = { destroy_landed_title = THIS }
-				activate_title = { title = e_three_rings status = no }
-				hidden_tooltip = {
-					e_three_rings = { destroy_landed_title = THIS }
-					activate_title = { title = e_three_rings status = no }
-				}
-			}
+				narrative_event = { id = mandate.30 }
+			} else = {
+				narrative_event = { id = mandate.30 }
+			}			
+			activate_title = { title = event_target:revolt_title status = no }
+			event_target:revolt_title = { destroy_landed_title = THIS }
 		}
-		
+
 		hidden_tooltip = {
 			ROOT = { 
 				disband_event_forces = mandate_revolters
-				
 			}
 		}
-
 	}
 
 	on_fail = {
 		ROOT = {
 			prestige = -200
+			primary_title = {
+				save_event_target_as = revolt_title
+			}			
+			activate_title = { title = event_target:revolt_title status = no }
+			event_target:revolt_title = { destroy_landed_title = THIS }
 		}
 		FROM = {
 			prestige = 100
@@ -4298,38 +4279,35 @@ mandate_revolt = {
 			add_character_modifier = {
 				name = ek_won_mandate_war
 				years = 10
-				#hidden = yes
 			}
 		}
 		hidden_tooltip = {
-			ROOT = { disband_event_forces = decadence_revolters }
+			ROOT = { disband_event_forces = mandate_revolters }
 		}
 	}
 
 	on_reverse_demand = {
 		ROOT = { set_defacto_liege = FROM }
 		ROOT = {
+			set_defacto_liege = FROM
 			prestige = -200
+			primary_title = {
+				save_event_target_as = revolt_title
+			}			
+			activate_title = { title = event_target:revolt_title status = no }
+			event_target:revolt_title = { destroy_landed_title = THIS }		
 			transfer_scaled_wealth = {
 				to = FROM
 				value = 8.0
 			}
+
 		}
 		FROM = {
 			prestige = 200
 		}
 		ROOT = { 
 			imprison = FROM
-			disband_event_forces = decadence_revolters
-		}
-		if = {
-			limit = {
-				FROM = {
-					ai = no
-					NOT = { has_character_flag = achievement_decadent_warrior }
-				}
-			}
-			FROM = { set_character_flag = achievement_decadent_warrior }
+			disband_event_forces = mandate_revolters
 		}
 	}
 
