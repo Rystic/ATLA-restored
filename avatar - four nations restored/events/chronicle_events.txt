@@ -109,102 +109,102 @@ character_event = {
 #############################
 
 # From on action on_death - check who died and create appropriate chronicle entries
-character_event = {
-	id = CM.10010
+# character_event = {
+	# id = CM.10010
 
-	hide_window = yes
+	# hide_window = yes
 
-	is_triggered_only = yes
+	# is_triggered_only = yes
 
-	trigger = {
-		any_player = {
-			OR = {
-				liege = { character = ROOT }
-				any_spouse = { character = ROOT }
-				is_child_of = ROOT
-				current_heir = {
-					character = ROOT
-				}
-				AND = {
-					religion = ROOT
-					ROOT = { controls_religion = yes }
-				}
-			}
-		}
-	}
+	# trigger = {
+		# any_player = {
+			# OR = {
+				# liege = { character = ROOT }
+				# any_spouse = { character = ROOT }
+				# is_child_of = ROOT
+				# current_heir = {
+					# character = ROOT
+				# }
+				# AND = {
+					# religion = ROOT
+					# ROOT = { controls_religion = yes }
+				# }
+			# }
+		# }
+	# }
 
-	immediate = {
-		any_vassal = {
-			limit = {
-				ai = no
-				NOT = {
-					OR = {
-						father = { character = ROOT }
-						mother = { character = ROOT }
-					}
-				}
-				NOT = { is_primary_heir = ROOT } # Any vassal except primary heir which is handled in chronicle owner transfer event CM.10001
-			}
-			chronicle = {
-				entry = CHRONICLE_DEATH_OF_LIEGE
-				portrait = [Root.GetID]
-			}
-		}
-		any_spouse = {
-			limit = {
-				ai = no
-				NOT = { is_primary_heir = ROOT } # Not used for primary heir which is handled in chronicle owner transfer event CM.10001
-			}
-			chronicle = {
-				entry = CHRONICLE_DEATH_OF_SPOUSE
-				portrait = [Root.GetID]
-			}
-		}
-		any_child = {
-			limit = {
-				ai = no
-				ROOT = {
-					NOT = { is_primary_heir = PREV } # Sent to any child except primary heir which is handled in chronicle owner transfer event CM.10001
-				}
-			}
-			chronicle = {
-				entry = CHRONICLE_DEATH_OF_PARENT
-				portrait = [Root.GetID]
-			}
-		}
-		any_player = {
-			limit = {
-				current_heir = {
-					character = ROOT
-				}
-				NOT = { is_primary_heir = ROOT } # Not used for primary heir which is handled in chronicle owner transfer event CM.10001
-			}
-			chronicle = {
-				entry = CHRONICLE_DEATH_OF_HEIR
-				portrait = [Root.GetID]
-			}
-		}
-		any_player = {
-			limit = {
-				religion_head = {
-					character = ROOT
-				}
-				NOT = { is_primary_heir = ROOT } # Not used for primary heir which is handled in chronicle owner transfer event CM.10001
-				NOT = {
-					OR = {
-						father = { character = ROOT }
-						mother = { character = ROOT }
-						spouse = { character = ROOT }
-					}
-				}
-			}
-			chronicle = {
-				entry = CHRONICLE_DEATH_OF_RELIGION_HEAD
-				portrait = [Root.GetID]
-			}
-		}
-	}
-}
+	# immediate = {
+		# any_vassal = {
+			# limit = {
+				# ai = no
+				# NOT = {
+					# OR = {
+						# father = { character = ROOT }
+						# mother = { character = ROOT }
+					# }
+				# }
+				# NOT = { is_primary_heir = ROOT } # Any vassal except primary heir which is handled in chronicle owner transfer event CM.10001
+			# }
+			# chronicle = {
+				# entry = CHRONICLE_DEATH_OF_LIEGE
+				# portrait = [Root.GetID]
+			# }
+		# }
+		# any_spouse = {
+			# limit = {
+				# ai = no
+				# NOT = { is_primary_heir = ROOT } # Not used for primary heir which is handled in chronicle owner transfer event CM.10001
+			# }
+			# chronicle = {
+				# entry = CHRONICLE_DEATH_OF_SPOUSE
+				# portrait = [Root.GetID]
+			# }
+		# }
+		# any_child = {
+			# limit = {
+				# ai = no
+				# ROOT = {
+					# NOT = { is_primary_heir = PREV } # Sent to any child except primary heir which is handled in chronicle owner transfer event CM.10001
+				# }
+			# }
+			# chronicle = {
+				# entry = CHRONICLE_DEATH_OF_PARENT
+				# portrait = [Root.GetID]
+			# }
+		# }
+		# any_player = {
+			# limit = {
+				# current_heir = {
+					# character = ROOT
+				# }
+				# NOT = { is_primary_heir = ROOT } # Not used for primary heir which is handled in chronicle owner transfer event CM.10001
+			# }
+			# chronicle = {
+				# entry = CHRONICLE_DEATH_OF_HEIR
+				# portrait = [Root.GetID]
+			# }
+		# }
+		# any_player = {
+			# limit = {
+				# religion_head = {
+					# character = ROOT
+				# }
+				# NOT = { is_primary_heir = ROOT } # Not used for primary heir which is handled in chronicle owner transfer event CM.10001
+				# NOT = {
+					# OR = {
+						# father = { character = ROOT }
+						# mother = { character = ROOT }
+						# spouse = { character = ROOT }
+					# }
+				# }
+			# }
+			# chronicle = {
+				# entry = CHRONICLE_DEATH_OF_RELIGION_HEAD
+				# portrait = [Root.GetID]
+			# }
+		# }
+	# }
+# }
 
 # From on action on_birth - check who was born and create appropriate chronicle entries
 character_event = {
