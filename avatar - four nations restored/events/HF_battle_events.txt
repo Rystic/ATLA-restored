@@ -22,40 +22,40 @@ character_event = { #On-death event to log commander deaths in game.
 }
 
 
-character_event = { #TEST event to set correct paths - how? Fire on the ("ENEMY") LIEGE of a commander for testing
-    id = HFP.10998
-    hide_window = yes
-    is_triggered_only = yes
-    immediate = {
-    	random_courtier_or_vassal = {
-    		limit = {
-	    		#has_minor_title = title_commander
-	    		is_landed = yes
-	    		#trait = duelist #For testing!
-    		}
-	    	character_event = { id = HFP.10999 days = 1 } #finds and send the event to commander
-    	}
-    }
-}
+# character_event = { #TEST event to set correct paths - how? Fire on the ("ENEMY") LIEGE of a commander for testing
+    # id = HFP.10998
+    # hide_window = yes
+    # is_triggered_only = yes
+    # immediate = {
+    	# random_courtier_or_vassal = {
+    		# limit = {
+	    		# has_minor_title = title_commander
+	    		# is_landed = yes
+	    		# trait = duelist #For testing!
+    		# }
+	    	# character_event = { id = HFP.10999 days = 1 } #finds and send the event to commander
+    	# }
+    # }
+# }
 character_event = { #TEST event to set correct paths - fires for a commander (Can also be used to test being a commander)
-    id = HFP.10999
-    hide_window = yes
-    is_triggered_only = yes
-    immediate = {
-    	any_character = {
-    		limit = {
-	    		ai = no
-    		}
-    		character_event = { id = HFP.11000 days = 1 } #send tombola to a player (with the correct scopes in place)
+    # id = HFP.10999
+    # hide_window = yes
+    # is_triggered_only = yes
+    # immediate = {
+    	# any_character = {
+    		# limit = {
+	    		# ai = no
+    		# }
+    		# character_event = { id = HFP.11000 days = 1 } #send tombola to a player (with the correct scopes in place)
     		#character_event = { id = MIL.500 days = 1 } #send tombola to a player (with the correct scopes in place). (Milla's debug event)
     		
 #    		random_vassal = { #For testing: In vassal scope so I can check the instant death notification from a killed commander.
 #    			limit = { trait = duelist }
 #	    		character_event = { id = HFP.11000 days = 1 } #send tombola to a player (with the correct scopes in place)
 #    		}
-    	}
-    }
-}
+    	# }
+    # }
+# }
 
 
 ####################################################################################
@@ -72,67 +72,12 @@ character_event = {
     	OR = { #you can't be fighting null-character
     		FROM = { always = yes }
     		FROMFROM = { always = yes }
-
-#    		location = { #An attempt to combat the "null-character" fights
-#    			ROOT = {
-#    				any_current_enemy = {
-#    					any_unit = {
-#    						location = {
-#    							province = PREVPREVPREVPREV
-#    						}
-#    					}
-#    				}
-#    			}
-#    		}
     	}
-#    	log = "BATTLE EVENT: FROM yields enemy commander: [From.GetBestName] "
-#    	log = "BATTLE EVENT: FROMFROM yields enemy liege: [FromFrom.GetBestName] "
-#    	log = "BATTLE EVENT: ROOT is: [Root.GetBestName]"
+
     }
     fail_trigger_effect = {
-#    	log = "BATTLE EVENT: FROM and FROMFROM are both empty."
-#    	log = "BATTLE EVENT: ROOT was: [Root.GetBestName]"
     	change_variable = { which = global_combat_pulse_failed_to_find_leader value = 1 }
-#		if = {
-#			limit = {
-#				NOR = {
-#					FROM = { always = yes }
-#	    			FROMFROM = { always = yes }
-#	    			location = { #An attempt to combat the "null-character" fights
-#		    			ROOT = {
-#		    				any_current_enemy = {
-#		    					any_unit = {
-#		    						location = {
-#		    							province = PREVPREVPREVPREV
-#		    						}
-#		    					}
-#		    				}
-#		    			}
-#		    		}
-#				}
-#			}
-#			change_variable = { which = global_combat_pulse_failed_to_find_leader value = 1 }
-#		}
-#		else_if = {
-#			limit = {
-#				NOR = {
-#					FROM = { always = yes }
-#	    			FROMFROM = { always = yes }
-#				}
-#    			location = { #An attempt to combat the "null-character" fights
-#	    			ROOT = {
-#	    				any_current_enemy = {
-#	    					any_unit = {
-#	    						location = {
-#	    							province = PREVPREVPREVPREV
-#	    						}
-#	    					}
-#	    				}
-#	    			}
-#	    		}
-#			}
-#			change_variable = { which = global_combat_pulse_found_back_up value = 1 }		
-#		}
+	
     }
 
     immediate = {
@@ -305,8 +250,8 @@ character_event = {
 
 				random = { #Fix to the quick fix
 	    			chance = 75
-	    			break = yes
 	    			allow_new_battle_events_effect = yes
+					break = yes
 	    		}
 
 				character_event = { id = HFP.11001 } # Killed (remake of 242)
@@ -348,8 +293,8 @@ character_event = {
 				warrior_lodge_risk_reduction_score = yes
 				random = { #Fix to the quick fix
 	    			chance = 75
-	    			break = yes
 	    			allow_new_battle_events_effect = yes
+					break = yes
 	    		}
 				character_event = { id = HFP.11012 } # Serious head-injury (remake of 245). Chance to become Disfigured (if has RIP) or Incapable.
 			}
@@ -625,94 +570,6 @@ character_event = {
 				good_soldier_outcome_score = yes
 				character_event = { id = TOG.3004 } # Berserker Kills Many
 				log = "fired OLD battle EVENT TOG.3004"
-			}
-
-			15 = {
-				trigger = {
-					OR = {
-						liege = { is_member_of_any_warrior_lodge_trigger = yes }
-					}
-					trait = shieldmaiden
-
-					liege = {
-						at_location = ROOT
-						age = 16
-						prisoner = no
-						NOT = { has_character_modifier = lucky_to_be_alive }
-					}
-					NOT = {
-						trait = incapable
-						prisoner = no
-						has_character_modifier = favored_shieldmaiden
-						has_character_modifier = bad_shieldmaiden
-						has_character_modifier = clumsy_shieldmaiden
-						has_character_modifier = inattentive_soldier
-					}
-				}
-				character_event = { id = 79009 } # Shieldmaiden can save liege on battlefield (choice for Shieldmaiden who is ROOT)
-				log = "fired OLD battle EVENT 79009"
-			}
-			15 = {
-				trigger = {
-					OR = {
-						is_member_of_any_warrior_lodge_trigger = yes
-					}
-					age = 16
-					NOT = { trait = incapable }
-
-					any_courtier_or_vassal = {
-						trait = shieldmaiden
-						NOT = { trait = incapable }
-						prisoner = no
-						has_minor_title = title_commander
-					}
-				}
-				character_event = { id = 79001 } # Shieldmaiden saves liege, but she is injured (small chain, fired for liege who is ROOT)
-				log = "fired OLD battle EVENT 79001"
-			}						
-
-			# SCRYING VISIONS (2)
-			50 = {
-				trigger = {
-			    	has_dlc = "Mystics"
-			    	is_alive = yes
-			    	can_have_more_leadership_traits = yes
-			    	OR = {
-			    		NOT = { trait = experimenter }
-			    		NOT = { trait = unyielding_leader }
-			    		NOT = { trait = inspiring_leader }
-			    	}    	
-					has_battle_omen_modifier_trigger = yes
-			    }
-			    good_soldier_outcome_score = yes
-			    modifier = {
-					factor = 2.5
-					has_character_modifier = good_battle_omen
-				}
-			    modifier = {
-					factor = 0.9
-					has_character_modifier = bad_battle_omen
-				}
-				character_event = { id = MNM.1202 }  # Scrying vision inspires greatness
-				log = "fired OLD battle EVENT MNM.1202"
-			}
-			50 = {
-				trigger = {
-			    	has_dlc = "Mystics"
-			    	is_alive = yes
-			    	has_battle_omen_modifier_trigger = yes
-			    }
-				bad_soldier_outcome_score = yes
-			    modifier = {
-					factor = 2.5
-					has_character_modifier = bad_battle_omen
-				}
-			    modifier = {
-					factor = 0.9
-					has_character_modifier = good_battle_omen
-				}
-				character_event = { id = MNM.1203 } # Scrying vision injury
-				log = "fired OLD battle EVENT MNM.1203"
 			}
 			
 			1 = {
@@ -2235,7 +2092,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 	}
 	
 	option = {
@@ -2275,7 +2132,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2380,7 +2237,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 		spawn_good_commander_effect = yes
 	}
 
@@ -2431,7 +2288,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2441,14 +2298,6 @@ character_event = {
 			NOT = { trait = jungle_terrain_leader }
 		}
 		add_trait = jungle_terrain_leader
-	}
-	option = {
-		name = EVTOPTL96500 # War elephants
-		trigger = {
-			has_dharmic_religion_trigger = yes
-			NOT = { trait = war_elephant_leader }
-		}
-		add_trait = war_elephant_leader
 	}
 	option = {
 		name = EVTOPTM96500 # WINTER Terrain Specialization
@@ -2822,7 +2671,7 @@ character_event = {
 	
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = { # Organizer
@@ -2876,7 +2725,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2938,7 +2787,7 @@ character_event = {
 	
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -3217,52 +3066,6 @@ character_event = {
     	set_character_flag = desc_fallback
     }
 
-    ### Let the pet die....
-    option = {
-        name = EVTOPTA_HFP_11025_dog
-        custom_tooltip = { text = EVTOPTA_HFP_11025_TT_dog }
-		remove_character_modifier = pet_hunting_dog
-		hidden_effect = {
-			remove_character_modifier = pet_best_friends
-			if = { #To handle omens from hermetics
-				limit = {
-					has_dlc = "Mystics"
-					OR = {
-						has_character_modifier = good_relationship_omen
-						has_character_modifier = bad_relationship_omen
-					}
-				}
-				set_character_flag = dog_death_omen
-				character_event = { id = MNM.1213 days = 35 random = 30 } # Scrying vision come true
-			}
-		}
-		send_new_dog_event_effect = yes # Will only work for certain bloodlines...
-		clr_character_flag = about_to_challenge_enemy_commander
-		allow_new_battle_events_effect = yes
-        trigger = { has_character_flag = desc_dog }
-    }
-    option = {
-        name = EVTOPTA_HFP_11025_cat
-        custom_tooltip = { text = EVTOPTA_HFP_11025_TT_cat }
-		remove_character_modifier = pet_cat
-		hidden_effect = {
-			remove_character_modifier = pet_best_friends
-			if = { #To handle omens from hermetics
-				limit = {
-					has_dlc = "Mystics"
-					OR = {
-						has_character_modifier = good_relationship_omen
-						has_character_modifier = bad_relationship_omen
-					}
-				}
-				set_character_flag = cat_death_omen
-				character_event = { id = MNM.1213 days = 35 random = 30 } # Scrying vision come true
-			}
-		}
-		clr_character_flag = about_to_challenge_enemy_commander
-		allow_new_battle_events_effect = yes
-        trigger = { has_character_flag = desc_cat }
-    }
     option = {      
         name = EVTOPTA_HFP_11025_horse
         custom_tooltip = { text = EVTOPTA_HFP_11025_TT_horse }
@@ -3368,7 +3171,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	battle_commander_counter_positive_effect = yes
+    	
     	if = {
     		limit = {
     			society_rank == 1
@@ -3462,7 +3265,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	battle_commander_counter_positive_effect = yes
+    	
 
     	### Set potential nickname-flags...
     	if = {
@@ -3771,7 +3574,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 
 		hidden_effect = {
 			#Sets up weapons for localization...
@@ -4277,7 +4080,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 
     	random_unit_leader = {
        		limit = {
@@ -4381,10 +4184,6 @@ character_event = {
         		same_society_as = event_target:my_fellow_commander
         	}
         	modifier = {
-        		factor = 1.5
-        		same_society_as = event_target:my_fellow_commander
-        	}
-        	modifier = {
         		factor = 5
         		event_target:my_fellow_commander = {
         			current_scope_and_root_make_sense_as_friendlies_trigger = yes
@@ -4477,7 +4276,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	battle_commander_counter_positive_effect = yes
+    	
 
     	any_unit_leader = {
        		limit = {
@@ -4684,7 +4483,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		battle_commander_counter_positive_effect = yes
+		
 
     	random_list = {
     		10 = { #the least interesting choice...
@@ -4831,7 +4630,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	battle_commander_counter_positive_effect = yes
+    	
     }
 
     option = {
