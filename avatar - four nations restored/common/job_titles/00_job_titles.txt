@@ -23,12 +23,6 @@ job_chancellor = {
 	
 	allow = {
 		can_be_chancellor_trigger = yes
-		liege = {
-			NAND = {
-				is_avatar_trigger = yes
-				government = avatar_team_government
-			}
-		}
 	}
 	dismiss_trigger = {
 		FROM = {
@@ -70,8 +64,16 @@ job_chancellor = {
 			opinion = { who = FROM modifier = opinion_fired_from_council }
 			opinion = { who = FROM modifier = opinion_recently_fired }
 		}
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
 	}
 	retire_effect = {
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
 		if = {
 			limit = {
 				NOT = {
@@ -93,6 +95,7 @@ job_chancellor = {
 	action = action_statecraft
 	action = action_improve_relations
 	action = action_fabricate_claims
+	action = action_clan_sentiment # Replaces Fabricate Claims for Nomads
 	action = action_sow_dissent
 
 	lift_fow = yes
@@ -110,12 +113,6 @@ job_marshal = {
 	
 	allow = {
 		can_be_marshal_trigger = yes
-		liege = {
-			NAND = {
-				is_avatar_trigger = yes
-				government = avatar_team_government
-			}
-		}
 	}
 	dismiss_trigger = {
 		FROM = {
@@ -141,6 +138,73 @@ job_marshal = {
 		}
 	}
 	gain_effect = {
+		if = {
+			limit = {
+				FROM = { 
+					has_law = succ_byzantine_elective 
+					any_courtier_or_vassal = { 
+						attribute_diff = { character = PREVPREV attribute = martial value = 5 } #Check if any other vassal or courtier has higher martial than current character. And check that said vassal or courtier would be a viable marshal.
+						can_be_marshal_trigger = yes
+						NOT = {
+							character = ROOT
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = {  
+						martial = 2
+					}
+				}
+				FROM = { change_variable = { which = byzantine_credibility_appointed_sycophant value = -10 } }
+			}
+			else_if = {
+				limit = {
+					martial = 2
+					NOT = {  
+						martial = 4
+					}
+				}
+				FROM = { change_variable = { which = byzantine_credibility_appointed_sycophant value = -5 } }
+			}
+			else_if = {
+				limit = {
+					martial = 4
+					NOT = {  
+						martial = 6
+					}
+				}
+				FROM = { change_variable = { which = byzantine_credibility_appointed_sycophant value = -4 } }
+			}
+			else_if = {
+				limit = {
+					martial = 6
+					NOT = {  
+						martial = 8
+					}
+				}
+				FROM = { change_variable = { which = byzantine_credibility_appointed_sycophant value = -3 } }
+			}
+			else_if = {
+				limit = {
+					martial = 8
+					NOT = {  
+						martial = 10
+					}
+				}
+				FROM = { change_variable = { which = byzantine_credibility_appointed_sycophant value = -2 } }
+			}
+			else_if = {
+				limit = {
+					martial = 10
+					NOT = {  
+						martial = 12
+					}
+				}
+				FROM = { change_variable = { which = byzantine_credibility_appointed_sycophant value = -1 } }
+			}
+		}
 	}
 	lose_effect = {
 		if = {
@@ -156,10 +220,19 @@ job_marshal = {
 			}
 			opinion = { who = FROM modifier = opinion_fired_from_council }
 			opinion = { who = FROM modifier = opinion_recently_fired }
-			#character_event = { id = HFP.20806 days = 1 }
+			character_event = { id = HFP.20806 days = 1 }
+		}
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
 		}
 	}
 	retire_effect = {
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
+
 		if = {
 			limit = {
 				NOT = {
@@ -204,7 +277,7 @@ job_treasurer = {
 				is_avatar_trigger = yes
 				government = avatar_team_government
 			}
-		}
+		}		
 	}
 	dismiss_trigger = {
 		FROM = {
@@ -246,8 +319,17 @@ job_treasurer = {
 			opinion = { who = FROM modifier = opinion_fired_from_council }
 			opinion = { who = FROM modifier = opinion_recently_fired }
 		}
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
 	}
 	retire_effect = {
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
+
 		if = {
 			limit = {
 				NOT = {
@@ -292,7 +374,7 @@ job_spymaster = {
 				is_avatar_trigger = yes
 				government = avatar_team_government
 			}
-		}
+		}		
 	}
 	dismiss_trigger = {
 		FROM = {
@@ -334,8 +416,17 @@ job_spymaster = {
 			opinion = { who = FROM modifier = opinion_fired_from_council }
 			opinion = { who = FROM modifier = opinion_recently_fired }
 		}
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
 	}
 	retire_effect = {
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
+
 		if = {
 			limit = {
 				NOT = {
@@ -381,10 +472,11 @@ job_spiritual = {
 				is_avatar_trigger = yes
 				government = avatar_team_government
 			}
-		}
+		}		
 	}
 	dismiss_trigger = {
 		FROM = {
+			NOT = { religion = ROOT }
 			NOT = { 
 				AND = {
 					has_law = succession_voting_power_1
@@ -423,8 +515,17 @@ job_spiritual = {
 			opinion = { who = FROM modifier = opinion_fired_from_council }
 			opinion = { who = FROM modifier = opinion_recently_fired }
 		}
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
 	}
 	retire_effect = {
+		if = {
+			limit = { has_character_flag = relic_hunter }
+			character_event = { id = MNM.9034 }
+		}
+
 		if = {
 			limit = {
 				NOT = {
@@ -444,11 +545,12 @@ job_spiritual = {
 	}
 	
 	
+	action = action_hunt_heretics
 	action = action_inquisition
 	action = action_advance_cul_tech
 	action = action_improve_rel_relations
 	action = action_charity
 	action = action_build_zeal # Tribal replacement for 'action_advance_cul_tech'
-
+	
 	lift_fow = yes
 }
