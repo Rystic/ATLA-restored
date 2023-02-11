@@ -10,302 +10,6 @@
 namespace = HFP
 
 ### CLAIM DUELS 
-# Get challenged (sent from duel_decision )
-character_event = {
-    id = HF.10095
-    title = claim_duel_challenge_title
-    picture = GFX_evt_bloodlines
-    border = GFX_event_normal_frame_war
-    
-    desc = {
-        text = EVTDESC_HF_10095_A
-        trigger = {
-            event_target:combatant_1 = { has_character_flag = wants_single_title_from@event_target:combatant_2 }
-        }
-    }
-    desc = {
-        text = EVTDESC_HF_10095_B
-        trigger = {
-            event_target:combatant_1 = { has_character_flag = wants_multiple_titles_from@event_target:combatant_2 }
-        }
-    }
-
-    is_triggered_only = yes
-    
-    immediate = {
-        if = { #to prevent spam...
-            limit = { NOT = { has_character_modifier = recent_duel_timer } }
-            add_character_modifier = {
-                modifier = recent_duel_timer
-                hidden = yes
-                months = 3
-            }
-        }
-        event_target:combatant_1 = { #combatant_1/attacker
-            if = {
-                limit = { NOT = { has_character_modifier = recent_duel_timer } }
-                #special circumstances, like initiation duel, etc
-                add_character_modifier = { #OUTCOMMENT FOR TESTING PURPOSES
-                    modifier = recent_duel_timer
-                    hidden = yes
-                    months = 3
-                }
-            }
-        }
-    }
-    
-    option = { #Challenge accepted
-        name = EVTOPTA_WOL_11000
-        custom_tooltip = { text = EVTOPTA_HF_10095_TT }
-        ai_chance = {
-            factor = 20
-            modifier = {
-                factor = 2
-                trait = proud
-            }
-            modifier = {
-                factor = 0.5
-                trait = craven
-            }
-        }
-        if = {
-            limit = { trait = craven }
-            random = {
-                chance = 20
-                remove_trait = craven
-            }
-        }
-        pacifists_lose_piety_effect = yes
-        if = {
-            limit = { #Warriors like a warrior who acts like one...
-                is_member_of_any_warrior_lodge_trigger = yes
-            }
-            add_legend_progress_trivial_effect = yes
-        }
-        event_target:combatant_1 = {
-            character_event = { id = HF.10096 days = 2 }
-        }
-        set_character_flag = add_duel_xp
-        clr_character_flag = punish_declining
-    }
-    option = { #No way! He/She can't just DUEL me for my titles...!
-        name = {
-            text = EVTOPTA_HF_10095_wroth
-            trigger = { trait = wroth }
-        }
-        name = {
-            text = EVTOPTA_HF_10095_ordely
-            trigger = {
-                OR = {
-                    trait = administrator
-                    is_learned_trigger = yes
-                }
-            }
-        }
-        name = {
-            text = EVTOPTA_HF_10095_craven
-            trigger = { NOT = { trait = wroth } }
-        }
-
-        if = {
-            limit = { trait = craven }
-            add_character_modifier = {
-                modifier = cowardly_ruler
-                years = 5
-            }
-        }
-        else = {
-            add_trait = craven
-        }
-        ai_chance = {
-            factor = 3
-            modifier = {
-                trait = craven
-                factor = 1.5
-            }
-        }
-        if = {
-            limit = { has_character_flag = punish_declining }
-            if = {
-                limit = { 
-                    NOR = {
-                        trait = craven
-                        trait = brave
-                        trait = berserker 
-                    }
-                }
-                random = {
-                    chance = 50
-                    add_trait = craven
-                    hidden_tooltip = {
-                        character_event = {
-                            id = 38257 #Notify Craven
-                        }
-                    }
-                }
-            }
-            if = {
-                limit = {
-                    trait = brave
-                }
-                remove_trait = brave
-            }
-            prestige = -50
-            add_character_modifier = {
-                modifier = declined_prestige_duel_timer
-                hidden = yes
-                duration = 1095
-            }
-        }
-        hidden_tooltip = {
-            remove_character_modifier = recent_duel_timer
-        }
-        event_target:combatant_1 = { #the attacker/combatant_1
-            hidden_tooltip = {
-                remove_character_modifier = recent_duel_timer
-                if = {
-                    limit = {
-                        NOT = { has_character_modifier = duels_declined }
-                    }
-                    opinion = {
-                        modifier = opinion_fled_duel
-                        who = ROOT
-                        years = 100
-                    }
-                }
-                else = {
-                    opinion = {
-                        modifier = opinion_declined_my_duel #For visuals
-                        who = ROOT
-                        years = 100
-                    }
-                }
-                character_event = { id = HFP.10097 days = 3 } #Duel rejected...
-            }
-        }
-        increase_cowardly_status_effect = yes #tracks duel cowardice
-        clr_character_flag = punish_declining
-    }
-}
-
-# Start the duel - For the attacker (combatant_1)
-character_event = {
-    id = HF.10096
-    title = challenge_accepted_title
-    is_triggered_only = yes
-    picture = GFX_evt_bloodlines
-    border = GFX_event_normal_frame_war
-
-    desc = {
-        text = EVTDESC_HF_10096_A
-        trigger = {
-            event_target:combatant_1 = { has_character_flag = wants_single_title_from@event_target:combatant_2 }
-        }
-    }
-    desc = {
-        text = EVTDESC_HF_10096_B
-        trigger = {
-            event_target:combatant_1 = { has_character_flag = wants_multiple_titles_from@event_target:combatant_2 }
-        }
-    }
-
-    option = {
-        name = {
-            text = EVTOPTA_WOL_11001 #Let's fight!
-        }
-        if = {
-            limit = { has_character_flag = mock_duel }
-            custom_tooltip = { text = EVTOPTA_HFP_10096_TT } #the duel will take place within the next few days.
-        }
-        if = {
-            limit = {
-                is_tribal = yes
-                has_strong_claim = FROM # if attacker has strong claim on target
-                FROM = { is_tribal = yes }
-            }
-            custom_tooltip = { text = EVTOPTA_HFP_10096_CLAIM_DUEL_TT } # "This might affect the fate of <title>..."
-        }
-
-        if = {
-            limit = { #Warriors like a warrior who acts like one...
-                is_member_of_any_warrior_lodge_trigger = yes
-            }
-            add_legend_progress_trivial_effect = yes
-        }
-
-        #FALLBACK:
-        if = { #If FROM is no longer alive, clear relevant flags, etc...
-            limit = { FROM = { NOT = { is_alive = yes } } }
-            hidden_effect = {
-                remove_character_modifier = recent_duel_timer
-                clr_duel_flags_effect = yes
-            }
-        }
-        else = {
-            hidden_effect = {
-                set_character_flag = add_duel_xp
-                reset_duel_timers_effect = yes
-                character_event = { id = HFP.10100 } #Send hidden set-up of duel (from there: result)
-            }
-        }
-        ai_chance = {
-            factor = 80
-        }
-    }
-
-    option = { # [INTRIGUE OPTION]
-        name = {
-            text = EVTOPTA_HF_10096 #I will do something.... special.
-        }
-        tooltip_info = intrigue
-
-        custom_tooltip = { text = EVTOPTA_HF_10096_TT } #you will use any means necessary...
-
-        set_character_flag = attacker_using_poison@event_target:combatant_2
-
-        if = { #There is a chance the poison fails...
-            limit = {
-                OR = {
-                    FROM = {
-                        job_spymaster = {
-                            opinion = { who = PREV value = 15 } #if they like their employer
-                            intrigue = ROOT #and they can match your intrigue
-                        }
-                    }
-                    FROM = { intrigue = ROOT } #they alone can match your intrigue
-                }
-            }
-            set_character_flag = poison_can_fail_against@event_target:combatant_2
-        }
-        
-        #FALLBACK:
-        if = { #If FROM is no longer alive, clear relevant flags, etc...
-            limit = { FROM = { NOT = { is_alive = yes } } }
-            hidden_effect = {
-                remove_character_modifier = recent_duel_timer
-                clr_duel_flags_effect = yes
-            }
-        }
-        else = {
-            hidden_effect = {
-                set_character_flag = add_duel_xp
-                reset_duel_timers_effect = yes
-                character_event = { id = HFP.10100 } #Send hidden set-up of duel (from there: result)
-            }
-        }
-
-        ai_chance = {
-            factor = 20
-            dishonorable_ai_chance_increase_score = yes
-        }
-
-        trigger = {
-            intrigue = 12
-            has_dlc = "Holy Fury"
-        }
-    }
-}
-
 
 ### "REGULAR" duels start here...
 # Get challenged (sent from duel_decision )
@@ -413,10 +117,6 @@ character_event = {
                 trait = craven
             }
             modifier = {
-                is_priest = yes
-                factor = 0
-            }
-            modifier = {
                 is_female = no
                 event_target:combatant_1 = { is_female = yes }
                 top_liege = {
@@ -454,9 +154,6 @@ character_event = {
         }
         set_character_flag = add_duel_xp
         clr_character_flag = punish_declining
-        ai_chance = {
-            factor = 80
-        }
     }
 
     option = { # [INTRIGUE OPTION]
@@ -622,17 +319,17 @@ character_event = {
         increase_cowardly_status_effect = yes #tracks duel cowardice
         clr_character_flag = punish_declining
 
-        # if = { #For characters who were recruited by their parents...
-            # limit = {
-                # has_character_flag = is_being_recruited_to_warrior_lodge_by_parent
-                # event_target:recruiting_parent = { is_alive = yes }
-            # }
-            # custom_tooltip = { text = notify_parent_recruiter_tt } #Your parent will be notified.
-            # set_character_flag = failed_initiation
-            # set_character_flag = chickened_out
-            # event_target:recruiting_parent = { character_event = { id = HF.10014 } }
-            # clr_character_flag = society_join_block
-        # }
+        if = { #For characters who were recruited by their parents...
+            limit = {
+                has_character_flag = is_being_recruited_to_warrior_lodge_by_parent
+                event_target:recruiting_parent = { is_alive = yes }
+            }
+            custom_tooltip = { text = notify_parent_recruiter_tt } #Your parent will be notified.
+            set_character_flag = failed_initiation
+            set_character_flag = chickened_out
+            event_target:recruiting_parent = { character_event = { id = HF.10014 } }
+            clr_character_flag = society_join_block
+        }
 
         trigger = {
             NOT = { event_target:duel_target = { character = event_target:hero_character } } #if set-up failed spectacularly, and it's a case of MP, the player leader will be unable to turn down the duel just for the hell of it
