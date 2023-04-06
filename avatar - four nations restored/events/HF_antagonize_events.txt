@@ -11,7 +11,7 @@ character_event = {
 		NOT = { trait = incapable }
 		NOT = { 
 			has_opinion_modifier = { 
-				who = FROM 
+				who = persistent_event_target:antagonize_target 
 				modifier = antagonize_stop_cooldown 
 			}
 		}
@@ -221,7 +221,6 @@ character_event = {
 							trait = dull
 							trait = trusting
 							trait = zealous
-							trait = erudite 
 							AND = { 
 								trait = cynical 
 								religion = ROOT
@@ -855,27 +854,27 @@ character_event = {
 }
 
 #Antagonizer notified.
-character_event = {
-	id = HF.22003
-	desc = EVTDESCHF22003
-	picture = GFX_evt_upsetting_letter
+# character_event = {
+	# id = HF.22003
+	# desc = EVTDESCHF22003
+	# picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { is_alive = yes } 
-	}
-	is_triggered_only = yes
+	# trigger = { 
+		# FROM = { is_alive = yes } 
+	# }
+	# is_triggered_only = yes
 
-	option = { 
-		name = EVTOPTAHF22003
-		custom_tooltip = { text = tooltip_22003_A }
-		hidden_tooltip = { 
-			remove_special_interest = persistent_event_target:antagonize_target
-			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
-			clear_persistent_event_target = antagonize_target
-		}
-		ai_chance = { factor = 100 }
-	}
-}
+	# option = { 
+		# name = EVTOPTAHF22003
+		# custom_tooltip = { text = tooltip_22003_A }
+		# hidden_tooltip = { 
+			# remove_special_interest = persistent_event_target:antagonize_target
+			# persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
+			# clear_persistent_event_target = antagonize_target
+		# }
+		# ai_chance = { factor = 100 }
+	# }
+# }
 
 #Antagonized: is imprisoned and can no longer be interacted with.
 character_event = {
@@ -2369,7 +2368,7 @@ character_event = {
 				modifier = { 
 					factor = 0
 					NOT = { trait = erudite }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = dull }
@@ -2678,7 +2677,7 @@ character_event = {
 		custom_tooltip = { text = tooltip_22022_Y }
 		trigger = { 
 			trait = lunatic
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
 		FROM = { 
@@ -2706,7 +2705,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -2725,19 +2724,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}
@@ -2801,7 +2800,7 @@ character_event = {
 			NOT = { trait = lunatic }
 			NOT = { trait = wroth } #Give priority to the option for Wroth characters.
 			is_rival = FROM
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
 		FROM = { 
@@ -2829,7 +2828,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -2848,19 +2847,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}
@@ -2870,7 +2869,7 @@ character_event = {
 		trigger = { 
 			NOT = { trait = lunatic }
 			trait = wroth
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		tooltip_info = wroth
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
@@ -2899,7 +2898,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -2918,19 +2917,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}
@@ -4837,8 +4836,6 @@ character_event = {
 			set_character_flag = manifest_food_poisoning
 			add_disease_level_effect = yes
 			blessing_removes_disease_effect = yes
-			# deaths_gift_removes_disease_effect = yes
-			# scrying_omen_fulfilled_by_gaining_disease_effect = yes
 		}
 		if = { 
 			limit = { NOT = { has_dlc = "Reapers" } } 
@@ -6176,7 +6173,7 @@ character_event = {
 		custom_tooltip = { text = tooltip_22022_Y }
 		trigger = { 
 			is_rival = FROM
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		add_character_modifier = {  
 			name = vicious_rumors
@@ -6209,7 +6206,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -6228,19 +6225,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}
@@ -6271,7 +6268,7 @@ character_event = {
 		custom_tooltip = { text = tooltip_22022_Y }
 		trigger = { 
 			is_rival = FROM
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		add_character_modifier = {  
 			name = vicious_rumors_2
@@ -6303,7 +6300,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -6322,19 +6319,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}
@@ -6364,7 +6361,7 @@ character_event = {
 		custom_tooltip = { text = tooltip_22022_Y }
 		trigger = { 
 			is_rival = FROM
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		if = {  
 			limit = { 
@@ -6424,7 +6421,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -6443,19 +6440,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}
@@ -6513,7 +6510,7 @@ character_event = {
 		custom_tooltip = { text = tooltip_22022_Y }
 		trigger = { 
 			is_rival = FROM
-			#this_can_duel_with_from_trigger = yes
+			this_can_duel_with_from_trigger = yes
 		}
 		if = {  
 			limit = { 
@@ -6570,7 +6567,7 @@ character_event = {
 	        hidden = yes
 	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = ADUEL.1 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
 		ai_chance = { 
 			factor = 40
@@ -6589,19 +6586,19 @@ character_event = {
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 5 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
 			modifier = { 
 				factor = 1.25
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 10 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
 			modifier = { 
 				factor = 1.5
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 15 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
 			modifier = { 
 				factor = 1.75
-				ROOT = { attribute_diff = { character = FROM attribute = combat_rating  value = 20 } }
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
 		}
 	}

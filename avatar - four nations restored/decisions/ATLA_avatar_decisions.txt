@@ -1,25 +1,117 @@
 decisions = {
-	play_avatar = {
-        is_high_prio = yes
+	#play_avatar = {
+	#	is_high_prio = yes
+	#	only_playable = yes
+	#	ai = no
+	#	potential = {
+	#		is_avatar_trigger = no
+	#		event_target:global_avatar = {
+	#			is_avatar_trigger = yes
+	#			ai = yes
+	#		}
+	#		has_global_flag = playable_avatar
+	#	}
+	#	allow = {
+	#		always = yes
+	#	}
+	#	effect = {
+	#		# find_avatar_effect = yes
+	#		set_player_character = event_target:global_avatar
+	#	}
+	#}
+}
+
+targeted_decisions = {
+	move_avatar = {
+		is_high_prio = yes
 		only_playable = yes
-        ai = no
+		filter = independent_rulers
+		ai = no
+		from_potential = {
+			is_landed = no
+			is_avatar_trigger = yes
+		}
 		potential = {
-			is_avatar_trigger = no
-            event_target:global_avatar = {
-				is_avatar_trigger = yes
-				ai = yes
-            }
-            has_global_flag = playable_avatar
+			is_within_diplo_range = FROM
+			is_landed = yes
+			# you're not already a tributary
+			FROM = {
+				NOR = {
+					is_tributary = {
+						type = unrevealed_avatar_tributary
+						suzerain = PREV
+					}
+					is_tributary = {
+						type = avatar_tributary
+						suzerain = PREV
+					}
+				}
+			}
 		}
 		allow = {
-			always = yes
+			FROM = {
+				age >= 16
+				NOT = {
+					trait = on_journey
+				}
+				NOR = {
+					is_rival = ROOT
+					is_foe = ROOT
+				}
+			}
+			opinion = {
+				who = FROM
+				value >= 0
+			}
+			OR = {
+				custom_tooltip = {
+					text = has_flying_pet_or_artifact_tt
+					FROM = {
+						has_flying_pet_or_artifact_trigger = yes
+					}
+				}
+				custom_tooltip = {
+					text = is_within_reach_tt
+					ROOT = {
+						capital_holding = {
+							OR = {
+								# avatar location is in 1000px range
+								FROM = {
+									location = {
+										distance = {
+											who = PREV
+											value <= 1000
+										}
+									}
+								}
+								# location of avatar's suzerain is in 1000px range
+								# FROM = {
+								# 	suzerain = {
+								# 		capital_holding = {
+								# 			location = {
+								# 				distance = {
+								# 					who = PREVPREVPREVPREV
+								# 					value <= 1000
+								# 				}
+								# 			}
+								# 		}
+								# 	}
+								# }
+							}
+						}
+					}
+				}
+			}
 		}
 		effect = {
-			# find_avatar_effect = yes
-            set_player_character = event_target:global_avatar
-		}
-		revoke_allowed = {
-			always = no
+			custom_tooltip = {
+				text = move_avatar_tt
+				FROM = {
+					character_event = {
+						id = new_avatar_journey.10
+					}
+				}
+			}
 		}
 	}
 }

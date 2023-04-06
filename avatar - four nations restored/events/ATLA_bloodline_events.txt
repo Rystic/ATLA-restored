@@ -1,9 +1,12 @@
 namespace = bloodline_events
+#
+# chin's descedants get ambitious/strong/craven trait
 character_event = {
-	id = bloodline_events.0001
+	id = bloodline_events.1
+	title = EVTTITLEbender_bloodlines.1
 	desc = EVTDESCbender_bloodlines.1
+	picture = GFX_evt_chin_war
 	min_age = 16
-		
 	trigger = {
 		NOR = {
 			trait = ambitious
@@ -13,39 +16,69 @@ character_event = {
 			has_bloodline_flag = bloodline_chin
 		}
 	}
-	
 	mean_time_to_happen = {
 		months = 1
 	}
-		
 	option = {
-		name = EVTOPTbender_bloodlines.0001
-			
-		hidden_tooltip = {
-			random_list = {
-				60 = {
-					add_trait = ambitious
-				}
-				10 = {
-					add_trait = craven
-				}
-				1 = {
-					add_trait = ambitious
-					add_trait = strong
-				}
-				29 = {
-				}
+		name = EVTOPTbender_bloodlines.1
+		tooltip_info_custom = because_bloodline_tt
+		# chin's traits
+		random_list = {
+			60 = {
+				add_trait = ambitious
 			}
-			set_flag = ambitious_check
+			10 = {
+				trigger = {
+					NOT = {
+						trait = strong
+					}
+				}
+				add_trait = strong
+			}
+			10 = {
+				trigger = {
+					NOT = {
+						trait = brave
+					}
+				}
+				add_trait = brave
+			}
+			10 = {
+				trigger = {
+					NOT = {
+						trait = stubborn
+					}
+				}
+				add_trait = stubborn
+			}
+			5 = {
+				add_trait = ambitious
+				add_trait = strong
+			}
+			5 = {
+				add_trait = ambitious
+				add_trait = brave
+			}
+			5 = {
+				trigger = {
+					NOT = {
+						trait = craven
+					}
+				}
+				add_trait = craven
+			}
 		}
+		set_character_flag = ambitious_check
 	}
 }
 
-character_event = {
-	id = bloodline_events.0002
+# general avatar bloodline event
+narrative_event = {
+	id = bloodline_events.2
+	title = EVTTbender_bloodlines.2
 	desc = EVTDESCbender_bloodlines.2
+	picture = GFX_evt_avatar_conflict
 	min_age = 16
-		
 	trigger = {
 		AND = {
 			trait = fullyrealisedavatar
@@ -71,42 +104,72 @@ character_event = {
 			}
 		}
 	}
-	
 	mean_time_to_happen = {
 		months = 1
 	}
-	
 	option = {
+		name = EVTOPTbender_bloodlines.2
 		random_list = {
 			25 = {
 				create_bloodline = {
 					type = bloodline_avatar_1
+					inheritance = all_descendants
 				}
 			}
 			25 = {
 				create_bloodline = {
 					type = bloodline_avatar_2
-                }
-            }
+					inheritance = all_descendants
+				}
+			}
 			25 = {
 				create_bloodline = {
 					type = bloodline_avatar_3
-                }
+					inheritance = all_descendants
+				}
 			}
 			25 = {
 				create_bloodline = {
 					type = bloodline_avatar_4
-                }
-            }
-        }
-    }
+					inheritance = all_descendants
+				}
+			}
+		}
+		new_bloodline = {
+			set_name = bloodline_generic_avatar
+			trigger_switch = {
+				on_trigger = has_global_flag
+				avatar_water = {
+					set_description = bloodline_desc_generic_avatar_water
+				}
+				avatar_earth = {
+					set_description = bloodline_desc_generic_avatar_earth
+				}
+				avatar_fire = {
+					set_description = bloodline_desc_generic_avatar_fire
+				}
+				avatar_air = {
+					set_description = bloodline_desc_generic_avatar_air
+				}
+			}
+			# random_list = {
+			# 	#Randomize names
+			# 	20 = {  }
+			# 	20 = { set_name = bloodline_legendary_eagle_hunter_B }
+			# 	20 = { set_name = bloodline_legendary_eagle_hunter_C }
+			# 	20 = { set_name = bloodline_legendary_eagle_hunter_D }
+			# }
+		}
+	}
 }
 
+# metalbender founder's descedants get metalbender trait or improve their bending
 character_event = {
-	id = bloodline_events.0003
+	id = bloodline_events.3
+	title = EVTTITLEbender_bloodlines.3
 	desc = EVTDESCbender_bloodlines.3
+	picture = GFX_evt_metalbending_discovery
 	min_age = 16
-		
 	trigger = {
 		trait = earthbender
 		NOR = {
@@ -117,33 +180,45 @@ character_event = {
 			has_bloodline_flag = bloodline_metalbender_founder
 		}
 	}
-	
+	immediate = {
+		any_owned_bloodline = {
+			limit = {
+				has_bloodline_flag = bloodline_metalbender_founder
+			}
+			save_event_target_as = metalbending_bloodline
+			founder = {
+				save_event_target_as = metalbending_founder_ancestor
+			}
+		}
+	}
 	mean_time_to_happen = {
 		months = 1
 	}
-		
 	option = {
-		name = EVTOPTbender_bloodlines.0003
-			
-		hidden_tooltip = {
-			random_list = {
-				50 = {
-					add_trait = metalbender
-				}
-				50 = {
-				}
+		name = EVTOPTbender_bloodlines.3
+		tooltip_info_custom = because_bloodline_tt
+		random_list = {
+			75 = {
+				add_trait = metalbender
 			}
-			set_flag = metalbender_check
+			25 = {
+				trigger = {
+					NOT = {
+						trait = master_bender
+					}
+				}
+				level_up_bending_effect = yes
+			}
 		}
+		set_character_flag = metalbender_check
 	}
 }
 
-character_event = { # kyoshi dies in personal duel
-	id = bloodline_events.0004
+character_event = {
+	# kyoshi dies in personal duel
+	id = bloodline_events.4
 	hide_window = yes
-	
 	is_triggered_only = yes
-	
 	trigger = {
 		character = 34
 		OR = {
@@ -157,27 +232,45 @@ character_event = { # kyoshi dies in personal duel
 		}
 		killer = {
 			is_alive = yes
-			religion = way_of_chin
 		}
 	}
-	
 	immediate = {
-		killer = { narrative_event = { id = bloodline_events.0005 days = 3 random = 2 } }
+		if = {
+			limit = {
+				killer = {
+					religion = way_of_chin
+				}
+			}
+			killer = {
+				narrative_event = {
+					id = bloodline_events.5
+					days = 3
+					random = 2
+				}
+			}
+		}
+		else = {
+			killer = {
+				narrative_event = {
+					id = bloodline_events.6
+					days = 3
+					random = 2
+				}
+			}
+		}
 	}
 }
 
+# todo: add loc
+# !loc
 narrative_event = {
-	id = bloodline_events.0005
+	id = bloodline_events.5
 	desc = EVTDESCbender_bloodlines.5
 	title = EVTTbender_bloodlines.5
-	
-	#picture =
-	
+	picture = GFX_evt_avatar_death
 	is_triggered_only = yes
-
 	option = {
-		name = bloodline_events.0005optA
-		
+		name = bloodline_events.5.opt
 		prestige = 250
 		create_bloodline = {
 			type = kyoshi_killer_chin
@@ -185,45 +278,18 @@ narrative_event = {
 	}
 }
 
-character_event = { # kyoshi dies in personal duel
-	id = bloodline_events.0006
-	hide_window = yes
-	
-	is_triggered_only = yes
-	
-	trigger = {
-		character = 34
-		OR = {
-			death_reason = death_duel
-			death_reason = death_mission_duel
-			death_reason = death_battle_duel
-			death_reason = death_legendary_fail_duel
-			death_reason = death_legendary_win_duel
-			death_reason = death_claim_duel_attacker
-			death_reason = death_claim_duel_defender
-		}
-		killer = {
-			is_alive = yes
-		}
-	}
-	
-	immediate = {
-		killer = { narrative_event = { id = bloodline_events.0007 days = 3 random = 2 } }
-	}
-}
 
+# todo: add loc
+# !loc
 narrative_event = {
-	id = bloodline_events.0007
-	desc = EVTDESCbender_bloodlines.7
-	title = EVTTbender_bloodlines.7
-	
-	#picture =
-	
+	id = bloodline_events.6
+	desc = EVTDESCbender_bloodlines.6
+	title = EVTTbender_bloodlines.6
+	picture = GFX_evt_avatar_death
 	is_triggered_only = yes
-
 	option = {
-		name = bloodline_events.0007optA
-		
+		# name = bloodline_events.6.opt
+		name = OK
 		prestige = 250
 		create_bloodline = {
 			type = kyoshi_killer
@@ -231,71 +297,75 @@ narrative_event = {
 	}
 }
 
-narrative_event = {
-	id = bloodline_events.0008
-	desc = EVTDESCbender_bloodlines.8
-	title = EVTTbender_bloodlines.8
-	#picture
-	is_triggered_only = yes
-	
-	trigger = {
-		prestige = 5000
-		piety = 5000
-		prisoner = no
-		NOR = {
-			any_owned_bloodline = {
-				has_bloodline_flag = bloodline_earthking
-			}
-			any_owned_bloodline = {
-				has_bloodline_flag = bloodline_houting
-			}
-		}
-	}
-	
-	option = {
-		name = bloodline_events.0008opt
-		
-		prestige = 250
-		create_bloodline = {
-			type = bloodline_earthking
-		}
-	}
-}
+# todo: figure out
+# !loc
+# !nevercalled
+# narrative_event = {
+# 	id = bloodline_events.8
+# 	desc = EVTDESCbender_bloodlines.8
+# 	title = EVTTbender_bloodlines.8
+# 	picture = GFX_evt_china_expansionist
+# 	is_triggered_only = yes
+# 	trigger = {
+# 		prestige = 5000
+# 		piety = 5000
+# 		prisoner = no
+# 		NOR = {
+# 			any_owned_bloodline = {
+# 				has_bloodline_flag = bloodline_earthking
+# 			}
+# 			any_owned_bloodline = {
+# 				has_bloodline_flag = bloodline_houting
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		# name = bloodline_events.8.opt
+# 		name = OK
+# 		prestige = 250
+# 		create_bloodline = {
+# 			type = bloodline_earthking
+# 		}
+# 	}
+# }
 
-narrative_event = {
-	id = bloodline_events.0009
-	desc = EVTDESCbender_bloodlines.9
-	title = EVTTbender_bloodlines.9
-	#picture
-	is_triggered_only = yes
-	
-	trigger = {
-		prisoner = no
-		completely_controls = e_earth_kingdom
-		NOT = { has_global_flag = earth_uniter }
-		NOR = {
-			any_owned_bloodline = {
-				has_bloodline_flag = earth_uniter_bloodline
-			}
-		}
-	}
-	
-	option = {
-		name = bloodline_events.0009opt
-		
-		prestige = 250
-		create_bloodline = {
-			type = bloodline_earth_uniter
-		}
-		set_global_flag = earth_uniter
-	}
-}
+# todo: figure out
+# !loc
+# !nevercalled
+# narrative_event = {
+# 	id = bloodline_events.9
+# 	desc = EVTDESCbender_bloodlines.9
+# 	title = EVTTbender_bloodlines.9
+# 	picture = GFX_evt_china_expansionist
+# 	is_triggered_only = yes
+# 	trigger = {
+# 		prisoner = no
+# 		completely_controls = e_earth_kingdom
+# 		NOT = {
+# 			has_global_flag = earth_uniter
+# 		}
+# 		NOR = {
+# 			any_owned_bloodline = {
+# 				has_bloodline_flag = earth_uniter_bloodline
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		# name = bloodline_events.9.opt
+# 		name = OK
+# 		prestige = 250
+# 		create_bloodline = {
+# 			type = bloodline_earth_uniter
+# 		}
+# 		set_global_flag = earth_uniter
+# 	}
+# }
+
 character_event = {
-	id = bloodline_events.00010
+	id = bloodline_events.10
 	desc = EVTDESCbender_bloodlines.10
+	picture = GFX_evt_lightning_bending_scroll
 	min_age = 16
-	hide_window = yes
-	
 	trigger = {
 		trait = firebender
 		NOR = {
@@ -306,22 +376,18 @@ character_event = {
 			has_bloodline_flag = bloodline_rakurai
 		}
 	}
-	
 	mean_time_to_happen = {
 		months = 1
 	}
-		
 	option = {
-		name = EVTOPTbender_bloodlines.00010
-			
-		hidden_tooltip = {
-			random_list = {
-				20 = {
-					add_trait = lightningbender
-				}
-				80 = {
-					set_flag = lightning_check
-				}
+		name = EVTOPTbender_bloodlines.10
+		tooltip_info_custom = because_bloodline_tt
+		random_list = {
+			25 = {
+				add_trait = lightningbender
+			}
+			75 = {
+				set_character_flag = lightning_check
 			}
 		}
 	}

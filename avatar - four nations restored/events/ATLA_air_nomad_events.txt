@@ -23,286 +23,322 @@ namespace = NOMAD
 # NOMAD.15 - Air Nomad Adulthood
 # NOMAD.16 - Unused
 ##########################
-
 # On-action event: A child is born
 # Should be hidden?
-character_event = {
-	id = NOMAD.1
-	desc = NOMADEVTDESC1
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-	culture_group = air_nomad_culture
-
-	trigger = {
-		NOT = { trait = directdescendantavatar }
-		NOT = { trait = descendantavatar }
-	}
-
-	option = {
-		name = OK
-		remove_trait = bastard
-		add_trait = airinitiate
-
-		mother = {
-			character_event = { id = NOMAD.6 } # The father's reaction
-		}
-		father = {
-			character_event = { id = NOMAD.7 } # The mother's reaction
-		}
-	}
-}
+# !!!todo: refactor these birth events
+# !nevercalled
+# character_event = {
+# 	id = NOMAD.1
+# 	desc = NOMADEVTDESC1
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	culture_group = air_nomad_culture
+# 	trigger = {
+# 		NOT = {
+# 			trait = directdescendantavatar
+# 		}
+# 		NOT = {
+# 			trait = descendantavatar
+# 		}
+# 	}
+# 	option = {
+# 		name = OK
+# 		remove_trait = bastard
+# 		add_trait = airinitiate
+# 		mother = {
+# 			character_event = {
+# 				id = NOMAD.6
+# 			}
+# 			# The father's reaction
+# 		}
+# 		father = {
+# 			character_event = {
+# 				id = NOMAD.7
+# 			}
+# 			# The mother's reaction
+# 		}
+# 	}
+# }
 
 # Father reacts - Female
-character_event = {
-	id = NOMAD.2
-	desc = NOMADEVTDESC2
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTANOMAD.2
-	}
-}
+# !depends: NOMAD.6
+# character_event = {
+# 	id = NOMAD.2
+# 	desc = NOMADEVTDESC2
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.2
+# 	}
+# }
 
 # Mother reacts - Female
-character_event = {
-	id = NOMAD.3
-	desc = NOMADEVTDESC3
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTANOMAD.3
-		if = {
-			limit = {
-				is_ruler = yes
-			}
-			FROMFROM = { move_character = ROOT }
-		}
-		if = {
-			limit = {
-				is_ruler = no
-			}
-			liege = {
-				FROMFROM = { move_character = THIS }
-			}
-		}
-		FROMFROM = { dynasty = ROOT }
-	}
-}
+# !depends: NOMAD.7
+# character_event = {
+# 	id = NOMAD.3
+# 	desc = NOMADEVTDESC3
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.3
+# 		if = {
+# 			limit = {
+# 				is_ruler = yes
+# 			}
+# 			FROMFROM = {
+# 				move_character = ROOT
+# 			}
+# 		}
+# 		if = {
+# 			limit = {
+# 				is_ruler = no
+# 			}
+# 			liege = {
+# 				FROMFROM = {
+# 					move_character = THIS
+# 				}
+# 			}
+# 		}
+# 		FROMFROM = {
+# 			dynasty = ROOT
+# 		}
+# 	}
+# }
 
 # Father reacts - Male
-character_event = {
-	id = NOMAD.4
-	desc = NOMADEVTDESC4
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTANOMAD.4
-		if = {
-			limit = {
-				is_ruler = yes
-			}
-			FROMFROM = { move_character = ROOT }
-		}
-		if = {
-			limit = {
-				is_ruler = no
-			}
-			liege = {
-				FROMFROM = { move_character = THIS }
-			}
-		}
-		FROMFROM = { dynasty = ROOT }
-	}
-}
+# !depends: NOMAD.6
+# character_event = {
+# 	id = NOMAD.4
+# 	desc = NOMADEVTDESC4
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.4
+# 		if = {
+# 			limit = {
+# 				is_ruler = yes
+# 			}
+# 			FROMFROM = {
+# 				move_character = ROOT
+# 			}
+# 		}
+# 		if = {
+# 			limit = {
+# 				is_ruler = no
+# 			}
+# 			liege = {
+# 				FROMFROM = {
+# 					move_character = THIS
+# 				}
+# 			}
+# 		}
+# 		FROMFROM = {
+# 			dynasty = ROOT
+# 		}
+# 	}
+# }
 
 # Mother reacts - Male
-character_event = {
-	id = NOMAD.5
-	desc = NOMADEVTDESC5
-	picture = GFX_evt_birth
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTANOMAD.5
-	}
-}
+# !depends: NOMAD.7
+# character_event = {
+# 	id = NOMAD.5
+# 	desc = NOMADEVTDESC5
+# 	picture = GFX_evt_birth
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.5
+# 	}
+# }
 
 # Ping Father
-character_event = {
-	id = NOMAD.6
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		FROM = {
-			if = {
-				limit = {
-					is_female = yes
-				}
-				father = {
-					character_event = { id = NOMAD.2 days = 1 } # The father's reaction - Female
-				}
-			}
-			if = {
-				limit = {
-					is_female = no
-				}
-				father = {
-					character_event = { id = NOMAD.4 days = 1 } # The father's reaction - Male
-				}
-			}
-		}
-	}
-}
+# character_event = {
+# 	id = NOMAD.6
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	immediate = {
+# 		FROM = {
+# 			if = {
+# 				limit = {
+# 					is_female = yes
+# 				}
+# 				father = {
+# 					character_event = {
+# 						id = NOMAD.2
+# 						days = 1
+# 					}
+# 					# The father's reaction - Female
+# 				}
+# 			}
+# 			if = {
+# 				limit = {
+# 					is_female = no
+# 				}
+# 				father = {
+# 					character_event = {
+# 						id = NOMAD.4
+# 						days = 1
+# 					}
+# 					# The father's reaction - Male
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 # Ping Mother
-character_event = {
-	id = NOMAD.7
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		FROM = {
-			if = {
-				limit = {
-					is_female = yes
-				}
-				mother = {
-					character_event = { id = NOMAD.3 days = 1 } # The mother's reaction - Female
-				}
-			}
-			if = {
-				limit = {
-					is_female = no
-				}
-				mother = {
-					character_event = { id = NOMAD.5 days = 1 } # The mother's reaction - Male
-				}
-			}
-		}
-	}
-}
+# !depends: NOMAD.1
+# character_event = {
+# 	id = NOMAD.7
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	immediate = {
+# 		FROM = {
+# 			if = {
+# 				limit = {
+# 					is_female = yes
+# 				}
+# 				mother = {
+# 					character_event = {
+# 						id = NOMAD.3
+# 						days = 1
+# 					}
+# 					# The mother's reaction - Female
+# 				}
+# 			}
+# 			if = {
+# 				limit = {
+# 					is_female = no
+# 				}
+# 				mother = {
+# 					character_event = {
+# 						id = NOMAD.5
+# 						days = 1
+# 					}
+# 					# The mother's reaction - Male
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 # On-action event: Right Home
-character_event = {
-	id = NOMAD.8
-	hide_window = yes
-
-	is_triggered_only = yes
-	culture_group = air_nomad_culture
-	ai = yes
-
-	trigger = {
-		is_ruler = no
-
-		OR = {
-			AND = {
-				is_female = yes
-				culture = northern_air_nomad
-			}
-			AND = {
-				is_female = yes
-				culture = southern_air_nomad
-			}
-			AND = {
-				is_female = no
-				culture = eastern_air_nomad
-			}
-			AND = {
-				is_female = no
-				culture = western_air_nomad
-			}
-			AND = {
-				is_female = yes
-				liege = {
-					is_female = no
-				}
-			}
-			AND = {
-				is_female = no
-				liege = {
-					is_female = yes
-				}
-			}
-		}
-	}
-
-	option = {
-		name = OK
-		if = {
-			limit = {
-				is_unimportant_trigger = yes
-			}
-			death = { death_reason = death_missing }
-			break = yes
-		}
-		if = { # Female
-			limit = {
-				is_female = yes
-			}
-			random_list = {
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = yes
-							culture = eastern_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = eastern_air_nomad
-						}
-					}
-				}
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = yes
-							culture = western_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = western_air_nomad
-						}
-					}
-				}
-			}
-		}
-		if = { # Male
-			limit = {
-				is_female = no
-			}
-			random_list = {
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = no
-							culture = northern_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = northern_air_nomad
-						}
-					}
-				}
-				50 = {
-					any_playable_ruler = {
-						limit = {
-							is_female = no
-							culture = southern_air_nomad
-						}
-						ROOT = {
-							force_host = PREV
-							culture = southern_air_nomad
-						}
-					}
-				}
-			}
-		}
-	}
-}
+# todo: figure out
+# !nevercalled
+# character_event = {
+# 	id = NOMAD.8
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	culture_group = air_nomad_culture
+# 	ai = yes
+# 	trigger = {
+# 		is_ruler = no
+# 		OR = {
+# 			AND = {
+# 				is_female = yes
+# 				culture = northern_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = yes
+# 				culture = southern_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = no
+# 				culture = eastern_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = no
+# 				culture = western_air_nomad
+# 			}
+# 			AND = {
+# 				is_female = yes
+# 				liege = {
+# 					is_female = no
+# 				}
+# 			}
+# 			AND = {
+# 				is_female = no
+# 				liege = {
+# 					is_female = yes
+# 				}
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		if = {
+# 			limit = {
+# 				is_unimportant_trigger = yes
+# 			}
+# 			death = {
+# 				death_reason = death_missing
+# 			}
+# 			break = yes
+# 		}
+# 		if = {
+# 			# Female
+# 			limit = {
+# 				is_female = yes
+# 			}
+# 			random_list = {
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = yes
+# 							culture = eastern_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = eastern_air_nomad
+# 						}
+# 					}
+# 				}
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = yes
+# 							culture = western_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = western_air_nomad
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		if = {
+# 			# Male
+# 			limit = {
+# 				is_female = no
+# 			}
+# 			random_list = {
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = no
+# 							culture = northern_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = northern_air_nomad
+# 						}
+# 					}
+# 				}
+# 				50 = {
+# 					any_playable_ruler = {
+# 						limit = {
+# 							is_female = no
+# 							culture = southern_air_nomad
+# 						}
+# 						ROOT = {
+# 							force_host = PREV
+# 							culture = southern_air_nomad
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }
 
 # On-action event: Pregnancy starts showing
 character_event = {
@@ -310,28 +346,30 @@ character_event = {
 	desc = NOMADEVTDESC10
 	picture = GFX_evt_pregnancy
 	border = GFX_event_normal_frame_religion
-
 	is_triggered_only = yes
 	only_women = yes
 	culture_group = air_nomad_culture
-
 	trigger = {
-		NOT = { trait = pregnant }
+		NOT = {
+			trait = pregnant
+		}
 	}
-
 	option = {
 		name = OK
 		add_trait = pregnant
 		prestige = 10
-
 		if = {
 			limit = {
 				father_of_unborn = {
 					is_alive = yes
 				}
 			}
-
-			father_of_unborn = { character_event = { id = NOMAD.11 tooltip = EVTTOOLTIP403 } }
+			father_of_unborn = {
+				character_event = {
+					id = NOMAD.11
+					tooltip = EVTTOOLTIP403
+				}
+			}
 		}
 	}
 }
@@ -341,11 +379,8 @@ character_event = {
 	id = NOMAD.11
 	picture = GFX_evt_pregnancy
 	border = GFX_event_normal_frame_religion
-
 	is_triggered_only = yes
-
 	desc = NOMADEVTDESC11
-
 	option = {
 		name = OK
 		prestige = 5
@@ -360,7 +395,6 @@ character_event = {
 	culture_group = air_nomad_culture
 	only_rulers = yes
 	ai = yes
-
 	trigger = {
 		is_playable = yes
 		higher_tier_than = BARON
@@ -415,10 +449,9 @@ character_event = {
 			}
 		}
 	}
-
 	option = {
-		name = OK
-		if = { # Create Chancellor
+		if = {
+			# Create Chancellor
 			limit = {
 				NOR = {
 					any_courtier_or_vassal = {
@@ -452,7 +485,8 @@ character_event = {
 				give_job_title = job_chancellor
 			}
 		}
-		if = { # Create Marshal
+		if = {
+			# Create Marshal
 			limit = {
 				NOR = {
 					any_courtier_or_vassal = {
@@ -486,7 +520,8 @@ character_event = {
 				give_job_title = job_marshal
 			}
 		}
-		if = { # Create Steward
+		if = {
+			# Create Steward
 			limit = {
 				NOR = {
 					any_courtier_or_vassal = {
@@ -520,7 +555,8 @@ character_event = {
 				give_job_title = job_treasurer
 			}
 		}
-		if = { # Create Spymaster
+		if = {
+			# Create Spymaster
 			limit = {
 				NOR = {
 					any_courtier_or_vassal = {
@@ -554,7 +590,8 @@ character_event = {
 				give_job_title = job_spymaster
 			}
 		}
-		if = { # Create Spiritual
+		if = {
+			# Create Spiritual
 			limit = {
 				NOR = {
 					any_courtier_or_vassal = {
@@ -588,7 +625,8 @@ character_event = {
 				give_job_title = job_spiritual
 			}
 		}
-		if = { # Create Court Physician
+		if = {
+			# Create Court Physician
 			limit = {
 				NOR = {
 					any_courtier_or_vassal = {
@@ -629,70 +667,76 @@ character_event = {
 }
 
 #### Yangchen's Festival ####
-
 # Festival Start
-character_event = {
-	id = NOMAD.13
-	desc = EVTDESCNOMAD.13
-	picture = GFX_evt_air_south
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTANOMAD.13
-	}
-}
-
-character_event = { # Festival End
-	id = NOMAD.14
-	desc = NOMADEVTDESC.14
-	picture = GFX_evt_air_south
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTANOMAD.14
-		clr_character_flag = do_not_disturb
-		clr_character_flag = recent_minor_decision
-		clr_character_flag = holding_nomad_festival
-		remove_character_modifier = holding_nomad_festival
-	}
-}
-
-#### Yangchen's Festival ####
-
+# todo: figure out
+# !depends: nomad_festival
+# character_event = {
+# 	id = NOMAD.13
+# 	desc = EVTDESCNOMAD.13
+# 	picture = GFX_evt_air_south
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.13
+# 	}
+# }
+# todo: figure out
+# !depends: nomad_festival
+# character_event = {
+# 	# Festival End
+# 	id = NOMAD.14
+# 	desc = NOMADEVTDESC.14
+# 	picture = GFX_evt_air_south
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTANOMAD.14
+# 		clr_character_flag = do_not_disturb
+# 		clr_character_flag = recent_minor_decision
+# 		clr_character_flag = holding_nomad_festival
+# 		remove_character_modifier = holding_nomad_festival
+# 	}
+# }
+#### Yangchen's Festival END ####
 # Air Nomad Adulthood
 character_event = {
 	id = NOMAD.15
 	desc = NOMADEVTDESC15
 	picture = GFX_evt_nomad_wander
-
 	is_triggered_only = yes
 	culture_group = air_nomad_culture
-
 	trigger = {
 		liege = {
 			culture_group = air_nomad_culture
 		}
 		# ???
-		NOT = { trait = avatar }
-		NOT = { trait = fullyrealisedavatar }
-		NOT = { trait = directdescendantavatar }
-		NOT = { trait = descendantavatar }
+		NOT = {
+			trait = avatar
+		}
+		NOT = {
+			trait = fullyrealisedavatar
+		}
+		NOT = {
+			trait = directdescendantavatar
+		}
+		NOT = {
+			trait = descendantavatar
+		}
 	}
-
 	option = {
 		name = EVTOPTANOMADA.15
 		remove_trait = airinitiate
 		add_trait = airnomad
-
 		if = {
 			limit = {
 				is_landed = no
 			}
-		liege = { # Ask Liege
-			hidden_tooltip = {
-					character_event = { id = NOMAD.401 }
+			liege = {
+				# Ask Liege
+				hidden_tooltip = {
+					character_event = {
+						id = NOMAD.401
+					}
+				}
 			}
-		}
 		}
 		ai_chance = {
 			factor = 10
@@ -706,7 +750,6 @@ character_event = {
 			}
 		}
 	}
-
 	# REWORK #
 	option = {
 		name = EVTOPTANOMADB.15
@@ -716,9 +759,12 @@ character_event = {
 			limit = {
 				is_ruler = no
 			}
-			liege = { # Tell Liege you refuse
+			liege = {
+				# Tell Liege you refuse
 				hidden_tooltip = {
-					character_event = { id = NOMAD.402 }
+					character_event = {
+						id = NOMAD.402
+					}
 				}
 			}
 		}
@@ -736,50 +782,52 @@ character_event = {
 	}
 }
 
-# UNUSED #
-character_event = {
-	id = NOMAD.16
-	hide_window = yes
-	is_triggered_only = yes
-	is_married = yes
-
-	trigger = {
-		OR = {
-			culture = northern_air_nomad
-			culture = eastern_air_nomad
-			culture = southern_air_nomad
-			culture = western_air_nomad
-		}
-	}
-
-	option = {
-		remove_spouse = spouse
-		add_trait = airnomad
-	}
-}
-
+# todo: figure out
+# *info: looks like it removes spouse if you are airnomad
+# !nevercalled
+# character_event = {
+# 	id = NOMAD.16
+# 	hide_window = yes
+# 	is_triggered_only = yes
+# 	is_married = yes
+# 	trigger = {
+# 		OR = {
+# 			culture = northern_air_nomad
+# 			culture = eastern_air_nomad
+# 			culture = southern_air_nomad
+# 			culture = western_air_nomad
+# 		}
+# 	}
+# 	option = {
+# 		remove_spouse = spouse
+# 		add_trait = airnomad
+# 	}
+# }
 ### Nomadic Lifestyle ###
 # NOMAD.401 > 750
-
 # Asks to go on Journey
 character_event = {
 	id = NOMAD.401
 	desc = {
 		trigger = {
-			FROM = { is_child_of = ROOT }
+			FROM = {
+				is_child_of = ROOT
+			}
 		}
 		text = NOMADEVTDESCA401
 	}
 	desc = {
 		trigger = {
-			FROM = { NOT = { is_child_of = ROOT } }
+			FROM = {
+				NOT = {
+					is_child_of = ROOT
+				}
+			}
 		}
 		text = NOMADEVTDESCB401
 	}
 	picture = GFX_evt_nomad_wander
-
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.401"
 		FROM = {
@@ -791,11 +839,12 @@ character_event = {
 			factor = 10
 			modifier = {
 				factor = 0
-				NOT = { dynasty = FROM }
+				NOT = {
+					dynasty = FROM
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.401"
 		ai_chance = {
@@ -813,19 +862,24 @@ character_event = {
 	id = NOMAD.402
 	desc = {
 		trigger = {
-			FROM = { is_child_of = ROOT }
+			FROM = {
+				is_child_of = ROOT
+			}
 		}
 		text = NOMADEVTDESCA402
 	}
 	desc = {
 		trigger = {
-			FROM = { NOT = { is_child_of = ROOT } }
+			FROM = {
+				NOT = {
+					is_child_of = ROOT
+				}
+			}
 		}
 		text = NOMADEVTDESCB402
 	}
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.402"
 		FROM = {
@@ -837,11 +891,12 @@ character_event = {
 			factor = 10
 			modifier = {
 				factor = 0
-				NOT = { dynasty = FROM }
+				NOT = {
+					dynasty = FROM
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.402"
 		ai_chance = {
@@ -859,55 +914,77 @@ character_event = {
 	id = NOMAD.404
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
 		culture_group = air_nomad_culture
 		has_character_flag = nomad_journey
 		is_actually_important_trigger = yes
 	}
-
 	option = {
-		random_list = { # Random Nomad Event
-			10 = { # Make Friend
-				character_event = { id = NOMAD.405 }
+		random_list = {
+			# Random Nomad Event
+			10 = {
+				# Make Friend
+				character_event = {
+					id = NOMAD.405
+				}
 			}
-			10 = { # Make Rival
-				character_event = { id = NOMAD.406 }
+			10 = {
+				# Make Rival
+				character_event = {
+					id = NOMAD.406
+				}
 			}
-			10 = { # Find Companion
-				character_event = { id = NOMAD.407 }
+			10 = {
+				# Find Companion
+				character_event = {
+					id = NOMAD.407
+				}
 			}
-			10 = { # End Journey
+			10 = {
+				# End Journey
 				liege = {
-					character_event = { id = NOMAD.410 }
+					character_event = {
+						id = NOMAD.410
+					}
 				}
 				modifier = {
 					factor = 0
-					NOT = { age = 29 }
+					NOT = {
+						age = 29
+					}
 				}
 				modifier = {
 					factor = 4
 					age = 35
 				}
 			}
-			10 = { # Object of value
+			10 = {
+				# Object of value
 				wealth = 10
 			}
-			10 = { # Prove oneself
+			10 = {
+				# Prove oneself
 				prestige = 10
 			}
-			10 = { # Charity
+			10 = {
+				# Charity
 				piety = 10
 			}
-			10 = { # Visit Ruler
-				character_event = { id = NOMAD.412 }
+			10 = {
+				# Visit Ruler
+				character_event = {
+					id = NOMAD.412
+				}
 			}
-			10 = { # Have Children
+			10 = {
+				# Have Children
 				if = {
 					limit = {
 						is_female = no
 					}
-					character_event = { id = NOMAD.411 }
+					character_event = {
+						id = NOMAD.411
+					}
 				}
 				modifier = {
 					factor = 0
@@ -923,26 +1000,41 @@ character_event = {
 	id = NOMAD.405
 	is_triggered_only = yes
 	hide_window = yes
-
 	option = {
 		random_playable_ruler = {
 			limit = {
 				culture_group = air_nomad_culture
 				any_courtier = {
 					has_character_flag = nomad_journey
-					NOT = { is_friend = ROOT }
-					NOT = { is_rival = ROOT }
-					NOT = { is_lover = ROOT }
-					NOT = { num_of_friends = 3 }
+					NOT = {
+						is_friend = ROOT
+					}
+					NOT = {
+						is_rival = ROOT
+					}
+					NOT = {
+						is_lover = ROOT
+					}
+					NOT = {
+						num_of_friends = 3
+					}
 				}
 			}
 			random_courtier = {
 				limit = {
 					has_character_flag = nomad_journey
-					NOT = { is_friend = ROOT }
-					NOT = { is_rival = ROOT }
-					NOT = { is_lover = ROOT }
-					NOT = { num_of_friends = 3 }
+					NOT = {
+						is_friend = ROOT
+					}
+					NOT = {
+						is_rival = ROOT
+					}
+					NOT = {
+						is_lover = ROOT
+					}
+					NOT = {
+						num_of_friends = 3
+					}
 				}
 				add_friend = ROOT
 			}
@@ -955,26 +1047,41 @@ character_event = {
 	id = NOMAD.406
 	is_triggered_only = yes
 	hide_window = yes
-
 	option = {
 		random_playable_ruler = {
 			limit = {
 				culture_group = air_nomad_culture
 				any_courtier = {
 					has_character_flag = nomad_journey
-					NOT = { is_friend = ROOT }
-					NOT = { is_rival = ROOT }
-					NOT = { is_lover = ROOT }
-					NOT = { num_of_rivals = 1 }
+					NOT = {
+						is_friend = ROOT
+					}
+					NOT = {
+						is_rival = ROOT
+					}
+					NOT = {
+						is_lover = ROOT
+					}
+					NOT = {
+						num_of_rivals = 1
+					}
 				}
 			}
 			random_courtier = {
 				limit = {
 					has_character_flag = nomad_journey
-					NOT = { is_friend = ROOT }
-					NOT = { is_rival = ROOT }
-					NOT = { is_lover = ROOT }
-					NOT = { num_of_rivals = 1 }
+					NOT = {
+						is_friend = ROOT
+					}
+					NOT = {
+						is_rival = ROOT
+					}
+					NOT = {
+						is_lover = ROOT
+					}
+					NOT = {
+						num_of_rivals = 1
+					}
 				}
 				add_rival = ROOT
 			}
@@ -987,11 +1094,9 @@ character_event = {
 	id = NOMAD.407
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
 		culture_group = air_nomad_culture
 	}
-
 	option = {
 		clr_character_flag = nomad_wrote_home
 		random_playable_ruler = {
@@ -1002,12 +1107,16 @@ character_event = {
 				limit = {
 					has_character_flag = nomad_journey
 					is_opposite_sex = ROOT
-					NOT = { is_rival = ROOT }
+					NOT = {
+						is_rival = ROOT
+					}
 				}
 				add_lover = ROOT
 				add_friend = ROOT
 				clr_character_flag = nomad_wrote_home
-				character_event = { id = NOMAD.409 }
+				character_event = {
+					id = NOMAD.409
+				}
 			}
 		}
 	}
@@ -1019,12 +1128,12 @@ character_event = {
 	desc = NOMADEVTDESC408
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
-	option = { # Approve
+	option = {
+		# Approve
 		name = "EVTOPTANOMADA.408"
 	}
-
-	option = { # Disapprove
+	option = {
+		# Disapprove
 		name = "EVTOPTANOMADB.408"
 		FROMFROM = {
 			remove_lover = FROM
@@ -1037,18 +1146,20 @@ character_event = {
 	id = NOMAD.409
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
-		NOT = { has_character_flag = nomad_wrote_home }
+		NOT = {
+			has_character_flag = nomad_wrote_home
+		}
 		culture_group = air_nomad_culture
 	}
-
 	option = {
 		set_character_flag = nomad_wrote_home
 		if = {
 			limit = {
 				ROOT = {
-					NOT = { de_facto_liege = THIS }
+					NOT = {
+						de_facto_liege = THIS
+					}
 					liege = {
 						dynasty = ROOT
 						ai = no
@@ -1057,18 +1168,27 @@ character_event = {
 			}
 			ROOT = {
 				liege = {
-					character_event = { id = NOMAD.408 days = 7 } # Tell Parent
+					character_event = {
+						id = NOMAD.408
+						days = 7
+					}
+					# Tell Parent
 				}
 			}
 		}
 		if = {
 			limit = {
 				FROM = {
-					NOT = { has_character_flag = nomad_wrote_home }
+					NOT = {
+						has_character_flag = nomad_wrote_home
+					}
 				}
 			}
 			FROM = {
-				character_event = { id = NOMAD.409 } # Tell Parent
+				character_event = {
+					id = NOMAD.409
+				}
+				# Tell Parent
 			}
 		}
 	}
@@ -1079,19 +1199,24 @@ character_event = {
 	id = NOMAD.410
 	desc = {
 		trigger = {
-			FROM = { is_child_of = ROOT }
+			FROM = {
+				is_child_of = ROOT
+			}
 		}
 		text = NOMADEVTDESCA410
 	}
 	desc = {
 		trigger = {
-			FROM = { NOT = { is_child_of = ROOT } }
+			FROM = {
+				NOT = {
+					is_child_of = ROOT
+				}
+			}
 		}
 		text = NOMADEVTDESCB410
 	}
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.410"
 		FROM = {
@@ -1107,7 +1232,6 @@ character_event = {
 	id = NOMAD.411
 	is_triggered_only = yes
 	hide_window = yes
-
 	option = {
 		clr_character_flag = nomad_wrote_home
 		random_lover = {
@@ -1126,107 +1250,115 @@ character_event = {
 	id = NOMAD.412
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
-		NOT = { has_character_flag = visitedLord }
+		NOT = {
+			has_character_flag = visitedLord
+		}
 	}
-
 	option = {
 		random_playable_ruler = {
 			limit = {
-				NOT = { has_character_flag = visitedByNomads }
-				NOT = { religion = fire_nation_imperialism }
+				NOT = {
+					has_character_flag = visitedByNomads
+				}
+				NOT = {
+					religion = fire_nation_imperialism
+				}
 			}
-			character_event = { id = NOMAD.409 days = 7 random = 31 } # Visit Ruler
+			character_event = {
+				id = NOMAD.409
+				days = 7
+				random = 31
+			}
+			# Visit Ruler
 			set_character_flag = visitedByNomads
 		}
 	}
 }
 
 # Journey: Visit Ruler - Ruler
-character_event = {
-	id = NOMAD.413
-	desc = NOMADEVTDESC412
-	picture = GFX_evt_nomad_wander
-	is_triggered_only = yes
-
-	immediate = {
-		set_character_flag = visitedByNomads
-	}
-
-	option = { # Approve
-		name = "EVTOPTANOMADA.412"
-		hidden_tooltip = {
-			character_event = { id = NOMAD.414 days = 3 } # Visit Ruler
-		}
-	}
-
-	option = { # Disapprove
-		name = "EVTOPTANOMADB.412"
-	}
-
-	option = { # Disapprove
-		name = "EVTOPTANOMADC.412"
-	}
-}
-
+# todo: figure out
+# !nevercalled
+# character_event = {
+# 	id = NOMAD.413
+# 	desc = NOMADEVTDESC412
+# 	picture = GFX_evt_nomad_wander
+# 	is_triggered_only = yes
+# 	immediate = {
+# 		set_character_flag = visitedByNomads
+# 	}
+# 	option = {
+# 		# Approve
+# 		name = "EVTOPTANOMADA.412"
+# 		hidden_tooltip = {
+# 			character_event = {
+# 				id = NOMAD.414
+# 				days = 3
+# 			}			# Visit Ruler
+# 		}
+# 	}
+# 	option = {
+# 		# Disapprove
+# 		name = "EVTOPTANOMADB.412"
+# 	}
+# 	option = {
+# 		# Disapprove
+# 		name = "EVTOPTANOMADC.412"
+# 	}
+# }
+# todo: figure out
+# !depends: NOMAD.413
 # Journey: Visit Ruler - Ruler - Feast
-character_event = {
-	id = NOMAD.414
-	desc = NOMADEVTDESC414
-	picture = GFX_evt_feast
-	is_triggered_only = yes
-
-	option = { # Approve
-		name = "EVTOPTANOMADA.414"
-	}
-
-	option = { # Disapprove
-		name = "EVTOPTANOMADB.414"
-	}
-
-	option = { # Disapprove
-		name = "EVTOPTANOMADC.414"
-	}
-}
-
+# character_event = {
+# 	id = NOMAD.414
+# 	desc = NOMADEVTDESC414
+# 	picture = GFX_evt_feast
+# 	is_triggered_only = yes
+# 	option = {
+# 		# Approve
+# 		name = "EVTOPTANOMADA.414"
+# 	}
+# 	option = {
+# 		# Disapprove
+# 		name = "EVTOPTANOMADB.414"
+# 	}
+# 	option = {
+# 		# Disapprove
+# 		name = "EVTOPTANOMADC.414"
+# 	}
+# }
 ### AIR NOMAD SUCCESSION
-
 # ruler decided to make me his succession pretendent
 character_event = {
 	id = NOMAD.500
 	desc = NOMADEVTDESC500
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Accept
-		name = OK #"EVTOPTANOMADA.500"
-
+	option = {
+		# Accept
+		name = OK		#"EVTOPTANOMADA.500"
 		trigger = {
 			NOR = {
-				trait = airinitiate # young age
-				has_character_flag = nomad_journey # journey
+				trait = airinitiate				# young age
+				has_character_flag = nomad_journey				# journey
 			}
 		}
-
 		set_character_flag = accepted_potential_successor
-
 		FROM = {
 			character_event = {
 				id = NOMAD.501
 				days = 20
 			}
 		}
-
 		ai_chance = {
 			factor = 10
 		}
 	}
-
-	option = { # No, for some reasons
-		name = NO #"EVTOPTANOMADA.500"
-
-		if = { # cause of age
+	option = {
+		# No, for some reasons
+		name = NO		#"EVTOPTANOMADA.500"
+		if = {
+			# cause of age
 			limit = {
 				trait = airinitiate
 			}
@@ -1238,8 +1370,8 @@ character_event = {
 			}
 			break = yes
 		}
-
-		if = { # cause of journey
+		if = {
+			# cause of journey
 			limit = {
 				has_character_flag = nomad_journey
 			}
@@ -1251,11 +1383,9 @@ character_event = {
 			}
 			break = yes
 		}
-
 		ai_chance = {
 			factor = 1
 		}
-
 	}
 }
 
@@ -1265,16 +1395,14 @@ character_event = {
 	desc = NOMADEVTDESC501
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Yes, (s)he is ready
+	option = {
+		# Yes, (s)he is ready
 		name = "NOMADEVTOPTA.501"
-
 		set_character_flag = found_at_least_one_pretendent
-
 		FROM = {
 			# set_father = ROOT
-
-			if = { # if (s)he isn't (grand)father or brother or child or etc, make him/her your child
+			if = {
+				# if (s)he isn't (grand)father or brother or child or etc, make him/her your child
 				limit = {
 					NOT = {
 						is_close_relative = ROOT
@@ -1290,7 +1418,6 @@ character_event = {
 					set_father = ROOT
 				}
 			}
-
 			dynasty = ROOT
 			opinion = {
 				modifier = opinion_adopted_as_successor
@@ -1301,23 +1428,19 @@ character_event = {
 				who = ROOT
 			}
 		}
-
 		ai_chance = {
 			factor = 10
 		}
 	}
-
-	option = { # No, (s)he isn't ready
+	option = {
+		# No, (s)he isn't ready
 		name = "NOMADEVTOPTB.501"
-
 		trigger = {
 			ai = no
 		}
-
 		FROM = {
 			clr_character_flag = accepted_potential_successor
 		}
-
 		ai_chance = {
 			factor = 5
 		}
@@ -1330,8 +1453,8 @@ character_event = {
 	desc = NOMADEVTDESC502
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Yes, (s)he isn't ready
+	option = {
+		# Yes, (s)he isn't ready
 		name = "NOMADEVTOPTA.502"
 	}
 }
@@ -1342,15 +1465,16 @@ character_event = {
 	desc = NOMADEVTDESC503
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
-	option = { # Yes, (s)he needs to see the world.
+	option = {
+		# Yes, (s)he needs to see the world.
 		name = "NOMADEVTOPTA.503"
-		trigger = { ai = no }
+		trigger = {
+			ai = no
+		}
 	}
-
-	option = { # No, return him
+	option = {
+		# No, return him
 		name = "NOMADEVTOPTB.503"
-
 		FROM = {
 			character_event = {
 				id = NOMAD.504
@@ -1366,16 +1490,14 @@ character_event = {
 	desc = NOMADEVTDESC504
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
 	option = {
 		name = "NOMADEVTOPT.504"
-
 		set_character_flag = accepted_potential_successor
-
 		liege = {
-			character_event = { id = NOMAD.410 }
+			character_event = {
+				id = NOMAD.410
+			}
 		}
-
 		FROM = {
 			character_event = {
 				id = NOMAD.501
@@ -1390,25 +1512,24 @@ character_event = {
 	id = NOMAD.510
 	hide_window = yes
 	is_triggered_only = yes
-
 	immediate = {
-		if = { # I've found a successor
+		if = {
+			# I've found a successor
 			limit = {
 				has_character_flag = found_at_least_one_pretendent
 			}
-
 			character_event = {
 				id = NOMAD.511
 				days = 1
 			}
 		}
-		if = { # I've found no successor
+		if = {
+			# I've found no successor
 			limit = {
 				NOT = {
 					has_character_flag = found_at_least_one_pretendent
 				}
 			}
-
 			character_event = {
 				id = NOMAD.512
 				days = 1
@@ -1423,30 +1544,24 @@ character_event = {
 	desc = NOMADEVTDESC511
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = OK
-
 		prestige = 50
-
 		add_character_modifier = {
 			name = just_choosed_candidate
 			years = 3
 		}
-
 		any_close_relative = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 			}
 		}
-
 		any_courtier = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 				dynasty = ROOT
 			}
 		}
-
 		clr_character_flag = search_for_successor
 	}
 }
@@ -1457,22 +1572,17 @@ character_event = {
 	desc = NOMADEVTDESC512
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = OK
-
 		prestige = -50
-
 		clr_character_flag = search_for_successor
 	}
-
-	option = { # I'll repeat my searching
+	option = {
+		# I'll repeat my searching
 		name = "NOMADEVTOPTA.512"
-
 		custom_tooltip = {
 			text = bad_search_tt
 		}
-
 		character_event = {
 			id = NOMAD.603
 			days = 20
@@ -1484,57 +1594,46 @@ character_event = {
 character_event = {
 	id = NOMAD.520
 	hide_window = yes
-
 	is_triggered_only = yes
-
 	immediate = {
 		any_close_relative = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 				is_heir = yes
 			}
-
 			clr_character_flag = accepted_potential_successor
 		}
-		any_courtier = { # any kinsman I've adopted
+		any_courtier = {
+			# any kinsman I've adopted
 			limit = {
 				has_character_flag = accepted_potential_successor
 				dynasty = ROOT
 				is_heir = yes
 			}
-
 			clr_character_flag = accepted_potential_successor
 		}
 	}
-
 	option = {
-		name = OK
-
 		any_close_relative = {
 			limit = {
 				has_character_flag = accepted_potential_successor
 			}
-
 			if = {
 				limit = {
 					dynasty = ROOT
 				}
-
 				dynasty = father_bastard
 			}
-
 			clr_character_flag = accepted_potential_successor
 		}
-
-		any_courtier = { # any kinsman I've adopted
+		any_courtier = {
+			# any kinsman I've adopted
 			limit = {
 				has_character_flag = accepted_potential_successor
 				dynasty = ROOT
 			}
-
 			dynasty = father_bastard
 		}
-
 	}
 }
 
@@ -1543,10 +1642,7 @@ character_event = {
 	id = NOMAD.550
 	hide_window = yes
 	is_triggered_only = yes
-
 	option = {
-		name = OK
-
 		liege = {
 			character_event = {
 				id = NOMAD.551
@@ -1560,10 +1656,8 @@ character_event = {
 	desc = NOMADEVTDESC551
 	picture = GFX_evt_air_tattoos_ceremony
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMAD.551"
-
 		FROM = {
 			add_trait = airnomad_tattoos
 		}
@@ -1571,7 +1665,6 @@ character_event = {
 }
 
 ### AIR NOMAD CONTROL EVENT
-
 # Give skybison
 character_event = {
 	id = NOMAD.599
@@ -1580,17 +1673,14 @@ character_event = {
 	culture_group = air_nomad_culture
 	religion_group = air_religions
 	min_age = 9
-
 	trigger = {
 		trait = airbender
 		NOT = {
 			has_artifact = petSkybison
 		}
 	}
-
 	option = {
 		add_artifact = petSkybison
-
 		new_artifact = {
 			set_name = "[Root.GetSkybisonName]"
 		}
@@ -1605,7 +1695,6 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	culture_group = air_nomad_culture
-
 	trigger = {
 		NOR = {
 			trait = airinitiate
@@ -1613,7 +1702,6 @@ character_event = {
 			trait = airelder
 		}
 	}
-
 	option = {
 		if = {
 			limit = {
@@ -1627,7 +1715,9 @@ character_event = {
 		}
 		if = {
 			limit = {
-				NOT = { age = 45 }
+				NOT = {
+					age = 45
+				}
 				age = 16
 			}
 			add_trait = airnomad
@@ -1637,7 +1727,9 @@ character_event = {
 		}
 		if = {
 			limit = {
-				NOT = { age = 16 }
+				NOT = {
+					age = 16
+				}
 			}
 			add_trait = airinitiate
 			add_trait = airbender
@@ -1653,17 +1745,21 @@ character_event = {
 	desc = NOMADEVTDESC601
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
-	option = { # Approve
+	option = {
+		# Approve
 		name = "EVTOPTANOMADA.601"
 		hidden_tooltip = {
 			any_society_member = {
 				limit = {
 					society_member_of = monastic_order_elder_council
 					society_rank = 4
-					NOT = { character = ROOT }
+					NOT = {
+						character = ROOT
+					}
 				}
-				character_event = { id = NOMAD.602 }
+				character_event = {
+					id = NOMAD.602
+				}
 			}
 		}
 	}
@@ -1675,8 +1771,8 @@ character_event = {
 	desc = NOMADEVTDESC602
 	picture = GFX_evt_nomad_wander
 	is_triggered_only = yes
-
-	option = { # Approve
+	option = {
+		# Approve
 		name = "EVTOPTANOMADA.602"
 	}
 }
@@ -1687,32 +1783,32 @@ character_event = {
 	desc = NOMADEVTDESC603
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # I will choose the person whom the council has elected
+	option = {
+		# I will choose the person whom the council has elected
 		name = "EVTOPTANOMADC.603"
 		log = "[From.GetFullName] choosed council"
-
 		tooltip_info = learning
 		custom_tooltip = {
 			text = choose_council_nominee_tt
 		}
-
 		any_courtier = {
 			limit = {
 				is_heir = ROOT
 			}
-
-			character_event = { # make him/her an offer
-				id = NOMAD.500 days = 1
+			character_event = {
+				# make him/her an offer
+				id = NOMAD.500
+				days = 1
 			}
 		}
-
-		character_event = { # end search
-			id = NOMAD.510 days = 60
+		character_event = {
+			# end search
+			id = NOMAD.510
+			days = 60
 		}
 	}
-
-	option = { # I will find someone in the temple
+	option = {
+		# I will find someone in the temple
 		name = "EVTOPTANOMADA.603"
 		log = "[From.GetFullName] choosed random"
 		tooltip_info = diplomacy
@@ -1720,17 +1816,19 @@ character_event = {
 			text = choose_random_tt
 		}
 		hidden_tooltip = {
-			character_event = { id = NOMAD.604 days = 21 }
+			character_event = {
+				id = NOMAD.604
+				days = 21
+			}
 		}
 	}
-
-	option = { # I will choose someone from my family
+	option = {
+		# I will choose someone from my family
 		name = "EVTOPTANOMADB.603"
 		tooltip_info = intrigue
 		custom_tooltip = {
 			text = choose_family_tt
 		}
-
 		log = "[From.GetFullName] choosed family"
 		trigger = {
 			# ai = no
@@ -1745,20 +1843,25 @@ character_event = {
 				same_sex = ROOT
 				age = 20
 			}
-
-			character_event = { # make him/her an offer
-				id = NOMAD.500 days = 1
+			character_event = {
+				# make him/her an offer
+				id = NOMAD.500
+				days = 1
 			}
 		}
-		character_event = { # end search
-			id = NOMAD.510 days = 60
+		character_event = {
+			# end search
+			id = NOMAD.510
+			days = 60
 		}
 	}
-
-	option = { # Cancel
+	option = {
+		# Cancel
 		name = "EVTOPTANOMADD.603"
 		clr_character_flag = search_for_successor
-		trigger = { ai = no }
+		trigger = {
+			ai = no
+		}
 	}
 }
 
@@ -1767,7 +1870,6 @@ character_event = {
 	id = NOMAD.604
 	hide_window = yes
 	is_triggered_only = yes
-
 	immediate = {
 		if = {
 			limit = {
@@ -1795,7 +1897,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_diplomat_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1820,7 +1924,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_martial_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1845,7 +1951,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_steward_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1870,7 +1978,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_spy_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1895,7 +2005,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_learned_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 			}
@@ -1925,7 +2037,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_diplomat_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1949,7 +2063,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_martial_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1973,7 +2089,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_steward_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -1997,7 +2115,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_spy_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 				10 = {
@@ -2021,7 +2141,9 @@ character_event = {
 					}
 					new_character = {
 						set_character_flag = is_learned_successor
-						character_event = { id = NOMAD.605 }
+						character_event = {
+							id = NOMAD.605
+						}
 					}
 				}
 			}
@@ -2034,10 +2156,11 @@ character_event = {
 	id = NOMAD.605
 	hide_window = yes
 	is_triggered_only = yes
-
 	option = {
 		FROM = {
-			character_event = { id = NOMAD.606 }
+			character_event = {
+				id = NOMAD.606
+			}
 		}
 	}
 }
@@ -2047,47 +2170,57 @@ character_event = {
 	id = NOMAD.606
 	desc = {
 		trigger = {
-			FROM = { has_character_flag = is_diplomat_successor }
+			FROM = {
+				has_character_flag = is_diplomat_successor
+			}
 		}
 		text = NOMADEVTDESC606A
 	}
 	desc = {
 		trigger = {
-			FROM = { has_character_flag = is_martial_successor }
+			FROM = {
+				has_character_flag = is_martial_successor
+			}
 		}
 		text = NOMADEVTDESC606B
 	}
 	desc = {
 		trigger = {
-			FROM = { has_character_flag = is_steward_successor }
+			FROM = {
+				has_character_flag = is_steward_successor
+			}
 		}
 		text = NOMADEVTDESC606C
 	}
 	desc = {
 		trigger = {
-			FROM = { has_character_flag = is_spy_successor }
+			FROM = {
+				has_character_flag = is_spy_successor
+			}
 		}
 		text = NOMADEVTDESC606D
 	}
 	desc = {
 		trigger = {
-			FROM = { has_character_flag = is_learned_successor }
+			FROM = {
+				has_character_flag = is_learned_successor
+			}
 		}
 		text = NOMADEVTDESC606E
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Approve - End Search
+	option = {
+		# Approve - End Search
 		name = "EVTOPTANOMADA.606"
-
 		clr_character_flag = search_for_successor
-
 		custom_tooltip = {
 			text = end_search_for_successor_tooltip
 			hidden_tooltip = {
 				if = {
-					limit = { is_female = yes }
+					limit = {
+						is_female = yes
+					}
 					FROM = {
 						set_mother = ROOT
 						dynasty = ROOT
@@ -2102,7 +2235,9 @@ character_event = {
 					}
 				}
 				if = {
-					limit = { is_female = no }
+					limit = {
+						is_female = no
+					}
 					FROM = {
 						set_father = ROOT
 						dynasty = ROOT
@@ -2118,21 +2253,27 @@ character_event = {
 				}
 			}
 		}
-
 	}
-	option = { # Dismiss - Continue Search
+	option = {
+		# Dismiss - Continue Search
 		name = "EVTOPTANOMADB.606"
 		hidden_tooltip = {
-			character_event = { id = NOMAD.604 }
+			character_event = {
+				id = NOMAD.604
+			}
 			set_character_flag = had_chance_to_find_successor
 			FROM = {
 				leave_court_effect = yes
-				death = { death_reason = death_missing }
+				death = {
+					death_reason = death_missing
+				}
 			}
 		}
 		trigger = {
 			ai = no
-			NOT = { has_character_flag = had_chance_to_find_successor }
+			NOT = {
+				has_character_flag = had_chance_to_find_successor
+			}
 		}
 	}
 	option = {
@@ -2141,7 +2282,6 @@ character_event = {
 			has_character_flag = had_chance_to_find_successor
 		}
 		clr_character_flag = had_chance_to_find_successor
-
 		custom_tooltip = {
 			text = bad_search_tt
 		}
@@ -2158,7 +2298,6 @@ character_event = {
 	desc = NOMADEVTDESC607
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	immediate = {
 		clr_global_flag = cp_talked_aggression
 		clr_global_flag = cp_talked_isolation
@@ -2170,19 +2309,26 @@ character_event = {
 		clr_global_flag = cp_passed_religion_change
 		clr_global_flag = cp_passed_trade_change
 	}
-
-	option = { # Summon Council
+	option = {
+		# Summon Council
 		name = "EVTOPTANOMADA.607"
 		hidden_tooltip = {
-			character_event = { id = NOMAD.608 days = 21 }
+			character_event = {
+				id = NOMAD.608
+				days = 21
+			}
 			any_society_member = {
 				limit = {
 					society_member_of = monastic_order_elder_council
 					society_rank = 4
-					NOT = { character = ROOT }
+					NOT = {
+						character = ROOT
+					}
 				}
 				clr_character_flag = cp_has_spoken
-				character_event = { id = NOMAD.609 }
+				character_event = {
+					id = NOMAD.609
+				}
 			}
 		}
 	}
@@ -2194,74 +2340,109 @@ character_event = {
 	desc = NOMADEVTDESC608
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	immediate = {
 		any_society_member = {
 			limit = {
 				society_member_of = monastic_order_elder_council
 				society_rank = 4
-				NOT = { character = ROOT }
+				NOT = {
+					character = ROOT
+				}
 			}
-			character_event = { id = NOMAD.610 }
+			character_event = {
+				id = NOMAD.610
+			}
 		}
 		set_character_flag = cp_has_spoken
-		character_event = { id = NOMAD.616 days = 37 }
+		character_event = {
+			id = NOMAD.616
+			days = 37
+		}
 	}
-
-	option = { # Change Policy - Towards Aggression
+	option = {
+		# Change Policy - Towards Aggression
 		name = "EVTOPTANOMADA.608"
 		tooltip_info = martial
 		trigger = {
 			primary_title = {
-				NOT = { has_law = an_law_3 }
+				NOT = {
+					has_law = an_law_3
+				}
 			}
 		}
 		custom_tooltip = {
-
 			text = change_policy_to_aggression
 			hidden_tooltip = {
-
 				set_global_flag = cp_talked_aggression
-				set_variable = { which = global_cp_aggression_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_aggression_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.611 days = 2 }
+					character_event = {
+						id = NOMAD.611
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.612 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.612
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Towards Isolation
+	option = {
+		# Change Policy - Towards Isolation
 		name = "EVTOPTANOMADB.608"
 		tooltip_info = diplomacy
 		trigger = {
 			primary_title = {
-				NOT = { has_law = an_law_0 }
+				NOT = {
+					has_law = an_law_0
+				}
 			}
 		}
 		custom_tooltip = {
-
 			text = change_policy_to_isolation
 			hidden_tooltip = {
 				set_global_flag = cp_talked_isolation
-				set_variable = { which = global_cp_isolation_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_isolation_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.618 days = 2 }
+					character_event = {
+						id = NOMAD.618
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.619 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.619
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Pacifism
+	option = {
+		# Change Policy - Reaffirm Pacifism
 		name = "EVTOPTANOMADD.608"
 		tooltip_info = learning
 		trigger = {
@@ -2271,20 +2452,34 @@ character_event = {
 			text = change_policy_to_pacifism
 			hidden_tooltip = {
 				set_global_flag = cp_talked_pacifism
-				set_variable = { which = global_cp_pacifism_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_pacifism_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.620 days = 2 }
+					character_event = {
+						id = NOMAD.620
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.621 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.621
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Nhilism
+	option = {
+		# Change Policy - Reaffirm Nhilism
 		name = "EVTOPTANOMADE.608"
 		tooltip_info = nomadic_nihilism
 		trigger = {
@@ -2294,56 +2489,97 @@ character_event = {
 			text = change_policy_to_nihilism
 			hidden_tooltip = {
 				set_global_flag = cp_talked_nihilism
-				set_variable = { which = global_cp_nihilism_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_nihilism_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.622 days = 2 }
+					character_event = {
+						id = NOMAD.622
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.623 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.623
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Trade
+	option = {
+		# Change Policy - Reaffirm Trade
 		name = "EVTOPTANOMADF.608"
 		tooltip_info = stewardship
 		custom_tooltip = {
 			text = change_policy_to_trade
 			hidden_tooltip = {
 				set_global_flag = cp_talked_trade
-				set_variable = { which = global_cp_trade_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_trade_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.624 days = 2 }
+					character_event = {
+						id = NOMAD.624
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.625 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.625
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Protection
+	option = {
+		# Change Policy - Reaffirm Protection
 		name = "EVTOPTANOMADC.608"
 		tooltip_info = stewardship
 		custom_tooltip = {
 			text = change_policy_to_protection
 			hidden_tooltip = {
 				set_global_flag = cp_talked_protection
-				set_variable = { which = global_cp_trade_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_trade_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.626 days = 2 }
+					character_event = {
+						id = NOMAD.626
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.627 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.627
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
@@ -2355,8 +2591,8 @@ character_event = {
 	desc = NOMADEVTDESC609
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Summon Known
+	option = {
+		# Summon Known
 		name = "EVTOPTANOMADA.609"
 	}
 }
@@ -2367,8 +2603,8 @@ character_event = {
 	desc = NOMADEVTDESC610
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Summon Known
+	option = {
+		# Summon Known
 		name = "EVTOPTANOMADA.610"
 	}
 }
@@ -2379,13 +2615,16 @@ character_event = {
 	desc = NOMADEVTDESC611
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Vote Yes
+	option = {
+		# Vote Yes
 		name = "EVTOPTANOMADA.611"
 		custom_tooltip = {
 			text = cp_vote_yes_to_aggression
 			hidden_tooltip = {
-				change_variable = { which = global_cp_aggression_vote value = 1 }
+				change_variable = {
+					which = global_cp_aggression_vote
+					value = 1
+				}
 			}
 		}
 		ai_chance = {
@@ -2407,29 +2646,38 @@ character_event = {
 				OR = {
 					c_southern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_eastern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_northern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_western_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-	option = { # Vote No
+	option = {
+		# Vote No
 		name = "EVTOPTANOMADB.611"
 		custom_tooltip = {
 			text = cp_vote_no_to_aggression
@@ -2475,19 +2723,26 @@ character_event = {
 	id = NOMAD.612
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_aggression_vote value = 3 }
+			check_variable = {
+				which = global_cp_aggression_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC612A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_aggression_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_aggression_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC612B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.612"
 		custom_tooltip = {
@@ -2498,17 +2753,28 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.628 days = 1 }
+					character_event = {
+						id = NOMAD.628
+						days = 1
+					}
 				}
 				if = {
 					limit = {
@@ -2516,16 +2782,26 @@ character_event = {
 							has_law = an_law_2
 						}
 					}
-
-					ROOT = { # 'cause any_independent_ruler doesn't include it
+					ROOT = {
+						# 'cause any_independent_ruler doesn't include it
 						primary_title = {
-							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_2
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 					any_independent_ruler = {
-						limit = { religion_group = air_religions }
+						limit = {
+							religion_group = air_religions
+						}
 						primary_title = {
-							add_law = { law = an_law_3 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_3
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 				}
@@ -2535,16 +2811,26 @@ character_event = {
 							has_law = an_law_1
 						}
 					}
-
-					ROOT = { # 'cause any_independent_ruler doesn't include it
+					ROOT = {
+						# 'cause any_independent_ruler doesn't include it
 						primary_title = {
-							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_2
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 					any_independent_ruler = {
-						limit = { religion_group = air_religions }
+						limit = {
+							religion_group = air_religions
+						}
 						primary_title = {
-							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_2
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 				}
@@ -2554,25 +2840,38 @@ character_event = {
 							has_law = an_law_0
 						}
 					}
-					ROOT = { # 'cause any_independent_ruler doesn't include it
+					ROOT = {
+						# 'cause any_independent_ruler doesn't include it
 						primary_title = {
-							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_2
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 					any_independent_ruler = {
-						limit = { religion_group = air_religions }
+						limit = {
+							religion_group = air_religions
+						}
 						primary_title = {
-							add_law = { law = an_law_1 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_1
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 				}
 			}
 		}
 		trigger = {
-			check_variable = { which = global_cp_aggression_vote value = 3 }
+			check_variable = {
+				which = global_cp_aggression_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.612"
 		custom_tooltip = {
@@ -2582,22 +2881,38 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.628 days = 1 }
+					character_event = {
+						id = NOMAD.628
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_aggression_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_aggression_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -2608,12 +2923,11 @@ character_event = {
 	desc = NOMADEVTDESC613
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	immediate = {
 		set_character_flag = cp_has_spoken
 	}
-
-	option = { # Change Policy - Towards Aggression
+	option = {
+		# Change Policy - Towards Aggression
 		name = "EVTOPTANOMADA.608"
 		trigger = {
 			NOR = {
@@ -2621,27 +2935,43 @@ character_event = {
 				has_global_flag = cp_talked_aggression
 			}
 			primary_title = {
-				NOT = { has_law = an_law_3 }
+				NOT = {
+					has_law = an_law_3
+				}
 			}
 		}
 		custom_tooltip = {
 			text = change_policy_to_aggression
 			hidden_tooltip = {
 				set_global_flag = cp_talked_aggression
-				set_variable = { which = global_cp_aggression_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_aggression_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.611 days = 2 }
+					character_event = {
+						id = NOMAD.611
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.612 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.612
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Towards Isolation
+	option = {
+		# Change Policy - Towards Isolation
 		name = "EVTOPTANOMADB.608"
 		trigger = {
 			NOR = {
@@ -2649,27 +2979,43 @@ character_event = {
 				has_global_flag = cp_talked_isolation
 			}
 			primary_title = {
-				NOT = { has_law = an_law_0 }
+				NOT = {
+					has_law = an_law_0
+				}
 			}
 		}
 		custom_tooltip = {
 			text = change_policy_to_isolation
 			hidden_tooltip = {
 				set_global_flag = cp_talked_isolation
-				set_variable = { which = global_cp_isolation_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_isolation_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.618 days = 2 }
+					character_event = {
+						id = NOMAD.618
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.619 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.619
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Pacifism
+	option = {
+		# Change Policy - Reaffirm Pacifism
 		name = "EVTOPTANOMADD.608"
 		trigger = {
 			NOR = {
@@ -2682,20 +3028,34 @@ character_event = {
 			text = change_policy_to_pacifism
 			hidden_tooltip = {
 				set_global_flag = cp_talked_pacifism
-				set_variable = { which = global_cp_pacifism_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_pacifism_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.620 days = 2 }
+					character_event = {
+						id = NOMAD.620
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.621 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.621
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Nhilism
+	option = {
+		# Change Policy - Reaffirm Nhilism
 		name = "EVTOPTANOMADE.608"
 		trigger = {
 			NOR = {
@@ -2708,20 +3068,34 @@ character_event = {
 			text = change_policy_to_nihilism
 			hidden_tooltip = {
 				set_global_flag = cp_talked_nihilism
-				set_variable = { which = global_cp_nihilism_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_nihilism_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.622 days = 2 }
+					character_event = {
+						id = NOMAD.622
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.623 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.623
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Trade
+	option = {
+		# Change Policy - Reaffirm Trade
 		name = "EVTOPTANOMADF.608"
 		trigger = {
 			NOR = {
@@ -2733,20 +3107,34 @@ character_event = {
 			text = change_policy_to_trade
 			hidden_tooltip = {
 				set_global_flag = cp_talked_trade
-				set_variable = { which = global_cp_trade_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_trade_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.624 days = 2 }
+					character_event = {
+						id = NOMAD.624
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.625 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.625
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Reaffirm Protection
+	option = {
+		# Change Policy - Reaffirm Protection
 		name = "EVTOPTANOMADC.608"
 		trigger = {
 			NOR = {
@@ -2758,20 +3146,34 @@ character_event = {
 			text = change_policy_to_protection
 			hidden_tooltip = {
 				set_global_flag = cp_talked_protection
-				set_variable = { which = global_cp_protection_vote value = 1 }
-				any_society_member = { # Get Votes
+				set_variable = {
+					which = global_cp_protection_vote
+					value = 1
+				}
+				any_society_member = {
+					# Get Votes
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.626 days = 2 }
+					character_event = {
+						id = NOMAD.626
+						days = 2
+					}
 				}
-				character_event = { id = NOMAD.627 days = 5 } # Get Vote Results
+				character_event = {
+					id = NOMAD.627
+					days = 5
+				}
+				# Get Vote Results
 			}
 		}
 	}
-	option = { # Change Policy - Nothing More
+	option = {
+		# Change Policy - Nothing More
 		name = "EVTOPTANOMADG.608"
 		trigger = {
 			OR = {
@@ -2788,9 +3190,14 @@ character_event = {
 				limit = {
 					society_member_of = monastic_order_elder_council
 					society_rank = 4
-					NOT = { has_character_flag = cp_has_spoken }
+					NOT = {
+						has_character_flag = cp_has_spoken
+					}
 				}
-				character_event = { id = NOMAD.613 days = 3 }
+				character_event = {
+					id = NOMAD.613
+					days = 3
+				}
 			}
 		}
 	}
@@ -2802,18 +3209,20 @@ character_event = {
 	desc = NOMADEVTDESC616
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	immediate = {
 		any_society_member = {
 			limit = {
 				society_member_of = monastic_order_elder_council
 				society_rank = 4
-				NOT = { character = ROOT }
+				NOT = {
+					character = ROOT
+				}
 			}
-			character_event = { id = NOMAD.617 }
+			character_event = {
+				id = NOMAD.617
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADA.616"
 	}
@@ -2825,7 +3234,6 @@ character_event = {
 	desc = NOMADEVTDESC617
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.617"
 	}
@@ -2837,13 +3245,16 @@ character_event = {
 	desc = NOMADEVTDESC618
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Vote Yes
+	option = {
+		# Vote Yes
 		name = "EVTOPTANOMADA.618"
 		custom_tooltip = {
 			text = cp_vote_yes_to_isolation
 			hidden_tooltip = {
-				change_variable = { which = global_cp_isolation_vote value = 1 }
+				change_variable = {
+					which = global_cp_isolation_vote
+					value = 1
+				}
 			}
 		}
 		ai_chance = {
@@ -2880,7 +3291,8 @@ character_event = {
 			}
 		}
 	}
-	option = { # Vote No
+	option = {
+		# Vote No
 		name = "EVTOPTANOMADB.618"
 		custom_tooltip = {
 			text = cp_vote_no_to_isolation
@@ -2904,22 +3316,30 @@ character_event = {
 				OR = {
 					c_southern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_eastern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_northern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_western_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 				}
@@ -2933,19 +3353,26 @@ character_event = {
 	id = NOMAD.619
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_isolation_vote value = 3 }
+			check_variable = {
+				which = global_cp_isolation_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC619A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_isolation_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_isolation_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC619B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.619"
 		custom_tooltip = {
@@ -2956,17 +3383,28 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.629 days = 1 }
+					character_event = {
+						id = NOMAD.629
+						days = 1
+					}
 				}
 				if = {
 					limit = {
@@ -2974,15 +3412,26 @@ character_event = {
 							has_law = an_law_3
 						}
 					}
-					ROOT = { # 'cause any_independent_ruler doesn't include it
+					ROOT = {
+						# 'cause any_independent_ruler doesn't include it
 						primary_title = {
-							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_2
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 					any_independent_ruler = {
-						limit = { religion_group = air_religions }
+						limit = {
+							religion_group = air_religions
+						}
 						primary_title = {
-							add_law = { law = an_law_2 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_2
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 				}
@@ -2992,15 +3441,26 @@ character_event = {
 							has_law = an_law_2
 						}
 					}
-					ROOT = { # 'cause any_independent_ruler doesn't include it
+					ROOT = {
+						# 'cause any_independent_ruler doesn't include it
 						primary_title = {
-							add_law = { law = an_law_1 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_1
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 					any_independent_ruler = {
-						limit = { religion_group = air_religions }
+						limit = {
+							religion_group = air_religions
+						}
 						primary_title = {
-							add_law = { law = an_law_1 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_1
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 				}
@@ -3010,25 +3470,38 @@ character_event = {
 							has_law = an_law_1
 						}
 					}
-					ROOT = { # 'cause any_independent_ruler doesn't include it
+					ROOT = {
+						# 'cause any_independent_ruler doesn't include it
 						primary_title = {
-							add_law = { law = an_law_0 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_0
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 					any_independent_ruler = {
-						limit = { religion_group = air_religions }
+						limit = {
+							religion_group = air_religions
+						}
 						primary_title = {
-							add_law = { law = an_law_0 cooldown = no opinion_effect = no }
+							add_law = {
+								law = an_law_0
+								cooldown = no
+								opinion_effect = no
+							}
 						}
 					}
 				}
 			}
 		}
 		trigger = {
-			check_variable = { which = global_cp_isolation_vote value = 3 }
+			check_variable = {
+				which = global_cp_isolation_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.619"
 		custom_tooltip = {
@@ -3038,22 +3511,38 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.629 days = 1 }
+					character_event = {
+						id = NOMAD.629
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_isolation_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_isolation_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3064,19 +3553,22 @@ character_event = {
 	desc = NOMADEVTDESC620
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Vote Yes
+	option = {
+		# Vote Yes
 		name = "EVTOPTANOMADA.620"
 		custom_tooltip = {
 			text = cp_vote_yes_to_pacifism
 			hidden_tooltip = {
-				change_variable = { which = global_cp_pacifism_vote value = 1 }
+				change_variable = {
+					which = global_cp_pacifism_vote
+					value = 1
+				}
 			}
 		}
 		ai_chance = {
 			factor = 1
 			modifier = {
-				factor = 2.0
+				factor = 2
 				religion = air_spirituality
 			}
 			modifier = {
@@ -3125,7 +3617,8 @@ character_event = {
 			}
 		}
 	}
-	option = { # Vote No
+	option = {
+		# Vote No
 		name = "EVTOPTANOMADB.620"
 		custom_tooltip = {
 			text = cp_vote_no_to_pacifism
@@ -3134,7 +3627,9 @@ character_event = {
 			factor = 1.5
 			modifier = {
 				factor = 0.5
-				NOT = { has_global_flag = avatar_revealed }
+				NOT = {
+					has_global_flag = avatar_revealed
+				}
 			}
 			modifier = {
 				factor = 0.5
@@ -3149,22 +3644,30 @@ character_event = {
 				OR = {
 					c_southern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_eastern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_northern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_western_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 				}
@@ -3178,19 +3681,26 @@ character_event = {
 	id = NOMAD.621
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_pacifism_vote value = 3 }
+			check_variable = {
+				which = global_cp_pacifism_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC621A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_pacifism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_pacifism_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC621B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.621"
 		custom_tooltip = {
@@ -3201,17 +3711,28 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.630 days = 1 }
+					character_event = {
+						id = NOMAD.630
+						days = 1
+					}
 				}
 			}
 			random_province = {
@@ -3222,10 +3743,12 @@ character_event = {
 			}
 		}
 		trigger = {
-			check_variable = { which = global_cp_pacifism_vote value = 3 }
+			check_variable = {
+				which = global_cp_pacifism_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.621"
 		custom_tooltip = {
@@ -3235,22 +3758,38 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.630 days = 1 }
+					character_event = {
+						id = NOMAD.630
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_pacifism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_pacifism_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3261,20 +3800,25 @@ character_event = {
 	desc = NOMADEVTDESC622
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Vote Yes
+	option = {
+		# Vote Yes
 		name = "EVTOPTANOMADA.622"
 		custom_tooltip = {
 			text = cp_vote_yes_to_nihilism
 			hidden_tooltip = {
-				change_variable = { which = global_cp_nihilism_vote value = 1 }
+				change_variable = {
+					which = global_cp_nihilism_vote
+					value = 1
+				}
 			}
 		}
 		ai_chance = {
 			factor = 1
 			modifier = {
 				factor = 0.5
-				NOT = { has_global_flag = avatar_revealed }
+				NOT = {
+					has_global_flag = avatar_revealed
+				}
 			}
 			modifier = {
 				factor = 0.5
@@ -3289,29 +3833,38 @@ character_event = {
 				OR = {
 					c_southern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_eastern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_northern_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 					c_western_air_temple = {
 						owner = {
-							NOT = { religion_group = air_religions }
+							NOT = {
+								religion_group = air_religions
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-	option = { # Vote No
+	option = {
+		# Vote No
 		name = "EVTOPTANOMADB.622"
 		custom_tooltip = {
 			text = cp_vote_no_to_nihilism
@@ -3319,7 +3872,7 @@ character_event = {
 		ai_chance = {
 			factor = 1.5
 			modifier = {
-				factor = 2.0
+				factor = 2
 				religion = air_spirituality
 			}
 			modifier = {
@@ -3375,19 +3928,26 @@ character_event = {
 	id = NOMAD.623
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_nihilism_vote value = 3 }
+			check_variable = {
+				which = global_cp_nihilism_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC623A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_nihilism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_nihilism_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC623B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.623"
 		custom_tooltip = {
@@ -3398,17 +3958,28 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.631 days = 1 }
+					character_event = {
+						id = NOMAD.631
+						days = 1
+					}
 				}
 			}
 			random_province = {
@@ -3419,10 +3990,12 @@ character_event = {
 			}
 		}
 		trigger = {
-			check_variable = { which = global_cp_nihilism_vote value = 3 }
+			check_variable = {
+				which = global_cp_nihilism_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.623"
 		custom_tooltip = {
@@ -3432,22 +4005,38 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.631 days = 1 }
+					character_event = {
+						id = NOMAD.631
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_nihilism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_nihilism_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3458,13 +4047,16 @@ character_event = {
 	desc = NOMADEVTDESC624
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Vote Yes
+	option = {
+		# Vote Yes
 		name = "EVTOPTANOMADA.624"
 		custom_tooltip = {
 			text = cp_vote_yes_to_trade
 			hidden_tooltip = {
-				change_variable = { which = global_cp_trade_vote value = 1 }
+				change_variable = {
+					which = global_cp_trade_vote
+					value = 1
+				}
 			}
 		}
 		ai_chance = {
@@ -3479,7 +4071,8 @@ character_event = {
 			}
 		}
 	}
-	option = { # Vote No
+	option = {
+		# Vote No
 		name = "EVTOPTANOMADB.624"
 		custom_tooltip = {
 			text = cp_vote_no_to_trade
@@ -3517,19 +4110,26 @@ character_event = {
 	id = NOMAD.625
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_trade_vote value = 3 }
+			check_variable = {
+				which = global_cp_trade_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC625A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_trade_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_trade_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC625B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.625"
 		custom_tooltip = {
@@ -3540,29 +4140,47 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 					any_province = {
-						limit = { religion_group = air_religions }
-						add_province_modifier = { name = cp_boost_trade duration = 2840 }
+						limit = {
+							religion_group = air_religions
+						}
+						add_province_modifier = {
+							name = cp_boost_trade
+							duration = 2840
+						}
 					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.632 days = 1 }
+					character_event = {
+						id = NOMAD.632
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			check_variable = { which = global_cp_trade_vote value = 3 }
+			check_variable = {
+				which = global_cp_trade_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.625"
 		custom_tooltip = {
@@ -3572,22 +4190,38 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.632 days = 1 }
+					character_event = {
+						id = NOMAD.632
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_trade_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_trade_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3598,13 +4232,16 @@ character_event = {
 	desc = NOMADEVTDESC626
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
-	option = { # Vote Yes
+	option = {
+		# Vote Yes
 		name = "EVTOPTANOMADA.626"
 		custom_tooltip = {
 			text = cp_vote_yes_to_protection
 			hidden_tooltip = {
-				change_variable = { which = global_cp_protection_vote value = 1 }
+				change_variable = {
+					which = global_cp_protection_vote
+					value = 1
+				}
 			}
 		}
 		ai_chance = {
@@ -3633,7 +4270,8 @@ character_event = {
 			}
 		}
 	}
-	option = { # Vote No
+	option = {
+		# Vote No
 		name = "EVTOPTANOMADB.626"
 		custom_tooltip = {
 			text = cp_vote_no_to_protection
@@ -3657,19 +4295,26 @@ character_event = {
 	id = NOMAD.627
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_protection_vote value = 3 }
+			check_variable = {
+				which = global_cp_protection_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC627A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_protection_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_protection_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC627B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.627"
 		custom_tooltip = {
@@ -3680,29 +4325,47 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 					any_province = {
-						limit = { religion_group = air_religions }
-						add_province_modifier = { name = cp_boost_protection duration = 2840 }
+						limit = {
+							religion_group = air_religions
+						}
+						add_province_modifier = {
+							name = cp_boost_protection
+							duration = 2840
+						}
 					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.633 days = 1 }
+					character_event = {
+						id = NOMAD.633
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			check_variable = { which = global_cp_protection_vote value = 3 }
+			check_variable = {
+				which = global_cp_protection_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.627"
 		custom_tooltip = {
@@ -3712,22 +4375,38 @@ character_event = {
 					limit = {
 						society_member_of = monastic_order_elder_council
 						society_rank = 4
-						NOT = { has_character_flag = cp_has_spoken }
+						NOT = {
+							has_character_flag = cp_has_spoken
+						}
 					}
-					character_event = { id = NOMAD.613 days = 3 }
+					character_event = {
+						id = NOMAD.613
+						days = 3
+					}
 				}
-				any_playable_ruler = { # Send Notice
+				any_playable_ruler = {
+					# Send Notice
 					limit = {
 						ai = no
 						culture_group = air_nomad_culture
-						NOT = { character = ROOT }
+						NOT = {
+							character = ROOT
+						}
 					}
-					character_event = { id = NOMAD.633 days = 1 }
+					character_event = {
+						id = NOMAD.633
+						days = 1
+					}
 				}
 			}
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_protection_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_protection_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3737,36 +4416,50 @@ character_event = {
 	id = NOMAD.628
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_aggression_vote value = 3 }
+			check_variable = {
+				which = global_cp_aggression_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC628A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_aggression_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_aggression_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC628B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.628"
 		custom_tooltip = {
 			text = cp_pass_aggression
 		}
 		trigger = {
-			check_variable = { which = global_cp_aggression_vote value = 3 }
+			check_variable = {
+				which = global_cp_aggression_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.628"
 		custom_tooltip = {
 			text = cp_fail_pass_aggression
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_aggression_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_aggression_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3776,36 +4469,50 @@ character_event = {
 	id = NOMAD.629
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_isolation_vote value = 3 }
+			check_variable = {
+				which = global_cp_isolation_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC629A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_isolation_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_isolation_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC629B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.629"
 		custom_tooltip = {
 			text = cp_pass_isolation
 		}
 		trigger = {
-			check_variable = { which = global_cp_isolation_vote value = 3 }
+			check_variable = {
+				which = global_cp_isolation_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.629"
 		custom_tooltip = {
 			text = cp_fail_pass_isolation
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_isolation_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_isolation_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3815,36 +4522,50 @@ character_event = {
 	id = NOMAD.630
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_pacifism_vote value = 3 }
+			check_variable = {
+				which = global_cp_pacifism_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC630A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_pacifism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_pacifism_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC630B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.630"
 		custom_tooltip = {
 			text = cp_pass_pacifism
 		}
 		trigger = {
-			check_variable = { which = global_cp_pacifism_vote value = 3 }
+			check_variable = {
+				which = global_cp_pacifism_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.630"
 		custom_tooltip = {
 			text = cp_fail_pass_pacifism
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_pacifism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_pacifism_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3854,36 +4575,50 @@ character_event = {
 	id = NOMAD.631
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_nihilism_vote value = 3 }
+			check_variable = {
+				which = global_cp_nihilism_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC631A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_nihilism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_nihilism_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC631B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.631"
 		custom_tooltip = {
 			text = cp_pass_nihilism
 		}
 		trigger = {
-			check_variable = { which = global_cp_nihilism_vote value = 3 }
+			check_variable = {
+				which = global_cp_nihilism_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.631"
 		custom_tooltip = {
 			text = cp_fail_pass_nihilism
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_nihilism_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_nihilism_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3893,36 +4628,50 @@ character_event = {
 	id = NOMAD.632
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_trade_vote value = 3 }
+			check_variable = {
+				which = global_cp_trade_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC632A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_trade_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_trade_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC632B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.632"
 		custom_tooltip = {
 			text = cp_pass_trade
 		}
 		trigger = {
-			check_variable = { which = global_cp_trade_vote value = 3 }
+			check_variable = {
+				which = global_cp_trade_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.632"
 		custom_tooltip = {
 			text = cp_fail_pass_trade
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_trade_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_trade_vote
+					value = 3
+				}
+			}
 		}
 	}
 }
@@ -3932,36 +4681,50 @@ character_event = {
 	id = NOMAD.633
 	desc = {
 		trigger = {
-			check_variable = { which = global_cp_protection_vote value = 3 }
+			check_variable = {
+				which = global_cp_protection_vote
+				value = 3
+			}
 		}
 		text = NOMADEVTDESC633A
 	}
 	desc = {
 		trigger = {
-			NOT = { check_variable = { which = global_cp_protection_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_protection_vote
+					value = 3
+				}
+			}
 		}
 		text = NOMADEVTDESC633B
 	}
 	picture = GFX_evt_air_south
 	is_triggered_only = yes
-
 	option = {
 		name = "EVTOPTANOMADA.633"
 		custom_tooltip = {
 			text = cp_pass_protection
 		}
 		trigger = {
-			check_variable = { which = global_cp_protection_vote value = 3 }
+			check_variable = {
+				which = global_cp_protection_vote
+				value = 3
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTANOMADB.633"
 		custom_tooltip = {
 			text = cp_fail_pass_protection
 		}
 		trigger = {
-			NOT = { check_variable = { which = global_cp_protection_vote value = 3 } }
+			NOT = {
+				check_variable = {
+					which = global_cp_protection_vote
+					value = 3
+				}
+			}
 		}
 	}
 }

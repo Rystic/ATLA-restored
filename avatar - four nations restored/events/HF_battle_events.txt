@@ -22,40 +22,40 @@ character_event = { #On-death event to log commander deaths in game.
 }
 
 
-character_event = { #TEST event to set correct paths - how? Fire on the ("ENEMY") LIEGE of a commander for testing
-    id = HFP.10998
-    hide_window = yes
-    is_triggered_only = yes
-    immediate = {
-    	random_courtier_or_vassal = {
-    		limit = {
-	    		#has_minor_title = title_commander
-	    		is_landed = yes
-	    		#trait = duelist #For testing!
-    		}
-	    	character_event = { id = HFP.10999 days = 1 } #finds and send the event to commander
-    	}
-    }
-}
-character_event = { #TEST event to set correct paths - fires for a commander (Can also be used to test being a commander)
-    id = HFP.10999
-    hide_window = yes
-    is_triggered_only = yes
-    immediate = {
-    	any_character = {
-    		limit = {
-	    		ai = no
-    		}
-    		character_event = { id = HFP.11000 days = 1 } #send tombola to a player (with the correct scopes in place)
+# character_event = { #TEST event to set correct paths - how? Fire on the ("ENEMY") LIEGE of a commander for testing
+    # id = HFP.10998
+    # hide_window = yes
+    # is_triggered_only = yes
+    # immediate = {
+    	# random_courtier_or_vassal = {
+    		# limit = {
+	    		# has_minor_title = title_commander
+	    		# is_landed = yes
+	    		# trait = duelist #For testing!
+    		# }
+	    	# character_event = { id = HFP.10999 days = 1 } #finds and send the event to commander
+    	# }
+    # }
+# }
+# character_event = { #TEST event to set correct paths - fires for a commander (Can also be used to test being a commander)
+    # id = HFP.10999
+    # hide_window = yes
+    # is_triggered_only = yes
+    # immediate = {
+    	# any_character = {
+    		# limit = {
+	    		# ai = no
+    		# }
+    		# character_event = { id = HFP.11000 days = 1 } #send tombola to a player (with the correct scopes in place)
     		#character_event = { id = MIL.500 days = 1 } #send tombola to a player (with the correct scopes in place). (Milla's debug event)
     		
 #    		random_vassal = { #For testing: In vassal scope so I can check the instant death notification from a killed commander.
 #    			limit = { trait = duelist }
 #	    		character_event = { id = HFP.11000 days = 1 } #send tombola to a player (with the correct scopes in place)
 #    		}
-    	}
-    }
-}
+    	# }
+    # }
+# }
 
 
 ####################################################################################
@@ -72,67 +72,12 @@ character_event = {
     	OR = { #you can't be fighting null-character
     		FROM = { always = yes }
     		FROMFROM = { always = yes }
-
-#    		location = { #An attempt to combat the "null-character" fights
-#    			ROOT = {
-#    				any_current_enemy = {
-#    					any_unit = {
-#    						location = {
-#    							province = PREVPREVPREVPREV
-#    						}
-#    					}
-#    				}
-#    			}
-#    		}
     	}
-#    	log = "BATTLE EVENT: FROM yields enemy commander: [From.GetBestName] "
-#    	log = "BATTLE EVENT: FROMFROM yields enemy liege: [FromFrom.GetBestName] "
-#    	log = "BATTLE EVENT: ROOT is: [Root.GetBestName]"
+
     }
     fail_trigger_effect = {
-#    	log = "BATTLE EVENT: FROM and FROMFROM are both empty."
-#    	log = "BATTLE EVENT: ROOT was: [Root.GetBestName]"
     	change_variable = { which = global_combat_pulse_failed_to_find_leader value = 1 }
-#		if = {
-#			limit = {
-#				NOR = {
-#					FROM = { always = yes }
-#	    			FROMFROM = { always = yes }
-#	    			location = { #An attempt to combat the "null-character" fights
-#		    			ROOT = {
-#		    				any_current_enemy = {
-#		    					any_unit = {
-#		    						location = {
-#		    							province = PREVPREVPREVPREV
-#		    						}
-#		    					}
-#		    				}
-#		    			}
-#		    		}
-#				}
-#			}
-#			change_variable = { which = global_combat_pulse_failed_to_find_leader value = 1 }
-#		}
-#		else_if = {
-#			limit = {
-#				NOR = {
-#					FROM = { always = yes }
-#	    			FROMFROM = { always = yes }
-#				}
-#    			location = { #An attempt to combat the "null-character" fights
-#	    			ROOT = {
-#	    				any_current_enemy = {
-#	    					any_unit = {
-#	    						location = {
-#	    							province = PREVPREVPREVPREV
-#	    						}
-#	    					}
-#	    				}
-#	    			}
-#	    		}
-#			}
-#			change_variable = { which = global_combat_pulse_found_back_up value = 1 }		
-#		}
+	
     }
 
     immediate = {
@@ -196,17 +141,117 @@ character_event = {
     	event_target:enemy_commander = { save_event_target_as = combatant_2 } #the target of the battle...
 
     	random_list = {
-    		#### INJURIES...
+			##### Warrior Lodge exclusive ######
 			10 = {
 				trigger = {
-					NOT = { is_indomitable_trigger = yes }  #The "Indomitable" power blocks "very bad stuff"
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					NOT = { any_artifact = { has_artifact_flag = battlefield_loot } }
+				}
+				good_soldier_outcome_score = yes
+
+				character_event = { id = HFP.11026 }  # Find a weapon on the battlefield
+			}
+			10 = {
+				trigger = {
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					has_nickname = no
+				}
+				good_soldier_outcome_score = yes
+				character_event = { id = HFP.11027 } # Pick a nickname!
+			}
+			
+			5 = {
+				trigger = {
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					event_target:enemy_commander = { always = yes } #There has to be an opponent...
+					NOT = { has_character_modifier = battle_events_1_cooldown }
+				}
+				good_soldier_outcome_score = yes
+
+				add_character_modifier = { name = battle_events_1_cooldown duration = 365 hidden = yes }				
+				character_event = { id = HFP.11028 } # You decapitate your enemy, and take their skull as a trophy.
+			}
+			10 = {
+				trigger = {
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					NOT = { trait = robust }
+				}
+				good_soldier_outcome_score = yes
+				character_event = { id = HFP.11034 } # You become Brawny.
+			}
+			10 = {
+				trigger = {
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					any_unit_leader = {
+			       		always = yes
+			       		NOT = { character = ROOT }
+			       		root_potentially_interested_in_rivaling_this_trigger = no
+			    	}
+			    	NOT = { has_character_modifier = battle_events_2_cooldown }
 				}
 				bad_soldier_outcome_score = yes
 
+				add_character_modifier = { name = battle_events_2_cooldown duration = 365 hidden = yes }
+				character_event = { id = HFP.11036 }  # You are impressed by fellow commander
+			}
+			10 = {
+				trigger = {
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					event_target:home_capital_province = { #If something cool happened at your capital once and you haven't already addressed it...
+						OR = {
+							AND = {
+								persistent_event_target:local_dead_commander_target = { always = yes }
+								ROOT = { NOT = { has_character_modifier = glory_days } }
+							}
+							AND = {
+								persistent_event_target:local_inspiring_commander_target = { always = yes }
+			        			ROOT = { NOT = { has_character_modifier = proud_role_model } }
+							}
+							AND = {
+								persistent_event_target:local_fearsome_commander_target = { always = yes }
+			        			ROOT = { NOT = { has_character_modifier = center_of_attention } }
+							}
+						}
+					}
+					NOT = { has_character_modifier = battle_events_3_cooldown }
+				}
+
+				add_character_modifier = { name = battle_events_3_cooldown duration = 365 hidden = yes }
+				character_event = { id = HFP.11037 } # You reminisce about previous battles (hooked from previous events)
+			}
+			3 = {
+				trigger = {
+					has_dlc = "Holy Fury"
+					is_member_of_any_warrior_lodge_trigger = yes
+					OR = {
+						has_nickname = no
+						trait = depressed
+						trait = stressed
+					}
+				}
+				good_soldier_outcome_score = yes
+				character_event = { id = HFP.11038 }  # An event where you gain a nickname/lose stressed/depressed
+			}
+
+    		#### INJURIES...
+			10 = {
+				trigger = {
+					NOT = { trait = berserker }
+					NOT = { is_indomitable_trigger = yes }  #The "Indomitable" power blocks "very bad stuff"
+				}
+				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
+
 				random = { #Fix to the quick fix
 	    			chance = 75
-	    			break = yes
 	    			allow_new_battle_events_effect = yes
+					break = yes
 	    		}
 
 				character_event = { id = HFP.11001 } # Killed (remake of 242)
@@ -214,9 +259,11 @@ character_event = {
 			15 = {
 				trigger = {
 					NOT = { trait = wounded }
+					NOT = { trait = berserker }
 					is_alive = yes
 				}
 				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
 				character_event = { id = HFP.11010 } # Become Wounded/Bruised (choose injury or gain Craven/lose Brave + lose prestige)
 			}
 			15 = {
@@ -228,9 +275,11 @@ character_event = {
 						trait = one_legged 
 						trait = disfigured 
 					}
+					NOT = { trait = berserker }
 					is_alive = yes
 				}
 				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
 				character_event = { id = HFP.11011 } # Maimed (randomly selected maiming, if has RIP. Otherwise, Maimed.)
 			}
 			10 = {
@@ -241,10 +290,11 @@ character_event = {
 					NOT = { is_indomitable_trigger = yes } #The "Indomitable" power blocks "very bad stuff"
 				}
 				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
 				random = { #Fix to the quick fix
 	    			chance = 75
-	    			break = yes
 	    			allow_new_battle_events_effect = yes
+					break = yes
 	    		}
 				character_event = { id = HFP.11012 } # Serious head-injury (remake of 245). Chance to become Disfigured (if has RIP) or Incapable.
 			}
@@ -261,6 +311,7 @@ character_event = {
 					}
 				}
 				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
 
 				additive_modifier = { #For the more varied versions...
 					has_pet_animal_trigger = yes
@@ -445,6 +496,76 @@ character_event = {
 			}
 
 			#MISC: Old events
+			50 = {
+				trigger = {
+					has_dlc = "The Old Gods"
+					is_alive = yes
+					NOT = { trait = berserker }
+					OR = {
+						NOT = { age = 50 }
+						immortal = yes
+					}
+					OR = {
+						trait = wroth
+						trait = aggressive_leader
+					}
+				}
+				character_event = { id = TOG.3000 } # Becomes Berserker
+				log = "fired OLD battle EVENT TOG.3000"
+			}
+			50 = {
+				trigger = {
+					has_dlc = "The Old Gods"
+					trait = berserker
+					NOT = { trait = maimed }
+					NOT = { trait = one_legged }
+					is_alive = yes
+				}
+				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
+				character_event = { id = TOG.3001 } # Berserker Maimed
+				log = "fired OLD battle EVENT TOG.3001"
+			}
+			50 = {
+				trigger = {
+					has_dlc = "The Old Gods"
+					trait = berserker
+					NOT = { trait = wounded }
+					NOT = { is_maimed_trigger = yes }
+					is_alive = yes
+				}
+				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
+				character_event = { id = TOG.3002 } # Berserker Wounded
+				log = "fired OLD battle EVENT TOG.3002"
+			}
+			50 = {
+				trigger = {
+					has_dlc = "The Old Gods"
+					trait = berserker
+				}
+				bad_soldier_outcome_score = yes
+				warrior_lodge_risk_reduction_score = yes
+				character_event = { id = TOG.3003 } # Berserker Killed - Updated with new notification events
+				log = "fired OLD battle EVENT TOG.3003"
+			}
+			50 = {
+				trigger = {
+					has_dlc = "The Old Gods"
+					trait = berserker
+				}
+				good_soldier_outcome_score = yes
+				character_event = { id = TOG.3004 } # Berserker Kills Many
+				log = "fired OLD battle EVENT TOG.3004"
+			}
+			
+			1 = {
+				trigger = {
+					is_alive = yes
+					NOT = { is_indomitable_trigger = yes }
+				}
+				character_event = { id = HFP.30200 }
+			}
 		}
     }
 }
@@ -747,6 +868,7 @@ character_event = {
 		if = { #This is currently a little too common maybe?
 			limit = {
 				is_landed = yes
+				is_member_of_any_warrior_lodge_trigger = yes
 			}
 			event_target:home_capital_province = {
 				show_scope_change = no
@@ -1149,12 +1271,13 @@ character_event = {
 
 	trigger = {
 		NOT = { trait = wounded }
+		NOT = { trait = berserker }
 		is_alive = yes
 	}
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_negative_effect = yes
+		
 
 		if = {
 			limit = { event_target:enemy_commander = { is_alive = yes ai = yes } }
@@ -1437,12 +1560,13 @@ character_event = {
 			trait = one_legged 
 			trait = disfigured 
 		}
+		NOT = { trait = berserker }
 		is_alive = yes
 	}
 	
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_negative_effect = yes
+		
 
 		if = {
 			limit = { event_target:enemy_commander = { is_alive = yes ai = yes } }
@@ -1880,7 +2004,7 @@ character_event = {
 	
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_negative_effect = yes
+		
 		add_blood_splatter_effect = yes
 		random_list = {
 			60 = {
@@ -1955,7 +2079,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 	}
 	
 	option = {
@@ -1995,7 +2119,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2100,7 +2224,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 		spawn_good_commander_effect = yes
 	}
 
@@ -2151,7 +2275,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2161,14 +2285,6 @@ character_event = {
 			NOT = { trait = jungle_terrain_leader }
 		}
 		add_trait = jungle_terrain_leader
-	}
-	option = {
-		name = EVTOPTL96500 # War elephants
-		trigger = {
-			#has_dharmic_religion_trigger = yes
-			NOT = { trait = war_elephant_leader }
-		}
-		add_trait = war_elephant_leader
 	}
 	option = {
 		name = EVTOPTM96500 # WINTER Terrain Specialization
@@ -2410,7 +2526,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_negative_effect = yes
+		
 
 		random_list = {
 			10 = {
@@ -2542,7 +2658,7 @@ character_event = {
 	
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = { # Organizer
@@ -2596,7 +2712,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2658,7 +2774,7 @@ character_event = {
 	
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 	}
 
 	option = {
@@ -2901,7 +3017,7 @@ character_event = {
 
     immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_negative_effect = yes
+		
 
 		if = {
 			limit = { event_target:enemy_commander = { is_alive = yes ai = yes } }
@@ -2937,30 +3053,6 @@ character_event = {
     	set_character_flag = desc_fallback
     }
 
-    ### Let the pet die....
-    option = {
-        name = EVTOPTA_HFP_11025_dog
-        custom_tooltip = { text = EVTOPTA_HFP_11025_TT_dog }
-		remove_character_modifier = pet_hunting_dog
-		hidden_effect = {
-			remove_character_modifier = pet_best_friends
-		}
-		send_new_dog_event_effect = yes # Will only work for certain bloodlines...
-		clr_character_flag = about_to_challenge_enemy_commander
-		allow_new_battle_events_effect = yes
-        trigger = { has_character_flag = desc_dog }
-    }
-    option = {
-        name = EVTOPTA_HFP_11025_cat
-        custom_tooltip = { text = EVTOPTA_HFP_11025_TT_cat }
-		remove_character_modifier = pet_cat
-		hidden_effect = {
-			remove_character_modifier = pet_best_friends
-		}
-		clr_character_flag = about_to_challenge_enemy_commander
-		allow_new_battle_events_effect = yes
-        trigger = { has_character_flag = desc_cat }
-    }
     option = {      
         name = EVTOPTA_HFP_11025_horse
         custom_tooltip = { text = EVTOPTA_HFP_11025_TT_horse }
@@ -2976,16 +3068,6 @@ character_event = {
 		clr_character_flag = about_to_challenge_enemy_commander
 		allow_new_battle_events_effect = yes
         trigger = { has_character_flag = desc_owl }
-    }
-    option = {
-        name = EVTOPTA_HFP_11025_eagle
-        custom_tooltip = { text = EVTOPTA_HFP_11025_TT_eagle }
-		remove_character_modifier = pet_hunting_eagle
-		clr_character_flag = about_to_challenge_enemy_commander
-		allow_new_battle_events_effect = yes
-		send_new_eagle_event_effect = yes #Only for certain bloodlines...!
-
-        trigger = { has_character_flag = desc_eagle }
     }
     option = {
         name = EVTOPTA_HFP_11025_fallback
@@ -3045,6 +3127,103 @@ character_event = {
     }
 }
 
+
+#######################################################
+############### Warrior Lodge members only ############
+#######################################################
+### BATTLE EVENT: Find a weapon on the battlefield... (fired from HFP.11000)
+character_event = {
+    id = HFP.11026
+    title = the_battle_at_location
+    desc = EVTDESC_HF_11026
+	picture = GFX_evt_battle
+	border = GFX_event_normal_frame_war
+    is_triggered_only = yes
+	hide_from = yes
+    has_dlc = "Holy Fury"
+    
+    trigger = {
+    	is_alive = yes
+    }
+
+    immediate = {
+    	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
+    	
+    	if = {
+    		limit = {
+    			society_rank == 1
+    		}
+    		set_character_flag = rank_1
+    	}
+    	else_if = {
+    		limit = {
+    			society_rank == 2
+    		}
+    		set_character_flag = rank_2
+    	}
+    	else_if = {
+    		limit = {
+    			society_rank == 3
+    		}
+    		set_character_flag = rank_3
+    	}
+    	else_if = {
+    		limit = {
+    			society_rank == 4
+    		}
+    		set_character_flag = rank_4
+    	}
+    }
+    
+    option = {
+        name = EVTOPTA_HFP_11026
+        trigger_switch = {
+        	on_trigger = has_character_flag
+        	rank_1 = {
+        		add_artifact = sword_1_battlefield
+        		new_artifact = {
+        			set_name = weapon_battlefield_rename_1
+        			set_description = weapon_battlefield_desc_rename_1
+        		}
+        	}
+        	rank_2 = {
+        		add_artifact = sword_2_battlefield
+        		new_artifact = {
+        			set_name = weapon_battlefield_rename_2
+        			set_description = weapon_battlefield_desc_rename_2
+        		}
+        	}
+        	rank_3 = {
+        		add_artifact = sword_3_battlefield
+        		new_artifact = {
+        			set_name = weapon_battlefield_rename_3
+        			set_description = weapon_battlefield_desc_rename_3
+        		}
+        	}
+        	rank_4 = {
+        		add_artifact = sword_3_battlefield #same as rank 3
+        		new_artifact = {
+        			set_name = weapon_battlefield_rename_3
+        			set_description = weapon_battlefield_desc_rename_3
+        		}
+        	}
+        }
+        pacifists_lose_piety_effect = yes
+        add_blood_splatter_effect = yes
+    }
+    option = {      
+        name = EVTOPTB_HFP_11026
+        custom_tooltip = { text = EVTOPTB_HFP_11026_TT }
+    }
+    after = {
+    	clr_character_flag = rank_1
+        clr_character_flag = rank_2
+        clr_character_flag = rank_3
+        clr_character_flag = rank_4
+        allow_new_battle_events_effect = yes
+    }
+}
+
 ### BATTLE EVENT: Choose a nickname...! "Call me.." what? (fired from HFP.11000)
 character_event = {
     id = HFP.11027
@@ -3063,7 +3242,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	#battle_commander_counter_positive_effect = yes
+    	
 
     	### Set potential nickname-flags...
     	if = {
@@ -3372,7 +3551,7 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 
 		hidden_effect = {
 			#Sets up weapons for localization...
@@ -3878,7 +4057,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 
     	random_unit_leader = {
        		limit = {
@@ -3982,10 +4161,6 @@ character_event = {
         		same_society_as = event_target:my_fellow_commander
         	}
         	modifier = {
-        		factor = 1.5
-        		same_society_as = event_target:my_fellow_commander
-        	}
-        	modifier = {
         		factor = 5
         		event_target:my_fellow_commander = {
         			current_scope_and_root_make_sense_as_friendlies_trigger = yes
@@ -4078,7 +4253,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	#battle_commander_counter_positive_effect = yes
+    	
 
     	any_unit_leader = {
        		limit = {
@@ -4183,7 +4358,6 @@ character_event = {
 	        		trait = kind
 	        		trait = cannibal_trait
 	        		is_evil_trigger = yes
-				trait = zealous
         		}
         	}
         }
@@ -4211,6 +4385,7 @@ character_event = {
         	text = EVTOPTA_HFP_11039_zealous
         	trigger = {
         		trait = zealous
+        		
         		NOT = { trait = depressed }
         	}
         }
@@ -4285,7 +4460,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
+		
 
     	random_list = {
     		10 = { #the least interesting choice...
@@ -4432,7 +4607,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-    	#battle_commander_counter_positive_effect = yes
+    	
     }
 
     option = {
@@ -4445,7 +4620,10 @@ character_event = {
 	        		trait = kind
 	        		trait = cannibal_trait
 	        		is_evil_trigger = yes
-				trait = zealous
+	        		AND = {
+	        		    trait = zealous
+	        			
+	        		}
         		}
         	}
         }
@@ -4473,6 +4651,7 @@ character_event = {
         	text = EVTOPTA_HFP_11038_zealous
         	trigger = {
         		trait = zealous
+        		
         		NOT = { trait = depressed }
         	}
         }
@@ -4538,6 +4717,7 @@ character_event = {
         			trait = lunatic
         			trait = envious
         			trait = possessed
+        			
         		}
         		OR = {
         			event_target:commander_to_the_rescue = { duelist_skill_compared_to_prev_high_group_trigger = yes } #commander_to_the_rescue is a better dueler than you...
@@ -4561,6 +4741,7 @@ character_event = {
         			trait = lunatic
         			trait = envious
         			trait = possessed
+        			
         		}
         		OR = {
         			event_target:commander_to_the_rescue = { duelist_skill_compared_to_prev_high_group_trigger = yes } #commander_to_the_rescue is a better dueler than you...
@@ -4584,6 +4765,7 @@ character_event = {
         			trait = lunatic
         			trait = envious
         			trait = possessed
+        			
         		}
         		OR = {
         			event_target:commander_to_the_rescue = { duelist_skill_compared_to_prev_high_group_trigger = yes } #commander_to_the_rescue is a better dueler than you...
@@ -4702,7 +4884,7 @@ character_event = {
 
     immediate = {
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
- 		#battle_commander_counter_negative_effect = yes
+ 		
 
     	set_loser_flags_and_save_opponent_effect = yes
     	#Find a potential AI to sacrifice...
@@ -4944,7 +5126,7 @@ character_event = {
 
     immediate = {
     	set_loser_flags_and_save_opponent_effect = yes
-    	#battle_commander_counter_negative_effect = yes
+    	
     	
     	disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
     	save_event_target_as = captured_commander
@@ -5091,7 +5273,7 @@ character_event = {
 					}
 					change_variable = { which = burned_hearts_points value = 2 }
 				}
-				#bloodthirsty_tiered_traits_effect = yes
+				bloodthirsty_tiered_traits_effect = yes
 			}
 		}
 
@@ -5123,6 +5305,7 @@ character_event = {
 
 		trigger = {
 			has_dlc = "Holy Fury"
+			is_member_of_any_warrior_lodge_trigger = yes
 		}
 	}
 	# Non-Warrior Lodge members only...
@@ -5423,7 +5606,6 @@ character_event = {
 
 	immediate = {
 		disallow_new_battle_events_effect = yes #to keep the tombola from spamming you...
-		#battle_commander_counter_positive_effect = yes
 
 		if = {
 			limit = { event_target:enemy_commander = { is_alive = yes ai = yes } }
@@ -5539,6 +5721,35 @@ character_event = {
 	    clr_character_flag = duel_enemy_opt_is_brave
 	}
 }
+
+character_event = {
+	id = HFP.30200
+	desc = HFP_DESC_30200
+	title = the_battle_at_location
+	picture = GFX_evt_battle
+	border = GFX_event_normal_frame_war
+	hide_from = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		event_target:battlefield_location = {
+			region = world_the_swamp
+		}
+	}
+	
+	immediate = {
+		disallow_new_battle_events_effect = yes
+	}
+	
+	option = {
+		name = EVTOPTA_HFP_30200
+		death = {
+			death_reason = death_crocodile
+		}
+	}
+}
+
 
 #### Special Events from Duel/Battle Experience #####
 

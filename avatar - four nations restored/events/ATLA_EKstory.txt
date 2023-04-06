@@ -57,6 +57,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY1
 	title = EVTTITEKSTORY1
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		has_landed_title = k_earth_kingdom
@@ -68,6 +69,10 @@ narrative_event = {
 			has_global_flag = ek_choose_war
 			has_global_flag = ek_choose_peace
 		}
+	}
+	
+	immediate = {
+		save_event_target_as = earth_king
 	}
 	
 	option = {#Canon
@@ -115,46 +120,47 @@ narrative_event = {
 					culture_group = earth_kingdom_culture
 					NOT = { religion = way_of_chin }
 				}
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					NOR = { 
-						culture = sandbender
-						culture = southern_earth
-						culture = barbarians	
+				save_event_target_as = lesser_ruler
+				if = {
+					limit = {
+						culture_group = earth_kingdom_culture
+						NOR = { 
+							culture = sandbender_culture
+							culture = southern_earth
+							culture = barbarians	
+						}
+						mercenary = no
+						holy_order = no
+						#temporary = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						NOT = { religion = way_of_chin }
+						capital_scope = {
+								OR = {
+									region = world_north_west_kingdom
+									region = world_north_east_earth_kingdom
+									region = world_central_desert
+									region = world_western_earth_kingdom
+									region = world_eastern_coast
+								}
+								
+						}
 					}
-					mercenary = no
-					holy_order = no
-					temporary = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOT = { religion = way_of_chin }
-					capital_scope = {
-							OR = {
-								region = world_north_west_kingdom
-								region = world_north_east_earth_kingdom
-								region = world_central_desert
-								region = world_western_earth_kingdom
-								region = world_eastern_coast
-							}
-							
-					}
-				}
-				FROM = {
-					make_tributary = {						
-						who = PREV
+					event_target:earth_king = {
+						make_tributary = {						
+							who = event_target:lesser_ruler
 							percentage = 0.16
 							tributary_type = earth_kingdom_province_tributary
 						}
 					}
-			}
+				}
 			if = {
 				limit = {
 					culture_group = earth_kingdom_culture
 					NOT = { culture = eastern_earth }
 					mercenary = no
 					holy_order = no
-					temporary = no
+					#temporary = no
 					rebel = no
 					NOT = { has_landed_title = d_avatar }
 					NOT = { religion = way_of_chin }
@@ -167,9 +173,9 @@ narrative_event = {
 							}
 						}
 					}
-				FROM = {
+				event_target:earth_king = {
 					make_tributary = {						
-						who = PREV
+						who = event_target:lesser_ruler
 							percentage = 0.12
 							tributary_type = earth_kingdom_territory_tributary
 						}
@@ -179,11 +185,11 @@ narrative_event = {
 				limit = {
 					OR = {
 						culture = barbarians
-						culture = sandbender
+						culture = sandbender_culture
 					}
 					mercenary = no
 					holy_order = no
-					temporary = no
+					#temporary = no
 					rebel = no
 					NOT = { has_landed_title = d_avatar }
 					capital_scope = {
@@ -194,9 +200,9 @@ narrative_event = {
 						}
 					}	
 				}
-				FROM = {
+				event_target:earth_king = {
 					make_tributary = {						
-						who = PREV
+						who = event_target:lesser_ruler
 							percentage = 0.1
 							tributary_type = earth_kingdom_outpost_tributary
 						}
@@ -213,6 +219,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY2
 	title = EVTTITEKSTORY2
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		has_landed_title = k_earth_kingdom
@@ -377,6 +384,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY3
 	title = EVTTITEKSTORY3
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		has_global_flag = whispers_of_rebelion
@@ -416,27 +424,37 @@ narrative_event = {
 #Chin Remnants submit and join EK
 narrative_event = { 
 	id = ekstory.4
+	picture = GFX_evt_avatar_conflict
+	
 	desc = {
 		trigger = {
-			has_title_flag = chin_chosen_diplo
+			k_earth_kingdom = {
+				has_title_flag = chin_chosen_diplo
+			}
 		}
 		text = EVTDESCEKSTORY4a
 	}
 	desc = {
 		trigger = {
-			has_title_flag = chin_chosen_tarifs
+			k_earth_kingdom = { 
+				has_title_flag = chin_chosen_tarifs
+			}
 		}
 		text = EVTDESCEKSTORY4b
 	}
 	desc = {
 		trigger = {
-			has_title_flag = chin_chosen_martial
+			k_earth_kingdom = {
+				has_title_flag = chin_chosen_martial
+			}
 		}
 		text = EVTDESCEKSTORY4c
 	}
 	desc = {
 		trigger = {
-			has_title_flag = chin_chosen_avatar
+			k_earth_kingdom = {
+				has_title_flag = chin_chosen_avatar
+			}
 		}
 		text = EVTDESCEKSTORY4d
 	}	
@@ -484,7 +502,7 @@ narrative_event = {
 			# offmap_ek = {
 			# 	set_policy = earth_kingdom_reconstruction
 			# }
-			character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
+			#character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
 		}
 	}
 	
@@ -513,7 +531,7 @@ narrative_event = {
 			# offmap_ek = {
 			# 	set_policy = earth_kingdom_reconstruction
 			# }
-			character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
+			#character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
 		}
 	}
 
@@ -545,7 +563,7 @@ narrative_event = {
 			# offmap_ek = {
 			# 	set_policy = earth_kingdom_reconstruction
 			# }
-			character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
+			#character_event = { id = ekoffmap.2 years = 10 } #change ek "policy" after 10 years
 		}
 	}	
 }
@@ -627,6 +645,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY6
 	title = EVTTITEKSTORY6
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		NOT = { has_global_flag = ek_chin_remnants_war }
@@ -648,8 +667,8 @@ narrative_event = {
 			}
 			reverse_unsafe_war = { 	#reverse_unsafe_war
 					target = ROOT #FROM
-					casus_belli = earth_kingdom_reconquest_disunion
-					thirdparty_title = FROMFROM
+					casus_belli = earth_kingdom_reconquest
+					thirdparty_title = k_earth_kingdom
 			}
 		}
 	}
@@ -661,6 +680,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY7
 	title = EVTTITEKSTORY7
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		has_landed_title = d_avatar
@@ -702,6 +722,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY8
 	title = EVTTITEKSTORY8
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = { 
 		has_global_flag = ba_sing_se_rebelion
@@ -775,6 +796,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY10
 	title = EVTTITEKSTORY10
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		has_landed_title = k_earth_kingdom
@@ -790,13 +812,8 @@ narrative_event = {
 		
 	option = {
 		name = fullyoperationalbattlestation
-		custom_tooltip = {
-			name = barebelionwonraboost
-			hidden_tooltip = {
-				clr_character_flag = ba_rebelion_timer
-				change_variable = { which = global_royalAuthority value = 25 }
-			}
-		}
+		clr_character_flag = ba_rebelion_timer
+		change_variable = { which = global_royalAuthority value = 25 }
 	}
 }
 
@@ -964,101 +981,73 @@ character_event = {
 	}
 }
 #gave up power?
-narrative_event = {
-	id = ekstory.17
-	desc = EVTDESCEKSTORY17
-	title = EVTTITEKSTORY17
-	is_triggered_only = yes
+# narrative_event = {
+	# id = ekstory.17
+	# desc = EVTDESCEKSTORY17
+	# title = EVTTITEKSTORY17
+	# is_triggered_only = yes
 	
-	trigger = {
-		# offmap_ek = {
-		# 	NOT = { has_policy = earth_kingdom_reconstruction }
-		# }	
-		NOT = { has_global_flag = ek_choose_war }
-		NOR = {
-			trait = earthkingpuppet
-			trait = unjust
-			trait = dishonourable
-			trait = conqueror
-			trait = tyrannical
-			trait = irredeemable
-			trait = cruel
-		}
-		OR = {
-			AND = {
-				year < 700
-				has_global_flag = ek_choose_peace
-				has_global_flag = ek_chin_remnants_submit
-			}
-			AND = {
-				year >= 700
-				has_global_flag = earthking_in_power
-				NOR = {
-					has_global_flag = ek_choose_peace
-					has_global_flag = ek_chin_remnants_submit
-				}
-				
-			}
-		}
-	}
-	
-	option = {
-		name = ekbecameconstitution
-		remove_trait = earthking
-		remove_trait = earthkingpuppet #just to be sure
-		add_trait = earthkingconstitution
-		character_event = { id = earthking.56 } #to recalculate RA
-		any_playable_ruler = {
-			narrative_event = {
-				id = ekstory.21
-				days = 2
-			}
-		}
-		set_global_flag = ek_gave_some_power 
-		# offmap_ek = {
-		# 	if = {
-		# 		limit = {
-		# 			has_status = military_faction_absolute 
-		# 		}
-		# 		set_status = military_faction_parliament
-		# 	}	
-		# 	if = {
-		# 		limit = {
-		# 			has_status = daili_faction_absolute
-		# 		}
-		# 		set_status = daili_faction_parliament
-		# 	}	
-		# 	if = {
-		# 		limit = {
-		# 			has_status = bureaucratic_faction_absolute
-		# 		}
-		# 		set_status = bureaucratic_faction_parliament
-		# 	}	
-		# 	if = {
-		# 		limit = {
-		# 			has_status = noble_faction_absolute
-		# 		}
-		# 		set_status = noble_faction_parliament
-		# 	}
+	# trigger = {
+		# NOT = { has_global_flag = ek_choose_war }
+		# NOR = {
+			# trait = earthkingpuppet
+			# trait = unjust
+			# trait = dishonourable
+			# trait = conqueror
+			# trait = tyrannical
+			# trait = irredeemable
+			# trait = cruel
 		# }
-	}
+		# OR = {
+			# AND = {
+				# year < 700
+				# has_global_flag = ek_choose_peace
+				# has_global_flag = ek_chin_remnants_submit
+			# }
+			# AND = {
+				# year >= 700
+				# has_global_flag = earthking_in_power
+				# NOR = {
+					# has_global_flag = ek_choose_peace
+					# has_global_flag = ek_chin_remnants_submit
+				# }
+				
+			# }
+		# }
+	# }
 	
-	option = {
-		name = unlimitedpower
-		if = {
-			limit = {
-				trait = greedy
-			}
-			add_trait = greedy
-		}
-	}
-}
+	# option = {
+		# name = ekbecameconstitution
+		# remove_trait = earthking
+		# remove_trait = earthkingpuppet #just to be sure
+		# add_trait = earthkingconstitution
+		# character_event = { id = earthking.56 } #to recalculate RA
+		# any_playable_ruler = {
+			# narrative_event = {
+				# id = ekstory.21
+				# days = 2
+			# }
+		# }
+		# set_global_flag = ek_gave_some_power 
+	# }
+	
+	# option = {
+		# name = unlimitedpower
+		# if = {
+			# limit = {
+				# trait = greedy
+			# }
+			# add_trait = greedy
+		# }
+	# }
+# }
 
 narrative_event = { 
 	id = ekstory.18
 	desc = EVTDESCEKSTORY18
  	title = EVTTITEKSTORY18
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = { 
 		has_landed_title = k_earth_kingdom
@@ -1066,7 +1055,7 @@ narrative_event = {
 		year < 700
 		NOT = { has_global_flag = ending_of_jian_chain }
 		has_global_flag = ek_choose_war
-	}	
+	}
 	
 	option = {
 		name = damnit
@@ -1078,10 +1067,10 @@ narrative_event = {
 		}
 		d_dai_li = {
 			holder_scope = {
-				set_defacto_liege = ROOT
-				copy_title_laws = FROMFROM
-				copy_title_history = FROMFROM				
+				set_defacto_liege = ROOT			
 			}
+			copy_title_laws = d_avatar
+			copy_title_history = d_avatar				
 		}
 		clr_global_flag = dai_li_disbanded
 	}
@@ -1092,6 +1081,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY19
 	title = EVTTITEKSTORY19
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
 		has_landed_title = k_earth_kingdom
@@ -1124,6 +1114,7 @@ narrative_event = {
 	desc = EVTDESCEKSTORY20
 	title = EVTTITEKSTORY20
 	is_triggered_only = yes
+	picture = GFX_evt_avatar_conflict
 
 	trigger = {
 		NOT = { has_global_flag = ending_of_jian_chain }
@@ -1139,13 +1130,18 @@ narrative_event = {
 				tier = count
 				NOT = { is_adult = no }
 			}
+			
+
 			primary_title = {
+				save_event_target_as = primary_title
 				holder_scope = {
 					activate_title = { title = d_dai_li status = yes }
 					grant_title = d_dai_li
 					set_defacto_liege = ROOT
-					copy_title_laws = FROMFROM
-					copy_title_history = FROMFROM		
+					d_dai_li = {
+						copy_title_laws = event_target:primary_title
+						copy_title_history = event_target:primary_title		
+					}
 				}
 			}
 		}
@@ -1161,75 +1157,76 @@ narrative_event = {
 	
 	
 #Constitution (peaceful)	
-narrative_event = {
-	id = ekstory.21
-	desc = EVTDESCEKSTORY21
-	title = EVTTITEKSTORY21
-	is_triggered_only = yes
+# narrative_event = {
+	# id = ekstory.21
+	# desc = EVTDESCEKSTORY21
+	# title = EVTTITEKSTORY21
+	# is_triggered_only = yes
+	# picture = GFX_evt_avatar_conflict
 	
-	trigger = {
-		OR = {
-			AND = {	
-				NOT = { has_global_flag = ending_of_jian_chain }
-				has_landed_title = k_earth_kingdom
-				has_global_flag = ek_choose_peace
-			}
-			AND = {
-				year > 610
-				NOR = { 
-					trait = earthkingpuppet
-					trait = earthkingconstitution
-				}
-				has_landed_title = k_earth_kingdom
-			}
-		}
-	}
+	# trigger = {
+		# OR = {
+			# AND = {	
+				# NOT = { has_global_flag = ending_of_jian_chain }
+				# has_landed_title = k_earth_kingdom
+				# has_global_flag = ek_choose_peace
+			# }
+			# AND = {
+				# year > 610
+				# NOR = { 
+					# trait = earthkingpuppet
+					# trait = earthkingconstitution
+				# }
+				# has_landed_title = k_earth_kingdom
+			# }
+		# }
+	# }
 	
-	#EK
-	option = {
-		name = peacefulending
-		trigger = {
-			has_landed_title = k_earth_kingdom
-		}
-		set_global_flag = ending_of_jian_chain
-	}
+	# EK
+	# option = {
+		# name = peacefulending
+		# trigger = {
+			# has_landed_title = k_earth_kingdom
+		# }
+		# set_global_flag = ending_of_jian_chain
+	# }
 	
-	#EK de jure vassals
-	option = {
-		name = peacefulendingekingdom
-		trigger = {
-			culture_group = earth_kingdom_culture
-			NOR = { 
-				has_landed_title = k_earth_kingdom
-				has_landed_title = d_avatar
-			}
-		}
-		set_global_flag = ending_of_jian_chain
-	}
+	# EK de jure vassals
+	# option = {
+		# name = peacefulendingekingdom
+		# trigger = {
+			# culture_group = earth_kingdom_culture
+			# NOR = { 
+				# has_landed_title = k_earth_kingdom
+				# has_landed_title = d_avatar
+			# }
+		# }
+		# set_global_flag = ending_of_jian_chain
+	# }
 	
-	#Rest of world wthout avatar
-	option = {
-		name = peacefulendingrest
-		trigger = {
-			NOR = { 
-				has_landed_title = k_earth_kingdom
-				has_landed_title = d_avatar
-				culture_group = earth_kingdom_culture
-			}
-		}
-		set_global_flag = ending_of_jian_chain
-	}	
+	# Rest of world wthout avatar
+	# option = {
+		# name = peacefulendingrest
+		# trigger = {
+			# NOR = { 
+				# has_landed_title = k_earth_kingdom
+				# has_landed_title = d_avatar
+				# culture_group = earth_kingdom_culture
+			# }
+		# }
+		# set_global_flag = ending_of_jian_chain
+	# }	
 	
-	#avatar	
+	# avatar	
 	
-	option = {
-		name = peacefulendingavatar
-		trigger = {
-			has_landed_title = d_avatar
-		}
-		set_global_flag = ending_of_jian_chain
-	}
-}
+	# option = {
+		# name = peacefulendingavatar
+		# trigger = {
+			# has_landed_title = d_avatar
+		# }
+		# set_global_flag = ending_of_jian_chain
+	# }
+# }
 
 character_event = {
 	id = ekstory.22
@@ -1266,12 +1263,20 @@ character_event = {
 		}
 	}
 	
+	immediate = {
+		d_avatar = {
+			owner = {
+				save_event_target_as = avatar
+			}
+		}
+	}
+	
 	option = {
 		name = youaredednobigsurpise
 		ROOT = {
 			death = {
 				death_reason = death_murder
-				killer = d_avatar
+				killer = event_target:avatar
 			}
 		}
 	}

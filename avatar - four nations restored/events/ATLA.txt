@@ -1,7 +1,5 @@
 #avatar basic death, revelation, and rebirth events
-
 namespace = ATLA
-
 #avatar_fire: fire_nation, republic_city, air_acolytes and colonial if the parent is a firebender
 #avatar_air: northern_air_nomad, eastern_air_nomad, western_air_nomad, southern_air_nomad, new_air_nation, but air_acolytes if a parent is an airbender
 #avatar_water: northern_water, southern_water and republic and air_acolytes if a parent is a waterbender
@@ -36,20 +34,19 @@ namespace = ATLA
 #104 - FROM asked to convert to ROOT religion
 #105 - Inherit Succession (Air)
 #106 - Check Ambition Status ( see realm growth )
-#107 - Avatar reborn - Air 
-#108 - Avatar reborn - Water 
+#107 - Avatar reborn - Air
+#108 - Avatar reborn - Water
 #109 - Avatar reborn - Earth
 #110 - Avatar reborn - Fire
 #111 - 11099 - NOTHING
 #11100 - 11102 - Various EK handlers
 ###
-
-character_event = { #avatar killed
+character_event = {
+	#avatar killed
 	id = ATLA.1
 	desc = "EVTDESCATLA.1"
 	picture = "GFX_evt_avatar_death"
 	is_triggered_only = yes
-
 	trigger = {
 		OR = {
 			trait = avatar
@@ -57,57 +54,65 @@ character_event = { #avatar killed
 			has_character_flag = avatar_revealed
 		}
 	}
-
 	immediate = {
-		death = { death_reason = death_natural }
+		death = {
+			death_reason = death_natural
+		}
 		clr_character_flag = avatar_revealed
 		set_global_flag = avatar_dead
 		clr_global_flag = avatar_revealed
-		activate_title = { title = d_avatar status = no }
+		activate_title = {
+			title = d_avatar
+			status = no
+		}
 	}
-
 	option = {
 		name = "EVTOPTAATLA.1"
-		narrative_event = { id = ATLA.3 }
+		narrative_event = {
+			id = ATLA.3
+		}
 	}
-
 }
 
-character_event = { #create the new avatar #on_birth is recycled
+character_event = {
+	#create the new avatar #on_birth is recycled
 	id = ATLA.2
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
-		NOT = { has_global_flag = HYW_16 }
+		has_game_rule = {
+			name = avatar_system
+			value = old
+		}
+		NOT = {
+			has_global_flag = HYW_16
+		}
 		has_global_flag = avatar_dead
 		has_global_flag = avatar_fire
-		ROOT = {
-			OR = {
-				culture_group = air_nomad_culture
-				father_even_if_dead = {
-					trait = airbender
-				}
-				mother_even_if_dead = {
-					trait = airbender
-				}
+		OR = {
+			culture_group = air_nomad_culture
+			father_even_if_dead = {
+				trait = airbender
 			}
-			# OR = {
-				# AND = {
-					# has_game_rule = {
-						# name = canon_events
-						# value = strict_canon
-					# }
-					# is_female = no
-				# }
-				# NOT = {
-					# has_game_rule = {
-						# name = canon_events
-						# value = strict_canon
-					# }
-				# }
-			# }
+			mother_even_if_dead = {
+				trait = airbender
+			}
 		}
+		# OR = {
+		# AND = {
+		# has_game_rule = {
+		# name = canon_events
+		# value = strict_canon
+		# }
+		# is_female = no
+		# }
+		# NOT = {
+		# has_game_rule = {
+		# name = canon_events
+		# value = strict_canon
+		# }
+		# }
+		# }
 	}
 	immediate = {
 		clr_global_flag = avatar_dead
@@ -118,22 +123,28 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 	option = {
 		any_playable_ruler = {
-			character_event = { id = ATLA.107 }
+			character_event = {
+				id = ATLA.107
+			}
 		}
 		if = {
 			limit = {
-				NOT = { has_global_flag = Aang }
+				NOT = {
+					has_global_flag = Aang
+				}
 				is_female = no
 			}
 			set_name = "Aang"
-			set_graphical_culture = customPortrait_aang #aanggfx
+			set_graphical_culture = customPortrait_aang			#aanggfx
 			set_global_flag = Aang
 			add_trait = canon_character
 			set_character_flag = is_aang
 		}
 		if = {
 			limit = {
-				NOT = { has_global_flag = Malu }
+				NOT = {
+					has_global_flag = Malu
+				}
 				is_female = yes
 			}
 			set_name = "Malu"
@@ -143,27 +154,27 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 }
 
-narrative_event = { #The avatar is dead and the search begins
+narrative_event = {
+	#The avatar is dead and the search begins
 	id = ATLA.3
 	desc = "EVTDESCATLA.3"
 	title = "EVTTITLEATLA.3"
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_death
 	major = yes
-	hide_new = yes 
-
+	hide_new = yes
 	option = {
 		name = "EVTOPTAATLA.3"
 	}
 }
 
-character_event = { #avatar revealed
+character_event = {
+	#avatar revealed
 	id = ATLA.4
 	desc = "EVTDESCATLA.4"
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
 	# min_age = 16 # was causing event delay
-
 	trigger = {
 		has_character_flag = avatar_unrevealed
 	}
@@ -175,15 +186,26 @@ character_event = { #avatar revealed
 		clr_character_flag = avatar_unrevealed
 		clr_global_flag = avatar_unrevealed
 		set_global_flag = avatar_revealed
-		narrative_event = { id = ATLA.5 }
-		character_event = { id = avatar.170 days = 30 random = 90 }
-      	activate_title = { title = d_avatar status = yes }
+		narrative_event = {
+			id = ATLA.5
+		}
+		character_event = {
+			id = avatar.170
+			days = 30
+			random = 90
+		}
+		activate_title = {
+			title = d_avatar
+			status = yes
+		}
 		d_avatar = {
 			grant_title = ROOT
 		}
-		activate_title = { title = d_avatar_unrevealed status = no }
+		activate_title = {
+			title = d_avatar_unrevealed
+			status = no
+		}
 		destroy_landed_title = d_avatar_unrevealed
-			
 		hidden_tooltip = {
 			any_independent_ruler = {
 				any_realm_character = {
@@ -192,7 +214,9 @@ character_event = { #avatar revealed
 							has_character_flag = avatar_hunt
 						}
 						clr_character_flag = avatar_hunt
-						character_event = { id = ATLA.27 }
+						character_event = {
+							id = ATLA.27
+						}
 					}
 				}
 			}
@@ -208,48 +232,54 @@ narrative_event = {
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_conflict
 	major = yes
-
+	major_trigger = {
+		is_avatar_trigger = no
+	}
 	option = {
 		name = "EVTOPTAATLA.5"
 	}
 }
 
-character_event = { #create the new avatar #on_birth is recycled
+character_event = {
+	#create the new avatar #on_birth is recycled
 	id = ATLA.6
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
-		NOT = { has_global_flag = HYW_16 }
+		has_game_rule = {
+			name = avatar_system
+			value = old
+		}
+		NOT = {
+			has_global_flag = HYW_16
+		}
 		has_global_flag = avatar_dead
 		has_global_flag = avatar_air
-		ROOT = {
-			OR = {
-				culture = northern_water
-				culture = southern_water
-				father_even_if_dead = {
-					trait = waterbender
-				}
-				mother_even_if_dead = {
-					trait = waterbender
-				}
+		OR = {
+			culture = northern_water
+			culture = southern_water
+			father_even_if_dead = {
+				trait = waterbender
 			}
-			# OR = {
-				# AND = {
-					# has_game_rule = {
-						# name = canon_events
-						# value = strict_canon
-					# }
-					# is_female = yes
-				# }
-				# NOT = {
-					# has_game_rule = {
-						# name = canon_events
-						# value = strict_canon
-					# }
-				# }
-			# }
+			mother_even_if_dead = {
+				trait = waterbender
+			}
 		}
+		# OR = {
+		# AND = {
+		# has_game_rule = {
+		# name = canon_events
+		# value = strict_canon
+		# }
+		# is_female = yes
+		# }
+		# NOT = {
+		# has_game_rule = {
+		# name = canon_events
+		# value = strict_canon
+		# }
+		# }
+		# }
 	}
 	immediate = {
 		clr_global_flag = avatar_dead
@@ -260,11 +290,15 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 	option = {
 		any_playable_ruler = {
-			character_event = { id = ATLA.108 }
+			character_event = {
+				id = ATLA.108
+			}
 		}
 		if = {
 			limit = {
-				NOT = { has_global_flag = Korra }
+				NOT = {
+					has_global_flag = Korra
+				}
 				is_female = yes
 			}
 			set_name = "Korra"
@@ -275,13 +309,19 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 }
 
-character_event = { #create the new avatar #on_birth is recycled
+character_event = {
+	#create the new avatar #on_birth is recycled
 	id = ATLA.7
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
-		NOT = { has_global_flag = HYW_16 }
+		has_game_rule = {
+			name = avatar_system
+			value = old
+		}
+		NOT = {
+			has_global_flag = HYW_16
+		}
 		has_global_flag = avatar_dead
 		has_global_flag = avatar_water
 		ROOT = {
@@ -305,48 +345,56 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 	option = {
 		any_playable_ruler = {
-			character_event = { id = ATLA.109 }
+			character_event = {
+				id = ATLA.109
+			}
 		}
 	}
 }
 
-character_event = { #create the new avatar #on_birth is recycled
+character_event = {
+	#create the new avatar #on_birth is recycled
 	id = ATLA.8
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
-		NOT = { has_global_flag = HYW_16 }
+		has_game_rule = {
+			name = avatar_system
+			value = old
+		}
+		NOT = {
+			has_global_flag = HYW_16
+		}
 		has_global_flag = avatar_dead
 		has_global_flag = avatar_earth
-		ROOT = {
-			OR = {
-				culture_group = fire_nation_culture
-				father_even_if_dead = {
-					trait = firebender
-				}
-				mother_even_if_dead = {
-					trait = firebender
-				}
+		OR = {
+			culture_group = fire_nation_culture
+			father_even_if_dead = {
+				trait = firebender
 			}
-			# OR = {
-				# AND = {
-					# has_game_rule = {
-						# name = canon_events
-						# value = strict_canon
-					# }
-					# is_female = no
-				# }
-				# NOT = {
-					# has_game_rule = {
-						# name = canon_events
-						# value = strict_canon
-					# }
-				# }
-			# }
+			mother_even_if_dead = {
+				trait = firebender
+			}
 		}
+		# OR = {
+		# AND = {
+		# has_game_rule = {
+		# name = canon_events
+		# value = strict_canon
+		# }
+		# is_female = no
+		# }
+		# NOT = {
+		# has_game_rule = {
+		# name = canon_events
+		# value = strict_canon
+		# }
+		# }
+		# }
 	}
 	immediate = {
+		log = "ATLA.8: create the new avatar #on_birth is recycled"
+		print_scope_effect = yes
 		clr_global_flag = avatar_dead
 		clr_global_flag = avatar_earth
 		set_character_flag = avatar_unrevealed
@@ -355,11 +403,15 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 	option = {
 		any_playable_ruler = {
-			character_event = { id = ATLA.110 }
+			character_event = {
+				id = ATLA.110
+			}
 		}
 		if = {
 			limit = {
-				NOT = { has_global_flag = Roku }
+				NOT = {
+					has_global_flag = Roku
+				}
 				is_female = no
 			}
 			set_name = "Roku"
@@ -370,20 +422,31 @@ character_event = { #create the new avatar #on_birth is recycled
 	}
 }
 
-
-character_event = { #ensures the avatar's descendents get the appropriate descendent trait
+character_event = {
+	#ensures the avatar's descendents get the appropriate descendent trait
 	id = ATLA.9
 	hide_window = yes
 	is_triggered_only = yes
-
 	trigger = {
 		OR = {
-			mother = { trait = avatar }
-			father = { trait = avatar }
-			mother = { trait = fullyrealisedavatar }
-			father = { trait = fullyrealisedavatar }
-			mother = { trait = directdescendantavatar }
-			father = { trait = directdescendantavatar }
+			mother = {
+				trait = avatar
+			}
+			father = {
+				trait = avatar
+			}
+			mother = {
+				trait = fullyrealisedavatar
+			}
+			father = {
+				trait = fullyrealisedavatar
+			}
+			mother = {
+				trait = directdescendantavatar
+			}
+			father = {
+				trait = directdescendantavatar
+			}
 		}
 		NOT = {
 			OR = {
@@ -392,15 +455,22 @@ character_event = { #ensures the avatar's descendents get the appropriate descen
 			}
 		}
 	}
-
 	immediate = {
 		if = {
 			limit = {
 				OR = {
-					mother = { trait = avatar }
-					father = { trait = avatar }
-					mother = { trait = fullyrealisedavatar }
-					father = { trait = fullyrealisedavatar }
+					mother = {
+						trait = avatar
+					}
+					father = {
+						trait = avatar
+					}
+					mother = {
+						trait = fullyrealisedavatar
+					}
+					father = {
+						trait = fullyrealisedavatar
+					}
 				}
 			}
 			add_trait = directdescendantavatar
@@ -408,169 +478,141 @@ character_event = { #ensures the avatar's descendents get the appropriate descen
 		if = {
 			limit = {
 				OR = {
-					mother = { trait = directdescendantavatar }
-					father = { trait = directdescendantavatar }
+					mother = {
+						trait = directdescendantavatar
+					}
+					father = {
+						trait = directdescendantavatar
+					}
 				}
 			}
 			add_trait = descendantavatar
 		}
-	}
-	option = {
-		name = OK
 	}
 }
 
 # Build out by RadSquirrel based on 000_atla.csv localization, needs improvement
 # Associated Events 20,25
 # Missing events in chain, 10, 12, 13, 14, 15, 16
-character_event = { # Previously missing event for searching the avatar!
-	id = ATLA.11
-	desc = EVTDESCATLA.11
-	is_triggered_only = yes
-	option = {
-		name = EVTOPTAATLA.11
-	}
-	option = {
-		name = EVTOPTBATLA.11
-	}
-	option = {
-		name = EVTOPTCATLA.11
-	}
-	option = {
-		name = EVTOPTDATLA.11
-	}
-}
+# todo: figure out
+# !nevercalled
+# character_event = {
+# 	# Previously missing event for searching the avatar!
+# 	id = ATLA.11
+# 	desc = EVTDESCATLA.11
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTAATLA.11
+# 	}
+# 	option = {
+# 		name = EVTOPTBATLA.11
+# 	}
+# 	option = {
+# 		name = EVTOPTCATLA.11
+# 	}
+# 	option = {
+# 		name = EVTOPTDATLA.11
+# 	}
+# }
 
 #Never caled probably for zuko or Sozin/ambition??? - TypicalCrusader
-character_event = {
-	id = ATLA.20
-	desc = EVTDESCATLA.20
-	picture = GFX_evt_cliff_face
-	is_triggered_only = yes
-
-	option = { #the search begins again
-		name = EVTOPTAATLA.20
-		random = {
-			chance = 20
-			add_trait = diligent
-		}
-		scaled_wealth = -0.33
-		hidden_tooltip = {
-			random_list = {
-				2 = {
-					modifier = {
-						factor = 5
-						trait = diligent
-					}
-					character_event = { id = ATLA.11 days = 180 }
-				}
-				1 = {
-					modifier = {
-						factor = 10
-						trait = content
-					}
-					character_event = { id = ATLA.20 days = 200 }
-				}
-			}
-		}
-	}
-	option = { #the search is ended
-		name = EVTOPTBATLA.20
-		prestige = -50
-		hidden_tooltip = {
-			clr_character_flag = avatar_hunt
-#			remove_trait = on_pilgrimage
-		}
-	}
-}
+# todo: figure out
+# !nevercalled
+# character_event = {
+# 	id = ATLA.20
+# 	desc = EVTDESCATLA.20
+# 	picture = GFX_evt_cliff_face
+# 	is_triggered_only = yes
+# 	option = {
+# 		#the search begins again
+# 		name = EVTOPTAATLA.20
+# 		random = {
+# 			chance = 20
+# 			add_trait = diligent
+# 		}
+# 		scaled_wealth = -0.33
+# 		hidden_tooltip = {
+# 			random_list = {
+# 				2 = {
+# 					modifier = {
+# 						factor = 5
+# 						trait = diligent
+# 					}
+# 					character_event = {
+# 						id = ATLA.11
+# 						days = 180
+# 					}
+# 				}
+# 				1 = {
+# 					modifier = {
+# 						factor = 10
+# 						trait = content
+# 					}
+# 					character_event = {
+# 						id = ATLA.20
+# 						days = 200
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		#the search is ended
+# 		name = EVTOPTBATLA.20
+# 		prestige = -50
+# 		hidden_tooltip = {
+# 			clr_character_flag = avatar_hunt
+# 			#			remove_trait = on_pilgrimage
+# 		}
+# 	}
+# }
 
 #Never caled probably for zuko or Sozin???/ambition - TypicalCrusader
-character_event = {
-	id = ATLA.25
-	desc = EVTDESCATLA.25
-	picture = GFX_evt_cliff_face
-	is_triggered_only = yes
-
-	option = {
-		name = EVTOPTAATLA.25
-		trigger = {
-			wealth = 25
-		}
-		wealth = -25
-		hidden_tooltip = {
-			character_event = { id = ATLA.11 days = 90 }
-		}
-	}
-	option = {
-		name = EVTOPTBATLA.25
-		hidden_tooltip = {
-			clr_character_flag = avatar_hunt
-#			remove_trait = on_pilgrimage
-		}
-	}
-}
-
-character_event = {
-	id = ATLA.26
-	is_triggered_only = yes
-	hide_window = yes
-
-	trigger = {
-		has_character_flag = avatar_unrevealed
-	}
-	immediate = {
-		clr_character_flag = avatar_unrevealed
-		set_global_flag = avatar_dead
-	}
-	option = {
-		if = {
-			limit = {
-				has_global_flag = avatar_fire
-			}
-			clr_global_flag = avatar_fire
-			set_global_flag = avatar_air
-		}
-		if = {
-			limit = {
-				has_global_flag = avatar_air
-			}
-			clr_global_flag = avatar_air
-			set_global_flag = avatar_water
-		}
-		if = {
-			limit = {
-				has_global_flag = avatar_water
-			}
-			clr_global_flag = avatar_water
-			set_global_flag = avatar_earth
-		}
-		if = {
-			limit = {
-				has_global_flag = avatar_earth
-			}
-			clr_global_flag = avatar_earth
-			set_global_flag = avatar_fire
-		}
-	}
-}
+# todo: figure out
+# !nevercalled
+# character_event = {
+# 	id = ATLA.25
+# 	desc = EVTDESCATLA.25
+# 	picture = GFX_evt_cliff_face
+# 	is_triggered_only = yes
+# 	option = {
+# 		name = EVTOPTAATLA.25
+# 		trigger = {
+# 			wealth = 25
+# 		}
+# 		wealth = -25
+# 		hidden_tooltip = {
+# 			character_event = {
+# 				id = ATLA.11
+# 				days = 90
+# 			}
+# 		}
+# 	}
+# 	option = {
+# 		name = EVTOPTBATLA.25
+# 		hidden_tooltip = {
+# 			clr_character_flag = avatar_hunt
+# 			#			remove_trait = on_pilgrimage
+# 		}
+# 	}
+# }
 
 character_event = {
 	id = ATLA.27
 	desc = EVTDESCATLA.27
 	is_triggered_only = yes
 	picture = GFX_evt_cliff_face
-
 	option = {
 		name = EVTOPTAATLA.27
 		prestige = -50
 	}
 }
 
-character_event = { #triggers on avatars untimely death
+character_event = {
+	#triggers on avatars untimely death
 	id = ATLA.30
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
 		OR = {
 			trait = avatar
@@ -579,12 +621,10 @@ character_event = { #triggers on avatars untimely death
 			has_character_flag = avatar_unrevealed
 		}
 	}
-
 	immediate = {
 		set_global_flag = avatar_dead
-
 		d_avatar = {
-			unsafe_destroy_landed_title = d_avatar #yes
+			unsafe_destroy_landed_title = d_avatar			#yes
 		}
 		create_character = {
 			dynasty = random
@@ -597,7 +637,7 @@ character_event = { #triggers on avatars untimely death
 				grant_title = PREV
 			}
 		}
-
+		# * * NEW AVATAR SYSTEM * *
 		if = {
 			limit = {
 				has_game_rule = {
@@ -605,30 +645,29 @@ character_event = { #triggers on avatars untimely death
 					value = new
 				}
 			}
-
 			create_new_avatar_effect = yes
 		}
 	}
-
 	option = {
 		if = {
 			limit = {
 				has_character_flag = avatar_revealed
 			}
-			narrative_event = { id = ATLA.3 }
+			narrative_event = {
+				id = ATLA.3
+			}
 		}
-		
 		clr_character_flag = avatar_revealed
 		clr_global_flag = avatar_revealed
 	}
 }
 
-character_event = { #Avatar resists Imprisonment - ROOT
+character_event = {
+	#Avatar resists Imprisonment - ROOT
 	id = ATLA.31
 	desc = EVTDESCATLA.31
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_resist
-
 	trigger = {
 		OR = {
 			trait = avatar
@@ -641,17 +680,19 @@ character_event = { #Avatar resists Imprisonment - ROOT
 		prisoner = no
 		banish = yes
 		FROM = {
-			character_event = { id = ATLA.32 }
+			character_event = {
+				id = ATLA.32
+			}
 		}
 	}
 }
 
-character_event = { #Avatar resists Imprisonment - FROM
+character_event = {
+	#Avatar resists Imprisonment - FROM
 	id = ATLA.32
 	desc = "EVTDESCATLA.32"
 	is_triggered_only = yes
 	picture = GFX_evt_avatar_resist
-
 	option = {
 		name = EVTOPTATLA.32
 		prestige = -500
@@ -659,13 +700,13 @@ character_event = { #Avatar resists Imprisonment - FROM
 	}
 }
 
-character_event = { #Generate Benders
+character_event = {
+	#Generate Benders
 	id = ATLA.33
 	is_triggered_only = yes
 	hide_window = yes
 	ai = yes
 	only_playable = yes
-
 	option = {
 		if = {
 			limit = {
@@ -734,8 +775,16 @@ character_event = { #Generate Benders
 					has_law = succ_gavelkind
 				}
 				any_demesne_title = {
-					add_law = { law = succ_primogeniture cooldown = no opinion_effect = no }
-					add_law = { law = true_cognatic_succession cooldown = no opinion_effect = no }
+					add_law = {
+						law = succ_primogeniture
+						cooldown = no
+						opinion_effect = no
+					}
+					add_law = {
+						law = true_cognatic_succession
+						cooldown = no
+						opinion_effect = no
+					}
 				}
 			}
 			random_list = {
@@ -794,29 +843,29 @@ character_event = { #Generate Benders
 #		set_character_flag = avatar_busy
 #	}
 #}
-
 character_event = {
 	id = ATLA.100
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
 		OR = {
 			trait = avatar
 			trait = fullyrealisedavatar
 		}
-		NOT = { has_minor_title = title_avatar }
+		NOT = {
+			has_minor_title = title_avatar
+		}
 	}
 	option = {
 		give_minor_title = title_avatar
 	}
 }
 
-character_event = { # Avatar Event Handler
+character_event = {
+	# Avatar Event Handler
 	id = ATLA.101
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
 		OR = {
 			trait = avatar
@@ -824,10 +873,9 @@ character_event = { # Avatar Event Handler
 			has_character_flag = avatar_unrevealed
 		}
 	}
-
 	immediate = {
-
-		if = { # START: Gain First Bending Trait
+		if = {
+			# START: Gain First Bending Trait
 			limit = {
 				has_character_flag = avatar_unrevealed
 				age = 6
@@ -842,79 +890,113 @@ character_event = { # Avatar Event Handler
 				limit = {
 					has_global_flag = avatar_fire
 				}
-				character_event = { id = bending.1 days = 10 random = 30 }
+				character_event = {
+					id = bending.1
+					days = 10
+					random = 30
+				}
 				break = yes
 			}
 			if = {
 				limit = {
 					has_global_flag = avatar_air
 				}
-				character_event = { id = bending.94 days = 10 random = 30 }
+				character_event = {
+					id = bending.94
+					days = 10
+					random = 30
+				}
 				break = yes
 			}
 			if = {
 				limit = {
 					has_global_flag = avatar_water
 				}
-				character_event = { id = bending.31 days = 10 random = 30 }
+				character_event = {
+					id = bending.31
+					days = 10
+					random = 30
+				}
 				break = yes
 			}
 			if = {
 				limit = {
 					has_global_flag = avatar_earth
 				}
-				character_event = { id = bending.61 days = 10 random = 30 }
+				character_event = {
+					id = bending.61
+					days = 10
+					random = 30
+				}
 				break = yes
 			}
-		} # END: Gain First Bending Trait
-
-		if = { # START: Master Native Element
+		}
+		# END: Gain First Bending Trait
+		if = {
+			# START: Master Native Element
 			limit = {
 				has_character_flag = avatar_unrevealed
 				age = 9
-				NOT = { age = 16 }
+				NOT = {
+					age = 16
+				}
 				OR = {
 					trait = incompetent_bender
 					trait = competent_bender
 				}
 			}
-			character_event = { id = bending.160 days = 10 random = 30 }
-			educator = { # Inform Educator
-				character_event = { id = avatar.202 days = 40 random = 60 }
+			character_event = {
+				id = bending.160
+				days = 10
+				random = 30
+			}
+			educator = {
+				# Inform Educator
+				character_event = {
+					id = avatar.202
+					days = 40
+					random = 60
+				}
 			}
 			break = yes
-		} # END: Master Native Element
-
-		if = { # START: Avatar Revealed
+		}
+		# END: Master Native Element
+		if = {
+			# START: Avatar Revealed
 			limit = {
 				has_character_flag = avatar_unrevealed
-				NOT = { has_character_flag = avatar_training }
+				NOT = {
+					has_character_flag = avatar_training
+				}
 				age = 16
 			}
-			character_event = { id = ATLA.4 days = 10 random = 30 }
+			character_event = {
+				id = ATLA.4
+				days = 10
+				random = 30
+			}
 			break = yes
-		} # END: Master Native Element
-
-		if = { # START: Master the Four Elements
+		}
+		# END: Master Native Element
+		if = {
+			# START: Master the Four Elements
 			limit = {
 				has_character_flag = avatar_revealed
-				NOT = { trait = fullyrealisedavatar }
-				NOT = { has_character_flag = avatar_journey }
-			}
-			if = {
-				limit = {
-					NOT = { trait = on_journey }
-					has_game_rule = { name = avatar_system value = new }
+				NOT = {
+					trait = fullyrealisedavatar
 				}
-				character_event = { id = new_avatar_journey.1 }
+				NOT = {
+					has_character_flag = avatar_journey
+				}
 			}
-			else = {
-				character_event = { id = avatar.151 }
+			character_event = {
+				id = new_avatar_journey.1
 			}
 			break = yes
-		} # END: Master the Four Elements
-
-		if = { # Heal the Avatar if nessecary
+		}
+		# END: Master the Four Elements
+		if = {
+			# Heal the Avatar if nessecary
 			limit = {
 				OR = {
 					trait = fullyrealisedavatar
@@ -936,13 +1018,14 @@ character_event = { # Avatar Event Handler
 			remove_trait = infirm
 			remove_trait = incapable
 		}
-
-		if = { # START: Avatar Personal Events
+		if = {
+			# START: Avatar Personal Events
 			limit = {
 				trait = fullyrealisedavatar
 			}
 			random_list = {
-				50 = { } # No Event
+				50 = {
+				}				# No Event
 			}
 			if = {
 				limit = {
@@ -959,59 +1042,69 @@ character_event = { # Avatar Event Handler
 						# Stays
 					}
 					# 25 = { # Leaves (event is commented out, hence commented this out)
-						# ROOT = {
-							# random_child = {
-								# limit = {
-									# de_facto_liege = ROOT
-									# age = 18
-								# }
-								# character_event = { id = avatar.191 }
-							# }
-						# }
+					# ROOT = {
+					# random_child = {
+					# limit = {
+					# de_facto_liege = ROOT
+					# age = 18
+					# }
+					# character_event = { id = avatar.191 }
+					# }
+					# }
 					# }
 					# 50 = { # Leaves and marries (should be 25 once above is re-added) (event is not existant)
-						# ROOT = {
-							# random_child = {
-								# limit = {
-									# de_facto_liege = ROOT
-									# age = 18
-								# }
-								# character_event = { id = avatar.190 }
-							# }
-						# }
+					# ROOT = {
+					# random_child = {
+					# limit = {
+					# de_facto_liege = ROOT
+					# age = 18
+					# }
+					# character_event = { id = avatar.190 }
+					# }
+					# }
 					# }
 				}
 			}
 		}
-
-		if = { # START: Avatar Joins War
+		if = {
+			# START: Avatar Joins War
 			limit = {
-				NOT = { has_global_flag = avatar_at_war }
+				NOT = {
+					has_global_flag = avatar_at_war
+				}
 				trait = fullyrealisedavatar
 				has_global_flag = HYW_0
 			}
-			character_event = { id = avatar.184 }
+			character_event = {
+				id = avatar.184
+			}
 			break = yes
 		}
-
-		if = { # START: Avatar takes action
+		if = {
+			# START: Avatar takes action
 			limit = {
 				has_global_flag = avatar_at_war
-				NOT = { has_global_flag = avatar_busy }
+				NOT = {
+					has_global_flag = avatar_busy
+				}
 				trait = fullyrealisedavatar
 				has_global_flag = HYW_0
 			}
-			character_event = { id = avatar.186 }
+			character_event = {
+				id = avatar.186
+			}
 			if = {
 				limit = {
 					war = no
 				}
-				character_event = { id = avatar.199 }
+				character_event = {
+					id = avatar.199
+				}
 			}
 			break = yes
 		}
-
-		if = { # START: Death (Old Age)
+		if = {
+			# START: Death (Old Age)
 			limit = {
 				age = 100
 			}
@@ -1053,17 +1146,20 @@ character_event = { # Avatar Event Handler
 						factor = 75
 						trait = incapable
 					}
-					character_event = { id = ATLA.1 days = 10 random = 30 }
+					character_event = {
+						id = ATLA.1
+						days = 10
+						random = 30
+					}
 					break = yes
 				}
 				99 = {
 					break = yes
 				}
 			}
-		} # END: Death (Old Age)
-
+		}
+		# END: Death (Old Age)
 	}
-
 }
 
 character_event = {
@@ -1071,7 +1167,6 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	ai = no
-
 	trigger = {
 		OR = {
 			trait = waterbender_novice
@@ -1097,9 +1192,9 @@ character_event = {
 		}
 		OR = {
 			trait = blueflames_rd
-			trait = innerflame_rd 
+			trait = innerflame_rd
 			trait = levitation_rd
-			trait = voidbender_rd 
+			trait = voidbender_rd
 			trait = lavabender_rd
 			trait = sandbender_rd
 			trait = metalbender_rd
@@ -1112,9 +1207,8 @@ character_event = {
 		}
 	}
 	option = {
-	
 		trigger_switch = {
-		on_trigger = trait	
+			on_trigger = trait
 			waterbender_novice = {
 				remove_trait = waterbender_novice
 				add_trait = waterbender
@@ -1160,10 +1254,10 @@ character_event = {
 				add_trait = firebender
 				add_trait = master_bender
 			}
-			firebender_legendary = { 
-				remove_trait = firebender_legendary 
-				add_trait = firebender 
-				add_trait = legendary_bender 
+			firebender_legendary = {
+				remove_trait = firebender_legendary
+				add_trait = firebender
+				add_trait = legendary_bender
 			}
 			earthbender_novice = {
 				remove_trait = earthbender_novice
@@ -1216,7 +1310,6 @@ character_event = {
 				add_trait = legendary_bender
 			}
 		}
-		
 		if = {
 			limit = {
 				trait = blueflames_rd
@@ -1292,7 +1385,7 @@ character_event = {
 			}
 			if = {
 				limit = {
-					OR = {	
+					OR = {
 						trait = lightningbender_rd
 						trait = innerflame_rd
 						trait = blueflames_rd
@@ -1310,7 +1403,6 @@ character_event = {
 				add_trait = combustionbender
 			}
 		}
-
 		if = {
 			limit = {
 				trait = lavabender_rd
@@ -1326,7 +1418,7 @@ character_event = {
 			}
 			remove_trait = sandbender_rd
 			add_trait = sandbender
-		}	
+		}
 		if = {
 			limit = {
 				trait = seismicsense_rd
@@ -1370,7 +1462,6 @@ character_event = {
 				remove_trait = metalbender_rd
 			}
 		}
-
 		if = {
 			limit = {
 				trait = bloodbender_rd
@@ -1388,7 +1479,6 @@ character_event = {
 			remove_trait = healer_rd
 			add_trait = healer
 		}
-		
 		if = {
 			limit = {
 				trait = levitation_rd
@@ -1399,10 +1489,12 @@ character_event = {
 			add_trait = levitation
 			if = {
 				limit = {
-					NOT = { religion = air_spirituality }
+					NOT = {
+						religion = air_spirituality
+					}
 				}
 				remove_trait = levitation_rd
-			}			
+			}
 		}
 		if = {
 			limit = {
@@ -1414,20 +1506,22 @@ character_event = {
 			add_trait = voidbender
 			if = {
 				limit = {
-					NOT = { religion = nomadic_nihilism }
+					NOT = {
+						religion = nomadic_nihilism
+					}
 				}
 				remove_trait = voidbender_rd
 			}
-		}		
+		}
 	}
 }
 
-character_event = { # Earth Kingdom settings
+character_event = {
+	# Earth Kingdom settings
 	id = ATLA.103
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-
 	trigger = {
 		is_save_game = no
 		OR = {
@@ -1435,7 +1529,6 @@ character_event = { # Earth Kingdom settings
 			has_landed_title = k_earth_kingdom
 		}
 	}
-
 	immediate = {
 		if = {
 			limit = {
@@ -1455,16 +1548,20 @@ character_event = { # Earth Kingdom settings
 						mercenary = no
 						holy_order = no
 						rebel = no
-						NOT = { has_landed_title = d_avatar }
-						NOT = { religion = way_of_chin }
+						NOT = {
+							has_landed_title = d_avatar
+						}
+						NOT = {
+							religion = way_of_chin
+						}
 					}
 					if = {
 						limit = {
-							NOR = { 
-								culture = sandbender
+							NOR = {
+								culture = sandbender_culture
 								culture = southern_earth
-								culture = barbarians	
-							}				
+								culture = barbarians
+							}
 							capital_scope = {
 								OR = {
 									region = world_north_west_kingdom
@@ -1473,7 +1570,6 @@ character_event = { # Earth Kingdom settings
 									region = world_western_earth_kingdom
 									region = world_eastern_coast
 								}
-									
 							}
 						}
 						suzerain = {
@@ -1513,7 +1609,7 @@ character_event = { # Earth Kingdom settings
 						limit = {
 							OR = {
 								culture = barbarians
-								culture = sandbender
+								culture = sandbender_culture
 							}
 							capital_scope = {
 								OR = {
@@ -1547,16 +1643,20 @@ character_event = { # Earth Kingdom settings
 						mercenary = no
 						holy_order = no
 						rebel = no
-						NOT = { has_landed_title = d_avatar }
-						NOT = { religion = way_of_chin }
+						NOT = {
+							has_landed_title = d_avatar
+						}
+						NOT = {
+							religion = way_of_chin
+						}
 					}
 					if = {
 						limit = {
-							NOR = { 
-								culture = sandbender
+							NOR = {
+								culture = sandbender_culture
 								culture = southern_earth
-								culture = barbarians	
-							}				
+								culture = barbarians
+							}
 							capital_scope = {
 								OR = {
 									region = world_north_west_kingdom
@@ -1565,7 +1665,6 @@ character_event = { # Earth Kingdom settings
 									region = world_western_earth_kingdom
 									region = world_eastern_coast
 								}
-									
 							}
 						}
 						suzerain = {
@@ -1605,7 +1704,7 @@ character_event = { # Earth Kingdom settings
 						limit = {
 							OR = {
 								culture = barbarians
-								culture = sandbender
+								culture = sandbender_culture
 							}
 							capital_scope = {
 								OR = {
@@ -1628,7 +1727,7 @@ character_event = { # Earth Kingdom settings
 					}
 				}
 				break = yes
-			}			
+			}
 		}
 	}
 }
@@ -1638,18 +1737,18 @@ character_event = {
 	desc = EVTDESCATLA.104
 	picture = GFX_evt_landscape_2
 	is_triggered_only = yes
-
-	option = { # Convert
+	option = {
+		# Convert
 		name = EVTOPTATLAA.104
 		religion = FROMFROM
 	}
-
-	option = { # No ( player only )
+	option = {
+		# No ( player only )
 		name = EVTOPTATLAB.104
 		trigger = {
 			ai = no
 		}
-		opinion = { 
+		opinion = {
 			modifier = refused_decision
 			who = FROMFROM
 			years = 5
@@ -1657,12 +1756,12 @@ character_event = {
 	}
 }
 
-character_event = { # Inherit Succession
+character_event = {
+	# Inherit Succession
 	id = ATLA.105
 	is_triggered_only = yes
 	hide_window = yes
 	only_rulers = yes
-
 	trigger = {
 		any_demesne_title = {
 			higher_tier_than = BARON
@@ -1674,7 +1773,9 @@ character_event = { # Inherit Succession
 							culture = eastern_air_nomad
 						}
 					}
-					NOT = { has_law = enatic_succession }
+					NOT = {
+						has_law = enatic_succession
+					}
 				}
 				AND = {
 					ROOT = {
@@ -1683,7 +1784,9 @@ character_event = { # Inherit Succession
 							culture = southern_air_nomad
 						}
 					}
-					NOT = { has_law = agnatic_succession }
+					NOT = {
+						has_law = agnatic_succession
+					}
 				}
 			}
 		}
@@ -1692,7 +1795,9 @@ character_event = { # Inherit Succession
 		any_demesne_title = {
 			limit = {
 				higher_tier_than = BARON
-				NOT = { has_law = true_cognatic_succession }
+				NOT = {
+					has_law = true_cognatic_succession
+				}
 			}
 			if = {
 				limit = {
@@ -1703,7 +1808,11 @@ character_event = { # Inherit Succession
 						}
 					}
 				}
-				add_law = { law = enatic_succession cooldown = no opinion_effect = no }
+				add_law = {
+					law = enatic_succession
+					cooldown = no
+					opinion_effect = no
+				}
 			}
 			if = {
 				limit = {
@@ -1714,54 +1823,65 @@ character_event = { # Inherit Succession
 						}
 					}
 				}
-				add_law = { law = agnatic_succession cooldown = no opinion_effect = no }
+				add_law = {
+					law = agnatic_succession
+					cooldown = no
+					opinion_effect = no
+				}
 			}
 		}
 	}
 }
 
-character_event = { # Check Ambition Status
+character_event = {
+	# Check Ambition Status
 	id = ATLA.106
 	is_triggered_only = yes
 	hide_window = yes
-
 	trigger = {
 		ROOT = {
 			has_ambition = obj_see_the_realm_grow
 		}
 	}
-
 	option = {
 		ROOT = {
-			export_to_variable = { which = currentRealmSize value = realm_size }
+			export_to_variable = {
+				which = currentRealmSize
+				value = realm_size
+			}
 		}
-		character_event = { id = ATLA.106  days = 14 }
+		character_event = {
+			id = ATLA.106
+			days = 14
+		}
 	}
 }
 
-character_event = { # Avatar Reborn - Air
+character_event = {
+	# Avatar Reborn - Air
 	id = ATLA.107
 	desc = EVTDESCATLA.107
 	picture = GFX_evt_cliff_face
 	is_triggered_only = yes
 	hide_from = yes
 	ai = no
-
 	option = {
 		name = EVTOPTATLAA.107
 		trigger = {
-			NOT = { religion = fire_nation_imperialism }
-			NOT = { culture_group = air_nomad_culture }
+			NOT = {
+				religion = fire_nation_imperialism
+			}
+			NOT = {
+				culture_group = air_nomad_culture
+			}
 		}
 	}
-
 	option = {
 		name = EVTOPTATLAB.107
 		trigger = {
 			religion = fire_nation_imperialism
 		}
 	}
-
 	option = {
 		name = EVTOPTATLAC.107
 		trigger = {
@@ -1770,71 +1890,74 @@ character_event = { # Avatar Reborn - Air
 	}
 }
 
-character_event = { # Avatar Reborn - Water
+character_event = {
+	# Avatar Reborn - Water
 	id = ATLA.108
 	desc = EVTDESCATLA.108
 	picture = GFX_evt_cliff_face
 	is_triggered_only = yes
 	hide_from = yes
 	ai = no
-
 	option = {
 		name = EVTOPTATLAA.108
 		trigger = {
 			culture_group = water_tribe_culture
 		}
 	}
-
 	option = {
 		name = EVTOPTATLAB.108
 		trigger = {
-			NOT = { culture_group = water_tribe_culture }
+			NOT = {
+				culture_group = water_tribe_culture
+			}
 		}
 	}
 }
 
-character_event = { # Avatar Reborn - Earth
+character_event = {
+	# Avatar Reborn - Earth
 	id = ATLA.109
 	desc = EVTDESCATLA.109
 	picture = GFX_evt_cliff_face
 	is_triggered_only = yes
 	hide_from = yes
 	ai = no
-
 	option = {
 		name = EVTOPTATLAA.109
 		trigger = {
 			culture_group = earth_kingdom_culture
 		}
 	}
-
 	option = {
 		name = EVTOPTATLAB.109
 		trigger = {
-			NOT = { culture_group = earth_kingdom_culture }
+			NOT = {
+				culture_group = earth_kingdom_culture
+			}
 		}
 	}
 }
 
-character_event = { # Avatar Reborn - Fire
+character_event = {
+	# Avatar Reborn - Fire
 	id = ATLA.110
 	desc = EVTDESCATLA.110
 	picture = GFX_evt_cliff_face
 	is_triggered_only = yes
 	hide_from = yes
 	ai = no
-
 	option = {
 		name = EVTOPTATLAA.110
 		trigger = {
 			culture_group = fire_nation_culture
 		}
 	}
-
 	option = {
 		name = EVTOPTATLAB.110
 		trigger = {
-			NOT = { culture_group = fire_nation_culture }
+			NOT = {
+				culture_group = fire_nation_culture
+			}
 		}
 	}
 }
@@ -1844,33 +1967,33 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-
 	trigger = {
 		always = yes
 		is_save_game = no
 		# OR = {
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = united
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = dismantled
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = canon
-			# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = united
+		# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = dismantled
+		# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = canon
+		# }
 		# }
 	}
-
 	immediate = {
 		any_playable_ruler = {
 			limit = {
 				independent = yes
 				culture_group = earth_kingdom_culture
 			}
-			character_event = { id = ATLA.103 }
+			character_event = {
+				id = ATLA.103
+			}
 		}
 	}
 }
@@ -1880,30 +2003,27 @@ character_event = {
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-
 	trigger = {
 		is_save_game = no
 		# OR = {
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = united
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = dismantled
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = canon
-			# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = united
+		# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = dismantled
+		# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = canon
+		# }
 		# }
 		OR = {
 			has_landed_title = e_earth_kingdom
 			has_landed_title = k_earth_kingdom
-		}		
+		}
 	}
-	
-	
 	immediate = {
 		if = {
 			limit = {
@@ -1915,56 +2035,87 @@ character_event = {
 			}
 			if = {
 				limit = {
-					NOT = { year = 602 }
+					NOT = {
+						year = 602
+					}
 				}
-				set_variable = { which = global_royalAuthority value = 20 }
+				set_variable = {
+					which = global_royalAuthority
+					value = 20
+				}
 			}
 			if = {
 				limit = {
 					year = 602
-					NOT = { year = 830 }
+					NOT = {
+						year = 830
+					}
 				}
-				set_variable = { which = global_royalAuthority value = 50 }
+				set_variable = {
+					which = global_royalAuthority
+					value = 50
+				}
 			}
 			if = {
 				limit = {
 					year = 830
-					NOT = { year = 925 }
+					NOT = {
+						year = 925
+					}
 				}
-				set_variable = { which = global_royalAuthority value = 90 }
+				set_variable = {
+					which = global_royalAuthority
+					value = 90
+				}
 			}
 			if = {
 				limit = {
 					year = 925
-					NOT = { year = 931 }
+					NOT = {
+						year = 931
+					}
 				}
-				set_variable = { which = global_royalAuthority value = 10 }
+				set_variable = {
+					which = global_royalAuthority
+					value = 10
+				}
 			}
 			if = {
 				limit = {
 					year = 931
-					NOT = { year = 978 }
+					NOT = {
+						year = 978
+					}
 				}
-				set_variable = { which = global_royalAuthority value = 40 }
+				set_variable = {
+					which = global_royalAuthority
+					value = 40
+				}
 			}
 			if = {
 				limit = {
 					year = 978
 				}
-				set_variable = { which = global_royalAuthority value = 60 }
+				set_variable = {
+					which = global_royalAuthority
+					value = 60
+				}
 			}
 		}
 	}
 	option = {
 		if = {
 			limit = {
-					OR = {
-						has_landed_title = e_earth_kingdom
-						has_landed_title = k_earth_kingdom
-					}
-					has_landed_title = c_royal_earth_palace
+				OR = {
+					has_landed_title = e_earth_kingdom
+					has_landed_title = k_earth_kingdom
+				}
+				has_landed_title = c_royal_earth_palace
 			}
-			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
+			add_character_modifier = {
+				name = supporting_the_earth_kingdom
+				duration = -1
+			}
 			primary_title = {
 				if = {
 					limit = {
@@ -1985,36 +2136,33 @@ character_event = {
 				}
 				set_global_flag = earthking_in_power
 				set_global_flag = dai_li_disbanded
-			}	
+			}
 		}
 	}
 }
-
 
 character_event = {
 	id = ATLA.11102
 	is_triggered_only = yes
 	hide_window = yes
 	only_independent = yes
-
 	trigger = {
 		always = yes
 		# OR = {
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = united
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = dismantled
-			# }
-			# has_game_rule = {
-				# name = earth_kingdom_status
-				# value = canon
-			# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = united
+		# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = dismantled
+		# }
+		# has_game_rule = {
+		# name = earth_kingdom_status
+		# value = canon
+		# }
 		# }
 	}
-
 	option = {
 		if = {
 			limit = {
@@ -2024,7 +2172,10 @@ character_event = {
 				}
 				has_landed_title = c_royal_earth_palace
 			}
-			add_character_modifier = { name = supporting_the_earth_kingdom duration = -1 }
+			add_character_modifier = {
+				name = supporting_the_earth_kingdom
+				duration = -1
+			}
 		}
 	}
 }

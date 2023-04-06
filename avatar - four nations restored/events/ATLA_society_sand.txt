@@ -51,73 +51,6 @@ letter_event = {
     }
 }
 
-#############################RANK UP#############################
-
-character_event = {
-	id = SANDR.400
-
-	hide_window = yes
-
-	trigger = {
-		has_character_flag = has_sent_request_to_rank_up
-	}
-
-	is_triggered_only = yes
-
-	immediate = {
-		if = {
-			limit = { is_in_society = yes }
-			random_society_member = {
-				limit = {
-					is_society_grandmaster = yes
-					same_society_as = ROOT
-				}
-				character_event = { id = SANDR.500 }
-			}
-		}
-		if = {
-			limit = { is_in_society = no }
-			clr_character_flag = has_sent_request_to_rank_up
-		}
-	}
-}
-
-# Grandmaster gets the rank-up request
-character_event = {
-	id = SANDR.500
-
-	hide_window = yes
-
-	is_triggered_only = yes
-
-	immediate = {
-		event_target:rank_up_target = { letter_event = { id = SANDR.600 } }
-	}
-}
-
-#Grand master approves my request
-letter_event = {
-	id = SANDR.600
-	desc = EVTDESC_SANDR.620
-	border = GFX_event_letter_frame_diplomacy
-
-	trigger = {
-		society_rank < 4
-		has_character_flag = has_sent_request_to_rank_up
-	}
-
-	is_triggered_only = yes
-
-
-	option = {
-		name = EVTOPTA_SANDR.621
-		if = { limit = { society_rank < 4 } #if not max rank, rank up
-			society_rank_up = 1
-		}
-		clr_character_flag = has_sent_request_to_rank_up
-	}
-}
-
 ####################SAND SAILER RACERS QUEST TOMBOLA FRAMEWORK##########################
 
 character_event = {
@@ -321,7 +254,7 @@ character_event = {   #the completion hub for all quests  (note to self: don't l
 		}
 		if = {
 			limit = {
-				FROM = {has_quest = donate_to_society}
+				FROM = {has_quest = donate_to_sand_society}
 			}
 			FROM = {letter_event = {id = SANDR.1074}}
 		}
@@ -336,7 +269,6 @@ character_event = {   #the completion hub for all quests  (note to self: don't l
 letter_event = {   #Completion letter for sand sailer practice
 	id = SANDR.1013
 	desc = EVTDESC_SANDR_1013
-	#picture =
 	border = GFX_event_letter_frame_war
 
 	is_triggered_only = yes
@@ -363,7 +295,7 @@ letter_event = {   #Completion letter for sand sailer practice
 letter_event = {   #failure letter for sand sailer practice
 	id = SANDR.1027
 	desc = EVTDESC_SANDR.1027
-	border = GFX_event_normal_frame_war
+	border = GFX_event_letter_frame_war
 	is_triggered_only = yes
 
 	trigger = { has_quest = sand_quest_race_training }
@@ -412,7 +344,7 @@ character_event = {
 	option = {
 		name = EVTOPTA_SANDR.1022
 		custom_tooltip = {
-			name = HARD_MANUVER
+			text = HARD_MANUVER
 			random_list = {
 				65 = {
 					modifier = {
@@ -421,7 +353,7 @@ character_event = {
 					}
 					character_event = {id = SANDR.1025 days = 1}
 					set_character_flag = good_manuever
-					prestige = 100
+					prestige = 25
 					modifier = {
 						factor = 1.5
 						trait = powerful_bender
@@ -452,7 +384,7 @@ character_event = {
 	option = {
 		name = EVTOPTB_SANDR.1022
 		custom_tooltip = {
-			name = TRICKY_MANUVER
+			text = TRICKY_MANUVER
 			random_list = {
 				75 = {
 					modifier = {
@@ -473,7 +405,7 @@ character_event = {
 					}
 					character_event = {id = SANDR.1025 days = 1}
 					set_character_flag = good_manuever
-					prestige = 50
+					prestige = 25
 				}
 
 				25 = {
@@ -510,6 +442,7 @@ character_event = {  #Good manuever practice, quest chain continues.
 character_event = {  #Bad manuever practice, ouch!
 	id = SANDR.1028
 	desc = EVTDESC_SANDR.1028
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -691,7 +624,7 @@ character_event = {
 	id = SANDR.1050
 	desc = EVTDESC_SANDR.1050
 	border = GFX_event_normal_frame_war
-	#picture
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -735,7 +668,7 @@ character_event = {
 	id = SANDR.1051
 	desc = EVTDESC_SANDR.1051
 	border = GFX_event_normal_frame_war
-	#picture
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -755,7 +688,7 @@ character_event = {
 	id = SANDR.1052
 	desc = EVTDESC_SANDR.1052
 	border = GFX_event_normal_frame_war
-	#picture
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -873,7 +806,7 @@ letter_event = { #completion letter for wood/sail
 			limit = {
 				has_character_flag = WOOD
 			}
-			change_society_currency = 350
+			change_society_currency = 200
 		}
 		if = {
 			limit = {
@@ -882,7 +815,7 @@ letter_event = { #completion letter for wood/sail
 					has_character_flag = expensive_sail
 				}
 			}
-			change_society_currency = 200
+			change_society_currency = 150
 		}
 		if = {
 			limit = {
@@ -891,7 +824,7 @@ letter_event = { #completion letter for wood/sail
 					has_character_flag = moderate_sail
 				}
 			}
-			change_society_currency = 150
+			change_society_currency = 100
 		}
 		if = {
 			limit = {
@@ -1053,7 +986,7 @@ character_event = {  #Very Beginning of maintain sailer quest line/choose your p
 	id = SANDR.1035
 	desc = EVTDESC_SANDR.1035
 	border = GFX_event_normal_frame_diplomacy
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -1116,7 +1049,7 @@ character_event = {         #Start of wood chain
 	id = SANDR.1036
 	desc = EVTDESC_SANDR.1036
 	border = GFX_event_normal_frame_diplomacy
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -1173,7 +1106,7 @@ character_event = {  #wood frame chain decision hub
 	id = SANDR.1038
 	desc = EVTDESC_SANDR.1038
 	border = GFX_event_normal_frame_diplomacy
-	# picture =
+	picture = GFX_evt_sandbender
 	is_triggered_only = yes
 
 	option = {
@@ -1194,7 +1127,7 @@ character_event = {   #honorable decisions to purchase wooden frame
 	id = SANDR.1039
 	desc = EVTDESC_SANDR.1039
 	border = GFX_event_normal_frame_diplomacy
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -1236,7 +1169,7 @@ character_event = {   #honorable decisions to purchase wooden frame
 character_event = {    #Dishonorable decisions
 	id = SANDR.1040
 	desc = EVTDESC_SANDR.1040
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -1249,7 +1182,7 @@ character_event = {    #Dishonorable decisions
 			random_character = {
 				limit = {
 					# is_within_diplo_range = ROOT
-					culture = sandbender
+					culture = sandbender_culture
 					age = 30
 					is_landed = no
 					is_in_society = no
@@ -1274,7 +1207,7 @@ character_event = {    #Dishonorable decisions
 			random_character = {
 				limit = {
 					# is_within_diplo_range = ROOT
-					culture = sandbender
+					culture = sandbender_culture
 					age = 30
 					is_in_society = no
 					is_landed = no
@@ -1299,7 +1232,7 @@ character_event = {    #Dishonorable decisions
 			random_character = {
 				limit = {
 					# is_within_diplo_range = ROOT
-					culture = sandbender
+					culture = sandbender_culture
 					age = 30
 					is_landed = no
 					is_in_society = no
@@ -1327,7 +1260,7 @@ character_event = {    #Dishonorable decisions
 character_event = {  #apply wood frame/chains to test run event chain
 	id = SANDR.1041
 	desc = EVTDESC_SANDR.1041
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -1376,7 +1309,7 @@ character_event = {  #apply wood frame/chains to test run event chain
 character_event = {  #No Prof help success
 	id = SANDR.1042
 	desc = EVTDESC_SANDR.1042
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -1392,7 +1325,7 @@ character_event = {  #No Prof help success
 character_event = { #Prof help
 	id = SANDR.1043
 	desc = EVTDESC_SANDR.1043
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -1408,7 +1341,7 @@ character_event = { #Prof help
 character_event = {  #Start of test run chain for wood/ gauntlet power decision
 	id = SANDR.1044
 	desc = EVTDESC_SANDR.1044
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -1420,7 +1353,18 @@ character_event = {  #Start of test run chain for wood/ gauntlet power decision
 	}
 
 	immediate = {
-		set_character_flag = wood_test_run
+		if = {
+			limit = {
+				has_quest = sand_quest_sailer
+			}
+			set_character_flag = wood_test_run
+		}
+		else_if = {
+			limit = {
+				NOT = { has_quest = sand_quest_sailer }
+			}
+			set_character_flag = running_gauntlet
+		}
 	}
 
 	option = {
@@ -1447,14 +1391,23 @@ character_event = {  #Start of test run chain for wood/ gauntlet power decision
 character_event = {  #Rock Canyon challenge
 	id = SANDR.1045
 	desc = EVTDESC_SANDR.1045
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_flag = wood_test_run
-		has_character_flag = rock_canyon
-		NOT = {has_character_flag = did_rock_canyon}
+		OR = {
+			AND = {
+				has_character_flag = wood_test_run
+				has_character_flag = rock_canyon
+				NOT = {has_character_flag = did_rock_canyon}
+			}
+			AND = {
+				has_character_flag = running_gauntlet
+				has_character_flag = rock_canyon
+				NOT = {has_character_flag = did_rock_canyon}
+			}
+		}
 	}
 	option = { #High intensity manuevers
 		name = EVTOPTA_SANDR.1045
@@ -1610,9 +1563,18 @@ character_event = { #Sand Stretch Challenge
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_flag = sand_stretch
-		has_character_flag = wood_test_run
-		NOT = {has_character_flag = did_sand_stretch}
+		OR = {
+			AND = {
+				has_character_flag = wood_test_run
+				has_character_flag = sand_stretch
+				NOT = {has_character_flag = did_sand_stretch}
+			}
+			AND = {
+				has_character_flag = running_gauntlet
+				has_character_flag = sand_stretch
+				NOT = {has_character_flag = did_sand_stretch}
+			}
+		}
 	}
 	option = { #High Speed!
 		name = EVTOPTA_SANDR.1046
@@ -1764,14 +1726,23 @@ character_event = { #Sand Stretch Challenge
 character_event = { #Razor Rock Challenge
 	id = SANDR.1047
 	desc = EVTDESC_SANDR.1047
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
 	trigger = {
-		has_character_flag = razor_rock_stretch
-		has_character_flag = wood_test_run
-		NOT = {has_character_flag = did_razor_rock_stretch}
+		OR = {
+			AND = {
+				has_character_flag = wood_test_run
+				has_character_flag = razor_rock_stretch
+				NOT = {has_character_flag = did_razor_rock_stretch}
+			}
+			AND = {
+				has_character_flag = running_gauntlet
+				has_character_flag = razor_rock_stretch
+				NOT = {has_character_flag = did_razor_rock_stretch}
+			}
+		}
 	}
 	option = { #Inside pass
 		name = EVTOPTA_SANDR.1047
@@ -1933,9 +1904,20 @@ character_event = { #Challenge completed segway event
 	desc = {
 		trigger = {
 			has_character_flag = did_rock_canyon
-			NOR = {
+			OR = {
+				has_character_flag = did_rock_canyon
 				has_character_flag = did_sand_stretch
+			}
+			OR = {
+				has_character_flag = did_rock_canyon
 				has_character_flag = did_razor_rock_stretch
+			}
+			NOT = {
+				AND = {
+					has_character_flag = did_razor_rock_stretch
+					has_character_flag = did_rock_canyon
+					has_character_flag = did_sand_stretch
+				}
 			}
 		}
 		text = EVTDESC_CASE1_SANDR.1048
@@ -1943,9 +1925,20 @@ character_event = { #Challenge completed segway event
 	desc = {
 		trigger = {
 			has_character_flag = did_sand_stretch
-			NOR = {
-				has_character_flag = did_rock_canyon
+			OR = {
+				has_character_flag = did_sand_stretch
 				has_character_flag = did_razor_rock_stretch
+			}
+			OR = {
+				has_character_flag = did_sand_stretch
+				has_character_flag = did_rock_canyon
+			}
+			NOT = {
+				AND = {
+					has_character_flag = did_razor_rock_stretch
+					has_character_flag = did_rock_canyon
+					has_character_flag = did_sand_stretch
+				}
 			}
 		}
 		text = EVTDESC_CASE2_SANDR.1048
@@ -1953,9 +1946,20 @@ character_event = { #Challenge completed segway event
 	desc = {
 		trigger = {
 			has_character_flag = did_razor_rock_stretch
-			NOR = {
+			OR = {
+				has_character_flag = did_razor_rock_stretch
 				has_character_flag = did_rock_canyon
+			}
+			OR = {
+				has_character_flag = did_razor_rock_stretch
 				has_character_flag = did_sand_stretch
+			}
+			NOT = {
+				AND = {
+					has_character_flag = did_razor_rock_stretch
+					has_character_flag = did_rock_canyon
+					has_character_flag = did_sand_stretch
+				}
 			}
 		}
 		text = EVTDESC_CASE3_SANDR.1048
@@ -1981,6 +1985,7 @@ character_event = { #Challenge completed segway event
 					has_character_flag = did_sand_stretch
 					has_character_flag = did_razor_rock_stretch
 				}
+				NOT = { has_character_flag = running_gauntlet }
 			}
 		}
 		trigger = {
@@ -2015,27 +2020,40 @@ character_event = { #Challenge completed segway event
 						NOT = { has_character_flag = did_rock_canyon }
 					}
 					set_character_flag = rock_canyon
-					character_event = {id = SANDR.1045 days = 2 }
+					character_event = { id = SANDR.1045 }
 				}
 				25 = {
 					trigger = {
 						NOT = { has_character_flag = did_sand_stretch }
 					}
 					set_character_flag = sand_stretch
-					character_event = {id = SANDR.1046 days = 2 }
+					character_event = { id = SANDR.1046 }
 				}
 				25 = {
 					trigger = {
 						NOT = { has_character_flag = did_razor_rock_stretch }
 					}
 					set_character_flag = razor_rock_stretch
-					character_event = {id = SANDR.1047 days = 2 }
+					character_event = { id = SANDR.1047 }
 				}
 				fallback = {
-					character_event = { id = SANDR.1049 days = 3 }
+					character_event = { id = SANDR.1049 }
 				}
 			}
 		}
+	}
+	option = {
+		name = EVTOPTB_SANDR.1048
+		trigger = {
+			AND = {
+				has_character_flag = did_rock_canyon
+				has_character_flag = did_sand_stretch
+				has_character_flag = did_razor_rock_stretch
+				has_character_flag = running_gauntlet
+			}
+			NOT = {has_character_flag = wood_test_run}
+		}
+		character_event = { id = SANDR.1049 }
 	}
 }
 
@@ -2084,7 +2102,7 @@ character_event = {  #fires after completing all challenges
 		clr_character_flag = razor_rock_stretch
 		clr_character_flag = wood_test_run
 		character_event = { id = SANDR.1011 days = 3 }
-		prestige = 20
+		prestige = 10
 	}
 	option = {
 		name = EVTOPTB_SANDR.1049
@@ -2172,7 +2190,7 @@ character_event = {  #character goes to local village
 character_event = { #Challenge failure event
 	id = SANDR.1055
 	desc = EVTDESC_SANDR.1055
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -2200,7 +2218,7 @@ character_event = { #Challenge failure event
 character_event = {  #start of rope rigging quest chain
 	id = SANDR.1056
 	desc = EVTDESC_SANDR.1056
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -2240,7 +2258,7 @@ character_event = {
 character_event = { #character finds in tact caravan, can buy rope then and there or ride along and get it for free.
 	id = SANDR.1058
 	desc = EVTDESC_SANDR.1058
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -2260,7 +2278,7 @@ character_event = { #character finds in tact caravan, can buy rope then and ther
 character_event = { #character rejects offer, buys rope
 	id = SANDR.1059
 	desc = EVTDESC_SANDR.1059
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_diplomacy
 	is_triggered_only = yes
 
@@ -2291,7 +2309,7 @@ character_event = {
 character_event = {  #character tags along
 	id = SANDR.1061
 	desc = EVTDESC_SANDR.1061
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 
@@ -2332,7 +2350,7 @@ character_event = { #switchboard event
 character_event = {
 	id = SANDR.1063
 	desc = EVTDESC_SANDR.1063
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2343,7 +2361,7 @@ character_event = {
 character_event = { #thug charges
 	id = SANDR.1064
 	desc = EVTDESC_SANDR.1064
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 
@@ -2373,7 +2391,7 @@ character_event = { #thug charges
 				}
 				random_character = {
 					limit = {
-						culture = sandbender
+						culture = sandbender_culture
 						trait = sandbender
 						is_adult = yes
 						is_landed = no
@@ -2407,7 +2425,7 @@ character_event = { #thug charges
 		}
 		random_character = {
 			limit = {
-				culture = sandbender
+				culture = sandbender_culture
 				trait = sandbender
 				is_adult = yes
 				is_landed = no
@@ -2440,7 +2458,7 @@ character_event = { #thug charges
 character_event = {
 	id = SANDR.1065
 	desc = EVTDESC_SANDR.1065
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 
@@ -2478,7 +2496,7 @@ character_event = {
 				}
 				random_character = {
 					limit = {
-						culture = sandbender
+						culture = sandbender_culture
 						trait = sandbender
 						is_adult = yes
 						is_landed = no
@@ -2509,7 +2527,7 @@ character_event = {
 character_event = {
 	id = SANDR.1066
 	desc = EVTDESC_SANDR.1066
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 
@@ -2547,7 +2565,7 @@ character_event = {
 				}
 				random_character = {
 					limit = {
-						culture = sandbender
+						culture = sandbender_culture
 						trait = sandbender
 						is_adult = yes
 						is_landed = no
@@ -2578,14 +2596,14 @@ character_event = {
 character_event = {  #character is saved by a caravan member
 	id = SANDR.1067
 	desc = EVTDESC_SANDR.1067
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
 		name = EVTOPTA_SANDR.1067
 		random_character = {
 			limit = {
-				culture = sandbender
+				culture = sandbender_culture
 				trait = sandbender
 				is_adult = yes
 				is_landed = no
@@ -2608,7 +2626,7 @@ character_event = {  #character is saved by a caravan member
 character_event = { #aftermath
 	id = SANDR.1068
 	desc = EVTDESC_SANDR.1068
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2631,7 +2649,7 @@ character_event = { #aftermath
 character_event = { #end of chain
 	id = SANDR.1069
 	desc = EVTDESC_SANDR.1069
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	immediate = {
@@ -2650,7 +2668,7 @@ character_event = { #end of chain
 character_event = { #character searches for caravan
 	id = SANDR.1070
 	desc = EVTDESC_SANDR.1070
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2661,7 +2679,7 @@ character_event = { #character searches for caravan
 character_event = { #character sees something on the horizon
 	id = SANDR.1071
 	desc = EVTDESC_SANDR.1071
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2672,7 +2690,7 @@ character_event = { #character sees something on the horizon
 character_event = { #character finds wrecked caravan with some rope left behind
 	id = SANDR.1072
 	desc = EVTDESC_SANDR.1072
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2700,7 +2718,7 @@ character_event = { #character finds wrecked caravan with some rope left behind
 character_event = {  #start of sail chain
 	id = SANDR.1076
 	desc = EVTDESC_SANDR.1076
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	hide_new = yes
 
@@ -2714,7 +2732,7 @@ character_event = {  #start of sail chain
 character_event = {  #sail chain decision hub
 	id = SANDR.1177
 	desc = EVTDESC_SANDR.1177
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	hide_new = yes
 
@@ -2732,7 +2750,7 @@ character_event = {  #sail chain decision hub
 character_event = {
 	id = SANDR.1178
 	desc = EVTDESC_SANDR.1178
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = { #purchase a sail
@@ -2745,7 +2763,7 @@ character_event = {
 character_event = {
 	id = SANDR.1179
 	desc = EVTDESC_SANDR.1179
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2763,7 +2781,7 @@ character_event = {
 
 character_event = {
 	id = SANDR.1180
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	desc = {
@@ -2806,7 +2824,7 @@ character_event = {
 character_event = {
 	id = SANDR.1181
 	desc = EVTDESC_SANDR.1181
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -2821,7 +2839,7 @@ character_event = {
 character_event = {
 	id = SANDR.1182
 	desc = EVTDESC_SANDR.1182
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	immediate = {
@@ -3073,6 +3091,7 @@ character_event = { #checks to see if sail maker is still alive
 character_event = {  #if sail maker is dead, quest ends as a success still, money is returned by kin of sail maker
 	id = SANDR.1187
 	desc = EVTDESC_SANDR.1187
+	picture = GFX_evt_wanshi_desert
 	hide_from = yes
 	is_triggered_only = yes
 
@@ -3111,7 +3130,7 @@ character_event = {  #if sail maker is dead, quest ends as a success still, mone
 character_event = { # sail maker fails because she's dumb
 	id = SANDR.1188
 	desc = EVTDESC_SANDR.1188
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3133,7 +3152,7 @@ character_event = { # sail maker fails because she's dumb
 character_event = { #expensive sail complete
 	id = SANDR.1189
 	desc = EVTDESC_SANDR.1189
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3156,7 +3175,7 @@ character_event = { #expensive sail complete
 character_event = { #moderate sail complete
 	id = SANDR.1190
 	desc = EVTDESC_SANDR.1190
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3179,7 +3198,7 @@ character_event = { #moderate sail complete
 character_event = { #cheap sail complete
 	id = SANDR.1191
 	desc = EVTDESC_SANDR.1191
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3203,7 +3222,7 @@ character_event = { #cheap sail complete
 character_event = {
 	id = SANDR.1192
 	desc = EVTDESC_SANDR.1192
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3215,7 +3234,7 @@ character_event = {
 long_character_event = {
 	id = SANDR.1193
 	desc = EVTDESC_SANDR.1193
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {  #seek the retired racer
@@ -3227,7 +3246,7 @@ long_character_event = {
 long_character_event = {
 	id = SANDR.1194
 	desc = EVTDESC_SANDR.1194
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3253,7 +3272,7 @@ character_event = {
 character_event = {
 	id = SANDR.1196
 	desc = EVTDESC_SANDR.1196
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	hide_from = yes
 
@@ -3312,7 +3331,7 @@ long_character_event = {
 character_event = {
 	id = SANDR.1120
 	desc = EVTDESC_SANDR.1120
-	picture = GFX_hl_desert
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	title = THE_SANDSTORM
 
@@ -3365,7 +3384,7 @@ character_event = {
 
 long_character_event = {
 	id = SANDR.1122
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	title = THE_SANDSTORM
 
@@ -3418,7 +3437,7 @@ long_character_event = {  #you meet the retired racer
 	id = SANDR.1124
 	title = EVTTITLE_SANDR.1124
 	desc = EVTDESC_SANDR.1124
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3429,7 +3448,7 @@ long_character_event = {  #you meet the retired racer
 character_event = {
 	id = SANDR.1125
 	desc = EVTDESC_SANDR.1125
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	title = THE_SANDSTORM
 
@@ -3447,7 +3466,7 @@ character_event = {
 character_event = {
 	id = SANDR.1126
 	desc = EVTDESC_SANDR.1126
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	title = THE_SANDSTORM
 
@@ -3465,7 +3484,7 @@ character_event = {
 character_event = {  #shelter
 	id = SANDR.1127
 	desc = EVTDESC_SANDR.1127
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3477,7 +3496,7 @@ character_event = {  #shelter
 long_character_event = {
 	id = SANDR.1128
 	desc = EVTDESC_SANDR.1128
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 	title = EVTTITLE_SANDR.1124
 
@@ -3506,7 +3525,7 @@ long_character_event = {
 character_event = {
 	id = SANDR.1129
 	desc = EVTDESC_SANDR.1129
-	#picture =
+	picture = GFX_evt_wanshi_desert
 	is_triggered_only = yes
 
 	option = {
@@ -3528,7 +3547,7 @@ society_quest_event = {
 
 	option = {
 		name = ACCEPT
-		set_quest = donate_to_society
+		set_quest = donate_to_sand_society
 		set_character_flag = donation_quest
 	}
 
@@ -3556,7 +3575,7 @@ letter_event = {  #comp letter
 		name = EVTOPTA_SANDR.1074
 		clr_quest = donation_quest
 		add_society_currency_tiny_effect = yes
-		prestige = 10
+		prestige = 3
 		random = {
 			chance = 5
 			add_trait = charitable
@@ -3572,17 +3591,17 @@ character_event = {
 
 	option = {
 		name = EVTOPTA_SANDR.1075
-		wealth = -25
+		wealth = -10
 		character_event = { id = SANDR.1011 days = 5 }
 	}
 	option = {
 		name = EVTOPTB_SANDR.1075
-		wealth = -25
+		wealth = -10
 		character_event = { id = SANDR.1011 days = 5 }
 	}
 	option = {
 		name = EVTOPTC_SANDR.1075
-		wealth = -25
+		wealth = -10
 		character_event = { id = SANDR.1011 days = 5 }
 	}
 	option = {
@@ -3592,14 +3611,13 @@ character_event = {
 				NOT = { is_society_grandmaster = yes }
 			}
 		}
-		wealth = -25
-		character_event = { id = SANDR.1011 days = 5 }
-	}
-	after = {
-        sand_sailer_racers = {
+		wealth = -10
+		
+		sand_sailer_racers = {
             leader = {
-                wealth = 150
+                wealth = 10
             }
         }
+		character_event = { id = SANDR.1011 days = 5 }
 	}
 }
