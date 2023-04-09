@@ -9,7 +9,7 @@
 
 namespace = HFP
 
-### CLAIM DUELS 
+### CLAIM DUELS
 
 ### "REGULAR" duels start here...
 # Get challenged (sent from duel_decision )
@@ -17,7 +17,7 @@ character_event = {
     id = HFP.10095
     picture = GFX_evt_armory
     border = GFX_event_normal_frame_war
-    
+
     desc = {
         trigger = {
             NOT = { event_target:combatant_1 = { has_character_flag = mock_duel } }
@@ -42,10 +42,10 @@ character_event = {
         }
         text = EVTDESC_HFP_10095_courtier_regent_duel
     }
-    
+
 
     is_triggered_only = yes
-    
+
     immediate = {
         if = {
             limit = { event_target:combatant_1 = { has_character_flag = mock_duel } }
@@ -55,7 +55,7 @@ character_event = {
             limit = {
                 OR = {
                     NOT = { has_character_modifier = declined_prestige_duel_timer }
-                    NOT = { 
+                    NOT = {
                         AND = {
                             is_female = no
                             event_target:combatant_1 = { is_female = yes }
@@ -102,7 +102,7 @@ character_event = {
             set_character_flag = mock_duel #makes sure outcome results works correctly for both parties...
         }
     }
-    
+
     option = { #Challenge accepted
         name = EVTOPTA_WOL_11000
         clr_character_flag = flag_duel_no_backsies
@@ -134,7 +134,7 @@ character_event = {
         }
         pacifists_lose_piety_effect = yes
         if = { #If they previously offended you, this rectifies that.
-            limit = { 
+            limit = {
                 event_target:combatant_1 = {
                     has_opinion_modifier = { who = ROOT modifier = grievously_offended }
                 }
@@ -199,10 +199,10 @@ character_event = {
             }
             set_character_flag = poison_can_fail_against@event_target:combatant_1
         }
-        
+
         pacifists_lose_piety_effect = yes
         if = { #If they previously offended you, this rectifies that.
-            limit = { 
+            limit = {
                 event_target:combatant_1 = {
                     has_opinion_modifier = { who = ROOT modifier = grievously_offended }
                 }
@@ -260,11 +260,11 @@ character_event = {
         if = {
             limit = { has_character_flag = punish_declining }
             if = {
-                limit = { 
+                limit = {
                     NOR = {
                         trait = craven
                         trait = brave
-                        trait = berserker 
+                        trait = berserker
                     }
                 }
                 random = {
@@ -363,7 +363,7 @@ character_event = {
         trigger = {
             has_character_flag = mock_duel #set in HF.10007
             NOT = { any_spouse = { character = event_target:combatant_2 } }
-            NOT = { has_quest = quest_warrior_lodge_duel_honor }            
+            NOT = { has_quest = quest_warrior_lodge_duel_honor }
             NOT = { any_owned_bloodline = { has_bloodline_flag = bloodline_legendary_warrior } }
         }
         picture = GFX_evt_teaching_moment
@@ -389,7 +389,7 @@ character_event = {
         text = EVTDESC_HFP_10096_bloodline #Initiation duel as special bloodline owner
     }
 
-    
+
     option = {
         name = {
             text = EVTOPTA_WOL_11001 #Let's fight!
@@ -485,7 +485,7 @@ character_event = {
             }
             set_character_flag = poison_can_fail_against@event_target:combatant_2
         }
-        
+
         #FALLBACK:
         if = { #If FROM is no longer alive, clear relevant flags, etc...
             limit = { FROM = { NOT = { is_alive = yes } } }
@@ -606,7 +606,7 @@ character_event = {
             }
         }
     }
-    
+
     option = { #"Corner"-option
         name = EVTOPTA_HFP_10097 # You won't get away that easily! (Only for INTRIGUE characters)
         tooltip_info = intrigue
@@ -667,12 +667,12 @@ character_event = { #You were cornered!
     border = GFX_event_normal_frame_intrigue
     title = getDuelTitle
     is_triggered_only = yes
-    
+
     trigger = {
         FROM = { is_alive = yes }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10098
         custom_tooltip = { text = EVTOPTA_HFP_10098_TT }
         FROM = {
@@ -689,12 +689,12 @@ character_event = { #I failed to corner them...
     border = GFX_event_normal_frame_intrigue
     title = getDuelTitle
     is_triggered_only = yes
-    
+
     trigger = {
         FROM = { is_alive = yes }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10099
         custom_tooltip = { text = EVTOPTA_HFP_10099_TT }
         hidden_effect = {
@@ -705,7 +705,7 @@ character_event = { #I failed to corner them...
             }
         }
     }
-	
+
 	after = {
 		clr_duel_flags_effect = yes
 	}
@@ -721,17 +721,17 @@ character_event = {
     hide_window = yes
 
     trigger = {
-        
+
     }
 
     immediate = {
         ### Room for any existing pre-conditions (is this an initiation duel? Is this a Challenge for a title?):
         # -- set here, or in previous event/decision...
-        
+
         #Chooses a weapon for mainly loc purposes (but has a tiny effect on outcomes, too)...
         set_dueling_weapon_effect = yes #You get a weapon!
         event_target:combatant_2 = { set_dueling_weapon_effect = yes } #and YOU get a weapon!
-        
+
         #Chooses a body part for injury (if it occurs), also for loc purposes (effect handles both characters)
         set_potential_injury_flag_effect = yes
 
@@ -742,7 +742,7 @@ character_event = {
         evaluate_extra_duel_result_score_effect = yes
 
         #Send the correct result event (from random_list)...
-        send_duel_result_event_effect = yes 
+        send_duel_result_event_effect = yes
     }
 }
 
@@ -762,7 +762,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:combatant_2
@@ -812,7 +812,7 @@ character_event = {
             is_using_intrigue_trigger = no
             event_target:other_combatant = { is_using_intrigue_trigger = yes }
         }
-        text = EVTDESC_HFP_double_death_intrigue_poison_killed_me 
+        text = EVTDESC_HFP_double_death_intrigue_poison_killed_me
     }
     desc = { #You used intrigue option to kill them (both die)
         trigger = {
@@ -826,7 +826,7 @@ character_event = {
             is_using_intrigue_trigger = yes
             event_target:other_combatant = { is_using_intrigue_trigger = yes }
         }
-        text = EVTDESC_HFP_double_death_intrigue_both_used_poison 
+        text = EVTDESC_HFP_double_death_intrigue_both_used_poison
     }
 
     option = {
@@ -859,7 +859,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:combatant_2
@@ -913,7 +913,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:combatant_1
@@ -934,7 +934,7 @@ character_event = {
             }
         }
     }
-    
+
     desc = {
         trigger = {
             NOR = {
@@ -964,7 +964,7 @@ character_event = {
             is_using_intrigue_trigger = no
             event_target:other_combatant = { is_using_intrigue_trigger = yes }
         }
-        text = EVTDESC_HFP_double_death_intrigue_poison_killed_me 
+        text = EVTDESC_HFP_double_death_intrigue_poison_killed_me
     }
     desc = { #You used intrigue option to kill them (both die)
         trigger = {
@@ -978,10 +978,10 @@ character_event = {
             is_using_intrigue_trigger = yes
             event_target:other_combatant = { is_using_intrigue_trigger = yes }
         }
-        text = EVTDESC_HFP_double_death_intrigue_both_used_poison 
+        text = EVTDESC_HFP_double_death_intrigue_both_used_poison
     }
 
-    option = {      
+    option = {
         name = {
             text = EVTOPTA_HFP_10102_default
             trigger = { NOR = { has_character_flag = elegant_double_KO has_character_flag = clumsy_double_KO } }
@@ -1011,7 +1011,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:combatant_1
@@ -1265,7 +1265,7 @@ character_event = {
             NOT = { event_target:combatant_1 = { has_character_flag = claim_duel@event_target:combatant_2 } }
         }
     }
-    
+
     ###### Claim duels Options: #########
 
     option = { #If claim duel, the following options are displayed instead...
@@ -1299,7 +1299,7 @@ character_event = {
         apply_generic_duel_victory_effect = yes
         add_blood_splatter_effect = yes
 
-        
+
         tooltip = {
             handle_claim_duel_result_effect = yes #Claim duels only...
             event_target:other_combatant = {
@@ -1348,7 +1348,7 @@ character_event = {
 
         custom_tooltip = { text = you_win_the_duel_tt }
         custom_tooltip = { text = EVTOPTB_HF_10103_TT }
-            
+
         apply_merciful_modifier_effect = yes
 
         tooltip = { # *actually* added further down the line...
@@ -1356,13 +1356,13 @@ character_event = {
                 prestige = 100
             }
             else = { prestige = 50 }
-        
+
             add_character_modifier = {
                 modifier = recent_duel_victory
                 months = 12 #also clears upon new duel!
             }
         }
-        
+
         hidden_effect = {
             event_target:other_combatant = {
                 if = {
@@ -1372,7 +1372,7 @@ character_event = {
                     }
                     set_character_flag = is_spared_poisoner
                 }
-                character_event = { id = HF.10104 }  #"I could be spared (CLAIM DUEL VERSION)" event 
+                character_event = { id = HF.10104 }  #"I could be spared (CLAIM DUEL VERSION)" event
             }
         }
 
@@ -1444,7 +1444,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:other_combatant
@@ -1555,7 +1555,7 @@ character_event = {
         }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10104 #Nooooo...!
         custom_tooltip = { text = you_lose_the_duel_tt }
 
@@ -1605,7 +1605,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:other_combatant
@@ -1621,7 +1621,7 @@ character_event = {
             else_if = {
                 limit = { event_target:combatant_1 = { has_character_flag = claim_duel@event_target:combatant_2 } }
                 if = {
-                    limit = { character = event_target:combatant_1 } 
+                    limit = { character = event_target:combatant_1 }
                     death = {
                         death_reason = death_claim_duel_attacker #for flavor
                         killer = event_target:other_combatant
@@ -1642,7 +1642,7 @@ character_event = {
             }
         }
     }
-    
+
     # SPECIAL OPTION: Only in Claim Duels, for players, if the opponent is an AI of your dynasty...
     option = {
         name = EVTOPTB_HFP_10104
@@ -1663,7 +1663,7 @@ character_event = {
                 give_nickname = nick_the_headless
             }
             if = {
-                limit = { character = event_target:combatant_1 } 
+                limit = { character = event_target:combatant_1 }
                 death = {
                     death_reason = death_claim_duel_attacker #for flavor
                     killer = event_target:other_combatant
@@ -1774,13 +1774,13 @@ character_event = {
         FROM = { character_event = { id = HF.10105 days = 1 } } #follow-up
 
         tooltip = { clean_up_after_duel_effect = yes }
-        
+
         ai_chance = {
             factor = 10
             likes_other_combatant_score = yes
         }
     }
-    
+
     # I would rather DIE
     option = {
         name = EVTOPTB_HF_10104
@@ -1800,7 +1800,7 @@ character_event = {
             give_nickname = nick_the_headless
         }
         if = {
-            limit = { character = event_target:combatant_1 } 
+            limit = { character = event_target:combatant_1 }
             death = {
                 death_reason = death_claim_duel_attacker #for flavor
                 killer = event_target:other_combatant
@@ -1829,7 +1829,7 @@ character_event = {
     option = {
         name = EVTOPTC_HF_10104
         tooltip_info_custom = available_because_dynasty_member_tt
-        
+
         custom_tooltip = { text = you_lose_the_duel_tt }
 
         # For correct effects and tooltips...
@@ -1845,7 +1845,7 @@ character_event = {
             give_nickname = nick_the_headless
         }
         if = {
-            limit = { character = event_target:combatant_1 } 
+            limit = { character = event_target:combatant_1 }
             death = {
                 death_reason = death_claim_duel_attacker #for flavor
                 killer = event_target:other_combatant
@@ -1857,7 +1857,7 @@ character_event = {
                 killer = event_target:other_combatant
             }
         }
-        
+
         tooltip = { clean_up_after_duel_effect = yes }
 
         set_player_character = event_target:other_combatant #take control of the winner...
@@ -1990,7 +1990,7 @@ character_event = {
             }
         }
         FROM = { set_character_flag = they_were_mean_about_it }
-        
+
         trigger = {
             OR = {
                 trait = deceitful
@@ -2029,7 +2029,7 @@ character_event = {
         text = EVTDESC_HF_10106_B
         trigger = { character = event_target:combatant_2 }
     }
-    
+
     picture = {
         picture = GFX_evt_duel_team #snowy picture
         trigger = {
@@ -2039,11 +2039,11 @@ character_event = {
         }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HF_10106 #what a waste of a man/woman
         trigger = { character = event_target:combatant_1 }
     }
-    option = {      
+    option = {
         name = EVTOPTB_HF_10106 #such needless drama
         custom_tooltip = { text = EVTOPTB_HF_10106_TT }
         trigger = { character = event_target:combatant_2 }
@@ -2075,7 +2075,7 @@ character_event = {
         }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HF_10107 #I could never have expected this generosity
 
         if = { #if you already have an opinion in place, become friends...
@@ -2099,12 +2099,12 @@ character_event = {
                 years = 10
             }
         }
-        
+
         clr_character_flag = they_were_nice_about_it
         trigger = { has_character_flag = they_were_nice_about_it }
     }
 
-    option = {      
+    option = {
         name = EVTOPTB_HF_10107 #I'm glad you show your true feelings...
 
         add_character_modifier = {
@@ -2139,7 +2139,7 @@ character_event = {
     title = getDuelTitle
     is_triggered_only = yes
     portrait = event_target:other_combatant
-    
+
     #Mock duels
     desc = {
         text = EVTDESC_HFP_10105_mock_duel_A
@@ -2324,7 +2324,7 @@ character_event = {
         }
     }
     option = { #Kill them anyway
-        name = { 
+        name = {
             text = EVTOPTB_HFP_10105_default
             trigger = {
                 NOT = { has_character_flag = is_rival_fight }
@@ -2334,7 +2334,7 @@ character_event = {
                 }
             }
         }
-        name = { 
+        name = {
             text = EVTOPTB_HFP_10105_rival
             trigger = {
                 has_character_flag = is_rival_fight
@@ -2344,7 +2344,7 @@ character_event = {
                 }
             }
         }
-        name = { 
+        name = {
             text = EVTOPTB_HFP_10105_lunatic
             trigger = {
                 OR = {
@@ -2529,7 +2529,7 @@ character_event = {
             is_using_intrigue_trigger = no
         }
     }
-	
+
     picture = {
         picture = GFX_evt_duel_team #snowy picture
         trigger = {
@@ -2544,7 +2544,7 @@ character_event = {
         set_loser_flags_and_save_opponent_effect = yes
     }
 
-    option = {      
+    option = {
         name = {
             text = EVTOPTA_HFP_10106_bare_hands #HOW?! With your bare hands?
             trigger = {
@@ -2643,7 +2643,7 @@ character_event = {
                         set_character_flag = was_battlefield_duel@event_target:other_combatant
                     }
                     character_event = { id = HFP.10118 days = 22 random = 5 }
-                }            
+                }
             }
 
             character_event = { id = HFP.10196 days = 1 } #Send delayed clean-up, to ensure flags are set properly in this after effect
@@ -2677,7 +2677,7 @@ character_event = {
         set_winner_flags_and_save_opponent_effect = yes
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10107 # Look at them run!
         custom_tooltip = { text = you_win_the_duel_tt }
         apply_generic_duel_victory_effect = yes
@@ -2827,7 +2827,7 @@ character_event = {
         }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10109 # It was all worth it
         custom_tooltip = { text = you_win_the_duel_tt }
         apply_generic_duel_victory_effect = yes
@@ -2894,7 +2894,7 @@ character_event = {
         set_character_flag = stalemate_lost
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10110 #Humiliating!
         custom_tooltip = { text = you_lose_the_duel_tt }
         apply_selected_duel_injury_effect = yes
@@ -2937,7 +2937,7 @@ character_event = {
                         set_character_flag = was_battlefield_duel@event_target:other_combatant
                     }
                     character_event = { id = HFP.10118 days = 22 random = 5 }
-                }            
+                }
             }
 
             character_event = { id = HFP.10196 days = 1 } #Send delayed clean-up, to ensure flags are set properly in this after effect
@@ -2962,7 +2962,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:other_combatant
@@ -3009,7 +3009,7 @@ character_event = {
         }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10111 #then there was nothing
         custom_tooltip = { text = you_lose_the_duel_tt }
         if = {
@@ -3019,7 +3019,7 @@ character_event = {
             if = {
                 limit = {
                     event_target:combatant_1 = { has_character_flag = deadly_duel@event_target:combatant_2 }
-                }                
+                }
                 death = {
                     death_reason = death_mission_duel #for flavor
                     killer = event_target:other_combatant
@@ -3058,7 +3058,7 @@ character_event = {
 }
 
 
-#Duel led to rivarly (sent from HFP.10106 (I lost a duel - Wounded)) 
+#Duel led to rivarly (sent from HFP.10106 (I lost a duel - Wounded))
 character_event = {
     id = HFP.10112
     picture = GFX_evt_duel_scene
@@ -3092,7 +3092,7 @@ character_event = {
         trigger = { trait = incapable }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10112 #I'll make them pay
         add_character_modifier = {
             modifier = fueled_by_rage
@@ -3103,14 +3103,14 @@ character_event = {
 
         event_target:other_combatant = { character_event = { id = HFP.10113 days = 1 } }
     }
-    option = {      
+    option = {
         name = EVTOPTB_HFP_10112 #These feelings shall pass
         prestige = -15
         opinion = {
             who = event_target:other_combatant
             modifier = opinion_fought_duel #Update to something cooler?
             years = 10
-        }        
+        }
         trigger = {
             NOT = { has_opinion_modifier = { who = event_target:other_combatant modifier = opinion_fought_duel } }
         }
@@ -3135,7 +3135,7 @@ character_event = {
         text = EVTDESC_HFP_10113_incapable #The last thing they muttered before the slipped into slumber was that they'd kill me?
         trigger = { FROM = { trait = incapable } }
     }
-    
+
     option = {
         name = EVTOPTA_WOL_11014
         trigger = {
@@ -3144,7 +3144,7 @@ character_event = {
         }
         add_rival = FROM
     }
-    
+
     option = {
         name = EVTOPTB_WOL_11014
         trigger = {
@@ -3162,7 +3162,7 @@ character_event = {
     }
 }
 
-#Duel led to friendship (sent from HFP.10106 (I lost a duel - Wounded)) 
+#Duel led to friendship (sent from HFP.10106 (I lost a duel - Wounded))
 character_event = {
     id = HFP.10115
     picture = GFX_evt_duel_scene
@@ -3230,7 +3230,7 @@ character_event = {
             NOT = { is_friend = event_target:other_combatant }
         }
     }
-    option = {      
+    option = {
         name = EVTOPTB_HFP_10115 #I have enough sparring partners
         add_trait = proud
         clr_character_flag = was_mock_duel@event_target:other_combatant
@@ -3244,7 +3244,7 @@ character_event = {
     is_triggered_only = yes
     picture = GFX_evt_duel_scene
     border = GFX_event_normal_frame_diplomacy
-    
+
     desc = {
         text = EVTDESC_HFP_10116_mock_duel
         trigger = { FROM = { has_character_flag = was_mock_duel@event_target:other_combatant } }
@@ -3317,7 +3317,7 @@ character_event = {
     }
 }
 
-#Duel led to romance (sent from HFP.10106 (I lost a duel - Wounded)) 
+#Duel led to romance (sent from HFP.10106 (I lost a duel - Wounded))
 character_event = {
     id = HFP.10118
     picture = GFX_evt_duel_scene
@@ -3353,7 +3353,7 @@ character_event = {
             }
         }
     }
-    
+
     desc = {
         text = EVTDESC_HFP_10118_new_crush_A #not spouse/no romance past or budding
         trigger = {
@@ -3411,7 +3411,7 @@ character_event = {
             }
         }
     }
-    
+
     option = {
         name = EVTOPTA_HFP_10118 #I have to express my feelings to them!
         custom_tooltip = { text = EVTOPTA_HFP_10118_TT }
@@ -3426,7 +3426,7 @@ character_event = {
                         }
                     }
                 }
-                event_target:other_combatant = { set_character_flag = finally_lovers }            
+                event_target:other_combatant = { set_character_flag = finally_lovers }
             }
             else = { #otherwise, add opinion of them...
                 event_target:other_combatant = { set_character_flag = they_like_me }
@@ -3438,7 +3438,7 @@ character_event = {
             }
         }
         event_target:other_combatant = { character_event = { id = HFP.10119 } }
-        
+
         ai_chance = {
             factor = 20
             modifier = {
@@ -3467,7 +3467,7 @@ character_event = {
             character_event = { id = HFP.10195 days = 1825 } #delayed event to update torch-flag to relate to the past
             clr_character_flag = was_mock_duel@event_target:other_combatant
         }
-        
+
         ai_chance = {
             factor = 1
             modifier = {
@@ -3490,7 +3490,7 @@ character_event = {
     is_triggered_only = yes
     picture = GFX_evt_recieve_letter
     border = GFX_event_normal_frame_diplomacy
-    
+
     picture = {
         picture = GFX_evt_pleasing_letter
         trigger = { is_female = yes }
@@ -3581,7 +3581,7 @@ character_event = {
             }
         }
     }
-    
+
     option = {
         name = EVTOPTB_HFP_10119 #I think I'd rather not get involved with <from>.
         if = {
@@ -3608,7 +3608,7 @@ character_event = {
                 factor = 2
                 FROM = { has_bottom_tier_education_trait_trigger = yes  }
             }
-            
+
         }
     }
     after = {
@@ -3699,7 +3699,7 @@ character_event = { #Response: Embraced! (for the one originally struck with fee
         }
     }
 
-    option = {      
+    option = {
         name = {
             text = EVTOPTA_HFP_10120_honest
             trigger = {
@@ -3786,7 +3786,7 @@ character_event = { #Response: Rejected! (for the one originally struck with fee
         }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HFP_10121 #I will keep this to myself then...
         add_character_modifier = {
             name = carrying_torch
@@ -3838,7 +3838,7 @@ character_event = {
     id = HFP.10197
     desc = EVTDESC_HFP_10196
     picture = GFX_evt_battle
-    
+
     is_triggered_only = yes
 
     trigger = {
@@ -3860,7 +3860,7 @@ character_event = {
     is_triggered_only = yes
 
     portrait = event_target:craven_ruler
-    
+
     trigger = {
         NOT = { trait = craven }
         is_inaccessible_or_incapable_trigger = no
@@ -3869,7 +3869,7 @@ character_event = {
             has_character_modifier = duels_declined
             trait = craven
             is_incapable = no
-        }        
+        }
         NAND = { #one part should be AI, for ease of choices
             ai = no
             FROM = { ai = no }
@@ -4027,12 +4027,12 @@ character_event = {
     picture = GFX_evt_camaraderie
     border = GFX_event_normal_frame_war
     is_triggered_only = yes
-    
+
     trigger = {
         FROM = { is_alive = yes }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HF_16001 # Thank you! Let's be Craven together
         prestige = 10
         if = {
@@ -4044,7 +4044,7 @@ character_event = {
             FROM = { show_scope_change = no remove_trait = brave }
         }
     }
-    option = {      
+    option = {
         name = EVTOPTB_HF_16001 #No, do as I SAY, not what... Argh..
 
         custom_tooltip = {
@@ -4067,12 +4067,12 @@ character_event = {
     picture = GFX_evt_upsetting_letter
     border = GFX_event_normal_frame_war
     is_triggered_only = yes
-    
+
     trigger = {
         FROM = { is_alive = yes }
     }
 
-    option = {      
+    option = {
         name = EVTOPTA_HF_16002 #They... have a point.
 
         if = {
@@ -4090,7 +4090,7 @@ character_event = {
             years = 20
         }
     }
-    option = {      
+    option = {
         name = EVTOPTB_HF_16002 #Political nonsense! I do as I please!
 
         prestige = 10

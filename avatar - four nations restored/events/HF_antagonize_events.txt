@@ -5,14 +5,14 @@ namespace=HF
 character_event = {
 	id = HF.22999
 	hide_window = yes
-	
+
 	trigger = {
 		has_dlc = "Holy Fury"
 		NOT = { trait = incapable }
-		NOT = { 
-			has_opinion_modifier = { 
-				who = persistent_event_target:antagonize_target 
-				modifier = antagonize_stop_cooldown 
+		NOT = {
+			has_opinion_modifier = {
+				who = persistent_event_target:antagonize_target
+				modifier = antagonize_stop_cooldown
 			}
 		}
 		prisoner = no
@@ -30,7 +30,7 @@ character_event = {
 character_event = {
 	id = HF.22000
 	hide_window = yes
-	
+
 	trigger = {
 		NOT = { trait = incapable }
 		prisoner = no
@@ -41,11 +41,11 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		#This event fires for the Antagonizer, but all the DELAYED events below this one should be sent to the Antagonized WITHOUT triggers. They need to be hidden events that simply check the trigger with an "if" and ping back to the Antagonizer. If the trigger has become invalid during the delay, then the hidden event can simply call this event again after a couple of weeks, this way the Antagonizer doesn't have to wait another year to receive an event from this list.
-		random_list = { 
+		random_list = {
 		#	100 = { #Out of range, clear event target.
-		#		modifier = { 
+		#		modifier = {
 		#			factor = 0
 		#			persistent_event_target:antagonize_target = { is_within_diplo_range = ROOT }
 		#		}
@@ -54,7 +54,7 @@ character_event = {
 
 		################## CLEAN UP EVENTS ####################
 			100 = { #You or your target have separately gone into Seclusion (somehow), clear target.
-				trigger = { 
+				trigger = {
 					OR = {
 						AND = { #They're in Seclusion, but you are not...
 							in_seclusion = no
@@ -79,54 +79,54 @@ character_event = {
 				character_event = { id = HF.22006 }
 			}
 			100 = { #Imprisoned, clear event target.
-				modifier = { 
+				modifier = {
 					factor = 0
 					persistent_event_target:antagonize_target = { prisoner = no }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_prisoner_notification
 				}
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22004 } }
 			}
 			100 = { #Incapable, clear event target.
-				modifier = { 
+				modifier = {
 					factor = 0
 					persistent_event_target:antagonize_target = { NOT = { trait = incapable } }
 				}
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22007 } }
 			}
 			100 = { #Antagonized has turned into a rival/friend/lover, clear target.
-				trigger = { 
-					OR = { 
+				trigger = {
+					OR = {
 						persistent_event_target:antagonize_target = { is_friend = ROOT }
-						persistent_event_target:antagonize_target = { is_lover = ROOT } 
+						persistent_event_target:antagonize_target = { is_lover = ROOT }
 					}
 				}
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22122 } }
 			}
 			10 = { #You have succeeded and gained a rival.
-				trigger = { 
-					NOR = { 
-						is_rival = persistent_event_target:antagonize_target 
+				trigger = {
+					NOR = {
+						is_rival = persistent_event_target:antagonize_target
 						num_of_rivals = 5
 						persistent_event_target:antagonize_target = { num_of_rivals = 5 }
 						persistent_event_target:antagonize_target = { opinion = { who = ROOT value = -25 } }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.5
 					NOT = { persistent_event_target:antagonize_target = { opinion = { who = ROOT value = -30 } } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.5
 					NOT = { persistent_event_target:antagonize_target = { opinion = { who = ROOT value = -40 } } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.5
 					NOT = { persistent_event_target:antagonize_target = { opinion = { who = ROOT value = -50 } } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.5
 					NOT = { persistent_event_target:antagonize_target = { opinion = { who = ROOT value = -60 } } }
 				}
@@ -135,9 +135,9 @@ character_event = {
 
 		################## TIER ONE EVENTS (Base, generic notifications) ####################
 			1 = { #Prestige for prestige/opinion.
-				trigger = { 
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+				trigger = {
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							is_inaccessible_trigger = yes
 							trait = incapable
 							prisoner = yes
@@ -147,11 +147,11 @@ character_event = {
 				}
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22011 } }
 			}
-			
+
 			1 = { #Generic Bad rumors.
-				trigger = { 
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+				trigger = {
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							is_inaccessible_trigger = yes
 							trait = incapable
 							prisoner = yes
@@ -167,15 +167,15 @@ character_event = {
 
 			30 = { #Main slander event.
 				trigger = { #Character must have at LEAST one trait.
-					persistent_event_target:antagonize_target = { 
-						OR = {  
+					persistent_event_target:antagonize_target = {
+						OR = {
 							AND = { is_close_relative = ROOT dynasty = ROOT }
 							NOT = { religion_group = ROOT }
 							is_heresy_of = ROOT
 							trait = dwarf
 							trait = hunchback
 							trait = kinslayer
-							trait = familial_kinslayer 
+							trait = familial_kinslayer
 							trait = dynastic_kinslayer
 							trait = excommunicated
 							trait = eunuch
@@ -221,17 +221,17 @@ character_event = {
 							trait = dull
 							trait = trusting
 							trait = zealous
-							AND = { 
-								trait = cynical 
+							AND = {
+								trait = cynical
 								religion = ROOT
 							}
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
-						OR = {  
+					persistent_event_target:antagonize_target = {
+						OR = {
 							is_inaccessible_trigger = yes
 							trait = incapable
 							prisoner = yes
@@ -244,9 +244,9 @@ character_event = {
 		################## TIER THREE EVENTS (Intrigue-locked events) ####################
 			20 = { #Fund blackguard.
 				trigger = {
-					OR = { 
+					OR = {
 						intrigue = 8
-						AND = { 
+						AND = {
 							is_rival = persistent_event_target:antagonize_target
 							intrigue = 5
 						}
@@ -254,29 +254,29 @@ character_event = {
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.1
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						independent = no
 					}
 				}
 				modifier = {
 					factor = 0.5
-					NOT = { 
+					NOT = {
 						intrigue = 10
 					}
 				}
@@ -303,45 +303,45 @@ character_event = {
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22050 } }
 			}
 			5 = { #Sins event - Lustful.
-				trigger = { 
+				trigger = {
 					intrigue = 10
-					persistent_event_target:antagonize_target = { 
-						NOR = { 
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							trait = syphilitic
 						}
 					}
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = lustful }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_1_cooldown
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
 				}
@@ -365,7 +365,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_1_cooldown
 						duration = 7200
@@ -375,46 +375,46 @@ character_event = {
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22069 } }
 			}
 			5 = { #Sins event - Gluttonous.
-				trigger = { 
+				trigger = {
 					intrigue = 10
-					persistent_event_target:antagonize_target = { 
-						NOR = { 
-							trait = food_poisoning 
+					persistent_event_target:antagonize_target = {
+						NOR = {
+							trait = food_poisoning
 							trait = ill
 						}
 					}
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = gluttonous }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_2_cooldown
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
 				}
@@ -438,7 +438,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_2_cooldown
 						duration = 7200
@@ -453,35 +453,35 @@ character_event = {
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = greedy }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_3_cooldown
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
 				}
@@ -505,7 +505,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_3_cooldown
 						duration = 7200
@@ -520,35 +520,35 @@ character_event = {
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = slothful }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_4_cooldown
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
 				}
@@ -572,7 +572,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_4_cooldown
 						duration = 7200
@@ -587,35 +587,35 @@ character_event = {
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = wroth }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_5_cooldown
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
 				}
@@ -639,7 +639,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_5_cooldown
 						duration = 7200
@@ -654,35 +654,35 @@ character_event = {
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = envious }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_6_cooldown
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
 				}
@@ -706,7 +706,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_6_cooldown
 						duration = 7200
@@ -721,38 +721,38 @@ character_event = {
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
 						}
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = no
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						NOT = { trait = proud }
 					}
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						has_character_modifier = antagonize_sins_7_cooldown
 					}
 				}
 				modifier = {
 					factor = 0.1
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
-				}				
+				}
 				modifier = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 2 } }
@@ -773,7 +773,7 @@ character_event = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				persistent_event_target:antagonize_target = { 
+				persistent_event_target:antagonize_target = {
 					add_character_modifier = {
 						name = antagonize_sins_7_cooldown
 						duration = 7200
@@ -783,17 +783,17 @@ character_event = {
 				persistent_event_target:antagonize_target = { character_event = { id = HF.22105 } }
 			}
 			50 = { #Sabotaging Antagonized Rival.
-				trigger = { 
+				trigger = {
 					intrigue = 10
-					persistent_event_target:antagonize_target = { 
+					persistent_event_target:antagonize_target = {
 						is_ruler = yes
 						is_rival = ROOT
 					}
 				}
 				modifier = { #Should rarely fire as first event.
 					factor = 0.5
-					persistent_event_target:antagonize_target = { 
-						NOR = {  
+					persistent_event_target:antagonize_target = {
+						NOR = {
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_1 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_2 }
 							has_opinion_modifier = { who = ROOT modifier = opinion_antagonized_3 }
@@ -802,10 +802,10 @@ character_event = {
 				}
 				modifier = {
 					factor = 0.5
-					NOT = { 
+					NOT = {
 						intrigue = 12
 					}
-				}				
+				}
 				modifier = {
 					factor = 1.5
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 2 } }
@@ -840,13 +840,13 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22002 } }
 	#	if = {  - Older check, no longer needed
 	#		limit = { NOT = { is_within_diplo_range = FROM } }
-	#		
+	#
 	#	}
-	#	if = { 
+	#	if = {
 	#		limit = { is_within_diplo_range = FROM }
 	#		FROM = { character_event = { id = HF.22000 days = 30 } } #Fire the big one again, pick another result.
 	#	}
@@ -859,15 +859,15 @@ character_event = {
 	# desc = EVTDESCHF22003
 	# picture = GFX_evt_upsetting_letter
 
-	# trigger = { 
-		# FROM = { is_alive = yes } 
+	# trigger = {
+		# FROM = { is_alive = yes }
 	# }
 	# is_triggered_only = yes
 
-	# option = { 
+	# option = {
 		# name = EVTOPTAHF22003
 		# custom_tooltip = { text = tooltip_22003_A }
-		# hidden_tooltip = { 
+		# hidden_tooltip = {
 			# remove_special_interest = persistent_event_target:antagonize_target
 			# persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			# clear_persistent_event_target = antagonize_target
@@ -883,7 +883,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22005 } }
 	}
 }
@@ -894,18 +894,18 @@ character_event = {
 	desc = EVTDESCHF22005
 	picture = GFX_evt_into_the_dungeon
 
-	trigger = { 
-		FROM = { 
-			prisoner = yes 
+	trigger = {
+		FROM = {
+			prisoner = yes
 			is_alive = yes
-		} 
+		}
 	}
 	is_triggered_only = yes
 
 	option = { #Stop trying to antagonize him.
 		name = EVTOPTAHF22005
 		custom_tooltip = { text = tooltip_22005_A }
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
@@ -926,7 +926,7 @@ character_event = {
 	id = HF.22006
 	picture = GFX_evt_woman_at_window_hf
 	portrait = persistent_event_target:antagonize_target
-	
+
 	is_triggered_only = yes
 
 	trigger = {
@@ -988,7 +988,7 @@ character_event = {
 		name = EVTOPTAHFP22006
 		custom_tooltip = { text = tooltip_stop_antagonizing }
 
-		hidden_effect = { 
+		hidden_effect = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
@@ -1004,7 +1004,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22008 } }
 	}
 }
@@ -1015,18 +1015,18 @@ character_event = {
 	desc = EVTDESCHF22008
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
+	trigger = {
+		FROM = {
+			is_alive = yes
 			trait = incapable
-		} 
+		}
 	}
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22008
 		custom_tooltip = { text = tooltip_22008_A }
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
@@ -1043,10 +1043,10 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22010 } }
 	}
-	option = { 
+	option = {
 		name = EVTOPTAHF22009
 		add_rival = FROM
 		ai_chance = { factor = 100 }
@@ -1059,15 +1059,15 @@ character_event = {
 	desc = EVTDESCHF22010
 	picture = GFX_evt_rival_rulers
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
+	trigger = {
+		FROM = {
+			is_alive = yes
 			NOT = { opinion = { who = FROM value = -10 } } #close enough...
-		} 
+		}
 	}
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22010
 		custom_tooltip = { text = tooltip_21010_A }
 		add_rival = FROM
@@ -1077,9 +1077,9 @@ character_event = {
 		name = EVTOPTBHF22010
 		custom_tooltip = { text = tooltip_21010_B }
 		add_rival = FROM
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
-			remove_special_interest = persistent_event_target:antagonize_target 
+			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
 		}
 		ai_chance = { factor = 0 }
@@ -1093,7 +1093,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22123 } }
 	}
 }
@@ -1103,34 +1103,34 @@ character_event = {
 	id = HF.22123
 	desc = {
 		text = EVTDESCAHFP22123
-		trigger = { 
+		trigger = {
 			is_lover = FROM
 		}
 	}
 	desc = {
 		text = EVTDESCBHFP22123
-		trigger = { 
+		trigger = {
 			is_friend = FROM
 		}
 	}
 	desc = {
 		text = EVTDESCCHFP22123
-		trigger = { 
+		trigger = {
 			is_rival = FROM
 		}
 	}
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { is_alive = yes } 
+	trigger = {
+		FROM = { is_alive = yes }
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHFP22123
 		custom_tooltip = { text = tooltip_22123_A }
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
@@ -1153,7 +1153,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22012 } }
 	}
 }
@@ -1164,14 +1164,14 @@ character_event = {
 	desc = EVTDESCHFP22012
 	picture = GFX_evt_daughter_asking_father
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHFP22012
 		custom_tooltip = { text = tooltip_22012_A }
 		prestige = -300
@@ -1206,28 +1206,28 @@ character_event = {
 	id = HF.22013
 	desc = {
 		text = EVTDESCAHF22013
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_antagonize_prestige_3 }
 		}
 	}
 	desc = {
 		text = EVTDESCBHF22013
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_antagonize_prestige_2 }
 		}
 	}
 	desc = {
 		text = EVTDESCCHF22013
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_antagonize_prestige_1 }
 		}
 	}
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 	is_triggered_only = yes
 
@@ -1236,77 +1236,77 @@ character_event = {
 		custom_tooltip = { text = tooltip_22013_A }
 		trigger = { intrigue = 12 }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22014 days = 5 } } }
-		opinion = { 
-			who = FROM 
+		opinion = {
+			who = FROM
 			modifier = opinion_antagonized_1
 			years = 10
 		}
-		ai_chance = { 
-			factor = 80 
+		ai_chance = {
+			factor = 80
 		}
 	}
-	option = { 
+	option = {
 		name = EVTOPTBHF22013
 		custom_tooltip = { text = tooltip_22013_B }
-		opinion = { 
-			who = FROM 
+		opinion = {
+			who = FROM
 			modifier = opinion_antagonized_2
 			years = 10
 		}
-		if = { 
-			limit = { 
-				FROM = { has_character_flag = flag_antagonize_prestige_3 } 
-				OR = { 
-					lower_tier_than = FROM 
+		if = {
+			limit = {
+				FROM = { has_character_flag = flag_antagonize_prestige_3 }
+				OR = {
+					lower_tier_than = FROM
 					tier = FROM
 				}
 			}
-			prestige = -300 
+			prestige = -300
 		}
-		if = { 
-			limit = { 
-				FROM = { has_character_flag = flag_antagonize_prestige_3 } 
+		if = {
+			limit = {
+				FROM = { has_character_flag = flag_antagonize_prestige_3 }
 				higher_tier_than = FROM
 			}
-			prestige = -150 
+			prestige = -150
 		}
-		if = { 
-			limit = { 
-				FROM = { has_character_flag = flag_antagonize_prestige_2 } 
-				OR = { 
-					lower_tier_than = FROM 
+		if = {
+			limit = {
+				FROM = { has_character_flag = flag_antagonize_prestige_2 }
+				OR = {
+					lower_tier_than = FROM
 					tier = FROM
 				}
 			}
-			prestige = -150 
+			prestige = -150
 		}
-		if = { 
-			limit = { 
-				FROM = { has_character_flag = flag_antagonize_prestige_2 } 
+		if = {
+			limit = {
+				FROM = { has_character_flag = flag_antagonize_prestige_2 }
 				higher_tier_than = FROM
 			}
-			prestige = -50 
+			prestige = -50
 		}
-		if = { 
-			limit = { 
-				FROM = { has_character_flag = flag_antagonize_prestige_1 } 
-				OR = { 
-					lower_tier_than = FROM 
+		if = {
+			limit = {
+				FROM = { has_character_flag = flag_antagonize_prestige_1 }
+				OR = {
+					lower_tier_than = FROM
 					tier = FROM
 				}
 			}
-			prestige = -50 
+			prestige = -50
 		}
-		if = { 
-			limit = { 
-				FROM = { has_character_flag = flag_antagonize_prestige_1 } 
+		if = {
+			limit = {
+				FROM = { has_character_flag = flag_antagonize_prestige_1 }
 				higher_tier_than = FROM
 			}
-			prestige = -10 
+			prestige = -10
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22015 days = 5 } } }
-		ai_chance = { 
-			factor = 10 
+		ai_chance = {
+			factor = 10
 		}
 	}
 }
@@ -1316,19 +1316,19 @@ character_event = {
 	id = HF.22014
 	desc = {
 		text = EVTDESCAHF22014
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_antagonize_prestige_3
 		}
 	}
 	desc = {
 		text = EVTDESCBHF22014
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_antagonize_prestige_2
 		}
 	}
 	desc = {
 		text = EVTDESCCHF22014
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_antagonize_prestige_1
 		}
 	}
@@ -1336,21 +1336,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22014
 		clr_character_flag = flag_antagonize_prestige_3
 		clr_character_flag = flag_antagonize_prestige_2
 		clr_character_flag = flag_antagonize_prestige_1
-		tooltip = { 
-			FROM = { 
-				opinion = { 
-					who = ROOT 
+		tooltip = {
+			FROM = {
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_1
 					years = 5
 				}
 			}
 		}
-		ai_chance = { factor = 100 } 
+		ai_chance = { factor = 100 }
 	}
 }
 #Antagonizer: success.
@@ -1361,21 +1361,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22015
 		clr_character_flag = flag_antagonize_prestige_3
 		clr_character_flag = flag_antagonize_prestige_2
 		clr_character_flag = flag_antagonize_prestige_1
-		tooltip = { 
-			FROM = { 
-				opinion = { 
-					who = ROOT 
+		tooltip = {
+			FROM = {
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_2
 					years = 5
 				}
 			}
 		}
-		ai_chance = { factor = 100 } 
+		ai_chance = { factor = 100 }
 	}
 }
 
@@ -1387,7 +1387,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22017 } } #Hidden ping for portrait, check intrigue.
 	}
 }
@@ -1398,47 +1398,47 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
-		random_list = { 
+	immediate = {
+		random_list = {
 			10 = { #Critical success
-				modifier = { 
+				modifier = {
 					factor = 0
 					trait = shy
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.5
 					trait = slow
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.2
 					trait = imbecile
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.5
 					NOT = { intrigue = 6 }
 				}
 				set_character_flag = flag_generic_antagonize_crit_success
-				FROM = { character_event = { id = HF.22018 } } 
+				FROM = { character_event = { id = HF.22018 } }
 			}
 			55 = { #Success
 
 				set_character_flag = flag_generic_antagonize_success
-				FROM = { character_event = { id = HF.22018 } } 
+				FROM = { character_event = { id = HF.22018 } }
 			}
 			34 = { #Failure
-				modifier = { 
+				modifier = {
 					factor = 0.5
 					reverse_opinion = { who = FROM value = 50 }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.35
 					NOT = { reverse_opinion = { who = FROM value = -50 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.5
 					trait = schemer
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.75
 					trait = deceitful
 				}
@@ -1467,31 +1467,31 @@ character_event = {
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 12 } }
 				}
 				set_character_flag = flag_generic_antagonize_failure
-				FROM = { character_event = { id = HF.22018 } } 
+				FROM = { character_event = { id = HF.22018 } }
 			}
 			1 = { #Critical Failure
-				modifier = { 
+				modifier = {
 					factor = 0
 					higher_tier_than = FROM
 				}
-				modifier = { 
+				modifier = {
 					factor = 2
 					NOT = { vassal_of = FROM }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					intrigue = 12
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					trait = deceitful
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					trait = schemer
 				}
 				set_character_flag = flag_generic_antagonize_crit_failure
-				FROM = { character_event = { id = HF.22018 } } 
+				FROM = { character_event = { id = HF.22018 } }
 			}
 		}
 	}
@@ -1502,38 +1502,38 @@ character_event = {
 	id = HF.22018
 	desc = {
 		text = EVTDESCAHF22018
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_generic_antagonize_crit_success }
 		}
 		picture = GFX_evt_bad_news
 	}
 	desc = {
 		text = EVTDESCBHF22018
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_generic_antagonize_success }
 		}
 		picture = GFX_evt_bad_news
 	}
 	desc = {
 		text = EVTDESCCHF22018
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_generic_antagonize_failure }
 		}
 		picture = GFX_evt_upsetting_letter
 	}
 	desc = {
 		text = EVTDESCDHF22018
-		trigger = { 
+		trigger = {
 			FROM = { has_character_flag = flag_generic_antagonize_crit_failure }
 		}
 		picture = GFX_evt_jugglers
 	}
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
@@ -1543,8 +1543,8 @@ character_event = {
 		trigger = { FROM = { has_character_flag = flag_generic_antagonize_crit_success } }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22019 } } }
 		prestige = -30
-		opinion = { 
-			who = FROM 
+		opinion = {
+			who = FROM
 			modifier = opinion_antagonized_1
 			years = 10
 		}
@@ -1553,8 +1553,8 @@ character_event = {
 	option = { #Liking him less.
 		name = EVTOPTBHF22018
 		trigger = { FROM = { has_character_flag = flag_generic_antagonize_success } }
-		opinion = { 
-			who = FROM 
+		opinion = {
+			who = FROM
 			modifier = opinion_antagonized_0
 			years = 5
 		}
@@ -1563,14 +1563,14 @@ character_event = {
 	}
 	option = { #Neutral Failure
 		name = EVTOPTCHF22018
-		trigger = { 
+		trigger = {
 			OR = {
-				AND = { 
+				AND = {
 					ai = no # Player always allowed to deny appeasement.
-					FROM = { NOT = { has_character_flag = flag_generic_antagonize_crit_failure } } 
-				}		
-				FROM = { has_character_flag = flag_generic_sway_failure } 
-			} 
+					FROM = { NOT = { has_character_flag = flag_generic_antagonize_crit_failure } }
+				}
+				FROM = { has_character_flag = flag_generic_sway_failure }
+			}
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22019 } } }
 		ai_chance = { factor = 100 }
@@ -1578,14 +1578,14 @@ character_event = {
 	option = { #Amused by him.
 		name = EVTOPTDHF22018
 		trigger = { FROM = { has_character_flag = flag_generic_antagonize_crit_failure } }
-		opinion = { 
-			who = FROM 
+		opinion = {
+			who = FROM
 			modifier = opinion_amused
 			years = 5
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22019 } } }
-		ai_chance = { 
-			factor = 100 
+		ai_chance = {
+			factor = 100
 		}
 	}
 }
@@ -1595,28 +1595,28 @@ character_event = {
 	id = HF.22019
 	desc = {
 		text = EVTDESCAHF22019
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_generic_antagonize_crit_success
 		}
 		picture = GFX_evt_bad_news
 	}
 	desc = {
 		text = EVTDESCBHF22019
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_generic_antagonize_success
 		}
 		picture = GFX_evt_bad_news
 	}
 	desc = {
 		text = EVTDESCCHF22019
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_generic_antagonize_failure
 		}
 		picture = GFX_evt_upsetting_letter
 	}
 	desc = {
 		text = EVTDESCDHF22019
-		trigger = { 
+		trigger = {
 			has_character_flag = flag_generic_antagonize_crit_failure
 		}
 		picture = GFX_evt_jugglers
@@ -1647,694 +1647,694 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
-		random_list = { 
+	immediate = {
+		random_list = {
 			10 = {
-				trigger = { 
+				trigger = {
 					is_close_relative = FROM
 					dynasty = FROM
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
-					FROM = { 
+					FROM = {
 						trait = cruel
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_relative
-				}		
+				}
 				set_character_flag = flag_antagonized_option_relative
 			}
 			20 = {
-				trigger = { 
+				trigger = {
 					NOT = { religion_group = FROM }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
-					FROM = { 
+					FROM = {
 						trait = zealous
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_infidel
-				}		
+				}
 				set_character_flag = flag_antagonized_option_infidel
 			}
 			20 = {
-				trigger = { 
+				trigger = {
 					is_heresy_of = FROM
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
-					FROM = { 
+					FROM = {
 						trait = zealous
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_heretic
-				}		
+				}
 				set_character_flag = flag_antagonized_option_heretic
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
-					NOR = { 
+					NOR = {
 						trait = dwarf
 						trait = hunchback
 					}
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 0.5
-					FROM = { 
-						OR = { 
+					FROM = {
+						OR = {
 							trait = dwarf
 							trait = hunchback
-						} 
+						}
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_hunchback
-				}		
+				}
 				set_character_flag = flag_antagonized_option_hunchback
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
-					NOR = { 
+					NOR = {
 						trait = kinslayer
-						trait = familial_kinslayer 
+						trait = familial_kinslayer
 						trait = dynastic_kinslayer
 					}
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 0.5
-					FROM = { 
-						OR = { 
+					FROM = {
+						OR = {
 							trait = kinslayer
-							trait = familial_kinslayer 
+							trait = familial_kinslayer
 							trait = dynastic_kinslayer
-						} 
+						}
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_kinslayer
-				}		
+				}
 				set_character_flag = flag_antagonized_option_kinslayer
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = excommunicated }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 0
-					FROM = { 
-						OR = { 
-							trait = excommunicated 
-							NOT = { religion = ROOT } 
+					FROM = {
+						OR = {
+							trait = excommunicated
+							NOT = { religion = ROOT }
 						}
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_excommunicated
-				}		
+				}
 				set_character_flag = flag_antagonized_option_excommunicated
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = eunuch }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 0
 					FROM = { trait = eunuch }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_eunuch
-				}		
+				}
 				set_character_flag = flag_antagonized_option_eunuch
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = mystic }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = theologian }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_mystic
-				}		
+				}
 				set_character_flag = flag_antagonized_option_mystic
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
-					NOR = { 
+					NOR = {
 						trait = seducer
-						trait = seductress 
+						trait = seductress
 						trait = lovers_pox
 					}
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = chaste }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_seducer
-				}		
+				}
 				set_character_flag = flag_antagonized_option_seducer
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = schemer }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = honest }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_schemer
-				}		
+				}
 				set_character_flag = flag_antagonized_option_schemer
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = impaler }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = kind }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_impaler
-				}		
+				}
 				set_character_flag = flag_antagonized_option_impaler
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = hedonist }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = temperate }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_hedonist
-				}		
+				}
 				set_character_flag = flag_antagonized_option_hedonist
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
-					NOR = { 
-						trait = bastard 
+					NOR = {
+						trait = bastard
 						trait = legit_bastard
 						trait = child_of_consort
 					}
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
-					FROM = { 
-						NOR = { 
-							trait = bastard 
+					FROM = {
+						NOR = {
+							trait = bastard
 							trait = legit_bastard
 							trait = child_of_consort
 						}
 					}
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_bastard
-				}		
+				}
 				set_character_flag = flag_antagonized_option_bastard
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { is_maimed_trigger = yes }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { is_maimed_trigger = no }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_maimed
-				}		
+				}
 				set_character_flag = flag_antagonized_option_maimed
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = infirm }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { NOT = { trait = infirm } }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_infirm
-				}		
+				}
 				set_character_flag = flag_antagonized_option_infirm
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = is_malnourished }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = is_fat }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_malnourished
-				}		
+				}
 				set_character_flag = flag_antagonized_option_malnourished
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = is_fat }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = is_malnourished }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_fat
-				}		
+				}
 				set_character_flag = flag_antagonized_option_fat
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = depressed }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = gregarious }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_depressed
-				}		
+				}
 				set_character_flag = flag_antagonized_option_depressed
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = drunkard }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = temperate }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_drunkard
-				}		
+				}
 				set_character_flag = flag_antagonized_option_drunkard
 			}
 
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = lunatic }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = kind }
-				}	
-				modifier = { 
+				}
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_lunatic
-				}		
+				}
 				set_character_flag = flag_antagonized_option_lunatic
 			}
 
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = possessed }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = zealous }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_possessed
-				}		
+				}
 				set_character_flag = flag_antagonized_option_possessed
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
-					NOR = { 
+					NOR = {
 						has_ugly_trait_trigger = yes
 						has_scarred_trait_trigger = yes
-						trait = disfigured 
+						trait = disfigured
 						trait = blinded
 						trait = one_eyed
 						trait = leper
-						trait = harelip 
+						trait = harelip
 					}
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { has_fair_trait_trigger = yes }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_ugly
-				}		
+				}
 				set_character_flag = flag_antagonized_option_ugly
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = chaste }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = lustful }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_chaste
-				}		
+				}
 				set_character_flag = flag_antagonized_option_chaste
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = temperate }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = gluttonous }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_temperate
-				}		
+				}
 				set_character_flag = flag_antagonized_option_temperate
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = charitable }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = greedy }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_charitable
-				}		
+				}
 				set_character_flag = flag_antagonized_option_charitable
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = diligent }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = slothful }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_diligent
-				}		
+				}
 				set_character_flag = flag_antagonized_option_diligent
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = patient }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = wroth }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_patient
-				}		
+				}
 				set_character_flag = flag_antagonized_option_patient
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = kind }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = cruel }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_kind
-				}		
+				}
 				set_character_flag = flag_antagonized_option_kind
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = humble }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = proud }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_humble
-				}		
+				}
 				set_character_flag = flag_antagonized_option_humble
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = lustful }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = chaste }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_lustful
-				}		
+				}
 				set_character_flag = flag_antagonized_option_lustful
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = gluttonous }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = temperate }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_gluttonous
-				}		
+				}
 				set_character_flag = flag_antagonized_option_gluttonous
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = greedy }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = charitable }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_greedy
-				}		
+				}
 				set_character_flag = flag_antagonized_option_greedy
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = slothful }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = diligent }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_slothful
-				}		
+				}
 				set_character_flag = flag_antagonized_option_slothful
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = wroth }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = patient }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_wroth
-				}		
+				}
 				set_character_flag = flag_antagonized_option_wroth
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = envious }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = kind }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_envious
-				}		
+				}
 				set_character_flag = flag_antagonized_option_envious
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = proud }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = humble }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_proud
-				}		
+				}
 				set_character_flag = flag_antagonized_option_proud
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = ambitious }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = content }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_ambitious
-				}		
+				}
 				set_character_flag = flag_antagonized_option_ambitious
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = arbitrary }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = just }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_arbitrary
-				}		
+				}
 				set_character_flag = flag_antagonized_option_arbitrary
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = brave }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = craven }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_brave
-				}		
+				}
 				set_character_flag = flag_antagonized_option_brave
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = content }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = ambitious }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_content
-				}		
+				}
 				set_character_flag = flag_antagonized_option_content
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = craven }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = brave }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_craven
-				}		
+				}
 				set_character_flag = flag_antagonized_option_craven
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = cruel }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = kind }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_cruel
-				}		
+				}
 				set_character_flag = flag_antagonized_option_cruel
 			}
 			20 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = cynical }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 0
 					FROM = { NOT = { religion = ROOT } }
@@ -2343,29 +2343,29 @@ character_event = {
 					factor = 1.5
 					FROM = { trait = zealous religion = ROOT }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_cynical
-				}		
+				}
 				set_character_flag = flag_antagonized_option_cynical
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = deceitful }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = honest }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_deceitful
-				}		
+				}
 				set_character_flag = flag_antagonized_option_deceitful
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = erudite }
 				}
@@ -2373,130 +2373,130 @@ character_event = {
 					factor = 1.5
 					FROM = { trait = dull }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_erudite
-				}		
+				}
 				set_character_flag = flag_antagonized_option_erudite
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = gregarious }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = shy }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_gregarious
-				}		
+				}
 				set_character_flag = flag_antagonized_option_gregarious
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = honest }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = deceitful }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_honest
-				}		
+				}
 				set_character_flag = flag_antagonized_option_honest
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = just }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = arbitrary }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_just
-				}		
+				}
 				set_character_flag = flag_antagonized_option_just
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = paranoid }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = trusting }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_paranoid
-				}		
+				}
 				set_character_flag = flag_antagonized_option_paranoid
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = shy }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = gregarious }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_shy
-				}		
+				}
 				set_character_flag = flag_antagonized_option_shy
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = dull }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = shrewd }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_dull
-				}		
+				}
 				set_character_flag = flag_antagonized_option_dull
 			}
 			10 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = trusting }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = paranoid }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_trusting
-				}		
+				}
 				set_character_flag = flag_antagonized_option_trusting
 			}
 			5 = {
-				modifier = { 
+				modifier = {
 					factor = 0
 					NOT = { trait = zealous }
-				}	
+				}
 				modifier = { #Try to pick opposite traits if any are available
 					factor = 1.5
 					FROM = { trait = cynical religion = ROOT }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					has_character_flag = flag_antagonized_option_zealous
-				}		
+				}
 				set_character_flag = flag_antagonized_option_zealous
 			}
 		}
@@ -2512,10 +2512,10 @@ character_event = {
 	desc = EVTDESCHF22021 #Custom localization keys
 	picture = GFX_evt_meeting_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
@@ -2523,10 +2523,10 @@ character_event = {
 	option = { #Special option. - Cruel vs deformed. Chance for depression/stress.
 		name = EVTOPTBHF22021
 		custom_tooltip = { text = tooltip_22021_B }
-		trigger = { 
+		trigger = {
 			trait = cruel
-			FROM = { 
-				OR = { 
+			FROM = {
+				OR = {
 					has_character_flag = flag_antagonized_option_eunuch
 					has_character_flag = flag_antagonized_option_maimed
 					has_character_flag = flag_antagonized_option_malnourished
@@ -2544,10 +2544,10 @@ character_event = {
 	option = { #Special option. - Moralizer vs hedonist. Chance for depression/stress.
 		name = EVTOPTCHF22021
 		custom_tooltip = { text = tooltip_22021_C }
-		trigger = { 
+		trigger = {
 			trait = temperate
-			FROM = { 
-				OR = { 
+			FROM = {
+				OR = {
 					has_character_flag = flag_antagonized_option_seducer
 					has_character_flag = flag_antagonized_option_hedonist
 					has_character_flag = flag_antagonized_option_fat
@@ -2566,10 +2566,10 @@ character_event = {
 	option = { #Special option. - Moralizer vs infidel. Chance for depression/stress.
 		name = EVTOPTDHF22021
 		custom_tooltip = { text = tooltip_22021_D }
-		trigger = { 
+		trigger = {
 			trait = zealous
-			FROM = { 
-				OR = { 
+			FROM = {
+				OR = {
 					has_character_flag = flag_antagonized_option_cynical
 					has_character_flag = flag_antagonized_option_heretic
 					has_character_flag = flag_antagonized_option_possessed
@@ -2593,7 +2593,7 @@ character_event = {
 	option = { #Do nothing - better luck next pulse.
 		name = EVTOPTFHF22021
 		ai_chance = { factor = 0 }
-		FROM = { 
+		FROM = {
 			clr_character_flag = flag_antagonized_option_kinslayer
 			clr_character_flag = flag_antagonized_option_excommunicated
 			clr_character_flag = flag_antagonized_option_eunuch
@@ -2657,16 +2657,16 @@ character_event = {
 	desc = EVTDESCHF22022 #Custom localization keys
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
 	#Lunatic special options:
-	#Attack 
+	#Attack
 	#Appreciate honesty (not evil)
 	#Dub Knight of turnips (liege, rare)
 
@@ -2675,21 +2675,21 @@ character_event = {
 		name = EVTOPTLUAHF22022
 		tooltip_info = lunatic
 		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
+		trigger = {
 			trait = lunatic
 			this_can_duel_with_from_trigger = yes
 		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
+		FROM = {
 			set_character_flag = flag_antagonizer_duel
 		}
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_3
 			who = ROOT
 			years = 15
 		}
 	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
+	    hidden_tooltip = {
 	    	save_event_target_as = combatant_1 #the person issuing the duel...
 	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
 	    }
@@ -2697,7 +2697,7 @@ character_event = {
 	    	show_scope_change = no
 	    	apply_degree_of_dishonorable_duel_effect = yes  #checks a bunch of age and health statuses...
 	    }
-	    
+
 	    pacifists_lose_piety_effect = yes
 	    add_character_modifier = {
 	        modifier = recent_duel_timer
@@ -2707,34 +2707,34 @@ character_event = {
 	    hidden_tooltip = {
 	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
-		ai_chance = { 
+		ai_chance = {
 			factor = 40
-			modifier = { 
+			modifier = {
 				factor = 0.1
 				trait = craven
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				trait = brave
 			}
-			modifier = { 
+			modifier = {
 				factor = 0.75
 				is_tribal = no
 				is_nomadic = no
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.75
 				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
@@ -2743,14 +2743,14 @@ character_event = {
 	option = { #Special option. - Lunatic is impressed. Avoid Antagonizer from getting special boons and stop his Antagonizing for a set amount of time.
 		name = EVTOPTLUBHF22022
 		custom_tooltip = { text = tooltip_22022_LUB }
-		trigger = { 
+		trigger = {
 			trait = lunatic
 			is_evil_trigger = no
 		}
 		tooltip_info = lunatic
 		FROM = {
-			show_scope_change = no 
-			opinion = { 
+			show_scope_change = no
+			opinion = {
 				modifier = opinion_swayed_0
 				who = ROOT
 				years = 10
@@ -2762,10 +2762,10 @@ character_event = {
 	option = { #Special option. - Lunatic liege gives title. Avoid Antagonizer from getting special boons and stop his Antagonizing for a set amount of time.
 		name = EVTOPTLUCHF22022
 		custom_tooltip = { text = tooltip_22022_LUC }
-		trigger = { 
+		trigger = {
 			trait = lunatic
-			FROM = { 
-				is_vassal_or_below_of = ROOT 
+			FROM = {
+				is_vassal_or_below_of = ROOT
 				NOT = { has_nickname = nick_the_knight_of_turnips }
 			}
 			is_evil_trigger = no
@@ -2774,17 +2774,17 @@ character_event = {
 		tiered_prestige_reward_effect = yes
 		tooltip = { FROM = { give_nickname = nick_the_knight_of_turnips } }
 		FROM = {
-			show_scope_change = no 
-			opinion = { 
+			show_scope_change = no
+			opinion = {
 				modifier = opinion_swayed_0
 				who = ROOT
 				years = 10
 			}
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22133 } } }
-		ai_chance = { 
-			factor = 10 
-			modifier = { 
+		ai_chance = {
+			factor = 10
+			modifier = {
 				factor = 0.25
 				FROM  = { ai = yes }
 			}
@@ -2796,93 +2796,23 @@ character_event = {
 	option = { #Special option. - Rival character starts duel!
 		name = EVTOPTYHF22022
 		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
+		trigger = {
 			NOT = { trait = lunatic }
 			NOT = { trait = wroth } #Give priority to the option for Wroth characters.
 			is_rival = FROM
 			this_can_duel_with_from_trigger = yes
 		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
+		FROM = {
 			set_character_flag = flag_antagonizer_duel
 		}
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_3
 			who = ROOT
 			years = 15
 		}
 	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
-	    	save_event_target_as = combatant_1 #the person issuing the duel...
-	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
-	    }
-	    FROM = {
-	    	show_scope_change = no
-	    	apply_degree_of_dishonorable_duel_effect = yes  #checks a bunch of age and health statuses...
-	    }
-	    
-	    pacifists_lose_piety_effect = yes
-	    add_character_modifier = {
-	        modifier = recent_duel_timer
-	        duration = 365
-	        hidden = yes
-	    }
 	    hidden_tooltip = {
-	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
-	    }
-		ai_chance = { 
-			factor = 40
-			modifier = { 
-				factor = 0.1
-				trait = craven
-			}
-			modifier = { 
-				factor = 1.5
-				trait = brave
-			}
-			modifier = { 
-				factor = 0.75
-				is_tribal = no
-				is_nomadic = no
-			}
-			modifier = { 
-				factor = 1.25
-				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
-			}
-			modifier = { 
-				factor = 1.25
-				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
-			}
-			modifier = { 
-				factor = 1.5
-				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
-			}
-			modifier = { 
-				factor = 1.75
-				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
-			}
-		}
-	}
-	option = { #Special option. - Wroth character starts duel!
-		name = EVTOPTYHF22022
-		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
-			NOT = { trait = lunatic }
-			trait = wroth
-			this_can_duel_with_from_trigger = yes
-		}
-		tooltip_info = wroth
-		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
-			set_character_flag = flag_antagonizer_duel
-		}
-		opinion = { 
-			modifier = opinion_antagonized_3
-			who = ROOT
-			years = 15
-		}
-	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
 	    	save_event_target_as = combatant_1 #the person issuing the duel...
 	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
 	    }
@@ -2900,34 +2830,104 @@ character_event = {
 	    hidden_tooltip = {
 	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
-		ai_chance = { 
+		ai_chance = {
 			factor = 40
-			modifier = { 
+			modifier = {
 				factor = 0.1
 				trait = craven
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				trait = brave
 			}
-			modifier = { 
+			modifier = {
 				factor = 0.75
 				is_tribal = no
 				is_nomadic = no
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
-			modifier = { 
+			modifier = {
+				factor = 1.75
+				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
+			}
+		}
+	}
+	option = { #Special option. - Wroth character starts duel!
+		name = EVTOPTYHF22022
+		custom_tooltip = { text = tooltip_22022_Y }
+		trigger = {
+			NOT = { trait = lunatic }
+			trait = wroth
+			this_can_duel_with_from_trigger = yes
+		}
+		tooltip_info = wroth
+		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
+		FROM = {
+			set_character_flag = flag_antagonizer_duel
+		}
+		opinion = {
+			modifier = opinion_antagonized_3
+			who = ROOT
+			years = 15
+		}
+	    #REQUIRED event targets for setting up duel evaluation!
+	    hidden_tooltip = {
+	    	save_event_target_as = combatant_1 #the person issuing the duel...
+	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
+	    }
+	    FROM = {
+	    	show_scope_change = no
+	    	apply_degree_of_dishonorable_duel_effect = yes  #checks a bunch of age and health statuses...
+	    }
+
+	    pacifists_lose_piety_effect = yes
+	    add_character_modifier = {
+	        modifier = recent_duel_timer
+	        duration = 365
+	        hidden = yes
+	    }
+	    hidden_tooltip = {
+	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
+	    }
+		ai_chance = {
+			factor = 40
+			modifier = {
+				factor = 0.1
+				trait = craven
+			}
+			modifier = {
+				factor = 1.5
+				trait = brave
+			}
+			modifier = {
+				factor = 0.75
+				is_tribal = no
+				is_nomadic = no
+			}
+			modifier = {
+				factor = 1.25
+				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
+			}
+			modifier = {
+				factor = 1.25
+				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
+			}
+			modifier = {
+				factor = 1.5
+				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
+			}
+			modifier = {
 				factor = 1.75
 				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
@@ -2936,14 +2936,14 @@ character_event = {
 	option = { #Special option. - Diplomacy. Avoid Antagonizer from getting special boons and stop his Antagonizing for a set amount of time.
 		name = EVTOPTZHF22022
 		custom_tooltip = { text = tooltip_22022_Z }
-		trigger = { 
+		trigger = {
 			NOT = { trait = lunatic }
 			ROOT = { attribute_diff = { character = FROM attribute = diplomacy  value = 12 } }
 		}
 		tooltip_info = diplomacy
 		FROM = {
-			show_scope_change = no 
-			opinion = { 
+			show_scope_change = no
+			opinion = {
 				modifier = opinion_swayed_0
 				who = ROOT
 				years = 10
@@ -2955,12 +2955,12 @@ character_event = {
 	option = { #Special option. - Intrigue. Avoid Antagonizer from getting special boons or adding negative traits.
 		name = EVTOPTAHF22022
 		custom_tooltip = { text = tooltip_22022_A }
-		trigger = { 
+		trigger = {
 			NOT = { trait = lunatic }
 			ROOT = { attribute_diff = { character = FROM attribute = intrigue  value = 5 } }
 		}
 		tooltip_info = intrigue
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_1
 			who = FROM
 			years = 10
@@ -2971,12 +2971,12 @@ character_event = {
 	option = { #Special option. - Humble character accepts criticism.
 		name = EVTOPTBHF22022
 		custom_tooltip = { text = tooltip_22022_B }
-		trigger = { 
+		trigger = {
 			NOT = { trait = lunatic }
 			trait = humble
-			FROM = { 
-				has_character_flag = flag_antagonize_slander_temperate 
-			} 
+			FROM = {
+				has_character_flag = flag_antagonize_slander_temperate
+			}
 		}
 		tooltip_info = humble
 		tiered_piety_negative_effect = yes
@@ -2987,12 +2987,12 @@ character_event = {
 	option = { #Special option. - Kind character forgives Antagonizer.
 		name = EVTOPTCHF22022
 		custom_tooltip = { text = tooltip_22022_C }
-		trigger = { 
+		trigger = {
 			NOT = { trait = lunatic }
 			trait = kind
-			FROM = { 
-				has_character_flag = flag_antagonize_slander_cruel 
-			} 
+			FROM = {
+				has_character_flag = flag_antagonize_slander_cruel
+			}
 		}
 		tooltip_info = kind
 		tiered_prestige_negative_effect = yes
@@ -3003,15 +3003,15 @@ character_event = {
 	option = { #Special option. - Cynical character is unimpressed.
 		name = EVTOPTDHF22022
 		custom_tooltip = { text = tooltip_22022_D }
-		trigger = { 
+		trigger = {
 			NOT = { trait = lunatic }
 			trait = cynical
-			FROM = { 
-				has_character_flag = flag_antagonize_slander_zealous 
-			} 
+			FROM = {
+				has_character_flag = flag_antagonize_slander_zealous
+			}
 		}
 		tooltip_info = cynical
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_0
 			who = FROM
 			years = 10
@@ -3023,65 +3023,65 @@ character_event = {
 	}
 	option = { #Take in slander.
 		name = EVTOPTEHF22022
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_2
 			who = FROM
 			years = 10
 		}
-		if = { 
-			limit = { 
+		if = {
+			limit = {
 				trait = stressed
-				FROM = { 
-					OR = { 
-						has_character_flag = flag_antagonize_slander_temperate 
-						has_character_flag = flag_antagonize_slander_zealous 
-					} 
-				} 
+				FROM = {
+					OR = {
+						has_character_flag = flag_antagonize_slander_temperate
+						has_character_flag = flag_antagonize_slander_zealous
+					}
+				}
 			}
 			tiered_piety_negative_effect = yes
 		}
-		if = { 
-			limit = { 
-				NOT = { trait = stressed } 
-				FROM = { 
-					OR = { 
-						has_character_flag = flag_antagonize_slander_temperate 
-						has_character_flag = flag_antagonize_slander_zealous 
-					} 
-				} 
+		if = {
+			limit = {
+				NOT = { trait = stressed }
+				FROM = {
+					OR = {
+						has_character_flag = flag_antagonize_slander_temperate
+						has_character_flag = flag_antagonize_slander_zealous
+					}
+				}
 			}
 			add_trait = stressed
 			hidden_tooltip = { character_event = { id = 38282 } }
 			hidden_tooltip = { FROM = { character_event = { id = HF.22028 days = 7 } } } #Notify Antagonizer as well.
 		}
-		if = { 
-			limit = { 
+		if = {
+			limit = {
 				trait = depressed
-				FROM = { 
-					has_character_flag = flag_antagonize_slander_cruel 
-				} 
+				FROM = {
+					has_character_flag = flag_antagonize_slander_cruel
+				}
 			}
 			tiered_prestige_negative_effect = yes
 		}
-		if = { 
-			limit = { 
-				NOT = { trait = depressed } 
-				FROM = { 
-					has_character_flag = flag_antagonize_slander_cruel 
-				} 
+		if = {
+			limit = {
+				NOT = { trait = depressed }
+				FROM = {
+					has_character_flag = flag_antagonize_slander_cruel
+				}
 			}
-			random = { 
-				chance = 30 
-				add_trait = depressed 
+			random = {
+				chance = 30
+				add_trait = depressed
 				hidden_tooltip = { character_event = { id = 38288 } }
 				hidden_tooltip = { FROM = { character_event = { id = HF.22029 days = 7 } } } #Notify Antagonizer as well.
-			} 
+			}
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22027 } } }
 		hidden_tooltip = { random_antagonizer_slander_roll_effect = yes }
 		ai_chance = { factor = 30 }
 	}
-	after = { 
+	after = {
 		clr_character_flag = flag_antagonized_option_kinslayer
 		clr_character_flag = flag_antagonized_option_excommunicated
 		clr_character_flag = flag_antagonized_option_eunuch
@@ -3137,7 +3137,7 @@ character_event = {
 		clr_character_flag = flag_antagonized_option_heretic
 
 
-		FROM = { 
+		FROM = {
 			clr_character_flag = flag_antagonize_slander_zealous
 			clr_character_flag = flag_antagonize_slander_cruel
 			clr_character_flag = flag_antagonize_slander_temperate
@@ -3152,27 +3152,27 @@ character_event = {
 	desc = EVTDESCHF22023
 	picture = GFX_evt_meeting_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22023
 		tooltip = {
 			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
+				opinion = {
 					modifier = opinion_antagonized_1
 					who = ROOT
 					years = 10
 				}
 			}
 		}
-	} 
+	}
 }
 #Antagonizer: notified of humble reaction.
 character_event = {
@@ -3180,17 +3180,17 @@ character_event = {
 	desc = EVTDESCHF22024
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22024
-	} 
+	}
 }
 #Antagonizer: notified of kind reaction.
 character_event = {
@@ -3198,17 +3198,17 @@ character_event = {
 	desc = EVTDESCHF22025
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22025
-	} 
+	}
 }
 #Antagonizer: notified of cynical reaction.
 character_event = {
@@ -3216,27 +3216,27 @@ character_event = {
 	desc = EVTDESCHF22026
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22026
 		tooltip = {
 			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
+				opinion = {
 					modifier = opinion_antagonized_0
 					who = ROOT
 					years = 10
 				}
 			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: notified of default reaction.
@@ -3245,27 +3245,27 @@ character_event = {
 	desc = EVTDESCHF22027
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22027
 		tooltip = {
 			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
+				opinion = {
 					modifier = opinion_antagonized_2
 					who = ROOT
 					years = 10
 				}
 			}
 		}
-	} 
+	}
 }
 #Antagonizer: notified Antagonized became stressed.
 character_event = {
@@ -3273,22 +3273,22 @@ character_event = {
 	desc = EVTDESCHF22028
 	picture = GFX_evt_pleasing_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22028
 		hidden_tooltip = {
 			FROM = {
 				add_trait = stressed
 			}
 		}
-	} 
+	}
 }
 #Antagonizer: notified Antagonized became depressed.
 character_event = {
@@ -3296,22 +3296,22 @@ character_event = {
 	desc = EVTDESCHF22029
 	picture = GFX_evt_pleasing_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22029
 		hidden_tooltip = {
 			FROM = {
 				add_trait = depressed
 			}
 		}
-	} 
+	}
 }
 
 #Antagonized: becoming a rival.
@@ -3321,19 +3321,19 @@ character_event = {
 	picture = GFX_evt_scandal
 	show_from_from = yes
 
-	trigger = { 
-		FROMFROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROMFROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22030
 		add_rival = FROMFROM
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22031 } } }
-	} 
+	}
 }
 
 #Antagonizer: notification.
@@ -3343,15 +3343,15 @@ character_event = {
 	picture = GFX_evt_scandal
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22031
 		add_rival = FROM
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
 		}
-	} 
+	}
 }
 
 #Random character: notice that Antagonizer hates Antagonized.
@@ -3364,36 +3364,36 @@ character_event = {
 
 	option = { #Become friend.
 		name = EVTOPTAHF22032
-		trigger = { 
-			NOT = { FROMFROM = { num_of_friends = 3 } } 
-			NOT = { num_of_friends = 3 } 
+		trigger = {
+			NOT = { FROMFROM = { num_of_friends = 3 } }
+			NOT = { num_of_friends = 3 }
 		}
 		add_friend = FROMFROM
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22033 } } }
-		ai_chance = { 
-			factor = 60 	
-			modifier = { 
+		ai_chance = {
+			factor = 60
+			modifier = {
 				factor = 0
 				NOT = { opinion = { who = FROMFROM value = 20 } }
 			}
 		}
-	} 
+	}
 	option = { #Approve of his actions.
 		name = EVTOPTBHF22032
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22034 } } }
-		opinion = { 
-			who = FROMFROM 
-			modifier = opinion_swayed_2 
-			years = 10 
+		opinion = {
+			who = FROMFROM
+			modifier = opinion_swayed_2
+			years = 10
 		}
-		ai_chance = { 
-			factor = 40 	
+		ai_chance = {
+			factor = 40
 			modifier = {
 				factor = 0.1
 				opinion = { who = FROMFROM value = 20 }
 			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: notification of friendship.
@@ -3403,10 +3403,10 @@ character_event = {
 	picture = GFX_evt_meeting_hf
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22033
 		add_friend = FROM
-	} 
+	}
 }
 #Antagonizer: notification of approval.
 character_event = {
@@ -3415,17 +3415,17 @@ character_event = {
 	picture = GFX_evt_meeting_hf
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22034
-		FROM = { 
+		FROM = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
-				modifier = opinion_swayed_2 
-				years = 10 
+			opinion = {
+				who = ROOT
+				modifier = opinion_swayed_2
+				years = 10
 			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: gain prestige for antagonizing powerful ruler.
@@ -3435,8 +3435,8 @@ character_event = {
 	picture = GFX_evt_meeting_hf
 	is_triggered_only = yes
 
-	option = { 
-		name = EVTOPTAHF22035	
+	option = {
+		name = EVTOPTAHF22035
 		if = {
 			limit = {
 				FROM = {
@@ -3444,9 +3444,9 @@ character_event = {
 					NOT = { trait = craven }
 				}
 			}
-			random = { 
-				chance = 10 
-				add_trait = brave 
+			random = {
+				chance = 10
+				add_trait = brave
 				hidden_tooltip = { character_event = { id = 38270 } }
 			}
 		}
@@ -3456,20 +3456,20 @@ character_event = {
 					trait = craven
 				}
 			}
-			random = { 
-				chance = 10 
-				remove_trait = craven 
+			random = {
+				chance = 10
+				remove_trait = craven
 				hidden_tooltip = { character_event = { id = 38296 } }
 			}
 		}
 		if = {
 			limit = {
 				FROM = {
-					OR = { 
+					OR = {
 						tier = DUKE
-						AND = { 
+						AND = {
 							lower_tier_than = DUKE
-							spouse = { tier = DUKE } 
+							spouse = { tier = DUKE }
 						}
 					}
 				}
@@ -3479,11 +3479,11 @@ character_event = {
 		if = {
 			limit = {
 				FROM = {
-					OR = { 
+					OR = {
 						tier = KING
-						AND = { 
+						AND = {
 							lower_tier_than = KING
-							spouse = { tier = KING } 
+							spouse = { tier = KING }
 						}
 					}
 				}
@@ -3493,18 +3493,18 @@ character_event = {
 		if = {
 			limit = {
 				FROM = {
-					OR = { 
+					OR = {
 						tier = EMPEROR
-						AND = { 
+						AND = {
 							lower_tier_than = EMPEROR
-							spouse = { tier = EMPEROR } 
+							spouse = { tier = EMPEROR }
 						}
 					}
 				}
 			}
 			prestige = 150
 		}
-	} 
+	}
 }
 #Landless Claimant: move to Antagonizer's court.
 character_event = {
@@ -3513,22 +3513,22 @@ character_event = {
 	picture = GFX_evt_meeting_hf
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22036
 		move_character = FROMFROM
-		any_spouse = { 
-			limit = { is_ruler = no } 
-			move_character = FROMFROM 
+		any_spouse = {
+			limit = { is_ruler = no }
+			move_character = FROMFROM
 		}
-		any_child = { 
-			limit = { 
+		any_child = {
+			limit = {
 				is_ruler = no
-				NOT = { age = 16 } 
-			} 
+				NOT = { age = 16 }
+			}
 			move_character = FROMFROM
 		}
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22037 } } }
-	} 
+	}
 }
 
 #Antagonizer notified.
@@ -3538,9 +3538,9 @@ character_event = {
 	picture = GFX_evt_meeting_hf
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22037
-	} 
+	}
 }
 
 #Antagonizer gets random county claim. - Given as a reward for high-intrigue-locked events.
@@ -3550,17 +3550,17 @@ character_event = {
 #	picture = GFX_evt_scandal
 #	is_triggered_only = yes
 #
-#	option = { 
+#	option = {
 #		name = EVTOPTAHF22038
-#		persistent_event_target:antagonize_target = { 
-#			random_demesne_title = { 
-#				limit = { lower_tier_than = DUKE } 
+#		persistent_event_target:antagonize_target = {
+#			random_demesne_title = {
+#				limit = { lower_tier_than = DUKE }
 #				add_claim = ROOT
 #				save_event_target_as = scoped_claim #For localization use only.
 #			}
-#			hidden_tooltip = { character_event = { id = HF.22039 days = 6 } } 
+#			hidden_tooltip = { character_event = { id = HF.22039 days = 6 } }
 #		}
-#	} 
+#	}
 #}
 
 #Antagonized notified.
@@ -3570,9 +3570,9 @@ character_event = {
 #	picture = GFX_evt_scandal
 #	is_triggered_only = yes
 #
-#	option = { 
+#	option = {
 #		name = EVTOPTAHF22039
-#	} 
+#	}
 #}
 
 #Antagonized: Safety cleanup check for all flags in case somebody dies before the chain is over.
@@ -3582,7 +3582,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		clr_character_flag = flag_antagonized_option_kinslayer
 		clr_character_flag = flag_antagonized_option_excommunicated
 		clr_character_flag = flag_antagonized_option_eunuch
@@ -3645,7 +3645,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		clr_character_flag = flag_antagonize_slander_zealous
 		clr_character_flag = flag_antagonize_slander_cruel
 		clr_character_flag = flag_antagonize_slander_temperate
@@ -3661,11 +3661,11 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22042
 		tooltip = { FROM = { tiered_prestige_negative_effect = yes } }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22043 } } }
-	} 
+	}
 }
 #Antagonized: notify of prestige hit.
 character_event = {
@@ -3675,10 +3675,10 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22043
 		tiered_prestige_negative_effect = yes
-	} 
+	}
 }
 
 #Antagonizer: Slander resulted in piety hit for Antagonized.
@@ -3689,11 +3689,11 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22044
 		tooltip = { FROM = { tiered_piety_negative_effect = yes } }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22045 } } }
-	} 
+	}
 }
 #Antagonized: notify of piety hit.
 character_event = {
@@ -3703,10 +3703,10 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22045
 		tiered_piety_negative_effect = yes
-	} 
+	}
 }
 
 
@@ -3718,19 +3718,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22046
-		tooltip = { 
-			FROM = { 
+		tooltip = {
+			FROM = {
 				add_character_modifier = {
 					modifier = vicious_rumors
 					years = 1
 					stacking = yes
-				} 
-			} 
+				}
+			}
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22047 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of opinion malus.
@@ -3741,14 +3741,14 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22047
 		add_character_modifier = {
 			modifier = vicious_rumors
 			years = 1
 			stacking = yes
 		}
-	} 
+	}
 }
 
 
@@ -3760,15 +3760,15 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22048
-		tooltip = { 
-			FROM = { 
-				add_trait = lunatic 
-			} 
+		tooltip = {
+			FROM = {
+				add_trait = lunatic
+			}
 		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22049 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of lunacy.
@@ -3779,10 +3779,10 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22049
-		add_trait = lunatic 
-	} 
+		add_trait = lunatic
+	}
 }
 
 ##### TIER III events (Intrigue-locked) ######
@@ -3793,7 +3793,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22051 } }
 	}
 }
@@ -3807,22 +3807,22 @@ character_event = {
 	is_triggered_only = yes
 
 	#Fabricate vassalization/county claim.
-	option = { 
+	option = {
 		name = EVTOPTAHF22051
 		custom_tooltip = { text = tooltip_22051_A }
-		trigger = { 
-			intrigue = 14 
+		trigger = {
+			intrigue = 14
 			#Needs to be able to gain either of the two positive outcomes.
 
-			OR = { 
-				NOT = { 
-					any_claim = { 
-						holder_scope = { 
+			OR = {
+				NOT = {
+					any_claim = {
+						holder_scope = {
 							character = persistent_event_target:antagonize_target
-						} 
-					} 
+						}
+					}
 				}
-				AND = { 
+				AND = {
 					has_dlc = "Jade Dragon"
 					ROOT = {
 						NOT = {
@@ -3837,7 +3837,7 @@ character_event = {
 						mercenary = no
 						is_nomadic = no
 					}
-		
+
 					FROM = {
 						lower_tier_than = ROOT
 						NOT = {
@@ -3858,51 +3858,51 @@ character_event = {
 		}
 		tooltip_info = intrigue
 		set_character_flag = flag_antagonize_fabricate_claim
-		if = { 
-			limit = { ai = no } 
-			scaled_wealth = { value = -2.5 min = -150 max = -450 } 
-		} 
+		if = {
+			limit = { ai = no }
+			scaled_wealth = { value = -2.5 min = -150 max = -450 }
+		}
 		hidden_tooltip = { character_event = { id = HF.22052 } }
 		ai_chance = { factor = 80 }
-	} 
+	}
 	#Cause province unrest.
-	option = { 
+	option = {
 		name = EVTOPTBHF22051
 		custom_tooltip = { text = tooltip_22051_B }
 		set_character_flag = flag_antagonize_cause_unrest
-		if = { 
-			limit = { ai = no } 
-			scaled_wealth = { value = -1.5 min = -100 max = -250 }  
-		} 
+		if = {
+			limit = { ai = no }
+			scaled_wealth = { value = -1.5 min = -100 max = -250 }
+		}
 		hidden_tooltip = { character_event = { id = HF.22052 } }
 		ai_chance = { factor = 40 }
-	} 
+	}
 	#Sow dissent.
-	option = { 
+	option = {
 		name = EVTOPTCHF22051
 		custom_tooltip = { text = tooltip_22051_C }
-		trigger = { 
-			persistent_event_target:antagonize_target = { 
-				OR = { 
-					is_married = yes 
+		trigger = {
+			persistent_event_target:antagonize_target = {
+				OR = {
+					is_married = yes
 					any_dynasty_member = { is_alive = yes is_adult = yes }
-					any_vassal = { is_alive = yes is_adult = yes } 
-				} 
-			} 
+					any_vassal = { is_alive = yes is_adult = yes }
+				}
+			}
 		}
-		if = { 
-			limit = { ai = no } 
-			scaled_wealth = { value = -1.5 min = -10 max = -50 } 
-		} 
+		if = {
+			limit = { ai = no }
+			scaled_wealth = { value = -1.5 min = -10 max = -50 }
+		}
 		set_character_flag = flag_antagonize_sow_dissent
 		hidden_tooltip = { character_event = { id = HF.22052 } }
 		ai_chance = { factor = 20 }
-	} 
+	}
 	#Do nothing.
-	option = { 
+	option = {
 		name = EVTOPTDHF22051
 		ai_chance = { factor = 0 }
-	} 
+	}
 }
 
 #Hidden check to determine outcome.
@@ -3912,8 +3912,8 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
-		random_list = { 
+	immediate = {
+		random_list = {
 			#Gain County Claim.
 			#Unlock Vassalization cb.
 
@@ -3925,26 +3925,26 @@ character_event = {
 			#Opinion malus with spouse.
 
 			30 = { #Gain County Claim.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_fabricate_claim }
 				}
-				modifier = { 
-					factor = 0 
-					any_claim = { 
-						holder_scope = { 
+				modifier = {
+					factor = 0
+					any_claim = {
+						holder_scope = {
 							character = persistent_event_target:antagonize_target
-						} 
+						}
 					}
 				}
 				character_event = { id = HF.22053 days = 4 }
 			}
 			30 = { #Gain Vassalization Claim.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_fabricate_claim }
 				}
-				trigger = { 
+				trigger = {
 					has_dlc = "Jade Dragon"
 					ROOT = {
 						NOT = {
@@ -3979,108 +3979,108 @@ character_event = {
 			}
 
 			30 = { #Revolt risk has increased in Antagonized's capital.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_cause_unrest }
 				}
 				character_event = { id = HF.22057 days = 4 }
 			}
 			30 = { #Tax revenue has been reduced in Antagonized's capital.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_cause_unrest }
 				}
 				character_event = { id = HF.22059 days = 4 }
 			}
 
 			25 = { #Opinion malus with Antagonized's vassals.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_sow_dissent }
 				}
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					persistent_event_target:antagonize_target = { NOT = { any_vassal = { is_alive = yes is_adult = yes } } }
 				}
 				character_event = { id = HF.22061 days = 4 }
 			}
 			25 = { #Opinion malus with Antagonized's relatives.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_sow_dissent }
 				}
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					persistent_event_target:antagonize_target = { NOT = { any_dynasty_member = { is_alive = yes is_adult = yes } } }
 				}
 				character_event = { id = HF.22063 days = 4 }
 			}
 			25 = { #Opinion malus with Antagonized's spouse.
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					NOT = { has_character_flag = flag_antagonize_sow_dissent }
 				}
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					persistent_event_target:antagonize_target = { is_married = no }
 				}
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					persistent_event_target:antagonize_target = { spouse = { is_lover = PREV } }
 				}
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					persistent_event_target:antagonize_target = { spouse = { is_friend = PREV } }
 				}
-				modifier = { 
-					factor = 0 
+				modifier = {
+					factor = 0
 					persistent_event_target:antagonize_target = { spouse = { is_rival = PREV } }
 				}
 				character_event = { id = HF.22065 days = 4 }
 			}
 
 			25 = { #Failure. - Antagonized is notified.
-				modifier = { 
+				modifier = {
 					factor = 0.85
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 2 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.85
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 4 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.85
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 6 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.85
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 8 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0.85
 					ROOT = { attribute_diff = { character = persistent_event_target:antagonize_target attribute = intrigue  value = 10 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 0
 					persistent_event_target:antagonize_target = { trait = incapable }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.25
 					persistent_event_target:antagonize_target = { attribute_diff = { character = ROOT attribute = intrigue  value = 2 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.25
 					persistent_event_target:antagonize_target = { attribute_diff = { character = ROOT attribute = intrigue  value = 4 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.25
 					persistent_event_target:antagonize_target = { attribute_diff = { character = ROOT attribute = intrigue  value = 6 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.25
 					persistent_event_target:antagonize_target = { attribute_diff = { character = ROOT attribute = intrigue  value = 8 } }
 				}
-				modifier = { 
+				modifier = {
 					factor = 1.25
 					persistent_event_target:antagonize_target = { attribute_diff = { character = ROOT attribute = intrigue  value = 10 } }
 				}
@@ -4103,29 +4103,29 @@ character_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		persistent_event_target:antagonize_target = { 
-			random_demesne_title = { 
+		persistent_event_target:antagonize_target = {
+			random_demesne_title = {
 				limit = { lower_tier_than = DUKE }
 				save_event_target_as = scoped_claim #For localization use only.
 			}
 		}
 	}
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22053
-		event_target:scoped_claim = {  
+		event_target:scoped_claim = {
 			add_claim = ROOT
-		} 
-		persistent_event_target:antagonize_target = { 
+		}
+		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22054 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of claim.
@@ -4136,19 +4136,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22054
-		tooltip = { 
-			event_target:scoped_claim = {  
+		tooltip = {
+			event_target:scoped_claim = {
 				add_claim = FROM
-			}  
-			opinion = { 
-				who = FROM 
+			}
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
 			}
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Blackguard fabricated a vassalization reason.
@@ -4161,26 +4161,26 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22055
-		custom_tooltip = { text = tooltip_HF22055_A } 
-		persistent_event_target:antagonize_target = { 
+		custom_tooltip = { text = tooltip_HF22055_A }
+		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
-		hidden_tooltip = {  
-			opinion = { 
-				who = persistent_event_target:antagonize_target 
-				modifier = opinion_antagonize_vassalize_claim 
+		hidden_tooltip = {
+			opinion = {
+				who = persistent_event_target:antagonize_target
+				modifier = opinion_antagonize_vassalize_claim
 				years = 100
-			} 
-		} 
+			}
+		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22056 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of claim.
@@ -4191,17 +4191,17 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22056
-		custom_tooltip = { text = tooltip_HF22056_A }  
-		tooltip = { 
-			opinion = { 
-				who = FROM 
+		custom_tooltip = { text = tooltip_HF22056_A }
+		tooltip = {
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: Blackguard upset the peasants.
@@ -4214,27 +4214,27 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22057
-		persistent_event_target:antagonize_target  = { 
-			show_scope_change = no 
-			capital_scope = { 
-				add_province_modifier = {
-					modifier = peasants_scorned 
-					years = 4
-				} 
-			} 
-		}
-		persistent_event_target:antagonize_target = { 
+		persistent_event_target:antagonize_target  = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			capital_scope = {
+				add_province_modifier = {
+					modifier = peasants_scorned
+					years = 4
+				}
+			}
+		}
+		persistent_event_target:antagonize_target = {
+			show_scope_change = no
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
-		} 
+		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22058 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of peasants upset.
@@ -4245,22 +4245,22 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22058
-		tooltip  = {  
-			opinion = { 
-				who = FROM 
+		tooltip  = {
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
 			}
-			capital_scope = { 
+			capital_scope = {
 				add_province_modifier = {
-					modifier = peasants_scorned 
+					modifier = peasants_scorned
 					years = 4
-				} 
-			} 
+				}
+			}
 		}
-	} 
+	}
 }
 #Antagonizer: Blackguard created thieves' guild.
 character_event = {
@@ -4272,26 +4272,26 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22059
-		persistent_event_target:antagonize_target  = {  
-			capital_scope = { 
+		persistent_event_target:antagonize_target  = {
+			capital_scope = {
 				add_province_modifier = {
-					modifier = thieves_guild 
+					modifier = thieves_guild
 					years = 4
-				} 
-			} 
-		} 
-		persistent_event_target:antagonize_target = { 
+				}
+			}
+		}
+		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22060 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of thieves' guild.
@@ -4302,22 +4302,22 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22060
-		tooltip  = {  
-			opinion = { 
-				who = FROM 
+		tooltip  = {
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
 			}
-			capital_scope = { 
+			capital_scope = {
 				add_province_modifier = {
-					modifier = thieves_guild 
+					modifier = thieves_guild
 					years = 4
-				} 
-			} 
+				}
+			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: Blackguard sew dissent amongst the vassals.
@@ -4330,24 +4330,24 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22061
-		persistent_event_target:antagonize_target  = {  
+		persistent_event_target:antagonize_target  = {
 			add_character_modifier = {
-				modifier = antagonize_slandering_vassals 
+				modifier = antagonize_slandering_vassals
 				years = 10
-			} 
-		} 
-		persistent_event_target:antagonize_target = { 
+			}
+		}
+		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22062 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of vassal opinion.
@@ -4358,20 +4358,20 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22062
-		tooltip  = {  
+		tooltip  = {
 			add_character_modifier = {
-				modifier = antagonize_slandering_vassals 
+				modifier = antagonize_slandering_vassals
 				years = 10
-			} 
-			opinion = { 
-				who = FROM 
+			}
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
-			} 
+			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: Blackguard sew dissent amongst the relatives.
@@ -4384,24 +4384,24 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22063
-		persistent_event_target:antagonize_target  = {  
+		persistent_event_target:antagonize_target  = {
 			add_character_modifier = {
-				modifier = antagonize_slandering_relatives 
+				modifier = antagonize_slandering_relatives
 				years = 10
-			} 
-		} 
-		persistent_event_target:antagonize_target = { 
+			}
+		}
+		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22064 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of relative opinion.
@@ -4412,20 +4412,20 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22064
-		tooltip  = {  
+		tooltip  = {
 			add_character_modifier = {
-				modifier = antagonize_slandering_relatives 
+				modifier = antagonize_slandering_relatives
 				years = 10
-			} 
-			opinion = { 
-				who = FROM 
+			}
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
-			} 
+			}
 		}
-	} 
+	}
 }
 
 #Antagonizer: Blackguard sew dissent between spouses.
@@ -4438,28 +4438,28 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22065
-		persistent_event_target:antagonize_target  = {  
+		persistent_event_target:antagonize_target  = {
 			spouse = {
 				show_scope_change = no
-				opinion = { 
+				opinion = {
 					who = PREV
 					modifier = opinion_antagonize_slandering_spouse
 					years = 10
-				} 
-			} 
-		} 
-		persistent_event_target:antagonize_target = { 
+				}
+			}
+		}
+		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
-				who = ROOT 
+			opinion = {
+				who = ROOT
 				modifier = opinion_antagonized_2
 				years = 10
 			}
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22066 } } }
-	} 
+	}
 }
 
 #Antagonized: notify of spouse opinion.
@@ -4470,24 +4470,24 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22066
-		tooltip  = {  
+		tooltip  = {
 			spouse = {
 				show_scope_change = no
-				opinion = { 
-					who = persistent_event_target:antagonize_target 
+				opinion = {
+					who = persistent_event_target:antagonize_target
 					modifier = opinion_antagonize_slandering_spouse
 					years = 10
-				} 
-			} 
-			opinion = { 
-				who = FROM 
+				}
+			}
+			opinion = {
+				who = FROM
 				modifier = opinion_antagonized_2
 				years = 10
-			} 
+			}
 		}
-	} 
+	}
 }
 #Antagonized: managed to outsmart the blackguard.
 character_event = {
@@ -4497,14 +4497,14 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22067
 		tooltip_info = intrigue
-		FROM = { 
+		FROM = {
 			tiered_prestige_negative_effect = yes
-		} 
+		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22068 } } }
-	} 
+	}
 }
 #Antagonizer: notification.
 character_event = {
@@ -4514,12 +4514,12 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22068
 		tooltip = {
 			tiered_prestige_negative_effect = yes
 		}
-	} 
+	}
 }
 
 ################################################
@@ -4532,7 +4532,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22070 } }
 	}
 }
@@ -4545,21 +4545,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22070
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22070_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -4567,11 +4567,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22071 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22070
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: receive present.
@@ -4579,26 +4579,26 @@ character_event = {
 	id = HF.22071
 	desc = { #Male courtesan
 		text = EVTDESCHFA22071
-		trigger = { 
-			OR = { 
-				is_female = yes 
-				AND = { 
-					is_female = no 
-					trait = homosexual 
-				} 
-			} 
+		trigger = {
+			OR = {
+				is_female = yes
+				AND = {
+					is_female = no
+					trait = homosexual
+				}
+			}
 		}
 	}
 	desc = { #Female courtesan
 		text = EVTDESCHFB22071
-		trigger = { 
-			OR = { 
-				is_female = no 
-				AND = { 
-					is_female = yes 
-					trait = homosexual 
-				} 
-			} 
+		trigger = {
+			OR = {
+				is_female = no
+				AND = {
+					is_female = yes
+					trait = homosexual
+				}
+			}
 		}
 	}
 	picture = GFX_evt_dancing
@@ -4613,19 +4613,19 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22071_A }
 		trigger = { trait = paranoid }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22072 } } }
-	} 
+	}
 	option = { #Courtesan accepted.
 		name = EVTOPTBHF22071
 		tooltip_info = lustful
 		custom_tooltip = { text = tooltip_HF22071_B }
-		if = { 
-			limit = { trait = paranoid } 
-			random = {  
+		if = {
+			limit = { trait = paranoid }
+			random = {
 				chance = 25
 				remove_trait = paranoid
 			}
 		}
-		tooltip = { 
+		tooltip = {
 			random = {
 				chance = 50
 				change_diplomacy = 1
@@ -4638,7 +4638,7 @@ character_event = {
 			}
 		}
 		hidden_tooltip = { character_event = { id = HF.22073 days = 4 } }
-	} 
+	}
 }
 
 
@@ -4650,35 +4650,35 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22072
-	} 
+	}
 }
 #Antagonized: courtesan was shyphilitic.
 character_event = {
 	id = HF.22073
 	desc = { #Male courtesan
 		text = EVTDESCHFA22073
-		trigger = { 
-			OR = { 
-				is_female = yes 
-				AND = { 
-					is_female = no 
-					trait = homosexual 
-				} 
-			} 
+		trigger = {
+			OR = {
+				is_female = yes
+				AND = {
+					is_female = no
+					trait = homosexual
+				}
+			}
 		}
 	}
 	desc = { #Female courtesan
 		text = EVTDESCHFB22073
-		trigger = { 
-			OR = { 
-				is_female = no 
-				AND = { 
-					is_female = yes 
-					trait = homosexual 
-				} 
-			} 
+		trigger = {
+			OR = {
+				is_female = no
+				AND = {
+					is_female = yes
+					trait = homosexual
+				}
+			}
 		}
 	}
 	picture = GFX_evt_bad_news
@@ -4686,16 +4686,16 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22073
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22074 } } }
 		add_trait = syphilitic
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -4707,19 +4707,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22074
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 
@@ -4730,7 +4730,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22076 } }
 	}
 }
@@ -4743,21 +4743,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22076
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22076_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -4765,11 +4765,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22077 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22076
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: receive present.
@@ -4788,21 +4788,21 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22077_A }
 		trigger = { trait = wroth }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22078 } } }
-	} 
+	}
 	option = { #Present accepted.
 		name = EVTOPTBHF22077
 		tooltip_info = gluttonous
 		custom_tooltip = { text = tooltip_HF22077_B }
-		if = { 
-			limit = { trait = wroth } 
-			random = {  
+		if = {
+			limit = { trait = wroth }
+			random = {
 				chance = 25
 				remove_trait = wroth
 			}
 		}
 		tiered_prestige_reward_effect = yes
 		hidden_tooltip = { character_event = { id = HF.22079 days = 4 } }
-	} 
+	}
 }
 
 
@@ -4814,9 +4814,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22078
-	} 
+	}
 }
 #Antagonized: gift caused food poisoning.
 character_event = {
@@ -4827,26 +4827,26 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22079
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22080 } } }
-		if = { 
-			limit = { has_dlc = "Reapers" } 
+		if = {
+			limit = { has_dlc = "Reapers" }
 			add_trait = food_poisoning
 			set_character_flag = manifest_food_poisoning
 			add_disease_level_effect = yes
 			blessing_removes_disease_effect = yes
 		}
-		if = { 
-			limit = { NOT = { has_dlc = "Reapers" } } 
+		if = {
+			limit = { NOT = { has_dlc = "Reapers" } }
 			add_trait = ill
 		}
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -4858,19 +4858,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22080
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 
@@ -4881,7 +4881,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22082 } }
 	}
 }
@@ -4894,21 +4894,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22082
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22082_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -4916,11 +4916,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22083 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22082
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: receive present.
@@ -4939,23 +4939,23 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22083_A }
 		trigger = { trait = humble }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22084 } } }
-	} 
+	}
 	option = { #Crown accepted.
 		name = EVTOPTBHF22083
 		tooltip_info = greedy
-		if = { 
-			limit = { trait = humble } 
-			random = {  
+		if = {
+			limit = { trait = humble }
+			random = {
 				chance = 25
 				remove_trait = humble
 			}
 		}
-		add_character_modifier = { 
+		add_character_modifier = {
 			modifier = luxurious_crown_modifier
 			duration = -1
 		}
 		hidden_tooltip = { character_event = { id = HF.22085 days = 4 } }
-	} 
+	}
 }
 
 
@@ -4967,9 +4967,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22084
-	} 
+	}
 }
 #Antagonized: crown was fake.
 character_event = {
@@ -4980,21 +4980,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22085
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22086 } } }
 		remove_character_modifier = luxurious_crown_modifier
 		tiered_prestige_negative_effect = yes
-		if = { 
-			limit = { NOT = { trait = stressed }  } 
+		if = {
+			limit = { NOT = { trait = stressed }  }
 			add_trait = stressed
 		}
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -5006,19 +5006,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22086
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 
@@ -5029,7 +5029,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22088 } }
 	}
 }
@@ -5042,21 +5042,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22088
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22088_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -5064,11 +5064,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22089 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22088
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: receive present.
@@ -5087,19 +5087,19 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22089_A }
 		trigger = { trait = arbitrary }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22090 } } }
-	} 
+	}
 	option = { #Missive accepted.
 		name = EVTOPTBHF22089
 		tooltip_info = slothful
 		custom_tooltip = { text = tooltip_HF22089_B }
-		if = { 
-			limit = { trait = arbitrary } 
-			random = {  
+		if = {
+			limit = { trait = arbitrary }
+			random = {
 				chance = 25
 				remove_trait = arbitrary
 			}
 		}
-		tooltip = { 
+		tooltip = {
 			random = {
 				chance = 50
 				change_stewardship = 1
@@ -5112,7 +5112,7 @@ character_event = {
 			}
 		}
 		hidden_tooltip = { character_event = { id = HF.22091 days = 4 } }
-	} 
+	}
 }
 
 
@@ -5124,9 +5124,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22090
-	} 
+	}
 }
 #Antagonized: border redrawing goes poorly.
 character_event = {
@@ -5137,20 +5137,20 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22091
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22092 } } }
 		tiered_prestige_negative_effect = yes
-		if = { 
-			limit = { NOT = { trait = stressed } } 
+		if = {
+			limit = { NOT = { trait = stressed } }
 			add_trait = stressed
 		}
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -5162,19 +5162,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22092
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 
@@ -5185,7 +5185,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22094 } }
 	}
 }
@@ -5198,21 +5198,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22094
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22094_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -5220,11 +5220,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22095 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22094
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: parade ruined.
@@ -5243,19 +5243,19 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22095_A }
 		trigger = { trait = kind }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22096 } } }
-	} 
+	}
 	option = { #Thugs pursued.
 		name = EVTOPTBHF22095
 		tooltip_info = wroth
 		custom_tooltip = { text = tooltip_HF22095_B }
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 			}
 		}
-		tooltip = { 
+		tooltip = {
 			random = {
 				chance = 50
 				change_martial = 1
@@ -5268,7 +5268,7 @@ character_event = {
 			}
 		}
 		hidden_tooltip = { character_event = { id = HF.22097 days = 4 } }
-	} 
+	}
 }
 
 
@@ -5280,9 +5280,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22096
-	} 
+	}
 }
 #Antagonized: taunting caused depression.
 character_event = {
@@ -5293,16 +5293,16 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22097
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22098 } } }
 		add_trait = depressed
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -5314,19 +5314,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22098
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 #Antagonized: send special gift to Envious Antagonized.
@@ -5336,7 +5336,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22100 } }
 	}
 }
@@ -5349,21 +5349,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22100
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22100_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -5371,11 +5371,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22101 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22100
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: receive present.
@@ -5388,9 +5388,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		random_neighbor_independent_ruler = {
-			limit = { NOT = { character = FROM } } 
+			limit = { NOT = { character = FROM } }
 			random_demesne_title = {
 				save_event_target_as = scoped_title
 			}
@@ -5403,13 +5403,13 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22101_A }
 		trigger = { trait = content }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22102 } } }
-	} 
+	}
 	option = { #Claim accepted.
 		name = EVTOPTBHF22101
 		tooltip_info = envious
-		if = { 
-			limit = { trait = content } 
-			random = {  
+		if = {
+			limit = { trait = content }
+			random = {
 				chance = 25
 				remove_trait = content
 			}
@@ -5420,7 +5420,7 @@ character_event = {
 			}
 		}
 		hidden_tooltip = { character_event = { id = HF.22103 days = 4 } }
-	} 
+	}
 }
 
 
@@ -5432,9 +5432,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22102
-	} 
+	}
 }
 #Antagonized: claim was false.
 character_event = {
@@ -5445,20 +5445,20 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22103
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22104 } } }
 		tiered_prestige_negative_effect = yes
-		if = { 
-			limit = { NOT = { trait = stressed } } 
+		if = {
+			limit = { NOT = { trait = stressed } }
 			add_trait = stressed
 		}
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -5470,19 +5470,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22104
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 #Antagonized: send special gift to Proud Antagonized.
@@ -5492,7 +5492,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22106 } }
 	}
 }
@@ -5505,21 +5505,21 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22106
 		tooltip_info = intrigue
 		custom_tooltip = { text = tooltip_HF22106_A }
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -5527,11 +5527,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22107 days = 12 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTBHF22106
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 
 #Antagonized: receive painting.
@@ -5548,23 +5548,23 @@ character_event = {
 		custom_tooltip = { text = tooltip_HF22107_A }
 		trigger = { trait = shy }
 		hidden_tooltip = { FROM = { character_event = { id = HF.22108 } } }
-	} 
+	}
 	option = { #Painting accepted.
 		name = EVTOPTBHF22107
 		tooltip_info = proud
 		custom_tooltip = { text = tooltip_HF22107_B }
-		if = { 
-			limit = { trait = shy } 
-			random = {  
+		if = {
+			limit = { trait = shy }
+			random = {
 				chance = 25
 				remove_trait = shy
 			}
 		}
-		tooltip = { 
+		tooltip = {
 			tiered_prestige_reward_effect = yes
 		}
 		hidden_tooltip = { character_event = { id = HF.22109 days = 4 } }
-	} 
+	}
 }
 
 
@@ -5576,9 +5576,9 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22108
-	} 
+	}
 }
 #Antagonized: painting is rotting.
 character_event = {
@@ -5589,20 +5589,20 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22109
 		hidden_tooltip = { FROMFROM = { character_event = { id = HF.22110 } } }
 		tiered_prestige_negative_effect = yes
-		if = { 
-			limit = { NOT = { trait = stressed } } 
+		if = {
+			limit = { NOT = { trait = stressed } }
 			add_trait = stressed
 		}
-		opinion = { 
+		opinion = {
 			who = FROMFROM
 			modifier = opinion_antagonized_3
 			years = 10
-		} 
-	} 
+		}
+	}
 }
 
 #Antagonizer: Notified.
@@ -5614,19 +5614,19 @@ character_event = {
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22110
-		tooltip = { 
-			persistent_event_target:antagonize_target = { 
+		tooltip = {
+			persistent_event_target:antagonize_target = {
 				show_scope_change = no
-				opinion = { 
-					who = ROOT 
+				opinion = {
+					who = ROOT
 					modifier = opinion_antagonized_3
 					years = 10
-				} 
-			} 
-		} 
-	} 
+				}
+			}
+		}
+	}
 }
 
 #Antagonizer: notified of high diplomacy reaction from slander causing you to stop antagonizing for some time.
@@ -5635,45 +5635,45 @@ character_event = {
 	desc = EVTDESCHF22111
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22111
 		custom_tooltip = { text = tooltip_EVTOPTAHF22111 }
 		trigger = { trait = arbitrary }
 		tooltip_info = arbitrary
 		tiered_prestige_negative_effect = yes
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			FROM = { character_event = { id = HF.22112 } } #Notify
 		}
 		ai_chance = { factor = 30 }
 	}
-	option = { 
+	option = {
 		name = EVTOPTBHF22111
 		custom_tooltip = { text = tooltip_EVTOPTBHF22111 }
-		hidden_tooltip = { 
-			opinion = { 
+		hidden_tooltip = {
+			opinion = {
 				modifier = antagonize_stop_cooldown
 				years = 2
 				who = FROM
-			} 
+			}
 		}
 		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
+			opinion = {
 				modifier = opinion_swayed_0
 				who = ROOT
 				years = 10
 			}
 		}
 		ai_chance = { factor = 70 }
-	} 
+	}
 }
 #Antagonized: notified of arbitrary response.
 character_event = {
@@ -5681,15 +5681,15 @@ character_event = {
 	desc = EVTDESCHF22112
 	picture = GFX_evt_lunatic
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22112
 		ai_chance = { factor = 50 }
 	}
@@ -5701,15 +5701,15 @@ character_event = {
 	desc = EVTDESCHF22113
 	picture = GFX_evt_hooded_figure_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22113
 		remove_trait = depressed
 		ai_chance = { factor = 50 }
@@ -5721,15 +5721,15 @@ character_event = {
 	desc = EVTDESCHF22114
 	picture = GFX_evt_hooded_figure_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22114
 		remove_trait = stressed
 		ai_chance = { factor = 50 }
@@ -5741,17 +5741,17 @@ character_event = {
 	desc = EVTDESCHF22115
 	picture = GFX_evt_hooded_figure_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22115
-		add_character_modifier = { 
+		add_character_modifier = {
 			name = antagonizer_good_mood
 			duration = 720
 		}
@@ -5764,15 +5764,15 @@ character_event = {
 	desc = EVTDESCHF22116
 	picture = GFX_evt_hooded_figure_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22116
 		change_intrigue = 1
 		ai_chance = { factor = 50 }
@@ -5784,21 +5784,21 @@ character_event = {
 	desc = EVTDESCHF22116 #Same as above.
 	picture = GFX_evt_hooded_figure_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22117
-		if = { 
+		if = {
 			limit = { NOT = { trait = honest } }
-			add_trait = deceitful 
+			add_trait = deceitful
 		}
-		if = { 
+		if = {
 			limit = { trait = honest }
 			remove_trait = honest
 		}
@@ -5811,21 +5811,21 @@ character_event = {
 	desc = EVTDESCHF22118
 	picture = GFX_evt_hooded_figure_hf
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22118
-		if = { 
+		if = {
 			limit = { NOT = { trait = wroth } }
-			add_trait = patient 
+			add_trait = patient
 		}
-		if = { 
+		if = {
 			limit = { trait = wroth }
 			remove_trait = wroth
 		}
@@ -5837,13 +5837,13 @@ character_event = {
 character_event = {
 	id = HF.22119
 	hide_window = yes
-	
+
 	has_character_flag = flag_character_being_antagonized
 
 	is_triggered_only = yes
 
 	immediate = {
-		any_playable_ruler = { 
+		any_playable_ruler = {
 			limit = {
 				persistent_event_target:antagonize_target = {
 					character = ROOT
@@ -5852,7 +5852,7 @@ character_event = {
 			persistent_event_target:antagonize_target = { clr_character_flag = flag_character_being_antagonized }
 			remove_special_interest = persistent_event_target:antagonize_target
 			clear_persistent_event_target = antagonize_target
-			character_event = { id = HF.21138 } 
+			character_event = { id = HF.21138 }
 		}
 	}
 }
@@ -5865,7 +5865,7 @@ character_event = {
 
 	is_triggered_only = yes
 
-	immediate = { 
+	immediate = {
 		FROM = { character_event = { id = HF.22121 } }
 	}
 }
@@ -5886,123 +5886,123 @@ character_event = {
 		name = EVTOPTAHF22121
 		trigger = { NOT = { intrigue = 12 } }
 		tiered_prestige_negative_effect = yes
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {  
+		tooltip = {
+			FROM = {
+				add_character_modifier = {
 					name = undermined_spy_network_1
 					months = 24
 					stacking = yes
-				} 
-			} 
-		} 
+				}
+			}
+		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22129 } } }
 		ai_chance = { factor = 40 }
-	} 
+	}
 
 	option = { #Undermine spy network - High intrigue
 		name = EVTOPTAHF22121
 		trigger = { intrigue = 12 }
-		tooltip_info = intrigue 
+		tooltip_info = intrigue
 		tiered_prestige_negative_effect = yes
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {  
+		tooltip = {
+			FROM = {
+				add_character_modifier = {
 					name = undermined_spy_network_2
 					months = 24
 					stacking = yes
-				} 
-			} 
-		} 
+				}
+			}
+		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22130 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Spread Vicious Rumors - Low intrigue
 		name = EVTOPTBHF22121
 		trigger = { NOT = { intrigue = 14 } }
 		tiered_prestige_negative_effect = yes
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {  
+		tooltip = {
+			FROM = {
+				add_character_modifier = {
 					name = vicious_rumors
 					months = 24
 					stacking = yes
-				} 
-			} 
-		} 
+				}
+			}
+		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22124 } } }
 		ai_chance = { factor = 40 }
-	} 
+	}
 
 	option = { #Spread Vicious Rumors - High intrigue
 		name = EVTOPTBHF22121
 		trigger = { intrigue = 14 }
-		tooltip_info = intrigue 
+		tooltip_info = intrigue
 		tiered_prestige_negative_effect = yes
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {  
+		tooltip = {
+			FROM = {
+				add_character_modifier = {
 					name = vicious_rumors_2
 					months = 24
 					stacking = yes
-				} 
-			} 
-		} 
+				}
+			}
+		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22125 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Psychological Warfare - Low intrigue
 		name = EVTOPTCHF22121
 		trigger = { NOT = { intrigue = 16 } }
 		tiered_prestige_negative_effect = yes
-		tooltip = { 
-			FROM = { 
-				if = {  
-					limit = { 
+		tooltip = {
+			FROM = {
+				if = {
+					limit = {
 						trait = lunatic
 						trait = depressed
-						trait = stressed 
-					} 
-					random = { 
-						chance = 25 
-						add_character_modifier = {  
+						trait = stressed
+					}
+					random = {
+						chance = 25
+						add_character_modifier = {
 							name = tormented_modifier
 							months = 50
 							stacking = yes
-						} 
+						}
 					}
 				}
-				if = {  
-					limit = { 
+				if = {
+					limit = {
 						NOT = { trait = lunatic }
 						trait = depressed
-						trait = stressed 
-					} 
+						trait = stressed
+					}
 					random = { chance = 25 add_trait = lunatic }
 				}
-				if = {  
-					limit = { 
+				if = {
+					limit = {
 						NOT = { trait = depressed }
-						trait = stressed 
-					} 
+						trait = stressed
+					}
 					random = { chance = 25 add_trait = depressed }
 				}
-				if = {  
-					limit = { NOT = { trait = stressed } } 
+				if = {
+					limit = { NOT = { trait = stressed } }
 					random = { chance = 25 add_trait = stressed }
-				}  
-			} 
-		} 
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+				}
+			}
+		}
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -6010,58 +6010,58 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22126 } } }
 		ai_chance = { factor = 40 }
-	} 
+	}
 
 	option = { #Psychological Warfare - High intrigue
 		name = EVTOPTCHF22121
 		trigger = { intrigue = 16 }
-		tooltip_info = intrigue 
+		tooltip_info = intrigue
 		tiered_prestige_negative_effect = yes
-		tooltip = { 
-			FROM = { 
-				if = {  
-					limit = { 
+		tooltip = {
+			FROM = {
+				if = {
+					limit = {
 						trait = lunatic
 						trait = depressed
-						trait = stressed 
-					} 
-					add_character_modifier = {  
+						trait = stressed
+					}
+					add_character_modifier = {
 						name = tormented_modifier
 						months = 50
 						stacking = yes
-					} 
+					}
 				}
-				if = {  
-					limit = { 
+				if = {
+					limit = {
 						trait = depressed
-						trait = stressed 
-					} 
+						trait = stressed
+					}
 					random = { chance = 50 add_trait = lunatic }
 				}
-				if = {  
-					limit = { 
+				if = {
+					limit = {
 						NOT = { trait = depressed }
-						trait = stressed 
-					} 
+						trait = stressed
+					}
 					add_trait = depressed
-				} 
-				if = {  
-					limit = { NOT = { trait = stressed } } 
+				}
+				if = {
+					limit = { NOT = { trait = stressed } }
 					add_trait = stressed
-				} 
-			} 
-		} 
-		if = { 
-			limit = { NOR = { trait = cruel trait = kind } } 
-			random = {  
+				}
+			}
+		}
+		if = {
+			limit = { NOR = { trait = cruel trait = kind } }
+			random = {
 				chance = 25
 				add_trait = cruel
 				hidden_tooltip = { character_event = { id = 38259 } }
 			}
 		}
-		if = { 
-			limit = { trait = kind } 
-			random = {  
+		if = {
+			limit = { trait = kind }
+			random = {
 				chance = 25
 				remove_trait = kind
 				hidden_tooltip = { character_event = { id = 38307 } }
@@ -6069,11 +6069,11 @@ character_event = {
 		}
 		hidden_tooltip = { persistent_event_target:antagonize_target = { character_event = { id = HF.22127 } } }
 		ai_chance = { factor = 90 }
-	} 
+	}
 	option = { #Do nothing.
 		name = EVTOPTDHF22121
 		ai_chance = { factor = 10 }
-	} 
+	}
 }
 #Antagonized: Spy Network compromised.
 character_event = {
@@ -6089,33 +6089,33 @@ character_event = {
 	option = { #Counterespionage
 		name = EVTOPTAHF22129
 		trigger = { intrigue = 14 }
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = undermined_spy_network_1
 			months = 24
 			stacking = yes
 		}
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {  
+		tooltip = {
+			FROM = {
+				add_character_modifier = {
 					name = counterespionage_modifier
 					months = 24
 					stacking = yes
-				} 
-			} 
-		} 
+				}
+			}
+		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22128 days = 12 random = 5 } } }
 		ai_chance = { factor = 100 }
-	} 
+	}
 	option = { #Take modifier
 		name = EVTOPTBHF22129
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = undermined_spy_network_1
 			months = 24
 			stacking = yes
 		}
 		ai_chance = { factor = 10 }
-	} 
-} 
+	}
+}
 #Antagonized: Spy Network compromised.
 character_event = {
 	id = HF.22130
@@ -6130,33 +6130,33 @@ character_event = {
 	option = { #Counterespionage
 		name = EVTOPTAHF22129
 		trigger = { intrigue = 14 }
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = undermined_spy_network_2
 			months = 24
 			stacking = yes
 		}
-		tooltip = { 
-			FROM = { 
-				add_character_modifier = {  
+		tooltip = {
+			FROM = {
+				add_character_modifier = {
 					name = counterespionage_modifier
 					months = 24
 					stacking = yes
-				} 
-			} 
-		} 
+				}
+			}
+		}
 		hidden_tooltip = { FROM = { character_event = { id = HF.22128 days = 12 random = 5 } } }
 		ai_chance = { factor = 100 }
-	} 
+	}
 	option = { #Take modifier
 		name = EVTOPTBHF22129
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = undermined_spy_network_2
 			months = 24
 			stacking = yes
 		}
 		ai_chance = { factor = 10 }
-	} 
-} 
+	}
+}
 #Antagonized: Vicious Rumors. - Low Intrigue
 character_event = {
 	id = HF.22124
@@ -6171,26 +6171,26 @@ character_event = {
 	option = { #Special option. - Rival character starts duel!
 		name = EVTOPTYHF22022
 		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
+		trigger = {
 			is_rival = FROM
 			this_can_duel_with_from_trigger = yes
 		}
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = vicious_rumors
 			months = 24
 			stacking = yes
 		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
+		FROM = {
 			set_character_flag = flag_antagonizer_duel
 		}
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_3
 			who = ROOT
 			years = 15
 		}
 	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
+	    hidden_tooltip = {
 	    	save_event_target_as = combatant_1 #the person issuing the duel...
 	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
 	    }
@@ -6198,7 +6198,7 @@ character_event = {
 	    	show_scope_change = no
 	    	apply_degree_of_dishonorable_duel_effect = yes  #checks a bunch of age and health statuses...
 	    }
-	    
+
 	    pacifists_lose_piety_effect = yes
 	    add_character_modifier = {
 	        modifier = recent_duel_timer
@@ -6208,34 +6208,34 @@ character_event = {
 	    hidden_tooltip = {
 	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
-		ai_chance = { 
+		ai_chance = {
 			factor = 40
-			modifier = { 
+			modifier = {
 				factor = 0.1
 				trait = craven
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				trait = brave
 			}
-			modifier = { 
+			modifier = {
 				factor = 0.75
 				is_tribal = no
 				is_nomadic = no
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.75
 				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
@@ -6243,14 +6243,14 @@ character_event = {
 	}
 	option = { #Take modifier
 		name = EVTOPTBHF22124
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = vicious_rumors
 			months = 24
 			stacking = yes
 		}
 		ai_chance = { factor = 40 }
-	} 
-} 
+	}
+}
 
 #Antagonized: Vicious Rumors. - High Intrigue
 character_event = {
@@ -6266,26 +6266,26 @@ character_event = {
 	option = { #Special option. - Rival character starts duel!
 		name = EVTOPTYHF22022
 		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
+		trigger = {
 			is_rival = FROM
 			this_can_duel_with_from_trigger = yes
 		}
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = vicious_rumors_2
 			months = 24
 			stacking = yes
 		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
+		FROM = {
 			set_character_flag = flag_antagonizer_duel
 		}
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_3
 			who = ROOT
 			years = 15
 		}
 	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
+	    hidden_tooltip = {
 	    	save_event_target_as = combatant_1 #the person issuing the duel...
 	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
 	    }
@@ -6302,34 +6302,34 @@ character_event = {
 	    hidden_tooltip = {
 	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
-		ai_chance = { 
+		ai_chance = {
 			factor = 40
-			modifier = { 
+			modifier = {
 				factor = 0.1
 				trait = craven
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				trait = brave
 			}
-			modifier = { 
+			modifier = {
 				factor = 0.75
 				is_tribal = no
 				is_nomadic = no
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.75
 				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
@@ -6337,14 +6337,14 @@ character_event = {
 	}
 	option = { #Take modifier
 		name = EVTOPTBHF22124
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = vicious_rumors_2
 			months = 24
 			stacking = yes
 		}
 		ai_chance = { factor = 40 }
-	} 
-} 
+	}
+}
 #Antagonized: Psychological warfare. - Low Intrigue
 character_event = {
 	id = HF.22126
@@ -6359,54 +6359,54 @@ character_event = {
 	option = { #Special option. - Rival character starts duel!
 		name = EVTOPTYHF22022
 		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
+		trigger = {
 			is_rival = FROM
 			this_can_duel_with_from_trigger = yes
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = lunatic
 				trait = depressed
-				trait = stressed 
-			} 
-			random = { 
-				chance = 25 
-				add_character_modifier = {  
+				trait = stressed
+			}
+			random = {
+				chance = 25
+				add_character_modifier = {
 					name = tormented_modifier
 					months = 50
 					stacking = yes
-				} 
+				}
 			}
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = depressed
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			random = { chance = 25 add_trait = lunatic }
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				NOT = { trait = depressed }
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			random = { chance = 25 add_trait = depressed }
-		} 
-		if = {  
-			limit = { NOT = { trait = stressed } } 
+		}
+		if = {
+			limit = { NOT = { trait = stressed } }
 			random = { chance = 25 add_trait = stressed }
-		} 
+		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
+		FROM = {
 			set_character_flag = flag_antagonizer_duel
 		}
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_3
 			who = ROOT
 			years = 15
 		}
 	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
+	    hidden_tooltip = {
 	    	save_event_target_as = combatant_1 #the person issuing the duel...
 	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
 	    }
@@ -6423,34 +6423,34 @@ character_event = {
 	    hidden_tooltip = {
 	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
-		ai_chance = { 
+		ai_chance = {
 			factor = 40
-			modifier = { 
+			modifier = {
 				factor = 0.1
 				trait = craven
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				trait = brave
 			}
-			modifier = { 
+			modifier = {
 				factor = 0.75
 				is_tribal = no
 				is_nomadic = no
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.75
 				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
@@ -6458,42 +6458,42 @@ character_event = {
 	}
 	option = { #Take modifier
 		name = EVTOPTBHF22126
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = lunatic
 				trait = depressed
-				trait = stressed 
-			} 
-			random = { 
-				chance = 25 
-				add_character_modifier = {  
+				trait = stressed
+			}
+			random = {
+				chance = 25
+				add_character_modifier = {
 					name = tormented_modifier
 					months = 50
 					stacking = yes
-				} 
+				}
 			}
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = depressed
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			random = { chance = 25 add_trait = lunatic }
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				NOT = { trait = depressed }
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			random = { chance = 25 add_trait = depressed }
-		} 
-		if = {  
-			limit = { NOT = { trait = stressed } } 
+		}
+		if = {
+			limit = { NOT = { trait = stressed } }
 			random = { chance = 25 add_trait = stressed }
-		} 
+		}
 		ai_chance = { factor = 40 }
-	} 
-} 
+	}
+}
 #Antagonized: Psychological warfare. - High Intrigue
 character_event = {
 	id = HF.22127
@@ -6508,51 +6508,51 @@ character_event = {
 	option = { #Special option. - Rival character starts duel!
 		name = EVTOPTYHF22022
 		custom_tooltip = { text = tooltip_22022_Y }
-		trigger = { 
+		trigger = {
 			is_rival = FROM
 			this_can_duel_with_from_trigger = yes
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = lunatic
 				trait = depressed
-				trait = stressed 
-			} 
-			add_character_modifier = {  
+				trait = stressed
+			}
+			add_character_modifier = {
 				name = tormented_modifier
 				months = 50
 				stacking = yes
-			} 
+			}
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = depressed
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			random = { chance = 50 add_trait = lunatic }
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				NOT = { trait = depressed }
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			add_trait = depressed
-		} 
-		if = {  
-			limit = { NOT = { trait = stressed } } 
+		}
+		if = {
+			limit = { NOT = { trait = stressed } }
 			add_trait = stressed
-		} 
+		}
 		set_character_flag = flag_antagonizer_duel #Used to prevent Merciless from being applied in case you win and decide to kill the opponent, given that it's a honor duel. Removed in the clean_up_after_duel_effect.
-		FROM = { 
+		FROM = {
 			set_character_flag = flag_antagonizer_duel
 		}
-		opinion = { 
+		opinion = {
 			modifier = opinion_antagonized_3
 			who = ROOT
 			years = 15
 		}
 	    #REQUIRED event targets for setting up duel evaluation!
-	    hidden_tooltip = { 
+	    hidden_tooltip = {
 	    	save_event_target_as = combatant_1 #the person issuing the duel...
 	    	FROM = { save_event_target_as = combatant_2 } #the target of the duel...
 	    }
@@ -6569,34 +6569,34 @@ character_event = {
 	    hidden_tooltip = {
 	        FROM = { character_event = { id = HFP.10095 days = 1 } } #Duel evaluation (hidden) + result event as follow-up.
 	    }
-		ai_chance = { 
+		ai_chance = {
 			factor = 40
-			modifier = { 
+			modifier = {
 				factor = 0.1
 				trait = craven
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				trait = brave
 			}
-			modifier = { 
+			modifier = {
 				factor = 0.75
 				is_tribal = no
 				is_nomadic = no
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 5 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.25
 				ROOT = { combat_rating_diff = { who = FROM value = 10 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.5
 				ROOT = { combat_rating_diff = { who = FROM value = 15 } }
 			}
-			modifier = { 
+			modifier = {
 				factor = 1.75
 				ROOT = { combat_rating_diff = { who = FROM value = 20 } }
 			}
@@ -6604,39 +6604,39 @@ character_event = {
 	}
 	option = { #Take modifier
 		name = EVTOPTBHF22126
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = lunatic
 				trait = depressed
-				trait = stressed 
-			} 
-			add_character_modifier = {  
+				trait = stressed
+			}
+			add_character_modifier = {
 				name = tormented_modifier
 				months = 50
 				stacking = yes
-			} 
+			}
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				trait = depressed
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			random = { chance = 50 add_trait = lunatic }
 		}
-		if = {  
-			limit = { 
+		if = {
+			limit = {
 				NOT = { trait = depressed }
-				trait = stressed 
-			} 
+				trait = stressed
+			}
 			add_trait = depressed
-		} 
-		if = {  
-			limit = { NOT = { trait = stressed } } 
+		}
+		if = {
+			limit = { NOT = { trait = stressed } }
 			add_trait = stressed
-		} 
+		}
 		ai_chance = { factor = 40 }
-	} 
-} 
+	}
+}
 
 #Counterespionage on Antagonizer.
 character_event = {
@@ -6648,14 +6648,14 @@ character_event = {
 
 	option = { #Take modifier
 		name = EVTOPTAHF22128
-		add_character_modifier = {  
+		add_character_modifier = {
 			name = counterespionage_modifier
 			months = 24
 			stacking = yes
 		}
 		ai_chance = { factor = 10 }
-	} 
-} 
+	}
+}
 
 #HF.22129 HF.22130 taken by double event.
 
@@ -6665,56 +6665,56 @@ character_event = {
 	desc = EVTDESCHF22131
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22131
 		custom_tooltip = { text = tooltip_EVTOPTAHF22131 }
 		trigger = { trait = lunatic }
 		tooltip_info = lunatic
 		tiered_prestige_reward_effect = yes
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			FROM = { character_event = { id = HF.22132 } } #Notify
 		}
 		ai_chance = { factor = 30 }
 	}
-	option = { 
+	option = {
 		name = EVTOPTBHF22131
 		custom_tooltip = { text = tooltip_EVTOPTAHF22131 }
 		trigger = { trait = arbitrary }
 		tooltip_info = arbitrary
 		tiered_prestige_negative_effect = yes
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			FROM = { character_event = { id = HF.22132 } } #Notify
 		}
 		ai_chance = { factor = 30 }
 	}
-	option = { 
+	option = {
 		name = EVTOPTCHF22131
 		custom_tooltip = { text = tooltip_EVTOPTBHF22111 }
-		hidden_tooltip = { 
-			opinion = { 
+		hidden_tooltip = {
+			opinion = {
 				modifier = antagonize_stop_cooldown
 				years = 2
 				who = FROM
-			} 
+			}
 		}
 		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
+			opinion = {
 				modifier = opinion_swayed_0
 				who = ROOT
 				years = 10
 			}
 		}
 		ai_chance = { factor = 70 }
-	} 
+	}
 }
 
 #Lunatic on lunatic antagonizing.
@@ -6729,8 +6729,8 @@ character_event = {
 		name = EVTOPTAHF22132
 		tooltip_info = lunatic
 		ai_chance = { factor = 10 }
-	} 
-} 
+	}
+}
 
 #Antagonizer: Lunatic gave title.
 character_event = {
@@ -6738,15 +6738,15 @@ character_event = {
 	desc = EVTDESCHF22133
 	picture = GFX_evt_upsetting_letter
 
-	trigger = { 
-		FROM = { 
-			is_alive = yes 
-		} 
+	trigger = {
+		FROM = {
+			is_alive = yes
+		}
 	}
 
 	is_triggered_only = yes
 
-	option = { 
+	option = {
 		name = EVTOPTAHF22133
 		custom_tooltip = { text = tooltip_EVTOPTAHF22133 }
 		trigger = { trait = lunatic }
@@ -6754,36 +6754,36 @@ character_event = {
 		tiered_prestige_reward_effect = yes
 		ai_chance = { factor = 30 }
 	}
-	option = { 
+	option = {
 		name = EVTOPTBHF22133
 		custom_tooltip = { text = tooltip_EVTOPTAHF22133 }
 		trigger = { trait = arbitrary }
 		tooltip_info = arbitrary
 		tiered_prestige_negative_effect = yes
-		hidden_tooltip = { 
+		hidden_tooltip = {
 			FROM = { character_event = { id = HF.22132 } } #Notify
 		}
 		ai_chance = { factor = 30 }
 	}
-	option = { 
+	option = {
 		name = EVTOPTCHF22131
 		custom_tooltip = { text = tooltip_EVTOPTBHF22111 }
-		hidden_tooltip = { 
-			opinion = { 
+		hidden_tooltip = {
+			opinion = {
 				modifier = antagonize_stop_cooldown
 				years = 2
 				who = FROM
-			} 
+			}
 		}
 		persistent_event_target:antagonize_target = {
 			show_scope_change = no
-			opinion = { 
+			opinion = {
 				modifier = opinion_swayed_0
 				who = ROOT
 				years = 10
 			}
 		}
 		ai_chance = { factor = 70 }
-	} 
+	}
 	after = { ROOT = { give_nickname = nick_the_knight_of_turnips } }
 }
