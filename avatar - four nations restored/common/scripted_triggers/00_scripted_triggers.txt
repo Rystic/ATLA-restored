@@ -5782,3 +5782,30 @@ can_enter_festival_physical_competitions_trigger = {
 # 		}
 # 	}
 }
+
+proselytize_convert_independent_trigger = {
+	owner = {
+		OR = { 
+			#FROM = { NOT = { religion_group = pagan_group } } TODO we can add religions meant to proselytize here
+			FROM = { has_religion_feature = religion_proselytizing }
+		}
+		independent = yes
+		NOT = { religion = FROM }
+		is_reformed_religion = no
+		capital_scope = {
+			province = ROOT
+		}
+		controls_religion = no
+		FROM = {
+			higher_tier_than = COUNT
+			OR = {
+				independent = yes
+				higher_tier_than = DUKE
+			}
+		}
+		NOT = {
+			has_opinion_modifier = { who = FROM modifier = opinion_sent_preacher }
+		}
+		is_within_diplo_range = FROM
+	}
+}
