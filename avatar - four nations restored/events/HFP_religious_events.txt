@@ -1,0 +1,129 @@
+# Written by Flavio (HFP.23001 - HFP.23027)
+
+namespace = HFP
+
+#Hidden event assigning cooldown on Excommunication requests.
+# Root = Excommunicated person
+# From = Asker
+# FromFrom = Pope
+character_event = {
+	id = HFP.23002
+	hide_window = yes
+
+	is_triggered_only = yes
+	
+	immediate = {
+		FROMFROM = {
+			opinion = {
+				modifier = opinion_requested_excommunication
+				who = ROOT_FROM
+				months = 6
+			}
+		}
+	}
+}
+
+#Tiered Money 
+#Tiered Prestige 
+#Vow of Celibacy 
+#Son/Daughter must take vows. 
+#Abdication-> Become Monk/Nun 
+#Enforce Papal Succession (Kings/Emperors) 
+#Change succession to Gavelkind (unless Elective or worse) (King/Emperors) 
+#Give Italian lands back (Emperors) 
+#Give Independence to Papacy (Emperors) 
+#Request vassalization (Italian Dukes)
+
+#on_imprisoned: stop pilgrimage.
+character_event = {
+	id = HFP.23024
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		#TODO tf is an abominable pilgrimage?
+		clr_character_flag = nomad_journey
+		clr_character_flag = do_not_disturb1
+		clr_character_flag = preparing_pilgrimage
+		clr_character_flag = activated_pilgrimage
+		hidden_tooltip = { remove_trait = on_journey }
+	}
+}
+
+
+#on_war_ended_victory: restore spouse under enemy's concubinage.
+# From = Attacker, Root = Defender
+character_event = {
+	id = HFP.23025
+	hide_window = yes
+	trigger = { 
+		ROOT = { 
+			any_consort = {
+				FROM = {
+					has_opinion_modifier = {
+						modifier = opinion_abducted_spouse
+						who = PREV
+					}
+				}
+			}
+		}
+	}
+	
+	is_triggered_only = yes
+
+	immediate = { 
+		ROOT = { 
+			any_consort = {
+				limit = {
+					FROM = {
+						has_opinion_modifier = {
+							modifier = opinion_abducted_spouse
+							who = PREV
+						}
+					}
+				}
+				ROOT = { remove_consort = PREV }
+				move_character = FROM
+			}
+		}
+	}
+}
+
+#on_war_ended_defeat: restore spouse under enemy's concubinage.
+# From = Attacker, Root = Defender
+character_event = {
+	id = HFP.23026
+	hide_window = yes
+	trigger = { 
+		FROM = { 
+			any_consort = {
+				ROOT = {
+					has_opinion_modifier = {
+						modifier = opinion_abducted_spouse
+						who = PREV
+					}
+				}
+			}
+		}
+	}
+	
+	is_triggered_only = yes
+
+	immediate = { 
+		FROM = { 
+			any_consort = {
+				limit = {
+					ROOT = {
+						has_opinion_modifier = {
+							modifier = opinion_abducted_spouse
+							who = PREV
+						}
+					}
+				}
+				FROM = { remove_consort = PREV }
+				move_character = ROOT
+			}
+		}
+	}
+}

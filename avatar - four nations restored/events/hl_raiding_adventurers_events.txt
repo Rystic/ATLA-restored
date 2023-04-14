@@ -32,12 +32,27 @@ character_event = {
 		}
 		
 		is_ruler = no
-		NOT = { year = 930 }
+		
+#		year = 867
+		
+#		diplomacy = 7
+#		martial = 9
+#		health = 4
+		
 		is_allowed_to_loot = yes
 		NOT = { trait = content }
 		NOT = { trait = craven }
-		# NOT = { trait = decadent }
 		OR = {
+			AND = {
+				any_liege = {
+					OR = {
+						government = lawless_piracy
+						government = pirate_cartel
+					}
+				}
+				culture_group = outlaw_culture
+			}
+			religion_group = outlaw_religions
 			AND = {
 				trait = ambitious
 				martial = 15
@@ -46,7 +61,6 @@ character_event = {
 				NOR = {
 					trait = craven
 					trait = content
-					# trait = decadent
 					any_child = {
 						OR = {
 							is_heir = yes
@@ -93,6 +107,7 @@ character_event = {
 				}
 			}
 		}
+		
 		OR = {
 			father_even_if_dead = {
 				OR = {
@@ -121,14 +136,6 @@ character_event = {
 	
 	mean_time_to_happen = {
 		years = 30
-		modifier = {
-			factor = 0.5
-			religion = piracy
-		}
-		modifier = {
-			factor = 0.5
-			NOT = { year = 700 }
-		}
 		modifier = {
 			factor = 0.5
 			trait = ambitious
@@ -222,7 +229,22 @@ character_event = {
 					}
 					set_character_flag = raiding_adventurer
 					change_variable = { which = global_raiding_adventurer_spawn_by_courtier_MTTH value = 1 }
-					character_event = { id = HL.102 } #create troops vikings
+					if = {
+						limit = {
+							event_target:previous_liege = {
+								government = nomadic_government
+							}
+						}
+						character_event = { id = HL.105 } #create troops steppe
+					}
+					if = {
+						limit = {
+							event_target:previous_liege = {
+								NOT = { government = nomadic_government }
+							}
+						}
+						character_event = { id = HL.102 } #create troops vikings
+					}
 					create_random_soldier = {
 						random_traits = yes
 						dynasty = none
@@ -285,11 +307,31 @@ character_event = {
 	immediate = {
 		random_list = {
 			30 = { #3
+				modifier = {
+					factor = 1.4
+					NOT = { year = 850 }
+				}
+				modifier = {
+					factor = 1.4
+					NOT = { year = 950 }
+				}
+				modifier = {
+					factor = 1.2
+					NOT = { year = 1050 }
+				}
+				modifier = {
+					factor = 0.6
+					year = 1150
+				}
 				character_event = { id = HL.104 }
 				character_event = { id = HL.103 }
 				character_event = { id = HL.103 }
 			}
 			30 = { #6
+				modifier = {
+					factor = 0.7
+					year = 1100
+				}
 				character_event = { id = HL.104 }
 				character_event = { id = HL.103 }
 				character_event = { id = HL.103 }
@@ -298,6 +340,30 @@ character_event = {
 				character_event = { id = HL.103 }
 			}
 			30 = { #9
+				modifier = {
+					factor = 0.7
+					NOT = { year = 900 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 950 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1000 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1050 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { martial = 12 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { martial = 14 }
+				}
 				character_event = { id = HL.104 }
 				character_event = { id = HL.103 }
 				character_event = { id = HL.103 }
@@ -309,6 +375,26 @@ character_event = {
 				character_event = { id = HL.103 }
 			}
 			30 = { #12
+				modifier = {
+					factor = 0
+					NOT = { year = 1150 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1180 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1200 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { martial = 15 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { martial = 20 }
+				}
 				character_event = { id = HL.104 }
 				character_event = { id = HL.103 }
 				character_event = { id = HL.103 }
@@ -774,31 +860,31 @@ character_event = {
 	immediate = {
 		random_list = {
 			30 = { #3
-#				modifier = {
-#					factor = 1.4
-#					NOT = { year = 850 }
-#				}
-#				modifier = {
-#					factor = 1.4
-#					NOT = { year = 950 }
-#				}
-#				modifier = {
-#					factor = 1.2
-#					NOT = { year = 1050 }
-#				}
-#				modifier = {
-#					factor = 0.6
-#					year = 1150
-#				}
+				modifier = {
+					factor = 1.4
+					NOT = { year = 850 }
+				}
+				modifier = {
+					factor = 1.4
+					NOT = { year = 950 }
+				}
+				modifier = {
+					factor = 1.2
+					NOT = { year = 1050 }
+				}
+				modifier = {
+					factor = 0.6
+					year = 1150
+				}
 				character_event = { id = HL.107 }
 				character_event = { id = HL.106 }
 				character_event = { id = HL.106 }
 			}
 			30 = { #6
-#				modifier = {
-#					factor = 0.7
-#					year = 1100
-#				}
+				modifier = {
+					factor = 0.7
+					year = 1100
+				}
 				character_event = { id = HL.107 }
 				character_event = { id = HL.106 }
 				character_event = { id = HL.106 }
@@ -807,22 +893,22 @@ character_event = {
 				character_event = { id = HL.106 }
 			}
 			30 = { #9
-#				modifier = {
-#					factor = 0.7
-#					NOT = { year = 900 }
-#				}
-#				modifier = {
-#					factor = 0.7
-#					NOT = { year = 950 }
-#				}
-#				modifier = {
-#					factor = 0.7
-#					NOT = { year = 1000 }
-#				}
-#				modifier = {
-#					factor = 0.7
-#					NOT = { year = 1050 }
-#				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 900 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 950 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1000 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1050 }
+				}
 				modifier = {
 					factor = 0.7
 					NOT = { martial = 12 }
@@ -842,18 +928,18 @@ character_event = {
 				character_event = { id = HL.106 }
 			}
 			30 = { #12
-#				modifier = {
-#					factor = 0
-#					NOT = { year = 1150 }
-#				}
-#				modifier = {
-#					factor = 0.7
-#					NOT = { year = 1180 }
-#				}
-#				modifier = {
-#					factor = 0.7
-#					NOT = { year = 1200 }
-#				}
+				modifier = {
+					factor = 0
+					NOT = { year = 1150 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1180 }
+				}
+				modifier = {
+					factor = 0.7
+					NOT = { year = 1200 }
+				}
 				modifier = {
 					factor = 0.7
 					NOT = { martial = 15 }
@@ -928,6 +1014,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 100 100 }
+						horse_archers = { 80 80 }
 					}
 				}
 			}
@@ -973,6 +1060,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 150 150 }
+						horse_archers = { 130 130 }
 					}
 				}
 				
@@ -1011,6 +1099,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 165 165 }
+						horse_archers = { 150 150 }
 					}
 				}
 			}
@@ -1048,6 +1137,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 190 190 }
+						horse_archers = { 175 175 }
 					}
 				}
 			}
@@ -1077,6 +1167,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 220 220 }
+						horse_archers = { 200 200 }
 					}
 				}
 			}
@@ -1134,6 +1225,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 100 100 }
+						horse_archers = { 80 80 }
 					}
 				}
 			}
@@ -1180,6 +1272,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 150 150 }
+						horse_archers = { 130 130 }
 					}
 				}
 				
@@ -1219,6 +1312,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 165 165 }
+						horse_archers = { 150 150 }
 					}
 				}
 			}
@@ -1257,6 +1351,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 190 190 }
+						horse_archers = { 175 175 }
 					}
 				}
 			}
@@ -1287,6 +1382,7 @@ character_event = {
 					merge = yes
 					troops = {
 						light_cavalry = { 220 220 }
+						horse_archers = { 200 200 }
 					}
 				}
 			}
@@ -1767,6 +1863,7 @@ character_event = {
 			home = event_target:last_province
 			troops = {
 				light_cavalry = { 200 200 }
+				horse_archers = { 50 50 }
 			}
 			attrition = 1.0
 			is_looter = yes

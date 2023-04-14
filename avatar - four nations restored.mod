@@ -29,6 +29,8 @@ replace_path="history/technology"
 replace_path="music"
 replace_path="map/statics" 
 replace_path="localisation/customizable_localisation"
+replace_path="gfx/characters"
+
 user_dir="Avatar - Four Nations Restored"
 tags={mod fantasy overhaul avatar}
 picture="image.jpg"
