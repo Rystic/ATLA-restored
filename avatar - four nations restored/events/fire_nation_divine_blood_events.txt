@@ -1,0 +1,146 @@
+namespace = FNDB
+
+#FNDB.1 -> Give newborns Divine Blood trait.
+#FNDB.2 -> Gain Divine Blood from Modernization War.
+
+#FNDB.1 -> Give newborns Divine Blood trait.
+character_event = {
+	id = FNDB.1
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			mother_even_if_dead = {
+				has_divine_blood = yes
+			}
+			father_even_if_dead = {
+				has_divine_blood = yes
+			}
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						mother_even_if_dead = {
+							has_divine_blood = yes
+						}
+						father_even_if_dead = {
+							has_divine_blood = no
+						}
+					}
+					AND = {
+						mother_even_if_dead = {
+							has_divine_blood = no
+						}
+						father_even_if_dead = {
+							has_divine_blood = yes
+						}
+					}
+					mother_even_if_dead = {
+						trait = divine_blood1			
+					}
+					father_even_if_dead = {
+						trait = divine_blood1
+					}
+				}
+			}
+			add_trait = divine_blood1
+		} 
+		else_if = {
+			limit = {
+				mother_even_if_dead = {
+					trait = divine_blood2			
+				}
+				mother_even_if_dead = {
+					trait = divine_blood2
+				}
+			}
+			add_trait = divine_blood2
+		}
+		else_if = {
+			limit = {
+				mother_even_if_dead = {
+					trait = divine_blood3			
+				}
+				mother_even_if_dead = {
+					trait = divine_blood3
+				}
+			}
+			add_trait = divine_blood3
+		}
+		else_if = {
+			limit = {
+				mother_even_if_dead = {
+					trait = divine_blood4			
+				}
+				mother_even_if_dead = {
+					trait = divine_blood4
+				}
+			}
+			add_trait = divine_blood4
+		}
+		else_if = {
+			limit = {
+				mother_even_if_dead = {
+					trait = divine_blood5		
+				}
+				mother_even_if_dead = {
+					trait = divine_blood5
+				}
+			}
+			add_trait = divine_blood5
+		}		
+	}
+}
+
+#FNDB.2 -> Gain Divine Blood from Modernization War.
+
+character_event = {
+	id = FNDB.2
+	desc = FNDB2_desc
+	picture = GFX_evt_firebenders_fight
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_character_flag = had_divine_blood_upgrade }
+	}
+	
+	option = {
+		trigger = {
+			has_education_martial_trigger = yes
+		}
+		name = FNDB2_martial_option
+		upgrade_education_effect = yes
+		upgrade_divine_blood = yes
+		set_character_flag = had_divine_blood_upgrade
+	}
+	
+	option = {
+		trigger = {
+			has_education_stewardship_trigger = yes
+		}
+		name = FNDB2_stewardship_option
+		upgrade_education_effect = yes
+		upgrade_divine_blood = yes
+		set_character_flag = had_divine_blood_upgrade
+	}
+	
+	option = {
+		name = FNDB2_default_option
+		trigger = {
+			NOT = {
+				has_education_stewardship_trigger = yes
+				has_education_martial_trigger = yes
+			}
+		}
+		
+		upgrade_divine_blood = yes
+		set_character_flag = had_divine_blood_upgrade
+	}	
+}
+
