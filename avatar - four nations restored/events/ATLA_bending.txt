@@ -224,7 +224,21 @@ character_event = {
 		}
 		FROM = {
 			add_trait = firebender
-			add_trait = incompetent_bender
+			if = {
+				limit = {
+					OR = {
+						trait = divine_blood3
+						trait = divine_blood5
+					}
+				}
+				trigger_switch = {
+					on_trigger = trait
+					divine_blood5 = { add_trait = powerful_bender }
+					divine_blood3 = { add_trait = competent_bender }
+				}
+			} else = {
+				add_trait = incompetent_bender
+			}
 			hidden_tooltip = {
 				random_list = {
 					40 = {
