@@ -23,79 +23,50 @@ character_event = {
 	}
 	
 	immediate = {
+		set_variable = { which = divine_blood_intensity value = 0 }
+		father_even_if_dead = {
+			trigger_switch = {
+				on_trigger = trait
+				divine_blood1 = { PREV = { change_variable = { which = divine_blood_intensity value = 1 } } }
+				divine_blood2 = { PREV = { change_variable = { which = divine_blood_intensity value = 2 } } }
+				divine_blood3 = { PREV = { change_variable = { which = divine_blood_intensity value = 3 } } }
+				divine_blood4 = { PREV = { change_variable = { which = divine_blood_intensity value = 4 } } }
+				divine_blood5 = { PREV = { change_variable = { which = divine_blood_intensity value = 5 } } }
+			}
+		}
+		mother_even_if_dead = {
+			trigger_switch = {
+				on_trigger = trait
+				divine_blood1 = { PREV = { change_variable = { which = divine_blood_intensity value = 1 } } }
+				divine_blood2 = { PREV = { change_variable = { which = divine_blood_intensity value = 2 } } }
+				divine_blood3 = { PREV = { change_variable = { which = divine_blood_intensity value = 3 } } }
+				divine_blood4 = { PREV = { change_variable = { which = divine_blood_intensity value = 4 } } }
+				divine_blood5 = { PREV = { change_variable = { which = divine_blood_intensity value = 5 } } }
+			}
+		}
 		if = {
 			limit = {
-				OR = {
-					AND = {
-						mother_even_if_dead = {
-							has_divine_blood = yes
-						}
-						father_even_if_dead = {
-							has_divine_blood = no
-						}
-					}
-					AND = {
-						mother_even_if_dead = {
-							has_divine_blood = no
-						}
-						father_even_if_dead = {
-							has_divine_blood = yes
-						}
-					}
-					mother_even_if_dead = {
-						trait = divine_blood1			
-					}
-					father_even_if_dead = {
-						trait = divine_blood1
-					}
-				}
-			}
-			add_trait = divine_blood1
-		} 
-		else_if = {
-			limit = {
-				mother_even_if_dead = {
-					trait = divine_blood2			
-				}
-				mother_even_if_dead = {
-					trait = divine_blood2
-				}
-			}
-			add_trait = divine_blood2
-		}
-		else_if = {
-			limit = {
-				mother_even_if_dead = {
-					trait = divine_blood3			
-				}
-				mother_even_if_dead = {
-					trait = divine_blood3
-				}
-			}
-			add_trait = divine_blood3
-		}
-		else_if = {
-			limit = {
-				mother_even_if_dead = {
-					trait = divine_blood4			
-				}
-				mother_even_if_dead = {
-					trait = divine_blood4
-				}
-			}
-			add_trait = divine_blood4
-		}
-		else_if = {
-			limit = {
-				mother_even_if_dead = {
-					trait = divine_blood5		
-				}
-				mother_even_if_dead = {
-					trait = divine_blood5
-				}
+				check_variable = { which = divine_blood_intensity value >= 10 }
 			}
 			add_trait = divine_blood5
-		}		
+		} else_if = {
+			limit = {
+				check_variable = { which = divine_blood_intensity value >= 8 }
+			}
+			add_trait = divine_blood4
+		} else_if = {
+			limit = {
+				check_variable = { which = divine_blood_intensity value >= 6 }
+			}
+			add_trait = divine_blood3
+		} else_if = {
+			limit = {
+				check_variable = { which = divine_blood_intensity value >= 4 }
+			}
+			add_trait = divine_blood2
+		} else = {
+			add_trait = divine_blood1
+		}
 	}
 }
 
@@ -108,13 +79,10 @@ character_event = {
 	border = GFX_event_normal_frame_war
 	is_triggered_only = yes
 	
-	trigger = {
-		NOT = { has_character_flag = had_divine_blood_upgrade }
-	}
-	
 	option = {
 		trigger = {
 			has_education_martial_trigger = yes
+			NOT = { has_character_flag = had_divine_blood_upgrade }
 		}
 		name = FNDB2_martial_option
 		upgrade_education_effect = yes
@@ -125,6 +93,7 @@ character_event = {
 	option = {
 		trigger = {
 			has_education_stewardship_trigger = yes
+			NOT = { has_character_flag = had_divine_blood_upgrade }
 		}
 		name = FNDB2_stewardship_option
 		upgrade_education_effect = yes
@@ -135,9 +104,12 @@ character_event = {
 	option = {
 		name = FNDB2_default_option
 		trigger = {
-			NOT = {
-				has_education_stewardship_trigger = yes
-				has_education_martial_trigger = yes
+			OR = {
+				has_character_flag = had_divine_blood_upgrade
+				NOT = {
+					has_education_stewardship_trigger = yes
+					has_education_martial_trigger = yes
+				}
 			}
 		}
 		
