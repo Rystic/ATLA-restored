@@ -51,6 +51,71 @@ letter_event = {
     }
 }
 
+character_event = {
+	id = SANDR.400
+
+	hide_window = yes
+
+	trigger = {
+		has_character_flag = has_sent_request_to_rank_up
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { is_in_society = yes }
+			random_society_member = {
+				limit = {
+					is_society_grandmaster = yes
+					same_society_as = ROOT
+				}
+				character_event = { id = SANDR.500 }
+			}
+		}
+		if = {
+			limit = { is_in_society = no }
+			clr_character_flag = has_sent_request_to_rank_up
+		}
+	}
+}
+
+# Grandmaster gets the rank-up request
+character_event = {
+	id = SANDR.500
+
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		event_target:rank_up_target = { letter_event = { id = SANDR.600 } }
+	}
+}
+
+#Grand master approves my request
+letter_event = {
+	id = SANDR.600
+	desc = EVTDESC_SANDR.620
+	border = GFX_event_letter_frame_diplomacy
+
+	trigger = {
+		society_rank < 4
+		has_character_flag = has_sent_request_to_rank_up
+	}
+
+	is_triggered_only = yes
+
+
+	option = {
+		name = EVTOPTA_SANDR.621
+		if = { limit = { society_rank < 4 } #if not max rank, rank up
+			society_rank_up = 1
+		}
+		clr_character_flag = has_sent_request_to_rank_up
+	}
+}
+
 ####################SAND SAILER RACERS QUEST TOMBOLA FRAMEWORK##########################
 
 character_event = {
@@ -195,6 +260,10 @@ society_quest_event = {
 	border = GFX_event_letter_frame_war
 
 	is_triggered_only = yes
+	
+	trigger = {
+		society_member_of = sand_sailer_racers 
+	}
 
 	option = {
 		name = ACCEPT
@@ -711,6 +780,10 @@ society_quest_event = {  #Sailer Maintain quest proposal letter
 	border = GFX_event_letter_frame_war
 
 	is_triggered_only = yes
+	
+	trigger = {
+		society_member_of = sand_sailer_racers 
+	}
 
 	option = {
 		name = ACCEPT
@@ -3544,6 +3617,10 @@ society_quest_event = {
 	border = GFX_event_letter_frame_war
 
 	is_triggered_only = yes
+	
+	trigger = {
+		society_member_of = sand_sailer_racers 
+	}
 
 	option = {
 		name = ACCEPT

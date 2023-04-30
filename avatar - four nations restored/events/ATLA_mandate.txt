@@ -175,266 +175,269 @@ character_event = { #make rebelion leader
 	}
 
 	option = {
-		name = mandate.2
-
-		primary_title = {
-			save_event_target_as = ek_title
-		}
-
-		change_variable = { which = global_royalAuthority value = 50 }
-
-		random_list = {
-			50 = { #peasant
-				custom_tooltip = {
-					text = MANDATE_PEASANT_REVOLT
-				}
-				hidden_tooltip = {
-					create_character = {
-						random_traits = yes
-						religion = ROOT
-						culture = ROOT
-						attributes = {
-							martial = 16
-						}
-						age = 16
-						add_trait = brilliant_strategist
-						add_trait = uncouth
-						add_trait = peasant_leader
-						flag = peasant_pretender
-					}
-					new_character = {
-						k_yellow_turbans = {
-							activate_title = { title = k_yellow_turbans status = yes }
-							copy_title_laws = event_target:ek_title
-						}
-						grant_title = k_yellow_turbans
-
-						if = {
-							limit = { ROOT = { tier = king } }
-							wealth = 750
-						}
-						if = {
-							limit = { ROOT = { tier = emperor } }
-							wealth = 1500
-						}
-
-						save_event_target_as = rebellion_leader
-					}
-				}
-			}
-			50 = { #noble
-				custom_tooltip = {
-					text = MANDATE_NOBLE_REVOLT
-				}
-				hidden_tooltip = {
-
-					create_character = {
-						random_traits = yes
-						religion = ROOT
-						culture = ROOT
-						attributes = {
-							martial = 13
-						}
-						age = 35
-						add_trait = brilliant_strategist
-						add_trait = groomed
-						flag = noble_pretender
-					}
-					new_character = {
-						k_three_rings = {
-							activate_title = { title = k_three_rings status = yes }
-							copy_title_laws = event_target:ek_title
-						}
-						grant_title = k_three_rings
-
-						if = {
-							limit = { ROOT = { tier = king } }
-							wealth = 1500
-						}
-						if = {
-							limit = { ROOT = { tier = emperor } }
-							wealth = 3000
-						}
-
-						save_event_target_as = rebellion_leader
-					}
-
-				}
-			}
-		}
-
-		hidden_tooltip = {
-			random_realm_province = {
-				preferred_limit = {
-					NOT = { title = c_royal_earth_palace }
-					de_jure_liege_or_above = k_earth_kingdom
-					AND = {
-						is_title_active = k_yellow_turbans
-						OR = {
-							NOT = { de_jure_liege_or_above = d_upper_ring }
-							NOT = { de_jure_liege_or_above = d_middle_ring }
-						}
-					}
-					AND = {
-						is_title_active = k_three_rings
-						OR = {
-							de_jure_liege_or_above = d_upper_ring
-							de_jure_liege_or_above = d_middle_ring
-						}
-					}
-				}
-
-				location = {
-					event_target:rebellion_leader = {
-						spawn_unit = {
-							province = PREV
-							home = PREV
-							owner = THIS
-							leader = THIS
-							match_character = ROOT
-							match_mult = 0.2
-							earmark = mandate_revolters
-							reinforces = yes
-							reinforce_rate_multiplier = 0.25
-						}
-						create_character = {
-							random_traits = yes
-							dynasty = THIS
-							religion = ROOT
-							culture = ROOT
-							female = no
-							age = 18
-							attributes = {
-								martial = 7
-							}
-							trait = skilled_tactician
-						}
-						new_character = {
-							set_father = PREV
-							spawn_unit = {
-								province = PREVPREV
-								home = PREVPREV
-								owner = PREV
-								match_character = ROOT
-								match_mult = 0.2
-								earmark = mandate_revolters
-								reinforces = yes
-								reinforce_rate_multiplier = 0.25
-							}
-						}
-
-						create_character = {
-							random_traits = yes
-							dynasty = THIS
-							religion = ROOT
-							culture = ROOT
-							female = no
-							age = 20
-							attributes = {
-								martial = 7
-							}
-							trait = skilled_tactician
-						}
-						new_character = {
-							set_father = PREV
-							spawn_unit = {
-								province = PREVPREV
-								home = PREVPREV
-								owner = PREV
-								#leader = THIS
-								match_character = ROOT
-								match_mult = 0.2
-								earmark = mandate_revolters
-								reinforces = yes
-								reinforce_rate_multiplier = 0.25
-							}
-						}
-
-						create_character = {
-							random_traits = yes
-							dynasty = NONE
-							religion = ROOT
-							culture = ROOT
-							female = no
-							age = 20
-							attributes = {
-								martial = 7
-							}
-							trait = skilled_tactician
-						}
-						new_character = {
-							spawn_unit = {
-								province = PREVPREV
-								home = PREVPREV
-								owner = PREV
-								#leader = THIS
-								match_character = ROOT
-								match_mult = 0.2
-								earmark = mandate_revolters
-								reinforces = yes
-								reinforce_rate_multiplier = 0.25
-							}
-						}
-						create_character = {
-							random_traits = yes
-							dynasty = NONE
-							religion = ROOT
-							culture = ROOT
-							female = no
-							age = 22
-							attributes = {
-								martial = 7
-							}
-							trait = skilled_tactician
-						}
-						new_character = {
-							spawn_unit = {
-								province = PREVPREV
-								home = PREVPREV
-								owner = PREV
-								#leader = THIS
-								match_character = ROOT
-								match_mult = 0.2
-								earmark = mandate_revolters
-								reinforces = yes
-								reinforce_rate_multiplier = 0.25
-							}
-						}
-						create_character = {
-							random_traits = yes
-							dynasty = NONE
-							religion = ROOT
-							culture = ROOT
-							female = no
-							age = 22
-							attributes = {
-								martial = 7
-							}
-							trait = skilled_tactician
-						}
-						new_character = {
-							spawn_unit = {
-								province = PREVPREV
-								home = PREVPREV
-								owner = PREV
-								#leader = THIS
-								match_character = ROOT
-								match_mult = 0.2
-								earmark = mandate_revolters
-								reinforces = yes
-								reinforce_rate_multiplier = 0.25
-							}
-						}
-
-						war = {
-							target = ROOT
-							casus_belli = mandate_revolt
-						}
-					}
-				}
-			}
-		}
 	}
+		# name = mandate.2
+
+		# primary_title = {
+			# save_event_target_as = ek_title
+		# }
+
+		# change_variable = { which = global_royalAuthority value = 50 }
+
+		# random_list = {
+			# 50 = { #peasant
+				# custom_tooltip = {
+					# text = MANDATE_PEASANT_REVOLT
+				# }
+				# hidden_tooltip = {
+					# create_character = {
+						# random_traits = yes
+						# religion = ROOT
+						# culture = ROOT
+						# attributes = {
+							# martial = 16
+						# }
+						# age = 16
+						# add_trait = brilliant_strategist
+						# add_trait = uncouth
+						# add_trait = peasant_leader
+						# flag = peasant_pretender
+					# }
+					# new_character = {
+						# k_yellow_turbans = {
+							# activate_title = { title = k_yellow_turbans status = yes }
+							# copy_title_laws = event_target:ek_title
+						# }
+						# grant_title = k_yellow_turbans
+
+						# if = {
+							# limit = { ROOT = { tier = king } }
+							# wealth = 750
+						# }
+						# if = {
+							# limit = { ROOT = { tier = emperor } }
+							# wealth = 1500
+						# }
+
+						# save_event_target_as = rebellion_leader
+						# set_character_flag = mandate_revolt_leader
+					# }
+				# }
+			# }
+			# 50 = { #noble
+				# custom_tooltip = {
+					# text = MANDATE_NOBLE_REVOLT
+				# }
+				# hidden_tooltip = {
+
+					# create_character = {
+						# random_traits = yes
+						# religion = ROOT
+						# culture = ROOT
+						# attributes = {
+							# martial = 13
+						# }
+						# age = 35
+						# add_trait = brilliant_strategist
+						# add_trait = groomed
+						# flag = noble_pretender
+					# }
+					# new_character = {
+						# k_three_rings = {
+							# activate_title = { title = k_three_rings status = yes }
+							# copy_title_laws = event_target:ek_title
+						# }
+						# grant_title = k_three_rings
+
+						# if = {
+							# limit = { ROOT = { tier = king } }
+							# wealth = 1500
+						# }
+						# if = {
+							# limit = { ROOT = { tier = emperor } }
+							# wealth = 3000
+						# }
+
+						# save_event_target_as = rebellion_leader
+						# set_character_flag = mandate_revolt_leader
+					# }
+
+				# }
+			# }
+		# }
+
+		# hidden_tooltip = {
+			# random_realm_province = {
+				# preferred_limit = {
+					# NOT = { title = c_royal_earth_palace }
+					# de_jure_liege_or_above = k_earth_kingdom
+					# AND = {
+						# is_title_active = k_yellow_turbans
+						# OR = {
+							# NOT = { de_jure_liege_or_above = d_upper_ring }
+							# NOT = { de_jure_liege_or_above = d_middle_ring }
+						# }
+					# }
+					# AND = {
+						# is_title_active = k_three_rings
+						# OR = {
+							# de_jure_liege_or_above = d_upper_ring
+							# de_jure_liege_or_above = d_middle_ring
+						# }
+					# }
+				# }
+
+				# location = {
+					# event_target:rebellion_leader = {
+						# spawn_unit = {
+							# province = PREV
+							# home = PREV
+							# owner = THIS
+							# leader = THIS
+							# match_character = ROOT
+							# match_mult = 0.2
+							# earmark = mandate_revolters
+							# reinforces = yes
+							# reinforce_rate_multiplier = 0.25
+						# }
+						# create_character = {
+							# random_traits = yes
+							# dynasty = THIS
+							# religion = ROOT
+							# culture = ROOT
+							# female = no
+							# age = 18
+							# attributes = {
+								# martial = 7
+							# }
+							# trait = skilled_tactician
+						# }
+						# new_character = {
+							# set_father = PREV
+							# spawn_unit = {
+								# province = PREVPREV
+								# home = PREVPREV
+								# owner = PREV
+								# match_character = ROOT
+								# match_mult = 0.2
+								# earmark = mandate_revolters
+								# reinforces = yes
+								# reinforce_rate_multiplier = 0.25
+							# }
+						# }
+
+						# create_character = {
+							# random_traits = yes
+							# dynasty = THIS
+							# religion = ROOT
+							# culture = ROOT
+							# female = no
+							# age = 20
+							# attributes = {
+								# martial = 7
+							# }
+							# trait = skilled_tactician
+						# }
+						# new_character = {
+							# set_father = PREV
+							# spawn_unit = {
+								# province = PREVPREV
+								# home = PREVPREV
+								# owner = PREV
+								# leader = THIS
+								# match_character = ROOT
+								# match_mult = 0.2
+								# earmark = mandate_revolters
+								# reinforces = yes
+								# reinforce_rate_multiplier = 0.25
+							# }
+						# }
+
+						# create_character = {
+							# random_traits = yes
+							# dynasty = NONE
+							# religion = ROOT
+							# culture = ROOT
+							# female = no
+							# age = 20
+							# attributes = {
+								# martial = 7
+							# }
+							# trait = skilled_tactician
+						# }
+						# new_character = {
+							# spawn_unit = {
+								# province = PREVPREV
+								# home = PREVPREV
+								# owner = PREV
+								# leader = THIS
+								# match_character = ROOT
+								# match_mult = 0.2
+								# earmark = mandate_revolters
+								# reinforces = yes
+								# reinforce_rate_multiplier = 0.25
+							# }
+						# }
+						# create_character = {
+							# random_traits = yes
+							# dynasty = NONE
+							# religion = ROOT
+							# culture = ROOT
+							# female = no
+							# age = 22
+							# attributes = {
+								# martial = 7
+							# }
+							# trait = skilled_tactician
+						# }
+						# new_character = {
+							# spawn_unit = {
+								# province = PREVPREV
+								# home = PREVPREV
+								# owner = PREV
+								# leader = THIS
+								# match_character = ROOT
+								# match_mult = 0.2
+								# earmark = mandate_revolters
+								# reinforces = yes
+								# reinforce_rate_multiplier = 0.25
+							# }
+						# }
+						# create_character = {
+							# random_traits = yes
+							# dynasty = NONE
+							# religion = ROOT
+							# culture = ROOT
+							# female = no
+							# age = 22
+							# attributes = {
+								# martial = 7
+							# }
+							# trait = skilled_tactician
+						# }
+						# new_character = {
+							# spawn_unit = {
+								# province = PREVPREV
+								# home = PREVPREV
+								# owner = PREV
+								# leader = THIS
+								# match_character = ROOT
+								# match_mult = 0.2
+								# earmark = mandate_revolters
+								# reinforces = yes
+								# reinforce_rate_multiplier = 0.25
+							# }
+						# }
+
+						# war = {
+							# target = ROOT
+							# casus_belli = mandate_revolt
+						# }
+					# }
+				# }
+			# }
+		# }
+	# }
 }
 narrative_event = {
 	id = mandate.3
@@ -446,6 +449,7 @@ narrative_event = {
 
 	trigger = {
 		OR = {
+			has_landed_title = k_earth_kingdom
 			has_landed_title = e_earth_kingdom
 		}
 		OR = {

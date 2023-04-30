@@ -319,18 +319,6 @@ character_event = {
         increase_cowardly_status_effect = yes #tracks duel cowardice
         clr_character_flag = punish_declining
 
-        if = { #For characters who were recruited by their parents...
-            limit = {
-                has_character_flag = is_being_recruited_to_warrior_lodge_by_parent
-                event_target:recruiting_parent = { is_alive = yes }
-            }
-            custom_tooltip = { text = notify_parent_recruiter_tt } #Your parent will be notified.
-            set_character_flag = failed_initiation
-            set_character_flag = chickened_out
-            event_target:recruiting_parent = { character_event = { id = HF.10014 } }
-            clr_character_flag = society_join_block
-        }
-
         trigger = {
             NOT = { event_target:duel_target = { character = event_target:hero_character } } #if set-up failed spectacularly, and it's a case of MP, the player leader will be unable to turn down the duel just for the hell of it
             NOT = { has_character_flag = flag_duel_no_backsies }

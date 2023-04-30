@@ -29,11 +29,13 @@ action_improve_relations = {
 			FROM = {
 				job_chancellor = {
 					NOT = { character = PREVPREV } # Can't be sent to improve relations with himself...
+
 				}
 			}
 		}
 		is_within_diplo_range = FROM
 	}
+
 
 	events = { 910 911 }
 }
@@ -41,15 +43,13 @@ action_improve_relations = {
 action_fabricate_claims = {
 	attribute = diplomacy
 
-	potential = {
-	}
-
 	trigger = {
 		any_province_lord = {
 			NOT = { character = FROM }
 			FROM = {
 				job_chancellor = {
 					NOT = { character = PREVPREV } # Can't be sent to improve relations with himself...
+
 				}
 			}
 		}
@@ -439,7 +439,11 @@ action_inquisition = {
 
 	trigger = {
 		num_of_settlements = 1
+		NAND = {
+			FROM = { job_spiritual = { has_character_modifier = spiritual_refused_pagans } }  # See Event ZE.5040
+		}
 		OR = {
+			proselytize_convert_independent_trigger = yes
 			any_province_lord = {
 				OR = {
 					character = FROM
@@ -500,18 +504,24 @@ action_inquisition = {
 					is_liege_or_above = FROM
 				}
 			}
+			proselytize_convert_independent_trigger = yes
 		}
 		color = { 255 0 0 }
 	}
 
-	events = { 900 }
+	display_on_map = {
+		tooltip = JOB_PROSELYTIZE_CONVERT_INDEPENDENT
+		trigger = {
+			proselytize_convert_independent_trigger = yes
+		}
+		color = { 255 35 35 }
+	}
+
+	events = { 900 901 902 903 }
 }
 
 action_improve_rel_relations = {
 	attribute = learning
-
-	potential = {
-	}
 
 	trigger = {
 		any_province_lord = {
@@ -573,20 +583,16 @@ action_build_zeal = {
 	events = { 20218 }
 }
 
-# Lord Spiritual
-action_charity = {
+action_hunt_heretics = {
 	attribute = learning
 
 	potential = {
+		has_dlc = Mystics
 	}
 
-	trigger = {
-		any_province_lord = {
-			character = FROM
-		}
-	}
+	liege_modifier = apostate_liege_mod
 
-	local_revolt_risk = -0.01
+	offmap = yes
 
-	events = { }
+	events = { MNM.70031 } #TODO main game uses 70100
 }
