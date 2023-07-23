@@ -283,7 +283,7 @@ character_event = {
 		FROM = {
 			clr_character_flag = preparedForDuel
 		}
-		character_event = { id = ADUEL.14 } # Duel - First Action
+		character_event = { id = agnikai.10 } # Duel - First Action
 	}
 	
 	option = { # Ping opponent
@@ -297,3 +297,239 @@ character_event = {
 		}
 	}
 }
+
+# Choose action
+character_event = {
+	id = agnikai.10
+	desc = ADUELdesc.14
+	picture = GFX_evt_agnikai_choose_action
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	sound = agni_kai_theme
+	
+	immediate = {
+		event_target:combatant_2 = {
+			save_event_target_as = hostile
+		}
+		ROOT = {
+			save_event_target_as = other_hostile
+		}
+	}
+	
+	option = { # Attack (fireblast)
+		name = ADUELoptA.14
+		tooltip_info = firebender
+		show_trait = firebender
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		character_event = {
+			id = agnikai.20
+		}
+	}
+
+	option = { # Use Lightning
+		name = TODO
+		ai_chance = {
+			factor = 0
+		}
+		tooltip_info = lightningbender
+		show_trait = lightningbender
+	}
+	
+	option = { # Use Combustion
+		name = TODO
+		ai_chance = {
+			factor = 0
+		}
+		tooltip_info = combustionbender
+		show_trait = combustionbender
+	}
+
+	option = { # Defence
+		name = ADUELoptB.14
+		ai_chance = {
+			factor = 0
+		}
+		custom_tooltip = {
+			text = ADUEL_DEFEND_TOOLTIP
+			# character_event = { id = ADUEL.26 } # Defend
+		}
+	}
+}
+
+# Attack (Fireblast)
+character_event = {
+	id = agnikai.20
+	desc = TODO
+	picture = GFX_evt_agnikai_fireblast_zuko_1
+	picture = GFX_evt_agnikai_fireblast_zuko_2
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = { # Attack (fireblast)
+		name = TODO
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+
+		random_list = {
+			10 = {
+				custom_tooltip = {
+					text = TODO_CRIT
+				}
+			}
+			40 = {
+				custom_tooltip = {
+					text = TODO_FULL
+				}
+			}
+			30 = {
+				custom_tooltip = {
+					text = TODO_HALF
+				}
+			}
+			10 = {
+				custom_tooltip = {
+					text = MISS_TODO
+					set_character_flag = agnikai_miss
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				NOT = {
+					has_character_flag = agnikai_miss
+				}
+			}
+			# broadcast it to the hostile
+			event_target:hostile = {
+				character_event = {
+					id = agnikai.21
+				}
+			}
+		}
+		# random_list = {
+			# enemy dodged
+			# enemy knocked down
+			# (depends on stamina)
+		# }
+	}
+}
+
+# Attack Broadcast (Fireblast) - Enemy uses blast
+character_event = {
+	id = agnikai.21
+	desc = TODO
+	picture = GFX_evt_agnikai_fireblast_zhao_1
+	picture = GFX_evt_agnikai_fireblast_zhao_2
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = TODO # Dodge
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+
+		random_list = {
+			# successful dodge
+			80 = {
+				FROM = {
+					character_event = {
+						id = agnikai.22
+					}
+				}
+			}
+			# unsuccessful dodge
+			20 = {
+				FROM = {
+					character_event = {
+						id = agnikai.23
+					}
+				}
+			}
+		}
+		
+		ai_chance = {
+			factor = 50
+		}
+	}
+
+	option = {
+		name = TODO # Stand firm
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		FROM = {
+			character_event = {
+				id = agnikai.24
+			}
+		}
+		ai_chance = {
+			factor = 50
+		}
+	}
+}
+
+# Attack Result (Fireblast) - Enemy dodged the blast
+character_event = {
+	id = agnikai.22
+	desc = TODO
+	picture = GFX_evt_agnikai_fireblast_dodge_1
+	picture = GFX_evt_agnikai_fireblast_dodge_2
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = TODO # damn it
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		character_event = {
+			id = agnikai.10
+		}
+	}
+}
+
+# Attack Result (Fireblast) - Enemy couldn't dodge the blast
+character_event = {
+	id = agnikai.23
+	desc = TODO
+	picture = GFX_evt_agnikai_dodge_fail
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = TODO # damn it
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		character_event = {
+			id = agnikai.10
+		}
+	}
+}
+
+
+# Attack Result (Fireblast) - Enemy dispersed the blast
+character_event = {
+	id = agnikai.24
+	desc = TODO
+	picture = GFX_evt_agnikai_dodge_zhao_1
+	picture = GFX_evt_agnikai_dodge_zhao_2
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	
+	option = {
+		name = TODO # damn it
+		custom_tooltip = {
+			text = ADUEL_HP_TOOLTIP
+		}
+		character_event = {
+			id = agnikai.10
+		}
+	}
+}
+
