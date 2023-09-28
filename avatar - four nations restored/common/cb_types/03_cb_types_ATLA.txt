@@ -3502,14 +3502,22 @@ water_offensive = {
 	check_de_jure_tier = DUKE
 
 	can_use_gui = {
+		has_global_flag = begin_watertribe_offensive
 		ROOT = {
-			has_dynasty_flag = wt_1
+			OR = {
+				religion = tui_and_la
+				religion = tui_and_la_reformed
+			}
 		}
 	}
 
 	can_use = {
+		has_global_flag = begin_watertribe_offensive
 		ROOT = {
-			has_dynasty_flag = wt_1
+			OR = {
+				religion = tui_and_la
+				religion = tui_and_la_reformed
+			}
 			NOT = { same_realm = FROM }
 			NOT = { religion = FROM }
 		}
@@ -3556,6 +3564,7 @@ water_offensive = {
 		FROM = { piety = -100 }
 		FROM = { prestige = -50 }
 	}
+	
 
 	on_success_title = {
 		custom_tooltip = {
@@ -3572,6 +3581,12 @@ water_offensive = {
 				}
 			}
 		}
+		
+		ROOT = {
+			religion_authority = {
+				modifier = won_county_conquest
+			}
+		}
 
 		hidden_tooltip = {
 			ROOT = {
@@ -3580,6 +3595,27 @@ water_offensive = {
 			}
 		}
 	}
+	
+	on_fail_title = {
+		ROOT = {
+			prestige = -100
+		}
+
+		any_defender = {
+			limit = { character = FROM }
+			participation_scaled_prestige = 50
+		}
+		any_defender = {
+			limit = { NOT = { character = FROM } }
+			hidden_tooltip = { participation_scaled_prestige = 50 }
+		}
+		
+		ROOT = {
+			religion_authority = {
+				modifier = lost_county_conquest
+			}
+		}		
+	}	
 
 	on_reverse_demand = {
 		ROOT = {
@@ -3600,6 +3636,12 @@ water_offensive = {
 				participation_scaled_prestige = 100
 			}
 		}
+		
+		ROOT = {
+			religion_authority = {
+				modifier = lost_county_conquest
+			}
+		}		
 	}
 
 	attacker_ai_victory_worth = {

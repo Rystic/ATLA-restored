@@ -1142,3 +1142,168 @@ narrative_event = { # Landing in the Earth Kingdom
 		}
 	}
 }
+
+narrative_event = {
+	id = watertribe.1000
+	desc = watertribe_offensive_declaration
+	title = watertribe_offensive_declaration_title
+	picture = GFX_evt_water_tribe_navy
+	border = GFX_event_narrative_frame_war
+	
+	option = {
+		name = watertribe_offensive_declaration_option
+		custom_tooltip = {
+			text = begin_water_tribe_offensive_tooltip
+		}
+	}
+}
+
+character_event = {
+	id = watertribe.1001
+	desc = watertribe_offensive_free_troops
+	picture = GFX_evt_water_tribe_navy
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		capital_scope = {
+			save_event_target_as = capital_province
+		}
+		spawn_fleet = {
+			province = closest # closest sea zone
+			owner = ROOT
+			disband_on_peace = no
+			troops =
+			{
+				galleys = { 20 20 }
+			}
+		}			
+	}
+	
+	option = {
+		name = watertribe_offensive_free_troops_conquest_option
+		custom_tooltip = {
+			text = watertribe_offensive_free_troops_conquest_option_tooltip
+		}
+		trait = ambitious
+		hidden_tooltip = {
+			spawn_unit = {
+				province = event_target:capital_province
+				home = event_target:capital_province
+				owner = THIS
+				match_character = THIS
+				match_mult = 0.03
+				match_min = 1000
+				match_max = 5000
+				attrition = 1.0
+				cannot_inherit = yes
+			}			
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				trait = wroth
+				factor = 2
+			}
+			modifier = {
+				trait = ambitious
+				factor = 2
+			}			
+			modifier = {
+				trait = zealous
+				factor = 4
+			}
+			modifier = {
+				martial = 10
+				factor = 1.5
+			}
+			modifier = {
+				martial = 12
+				factor = 1.5
+			}
+			modifier = {
+				martial = 14
+				factor = 1.5
+			}
+		}		
+	}
+	
+	option = {
+		name = watertribe_offensive_free_troops_mix_option
+		custom_tooltip = {
+			text = watertribe_offensive_free_troops_mix_option_tooltip
+		}
+		hidden_tooltip = {
+			spawn_unit = {
+				province = event_target:capital_province
+				home = event_target:capital_province
+				owner = THIS
+				match_character = THIS
+				match_mult = 0.03
+				match_min = 500
+				match_max = 5000
+				attrition = 1.0
+				cannot_inherit = yes
+			}			
+			spawn_unit = {
+				province = event_target:capital_province
+				home = event_target:capital_province
+				owner = THIS
+				match_character = THIS
+				match_mult = 0.03
+				match_min = 600
+				match_max = 5000
+				attrition = 1.0
+				cannot_inherit = yes
+				is_looter = yes
+				can_toggle_looting = no
+			}			
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				trait = content
+				factor = 2
+			}
+		}		
+	}
+	
+	option = {
+		name = watertribe_offensive_free_troops_raid_option
+		custom_tooltip = {
+			text = watertribe_offensive_free_troops_raid_option_tooltip
+		}
+		trait = greedy
+		hidden_tooltip = {
+			spawn_unit = {
+				province = event_target:capital_province
+				home = event_target:capital_province
+				owner = THIS
+				match_character = THIS
+				match_mult = 0.03
+				match_min = 1200
+				match_max = 5000
+				attrition = 1.0
+				cannot_inherit = yes
+				is_looter = yes
+				can_toggle_looting = no
+			}		
+		}
+		ai_chance = {
+			factor = 10
+			modifier = {
+				trait = greedy
+				factor = 2
+			}
+			modifier = {
+				trait = arbitrary
+				factor = 2
+			}
+			modifier = {
+				NOT = { martial = 10 }
+				factor = 1.5
+			}
+		}
+	}
+}
