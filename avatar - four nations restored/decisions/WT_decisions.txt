@@ -30,6 +30,7 @@ begin_water_tribe_offensive = { # Unify the Tribes -> Begin Water Tribe Offensiv
 			text = begin_water_tribe_offensive_tooltip
 		}
 		hidden_tooltip = {
+			log = "[Root.GetFullName] began the Water Tribe Offensive."
 			set_global_flag = begin_watertribe_offensive
 			narrative_event = { id = watertribe.1000 }
 			any_realm_lord = {
@@ -61,22 +62,24 @@ found_healing_hut_north_decision = {
 	}
 
 	allow = {
-		independent = yes
-		piety = 100
+		is_ruler = yes
 		OR = {
-			AND = {
-				ai = no
-				religion_authority = .30				
-			}
-			AND = {
-				ai = yes
-				religion_authority = .20 #make it easier for the ai because they don't really understand MA.
-			}
+			piety = 200
+			is_female = yes
+		}
+		OR = {
+			religion_authority = .30				
+			is_female = yes
 		}				
 	}
 
 	effect = {
-		piety = -100	
+		if = {
+			limit = {
+				is_female = no
+			}
+			piety = -200
+		}
 		custom_tooltip = {
 			text = founded_healing_hut_north_tooltip
 		}		
@@ -92,11 +95,14 @@ found_healing_hut_north_decision = {
 					is_female = yes
 					trait = waterbender
 				}
+				log = "[Root.GetFullName] founded the Healing Hut, and became the grand master."				
 				add_trait = healer
 				join_society = healing_hut_north
 				set_society_grandmaster = yes # Set character as Grand Master
 				add_society_currency_massive_effect = yes
+
 			} else = {
+				log = "[Root.GetFullName] founded the Healing Hut, but did not become the grandmaster."
 				create_character = {
 					random_traits = yes
 					dynasty = random
@@ -238,6 +244,42 @@ found_healing_hut_north_decision = {
 		}
 	ai_will_do = {
 		factor = 1
+	}
+}
+
+begin_ice_sculpting_north = {
+	is_high_prio = yes
+	only_playable = yes
+	
+	potential = {
+		mercenary = no
+		holy_order = no
+		culture_group = water_tribe_culture
+		OR = {
+			has_landed_title = e_water_tribes
+			has_landed_title = k_northern_water_tribe
+		}
+		OR = {
+			religion = tui_and_la
+			religion = tue_and_la_reformed
+		}
+		NOT = { has_global_flag = ice_carving_enabled }
+
+	}
+	
+	allow = {
+		prestige = 500
+	}
+	
+	effect = {
+		log = "[Root.GetFullName] begin ice sculpting north."
+		prestige = -500
+		custom_tooltip = {
+			text = begin_ice_sculpting_north_tooltip
+			hidden_tooltip = {
+				set_global_flag = ice_carving_enabled
+			}
+		}
 	}
 }
 
