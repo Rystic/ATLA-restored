@@ -23,6 +23,31 @@ begin_water_tribe_offensive = { # Unify the Tribes -> Begin Water Tribe Offensiv
 		prisoner = no
 		prestige = 250
 		completely_controls = k_northern_water_tribe
+		trait = ambitious
+		OR = {
+			custom_tooltip = {
+				text = avatar_friend_tip
+				any_friend = {
+					trait = avatar
+					is_friend = ROOT
+				}
+			}
+			AND = {
+				trait = envious
+				prestige = 1000
+				wealth = 300
+			}
+			regional_percentage = {
+				region = world_north_west_kingdom
+				percentage >= 0.50
+				OR = {
+					religion = the_eternal_flame
+					religion = bhanti_spirituality
+					religion = fire_nation_imperialism
+					religion = fire_spirituality
+				}
+			}
+		}
 	}
 	effect = {
 		prestige = -250
@@ -31,7 +56,8 @@ begin_water_tribe_offensive = { # Unify the Tribes -> Begin Water Tribe Offensiv
 		}
 		hidden_tooltip = {
 			set_global_flag = begin_watertribe_offensive
-			narrative_event = { id = watertribe.1000 }
+			narrative_event = { id = watertribe.1000 } #ALSO SHOULD TRIGGER AN EVENT IF THE AVATAR EXIST TO CONFRONT THE WATER TRIBE CHIEF, IF MOST OF THE NORTH WEST KINGDOM IS ALREADY UNDER THE FIRE NATION THE AVATAR SHOULD LET IT SLIP FOR NOW
+			#IDEA FOR FOLLOW UP, CUSTOM MIXED NATION WITH NEW CULTURE LIKE THE UNITED REPUBLIC BUT FOR WATER TRIBE
 			any_realm_lord = {
 				limit = {
 					primary_title = {
