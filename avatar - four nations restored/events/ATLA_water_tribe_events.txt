@@ -1188,7 +1188,7 @@ character_event = {
 		custom_tooltip = {
 			text = watertribe_offensive_free_troops_conquest_option_tooltip
 		}
-		trait = ambitious
+		add_trait = ambitious
 		hidden_tooltip = {
 			spawn_unit = {
 				province = event_target:capital_province
@@ -1276,7 +1276,7 @@ character_event = {
 		custom_tooltip = {
 			text = watertribe_offensive_free_troops_raid_option_tooltip
 		}
-		trait = greedy
+		add_trait = greedy
 		hidden_tooltip = {
 			spawn_unit = {
 				province = event_target:capital_province
@@ -1314,7 +1314,7 @@ character_event = {
 character_event = {
 	id = watertribe.2000
 	picture = GFX_evt_northern_water_tribe_wall
-	border = GFX_event_normal_frame_learning
+	border = GFX_event_normal_frame_religion
 	
 	is_triggered_only = yes
 	
@@ -1568,24 +1568,227 @@ character_event = {
 						}		
 					}
 				}
-				
-
+				character_event = { 
+					id = watertribe.2001 
+					days = 30
+					random = 60
+				}
 			}
 		}
 	}
 }
 
+#TOOMBLA EVENT - ROYAL ICE SCULPTOR
 character_event = {
 	id = watertribe.2001
-	picture = GFX_evt_northern_water_tribe_wall
-	border = GFX_event_normal_frame_learning
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				check_variable = {
+					which = sculpt_attempts
+					value = 0
+				}
+			}
+			#end event
+			break = yes
+		}
+				
+		change_variable = {
+			which = sculpt_attempts
+			value = -1
+		}	
+		
+		random_list = {
+		}
+	}
+}
+
+#2002 - conclusion TODO
+
+character_event = {
+	id = watertribe.2011
+	picture = GFX_evt_water_tribe_tundra
+	border = GFX_event_normal_frame_religion
+	desc = sculptor_training_basic
 	
 	is_triggered_only = yes
 	
-	desc = {
+	option = {
+		name = sculptor_training_basic_temperate
+		
 		trigger = {
-			has_character_flag = appointed_self_sculptor
+			NOT = {
+				trait = temperate
+			}
 		}
-		text = royal_ice_sculptor_self_start_desc
+		
+		random_list = {
+			90 = {
+				custom_tooltip = {
+					text = sculptor_training_small_gaining
+				}
+				custom_tooltip = {
+					text = sculptor_training_short_time
+				}				
+				character_event = { id = watertribe.3001 }
+				character_event = { 
+					id = watertribe.2001 
+					days = 120
+					random = 90
+				}					
+			}
+			10 = {
+				custom_tooltip = {
+					text = sculptor_training_medium_gaining
+				}
+				custom_tooltip = {
+					text = sculptor_training_short_time
+				}				
+				add_trait = temperate
+				character_event = { id = watertribe.3002 }
+				character_event = { 
+					id = watertribe.2001 
+					days = 90
+					random = 90
+				}				
+			}
+		}
+		
+	}
+	
+	option = {
+		name = sculptor_training_basic_diligent
+	}	
+}
+
+# ice sculpting, gaining experience and levels
+
+#level up check
+character_event = {
+	id = watertribe.3000
+	is_triggered_only = yes
+	hide_window = yes
+		
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOR = {
+							trait = ice_sculptor_1
+							trait = ice_sculptor_2
+							trait = ice_sculptor_3
+						}
+						check_variable = {
+							which = sculpting_experience
+							value = 8
+						}
+					}
+					AND = {
+						trait = ice_sculptor_1
+						check_variable = {
+							which = sculpting_experience
+							value = 10
+						}
+					}
+					AND = {
+						trait = ice_sculptor_2
+						check_variable = {
+							which = sculpting_experience
+							value = 12
+						}
+					}
+				}
+			}
+			character_event = { id = watertribe.3010 }
+		}
+	}
+}
+
+#leveled up ice sculpting
+character_event = {
+	id = watertribe.3010
+	picture = GFX_evt_waterbending_sparring_win
+	border = GFX_event_normal_frame_religion
+	desc = sculptor_level_up
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = sculptor_level_up_1
+		trigger = {
+			NOR = {
+				trait = ice_sculptor_1
+				trait = ice_sculptor_2
+				trait = ice_sculptor_3
+			}
+		}
+		add_trait = ice_sculptor_1
+		hidden_tooltip = {
+			change_variable = { which = sculpting_experience value = -8 }
+		}
+		character_event = { id = watertribe.3000 }		
+	}
+	
+	option = {
+		name = sculptor_level_up_2
+		trigger = {
+			trait = ice_sculptor_1
+		}
+		remove_trait = ice_sculptor_1
+		add_trait = ice_sculptor_2
+		hidden_tooltip = {
+			change_variable = { which = sculpting_experience value = -10 }
+		}
+		character_event = { id = watertribe.3000 }	
+	}	
+
+	option = {
+		name = sculptor_level_up_3
+		trigger = {
+			trait = ice_sculptor_2
+		}
+		remove_trait = ice_sculptor_2
+		add_trait = ice_sculptor_3
+		character_event = { id = watertribe.3000 }	
+	}
+}
+
+#low experience
+character_event = {
+	id = watertribe.3001
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		change_variable = { which = sculpting_experience value = 1 }		
+		character_event = { id = watertribe.3000 }
+	}
+}
+
+#med experience
+character_event = {
+	id = watertribe.3002
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		change_variable = { which = sculpting_experience value = 2 }
+		character_event = { id = watertribe.3000 }		
+	}
+}
+
+#high experience
+character_event = {
+	id = watertribe.3003
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		change_variable = { which = sculpting_experience value = 3 }
+		character_event = { id = watertribe.3000 }		
 	}
 }
