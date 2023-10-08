@@ -270,25 +270,72 @@ begin_ice_sculpting_north = {
 			religion = tui_and_la
 			religion = tue_and_la_reformed
 		}
-		NOT = { has_global_flag = ice_carving_enabled }
+		NOT = { has_global_flag = ice_sculpting_enabled }
 
 	}
 	
 	allow = {
-		prestige = 500
+		# prestige = 500
 	}
 	
 	effect = {
 		log = "[Root.GetFullName] begin ice sculpting north."
-		prestige = -500
+		# prestige = -500
 		custom_tooltip = {
 			text = begin_ice_sculpting_north_tooltip
 			hidden_tooltip = {
-				set_global_flag = ice_carving_enabled
+				set_global_flag = ice_sculpting_enabled
 			}
 		}
 	}
 }
+
+appoint_self_as_ice_sculptor = {
+	is_high_prio = yes
+	only_playable = yes
+	
+	potential = {
+		mercenary = no
+		holy_order = no
+		is_landed = yes
+		culture_group = water_tribe_culture
+		has_global_flag = ice_sculpting_enabled
+		OR = {
+			religion = tui_and_la
+			religion = tue_and_la_reformed
+		}
+		has_global_flag = ice_sculpting_enabled
+		NOT = { has_character_flag = appointed_self_sculptor }
+	}
+	
+	allow = {
+		trait = waterbender
+	}
+	
+	effect = {
+		log = "[Root.GetFullName] appointed themselves as the Royal Ice Sculptor."
+		custom_tooltip = {
+			text = appoint_self_as_ice_sculptor_tooltip
+			hidden_tooltip = {
+				set_character_flag = appointed_self_sculptor
+				character_event = { id = watertribe.2000 }
+			}
+		}
+	}
+	
+	ai_chance = {
+		factor = 1
+		modifier = {
+			OR = {
+				NOT = { learning = 5 }			
+				NOT = { martial = 5 }
+				trait = incompetent_bender
+			}
+			factor = 0
+		}
+	}
+}
+
 
 	wt_2 = { # Empire Title
 		is_high_prio = yes
