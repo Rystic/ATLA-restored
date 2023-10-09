@@ -17,39 +17,34 @@ long_character_event = {
 	only_rulers = yes
 	
 	trigger = {
-		OR = {
-			has_landed_title = e_fire_nation
-			primary_title = {
-				NOR = {
-					has_title_flag = GLOBSTATE_imperial_adopted_@THIS
-					has_title_flag = GLOBSTATE_FN_imperial_adopted 
-				}
-				higher_tier_than = duke
-				OR = {
-					has_law = ze_fire_administration_laws_2
-					has_law = fire_imperial_administration
-				}
-				holder_scope = {
-					culture_group = fire_nation_culture
-					NOT = { culture = sun_warrior }
-				}
+		primary_title = {
+			title = e_fire_nation
+			NOR = {
+				has_title_flag = GLOBSTATE_imperial_adopted_@THIS
+				has_title_flag = GLOBSTATE_FN_imperial_adopted 
+			}
+			higher_tier_than = duke
+			OR = {
+				has_law = ze_fire_administration_laws_2
+				has_law = fire_imperial_administration
+			}
+			holder_scope = {
+				culture_group = fire_nation_culture
+				NOT = { culture = sun_warrior }
 			}
 		}
 	}
 	
 	immediate = {
 		log = "Fire Nation went imperial ATLA_imperial.1"
-		if = {
-			limit = {
-				has_landed_title = e_fire_nation
-			}
-			primary_title = {
+		primary_title = {
+			if = {
+				limit = {
+					title = e_fire_nation
+				}
 				set_title_flag = GLOBSTATE_FN_imperial_adopted
-			}
-		}
-		else_if = {
-			limit = {
-				primary_title = {
+			} else_if = {
+				limit = {
 					higher_tier_than = duke
 					has_law = ze_fire_administration_laws_2
 					has_law = fire_imperial_administration
@@ -58,9 +53,6 @@ long_character_event = {
 						NOT = { culture = sun_warrior }
 					}
 				}
-				NOT = { has_landed_title = e_fire_nation }
-			}
-			primary_title = {
 				set_title_flag = GLOBSTATE_imperial_adopted_@THIS
 			}
 		}
@@ -72,19 +64,7 @@ long_character_event = {
 			set_government_type = fire_imperial_government
 			save_event_target_as = imperialism_adopter
 			prestige = 500
-			any_playable_ruler = {
-				limit = {
-					OR = { #anti clogger (im thinking forwards)
-						ai = no
-						AND = {
-							multiplayer = yes
-							ai = no
-						}
-						is_local_human_observer = yes
-					}
-				}
-				narrative_event = { id = ATLA_imperial.2 } #News Event
-			}
+			narrative_event = { id = ATLA_imperial.2 } #News Event
 		}
 	}
 }
@@ -96,6 +76,8 @@ narrative_event = {
 	picture = GFX_evt_fire_nation_army		
 	is_triggered_only = yes
 	only_rulers = yes
+	
+	major = yes
 	
 	#Fire Lord / Adopter
 	desc = {
