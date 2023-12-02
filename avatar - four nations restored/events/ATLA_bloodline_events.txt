@@ -395,3 +395,36 @@ character_event = {
 		}
 	}
 }
+
+# sun ruler gets bloodline
+character_event = {
+	id = bloodline_events.11
+	title = EVTTITLEbender_bloodlines.11
+	desc = EVTDESCbender_bloodlines.11
+	picture = GFX_evt_sun_warrior_city
+	min_age = 16
+
+	is_triggered_only = yes
+
+	option = {
+		name = EVTOPTbender_bloodlines.11
+
+		if = { # Give bloodline to Sun Warrior
+			limit = {
+				trait = firebender
+				NOR = {
+					any_owned_bloodline = { 
+						has_bloodline_flag = bloodline_sun # If you don't have the sun bloodline, it'll create one
+					}
+					has_character_flag = sunwarrior_check # not founded one before
+				} 
+			}
+			create_bloodline = { # reate one
+				type = sun_blood
+				inheritance = all_descendants
+			}
+			set_character_flag = sunwarrior_check
+		}
+	}
+}
+
