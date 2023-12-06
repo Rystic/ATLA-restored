@@ -378,24 +378,21 @@ narrative_event = { #character discovers metalbending
 	option = {
 		name = EVTOPTAspecial.17
 		add_trait = metalbender
-		create_bloodline = {
-			type = metalbending_founder
-		}
-		any_owned_bloodline = {
+		if = {
 			limit = {
-				has_bloodline_flag = bloodline_metalbender_founder
+				any_owned_bloodline = {
+					limit = {
+						NOT = { has_bloodline_flag = bloodline_metalbender_founder }
+					}
+				}
 			}
-
-			save_event_target_as = metalbending_bloodline
-			founder = {
-				save_event_target_as = metalbending_founder_ancestor 
+			create_bloodline = {
+				type = metalbending_founder
 			}
 		}
 		hidden_tooltip = {
 			character_event = { id = special.18 }
 		}	
-
-
 	}
 	immediate = {
 	
@@ -1022,7 +1019,7 @@ narrative_event = {
 		NOT = { trait = combustionbender }
 	}
 	option = {
-		name = EVTDESCspecial.47
+		name = EVTDESCCspecial.47
 		add_trait = combustionbender
 	}
 }
