@@ -1602,12 +1602,14 @@ character_event = {
 		}	
 		
 		random_list = {
+			#TODO add all the ice sculpting events
 		}
 	}
 }
 
 #2002 - conclusion TODO
 
+#2011 -> ice sculpting, temperance/diligence event
 character_event = {
 	id = watertribe.2011
 	picture = GFX_evt_water_tribe_tundra
@@ -1617,7 +1619,7 @@ character_event = {
 	is_triggered_only = yes
 	
 	option = {
-		name = sculptor_training_basic_temperate
+		name = sculptor_training_basic_not_temperate
 		
 		trigger = {
 			NOT = {
@@ -1655,13 +1657,501 @@ character_event = {
 					random = 90
 				}				
 			}
+		}		
+	}
+
+	option = {
+		name = sculptor_training_basic_temperate
+		
+		trigger = {
+			trait = temperate
+		}
+		tooltip_info = temperate
+		custom_tooltip = {
+			text = sculptor_training_medium_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}		
+		
+		character_event = { id = watertribe.3002 }
+		character_event = { 
+			id = watertribe.2001 
+			days = 90
+			random = 90
+		}	
+	}
+
+	
+	option = {
+		name = sculptor_training_basic_not_diligent
+		
+		trigger = {
+			NOT = {
+				trait = diligent
+			}
 		}
 		
+		random_list = {
+			90 = {
+				custom_tooltip = {
+					text = sculptor_training_medium_gaining
+				}
+				custom_tooltip = {
+					text = sculptor_training_long_time
+				}				
+				character_event = { id = watertribe.3002 }
+				character_event = { 
+					id = watertribe.2001 
+					days = 485
+					random = 90
+				}
+				add_trait = stressed
+			}
+			10 = {
+				custom_tooltip = {
+					text = sculptor_training_large_gaining
+				}
+				custom_tooltip = {
+					text = sculptor_training_long_time
+				}				
+				add_trait = diligent
+				character_event = { id = watertribe.3003 }
+				character_event = { 
+					id = watertribe.2001 
+					days = 455
+					random = 90
+				}
+				modifier = {
+					factor = 0
+					trait = stressed
+				}
+			}
+		}		
+	}
+
+	option = {
+		name = sculptor_training_basic_diligent
+		
+		trigger = {
+			trait = diligent
+		}
+		tooltip_info = diligent
+		custom_tooltip = {
+			text = sculptor_training_large_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}		
+		character_event = { id = watertribe.3003 }
+		character_event = { 
+			id = watertribe.2001 
+			days = 455
+			random = 90
+		}		
+	}		
+}
+
+#2012 -> ice sculpting, studying event
+character_event = {
+	id = watertribe.2012
+	picture = GFX_evt_water_tribe_tundra
+	border = GFX_event_normal_frame_religion
+	desc = sculptor_training_study
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = sculptor_training_study_basics
+		trigger = {
+			NAND = {
+				martial = 12
+				learning = 12
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_education_martial_trigger = yes
+					has_education_learning_trigger = yes
+				}
+				has_bottom_tier_education_trait_trigger = yes
+			}
+			upgrade_education_effect = yes
+		} else = {
+			random_list = {
+				40 = {
+					change_martial = 1				
+				}
+				40 = {
+					change_learning = 1					
+				}
+				20 = {
+					add_character_modifier = {
+						name = out_of_patience 
+						years = 2
+					}
+				}
+			}
+		}
+			
+		custom_tooltip = {
+			text = sculptor_training_small_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3001 }
+		if = {
+			limit = {
+				NOT = {
+					learning = 8
+				}
+			}
+			character_event = { 
+				id = watertribe.2001 
+				days = 455
+				random = 90
+			}
+		} else = {
+			character_event = { 
+				id = watertribe.2001 
+				days = 255
+				random = 90
+			}		
+		}
 	}
 	
 	option = {
-		name = sculptor_training_basic_diligent
+		name = sculptor_training_both_good
+		trigger = {
+			learning = 12
+			martial = 12
+		}
+		custom_tooltip = {
+			text = sculptor_training_large_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3003 }			
+		character_event = { 
+			id = watertribe.2001 
+			days = 120
+			random = 90
+		}		
 	}	
+	
+	option = {
+		name = sculptor_training_study_good_martial
+		trigger = {
+			martial = 12
+			NOT = {
+				learning = 12
+			}
+		}
+		random_list = {
+			80 = {
+				change_learning = 1					
+			}
+			20 = {
+				add_character_modifier = {
+					name = out_of_patience 
+					years = 2
+				}
+			}
+		}
+		custom_tooltip = {
+			text = sculptor_training_medium_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3002 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 455
+			random = 90
+		}		
+	}
+	
+	option = {
+		name = sculptor_training_study_good_learning
+		trigger = {
+			learning = 12
+			NOT = {
+				martial = 12
+			}
+		}
+		random_list = {
+			80 = {
+				change_martial = 1					
+			}
+			20 = {
+				add_character_modifier = {
+					name = out_of_patience 
+					years = 1
+				}
+			}
+		}
+		custom_tooltip = {
+			text = sculptor_training_medium_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3002 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 255
+			random = 90
+		}		
+	}
+	
+	option = {
+		name = sculptor_training_earthbending
+		trigger = {
+			trait = sympathy_earth_religions
+		}
+		custom_tooltip = {
+			text = sculptor_training_large_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3003 }			
+		character_event = { 
+			id = watertribe.2001 
+			days = 365
+			random = 90
+		}		
+	}	
+}
+
+#2013 -> ice sculpting, learning event
+character_event = {
+	id = watertribe.2013
+	picture = GFX_evt_northern_water_tribe_spirit_oasis
+	border = GFX_event_normal_frame_religion
+	desc = sculptor_training_learning
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = sculptor_training_learning_low_learning
+		trigger = {
+			NOT = { learning = 12 }
+		}
+		change_learning = 1
+		custom_tooltip = {
+			text = sculptor_training_small_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3001 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 100
+			random = 90
+		}			
+	}
+	
+	option = {
+		name = sculptor_training_learning_zealous
+		trigger = {
+			learning = 12
+			NOT = {
+				trait = zealous
+			}
+		}
+		random_list = {
+			50 = { add_trait = zealous }
+			50 = { add_trait = possessed }
+		}
+		custom_tooltip = {
+			text = sculptor_training_medium_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3002 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 320
+			random = 90
+		}		
+	}
+	
+	option = {
+		name = sculptor_training_learning_zealous
+		trigger = {
+			learning = 12
+			trait = zealous
+		}
+		custom_tooltip = {
+			text = sculptor_training_medium_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3002 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 120
+			random = 90
+		}		
+	}
+	
+	option = {
+		name = sculptor_training_learning_bending
+		trigger = {
+			learning = 12
+			NOT = {
+				trait = powerful_bender
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					trait = incompetent_bender
+					trait = competent_bender
+				}
+				level_up_bending_effect = yes
+			}
+		}
+		custom_tooltip = {
+			text = sculptor_training_small_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3001 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 120
+			random = 90
+		}		
+	}
+	
+	option = {
+		name = sculptor_training_learning_bending
+		trigger = {
+			learning = 12
+			OR = {
+				trait = powerful_bender
+				trait = master_bender
+				trait = legendary_bender
+			}
+		}
+		custom_tooltip = {
+			text = sculptor_training_large_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3003 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 120
+			random = 90
+		}		
+	}
+	
+	option = {
+		name = sculptor_training_learning_education
+		trigger = {
+			learning = 12
+			has_top_tier_education_trait_trigger = no
+			has_education_learning_trigger = yes
+		}
+		upgrade_education_effect = yes
+		custom_tooltip = {
+			text = sculptor_training_small_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3001 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 320
+			random = 90
+		}
+	}
+	
+	option = {
+		name = sculptor_training_learning_education
+		trigger = {
+			learning = 12
+			has_top_tier_education_trait_trigger = no
+			has_education_learning_trigger = yes
+		}
+		custom_tooltip = {
+			text = sculptor_training_large_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_long_time
+		}
+		character_event = { id = watertribe.3003 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 220
+			random = 90
+		}
+	}
+	
+	option = {
+		name = sculptor_training_learning_earthbending
+		trigger = {
+			trait = sympathy_earth_religions
+		}
+		tooltip_info = sympathy_earth_religions
+		custom_tooltip = {
+			text = sculptor_training_medium_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3002 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 100
+			random = 90
+		}		
+	}	
+}
+
+#2014 -> ice sculpting, martial event
+character_event = {
+	id = watertribe.2014
+	picture = GFX_evt_water_tribe_tundra
+	border = GFX_event_normal_frame_war
+	desc = sculptor_training_martial
+	
+	is_triggered_only = yes
+
+	option = {
+		name = sculptor_training_martial_low_martial
+		trigger = {
+			NOT = { martial = 12}
+		}
+		change_martial = 1
+		custom_tooltip = {
+			text = sculptor_training_small_gain
+		}
+		custom_tooltip = {
+			text = sculptor_training_short_time
+		}
+		character_event = { id = watertribe.3001 }			
+		character_event = {
+			id = watertribe.2001 
+			days = 100
+			random = 90
+		}					
+	}
 }
 
 # ice sculpting, gaining experience and levels
