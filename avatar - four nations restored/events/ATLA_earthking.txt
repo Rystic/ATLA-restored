@@ -2421,30 +2421,20 @@ character_event = {
 		change_variable = { which = global_royalAuthority which = traits_ra_gain }	
 		change_variable = { which = global_royalAuthority which = religion_ra_gain }			
 		
-		if = { # Authority Cap + Regency
-			limit = {
-				has_regent = yes
-				check_variable = { which = global_royalAuthority value = 50 }
-			}
-			set_variable = { which = global_royalAuthority value = 50 }
-		}
+		#If royal authority outside the -100 to 100 range, clamp it.
 		if = { # Authority Cap + Absolute
 			limit = {
-				check_variable = { which = global_royalAuthority value = 101 }
-				has_global_flag = earthking_in_power
+				check_variable = { which = global_royalAuthority value > 100 }
 			}
 			set_variable = { which = global_royalAuthority value = 100 }
-		}
+		}		
 		if = { # Authority Cap -
 			limit = {
-				check_variable = { which = global_royalAuthority value <= -101 }
-				OR = {
-					NOT = { trait = earthkingconstitution }
-					has_global_flag = kyoshi_parliamental_monarch
-				}
+				check_variable = { which = global_royalAuthority value < -100 }
 			}
 			set_variable = { which = global_royalAuthority value = -100 }
 		}
+		
 		if = { # Authority Cap + constitutional monarch
 			limit = {
 				check_variable = { which = global_royalAuthority value = 75 }
@@ -2452,9 +2442,18 @@ character_event = {
 			}
 			set_variable = { which = global_royalAuthority value = 75 }
 		}
+
+		if = { # Authority Cap + Regency
+			limit = {
+				has_regent = yes
+				check_variable = { which = global_royalAuthority value > 50 }
+			}
+			set_variable = { which = global_royalAuthority value = 50 }
+		}
+		
 		if = { # Authority Cap - constitutional monarch
 			limit = {
-				check_variable = { which = global_royalAuthority value <= -75 }
+				check_variable = { which = global_royalAuthority value < -75 }
 				AND = {
 					trait = earthkingconstitution
 					NOT = { has_global_flag = kyoshi_parliamental_monarch }
@@ -2463,53 +2462,16 @@ character_event = {
 			}
 			set_variable = { which = global_royalAuthority value = -75 }
 		}
-		if = { # Authority Cap -
-			limit = {
-				check_variable = { which = global_royalAuthority value <= -101 }
-			}
-			set_variable = { which = global_royalAuthority value = -100 }
-		}
 		set_variable = { which = authority_gain which = global_royalAuthority }
 		subtract_variable = { which = authority_gain which = old_authority }		
 	}
 	
 	option = {
 		name = EVTOPTA_EK_56
-			#if = {
-				#limit = {
-				#	check_variable = { which = laws_ra_gain value => 0 }
-				#	check_variable = { which = global_num_of_ek_tributaries value => 0 }
-				#	}
-				custom_tooltip = {
-					text = RA_GAIN_FIVE_YEAR
-				}
-			#}
-			#if = {
-			#	limit = {
-			#		check_variable = { which = laws_ra_gain value < 0 }
-			#		}
-			#	custom_tooltip = {
-			#		text = RA_GAIN_FIVE_YEAR_MIN_LAW
-			#	}
-			#}
-			#if = {
-			#	limit = {
-			#		check_variable = { which = global_num_of_ek_tributaries value < 0 }
-			#		}
-			#	custom_tooltip = {
-			#		text = RA_GAIN_FIVE_YEAR_MIN_TRIB
-			#	}
-			#}
-			#if = {
-			#	limit = {
-			#		check_variable = { which = laws_ra_gain value < 0 }
-			#		check_variable = { which = global_num_of_ek_tributaries value < 0 }
-			#		}
-			#	custom_tooltip = {
-			#		text = RA_GAIN_FIVE_YEAR_MIN_LAW_TRIB
-			#	}
-			#}
-	}
+			custom_tooltip = {
+				text = RA_GAIN_FIVE_YEAR
+			}
+		}
 	}
 
 # Earth Kingdom - Royal Authority - Relation Boost
