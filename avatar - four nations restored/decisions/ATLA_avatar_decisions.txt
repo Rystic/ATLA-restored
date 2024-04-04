@@ -1,24 +1,103 @@
 decisions = {
-	#play_avatar = {
-	#	is_high_prio = yes
-	#	only_playable = yes
-	#	ai = no
-	#	potential = {
-	#		is_avatar_trigger = no
-	#		event_target:global_avatar = {
-	#			is_avatar_trigger = yes
-	#			ai = yes
-	#		}
-	#		has_global_flag = playable_avatar
-	#	}
-	#	allow = {
-	#		always = yes
-	#	}
-	#	effect = {
-	#		# find_avatar_effect = yes
-	#		set_player_character = event_target:global_avatar
-	#	}
-	#}
+#	play_avatar = {
+#		is_high_prio = yes
+#		only_playable = yes
+#		ai = no
+#
+#		potential = {
+#			is_avatar_trigger = no
+#			event_target:global_avatar = {
+#				is_avatar_trigger = yes
+#				ai = yes
+#			}
+#			has_global_flag = playable_avatar
+#		}
+#		
+#		allow = {
+#			always = yes
+#		}
+#		
+#		effect = {
+#			find_avatar_effect = yes
+#			set_player_character = event_target:global_avatar
+#		}
+#	}
+	
+	check_avatar_decision = {
+		ai = no
+		
+		potential = {
+			NOR = {
+				trait = avatar
+				trait = fullyrealisedavatar
+				has_character_flag = avatar_revealed
+			}
+		}
+		allow = {
+			NOT = {
+				has_character_flag = viewing_avatar_status
+			}
+		}
+		effect = {
+			set_character_flag = viewing_avatar_status
+			character_event = {
+				id = ATLAR.764
+			}
+		}
+	}
+	
+	ruler_summons_avatar_revolt = {
+		is_high_prio = yes
+		only_rulers = yes
+		
+		potential = {
+			is_title_active = d_avatar
+			NOT = { has_landed_title = d_avatar }
+			NOT = { has_global_flag = avatar_busy }
+			NOT = {
+				primary_title = {
+					rebel = yes
+				}
+			}
+			NOT = { has_any_opinion_modifier = avatar_refused_aid }
+			any_war = { using_cb = peasant_revolt }
+			NOT = { has_character_flag = avatar_aid }
+
+			# avatar isn't busy with mastering elements
+			d_avatar = {
+				owner = {
+					NOT = {
+						has_character_flag = avatar_journey
+					}
+				}
+			}
+		}
+		
+		allow = {
+			NOR = { 
+				religion = way_of_chin
+				religion = way_of_chin_reformed
+				religion = fire_nation_imperialism
+				religion = pirate_faith 
+			}
+		}
+		
+		effect = {
+			log = "[Root.GetFullName] summoned the Avatar to help with a revolt."
+			set_character_flag = avatar_aid
+			d_avatar = {
+				owner = {
+					character_event = { id = avatar.179 }
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 0.5
+		}
+	
+	}
+
 }
 
 targeted_decisions = {
@@ -27,10 +106,12 @@ targeted_decisions = {
 		only_playable = yes
 		filter = independent_rulers
 		ai = no
+		
 		from_potential = {
 			is_landed = no
 			is_avatar_trigger = yes
 		}
+		
 		potential = {
 			is_within_diplo_range = FROM
 			is_landed = yes
@@ -48,6 +129,7 @@ targeted_decisions = {
 				}
 			}
 		}
+		
 		allow = {
 			FROM = {
 				age >= 16

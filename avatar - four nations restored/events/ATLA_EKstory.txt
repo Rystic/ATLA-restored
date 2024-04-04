@@ -7,9 +7,9 @@
 #List of events:
 #1 - start of chain
 #2 - Remnants of Chin Empire ( peaceful )
-#3 - Ba Sing Se rebelion ( canon )
+#3 - Ba Sing Se rebellion ( canon )
 #4 - Chin Remnants submit and join EK ( peaceful )
-#5 - Ba Sing Se rebelion random event server ( canon )
+#5 - Ba Sing Se rebellion random event server ( canon )
 #6 - War with chin remnants ( peaceful )
 #7 - Summon avatar to help dealing with chin remnants ( peaceful ) 
 #8 - Nah its avatar defy you
@@ -31,10 +31,10 @@
 #ek_choose_war
 #ek_chin_remnants_war
 #ek_chin_remnants_war
-#chin_chosen_avatar
-#chin_chosen_diplo
-#chin_chosen_martial
-#chin_chosen_tarifs
+#chin_chose_avatar
+#chin_chose_diplo
+#chin_chose_martial
+#chin_chose_tariffs
 #chin_submit_avatar
 #chin_war_avatar
 #ek_ra_set_unity_0
@@ -42,10 +42,10 @@
 #earthking_in_power
 #kyoshi_parliamental_monarch
 #ek_gave_some_power
-#ba_sing_se_rebelion
-#whispers_of_rebelion
+#ba_sing_se_rebellion
+#whispers_of_rebellion
 #ending_of_jian_chain
-#ba_rebelion_timer
+#ba_rebellion_timer
 ####
 
 
@@ -94,30 +94,30 @@ narrative_event = {
 				limit = {
 					has_law = ek_unity_0
 				}
-			revoke_law = ek_unity_0
-			add_law = ek_unity_1
-			clr_title_flag = ek_ra_set_unity_0
-			set_title_flag = ek_ra_set_unity_1
+				revoke_law = ek_unity_0
+				add_law = ek_unity_1
+				clr_title_flag = ek_ra_set_unity_0
+				set_title_flag = ek_ra_set_unity_1
 			}
 			if = {
 				limit = {
 					has_law = ze_admin_anarchy
 				}
-			revoke_law = ze_admin_anarchy			
-			add_law = ze_admin_territories
+				revoke_law = ze_admin_anarchy			
+				add_law = ze_admin_territories
 			}
 			if = {
 				limit = {
 					has_law = bureaucracy_anarchy
 				}
-			revoke_law = bureaucracy_anarchy		
-			add_law = underfunded_bureaucracy
+				revoke_law = bureaucracy_anarchy		
+				add_law = underfunded_bureaucracy
 			}			
 		}
 		hidden_tooltip = {
 			any_independent_ruler = { #copy paste from law server event with way of chin block
 				limit = {
-					culture_group = earth_kingdom_culture
+					culture_group = earth_kingdom_cultures
 					NOR = { 
 						religion = way_of_chin 
 						religion = way_of_chin_reformed
@@ -126,11 +126,11 @@ narrative_event = {
 				save_event_target_as = lesser_ruler
 				if = {
 					limit = {
-						culture_group = earth_kingdom_culture
+						culture_group = earth_kingdom_cultures
 						NOR = { 
 							culture = sandbender_culture
-							culture = southern_earth
-							culture = barbarians	
+							culture = southern_earth_culture
+							culture = barbarian_culture	
 						}
 						mercenary = no
 						holy_order = no
@@ -160,20 +160,20 @@ narrative_event = {
 						}
 					}
 				}
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-					NOT = { culture = eastern_earth }
-					mercenary = no
-					holy_order = no
-					#temporary = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					NOR = { 
-						religion = way_of_chin 
-						religion = way_of_chin_reformed
-					}
-					capital_scope = {
+				if = {
+					limit = {
+						culture_group = earth_kingdom_cultures
+						NOT = { culture = eastern_earth_culture }
+						mercenary = no
+						holy_order = no
+						#temporary = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						NOR = { 
+							religion = way_of_chin 
+							religion = way_of_chin_reformed
+						}
+						capital_scope = {
 							OR = {
 								region = world_southern_earth_kingdom
 								region = world_earth_islands
@@ -182,36 +182,36 @@ narrative_event = {
 							}
 						}
 					}
-				event_target:earth_king = {
-					make_tributary = {						
-						who = event_target:lesser_ruler
+					event_target:earth_king = {
+						make_tributary = {						
+							who = event_target:lesser_ruler
 							percentage = 0.12
 							tributary_type = earth_kingdom_territory_tributary
 						}
 					}
-			}
-			if = {
-				limit = {
-					OR = {
-						culture = barbarians
-						culture = sandbender_culture
-					}
-					mercenary = no
-					holy_order = no
-					#temporary = no
-					rebel = no
-					NOT = { has_landed_title = d_avatar }
-					capital_scope = {
-						OR = {
-							region = world_si_wong
-							region = world_western_earth_kingdom
-							region = world_north_east_earth_kingdom
-						}
-					}	
 				}
-				event_target:earth_king = {
-					make_tributary = {						
-						who = event_target:lesser_ruler
+				if = {
+					limit = {
+						OR = {
+							culture = barbarian_culture
+							culture = sandbender_culture
+						}
+						mercenary = no
+						holy_order = no
+						#temporary = no
+						rebel = no
+						NOT = { has_landed_title = d_avatar }
+						capital_scope = {
+							OR = {
+								region = world_si_wong
+								region = world_western_earth_kingdom
+								region = world_north_east_earth_kingdom
+							}
+						}	
+					}
+					event_target:earth_king = {
+						make_tributary = {						
+							who = event_target:lesser_ruler
 							percentage = 0.1
 							tributary_type = earth_kingdom_outpost_tributary
 						}
@@ -241,9 +241,7 @@ narrative_event = {
 	
 	option = {
 		name = ekstory2a
-		k_earth_kingdom = {
-				set_title_flag = chin_chosen_martial
-		}
+		k_earth_kingdom = { set_title_flag = chin_chose_martial }
 		if = {
 			limit = {
 				martial >= 12
@@ -302,9 +300,7 @@ narrative_event = {
 				diplomacy >= 12
 			}
 		}
-		k_earth_kingdom = {	
-			set_title_flag = chin_chosen_diplo
-		}
+		k_earth_kingdom = {	set_title_flag = chin_chose_diplo }
 		random_list = {
 			65 = {
 				custom_tooltip = {
@@ -332,9 +328,7 @@ narrative_event = {
 		trigger = {
 			stewardship >= 12
 		}
-		k_earth_kingdom = {		
-			set_title_flag = chin_chosen_tarifs
-		}
+		k_earth_kingdom = { set_title_flag = chin_chose_tariffs }
 		random_list = {
 			80 = {
 				custom_tooltip = {
@@ -370,9 +364,7 @@ narrative_event = {
 				}
 			}	
 		}
-		k_earth_kingdom = {
-			set_title_flag = chin_chosen_avatar
-		}
+		k_earth_kingdom = { set_title_flag = chin_chose_avatar }
 		custom_tooltip = {
 			text = summon_avatar_chin
 			d_avatar = {
@@ -381,13 +373,13 @@ narrative_event = {
 				}
 			}
 			k_earth_kingdom = {
-				set_title_flag = chin_chosen_avatar
+				set_title_flag = chin_chose_avatar
 			}
 		}
 	}
 }
 
-#Ba Sing Se rebelion
+#Ba Sing Se rebellion
 narrative_event = {
 	id = ekstory.3
 	desc = EVTDESCEKSTORY3
@@ -396,8 +388,8 @@ narrative_event = {
 	picture = GFX_evt_avatar_conflict
 	
 	trigger = {
-		has_global_flag = whispers_of_rebelion
-		NOT = { has_global_flag = ba_sing_se_rebelion }
+		has_global_flag = whispers_of_rebellion
+		NOT = { has_global_flag = ba_sing_se_rebellion }
 		year >= 600
 		year <= 630
 	}
@@ -405,11 +397,11 @@ narrative_event = {
 	option = {
 		name = iwilldealwiththemmyself
 		custom_tooltip = {
-			text = rebelion_continues
-			set_global_flag = ba_sing_se_rebelion
+			text = rebellion_continues
+			set_global_flag = ba_sing_se_rebellion
 			narrative_event = { id = ekstory.10 years = 10 }
 			narrative_event = { id = ekstory.5 }
-			set_character_flag = ba_rebelion_timer
+			set_character_flag = ba_rebellion_timer
 		}
 	}
 	option = { 
@@ -425,7 +417,7 @@ narrative_event = {
 			}
 		}
 		narrative_event = { id = ekstory.8 days = 150 random = 3 }
-		set_global_flag = ba_sing_se_rebelion
+		set_global_flag = ba_sing_se_rebellion
 		set_global_flag = avatar_summoned_ek
 	}	
 }
@@ -438,35 +430,31 @@ narrative_event = {
 	desc = {
 		trigger = {
 			k_earth_kingdom = {
-				has_title_flag = chin_chosen_diplo
+				has_title_flag = chin_chose_diplo
 			}
 		}
 		text = EVTDESCEKSTORY4a
 	}
 	desc = {
 		trigger = {
-			k_earth_kingdom = { 
-				has_title_flag = chin_chosen_tarifs
-			}
+			k_earth_kindom = { has_title_flag = chin_chose_tariffs }
 		}
 		text = EVTDESCEKSTORY4b
 	}
 	desc = {
 		trigger = {
 			k_earth_kingdom = {
-				has_title_flag = chin_chosen_martial
+				has_title_flag = chin_chose_martial
 			}
 		}
 		text = EVTDESCEKSTORY4c
 	}
 	desc = {
 		trigger = {
-			k_earth_kingdom = {
-				has_title_flag = chin_chosen_avatar
-			}
+			k_earth_kindom = { has_title_flag = chin_chose_avatar }
 		}
 		text = EVTDESCEKSTORY4d
-	}	
+	}
 	title = EVTTITEKSTORY4
 	is_triggered_only = yes
 	
@@ -478,10 +466,10 @@ narrative_event = {
 		year <= 700
 		k_earth_kingdom = {
 			OR = {
-				has_title_flag = chin_chosen_diplo
-				has_title_flag = chin_chosen_tarifs
-				has_title_flag = chin_chosen_martial
-				has_title_flag = chin_chosen_avatar
+				has_title_flag = chin_chose_diplo
+				has_title_flag = chin_chose_tariffs
+				has_title_flag = chin_chose_martial
+				has_title_flag = chin_chose_avatar
 			}
 		}
 	}
@@ -490,7 +478,7 @@ narrative_event = {
 		name = ekchinsubmitdiplo
 		trigger = {
 			k_earth_kingdom = {
-				has_title_flag = chin_chosen_diplo
+				has_title_flag = chin_chose_diplo
 			}
 		}		
 		custom_tooltip = {
@@ -501,7 +489,7 @@ narrative_event = {
 						religion = way_of_chin 
 						religion = way_of_chin_reformed
 					}
-					culture_group = earth_kingdom_culture
+					culture_group = earth_kingdom_cultures
 				}
 				FROM = {
 					make_tributary = {
@@ -522,7 +510,7 @@ narrative_event = {
 		name = ekchinsubmittarrifs
 		trigger = {
 			k_earth_kingdom = {
-				has_title_flag = chin_chosen_tarifs
+				has_title_flag = chin_chose_tariffs
 			}
 		}
 		custom_tooltip = {
@@ -533,7 +521,7 @@ narrative_event = {
 						religion = way_of_chin 
 						religion = way_of_chin_reformed
 					}
-					culture_group = earth_kingdom_culture
+					culture_group = earth_kingdom_cultures
 				}
 				FROM = {
 					make_tributary = {
@@ -555,8 +543,8 @@ narrative_event = {
 		trigger = {
 			k_earth_kingdom = {
 				OR = {
-					has_title_flag = chin_chosen_martial
-					has_title_flag = chin_chosen_avatar
+					has_title_flag = chin_chose_martial
+					has_title_flag = chin_chose_avatar
 				}
 			}
 		}
@@ -568,7 +556,7 @@ narrative_event = {
 						religion = way_of_chin 
 						religion = way_of_chin_reformed
 					}
-					culture_group = earth_kingdom_culture
+					culture_group = earth_kingdom_cultures
 				}
 				FROM = {
 					make_tributary = {
@@ -586,7 +574,7 @@ narrative_event = {
 	}	
 }
 
-#ba sing se rebelion event server
+#ba sing se rebellion event server
 character_event = {
 	id = ekstory.5
 	is_triggered_only = yes
@@ -597,12 +585,12 @@ character_event = {
 		year <= 630
 		year >= 600
 		has_global_flag = ek_choose_war
-		has_global_flag = ba_sing_se_rebelion
+		has_global_flag = ba_sing_se_rebellion
 		NOT = { has_global_flag = avatar_summoned_ek }
-		has_character_flag = ba_rebelion_timer
+		has_character_flag = ba_rebellion_timer
 	}
 	
-	immediate = { #well this awkard
+	immediate = { #well this awkard #Yeah, no shit - Liz
 		repeat_event = {
 			id = ekstory.5
 			days = 60
@@ -680,16 +668,16 @@ narrative_event = {
 		name = chinitstreasonthen
 		any_independent_ruler = {
 			limit = {
-				culture_group = earth_kingdom_culture
+				culture_group = earth_kingdom_cultures
 				OR = { 
 					religion = way_of_chin 
 					religion = way_of_chin_reformed
 				}
 			}
 			reverse_unsafe_war = { 	#reverse_unsafe_war
-					target = ROOT #FROM
-					casus_belli = earth_kingdom_reconquest
-					thirdparty_title = k_earth_kingdom
+				target = ROOT #FROM
+				casus_belli = earth_kingdom_reconquest
+				thirdparty_title = k_earth_kingdom
 			}
 		}
 	}
@@ -709,7 +697,7 @@ narrative_event = {
 			trait = avatar
 			trait = fullyrealisedavatar
 		}
-		has_global_flag = ba_sing_se_rebelion
+		has_global_flag = ba_sing_se_rebellion
 		year <= 630
 		year >= 280
 		NOT = { has_global_flag = kyoshi_summoned_canon }
@@ -746,7 +734,7 @@ narrative_event = {
 	picture = GFX_evt_avatar_conflict
 	
 	trigger = { 
-		has_global_flag = ba_sing_se_rebelion
+		has_global_flag = ba_sing_se_rebellion
 		has_global_flag = ek_choose_war
 		year >= 600
 		year <= 630
@@ -805,13 +793,13 @@ narrative_event = {
 		character_event = { id = ekstory.10 years = 10 }
 		character_event = { id = ekstory.5 }
 		clr_global_flag = avatar_summoned_ek
-		set_character_flag = ba_rebelion_timer
+		set_character_flag = ba_rebellion_timer
 	}
 }
 
 #Nine would be here but this event id kills game so its going to be unusued
 
-#End of Ba Sing Se rebelion
+#End of Ba Sing Se rebellion
 narrative_event = {
 	id = ekstory.10
 	desc = EVTDESCEKSTORY10
@@ -824,16 +812,16 @@ narrative_event = {
 		year <= 630
 		year >= 600
 		has_global_flag = ek_choose_war
-		has_global_flag = ba_sing_se_rebelion
+		has_global_flag = ba_sing_se_rebellion
 		had_character_flag = { 
-			flag = ba_rebelion_timer
+			flag = ba_rebellion_timer
 			years >= 10
 		}
 	}
 		
 	option = {
 		name = fullyoperationalbattlestation
-		clr_character_flag = ba_rebelion_timer
+		clr_character_flag = ba_rebellion_timer
 		change_variable = { which = global_royalAuthority value = 25 }
 	}
 }
@@ -849,8 +837,8 @@ character_event = { #Unrest
 		year <= 630
 		year >= 600
 		has_global_flag = ek_choose_war
-		has_global_flag = ba_sing_se_rebelion
-		has_character_flag = ba_rebelion_timer
+		has_global_flag = ba_sing_se_rebellion
+		has_character_flag = ba_rebellion_timer
 	}
 	
 	option = {
@@ -875,8 +863,8 @@ character_event = { #Corruption
 		year <= 630
 		year >= 600
 		has_global_flag = ek_choose_war
-		has_global_flag = ba_sing_se_rebelion
-		has_character_flag = ba_rebelion_timer
+		has_global_flag = ba_sing_se_rebellion
+		has_character_flag = ba_rebellion_timer
 	}
 	
 	option = {
@@ -899,8 +887,8 @@ character_event = { #Weak Gov
 		year <= 630
 		year >= 600
 		has_global_flag = ek_choose_war
-		has_global_flag = ba_sing_se_rebelion
-		has_character_flag = ba_rebelion_timer
+		has_global_flag = ba_sing_se_rebellion
+		has_character_flag = ba_rebellion_timer
 	}
 	
 	option = {
@@ -922,8 +910,8 @@ character_event = { #claimant appears
 		year <= 630
 		year >= 600
 		has_global_flag = ek_choose_war
-		has_global_flag = ba_sing_se_rebelion
-		has_character_flag = ba_rebelion_timer
+		has_global_flag = ba_sing_se_rebellion
+		has_character_flag = ba_rebellion_timer
 	}
 	
 	option = {
@@ -932,7 +920,7 @@ character_event = { #claimant appears
 		random_character = {
 			limit = {
 				is_landed = yes
-				culture_group = earth_kingdom_culture
+				culture_group = earth_kingdom_cultures
 			}
 			add_claim = k_earth_kingdom
 		}
@@ -978,7 +966,7 @@ character_event = {
 
 	trigger = {
 		has_global_flag = ek_choose_peace
-		has_global_flag = chin_chosen_avatar
+		has_global_flag = chin_chose_avatar
 		NOT = { has_global_flag = chin_war_avatar }
 		year < 700
 		has_landed_title = k_earth_kingdom
@@ -1072,7 +1060,7 @@ narrative_event = {
 	
 	trigger = { 
 		has_landed_title = k_earth_kingdom
-		has_global_flag = kyoshi_parliamental_monarch
+		has_global_flag = kyoshi_parliamental_monarch ##oh my shit, what? - Liz
 		year < 700
 		NOT = { has_global_flag = ending_of_jian_chain }
 		has_global_flag = ek_choose_war
@@ -1116,7 +1104,7 @@ narrative_event = {
 		name = canonending
 		set_global_flag = ending_of_jian_chain
 		clr_global_flag = ek_choose_peace
-		clr_global_flag = ba_sing_se_rebelion
+		clr_global_flag = ba_sing_se_rebellion
 		clr_global_flag = earthking_in_power
 		clr_global_flag = ek_choose_war
 		hidden_tooltip = {
@@ -1216,7 +1204,7 @@ narrative_event = {
 	# option = {
 		# name = peacefulendingekingdom
 		# trigger = {
-			# culture_group = earth_kingdom_culture
+			# culture_group = earth_kingdom_cultures
 			# NOR = { 
 				# has_landed_title = k_earth_kingdom
 				# has_landed_title = d_avatar
@@ -1232,7 +1220,7 @@ narrative_event = {
 			# NOR = { 
 				# has_landed_title = k_earth_kingdom
 				# has_landed_title = d_avatar
-				# culture_group = earth_kingdom_culture
+				# culture_group = earth_kingdom_cultures
 			# }
 		# }
 		# set_global_flag = ending_of_jian_chain
@@ -1249,23 +1237,7 @@ narrative_event = {
 	# }
 # }
 
-character_event = {
-	id = ekstory.22
-	is_triggered_only = yes
-	hide_window = yes
-	
-	trigger = {
-		always = yes
-	}
-	
-	immediate = {
-        k_earth_kingdom = {
-			any_claimant = {
-				add_trait = ek_claimant
-			}
-		}
-	}
-}
+##EK Story 22 has been dissolved on account of bad code. There is no EK Story 22 in Ba Sing Se.
 
 character_event = {
 	id = ekstory.23
@@ -1274,7 +1246,7 @@ character_event = {
 	picture = GFX_evt_avatar_resist
 	
 	trigger = {
-		has_global_flag = ba_sing_se_rebelion
+		has_global_flag = ba_sing_se_rebellion
 		has_global_flag = ek_choose_war
 		year >= 600
 		year <= 630

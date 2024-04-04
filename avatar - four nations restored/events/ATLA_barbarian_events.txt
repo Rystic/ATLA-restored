@@ -1,0 +1,1494 @@
+namespace = BAR
+
+character_event = {
+	id = BAR.0
+	hide_window = yes
+	is_triggered_only = yes 
+	
+	immediate = {
+		change_variable = { which = global_barbarism_executed_waterbenders value = 1 }
+		if = {
+			limit = {
+				religion = barbarism
+			}
+			FROM = {
+				religion_authority = {
+					modifier = executed_water_bender
+					years = 100
+				}
+			}
+		}
+		if = {
+			limit = {
+				religion = barbarism_reformed
+			}
+			FROM = {
+				religion_authority = {
+					modifier = executed_water_bender
+					years = 10
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { which = global_barbarism_executed_waterbenders value == 1 }
+			}
+			narrative_event = { id = BAR.1 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_barbarism_executed_waterbenders value == 5 }
+			}
+			narrative_event = { id = BAR.2 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_barbarism_executed_waterbenders value == 11 }
+			}
+			set_global_flag = barbarian_executions_2
+			narrative_event = { id = BAR.3 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_barbarism_executed_waterbenders value == 18 }
+			}
+			narrative_event = { id = BAR.4 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_barbarism_executed_waterbenders value == 26 }
+			}
+			narrative_event = { id = BAR.5 }
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_barbarism_executed_waterbenders value == 35 }
+			}
+			narrative_event = { id = BAR.6 }
+		}
+		else_if = {
+			limit = {
+				religion = barbarism_reformed
+				check_variable = { which = global_barbarism_executed_waterbenders value == 60 }
+			}
+			narrative_event = { id = BAR.7 }
+		}
+		else_if = {
+			limit = {
+				religion = barbarism_reformed
+				check_variable = { which = global_barbarism_executed_waterbenders value = 100 }
+			}
+			narrative_event = { id = BAR.8 }
+		}
+		else_if = {
+			limit = {
+				religion = barbarism_reformed
+				check_variable = { which = global_barbarism_executed_waterbenders value = 250 }
+			}
+			narrative_event = { id = BAR. 9 }
+		}
+	}
+}
+
+narrative_event = {
+	id = BAR.1
+	title = BAR.1.T
+	desc = BAR.1.D
+	picture = GFX_PLACEHOLDER
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes 
+	major = yes
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				culture = northern_water_culture
+			}
+		}
+	}
+	
+	option = {
+		name = BAR.1.OPTA
+		trigger = {
+			OR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+		prestige = 50
+		capital_scope = {
+			owner = {
+				spawn_unit = {
+					province = PREV
+					home = PREV
+					owner = PREVPREV
+					troops = {
+						light_infantry = { 250 250 }
+					}
+					attrition = 0.5
+					maintenance = no
+					reinforces = yes
+					is_looter = yes
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = BAR.1.OPTB
+		trigger = {
+			culture = northern_water_culture
+			NOR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+	}
+}
+
+narrative_event = {
+	id = BAR.2
+	picture = GFX_evt_campfire_hf
+	border = GFX_event_narrative_frame_war
+	title = A_PUSH_BACK_TITLE
+	is_triggered_only = yes
+	major = yes
+	desc = A_PUSH_BACK_DESC
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				culture = northern_water_culture
+			}
+		}
+	}
+	
+	option = {
+		name = A_PUSH_BACK_BARBARISM_OPTION
+		trigger = {
+			OR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+		prestige = 50
+		if = {
+			limit = {
+				is_playable = yes
+			}
+			capital_scope = {
+				owner = {
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = PREVPREV
+						troops = {
+							light_infantry = { 250 250 }
+						}
+						attrition = 0.5
+						maintenance = no
+						reinforces = yes
+						is_looter = yes
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = A_PUSH_BACK_WATERBENDER_OPTION
+		trigger = { culture = northern_water_culture }
+	}
+}
+
+narrative_event = {
+	id = BAR.3
+	picture = GFX_evt_campfire_hf
+	border = GFX_event_narrative_frame_war
+	title = A_SHOW_OF_FORCE
+	is_triggered_only = yes
+	major = yes
+	desc = A_SHOW_OF_FORCE_DESC
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				culture = northern_water_culture
+			}
+		}
+	}
+	
+	immediate = {
+		set_global_flag = can_use_barbarian_vendetta
+	}
+	
+	option = {
+		name = A_SHOW_OF_FORCE_BARBARISM_OPTION
+		trigger = {
+			OR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+		prestige = 50
+		
+		custom_tooltip = {
+			text = can_use_barbarian_vendetta
+		}
+		capital_scope = {
+			owner = {
+				spawn_unit = {
+					province = PREV
+					home = PREV
+					owner = PREVPREV
+					troops = {
+						light_infantry = { 250 250 }
+					}
+					attrition = 0.5
+					maintenance = no
+					reinforces = yes
+					is_looter = yes
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = A_SHOW_OF_FORCE_WATERBENDER_OPTION
+		trigger = { culture = northern_water_culture }
+	}
+}
+
+narrative_event = {
+	id = BAR.4
+	picture = GFX_evt_campfire_hf
+	border = GFX_event_narrative_frame_war
+	title = THE_REVERSE_INVASION
+	is_triggered_only = yes
+	major = yes
+	desc = THE_REVERSE_INVASION_DESC
+	
+	major_trigger = {
+		is_landed = yes #Also targets barons, since they need shipyards too
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				culture = northern_water_culture
+			}
+		}
+	}
+	
+	option = {
+		name = THE_REVERSE_INVASION_BARBARISM_OPTION
+		trigger = {
+			OR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+		prestige = 50
+		
+		any_realm_province = { #Tech buff
+			if = {
+				limit = {
+					port = yes
+					OR = {
+						religion = barbarism
+						religion = barbarism_reformed
+					}
+					TECH_NAVAL > 2 #You might well have needed ships to get to this point, so let it buff a little more
+				}
+				change_tech = {
+					technology = TECH_NAVAL
+					value = 1
+				}
+			}
+		}
+		any_demesne_title = { #Hands out the free shipyards
+			if = {
+				limit = {
+					tier = BARON
+					location = {
+						port = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					owner = {
+						is_feudal = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					NOT = { has_building = ca_shipyard_1 }
+				}
+				add_building = ca_shipyard_1
+			}
+			if = {
+				limit = {
+					tier = BARON
+					location = {
+						port = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					owner = {
+						is_republic = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					NOT = { has_building = ct_shipyard_1 }
+				}
+				add_building = ct_shipyard_1
+			}
+			if = {
+				limit = {
+					tier = BARON
+					location = {
+						port = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					owner = {
+						is_priest = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					NOT = { has_building = tp_shipyard_1 }
+				}
+				add_building = tp_shipyard_1
+			}
+			if = {
+				limit = {
+					tier = BARON
+					location = {
+						port = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					owner = {
+						is_tribal = yes
+						OR = {
+							religion = barbarism
+							religion = barbarism_reformed
+						}
+					}
+					NOT = { has_building = tb_shipyard_1 }
+				}
+				add_building = tb_shipyard_1
+			}
+		}
+		
+		if = {
+			limit = {
+				is_playable = yes
+			}
+			custom_tooltip = {
+				text = free_barbarian_shipyards
+			}
+			capital_scope = {
+				owner = {
+					spawn_unit = {
+						province = PREV
+						home = PREV
+						owner = PREVPREV
+						troops = {
+							archers = { 250 250 }
+						}
+						attrition = 0.5
+						maintenance = no
+						reinforces = yes
+						is_looter = yes
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = THE_REVERSE_INVASION_WATERBENDER_OPTION
+		trigger = {
+			AND = {
+				NOT = { religion = barbarism }
+				trait = waterbender
+			}
+		}
+	}
+}
+	
+narrative_event = {
+	id = BAR.5
+	picture = GFX_evt_campfire_hf
+	border = GFX_event_narrative_frame_war
+	title = PRIDE_OF_THE_NORTH
+	is_triggered_only = yes
+	major = yes
+	desc = PRIDE_OF_THE_NORTH_DESC
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				culture = northern_water_culture
+			}
+		}
+	}
+	
+	option = {
+		name = PRIDE_OF_THE_NORTH_BARBARISM_OPTION
+		trigger = {
+			OR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+		prestige = 1200
+		custom_tooltip = {
+			text = barbarian_all_counties_culture_flip
+			any_title_under = {
+				limit = {
+					NOT = { culture = barbarian_culture }
+				}
+				random_list = {
+					75 = {}
+					25 = {
+						location = {
+							culture = barbarian_culture
+						}
+					}
+				}
+			}
+		}
+
+		capital_scope = {
+			owner = {
+				spawn_unit = {
+					province = PREV
+					home = PREV
+					owner = PREVPREV
+					troops = {
+						earth_benders = { 250 250 }
+					}
+					attrition = 0.5
+					maintenance = no
+					reinforces = yes
+					is_looter = yes
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = PRIDE_OF_THE_NORTH_WATERBENDER_OPTION
+		trigger = { culture = northern_water_culture }
+	}
+}
+
+narrative_event = {
+	id = BAR.6
+	picture = GFX_evt_campfire_hf
+	border = GFX_event_narrative_frame_war
+	title = A_HIGHER_CALLING
+	is_triggered_only = yes
+	major = yes
+	desc = A_HIGHER_CALLING_DESC
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				culture = northern_water_culture
+			}
+		}
+	}
+	
+	option = {
+		name = A_HIGHER_CALLING_BARBARISM_OPTION
+		trigger = {
+			OR = {
+				religion = barbarism
+				religion = barbarism_reformed
+			}
+		}
+		prestige = 200
+
+		custom_tooltip = {
+			text = can_reform_barbarism
+		}
+
+		capital_scope = {
+			owner = {
+				spawn_unit = {
+					province = PREV
+					home = PREV
+					owner = PREVPREV
+					troops = {
+						earth_benders = { 500 500 }
+					}
+					attrition = 0.5
+					maintenance = no
+					reinforces = yes
+					is_looter = yes
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = A_HIGHER_CALLING_WATERBENDER_OPTION
+		trigger = { culture = northern_water_culture }
+	}
+}
+
+narrative_event = {
+	id = BAR.7
+	picture = GFX_evt_earth_kingdom_port
+	border = GFX_event_narrative_frame_war
+	title = BAR.7.T
+	desc = BAR.7.D
+	is_triggered_only = yes
+	major = yes
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				religion_group = water_religions
+			}
+		}
+	}
+	immediate = {
+		d_barbarism_high_priesthood = {
+			holder_scope = {
+				capital_scope = {
+					owner = {
+						spawn_fleet = {
+							province = closest # closest sea zone
+							owner = THIS
+							troops = {
+								galleys = { 30 30 }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = BAR.7.OPTA
+		trigger = { religion = barbarism_reformed }
+	}
+	
+	option = {
+		name = BAR.7.OPTB
+		trigger = { religion_group = water_religions }
+	}
+}
+
+narrative_event = {
+	id = BAR.8
+	picture = GFX_evt_warlord_era
+	border = GFX_event_narrative_frame_war
+	title = BAR.8.T
+	desc = BAR.8.A
+	is_triggered_only = yes
+	major = yes
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				religion_group = water_religions
+			}
+		}
+	}
+	
+	immediate = {
+		d_barbarism_high_priesthood = {
+			holder_scope = {
+				capital_scope = {
+					owner = {
+						spawn_unit = {
+							province = PREV
+							home = PREV
+							owner = PREVPREV
+							troops = {
+								heavy_infantry = { 500 500 }
+								heavy_infantry = { 500 500 }
+								heavy_infantry = { 500 500 }
+							}
+							attrition = 0.5
+							maintenance = no
+							reinforces = yes
+							is_looter = yes
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = BAR.8.OPTA
+		trigger = { religion = barbarism_reformed }
+		piety = 200
+	}
+	
+	option = {
+		name = BAR.8.OPTB
+		trigger = { religion_group = water_religions }
+	}
+}
+
+narrative_event = {
+	id = BAR.9
+	picture = GFX_evt_landscape_6
+	border = GFX_event_narrative_frame_war
+	title = BAR.9.T
+	desc = BAR.9.D
+	is_triggered_only = yes
+	major = yes
+	
+	major_trigger = {
+		is_playable = yes
+		OR = {
+			religion = barbarism
+			religion = barbarism_reformed
+			AND = {
+				ai = no
+				religion_group = water_religions
+			}
+		}
+	}
+	
+	option = {
+		name = BAR.9.OPTA
+		trigger = { religion = barbarism_reformed }
+		any_title_under = {
+			limit = {
+				NOT = { culture = ROOT }
+			}
+			hidden_tooltip = {
+				random = {
+					chance = 80
+					location = { culture = ROOT }
+				}
+			}
+		}
+		any_title_under = {
+			limit = {
+				NOT = { religion = ROOT }
+			}
+			hidden_tooltip = {
+				random = {
+					chance = 80
+					location = { religion = ROOT }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = BAR.9.OPTB
+		trigger = { religion_group = water_religions }
+	}
+}
+
+character_event = {
+	id = BAR.100
+	picture = GFX_evt_viking_throneroom_oldgods
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_NORMAL
+		
+		custom_tooltip = {
+			text = execute_waterbender_normal_desc
+		}
+		
+		random_list = {
+			5 = { # Worst Outcome
+				modifier = { 
+					factor = 0
+					trait = cruel 
+				}
+				modifier = {
+					factor = 2
+					NOT = { prestige = 100 }
+				}
+				modifier = {
+					factor = 2
+					NOT = { intrigue = 8 }
+				}
+				modifier = {
+					factor = 2
+					trait = shy 
+				}
+				modifier = {
+					factor = 2
+					trait = content 
+				}
+				modifier = {
+					factor = 3
+					trait = kind 
+				}
+				modifier = {
+					factor = 5
+					NOT = { intrigue = 2 }
+				}
+				modifier = {
+					factor = 5
+					NOT = { prestige = 0 }
+				}
+				custom_tooltip = {
+					text = execute_waterbender_normal_outcome_bad
+				}
+				character_event = { id = BAR.1001 }
+			}
+			100 = { # Neutral Outcome
+				custom_tooltip = {
+					text = execute_waterbender_normal_outcome_neutral
+				}
+				character_event = { id = BAR.1002 }
+				character_event = { id = BAR.0 }
+			}
+			1 = { # Best Outcome
+				modifier = { 
+					factor = 0.25
+					NOT = { intrigue = 8 }
+				}
+				modifier = { 
+					factor = 0.25
+					trait = kind 
+				}
+				modifier = { 
+					factor = 0.5
+					trait = shy 
+				}
+				modifier = { 
+					factor = 0.5
+					trait = content 
+				}
+				modifier = { 
+					factor = 1.25
+					prestige = 250
+				}
+				modifier = { 
+					factor = 2
+					trait = cruel 
+				}
+				modifier = { 
+					factor = 2
+					trait = wroth
+				}
+				modifier = { 
+					factor = 2
+					intrigue = 12
+				}
+				modifier = { 
+					factor = 3
+					trait = ambitious
+				}
+				modifier = { 
+					factor = 3
+					prestige = 300
+				}
+				modifier = { 
+					factor = 3
+					prestige = 1000
+				}
+				modifier = { 
+					factor = 5
+					intrigue = 20
+				}
+				custom_tooltip = {
+					text = execute_waterbender_normal_outcome_good
+				}
+				narrative_event = { id = BAR.1003 }
+				character_event = { id = BAR.0 }
+			}
+		}
+	}
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_EARTHBENDING
+		
+		trigger = {
+			trait = earthbender
+		}
+		
+		custom_tooltip = {
+			text = execute_waterbender_earthbending_desc
+		}
+		
+		random_list = {
+			5 = { # Worst Outcome
+				modifier = { 
+					factor = 0
+					trait = legendary_bender
+				}
+				modifier = { 
+					factor = 0
+					trait = master_bender
+				}
+				modifier = { 
+					factor = 0.5
+					trait = powerful_bender
+				}
+				modifier = { 
+					factor = 5
+					trait = competent_bender
+				}
+				modifier = { 
+					factor = 10
+					trait = incompetent_bender
+				}
+				custom_tooltip = {
+					text = execute_waterbender_earthbending_bad
+				}
+				character_event = { id = BAR.2001 }
+			}
+			
+			40 = {
+				modifier = { 
+					factor = 0
+					trait = legendary_bender
+				}
+				custom_tooltip = {
+					text = execute_waterbender_earthbending_neutral
+				}
+				character_event = { id = BAR.2002 }
+				character_event = { id = BAR.0 }
+			}
+			
+			1 = {
+				modifier = { 
+					factor = 0
+					trait = incompetent_bender
+				}
+				modifier = { 
+					factor = 0.1
+					trait = competent_bender
+				}
+				modifier = { 
+					factor = 5
+					trait = powerful_bender
+				}
+				modifier = { 
+					factor = 10
+					trait = master_bender
+				}						
+				custom_tooltip = {
+					text = execute_waterbender_earthbending_good
+				}
+				narrative_event = { id = BAR.2003 }
+				character_event = { id = BAR.0 }
+			}
+		}
+	}
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_DUEL
+		
+		trigger = {
+			NOT = { trait = craven }
+		}
+		
+		custom_tooltip = {
+			text = execute_waterbender_duel_desc
+		}
+		
+		random_list = {
+			5 = { # Worst Outcome
+				modifier = { 
+					factor = 0.25
+					trait = strong
+				}
+				modifier = { 
+					factor = 3
+					NOT = { combat_rating = 0 }
+				}
+				modifier = { 
+					factor = 3
+					NOT = { martial = 8 }
+				}
+				modifier = { 
+					factor = 4
+					trait = weak 
+				}
+				modifier = { 
+					factor = 4
+					trait = feeble 
+				}
+				modifier = { 
+					factor = 8
+					NOT = { martial = 2 }
+				}
+				custom_tooltip = {
+					text = execute_waterbender_duel_outcome_bad
+				}
+				character_event = { id = BAR.3001 }
+			}
+			
+			40 = {
+				custom_tooltip = {
+					text = execute_waterbender_duel_outcome_neutral
+				}
+				character_event = { id = BAR.3002 }
+				character_event = { id = BAR.0 }
+			}
+			
+			1 = {
+				modifier = { 
+					factor = 0
+					NOT = { combat_rating = 0 }
+				}
+				modifier = { 
+					factor = 2
+					martial = 10
+				}
+				modifier = { 
+					factor = 2
+					trait = strong
+				}
+				modifier = { 
+					factor = 2
+					trait = robust
+				}
+				modifier = { 
+					factor = 3
+					trait = giant
+				}
+				modifier = { 
+					factor = 3
+					combat_rating = 50
+				}
+				modifier = { 
+					factor = 5
+					martial = 20
+				}
+				custom_tooltip = {
+					text = execute_waterbender_duel_outcome_good
+				}
+				narrative_event = { id = BAR.3003 }
+				character_event = { id = BAR.0 }
+			}
+		}
+	}
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_SACRIFICE
+		
+		trigger = {
+			NOT = { trait = cynical }
+		}
+		
+		custom_tooltip = {
+			text = execute_waterbender_sacrifice_desc
+		}
+		
+		random_list = {
+			5 = { # Worst Outcome
+				modifier = { 
+					factor = 0.25
+					piety = 250
+				}
+				modifier = { 
+					factor = 0.25
+					piety = 500
+				}
+				modifier = { 
+					factor = 0.25
+					piety = 1000
+				}
+				modifier = { 
+					factor = 2
+					NOT = { learning = 10 }
+				}
+				modifier = { 
+					factor = 2
+					NOT = { learning = 8 }
+				}
+				modifier = { 
+					factor = 2
+					NOT = { learning = 6 }
+				}
+				modifier = { 
+					factor = 2
+					NOT = { learning = 4 }
+				}
+				modifier = { 
+					factor = 2
+					NOT = { learning = 2 }
+				}
+				modifier = { 
+					factor = 5
+					NOT = { learning = 0 }
+				}
+				modifier = { 
+					factor = 10
+					NOT = { piety = 0 }
+				}
+				custom_tooltip = {
+					text = execute_waterbender_sacrifice_outcome_bad
+				}
+				character_event = { id = BAR.4001 }
+			}
+			
+			40 = {
+				custom_tooltip = {
+					text = execute_waterbender_sacrifice_outcome_neutral
+				}
+				character_event = { id = BAR.4002 }
+				character_event = { id = BAR.0 }
+			}
+			
+			1 = {
+				modifier = { 
+					factor = 0
+					NOT = { piety = 0 }
+				}
+				modifier = { 
+					factor = 1.25
+					piety = 250
+				}
+				modifier = { 
+					factor = 1.25
+					piety = 500
+				}
+				modifier = { 
+					factor = 1.25
+					piety = 1000
+				}
+				modifier = { 
+					factor = 2
+					learning = 12
+				}
+				modifier = { 
+					factor = 2
+					learning = 14
+				}
+				modifier = { 
+					factor = 2
+					learning = 16
+				}
+				modifier = { 
+					factor = 2
+					learning = 18
+				}
+				modifier = { 
+					factor = 5
+					learning = 20
+				}
+				custom_tooltip = {
+					text = execute_waterbender_sacrifice_outcome_good
+				}
+				narrative_event = { id = BAR.4003 }
+				character_event = { id = BAR.0 }
+			}
+		}
+	}
+}
+
+character_event = {
+	id = BAR.1001
+	picture = GFX_evt_hung_from_trees_hf
+	border = GFX_event_normal_frame_intrigue
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_NORMAL_BAD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_OPTION_BAD
+		prestige = -100
+		random = {
+			chance = 50
+			add_trait = stressed
+		}
+		custom_tooltip = {
+			text = does_not_count_as_execution
+		}
+	}
+}
+
+character_event = {
+	id = BAR.1002
+	picture = GFX_evt_beheading
+	border = GFX_event_normal_frame_intrigue
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_NORMAL_NEUTRAL_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_OPTION_NEUTRAL
+		prestige = 100
+		random_list = {
+			45 = { add_trait = cruel }
+			45 = { add_trait = wroth }
+			10 = { add_trait = berserker }
+		}
+	}
+}
+
+narrative_event = {
+	id = BAR.1003
+	picture = GFX_evt_humiliation_prisoner
+	border = GFX_event_narrative_frame_intrigue
+	is_triggered_only = yes
+	title = EXECUTE_WATERBENDER_NORMAL_GOOD_TITLE
+	desc = EXECUTE_WATERBENDER_NORMAL_GOOD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_OPTION_GOOD
+		prestige = 500
+		custom_tooltip = {
+			text = barbarian_all_counties_religion_flip
+		}
+		any_title_under = {
+			limit = {
+				NOT = { culture = ROOT }
+			}
+			hidden_tooltip = {
+				random = {
+					chance = 25
+					location = { culture = ROOT }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = BAR.2001
+	picture = GFX_evt_death_execution_wheel
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_EARTHBENDING_BAD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EARTHBENDING_EVENT_OPTION_BAD
+		prestige = -100
+		random = {
+			chance = 50
+			add_trait = stressed
+		}
+		custom_tooltip = {
+			text = does_not_count_as_execution
+		}
+	}
+}
+
+character_event = {
+	id = BAR.2002
+	picture = GFX_evt_death_execution_wheel
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_EARTHBENDING_NEUTRAL_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EARTHBENDING_EVENT_OPTION_NEUTRAL
+		prestige = 100
+		random = {
+			chance = 50
+			upgrade_bending_effect = yes	
+			mult_modifier = {
+				factor = 0
+				trait = master_bender
+			}
+			mult_modifier = {
+				factor = 0.5
+				trait = competent_bender
+			}
+			mult_modifier = {
+				factor = 0.2
+				trait = powerful_bender
+			}
+		}
+	}
+}
+
+narrative_event = {
+	id = BAR.2003
+	picture = GFX_evt_death_execution_wheel
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	title = EXECUTE_WATERBENDER_EARTHBENDING_GOOD_TITLE
+	desc = EXECUTE_WATERBENDER_EARTHBENDING_GOOD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EARTHBENDING_EVENT_OPTION_GOOD
+		prestige = 250
+		custom_tooltip = {
+			text = bending_can_improve
+		}
+		custom_tooltip = {
+			text = bending_can_improve_children
+		}
+		
+		hidden_tooltip = {
+			random = {
+				chance = 50
+				upgrade_bending_effect = yes	
+				mult_modifier = {
+					factor = 0.2
+					trait = master_bender
+				}
+				mult_modifier = {
+					factor = 2
+					trait = competent_bender
+				}
+				mult_modifier = {
+					factor = 0.5
+					trait = powerful_bender
+				}
+			}
+		}
+		
+		any_child = {
+			hidden_tooltip = {
+				random = {
+					chance = 50
+					upgrade_bending_effect = yes	
+					mult_modifier = {
+						factor = 0
+						trait = master_bender
+					}
+					mult_modifier = {
+						factor = 0.5
+						trait = competent_bender
+					}
+					mult_modifier = {
+						factor = 0.2
+						trait = powerful_bender
+					}
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = BAR.3001
+	picture = GFX_evt_less_evil_beheading
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_DUEL_BAD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_DUEL_OPTION_BAD
+		prestige = -100
+		random = {
+			chance = 50
+			add_trait = stressed
+		}
+		random = {
+			chance = 40
+			add_trait = wounded
+		}
+		add_one_duel_experience_modifier = yes
+		
+		custom_tooltip = {
+			text = does_not_count_as_execution
+		}
+	}
+}
+
+character_event = {
+	id = BAR.3002
+	picture = GFX_evt_death_duel
+	border = GFX_event_normal_frame_war
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_DUEL_NEUTRAL_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_DUEL_OPTION_NEUTRAL
+		prestige = 150
+		add_one_duel_experience_modifier
+		random_list = {
+			20 = { add_trait = sturdy }
+			20 = { change_martial = 1 }
+			40 = { add_trait = wounded }
+			40 = { add_modifier = { name = duelist_renown duration = 730 } }
+		}
+		hidden_tooltip = {
+			any_spouse = {
+				random = {
+					chance = 20
+					add_trait = lustful
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_female = yes
+			}
+			custom_tooltip = {
+				text = husbands_become_lustful
+			}
+		}
+		else = {
+			custom_tooltip = {
+				text = wives_become_lustful
+			}
+		}
+	}
+}
+
+narrative_event = {
+	id = BAR.3003
+	picture = GFX_evt_death_duel
+	border = GFX_event_narrative_frame_war
+	is_triggered_only = yes
+	title = EXECUTE_WATERBENDER_DUEL_GOOD_TITLE
+	desc = EXECUTE_WATERBENDER_DUEL_GOOD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_DUEL_OPTION_GOOD
+		prestige = 250
+		add_trait = robust
+		add_character_modifier = {
+			name = ruthless_duelist
+			duration = 730
+		}
+		custom_tooltip = {
+			text = children_inspired_to_be_strong
+			hidden_tooltip = {
+				any_child = {
+					random_list = {
+						25 = { add_trait = robust }
+						50 = { add_one_duel_experience_modifier = yes }
+						25 = { change_martial = 1 }
+					}
+				}
+			}
+		}
+		hidden_tooltip = {
+			any_spouse = {
+				random = {
+					chance = 50
+					add_trait = lustful
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_female = yes
+			}
+			custom_tooltip = {
+				text = husbands_become_lustful
+			}
+		}
+		else = {
+			custom_tooltip = {
+				text = wives_become_lustful
+			}
+		}
+	}
+}
+
+character_event = {
+	id = BAR.4001
+	picture = GFX_evt_burning_man_hf
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_SACRIFICE_BAD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_SACRIFICE_OPTION_BAD
+		piety = -50
+		random = {
+			chance = 50
+			add_trait = stressed
+		}
+		custom_tooltip = {
+			text = does_not_count_as_execution
+		}
+	}
+}
+
+character_event = {
+	id = BAR.4002
+	picture = GFX_evt_bacchants_initiation
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
+	desc = EXECUTE_WATERBENDER_SACRIFICE_NEUTRAL_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_SACRIFICE_OPTION_NEUTRAL
+		piety = 100
+		add_trait = zealous
+		random = {
+			chance = 40
+			change_learning = 1
+		}
+	}
+}
+
+narrative_event = {
+	id = BAR.4003
+	picture = GFX_evt_death_execution_burning
+	border = GFX_event_narrative_frame_religion
+	is_triggered_only = yes
+	title = EXECUTE_WATERBENDER_SACRIFICE_GOOD_TITLE
+	desc = EXECUTE_WATERBENDER_SACRIFICE_GOOD_EVENT
+	
+	option = {
+		name = EXECUTE_WATERBENDER_EVENT_SACRIFICE_OPTION_GOOD
+		piety = 250
+		add_trait = zealous
+		change_learning = 2
+		custom_tooltip = {
+			text = barbarian_all_counties_religion_flip
+		}
+		any_title_under = {
+			limit = {
+				NOT = { religion = ROOT }
+			}
+			hidden_tooltip = {
+				random = {
+					chance = 25
+					location = { religion = ROOT }
+				}
+			}
+		}
+	}
+}

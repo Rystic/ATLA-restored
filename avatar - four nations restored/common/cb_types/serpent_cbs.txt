@@ -1,4 +1,4 @@
-force_vassalization_serpent = { # New2
+force_vassalization_serpent = {
 	name = CB_NAME_FORCE_VASSALIZATION_SERPENT
 	war_name = WAR_NAME_FORCE_VASSALIZATION_SERPENT
 	sprite = 23
@@ -11,6 +11,42 @@ force_vassalization_serpent = { # New2
 	
 	sort_priority = 5000
 	
+	can_use = {
+		ROOT = {
+			OR = {
+				has_character_modifier = strong_serpent_leader
+				AND = {
+					has_global_flag = the_lord_beneath_founded				#Founded the holy order
+					NOT = { has_character_modifier = weak_serpent_leader }
+				}
+			}
+			has_game_rule = {
+				name = jade_dragon_cbs
+				value = on
+			}
+			higher_tier_than = count
+			NOT = { same_realm = FROM }
+			mercenary = no
+			is_nomadic = no
+		}
+		
+		FROM = {
+			has_character_modifier = weak_serpent_leader
+			lower_tier_than = ROOT
+			NOT = {
+				realm_size = 31
+			}
+			in_revolt = no
+			is_nomadic = no
+			controls_religion = no
+			holy_order = no
+			OR = {
+				religion = ROOT
+			}
+			shares_realm_border_with = ROOT
+		}
+	}
+	
 	can_use_gui = {
 		FROM = {
 			show_scope_change = no
@@ -21,7 +57,7 @@ force_vassalization_serpent = { # New2
 				ROOT = {
 					show_scope_change = no
 					OR = { 
-						prestige = 250
+						prestige = 100
 						custom_tooltip = { 
 							text = tooltip_antagonize_vassalize_claim 
 							hidden_tooltip = { has_opinion_modifier = { who = FROM modifier = opinion_antagonize_vassalize_claim } } 
@@ -36,7 +72,7 @@ force_vassalization_serpent = { # New2
 				ROOT = {
 					show_scope_change = no
 					OR = { 
-						prestige = 250
+						prestige = 500
 						custom_tooltip = { 
 							text = tooltip_antagonize_vassalize_claim 
 							hidden_tooltip = { has_opinion_modifier = { who = FROM modifier = opinion_antagonize_vassalize_claim } } 
@@ -64,45 +100,6 @@ force_vassalization_serpent = { # New2
 	
 	on_add = {
 	
-	}
-	
-	can_use = {
-		ROOT = {
-			OR = {
-				has_character_modifier = weak_serpent_leader
-				AND = {
-					has_global_flag = the_lord_beneath_founded
-					NOT = { has_character_modifier = strong_serpent_leader }
-				}
-			}
-			NOT = {
-				has_game_rule = {
-					name = jade_dragon_cbs
-					value = off
-				}
-			}
-			higher_tier_than = count
-			NOT = { same_realm = FROM }
-			NOT = { is_liege_or_above = FROM }
-			mercenary = no
-			is_nomadic = no
-		}
-		
-		FROM = {
-			has_character_modifier = strong_serpent_leader
-			lower_tier_than = ROOT
-			NOT = {
-				realm_size = 31
-			}
-			in_revolt = no
-			is_nomadic = no
-			controls_religion = no
-			holy_order = no
-			OR = {
-				religion = ROOT
-			}
-			shares_realm_border_with = ROOT
-		}
 	}
 	
 	is_valid = {
@@ -262,26 +259,6 @@ coastal_serpent_superiority = {
 		}
 	}
 	
-	on_add = {
-		ROOT = {
-			prestige = -100
-		}
-	}
-	
-	on_success = {
-		if = {
-			limit = {
-				FROM = {
-					NOT = { culture = ROOT }
-				}
-			}
-			ROOT = {
-				character_event = { id = ATLA.7008 } # Incrase Tyranny
-				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
-			}
-		}
-	}
-
 	can_use_title = {
 		tier = count
 		# The attacker needs a border or be at the most two sea zones away
@@ -329,10 +306,31 @@ coastal_serpent_superiority = {
 			}
 		}
 	}
-
+	
 	is_valid = {
 		ROOT = {
 			NOT = { same_realm = FROM }
+		}
+	}
+	
+	
+	on_add = {
+		ROOT = {
+			prestige = -100
+		}
+	}
+	
+	on_success = {
+		if = {
+			limit = {
+				FROM = {
+					NOT = { culture = ROOT }
+				}
+			}
+			ROOT = {
+				character_event = { id = ATLA.7008 } # Incrase Tyranny
+				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
+			}
 		}
 	}
 
@@ -354,7 +352,6 @@ coastal_serpent_superiority = {
 					}
 				}
 			}
-
 			usurp_title = ROOT
 		}
 		
@@ -507,26 +504,6 @@ serpent_superiority = {
 		}
 	}
 
-	on_add = {
-		ROOT = {
-			prestige = -250
-		}
-	}
-	
-	on_success = {
-		if = {
-			limit = {
-				FROM = {
-					NOT = { culture = ROOT }
-				}
-			}
-			ROOT = {
-				character_event = { id = ATLA.7008 } # Incrase Tyranny
-				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
-			}
-		}
-	}
-
 	can_use_title = {
 		tier = count
 		# The attacker needs a border or be at the most two sea zones away
@@ -580,6 +557,27 @@ serpent_superiority = {
 			NOT = { same_realm = FROM }
 		}
 	}
+	
+	
+	on_add = {
+		ROOT = {
+			prestige = -250
+		}
+	}
+	
+	on_success = {
+		if = {
+			limit = {
+				FROM = {
+					NOT = { culture = ROOT }
+				}
+			}
+			ROOT = {
+				character_event = { id = ATLA.7008 } # Incrase Tyranny
+				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
+			}
+		}
+	}
 
 	on_success_title = {
 		usurp_title_plus_barony_if_unlanded = { target = ROOT type = invasion }
@@ -599,7 +597,6 @@ serpent_superiority = {
 					}
 				}
 			}
-
 			usurp_title = ROOT
 		}
 		ROOT = {
@@ -751,26 +748,6 @@ coastal_serpent_conquest = {
 		}
 	}
 	
-	on_add = {
-		ROOT = {
-			prestige = -250
-		}
-	}
-	
-	on_success = {
-		if = {
-			limit = {
-				FROM = {
-					NOT = { culture = ROOT }
-				}
-			}
-			ROOT = {
-				character_event = { id = ATLA.7008 } # Incrase Tyranny
-				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
-			}
-		}
-	}
-
 	can_use_title = {
 		tier = count
 		# The attacker needs a border or be at the most two sea zones away
@@ -823,6 +800,26 @@ coastal_serpent_conquest = {
 	is_valid = {
 		ROOT = {
 			NOT = { same_realm = FROM }
+		}
+	}
+	
+	on_add = {
+		ROOT = {
+			prestige = -250
+		}
+	}
+	
+	on_success = {
+		if = {
+			limit = {
+				FROM = {
+					NOT = { culture = ROOT }
+				}
+			}
+			ROOT = {
+				character_event = { id = ATLA.7008 } # Incrase Tyranny
+				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
+			}
 		}
 	}
 
@@ -996,26 +993,6 @@ serpent_conquest = {
 		}
 	}
 	
-	on_add = {
-		ROOT = {
-			prestige = -500
-		}
-	}
-	
-	on_success = {
-		if = {
-			limit = {
-				FROM = {
-					NOT = { culture = ROOT }
-				}
-			}
-			ROOT = {
-				character_event = { id = ATLA.7008 } # Incrase Tyranny
-				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
-			}
-		}
-	}
-
 	can_use_title = {
 		tier = count
 		# The attacker needs a border or be at the most two sea zones away
@@ -1068,6 +1045,26 @@ serpent_conquest = {
 	is_valid = {
 		ROOT = {
 			NOT = { same_realm = FROM }
+		}
+	}
+	
+	on_add = {
+		ROOT = {
+			prestige = -500
+		}
+	}
+	
+	on_success = {
+		if = {
+			limit = {
+				FROM = {
+					NOT = { culture = ROOT }
+				}
+			}
+			ROOT = {
+				character_event = { id = ATLA.7008 } # Incrase Tyranny
+				character_event = { id = ATLA.7000 days = 1 } # Check Tyranny
+			}
 		}
 	}
 

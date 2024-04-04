@@ -871,7 +871,7 @@ religion_doctrine = {
 				factor = 0.01 
 				FROM = { 
 					character = yes 
-					OR = { #Too Western for them.
+					OR = { #Too Western for them. ##TODO: Someone just find-and-replaced, didn't they? Fire religions would enjoy astrology, predicting comets etc.
 						religion = fire_nation_imperialism
 						religion = fire_spirituality
 						religion = fire_spirituality_reformed
@@ -1145,7 +1145,7 @@ religion_doctrine = {
 						character = yes 
 							NOT = { has_selected_religion_feature = religion_peaceful }
 							OR = { 
-								religion = piracy
+								religion = pirate_faith
 								religion = fortune_telling
 								religion = fortune_telling_reformed
 							}
@@ -1322,13 +1322,13 @@ religion_doctrine = {
 			has_game_started = yes
 			OR = {
 				religion_group = water_religions
-				religion = piracy
+				religion = pirate_faith
 			}
 		}
 		trigger = {
 			OR = {
 				religion_group = water_religions
-				religion = piracy
+				religion = pirate_faith
 			}
 			NOR = { 
 				has_selected_religion_feature = religion_adventuring
@@ -1420,22 +1420,24 @@ religion_doctrine = {
 			factor = 50
 		}
 	}
-	religion_feature_swamp = { # previously religion_feature_slavic
+	religion_feature_old_barbarism = { # previously religion_feature_slavic
 		picture = GFX_religion_feature_slavic
 		potential = {
 			has_game_started = yes
-			religion = the_great_swamp
+			religion = barbarism_reformed
 		}
 		trigger = {
-			religion = the_great_swamp
+			religion = barbarism_reformed
 			NOR = { 
 				has_selected_religion_feature = religion_stable
+				has_selected_religion_feature = religion_feature_new_barbarism
 			}
 		}
 		effect = {
 			custom_tooltip = { text = tooltip_religion_feature_rivermovement }
 			custom_tooltip = { text = tooltip_religion_feature_stable }
-			custom_tooltip = { text = tooltip_religion_feature_meliorism } 
+			custom_tooltip = { text = tooltip_religion_feature_meliorism }
+			custom_tooltip = { text = tooltip_religion_feature_old_barbarism }
 			hidden_tooltip = {
 				set_short_reign_opinion_year_mult = 0
 				set_allow_rivermovement = yes
@@ -1591,27 +1593,23 @@ religion_doctrine = {
 			factor = 50
 		}
 	}
-	religion_feature_sun_warriors = { # previously religion_feature_aztec
+	religion_feature_new_barbarism = { # previously religion_feature_aztec
 		picture = GFX_religion_feature_aztec
 		potential = {
 			has_game_started = yes
-			OR = {
-				religion = the_eternal_flame
-				religion = the_eternal_flame_reformed
-			}
+			religion = barbarism_reformed
 		}
 		trigger = {
-			OR = {
-				religion = the_eternal_flame
-				religion = the_eternal_flame_reformed
-			}
+			religion = barbarism_reformed
 			NOR = { 
 				has_selected_religion_feature = religion_seafaring #Redundant
 				has_selected_religion_feature = religion_ritual_sacrifice #Redundant
 				has_selected_religion_feature = religion_relentless #Redundant
+				has_selected_religion_feature = religion_feature_old_barbarism
 			}
 		}
 		effect = {
+			custom_tooltip = { text = tooltip_religion_feature_new_barbarism }
 			custom_tooltip = { text = tooltip_religion_feature_aztec_sacrifices }
 			custom_tooltip = { text = tooltip_religion_feature_bloodthirsty_mechanics }
 			custom_tooltip = { text = tooltip_religion_feature_anti_attrition }
@@ -2006,7 +2004,7 @@ religion_leadership = {
 						} 
 						NOR = {
 							religion = air_acolytism
-							religion = piracy
+							religion = pirate_faith
 
 						}
 					}

@@ -10,11 +10,11 @@ character_event = { # Start Conquest of the South
 		name = watertribeOPT.1
 		prestige = 50
 		custom_tooltip = {
-				text = watertribeTOOLTIP.1
+			text = watertribeTOOLTIP.1
 		}
 		any_playable_ruler = {
 			limit = {
-				culture = southern_water
+				culture = southern_water_culture
 			}
 			character_event = { id = watertribe.2 days = 7 }
 		}
@@ -128,7 +128,7 @@ character_event = { # Water Tribe Empire
 					limit = {
 						mercenary = no
 						is_tributary = yes
-						culture_group = water_tribe_culture
+						culture_group = water_tribe_cultures
 						any_allied_character = {
 							character = ROOT
 						}
@@ -157,7 +157,7 @@ character_event = { # Water Tribe Empire
 	
 	# option = {
 		# trigger = {
-			# culture = southern_water
+			# culture = southern_water_culture
 		# }
 		# piety = 50
 		# name = watertribeOPTB.8
@@ -1068,21 +1068,21 @@ narrative_event = { # Landing in the Earth Kingdom
 	title = "watertribeTITLE.200"
 	desc = { # Water
 		trigger = {
-			culture_group = water_tribe_culture
+			culture_group = water_tribe_cultures
 		}
 		text = watertribeDESCA.200
 	}
 	desc = { # Earth
 		trigger = {
-			culture_group = earth_kingdom_culture
+			culture_group = earth_kingdom_cultures
 		}
 		text = watertribeDESCB.200
 	}
 	desc = { # World
 		trigger = {
 			NOR = {
-				culture_group = water_tribe_culture
-				culture_group = earth_kingdom_culture
+				culture_group = water_tribe_cultures
+				culture_group = earth_kingdom_cultures
 			}
 		}
 		text = watertribeDESCC.200
@@ -1092,16 +1092,18 @@ narrative_event = { # Landing in the Earth Kingdom
 	major = yes
 	
 	trigger = {
-		NOT = { has_global_flag = water_tribe_landing_EK }
-		NOT = { has_global_flag = HYW_0 }
+		NOR = {
+			has_global_flag = water_tribe_landing_EK
+			has_global_flag = HYW_0
+		}
 		FROM = {
 			OR = {
-				culture = southern_water
-				culture = northern_water
+				culture = southern_water_culture
+				culture = northern_water_culture
 			}
 		}
 		ROOT = {
-			culture_group = earth_kingdom_culture
+			culture_group = earth_kingdom_cultures
 		}
 	}
 	
@@ -1113,7 +1115,7 @@ narrative_event = { # Landing in the Earth Kingdom
 		name = watertribeOPTA.200
 		prestige = 250
 		trigger = {
-			culture_group = water_tribe_culture
+			culture_group = water_tribe_cultures
 			any_realm_province = {
 				de_jure_liege_or_above = e_earth_kingdom
 			}
@@ -1122,22 +1124,22 @@ narrative_event = { # Landing in the Earth Kingdom
 	option = {
 		name = watertribeOPTB.200
 		trigger = {
-			culture_group = water_tribe_culture
+			culture_group = water_tribe_cultures
 		}
 	}
 	option = {
 		name = watertribeOPTC.200
 		trigger = {
-			NOT = { culture_group = water_tribe_culture }
-			culture_group = earth_kingdom_culture
+			NOT = { culture_group = water_tribe_cultures }
+			culture_group = earth_kingdom_cultures
 		}
 	}
 	option = {
 		name = watertribeOPTD.200
 		trigger = {
 			NOR = {
-				culture_group = water_tribe_culture
-				culture_group = earth_kingdom_culture
+				culture_group = water_tribe_cultures
+				culture_group = earth_kingdom_cultures
 			}
 		}
 	}
@@ -1172,7 +1174,7 @@ character_event = {
 		capital_scope = {
 			save_event_target_as = capital_province
 		}
-		spawn_fleet = {
+		spawn_fleet = { ##TODO: Should probably add failsafe to ensure it's on an ocean tile...
 			province = closest # closest sea zone
 			owner = ROOT
 			disband_on_peace = no

@@ -3,7 +3,7 @@ decisions = {
 	employ_soldier = {
 		ai = no
 		only_playable = yes
-
+		
 		potential = {
 			
 		}
@@ -43,21 +43,16 @@ decisions = {
 			custom_tooltip = { text = promoted_commander_TT }
 			character_event = { id = NE.1 }
 		}
-
-		ai_will_do = {
-			factor = 0
-		}
 	}
 	employ_bender = {
 		ai = no
-		only_playable = yes
 		
 		potential = {
 			OR = {
-				culture_group = earth_kingdom_culture
-				culture_group = fire_nation_culture
-				culture_group = water_tribe_culture
-				culture_group = air_nomad_culture
+				culture_group = earth_kingdom_cultures
+				culture_group = fire_nation_cultures
+				culture_group = water_tribe_cultures
+				culture_group = air_nomad_cultures
 			}
 		}
 		allow = {
@@ -70,407 +65,40 @@ decisions = {
 		effect = {
 			prestige = -20
 			scaled_wealth = -0.3
-			if = {
-				limit = {
-					culture_group = earth_kingdom_culture
-				}
-				create_random_soldier = {
-					random_traits = yes
-					dynasty = random
-					trait = earthbender
-					trait = competent_bender
-				}
-				new_character = {
-					remove_trait = weak
-					remove_trait = slow
-					remove_trait = imbecile
-					remove_trait = dull
-					remove_trait = craven
-					
-					if = {
-						limit = {
-							trait = misguided_warrior
-						}
-						remove_trait = misguided_warrior
-						add_trait = tough_soldier
+			create_random_soldier = {
+				random_traits = yes
+				female = 50 #50/50 to be a woman, bending doesn't discriminate
+				dynasty = actually_culture
+				culture = ROOT
+				religion = ROOT
+			}
+			trigger_switch = {
+				on_trigger = culture_group
+				earth_kingdom_cultures = { new_character = { trait = earthbender trait = competent_bender } }
+				fire_nation_cultures = { new_character = { trait = firebender trait = competent_bender } }
+				water_tribe_cultures = { new_character = { trait = waterbender trait = competent_bender } }
+				air_nomad_cultures = { new_character = { trait = airbender trait = competent_bender } }
+			}
+			new_character = {
+				remove_trait = weak
+				remove_trait = slow
+				remove_trait = imbecile
+				remove_trait = dull
+				remove_trait = craven	
+				if = {
+					limit = {
+						trait = misguided_warrior
 					}
-					
-					remove_trait = mystic
-					remove_trait = socializer
-					remove_trait = gamer
-					remove_trait = hedonist
-					remove_trait = duelist
-					remove_trait = hunter
-					remove_trait = strategist
-					remove_trait = administrator
-					remove_trait = architect
-					remove_trait = gardener
-					remove_trait = schemer
-					remove_trait = impaler
-					remove_trait = seducer
-					remove_trait = seductress
-					remove_trait = theologian
-					remove_trait = scholar
-					
-					random_list = { # Flavor Randomization
-						15 = {
-							change_martial = 2
-						}
-						10 = {
-							add_trait = robust
-						}
-						10 = {
-							add_trait = duelist
-						}
-						10 = {
-							add_trait = hunter
-						}
-						5 = {
-							add_trait = strategist
-						}
-						5 = {
-							change_martial = 4
-						}
-						5 = {
-							if = {
-								limit = {
-									has_dlc = "Reapers"
-								}
-								add_trait = one_eyed
-								change_martial = 1
-							}
-						}
-						5 = { 
-							add_trait = shrewd
-						}
-					}
-					save_event_target_as = invited_character
-				}				
+					remove_trait = misguided_warrior
+					add_trait = tough_soldier
+				}
+				random = {
+					chance = 20
+					upgrade_bending_effect = yes
+				}
+				save_event_target_as = invited_character
+			}
 			character_event = { id = NE.1 }
-			}
-			if = {
-				limit = {
-					culture_group = fire_nation_culture
-				}
-				create_random_soldier = {
-					random_traits = yes
-					dynasty = random
-					trait = firebender
-					trait = competent_bender
-				}
-				new_character = {
-					remove_trait = weak
-					remove_trait = slow
-					remove_trait = imbecile
-					remove_trait = dull
-					remove_trait = craven
-					
-					if = {
-						limit = {
-							trait = misguided_warrior
-						}
-						remove_trait = misguided_warrior
-						add_trait = tough_soldier
-					}
-					
-					remove_trait = mystic
-					remove_trait = socializer
-					remove_trait = gamer
-					remove_trait = hedonist
-					remove_trait = duelist
-					remove_trait = hunter
-					remove_trait = strategist
-					remove_trait = administrator
-					remove_trait = architect
-					remove_trait = gardener
-					remove_trait = schemer
-					remove_trait = impaler
-					remove_trait = seducer
-					remove_trait = seductress
-					remove_trait = theologian
-					remove_trait = scholar
-					
-					random_list = { # Flavor Randomization
-						15 = {
-							change_martial = 2
-						}
-						10 = {
-							add_trait = robust
-						}
-						10 = {
-							add_trait = duelist
-						}
-						10 = {
-							add_trait = hunter
-						}
-						5 = {
-							add_trait = strategist
-						}
-						5 = {
-							change_martial = 4
-						}
-						5 = {
-							if = {
-								limit = {
-									has_dlc = "Reapers"
-								}
-								add_trait = one_eyed
-								change_martial = 1
-							}
-						}
-						5 = { 
-							add_trait = shrewd
-						}
-					}
-					save_event_target_as = invited_character
-				}				
-
-				character_event = { id = NE.1 }
-			}
-			if = {
-				limit = {
-					culture_group = water_tribe_culture
-				}
-				create_random_soldier = {
-					random_traits = yes
-					dynasty = random
-					trait = waterbender
-					trait = competent_bender
-				}
-				new_character = {
-					remove_trait = weak
-					remove_trait = slow
-					remove_trait = imbecile
-					remove_trait = dull
-					remove_trait = craven
-					
-					if = {
-						limit = {
-							trait = misguided_warrior
-						}
-						remove_trait = misguided_warrior
-						add_trait = tough_soldier
-					}
-					
-					remove_trait = mystic
-					remove_trait = socializer
-					remove_trait = gamer
-					remove_trait = hedonist
-					remove_trait = duelist
-					remove_trait = hunter
-					remove_trait = strategist
-					remove_trait = administrator
-					remove_trait = architect
-					remove_trait = gardener
-					remove_trait = schemer
-					remove_trait = impaler
-					remove_trait = seducer
-					remove_trait = seductress
-					remove_trait = theologian
-					remove_trait = scholar
-					
-					random_list = { # Flavor Randomization
-						15 = {
-							change_martial = 2
-						}
-						10 = {
-							add_trait = robust
-						}
-						10 = {
-							add_trait = duelist
-						}
-						10 = {
-							add_trait = hunter
-						}
-						5 = {
-							add_trait = strategist
-						}
-						5 = {
-							change_martial = 4
-						}
-						5 = {
-							if = {
-								limit = {
-									has_dlc = "Reapers"
-								}
-								add_trait = one_eyed
-								change_martial = 1
-							}
-						}
-						5 = { 
-							add_trait = shrewd
-						}
-					}
-					save_event_target_as = invited_character
-				}				
-				character_event = { id = NE.1 }
-			}
-			if = {
-				limit = {
-					culture_group = air_nomad_culture
-				}
-				if = {
-					limit = {
-						ROOT = { is_female = yes }
-					}
-					create_random_soldier = {
-						random_traits = yes
-						dynasty = random
-						female = yes
-						trait = airbender
-						trait = competent_bender
-					}
-					new_character = {
-						remove_trait = weak
-						remove_trait = slow
-						remove_trait = imbecile
-						remove_trait = dull
-						remove_trait = craven
-						
-						if = {
-							limit = {
-								trait = misguided_warrior
-							}
-							remove_trait = misguided_warrior
-							add_trait = tough_soldier
-						}
-						
-						remove_trait = mystic
-						remove_trait = socializer
-						remove_trait = gamer
-						remove_trait = hedonist
-						remove_trait = duelist
-						remove_trait = hunter
-						remove_trait = strategist
-						remove_trait = administrator
-						remove_trait = architect
-						remove_trait = gardener
-						remove_trait = schemer
-						remove_trait = impaler
-						remove_trait = seducer
-						remove_trait = seductress
-						remove_trait = theologian
-						remove_trait = scholar
-						
-						random_list = { # Flavor Randomization
-							15 = {
-								change_martial = 2
-							}
-							10 = {
-								add_trait = robust
-							}
-							10 = {
-								add_trait = duelist
-							}
-							10 = {
-								add_trait = hunter
-							}
-							5 = {
-								add_trait = strategist
-							}
-							5 = {
-								change_martial = 4
-							}
-							5 = {
-								if = {
-									limit = {
-										has_dlc = "Reapers"
-									}
-									add_trait = one_eyed
-									change_martial = 1
-								}
-							}
-							5 = { 
-								add_trait = shrewd
-							}
-						}
-						save_event_target_as = invited_character
-					}				
-					character_event = { id = NE.1 }
-				}
-				if = {
-					limit = {
-						ROOT = { is_female = no }
-					}
-					create_random_soldier = {
-						random_traits = yes
-						dynasty = random
-						trait = airbender
-						trait = competent_bender
-					}
-					new_character = {
-						remove_trait = weak
-						remove_trait = slow
-						remove_trait = imbecile
-						remove_trait = dull
-						remove_trait = craven
-						
-						if = {
-							limit = {
-								trait = misguided_warrior
-							}
-							remove_trait = misguided_warrior
-							add_trait = tough_soldier
-						}
-						
-						remove_trait = mystic
-						remove_trait = socializer
-						remove_trait = gamer
-						remove_trait = hedonist
-						remove_trait = duelist
-						remove_trait = hunter
-						remove_trait = strategist
-						remove_trait = administrator
-						remove_trait = architect
-						remove_trait = gardener
-						remove_trait = schemer
-						remove_trait = impaler
-						remove_trait = seducer
-						remove_trait = seductress
-						remove_trait = theologian
-						remove_trait = scholar
-						
-						random_list = { # Flavor Randomization
-							15 = {
-								change_martial = 2
-							}
-							10 = {
-								add_trait = robust
-							}
-							10 = {
-								add_trait = duelist
-							}
-							10 = {
-								add_trait = hunter
-							}
-							5 = {
-								add_trait = strategist
-							}
-							5 = {
-								change_martial = 4
-							}
-							5 = {
-								if = {
-									limit = {
-										has_dlc = "Reapers"
-									}
-									add_trait = one_eyed
-									change_martial = 1
-								}
-							}
-							5 = { 
-								add_trait = shrewd
-							}
-						}
-						save_event_target_as = invited_character
-					}				
-					character_event = { id = NE.1 }
-				}
-			}
-		}
-
-		ai_will_do = {
-			factor = 0
 		}
 	}
 
@@ -479,6 +107,7 @@ decisions = {
 		only_playable = yes
 
 		potential = {
+			NOT = { has_religion_feature = religion_matriarchal } 
 		}
 		allow = {
 			piety = 25
@@ -568,6 +197,7 @@ decisions = {
 		only_playable = yes
 
 		potential = {
+			NOT = { has_religion_feature = religion_patriarchal }
 		}
 		allow = {
 			piety = 25
@@ -641,10 +271,6 @@ decisions = {
 			}
 			character_event = { id = NE.1 }
 		}
-
-		ai_will_do = {
-			factor = 0
-		}
 	}
 	
 	employ_steward = {
@@ -652,6 +278,7 @@ decisions = {
 		only_playable = yes
 
 		potential = {
+			NOT = { has_religion_feature = religion_matriarchal }
 		}
 		allow = {
 			scaled_wealth = 0.25
@@ -725,16 +352,13 @@ decisions = {
 			}
 			character_event = { id = NE.1 }
 		}
-
-		ai_will_do = {
-			factor = 0
-		}
 	}
 	employ_stewardess = {
 		ai = no
 		only_playable = yes
 
 		potential = {
+			NOT = { has_religion_feature = religion_patriarchal }
 		}
 		allow = {
 			scaled_wealth = 0.25
@@ -808,10 +432,6 @@ decisions = {
 			}
 			character_event = { id = NE.1 }
 		}
-
-		ai_will_do = {
-			factor = 0
-		}
 	}
 	
 	present_debutante = {
@@ -844,11 +464,8 @@ decisions = {
 			}
 			character_event = { id = NE.1 }
 		}
-
-		ai_will_do = {
-			factor = 0
-		}
 	}
+	
 	present_male_debutante = {
 		ai = no
 		only_playable = yes

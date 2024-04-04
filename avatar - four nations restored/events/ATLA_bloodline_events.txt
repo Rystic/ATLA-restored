@@ -1,8 +1,8 @@
-namespace = bloodline_events
+namespace = BLOODEV
 #
 # chin's descedants get ambitious/strong/craven trait
 character_event = {
-	id = bloodline_events.1
+	id = BLOODEV.1
 	title = EVTTITLEbender_bloodlines.1
 	desc = EVTDESCbender_bloodlines.1
 	picture = GFX_evt_chin_war
@@ -13,7 +13,7 @@ character_event = {
 			has_character_flag = ambitious_check
 		}
 		any_owned_bloodline = {
-			has_bloodline_flag = bloodline_chin
+			has_bloodline_flag = is_chin_bloodline
 		}
 	}
 	mean_time_to_happen = {
@@ -74,7 +74,7 @@ character_event = {
 
 # general avatar bloodline event
 narrative_event = {
-	id = bloodline_events.2
+	id = BLOODEV.2
 	title = EVTTbender_bloodlines.2
 	desc = EVTDESCbender_bloodlines.2
 	picture = GFX_evt_avatar_conflict
@@ -82,24 +82,9 @@ narrative_event = {
 	trigger = {
 		AND = {
 			trait = fullyrealisedavatar
-			NOR = {
+			NOT = {
 				any_owned_bloodline = {
-					has_bloodline_flag = bloodline_takahama
-				}
-				any_owned_bloodline = {
-					has_bloodline_flag = bloodline_last_airbender
-				}
-				any_owned_bloodline = {
-					has_bloodline_flag = bloodline_avatar_1
-				}
-				any_owned_bloodline = {
-					has_bloodline_flag = bloodline_avatar_2
-				}
-				any_owned_bloodline = {
-					has_bloodline_flag = bloodline_avatar_3
-				}
-				any_owned_bloodline = {
-					has_bloodline_flag = bloodline_avatar_4
+					has_bloodline_flag = is_avatar_bloodline
 				}
 			}
 		}
@@ -136,22 +121,8 @@ narrative_event = {
 			}
 		}
 		new_bloodline = {
-			set_name = bloodline_generic_avatar
-			trigger_switch = {
-				on_trigger = has_global_flag
-				avatar_water = {
-					set_description = bloodline_desc_generic_avatar_water
-				}
-				avatar_earth = {
-					set_description = bloodline_desc_generic_avatar_earth
-				}
-				avatar_fire = {
-					set_description = bloodline_desc_generic_avatar_fire
-				}
-				avatar_air = {
-					set_description = bloodline_desc_generic_avatar_air
-				}
-			}
+			set_name = generic_avatar_bloodline
+			set_description = generic_avatar_bloodline_desc
 			# random_list = {
 			# 	#Randomize names
 			# 	20 = {  }
@@ -165,7 +136,7 @@ narrative_event = {
 
 # metalbender founder's descedants get metalbender trait or improve their bending
 character_event = {
-	id = bloodline_events.3
+	id = BLOODEV.3
 	title = EVTTITLEbender_bloodlines.3
 	desc = EVTDESCbender_bloodlines.3
 	picture = GFX_evt_metalbending_discovery
@@ -177,13 +148,13 @@ character_event = {
 			has_character_flag = metalbender_check
 		}
 		any_owned_bloodline = {
-			has_bloodline_flag = bloodline_metalbender_founder
+			has_bloodline_flag = is_metalbending_bloodline
 		}
 	}
 	immediate = {
 		any_owned_bloodline = {
 			limit = {
-				has_bloodline_flag = bloodline_metalbender_founder
+				has_bloodline_flag = is_metalbending_bloodline
 			}
 			save_event_target_as = bloodline_metalbending
 			founder = {
@@ -191,7 +162,7 @@ character_event = {
 			}
 		}
 	}
-	mean_time_to_happen = {
+	mean_time_to_happen = { #REEEEEEEEEE TODO
 		months = 1
 	}
 	option = {
@@ -216,7 +187,7 @@ character_event = {
 
 character_event = {
 	# kyoshi dies in personal duel
-	id = bloodline_events.4
+	id = BLOODEV.4
 	hide_window = yes
 	is_triggered_only = yes
 	trigger = {
@@ -246,7 +217,7 @@ character_event = {
 			}
 			killer = {
 				narrative_event = {
-					id = bloodline_events.5
+					id = BLOODEV.5
 					days = 3
 					random = 2
 				}
@@ -255,7 +226,7 @@ character_event = {
 		else = {
 			killer = {
 				narrative_event = {
-					id = bloodline_events.6
+					id = BLOODEV.6
 					days = 3
 					random = 2
 				}
@@ -267,16 +238,16 @@ character_event = {
 # todo: add loc
 # !loc
 narrative_event = {
-	id = bloodline_events.5
+	id = BLOODEV.5
 	desc = EVTDESCbender_bloodlines.5
 	title = EVTTbender_bloodlines.5
 	picture = GFX_evt_avatar_death
 	is_triggered_only = yes
 	option = {
-		name = bloodline_events.5.opt
+		name = BLOODEV.5.opt
 		prestige = 250
 		create_bloodline = {
-			type = kyoshi_killer_chin
+			type = chin_kyoshi_killer_bloodline
 		}
 	}
 }
@@ -285,17 +256,17 @@ narrative_event = {
 # todo: add loc
 # !loc
 narrative_event = {
-	id = bloodline_events.6
+	id = BLOODEV.6
 	desc = EVTDESCbender_bloodlines.6
 	title = EVTTbender_bloodlines.6
 	picture = GFX_evt_avatar_death
 	is_triggered_only = yes
 	option = {
-		# name = bloodline_events.6.opt
+		# name = BLOODEV.6.opt
 		name = OK
 		prestige = 250
 		create_bloodline = {
-			type = kyoshi_killer
+			type = kyoshi_killer_bloodline
 		}
 	}
 }
@@ -304,7 +275,7 @@ narrative_event = {
 # !loc
 # !nevercalled
 # narrative_event = {
-# 	id = bloodline_events.8
+# 	id = BLOODEV.8
 # 	desc = EVTDESCbender_bloodlines.8
 # 	title = EVTTbender_bloodlines.8
 # 	picture = GFX_evt_china_expansionist
@@ -315,19 +286,19 @@ narrative_event = {
 # 		prisoner = no
 # 		NOR = {
 # 			any_owned_bloodline = {
-# 				has_bloodline_flag = bloodline_earthking
+# 				has_bloodline_flag = is_earth_king_bloodline
 # 			}
 # 			any_owned_bloodline = {
-# 				has_bloodline_flag = bloodline_houting
+# 				has_bloodline_flag = is_houting_bloodline
 # 			}
 # 		}
 # 	}
 # 	option = {
-# 		# name = bloodline_events.8.opt
+# 		# name = BLOODEV.8.opt
 # 		name = OK
 # 		prestige = 250
 # 		create_bloodline = {
-# 			type = bloodline_earthking
+# 			type = earth_king_bloodline
 # 		}
 # 	}
 # }
@@ -336,7 +307,7 @@ narrative_event = {
 # !loc
 # !nevercalled
 # narrative_event = {
-# 	id = bloodline_events.9
+# 	id = BLOODEV.9
 # 	desc = EVTDESCbender_bloodlines.9
 # 	title = EVTTbender_bloodlines.9
 # 	picture = GFX_evt_china_expansionist
@@ -349,12 +320,12 @@ narrative_event = {
 # 		}
 # 		NOR = {
 # 			any_owned_bloodline = {
-# 				has_bloodline_flag = earth_uniter_bloodline
+# 				has_bloodline_flag = is_earth_uniter_bloodline
 # 			}
 # 		}
 # 	}
 # 	option = {
-# 		# name = bloodline_events.9.opt
+# 		# name = BLOODEV.9.opt
 # 		name = OK
 # 		prestige = 250
 # 		create_bloodline = {
@@ -365,7 +336,7 @@ narrative_event = {
 # }
 
 character_event = {
-	id = bloodline_events.10
+	id = BLOODEV.10
 	desc = EVTDESCbender_bloodlines.10
 	picture = GFX_evt_lightning_bending_scroll
 	min_age = 16
@@ -376,7 +347,7 @@ character_event = {
 			has_character_flag = lightning_check
 		}
 		any_owned_bloodline = {
-			has_bloodline_flag = bloodline_rakurai
+			has_bloodline_flag = is_lightningbending_bloodline
 		}
 	}
 	mean_time_to_happen = {
@@ -398,7 +369,7 @@ character_event = {
 
 # sun ruler gets bloodline
 character_event = {
-	id = bloodline_events.11
+	id = BLOODEV.11
 	title = EVTTITLEbender_bloodlines.11
 	desc = EVTDESCbender_bloodlines.11
 	picture = GFX_evt_sun_warrior_city
@@ -414,13 +385,13 @@ character_event = {
 				trait = firebender
 				NOR = {
 					any_owned_bloodline = { 
-						has_bloodline_flag = bloodline_sun # If you don't have the sun bloodline, it'll create one
+						has_bloodline_flag = is_sun_bloodline # If you don't have the sun bloodline, it'll create one
 					}
 					has_character_flag = sunwarrior_check # not founded one before
 				} 
 			}
-			create_bloodline = { # reate one
-				type = sun_blood
+			create_bloodline = { #create one
+				type = sun_bloodline
 				inheritance = patrilineal
 			}
 			set_character_flag = sunwarrior_check

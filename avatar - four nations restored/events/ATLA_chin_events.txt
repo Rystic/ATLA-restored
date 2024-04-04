@@ -1,0 +1,283 @@
+namespace = CHN
+
+# Add Warlord of Chin trait to characters that are at least counts and follow Chin.
+character_event = {
+	id = CHN.1
+	desc = become_warlord_of_chin
+	picture = GFX_evt_battle_finnish_pagan
+	border = GFX_event_normal_frame_war
+
+	# This event should NOT be is_triggered_only ##TODO: Check WHY. Things can always be triggered_only. -Liz
+	mean_time_to_happen = {
+		months = 1
+	}
+
+	trigger = {
+		is_adult = yes
+		higher_tier_than = COUNT
+		OR = {
+			religion = way_of_chin
+			religion = way_of_chin_reformed
+		}
+		NOT = { trait = warlord_of_chin }
+	}
+	
+	option = {
+		name = become_warlord_of_chin_option
+		add_trait = warlord_of_chin
+		hidden_tooltip  = {
+			set_variable = { which = propaganda value = 0 }
+			set_variable = { which = propaganda_next_gain value = 50 }
+			set_variable = { which = propaganda_next_loss value = -25 }
+			character_event = { id = CHN.2 }
+		}
+	}
+}
+
+# Yearly propaganda gain ##This seems like it would be absolute HELL because of how vassals work. In one year you'd get like 4 different checks over a count's province! Surely this should only apply to independent Chin rulers who can enforce their propaganda anyway? Spreading the faith via prosyletisation represents the small-fry attempts to, this is an institutional thing.
+character_event = {
+	id = CHN.2
+	hide_window = yes
+	only_playable = yes
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			religion = way_of_chin
+			religion = way_of_chin_reformed
+		}
+	}
+	
+	immediate = {
+		set_variable = { which = propaganda_yearly value = 0 }
+		trigger_switch = {
+			on_trigger = martial
+			30 = { change_variable = { which = propaganda_yearly value = 3 } }
+			20 = { change_variable = { which = propaganda_yearly value = 2 } }
+			10 = { change_variable = { which = propaganda_yearly value = 1 } }
+			5 = { subtract_variable = { which = propaganda_yearly value = 1 } }
+			3 = { subtract_variable = { which = propaganda_yearly value = 2 } }
+			1 = { subtract_variable = { which = propaganda_yearly value = 3 } }
+			0 = { subtract_variable = { which = propaganda_yearly value = 5 } }
+		}
+		
+		if = {
+			limit = {
+				religion_authority = 0.80
+			}
+			change_variable = { which = propaganda_yearly value = 1 }
+		}		
+		
+		if = {
+			limit = {
+				religion_authority = 0.50
+			}
+			change_variable = { which = propaganda_yearly value = 1 }
+		}
+		
+		if = {
+			limit = {
+				NOT = { religion_authority = 0.30 }
+			}
+			subtract_variable = { which = propaganda_yearly value = 1 }
+		}
+		
+		if = {
+			limit = {
+				NOT = { religion_authority = 0.10 }
+			}
+			subtract_variable = { which = propaganda_yearly value = 2 }
+		}
+
+		if = {
+			limit = {
+				any_owned_bloodline = {
+					has_bloodline_flag = is_chin_kyoshi_killer_bloodline
+				}
+			}
+			change_variable = { which = propaganda_yearly value = 3 }
+		}
+		
+		if = {
+			limit = {
+				any_owned_bloodline = {
+					has_bloodline_flag = is_chin_bloodline
+				}
+			}
+			change_variable = { which = propaganda_yearly value = 2 }
+		}
+		
+		if = {
+			limit = {
+				any_owned_bloodline = {
+					has_bloodline_flag = is_takahama_bloodline
+				}
+			}
+			subtract_variable = { which = propaganda_yearly value = 3 }
+		}
+		
+		change_variable = { which = propaganda which = propaganda_yearly }
+		character_event = { id = CHN.3 }
+	}
+}
+
+# Check to see if propaganda is past either high or low threshold.
+character_event = {
+	id = CHN.3
+	hide_window = yes
+	is_triggered_only = yes
+	
+	option = {
+		character_event = { id = CHN.4 }
+		character_event = { id = CHN.5 }
+	}
+}
+
+# If propaganda spills over, convert a random county to Chin.
+character_event = {
+	id = CHN.4
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		check_variable = { which = propaganda which >= propaganda_next_gain }
+	}
+	
+	option = {
+		ROOT = {
+			subtract_variable = { which = propaganda which = propaganda_next_gain }
+			if = {
+				limit = {
+					any_realm_province = {
+						NOT = { religion = way_of_chin }
+					}
+				}
+				random_realm_province = {
+					limit = { NOT = { religion = way_of_chin  } }
+					religion = way_of_chin
+				}
+				random_vassal = {
+					limit = { 
+						ai = yes
+						higher_tier_than = baron
+						NOT = { 
+							religion = way_of_chin 
+						}
+					}
+					religion = way_of_chin
+				}				
+				religion_authority = {
+					modifier = embraced_chin
+					years = 10
+				}
+			}
+			else = {
+				religion_authority = {
+					modifier = chin_propaganda
+					years = 10
+				}
+				random_vassal = {
+					limit = { 
+						ai = yes
+						higher_tier_than = baron
+						NOT = { 
+							religion = way_of_chin 
+						}
+					}
+					religion = way_of_chin
+				}
+				random_vassal = {
+					limit = { 
+						ai = yes 
+						higher_tier_than = baron
+						NOT = { religion = way_of_chin }
+					}
+					religion = way_of_chin
+				}
+				random_courtier_or_vassal = {
+					limit = { 
+						ai = yes
+						NOT = { religion = way_of_chin }
+					}
+					religion = way_of_chin
+				}
+				random_courtier_or_vassal = {
+					limit = { 
+						ai = yes 
+						NOT = { religion = way_of_chin }
+					}
+					religion = way_of_chin
+				}
+			}
+		}
+	}
+}
+
+# If propaganda gets to low, convert people to Kyoshi
+character_event = {
+	id = CHN.5
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		check_variable = { which = propaganda which <= propaganda_next_loss }
+	}
+	
+	option = {
+		ROOT = {
+			subtract_variable = { which = propaganda which = propaganda_next_loss }
+			if = {
+				limit = {
+					any_realm_province = {
+						religion = way_of_chin
+					}
+				}
+				random_realm_province = {
+					limit = { religion = way_of_chin }
+					religion = followers_of_kyoshi
+				}
+				religion_authority = {
+					modifier = embraced_kyoshi
+					years = 10
+				}
+				random_courtier_or_vassal = {
+					limit = { ai = yes }
+					religion = followers_of_kyoshi
+				}
+				random_courtier_or_vassal = {
+					limit = { ai = yes }
+					religion = followers_of_kyoshi
+				}
+			}
+			else = {
+				random_courtier_or_vassal = {
+					limit = { ai = yes }
+					religion = followers_of_kyoshi
+				}
+				random_courtier_or_vassal = {
+					limit = { ai = yes }
+					religion = followers_of_kyoshi
+				}
+				random_courtier_or_vassal = {
+					limit = { ai = yes }
+					religion = followers_of_kyoshi
+				}
+				random_courtier_or_vassal = {
+					limit = { ai = yes }
+					religion = followers_of_kyoshi
+				}
+				if = {
+					limit = {
+						ai = yes
+					}
+					religion_authority = {
+						modifier = embraced_kyoshi
+						years = 10
+					}
+					religion = followers_of_kyoshi
+				}
+			}
+		}
+	}
+}

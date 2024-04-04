@@ -158,7 +158,7 @@ character_event = { # Find Pet
 		name = "EVTOPTAATLAR.7"
 		if = {
 			limit = {
-				culture_group = fire_nation_culture
+				culture_group = fire_nation_cultures
 				NOT = {
 					any_artifact = {
 						has_artifact_flag = pet
@@ -169,7 +169,7 @@ character_event = { # Find Pet
 		}
 		if = {
 			limit = {
-				culture_group = earth_kingdom_culture
+				culture_group = earth_kingdom_cultures
 				NOT = {
 					any_artifact = {
 						has_artifact_flag = pet
@@ -180,7 +180,7 @@ character_event = { # Find Pet
 		}
 		if = {
 			limit = {
-				culture_group = air_nomad_culture
+				culture_group = air_nomad_cultures
 				NOT = {
 					any_artifact = {
 						has_artifact_flag = pet
@@ -191,7 +191,7 @@ character_event = { # Find Pet
 		}
 		if = {
 			limit = {
-				culture_group = water_tribe_culture
+				culture_group = water_tribe_cultures
 				NOT = {
 					any_artifact = {
 						has_artifact_flag = pet
@@ -207,23 +207,13 @@ character_event = { # Find Master
 	id = ATLAR.8
 	desc = {
 		trigger = {
-			OR = {
-				trait = waterbender
-				trait = earthbender
-				trait = airbender
-				trait = firebender
-			}
+			is_bender_trigger = yes
 		}
 		text = EVTDESCATLARA.8
 	}
 	desc = {
 		trigger = {
-			NOR = {
-				trait = waterbender
-				trait = earthbender
-				trait = airbender
-				trait = firebender
-			}
+			is_bender_trigger = no
 		}
 		text = EVTDESCATLARB.8
 	}
@@ -234,31 +224,15 @@ character_event = { # Find Master
 		name = "EVTOPTAATLARA.8"
 		if = {
 			limit = {
-				NOR = {
-					trait = waterbender
-					trait = earthbender
-					trait = airbender
-					trait = firebender
-				}
+				is_bender_trigger = no
 			}
 			add_trait = weapons_expert
 		}
 		if = {
 			limit = {
-				OR = {
-					trait = waterbender
-					trait = earthbender
-					trait = airbender
-					trait = firebender
-				}
+				is_bender_trigger = yes
 			}
-			trigger_switch = {
-				on_trigger = trait
-				incompetent_bender = { remove_trait = incompetent_bender add_trait = competent_bender }
-				competent_bender = { remove_trait = competent_bender add_trait = powerful_bender }
-				powerful_bender = { remove_trait = powerful_bender add_trait = master_bender }
-				master_bender = { remove_trait = master_bender add_trait = legendary_bender }
-			}
+			upgrade_bending_effect = yes
 		}
 	}
 
@@ -306,25 +280,25 @@ character_event = { # Culture Group Event
 	id = ATLAR.11
 	desc = {
 		trigger = {
-			culture_group = fire_nation_culture
+			culture_group = fire_nation_cultures
 		}
 		text = EVTDESCATLARA.11
 	}
 	desc = {
 		trigger = {
-			culture_group = earth_kingdom_culture
+			culture_group = earth_kingdom_cultures
 		}
 		text = EVTDESCATLARB.11
 	}
 	desc = {
 		trigger = {
-			culture_group = air_nomad_culture
+			culture_group = air_nomad_cultures
 		}
 		text = EVTDESCATLARC.11
 	}
 	desc = {
 		trigger = {
-			culture_group = water_tribe_culture
+			culture_group = water_tribe_cultures
 		}
 		text = EVTDESCATLARD.11
 	}
@@ -335,25 +309,25 @@ character_event = { # Culture Group Event
 		name = "EVTOPTAATLARA.11"
 		if = {
 			limit = {
-				culture_group = fire_nation_culture
+				culture_group = fire_nation_cultures
 			}
 			character_event = { id = ATLAR.15 days = 7 }
 		}
 		if = {
 			limit = {
-				culture_group = earth_kingdom_culture
+				culture_group = earth_kingdom_cultures
 			}
 			character_event = { id = ATLAR.20 days = 7 }
 		}
 		if = {
 			limit = {
-				culture_group = air_nomad_culture
+				culture_group = air_nomad_cultures
 			}
 			character_event = { id = ATLAR.22 days = 7 }
 		}
 		if = {
 			limit = {
-				culture_group = water_tribe_culture
+				culture_group = water_tribe_cultures
 			}
 			character_event = { id = ATLAR.26 days = 7 }
 		}
@@ -598,13 +572,7 @@ character_event = { # Dragon - Dragon Slain
 			limit = {
 				trait = firebender
 			}
-			trigger_switch = {
-				on_trigger = trait
-				incompetent_bender = { remove_trait = incompetent_bender add_trait = competent_bender }
-				competent_bender = { remove_trait = competent_bender add_trait = powerful_bender }
-				powerful_bender = { remove_trait = powerful_bender add_trait = master_bender }
-				master_bender = { remove_trait = master_bender add_trait = legendary_bender }
-			}
+			upgrade_bending_effect = yes
 		}
 	}
 }
@@ -648,13 +616,7 @@ character_event = { # Badger Mole - Learning
 
 	option = {
 		name = "EVTOPTAATLAR.21"
-		trigger_switch = {
-			on_trigger = trait
-			incompetent_bender = { remove_trait = incompetent_bender add_trait = competent_bender }
-			competent_bender = { remove_trait = competent_bender add_trait = powerful_bender }
-			powerful_bender = { remove_trait = powerful_bender add_trait = master_bender }
-			master_bender = { remove_trait = master_bender add_trait = legendary_bender }
-		}
+		upgrade_bending_effect = yes
 		add_trait = seismicsense_nonblind
 	}
 }
@@ -838,7 +800,7 @@ character_event = { # Ruler Visited
 	option = {
 		name = "EVTOPTAATLARA.31"
 		trigger = {
-			culture_group = air_nomad_culture
+			culture_group = air_nomad_cultures
 		}
 		hidden_tooltip = {
 			FROM = { character_event = { id = ATLAR.32 days = 7 } }
@@ -858,7 +820,7 @@ character_event = { # Ruler Visited
 	option = {
 		name = "EVTOPTAATLARB.31"
 		trigger = {
-			NOT = { culture_group = air_nomad_culture }
+			NOT = { culture_group = air_nomad_cultures }
 		}
 		hidden_tooltip = {
 			FROM = { character_event = { id = ATLAR.32 days = 7 } }
@@ -954,8 +916,8 @@ character_event = { # WT: Wolves threaten settlement
 	trigger = {
 		higher_real_tier_than = COUNT
 		OR = {
-			culture = northern_water
-			culture = southern_water
+			culture = northern_water_culture
+			culture = southern_water_culture
 		}
 	}
 
@@ -1005,7 +967,7 @@ character_event = { # WT: Waterbender Healer Arrives - Start of Event Chain
 
 	trigger = {
 		higher_real_tier_than = BARON
-		culture = southern_water
+		culture = southern_water_culture
 	}
 
 	option = { # Welcome Her
@@ -1015,7 +977,7 @@ character_event = { # WT: Waterbender Healer Arrives - Start of Event Chain
 			random_traits = no
 			dynasty = random
 			religion = tui_and_la
-			culture = northern_water
+			culture = northern_water_culture
 			female = yes
 			age = 17
 			attributes = {
@@ -1049,8 +1011,8 @@ character_event = { # WT: Polar Bear Dog
 	trigger = {
 		higher_real_tier_than = BARON
 		OR = {
-			culture = northern_water
-			culture = southern_water
+			culture = northern_water_culture
+			culture = southern_water_culture
 		}
 	}
 
@@ -1112,8 +1074,8 @@ character_event = { # WT: Earth Kingdom Traders
 	trigger = {
 		higher_real_tier_than = BARON
 		OR = {
-			culture = northern_water
-			culture = southern_water
+			culture = northern_water_culture
+			culture = southern_water_culture
 		}
 	}
 
@@ -1146,7 +1108,7 @@ character_event = { # FN: Firebending Bandits
 	trigger = {
 		is_landed = yes
 		higher_real_tier_than = BARON
-		culture_group = fire_nation_culture
+		culture_group = fire_nation_cultures
 	}
 
 	option = { # Stop Them
@@ -1186,7 +1148,7 @@ character_event = { # FN: Forest Fire
 	trigger = {
 		is_landed = yes
 		higher_real_tier_than = BARON
-		culture_group = fire_nation_culture
+		culture_group = fire_nation_cultures
 	}
 
 	option = { # Stop it
@@ -1454,7 +1416,7 @@ character_event = {
 
 	trigger = {
 		NOT = { has_global_flag = welcomed_merchant }
-		culture_group = earth_kingdom_culture
+		culture_group = earth_kingdom_cultures
 		war = no
 		prisoner = no
 	}
@@ -1473,7 +1435,7 @@ character_event = {
 						name = "Gao"
 						dynasty = 2
 						religion = earth_spirituality
-						culture = northern_earth
+						culture = northern_earth_culture
 						employer = event_target:liege_title
 						female = no
 						historical = yes
@@ -1512,7 +1474,7 @@ character_event = {
 						name = "Gao"
 						dynasty = 2
 						religion = earth_spirituality
-						culture = northern_earth
+						culture = northern_earth_culture
 						employer = event_target:liege_title
 						female = no
 						historical = yes

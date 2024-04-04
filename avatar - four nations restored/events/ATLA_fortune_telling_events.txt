@@ -1,0 +1,625 @@
+namespace = FORTUNE
+
+character_event = {
+	id = FORTUNE.1
+	is_triggered_only = yes
+	hide_window = yes
+	only_independent = yes
+	
+	trigger = {
+		always = yes
+		is_save_game = no
+	}
+	
+	immediate = {
+		random_list = {
+			10 = { set_variable = { which = global_world_luck value = 2 } }
+			10 = { set_variable = { which = global_world_luck value = 3 } }
+			10 = { set_variable = { which = global_world_luck value = 4 } }
+			10 = { set_variable = { which = global_world_luck value = 5 } }
+			10 = { set_variable = { which = global_world_luck value = 6 } }
+			10 = { set_variable = { which = global_world_luck value = 7 } }
+			10 = { set_variable = { which = global_world_luck value = 8 } }
+		}
+	}
+	
+	option = {
+		if = {
+			limit = {
+				check_variable = { which = global_world_luck value >= 5 }
+			}
+			set_global_flag = global_world_luck_good
+			clr_global_flag = global_world_luck_bad
+		} else = {
+			clr_global_flag = global_world_luck_good
+			set_global_flag = global_world_luck_bad
+		}
+	}
+}
+
+letter_event = {
+	id = FORTUNE.100
+	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_bad
+			}
+		}
+		text = tell_fortune_0_bad
+	}
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_good
+			}
+		}
+		text = tell_fortune_0_good
+	}
+	
+	option = {
+		name = tell_fortune_response_0
+		prestige = -50
+		piety = -10
+		
+		FROM = {
+			add_character_modifier = {
+				name = had_fortune_told
+				days = 730
+			}
+		}
+	}
+}
+
+letter_event = {
+	id = FORTUNE.101
+	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_bad
+			}
+		}
+		text = tell_fortune_1_bad
+	}
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_good
+			}
+		}
+		text = tell_fortune_1_good
+	}
+	
+	option = {
+		name = tell_fortune_response_1
+
+		FROM = {
+			add_character_modifier = {
+				name = had_fortune_told
+				days = 730
+			}
+			opinion = {
+				modifier = opinion_entertained_by_fortunetelling
+				who = ROOT
+			}
+		}
+	}
+}
+
+letter_event = {
+	id = FORTUNE.102
+	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_bad
+			}
+		}
+		text = tell_fortune_2_bad
+	}
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_good
+			}
+		}
+		text = tell_fortune_2_good
+	}
+	
+	option = {
+		name = tell_fortune_response_2
+		FROM = {
+			add_friend = ROOT
+			add_character_modifier = {
+				name = had_fortune_told
+				days = 730
+			}
+		}
+		ROOT = {
+			religion_authority = {
+				modifier = successful_fortunetelling_ma
+				years = 10
+			}
+		}
+	}
+}
+
+letter_event = {
+	id = FORTUNE.103
+	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_bad
+			}
+		}
+		text = tell_fortune_3_bad
+	}
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_good
+			}
+		}
+		text = tell_fortune_3_good
+	}
+	
+	option = {
+		name = tell_fortune_response_3
+		FROM = {
+			add_friend = ROOT
+			religion = ROOT
+			add_character_modifier = {
+				name = had_fortune_told
+				days = 730
+			}
+		}
+		ROOT = {
+			religion_authority = {
+				modifier = successful_fortunetelling_ma
+				years = 10
+			}
+		}
+	}
+}
+
+letter_event = {
+	id = FORTUNE.104
+	is_triggered_only = yes
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_bad
+			}
+		}
+		text = tell_fortune_4_bad
+	}
+	
+	desc = {
+		trigger = {
+			ROOT = {
+				has_character_flag = personal_luck_good
+			
+			}
+		}
+		text = tell_fortune_4_good
+	}
+	
+	option = {
+		name = tell_fortune_response_4
+		FROM = {
+			add_friend = ROOT
+			religion = ROOT
+			force_host = ROOT
+			add_character_modifier = {
+				name = had_fortune_told
+				days = 730
+			}
+		}
+	}
+}
+
+character_event = { # Look for a fortune telling teacher
+	id = FORTUNE.1000
+	desc = find_a_ft_teacher
+	is_triggered_only = yes
+	picture = GFX_evt_fortune_teller
+	
+	immediate = {
+		character_event = { id = FORTUNE.1003 }
+	}
+	
+	option = {
+		name = find_a_ft_teacher_normal
+		capital_scope = {
+			if = {
+				limit = { 
+					has_building = fortune_telling_building_4
+				}
+				ROOT = {
+					hidden_tooltip = {
+						set_variable = { which = ft_building_tier value = 4 }
+					}
+					narrative_event = { id = FORTUNE.10000 days = 46 random = 23 }
+				}
+			}
+			else_if = {
+				limit = { 
+					has_building = fortune_telling_building_3
+				}
+				ROOT = {
+					hidden_tooltip = {
+						set_variable = { which = ft_building_tier value = 3 }
+					}
+					narrative_event = { id = FORTUNE.10000 days = 91 random = 46 }
+				}
+			}
+			else_if = {
+				limit = { 
+					has_building = fortune_telling_building_2
+				}
+				ROOT = {
+					hidden_tooltip = {
+						set_variable = { which = ft_building_tier value = 2 }
+					}
+					narrative_event = { id = FORTUNE.10000 days = 182 random = 91 }
+				}
+			}
+			else_if = {
+				limit = { 
+					has_building = fortune_telling_building_1
+				}
+				ROOT = {
+					hidden_tooltip = {
+						set_variable = { which = ft_building_tier value = 1 }
+					}
+					narrative_event = { id = FORTUNE.10000 days = 365 random = 182 }
+				}
+			}
+			else = {
+				ROOT = {
+					hidden_tooltip = {
+						set_variable = { which = ft_building_tier value = 0 }
+					}
+					narrative_event = { id = FORTUNE.10000 days = 730 random = 365 }
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = find_a_ft_teacher_intrigue
+		trigger = {
+			intrigue = 20
+		}
+		tooltip_info = intrigue
+		character_event = { id = FORTUNE.1001 days = 50 random = 10 }
+		
+		ai_chance = {
+        	factor = 1
+        	modifier = { trait = deceitful factor = 20 }
+			modifier = { trait = slothful factor = 3 }
+			modifier = { trait = paranoid factor = 3 }
+        	modifier = { trait = patient factor = 0.25 }
+		}
+	}
+}
+
+character_event = {
+	id = FORTUNE.1001
+	desc = became_a_fortuneteller
+	is_triggered_only = yes
+	picture = GFX_evt_fortune_teller
+
+	option = {
+		name = became_a_fortuneteller_option
+		add_trait = fortuneteller
+		piety = 100
+		clr_character_flag = learning_ft
+	}
+}
+
+character_event = { #calculate difference in luck of personal vs world
+	id = FORTUNE.1002
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		set_variable = { which = luck_difference which = global_world_luck }
+		subtract_variable = { which = luck_difference which = personal_luck }
+		if = {
+			limit = {
+				check_variable = { which = luck_difference value < 0 }
+			}
+			multiply_variable = { which = luck_difference value = -1 }
+		}	
+	}
+}
+
+character_event = { # set the character's personal luck
+	id = FORTUNE.1003
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		random_list = {
+			10 = { set_variable = { which = personal_luck value = 1 } }
+			10 = { set_variable = { which = personal_luck value = 2 } }
+			10 = { set_variable = { which = personal_luck value = 3 } }
+			10 = { set_variable = { which = personal_luck value = 4 } }
+			10 = { set_variable = { which = personal_luck value = 5 } }
+			10 = { set_variable = { which = personal_luck value = 6 } }
+			10 = { set_variable = { which = personal_luck value = 7 } }
+			10 = { set_variable = { which = personal_luck value = 8 } }
+			10 = { set_variable = { which = personal_luck value = 9 } }
+			10 = { set_variable = { which = personal_luck value = 10 } }
+		}
+		character_event = { id = FORTUNE.1004 }
+	}
+}
+
+character_event = { # set the correct flag for bad luck or good luck
+	id = FORTUNE.1004
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				check_variable = { which = personal_luck value > 5 }
+			}
+			set_character_flag = personal_luck_good
+			clr_character_flag = personal_luck_bad
+		}
+		else = {
+			clr_character_flag = personal_luck_good
+			set_character_flag = personal_luck_bad
+		}		
+	}
+}
+
+character_event = { # move the character's luck in the direction of world luck
+	id = FORTUNE.1005
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		character_event = { id = FORTUNE.1002 }
+		if = {
+			limit = {
+				check_variable = { which = luck_difference value > 0 }
+			}
+			if = {
+				limit = {
+					check_variable = { which = global_world_luck which > personal_luck }
+				}
+				change_variable = { which = personal_luck value = 1 }
+			}
+			else = {
+				subtract_variable = { which = personal_luck value = 1 }
+			}
+		}
+	}
+}
+
+narrative_event = {
+	id = FORTUNE.10000
+	is_triggered_only = yes
+	title = learn_ft_title
+	picture = GFX_evt_fortune_teller
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_bad
+			check_variable = { which = ft_building_tier value == 4 }
+		}
+		text = learn_ft_4_desc_bad
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_good
+			check_variable = { which = ft_building_tier value == 4 }
+		}
+		text = learn_ft_4_desc_good
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_bad
+			check_variable = { which = ft_building_tier value == 3 }
+		}
+		text = learn_ft_3_desc_bad
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_good
+			check_variable = { which = ft_building_tier value == 3 }
+		}
+		text = learn_ft_3_desc_good
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_bad
+			check_variable = { which = ft_building_tier value == 2 }
+		}
+		text = learn_ft_2_desc_bad
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_good
+			check_variable = { which = ft_building_tier value == 2 }
+		}
+		text = learn_ft_2_desc_good
+	}
+
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_bad
+			check_variable = { which = ft_building_tier value == 1 }
+		}
+		text = learn_ft_1_desc_bad
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_good
+			check_variable = { which = ft_building_tier value == 1 }
+		}
+		text = learn_ft_1_desc_good
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_bad
+			check_variable = { which = ft_building_tier value == 0 }
+		}
+		text = learn_ft_0_desc_bad
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = global_world_luck_good
+			check_variable = { which = ft_building_tier value == 0 }
+		}
+		text = learn_ft_0_desc_good
+	}
+	
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_global_flag = global_world_luck_bad
+					has_character_flag = personal_luck_bad
+				}
+				AND = {
+					has_global_flag = global_world_luck_good
+					has_character_flag = personal_luck_good
+				}
+			}
+		}
+		
+		name = {
+			text = learn_ft_0_match
+			trigger = {
+				check_variable = { which = ft_building_tier value == 0 }
+			}
+		}
+		name = {
+			text = learn_ft_1_match
+			trigger = {
+				check_variable = { which = ft_building_tier value == 1 }
+			}
+		}
+		name = {
+			text = learn_ft_2_match
+			trigger = {
+				check_variable = { which = ft_building_tier value == 2 }
+			}
+		}
+		name = {
+			text = learn_ft_3_match
+			trigger = {
+				check_variable = { which = ft_building_tier value == 3 }
+			}
+		}
+		name = {
+			text = learn_ft_4_match
+			trigger = {
+				check_variable = { which = ft_building_tier value == 4 }
+			}
+		}
+		
+		hidden_tooltip = {
+		
+			while = {
+				limit = {
+					check_variable = {
+						which = ft_building_tier
+						value >= 1
+					}
+				}
+				subtract_variable = { which = ft_building_tier value = 1 }
+				character_event = { id = FORTUNE.1005 }
+			}
+		}
+		
+		character_event = { id = FORTUNE.1001 days = 50 random = 10 }
+	}
+	
+	option = {
+		trigger = {
+			OR = {
+				AND = {
+					has_global_flag = global_world_luck_good
+					has_character_flag = personal_luck_bad
+				}
+				AND = {
+					has_global_flag = global_world_luck_bad
+					has_character_flag = personal_luck_good
+				}
+			}
+		}
+
+		name = {
+			text = learn_ft_0_mismatch
+			trigger = {
+				check_variable = { which = ft_building_tier value == 0 }
+			}
+		}
+		name = {
+			text = learn_ft_1_mismatch
+			trigger = {
+				check_variable = { which = ft_building_tier value == 1 }
+			}
+		}
+		name = {
+			text = learn_ft_2_mismatch
+			trigger = {
+				check_variable = { which = ft_building_tier value == 2 }
+			}
+		}
+		name = {
+			text = learn_ft_3_mismatch
+			trigger = {
+				check_variable = { which = ft_building_tier value == 3 }
+			}
+		}
+		name = {
+			text = learn_ft_4_mismatch
+			trigger = {
+				check_variable = { which = ft_building_tier value == 4 }
+			}
+		}
+		
+		hidden_tooltip = {
+			subtract_variable = { which = ft_building_tier value = 2 }
+			
+			while = {
+				limit = {
+					check_variable = {
+						which = ft_building_tier
+						value >= 1
+					}
+				}
+				subtract_variable = { which = ft_building_tier value = 1 }
+				character_event = { id = FORTUNE.1005 }
+			}
+		}
+		
+		character_event = { id = FORTUNE.1001 days = 50 random = 10 }
+	}
+}
