@@ -1,0 +1,689 @@
+targetted_decisions = {
+	force_instate_slavery = {
+
+		from_potential = {
+			is_ruler = yes
+			OR = {
+				government = lawless_piracy
+				government = pirate_cartel
+			}
+		}
+		
+		potential = {
+			ai = yes
+			religion = FROM
+			tier = COUNT
+			OR = {
+				is_tributary = { 
+					type = pirate_tributary 
+					suzerain = FROM
+				}
+				de_facto_liege = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = { ##Should be more stringent. -Liz
+			FROM = {
+				prestige = 250
+			}
+			
+			custom_tooltip = {
+				text = doesnt_have_slavery
+				hidden_tooltip = {
+					ROOT = {
+						NOT = { has_law = slavery_legal }
+					}
+				}
+			}
+			
+			custom_tooltip = {
+				text = needs_legal_slavery
+				hidden_tooltip = {
+					FROM = {
+						has_global_flag = slavery_instated
+						has_law = slavery_legal
+					}
+				}
+			}
+		}
+		effect = {
+			log = "([FROM.GetFullBaseName]) forced ([ROOT.GetFullBaseName]) to adopt slavery."
+			FROM = {
+				prestige = -250
+			}
+			custom_tooltip = {
+				text = force_instate_name
+				hidden_tooltip = {
+					primary_title = {
+						add_law = slavery_legal
+					}
+				}
+			}
+			
+			capital_scope = {
+				religion = FROM
+			}
+			religion_authority = {
+				modifier = forced_instate_slavery
+				years = 20
+			}
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random = {
+					chance = 25
+					FROM = { character_event = { id = PRT.20400 } } #Gain Pirate trait
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	absorb_pirate_governor = {
+		only_playable = yes
+		ai = no ##Currently implemented because until there's a better way to do this, letting the AI target *anyone* is going to shred people's CPUs. TODO: Find a new way to do this. - Liz
+
+		from_potential = {
+			government = pirate_cartel
+		}
+		
+		potential = {
+			ai = yes
+			tier = COUNT
+			is_tributary = {
+				type = pirate_tributary 
+				suzerain = FROM
+			}
+			NOT = { character = FROM }
+		}
+		
+		allow = {
+			FROM = {
+				prestige = 500
+				government = pirate_cartel
+			}
+		}
+		
+		effect = {
+			FROM = {
+				prestige = -500
+			}
+			
+			set_defacto_liege = FROM
+			set_government_type = pirate_cartel
+			
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random = {
+					chance = 25
+					FROM = { character_event = { id = PRT.20400 } } #Gain Pirate trait
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	decision_sell_prisoner = {
+
+		from_potential = {
+			society_member_of = the_black_market
+			society_rank > 1
+			is_playable = yes
+			is_adult = yes
+			prisoner = no
+			NOT = { trait = incapable }
+		}
+
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+			is_sick_or_injured_trigger = no
+		}
+
+		effect = {
+			custom_tooltip = {
+				text = decision_sell_prisoner_desc
+			}
+			ROOT = {
+				set_variable = { which = slave_value value = 0 } ##I hate this amount of ifs as much as you do but scripted triggers are a bitch to work with, this is the best way I know of. Shame we can't piggyback off third_party_score_value... ##TODO: Maybe figure out how to do that.
+				if = {
+					limit = { OR = { trait = avatar trait = fullyrealisedavatar } }
+#					character_event = { id = XXX } ##TODO: Write comedy event for trying to sell the avatar
+					break = yes
+				}
+				if = { 
+					limit = { is_fair_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 20
+					}
+				}
+				if = { 
+					limit = { is_ugly_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = -20
+					}
+				}
+				if = { 
+					limit = { is_teenager_age_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 10
+					}
+				}
+				if = { 
+					limit = { is_learned_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 4
+					}
+				}
+				if = { 
+					limit = { is_female = yes is_virgin_trigger = yes } #Not a desirable trait in men
+					change_variable = {
+						which = slave_value
+						value = 10
+					}
+				}
+				if = { 
+					limit = { is_smart_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 4
+					}
+				}
+				if = { 
+					limit = { is_dumb_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = -4
+					}
+				}
+				if = { 
+					limit = { is_strong_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 4
+					}
+				}
+				if = { 
+					limit = { is_weak_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = -4
+					}
+				}
+				if = { 
+					limit = { is_maimed_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = -10
+					}
+				}
+				if = { 
+					limit = { has_bottom_tier_education_trait_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = -4
+					}
+				}
+				if = { 
+					limit = { has_top_tier_education_trait_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 10
+					}
+				}
+				if = { 
+					limit = { has_lifestyle_trait = yes }
+					change_variable = {
+						which = slave_value
+						value = 2
+					}
+				}
+				if = { 
+					limit = { has_severe_disability = yes }
+					change_variable = {
+						which = slave_value
+						value = -10
+					}
+				}
+				if = { 
+					limit = { has_minor_disability_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = -4
+					}
+				}
+				if = { 
+					limit = { trait = eunuch }
+					change_variable = {
+						which = slave_value
+						value = 20
+					}
+				}
+				if = { 
+					limit = { trait = giant }
+					change_variable = {
+						which = slave_value
+						value = 10
+					}
+				}
+				if = { 
+					limit = { trait = dwarf } ##Very prestigous!
+					change_variable = {
+						which = slave_value
+						value = 10
+					}
+				}
+				if = { 
+					limit = { age = 410 }
+					change_variable = {
+						which = slave_value
+						value = -10
+					}
+				}
+				if = { 
+					limit = { OR = { trait = clubfooted trait = hunchback } }
+					change_variable = {
+						which = slave_value
+						value = -10
+					}
+				}
+				if = { 
+					limit = { is_specialist_bender_trigger = yes }
+					change_variable = {
+						which = slave_value
+						value = 12
+					}
+				}
+				trigger_switch = {
+					on_trigger = trait
+					incompetent_bender = { change_variable = { which = slave_value value = 2 } }
+					competent_bender = { change_variable = { which = slave_value value = 4 } }
+					powerful_bender = { change_variable = { which = slave_value value = 10 } }
+					master_bender = { change_variable = { which = slave_value value = 20 } }
+					legendary_bender = { change_variable = { which = slave_value value = 40 } }
+				}
+				trigger_switch = {
+					on_trigger = tier
+					BARON = { change_variable = { which = slave_value value = 2 } }
+					COUNT = { change_variable = { which = slave_value value = 4 } }
+					DUKE = { change_variable = { which = slave_value value = 10 } }
+					KING = { change_variable = { which = slave_value value = 20 } }
+					EMPEROR = { change_variable = { which = slave_value value = 40 } }
+				}
+				if = {
+					limit = { has_law = { slavery_allowed } } ##Requires you to also be a pirate yourself!
+					multiply_variable = { which = slave_value value = 1.5 }
+				}
+				if = {
+					limit = { NOT = { has_global_flag = slavery_instated } }
+					multiply_variable = { which = slave_value value = 0.5 }
+				}
+				
+				#What's the slave worth?
+				if = {
+					limit = {
+						check_variable = { which = slave_value value >= 1 }
+					}
+					FROM = { wealth = 3 }
+				}
+				else = {
+					FROM = {
+						wealth = slave_value
+						if = {
+							limit = {
+								check_variable = { which = slave_value value > 40 }
+							}
+							religion_authority = {
+								modifier = exceptional_slave
+								years = 20
+							}
+							add_society_currency_major_effect = yes
+							add_society_modifier = 	{
+								modifier = sold_an_exceptional_slave
+								years = 20
+							}
+						}
+						else_if = {
+							limit = { check_variable = { which = slave_value value >= 20 } }
+							religion_authority = {
+								modifier = good_slave
+								years = 20
+							}
+							add_society_currency_minor_effect = yes
+							add_society_modifier = 	{
+								modifier = sold_a_good_slave
+								years = 20
+							}
+						}
+						else = {
+							add_society_modifier = 	{
+								modifier = sold_a_decent_slave
+								years = 20
+							}	
+						}
+						
+						set_variable = { which = slave_value value = 0 } #Keeps the save nice and clean to set it to 0 afterwards
+					}
+				}
+				
+				ROOT = {
+					death = {
+						death_reason = death_slavery
+					}
+				}
+				if = {
+					limit = {
+						FROM = { NOT = { trait = pirate_trait } }
+					}
+					random = {
+						chance = 25
+						FROM = { character_event = { id = PRT.20400 } } #Gain Pirate trait
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+	
+	decision_abduct = {
+		filter = all
+		ai_target_filter = realm
+		
+		is_in_society = yes
+		only_playable = yes
+		ai = no
+		
+		from_potential = {
+			society_member_of = the_black_market
+			is_incapable = no
+			prisoner = no
+			NOT = { has_any_opinion_modifier = opinion_abducting }
+		}
+		
+		potential = {
+			ai = yes
+			NOT = { character = FROM }
+			is_patrician = no
+			OR = {
+				lower_tier_than = DUKE
+				is_landed = no
+			}
+			OR = {
+				father_even_if_dead = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				NOT = {
+					father = {
+						always = yes
+					}
+				}
+			}
+			OR = {
+				mother_even_if_dead = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				NOT = {
+					mother = {
+						always = yes
+					}
+				}
+			}
+			OR = {
+				spouse = {
+					lower_tier_than = DUKE
+					is_patrician = no
+					ai = yes
+				}
+				is_married = no
+			}
+		}
+		
+		allow = {
+			in_revolt = no
+			NOT = { war_with = FROM }
+			NOT = { same_society_as = FROM }
+			prisoner = no
+			OR = {
+				AND = {
+					is_landed = no
+					FROM = {
+						has_society_currency_tiny_trigger = yes
+					}
+				}
+				AND = {
+					is_landed = yes
+					NOT = {
+						higher_tier_than = BARON
+					}
+					FROM = {
+						has_society_currency_minor_trigger = yes
+					}
+				}
+				AND = {
+					higher_tier_than = BARON
+					FROM = {
+						has_society_currency_medium_trigger = yes
+					}
+				}
+			}
+			is_within_diplo_range = FROM
+		}
+		
+		effect = {
+			if = {
+				limit = {
+					NOT = {
+						is_ruler = yes
+					}
+				}
+				FROM = {
+					detract_society_currency_tiny_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					is_ruler = yes
+					lower_tier_than = COUNT
+				}
+				FROM = {
+					detract_society_currency_minor_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					higher_tier_than = BARON
+				}
+				FROM = {
+					detract_society_currency_medium_effect = yes
+				}
+			}
+			hidden_tooltip = {
+				FROM = {
+					any_opinion_modifier_target = {
+						limit = {
+							reverse_has_opinion_modifier = {
+								who = PREV
+								modifier = opinion_abducting
+							}
+						}
+						reverse_remove_opinion = {
+							who = PREV
+							modifier = opinion_abducting
+						}
+					}
+					opinion = {
+						who = ROOT
+						modifier = opinion_abducting
+						months = 12000
+					}
+					character_event = { id = PRT.20070 days = 1 }
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 0 		# 1 = 100% chance every month (for each allowed target!)
+		}
+	}
+	
+	stop_abduct_decision = {
+		filter = self
+		ai_target_filter = self
+		ai = no
+	
+		potential = {
+			society_member_of = the_black_market
+			has_any_opinion_modifier = opinion_abducting
+		}
+		
+		effect = {
+			random_opinion_modifier_target = {
+				limit = {
+					ROOT = {
+						has_opinion_modifier = {
+							who = PREV
+							modifier = opinion_abducting
+						}
+					}
+				}
+				save_event_target_as = target_abduction
+				ROOT = { character_event = { id = PRT.20100 tooltip = stop_abduct_decision_tt } }
+			}
+		}
+		
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	stop_abduct_decision_target = {
+		filter = all
+		ai_target_filter = realm
+		ai = no
+	
+		from_potential = {
+			society_member_of = the_black_market
+			has_any_opinion_modifier = opinion_abducting
+		}
+		
+		potential = {
+			FROM = {
+				has_opinion_modifier = {
+					who = ROOT
+					modifier = opinion_abducting
+				}
+			}
+		}
+		
+		effect = {
+			save_event_target_as = target_abduction
+			hidden_tooltip = {
+				FROM = { character_event = { id = PRT.20100 } }
+			}
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}
+
+title_decisions = {
+	settle_pirates_decision = {
+		only_playable = yes
+		ai_check_interval = 3
+		is_in_society = yes
+		
+		from_potential = {
+			is_ruler = yes
+			society_member_of = the_black_market
+			society_rank == 4
+		}
+		
+		potential = {
+			tier = COUNT
+			location = { NOT = { culture = FROM } }
+			holder_scope = {
+				OR = {
+					is_liege_or_above = FROM
+					character = FROM
+					is_tributary = { 
+						type = pirate_tributary 
+						suzerain = FROM
+					}
+				}
+			}
+		}
+		
+		allow = {
+			FROM = {
+				society_currency >= 1000
+			}
+			location = {
+				NOT = { culture = FROM }
+			}
+		}
+		
+		effect = {
+			FROM = {
+				change_society_currency = -1000
+				religion_authority = {
+					modifier = settle_pirates_ma
+					years = 20
+				}
+			}
+
+			location = {
+				culture = FROM
+				religion = FROM
+				add_province_modifier = {
+					name = peasant_unrest
+					years = 2
+				}
+			}
+			hidden_tooltip = {
+				if = { # Notify county owner
+					limit = {
+						holder_scope = { NOT = { character = FROM } }
+					}
+					holder_scope = { character_event = { id = PRT.23125 } }
+				}
+			}
+			if = {
+				limit = {
+					FROM = { NOT = { trait = pirate_trait} }
+				}
+				random_list = {
+					75 = {}
+					25 = { FROM = { character_event = {id = PRT.20400 } } }
+				}
+			}
+		}
+		
+		
+		
+		ai_will_do = {
+			factor = 1000
+		}
+	}
+}

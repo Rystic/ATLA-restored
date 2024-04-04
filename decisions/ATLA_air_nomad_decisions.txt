@@ -1,0 +1,373 @@
+decisions = {
+	establish_successor = {
+		ai_check_interval = 12
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {
+			culture_group = air_nomad_cultures
+			prisoner = no
+			OR = {
+				trait = eunuch #Don't give up, skeleton!
+				num_of_children < 1
+				NOR = {
+					any_child = {
+						same_sex = ROOT
+					}
+					any_nibling = { #Nieces/Nephews - i.e. any semblance of the next generation
+						same_sex = ROOT
+					}
+				}
+				current_heir = {
+					NOT = {
+						dynasty = ROOT
+					}
+				}
+			}
+			NOR = {
+				has_character_flag = search_for_successor
+				has_character_modifier = just_chose_candidate
+			}
+		}
+		allow = {
+			prestige = 50
+			current_heir = {
+				NOT = {
+					dynasty = ROOT
+				}
+			}
+		}
+		effect = {
+			prestige = -50
+			log = "[Root.GetFullName] established a successor. (air_nomad_decisions)"
+			custom_tooltip = {
+				text = establish_successor_tooltip
+				hidden_tooltip = {
+					set_character_flag = search_for_successor
+					character_event = {
+						id = NOMAD.603
+					}
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 0.5
+		}
+	}
+	claim_elder_council_seat = {
+		ai_check_interval = 12
+		is_high_prio = yes
+		is_playable = yes
+		
+		potential = {
+			OR = {
+				has_landed_title = k_southern_air_temple
+				has_landed_title = k_eastern_air_temple
+				has_landed_title = k_northern_air_temple
+				has_landed_title = k_western_air_temple
+			}
+			NOT = {
+				society_member_of = monastic_order_elder_council
+			}
+			culture_group = air_nomad_cultures
+			religion_group = air_religions
+			prisoner = no
+			
+		}
+		allow = {
+			prestige = 100
+		}
+		effect = {
+			log = "[Root.GetFullName] claimed an elder council seat (air_nomad_decisions)"
+			custom_tooltip = {
+				text = claim_council_seat_tooltip
+				hidden_tooltip = {
+					character_event = {
+						id = NOMAD.601
+					}
+					if = {
+						limit = {
+							NOT = {
+								is_in_society = yes
+								society_member_of = monastic_order_elder_council
+							}
+						}
+						join_society = monastic_order_elder_council
+						society_rank_up = 3
+					}
+					if = {
+						limit = {
+							society_member_of = monastic_order_elder_council
+							society_rank = 1
+						}
+						society_rank_up = 3
+					}
+					if = {
+						limit = {
+							society_member_of = monastic_order_elder_council
+							society_rank = 2
+						}
+						society_rank_up = 2
+					}
+					if = {
+						limit = {
+							society_member_of = monastic_order_elder_council
+							society_rank = 3
+						}
+						society_rank_up = 1
+					}
+				}
+			}
+			prestige = -100
+			set_character_flag = has_successor
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# todo: figure out
+	# !depends: NOMAD.13 NOMAD.14
+	# Yangchen's Festival
+	# nomad_festival = {
+	# only_playable = yes
+	# ai_check_interval = 12
+	# potential = {
+	# is_playable = yes
+	# culture_group = air_nomad_cultures
+	# prisoner = no
+	# NOR = {
+	# has_character_modifier = holding_nomad_festival
+	# has_character_flag = holding_nomad_festival
+	# }
+	# }
+	# allow = {
+	# war = no
+	# custom_tooltip = {
+	# text = UNOCCUPIED_DEMESNE_TITLE
+	# hidden_tooltip = {
+	# any_demesne_title = {
+	# NOT = { higher_tier_than = count }
+	# is_occupied = no
+	# }
+	# }
+	# }
+	# prisoner = no
+	# NOT = { is_inaccessible_trigger = yes }
+	# wealth = 25
+	# month = 2
+	# NOT = {
+	# month = 4
+	# }
+	# custom_tooltip = {
+	# text = is_not_busy_trigger_tooltip
+	# hidden_tooltip = { NOT = { has_character_flag = do_not_disturb } }
+	# }
+	# }
+	# effect = {
+	# wealth = -25
+	# add_character_modifier = {
+	# name = holding_nomad_festival
+	# duration = -1
+	# }
+	# set_character_flag = recent_minor_decision
+	# set_character_flag = do_not_disturb
+	# hidden_tooltip = {
+	# character_event = {
+	# id = NOMAD.14
+	# days = 70
+	# }
+	# character_event = { id = NOMAD.13 }
+	# }
+	# if = {
+	# limit = {
+	# has_dlc = "Reapers"
+	# }
+	# custom_tooltip = {
+	# text = capital_prospers_custom_tooltip
+	# hidden_tooltip = {
+	# capital_scope = {
+	# change_variable = { which = prosperity_value value = 8 }
+	# }
+	# }
+	# }
+	# }
+	# }
+	# revoke_allowed = {
+	# always = no
+	# }
+	# ai_will_do = {
+	# factor = 1
+	# modifier = {
+	# factor = 0
+	# NOT = {
+	# wealth = 30
+	# }
+	# }
+	# modifier = {
+	# factor = 0
+	# has_character_flag = recent_minor_decision
+	# NOT = {
+	# had_character_flag = {
+	# flag = recent_minor_decision
+	# days = 730
+	# }
+	# }
+	# }
+	# }
+	# }
+	
+	embrace_pacifism = {
+		potential = {
+			NOT = {
+				has_character_flag = OIALC
+			}
+			religion = nomadic_nihilism
+			culture_group = air_nomad_cultures
+			NOT = { trait = zealous }
+		}
+		allow = {
+			prestige = 100
+			NOR = {
+				trait = cruel
+				trait = wroth
+				trait = envious
+			}
+			OR = {
+				trait = charitable
+				trait = kind
+			}
+		}
+		effect = {
+			log = "[Root.GetFullName] embraced pacifism. (air_nomad_decisions)"
+			prestige = -100
+			piety = -100
+			religion = air_spirituality ##TODO: If made a heresy of air spirituality and reformed, then change this to just abandoning heresy so that it swaps to the correct one
+			set_character_flag = OIALC
+		}
+		ai_will_do = {
+			factor = 0.001
+		}
+	}
+	embrace_nihilism = {
+		potential = {
+			culture_group = air_nomad_cultures
+			AND = {
+				religion_group = air_religions
+				NOT = { religion = nomadic_nihilism }
+			}
+			NOT = {
+				has_character_flag = OIALC
+			}
+			NOT = {
+				trait = zealous
+			}
+			OR = {
+				trait = cynical
+				trait = cruel
+				trait = wroth
+				trait = envious
+				trait = depressed
+			}
+		}
+		allow = {
+			prestige = 100
+			NOR = {
+				trait = charitable
+				trait = kind
+			}
+		}
+		effect = {
+			log = "[Root.GetFullName] embraced nihilism. (air_nomad_decisions)"
+			prestige = -100
+			piety = -100
+			religion = nomadic_nihilism
+			set_character_flag = OIALC
+		}
+		ai_will_do = {
+			factor = 0.001
+		}
+	}
+	
+	form_air_nation = { #Empire-tier title
+		is_high_prio = yes
+		only_independent = yes
+		
+		potential = {
+			NOT = {
+				has_global_flag = founded_air_nation
+			}
+			government = feudal_government_air_nomad
+			culture_group = air_nomad_cultures
+			hidden_tooltip = {
+				has_game_rule = {
+					name = campaign_events
+					value = on
+				}
+			}
+		}
+		allow = {
+			prisoner = no
+			piety = 1000
+			OR = {
+				AND = {
+					completely_controls = k_northern_air_temple
+					completely_controls = k_southern_air_temple
+					completely_controls = k_western_air_temple
+					completely_controls = k_eastern_air_temple
+				}
+			}
+		}
+		effect = {
+			log = "[Root.GetFullName] founded the Air Nation empire. (air_nomad_decisions)"
+			set_global_flag = founded_air_nation
+			e_air_nomads = {
+				grant_title = ROOT
+			}
+			create_bloodline = {
+				type = air_nation_bloodline
+			}
+			add_artifact = eldernecklace
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	airball_balance_training = {
+		ai_check_interval = 12
+		is_high_prio = yes
+		is_in_society = yes
+		
+		potential = {
+			society_member_of = airball_association
+			society_rank >= 1
+			OR = {
+				NOT = {
+					has_character_flag = air_balance_training_done
+				}
+				had_character_flag = {
+					flag = air_balance_training_done
+					days = 1500
+				}
+			}
+		}
+		allow = {
+			prisoner = no
+			is_incapable = no
+			has_society_currency_medium_trigger = yes
+		}
+		effect = {
+			log = "[Root.GetFullName] did airball balance training. (air_nomad_decisions)"
+			detract_society_currency_medium_effect = yes
+			hidden_effect = {
+				character_event = {
+					id = AIRBALL.1100
+					days = 7
+				}
+				set_character_flag = air_balance_training_done
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

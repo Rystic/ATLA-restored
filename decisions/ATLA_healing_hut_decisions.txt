@@ -1,0 +1,487 @@
+targetted_decisions = {	
+	hhn_teach_healing = {
+		ai_check_interval = 12
+		is_in_society = yes
+		filter = society #Only target other members of the healing hut
+		ai_filter = society #Only target other members of the healing hut
+		
+		potential = {
+			society_member_of = healing_hut_north
+			trait = waterbender
+			NOR = { 
+				trait = healer
+				trait = master_healer
+			}
+			is_incapable = no
+		}
+		
+		from_potential = {
+			society_member_of = healing_hut_north
+			society_rank >= 1
+			is_adult = yes
+			OR = {
+				trait = healer
+				trait = master_healer
+			}
+			is_incapable = no
+		}
+		
+		allow = {
+			FROM = {
+				has_society_currency_minor_trigger = yes	###requires 100SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+		
+		effect = {
+			FROM = {
+				detract_society_currency_minor_effect = yes	###lose 100SocCur
+				if = {
+					limit = { ai = no }
+					character_event = { id = MNHHN.5064 } 
+				}
+			}
+			ROOT = {
+				add_trait = healer
+				if = {
+					limit = {
+						is_unexceptional_bender_trigger = yes
+					}
+					upgrade_bending_effect = yes
+				}
+				if = {
+					limit = { ai = no }
+					character_event = { id = MNHHN.5065 } 
+				}
+			}
+			add_taught_healing = yes
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	hhn_recruit_member = {
+		ai_check_interval = 12
+		filter = realm
+		ai_target_filter = home_court
+		is_in_society = yes
+	
+		potential = {
+			is_in_society = no
+			age = 10
+			trait = waterbender
+			religion = tui_and_la
+			OR = {
+				is_female = yes #Women can always join
+				has_law = status_of_women_4 #Total equality means everyone can join
+			}
+			is_incapable = no
+		}
+		
+		from_potential = {
+			society_member_of = healing_hut_north
+			society_rank >= 2
+			is_adult = yes
+			trait = healer
+			is_incapable = no
+		}
+		
+		allow = {
+			FROM = {
+				has_society_currency_medium_trigger = yes	###requires 300SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+		
+		effect = {
+			FROM = {
+				detract_society_currency_medium_effect = yes	###lose 300SocCur
+			}
+			ROOT = {
+				hidden_tooltip = {
+					letter_event = { id = MNHHN.5061 } 
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	hhn_treat_disease = {
+		ai_check_interval = 12
+		filter = realm
+		is_in_society = yes
+
+		potential = {
+			has_disease_trigger = yes
+		}
+		
+		from_potential = {
+			society_rank >= 2
+			society_member_of = healing_hut_north
+			trait = healer
+		}
+
+		allow = {
+			FROM = {
+				has_society_currency_major_trigger = yes	###requires 500Cur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+
+		effect = {
+			FROM = {
+				detract_society_currency_major_effect = yes	###lose 500SocCur
+			}
+			ROOT = {
+				hidden_tooltip = {
+					if = { limit = { trait = flu } remove_trait = flu }
+					if = { limit = { trait = dysentery } remove_trait = dysentery }
+					if = { limit = { trait = gout }	remove_trait = gout }
+					if = { limit = { trait = food_poisoning } remove_trait = food_poisoning }
+					if = { limit = { trait = rabies } remove_trait = rabies }
+					if = { limit = { trait = cancer } remove_trait = cancer }
+					if = { limit = { trait = pneumonic } remove_trait = pneumonic }
+					if = { limit = { trait = syphilitic } remove_trait = syphilitic set_character_flag = immune_syphilis }       
+					if = { limit = { trait = has_tuberculosis } remove_trait = has_tuberculosis set_character_flag = immune_tuberculosis }
+					if = { limit = { trait = has_typhoid_fever } remove_trait = has_typhoid_fever set_character_flag = immune_typhoid_fever}
+					if = { limit = { trait = has_typhus } remove_trait = has_typhus set_character_flag = immune_typhus}
+					if = { limit = { trait = has_bubonic_plague ai = yes } remove_trait = has_bubonic_plague set_character_flag = immune_bubonic_plague}
+					if = { limit = { trait = has_bubonic_plague ai = no } remove_trait = has_bubonic_plague set_character_flag = immune_bubonic_plague set_character_flag = achievement_i_got_better}
+					if = { limit = { trait = has_measles } remove_trait = has_measles set_character_flag = immune_measles}
+					if = { limit = { trait = has_small_pox } remove_trait = has_small_pox set_character_flag = immune_smallpox }
+					if = { limit = { trait = has_aztec_disease } remove_trait = has_aztec_disease set_character_flag = immune_aztec_disease }
+					if = { limit = { trait = dancing_plague } remove_trait = dancing_plague }
+					if = { limit = { trait = scurvy } remove_trait = scurvy }
+					if = { limit = { trait = ill } remove_trait = ill }
+					if = { limit = { trait = leper } remove_trait = leper }
+					if = { limit = { trait = lovers_pox } remove_trait = lovers_pox }
+					if = { limit = { trait = sickly } remove_trait = sickly }
+					remove_treatment_modifiers_effect = yes
+					clear_disease_level_effect = yes
+					remove_disease_flags_effect = yes
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+		
+	}
+	
+	hhn_treat_mental_illness = {
+		ai_check_interval = 12
+		filter = realm
+		is_in_society = yes
+
+		potential = {
+			OR = {
+				has_mental_disorder_trigger = yes
+				trait = cactusaddict
+			}
+		}
+		
+		from_potential = {
+			society_rank >= 3
+			society_member_of = healing_hut_north
+			trait = healer
+		}
+
+		allow = {
+			FROM = {
+				has_society_currency_massive_trigger = yes	###requires 1000SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+
+		effect = {
+			FROM = {
+				detract_society_currency_massive_effect = yes	###lose 1000SocCur
+			}
+			ROOT = {
+				hidden_tooltip = {
+					if = { limit = { trait = stressed } remove_trait = stressed }
+					if = { limit = { trait = depressed } remove_trait = depressed }
+					if = { limit = { trait = lunatic } remove_trait = lunatic }
+					if = { limit = { trait = possessed } remove_trait = possessed }
+					if = { limit = { trait = drunkard } remove_trait = drunkard }
+					if = { limit = { trait = cactusaddict } remove_trait = cactusaddict }
+					remove_treatment_modifiers_effect = yes
+					clear_disease_level_effect = yes
+					remove_disease_flags_effect = yes
+					set_character_flag = seen_the_light_of_modern_medicine
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+		
+	}
+	
+	hhh_spiritual_healing = {
+		ai_check_interval = 12
+		filter = realm
+		is_in_society = yes
+		
+		potential = {
+			religion = tui_and_la
+			NOT = { trait = spirit_healed }
+		}
+		
+		from_potential = {
+			society_rank = 4
+			society_member_of = healing_hut_north
+			trait = healer
+		}
+		
+		allow = {
+			FROM = {
+				has_society_currency_huge_trigger = yes	###requires 2000SocCur
+				is_inaccessible_trigger = no
+				prisoner = no
+				in_command = no
+			}
+			is_inaccessible_trigger = no
+			prisoner = no
+		}
+		
+		effect = {
+			FROM = {
+				detract_society_currency_huge_effect = yes	###lose 2000SocCur
+				hidden_tooltip = {
+					if = {
+						limit = { ai = no }
+						character_event = { id = MNHHN.6000 } 
+					}
+				}
+			}
+			ROOT = {
+				add_trait = spirit_healed
+				if = {
+					limit = { ai = no }
+					character_event = { id = MNHHN.6001 } 
+				}
+			}
+		}
+	}
+}
+
+decisions = {
+	found_healing_hut_north_decision = {
+		ai_check_interval = 12
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {				
+			religion = tui_and_la
+			NOT = { has_global_flag = healing_hut_north_founded }
+		}
+
+		allow = {
+			independent = yes
+			piety = 100
+			OR = {
+				AND = {
+					ai = no
+					religion_authority = .30				
+				}
+				AND = {
+					ai = yes
+					religion_authority = .20 #make it easier for the ai because they don't really understand MA.
+				}
+			}				
+		}
+
+		effect = {
+			piety = -100	
+			custom_tooltip = {
+				text = founded_healing_hut_north_tooltip
+			}		
+			religion_authority = {
+				modifier = founded_healing_hut
+				years = 20
+			}
+			# narrative_event = { id = MNHHN.4454 }
+			hidden_tooltip = {
+				set_global_flag = healing_hut_north_founded
+				if = {
+					limit = {
+						is_female = yes
+						trait = waterbender
+					}
+					add_trait = healer
+					join_society = healing_hut_north
+					set_society_grandmaster = yes # Set character as Grand Master
+					add_society_currency_massive_effect = yes
+				} else = {
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = ROOT
+						culture = ROOT
+						female = yes
+						trait = theologian
+						trait = waterbender
+						trait = master_bender
+						trait = mastermind_theologian
+						trait = healer
+						age = 30
+					}		
+					new_character = { 
+						join_society = healing_hut_north
+						set_society_grandmaster = yes
+						add_society_currency_massive_effect = yes
+					}				
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = competent_bender
+					trait = healer
+					age = 18
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = incompetent_bender
+					trait = healer
+					age = 16
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = competent_bender
+					trait = healer
+					age = 20
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = competent_bender
+					trait = healer
+					age = 19
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = competent_bender
+					age = 12
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = powerful_bender
+					trait = healer
+					age = 17
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = competent_bender
+					trait = healer
+					age = 15
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = incompetent_bender
+					age = 13
+				}
+				new_character = { join_society = healing_hut_north }
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = ROOT
+					culture = ROOT
+					female = yes
+					trait = waterbender
+					trait = incompetent_bender
+					age = 10
+				}
+				new_character = { join_society = healing_hut_north }
+				
+				any_character = {
+					limit = {
+						ai = yes
+						is_female = yes
+						trait = waterbender
+						religion = tui_and_la
+					}
+					if = {
+						limit = {
+							is_in_society = yes
+						}
+						leave_society = yes
+					}
+					join_society = healing_hut_north 
+					add_trait = healer
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
