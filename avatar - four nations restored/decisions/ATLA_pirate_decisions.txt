@@ -10,15 +10,17 @@ decisions = {
 				government = lawless_piracy
 				government = pirate_cartel
 			}
-			e_fifth_nation = {
-				has_holder = no
-			}
+			e_fifth_nation = { has_holder = no }
 			NOT = { has_global_flag = fifth_nation_restored }
 		}
 		
 		allow = {
 			primary_title = {
 				tier = KING
+			}
+			any_demesne_title = {
+				tier = KING
+				count = 2
 			}
 			custom_tooltip = {
 				text = needs_legal_slavery
@@ -44,6 +46,10 @@ decisions = {
 			piety = -4000
 			narrative_event = { id = PRT.20000 }
 			set_global_flag = fifth_nation_restored
+			activate_title = {
+				title = e_fifth_nation
+				status = yes
+			}
 			e_fifth_nation = {
 				show_scope_change = no
 				grant_title = ROOT
@@ -76,10 +82,12 @@ decisions = {
 		}
 
 		allow = {
-			any_tributary = {
-				type = pirate_tributary
-				suzerain = ROOT
-				count = 8
+			custom_tooltip = {
+				text = cartel_tributaries_requirement
+				any_tributary = {
+					limit = { type = pirate_tributary }
+					count = 8
+				}
 			}
 			religion_authority = .4
 			prestige = 1000
@@ -192,7 +200,6 @@ decisions = {
 		is_high_prio = yes
 
 		potential = {
-			is_landed = yes
 			OR = {
 				government = lawless_piracy
 				government = pirate_cartel
