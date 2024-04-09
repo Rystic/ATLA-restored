@@ -53,12 +53,12 @@ narrative_event = {
 	trigger = { 
 		society_member_of = tea_enthusiasts
 		society_rank >= 2
+		NOT = { days_in_society == 0 }
 		NOR = {
-			days_in_society == 0
-			tea_chose_self
+			has_character_flag = tea_chose_self
 			has_character_flag = tea_chose_spirits
 		}
-	}	
+	}
 	
 	option = {
 		name = choose_self
@@ -529,73 +529,11 @@ letter_event = {
 		custom_tooltip = {
 			text = improve_education
 			hidden_tooltip = {
-				trigger_switch = {
-					on_trigger = trait
-					detached_priest = {
-						set_character_flag = lowest_level_upgrade
-						remove_trait = detached_priest
-						add_trait = martial_cleric
-					}
-					martial_cleric = {
-						remove_trait = martial_cleric
-						add_trait = scholarly_theologian
-					}
-					scholarly_theologian = {
-						remove_trait = scholarly_theologian
-						add_trait = mastermind_theologian
-					}
-					misguided_warrior = {
-						set_character_flag = lowest_level_upgrade
-						remove_trait = misguided_warrior
-						add_trait = tough_soldier
-					}
-					tough_soldier = {
-						remove_trait = tough_soldier
-						add_trait = skilled_tactician
-					}
-					skilled_tactician = {
-						remove_trait = skilled_tactician
-						add_trait = brilliant_strategist
-					}
-					indulgent_wastrel = {
-						set_character_flag = lowest_level_upgrade
-						remove_trait = indulgent_wastrel
-						add_trait = thrifty_clerk
-					}
-					thrifty_clerk = {
-						remove_trait = thrifty_clerk
-						add_trait = fortune_builder
-					}
-					fortune_builder = {
-						remove_trait = fortune_builder
-						add_trait = midas_touched
-					}
-					naive_appeaser = {
-						set_character_flag = lowest_level_upgrade
-						remove_trait = naive_appeaser
-						add_trait = underhanded_rogue
-					}
-					underhanded_rogue = {
-						remove_trait = underhanded_rogue
-						add_trait = charismatic_negotiator
-					}
-					charismatic_negotiator = {
-						remove_trait = charismatic_negotiator
-						add_trait = grey_eminence
-					}
-					amateurish_plotter = {
-						remove_trait = amateurish_plotter
-						add_trait = flamboyant_schemer
-					}		
-					flamboyant_schemer = {
-						remove_trait = flamboyant_schemer
-						add_trait = intricate_webweaver
-					}
-					intricate_webweaver = {
-						remove_trait = intricate_webweaver
-						add_trait = elusive_shadow
-					}
+				if = {
+					limit = { has_bottom_tier_education_trait_trigger = yes }
+					set_character_flag = lowest_level_upgrade
 				}
+				upgrade_education_effect = yes
 			}
 		}
 		if = {
@@ -721,7 +659,7 @@ letter_event = {
 			hidden_tooltip = {
 				set_character_flag = had_chi_enhancing_tea
 				if = {
-					limit = { NOT = { trait = master_bender }
+					limit = { NOT = { trait = master_bender } }
 					upgrade_bender_effect = yes
 				}
 			}
@@ -5931,7 +5869,6 @@ character_event = {
 		character_event = { id = TEA.20001 }
 	}
 }
-
 
 
 #22025
