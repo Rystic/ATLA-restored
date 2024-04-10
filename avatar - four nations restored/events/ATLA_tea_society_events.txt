@@ -660,7 +660,7 @@ letter_event = {
 				set_character_flag = had_chi_enhancing_tea
 				if = {
 					limit = { NOT = { trait = master_bender } }
-					upgrade_bender_effect = yes
+					upgrade_bending_effect = yes
 				}
 			}
 		}
@@ -4534,35 +4534,18 @@ character_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	
-	option = {
-		name = tea_time_announcement_option
-		custom_tooltip = {
-			text = tea_time_announcement_tooltip
-		}
-
-		if = {
-			limit = {
-				has_character_flag = can_make_green_tea
-			}
-			character_event = { id = TEA.30015 days = 3 }
-		}
-		else_if = {
-			limit = {
-				has_character_flag = can_make_white_dragon
-			}
-			character_event = { id = TEA.30025 days = 3 }
-		}
-		else_if = {
-			limit = {
-				has_character_flag = can_make_jasmine_tea
-			}
-			character_event = { id = TEA.30035 days = 3 }
-		}
-		else_if = {
-			limit = {
-				has_character_flag = can_make_ginger_root_tea
-			}
-			character_event = { id = TEA.30045 days = 3 }
+#	option = { # ???? - Liz
+#		name = tea_time_announcement_option
+#		custom_tooltip = {
+#			text = tea_time_announcement_tooltip
+#		}
+	immediate = {
+		trigger_switch = {
+			on_trigger = has_character_flag
+			can_make_green_tea = { character_event = { id = TEA.30015 days = 3 } }
+			can_make_white_dragon = { character_event = { id = TEA.30025 days = 3 } }
+			can_make_jasmine_tea = { character_event = { id = TEA.30035 days = 3 } }
+			can_make_ginger_root_tea = { character_event = { id = TEA.30045 days = 3 } }
 		}
 	}
 }

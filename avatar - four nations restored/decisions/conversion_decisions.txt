@@ -844,171 +844,171 @@ targetted_decisions = {
 	}
 }
 
-decisions = {
-	
-	convert_to_attacker_religion = {
-		only_playable = yes
-		ai_check_interval = 18
-		is_high_prio = yes
-		
-		potential = {
-			is_playable = yes
-			NOT = { religion_authority = 0.3 } #Below 30% Religious Authority
-			controls_religion = no
-			NOR = { #Can't be based around religion
-				is_theocracy = yes
-				holy_order = yes
-				mercernary = yes
-			}
-			
-			war = yes
-			any_war = {
-				defender = { character = ROOT }
-				attacker = {
-					NOT = { religion = ROOT }
-					religion_authority = 0.5
-				}
-				OR = {
-					using_cb = air_reclamation
-					using_cb = new_crusade
-					using_cb = religious
-					using_cb = muslim_invasion
-					using_cb = buddhist_holy_war
-					using_cb = pagan_holy_war
-				}
-			}
-		}
-		
-		allow = {
-			NOT = { trait = zealous }
-		}
-		
-		effect = {
-			prestige = -500
-			piety = 100
-			
-			hidden_tooltip = {
-				any_war = {
-					limit = {
-						defender = { character = ROOT }
-						attacker = {
-							NOT = { religion = ROOT }
-							religion_authority = 0.5
-							OR = {
-								NOT = { religion_group = pagan_group }
-								is_reformed_religion = yes
-							}
-						}
-#						is_holy_war = yes ##Commented out until CB's can be sorted out. TODO: Sort CB's out, then specify rather than using this blanket.
-					}
-					attacker = {
-						save_event_target_as = enemy_attacker
-					}
-				}
-			}
-			if = { #Add sympathy for your old faith
-				limit = { event_target:enemy_attacker = { NOT = { religion_group = ROOT } } }
-				trigger_switch = {
-					on_trigger = religion_group
-					air_religions = { add_trait = sympathy_air_religions }
-					water_religions = { add_trait = sympathy_water_religions }
-					fire_religions = { add_trait = sympathy_fire_religions }
-					earth_religions = { add_trait = sympathy_earth_religions }
-					outlaw_religions = { add_trait = sympathy_outlaw_religions }
-					modern_religions = { add_trait = sympathy_modern_religions }
-				}
-			}	
-			event_target:enemy_attacker = {
-				hidden_tooltip = {
-					letter_event = { id = 62800 }
-					ROOT = {
-						any_courtier = {
-							limit = {
-								religion = ROOT
-								employer = { character = ROOT }
-							}
-							religion = PREVPREV
-						}
-						any_vassal = {
-							limit = {
-								is_playable = no
-								religion = ROOT
-							}
-							religion = PREVPREV
-						}
-						capital_scope = {
-							if = {
-								limit = { religion = ROOT }
-								religion = PREVPREV
-							}
-						}
-					}
-				}
-				hidden_tooltip = {
-					religion_authority = {
-						modifier = ruler_converted_to
-					}
-				}
-				reverse_religion = ROOT 
-			}
-			religion_authority = {
-				modifier = ruler_converted_from
-			}
-		}
-		
-		revoke_allowed = {
-			always = no
-		}
-		
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0.5
-			}
-			modifier = {
-				factor = 0.05
-				is_hard_to_convert = yes
-			}
-			modifier = {
-				factor = 0
-				NOT = {
-					any_war = {
-						defender = { character = ROOT }
-						attacker = {
-							NOT = { religion = ROOT }
-							religion_authority = 0.45
-						}
+#decisions = {
+#	
+#	convert_to_attacker_religion = { ##Commented out until CB's can be sorted out. TODO: Sort CB's out, then specify rather than using this blanket.
+#		only_playable = yes
+#		ai_check_interval = 18
+#		is_high_prio = yes
+#		
+#		potential = {
+#			is_playable = yes
+#			NOT = { religion_authority = 0.3 } #Below 30% Religious Authority
+#			controls_religion = no
+#			NOR = { #Can't be based around religion
+#				is_theocracy = yes
+#				holy_order = yes
+#				mercernary = yes
+#			}
+#			
+#			war = yes
+#			any_war = {
+#				defender = { character = ROOT }
+#				attacker = {
+#					NOT = { religion = ROOT }
+#					religion_authority = 0.5
+#				}
+#				OR = {
+#					using_cb = air_reclamation
+#					using_cb = new_crusade
+#					using_cb = religious
+#					using_cb = muslim_invasion
+#					using_cb = buddhist_holy_war
+#					using_cb = pagan_holy_war
+#				}
+#			}
+#		}
+#		
+#		allow = {
+#			NOT = { trait = zealous }
+#		}
+#		
+#		effect = {
+#			prestige = -500
+#			piety = 100
+#			
+#			hidden_tooltip = {
+#				any_war = {
+#					limit = {
+#						defender = { character = ROOT }
+#						attacker = {
+#							NOT = { religion = ROOT }
+#							religion_authority = 0.5
+#							OR = {
+#								NOT = { religion_group = pagan_group }
+#								is_reformed_religion = yes
+#							}
+#						}
 #						is_holy_war = yes
-						war_score = 50
-						thirdparty_title_scope = {
-							ROOT = {
-								primary_title = {
-									title = PREVPREV
-								}
-							}
-						}
-					}
-				}
-			}
-			modifier = {
-				factor = 2
-				any_war = {
-					defender = { character = ROOT }
-					attacker = {
-						NOT = { religion = ROOT }
-						religion_authority = 0.45
-					}
+#					}
+#					attacker = {
+#						save_event_target_as = enemy_attacker
+#					}
+#				}
+#			}
+#			if = { #Add sympathy for your old faith
+#				limit = { event_target:enemy_attacker = { NOT = { religion_group = ROOT } } }
+#				trigger_switch = {
+#					on_trigger = religion_group
+#					air_religions = { add_trait = sympathy_air_religions }
+#					water_religions = { add_trait = sympathy_water_religions }
+#					fire_religions = { add_trait = sympathy_fire_religions }
+#					earth_religions = { add_trait = sympathy_earth_religions }
+#					outlaw_religions = { add_trait = sympathy_outlaw_religions }
+#					modern_religions = { add_trait = sympathy_modern_religions }
+#				}
+#			}	
+#			event_target:enemy_attacker = {
+#				hidden_tooltip = {
+#					letter_event = { id = 62800 }
+#					ROOT = {
+#						any_courtier = {
+#								limit = {
+#								religion = ROOT
+#								employer = { character = ROOT }
+#							}
+#							religion = PREVPREV
+#						}
+#						any_vassal = {
+#							limit = {
+#								is_playable = no
+#								religion = ROOT
+#							}
+#							religion = PREVPREV
+#						}
+#						capital_scope = {
+#							if = {
+#								limit = { religion = ROOT }
+#								religion = PREVPREV
+#							}
+#						}
+#					}
+#				}
+#				hidden_tooltip = {
+#					religion_authority = {
+#						modifier = ruler_converted_to
+#					}
+#				}
+#				reverse_religion = ROOT 
+#			}
+#			religion_authority = {
+#				modifier = ruler_converted_from
+#			}
+#		}
+#		
+#		revoke_allowed = {
+#			always = no
+#		}
+#		
+#		ai_will_do = {
+#			factor = 1
+#			modifier = {
+#				factor = 0.5
+#			}
+#			modifier = {
+#				factor = 0.05
+#				is_hard_to_convert = yes
+#			}
+#			modifier = {
+#				factor = 0
+#				NOT = {
+#					any_war = {
+#						defender = { character = ROOT }
+#						attacker = {
+#							NOT = { religion = ROOT }
+#							religion_authority = 0.45
+#						}
+#						is_holy_war = yes
+#						war_score = 50
+#						thirdparty_title_scope = {
+#							ROOT = {
+#								primary_title = {
+#									title = PREVPREV
+#								}
+#							}
+#						}
+#					}
+#				}
+#			}
+#			modifier = {
+#				factor = 2
+#				any_war = {
+#					defender = { character = ROOT }
+#					attacker = {
+#						NOT = { religion = ROOT }
+#						religion_authority = 0.45
+#					}
 #					is_holy_war = yes
-					war_score = 75
-					thirdparty_title_scope = {
-						ROOT = {
-							primary_title = {
-								title = PREVPREV
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
+#					war_score = 75
+#					thirdparty_title_scope = {
+#						ROOT = {
+#							primary_title = {
+#								title = PREVPREV
+#							}
+#						}
+#					}
+#				}
+#			}
+#		}
+#	}
+#}
