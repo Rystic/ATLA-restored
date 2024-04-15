@@ -1,0 +1,57 @@
+title_decisions = {
+
+	colonize_province = {
+		is_high_prio = yes
+		only_playable = yes
+		filter = owned
+		ai_target_filter = owned
+		ai_check_interval = 12
+			
+		from_potential = {
+			OR = {
+				tier = DUKE
+				tier = KING
+				tier = EMPEROR
+			}
+		}
+			
+		potential = {
+			tier = COUNT
+			owner = FROM #Can't colonise places you don't own
+			location = {
+				NOR = {
+					has_province_modifier = colony_1
+					has_province_modifier = colony_2
+					has_province_modifier = colony_3
+					has_province_modifier = temple_outpost
+					culture_group = FROM
+				}
+			}
+		}
+		
+		allow = {
+			FROM = {
+				wealth = 250
+			}
+		}
+		
+		effect = {
+			location = {
+				add_province_modifier = { name = colony_1 duration = -1 }
+			}
+			FROM = {
+				wealth = -250
+			}
+			hidden_tooltip = {
+				holder_scope = { 
+					character_event = { id = ATLA.7008 }
+					character_event = { id = ATLA.7000 days = 1 }
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+}

@@ -1,0 +1,397 @@
+namespace = PETS
+
+character_event = { #what kind of pet do you want?
+	id = PETS.1
+	desc = PETS.1.D
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_hl_market
+	
+	is_triggered_only = yes
+	
+	option = { #A normal one
+		name = PETS.1.OPTA
+		character_event = { id = PETS.2 }
+	}
+	option = { #Something regional
+		name = PETS.1.OPTB
+		character_event = { id = PETS.3 }
+	}
+	option = { #Something rare
+		name = PETS.1.OPTC
+		character_event = { id = PETS.4 }
+	}
+	option = { #I've changed my mind
+		name = PETS.1.OPTD
+		clr_character_flag = at_petshop
+	}
+}
+
+character_event = { #Normal Pet
+	id = PETS.2
+	desc = PETS.2.D
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_hl_market
+	
+	is_triggered_only = yes
+	
+	option = { #Cat
+		name = PETS.2.OPTA
+		wealth = -50
+		add_artifact = petCat
+		clr_character_flag = at_petshop
+	}
+	option = { #Dog
+		name = PETS.2.OPTB
+		wealth = -50
+		add_artifact = petDog
+		clr_character_flag = at_petshop
+	}
+	option = { #An Ostrich Horse
+		name = PETS.2.OPTC
+		wealth = -200
+		add_artifact = petOstrichHorse
+		clr_character_flag = at_petshop
+	}
+	option = { #On second thought...
+		name = PETS.2.OPTD
+		character_event = { id = PETS.1 }
+	}
+}
+
+character_event = { #Something regional
+	id = PETS.3
+	desc = PETS.3.D
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_hl_market
+	
+	is_triggered_only = yes
+	
+	option = { #Regional Choice
+		name = PETS.3.OPTA
+		clr_character_flag = at_petshop
+		capital_scope = {
+			trigger_switch = {
+				on_trigger = region
+				world_air_temples = { ROOT = { wealth = -100 add_artifact = petWingedLemur } }	
+				world_si_wong = { ROOT = { wealth = -500 add_artifact = petGiantRhinocerosBeetle } }
+				world_the_swamp = { ROOT = { wealth = -500 add_artifact = petCatgator } }
+				world_central_earth_kingdom = { ROOT = { wealth = -100 add_artifact = petFireFerret } }
+				world_fire_isles = { ROOT = { wealth = -300 add_artifact = petKomodoRhino } }
+				world_northern_waters = { ROOT = { wealth = -500 add_artifact = petBuffaloYak } }
+				world_north_east_earth_kingdom = { ROOT = { wealth = -300 add_artifact = petArmadilloLion } }
+				world_north_west_kingdom = { ROOT = { wealth = -300 add_artifact = petGoatGorilla } }
+				world_southern_earth_kingdom = { ROOT = { wealth = -500 add_artifact = petEelHound } }
+				world_southern_waters = { ROOT = { wealth = -300 add_artifact = petPolarBearDog } }
+				world_western_earth_kingdom = { ROOT = { wealth = -300 add_artifact = petSpidercat } }
+				fallback = { ROOT = { wealth = -50 add_artifact = petCat } } #Just in case I missed somewhere
+			}
+		}
+	}
+	option = { #Southern Water Extra Option
+		name = PETS.3.OPTB
+		wealth = -500
+		trigger = { capital_scope = { region = world_southern_waters } }
+		add_artifact = petArcticCamel
+		clr_character_flag = at_petshop
+	}
+	option = { #Air Temple Extra Option
+		name = PETS.3.OPTC
+		trigger = { capital_scope = { region = world_air_temples } }
+		wealth = -500
+		add_artifact = petSkybison
+		clr_character_flag = at_petshop
+	}
+	option = { #On second thought...
+		name = PETS.3.OPTD
+		character_event = { id = PETS.1 }
+	}
+}
+
+character_event = { #Something Rare
+	id = PETS.4
+	desc = PETS.4.D
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_hl_market
+	
+	is_triggered_only = yes
+	
+	option = { #CatDeer
+		name = PETS.4.OPTA
+		wealth = -2000
+		trigger = { learning = 25 } #Do you even know this should exist?
+		tooltip_info = learning
+		custom_tooltip = { text = PETS.RARE.TT }
+		set_character_flag = searching_for_catdeer
+		character_event = { id = PETS.5 days = 60 }
+		character_event = { id = PETS.6 days = 720 }
+		clr_character_flag = at_petshop
+	}
+	option = { #Bear
+		name = PETS.4.OPTB
+		trigger = { tier = EMPEROR }
+		wealth = -2000
+		custom_tooltip = { text = PETS.RARE.TT }
+		set_character_flag = searching_for_bear
+		character_event = { id = PETS.5 days = 60 }
+		character_event = { id = PETS.6 days = 720 }
+		clr_character_flag = at_petshop
+	}
+	option = { #Dragon
+		name = PETS.4.OPTC
+		wealth = -2000
+		trigger = { trait = innerflame }
+		tooltip_info = innerflame
+		custom_tooltip = { text = PETS.RARE.TT }
+		set_character_flag = searching_for_dragon
+		character_event = { id = PETS.5 days = 60 }
+		character_event = { id = PETS.6 days = 720 }
+		clr_character_flag = at_petshop
+	}
+	option = { #On second thought...
+		name = PETS.4.OPTD
+		character_event = { id = PETS.1 }
+	}
+}
+
+character_event = { #Rare search result
+	id = PETS.5
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		random_list = {
+			5 = { character_event = { id = PETS.7 } } #Success!
+			95 = { character_event = { id = PETS.5 days = 60 } } #Failure, re-roll in 2 months.
+		}
+	}
+}
+
+character_event = { #Rare search notification
+	id = PETS.6
+	desc = PETS.6.D
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_hl_market
+	ai = no
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			has_character_flag = searching_for_bear
+			has_character_flag = searching_for_catdeer
+			has_character_flag = searching_for_dragon
+		}
+	}
+	
+	option = { #Keep waiting
+		name = PETS.6.OPTA
+		character_event = { id = PETS.6 days = 730 }
+	}
+	option = { #Give up
+		name = PETS.6.OPTB
+		wealth = 500
+		clr_character_flag = searching_for_bear
+		clr_character_flag = searching_for_catdeer
+		clr_character_flag = searching_for_dragon
+	}
+}
+
+character_event = { #Rare search success!
+	id = PETS.7
+	desc = PETS.7.D
+	border = GFX_event_normal_frame_diplomacy
+	picture = GFX_hl_market
+	
+	is_triggered_only = yes
+	
+	option = { #Get Bear
+		name = PETS.7.OPTA
+		trigger = { has_character_flag = searching_for_bear }
+		add_artifact = petBear
+		clr_character_flag = searching_for_bear
+	}
+	option = { #Get Dragon
+		name = PETS.7.OPTB
+		trigger = { has_character_flag = searching_for_dragon }
+		add_artifact = petDragon
+		clr_character_flag = searching_for_dragon
+	}
+	option = { #Get CatDeer
+		name = PETS.7.OPTC
+		trigger = { has_character_flag = searching_for_catdeer }
+		add_artifact = petCatDeer
+		clr_character_flag = searching_for_catdeer
+	}
+}
+
+character_event = { #AI pet generator
+	id = PETS.0
+	hide_window = yes
+	only_playable = yes
+	
+	is_triggered_only = yes #Fired once every 2 years
+	
+	trigger = { NOT = { any_artifact = { has_artifact_flag = pet } } }
+	
+	immediate = {
+		random = {
+			chance = 10 #Don't want to flood the place
+			random_list = {
+				30 = { add_artifact = petCat }
+				30 = { add_artifact = petDog }
+				20 = { add_artifact = petOstrichHorse }
+				10 = {
+					trigger = { higher_tier_than = COUNT }
+					capital_scope = {
+						trigger_switch = {
+							on_trigger = region
+							world_air_temples = { ROOT = { add_artifact = petWingedLemur } } #Real Air Nomads will always have Sky Bison
+							world_si_wong = { ROOT = { add_artifact = petGiantRhinocerosBeetle } }
+							world_the_swamp = { ROOT = { add_artifact = petCatgator } }
+							world_central_earth_kingdom = { ROOT = { add_artifact = petFireFerret } }
+							world_fire_isles = { ROOT = { add_artifact = petKomodoRhino } }
+							world_northern_waters = { ROOT = { add_artifact = petBuffaloYak } }
+							world_north_east_earth_kingdom = { ROOT = { add_artifact = petArmadilloLion } }
+							world_north_west_kingdom = { ROOT = { add_artifact = petGoatGorilla } }
+							world_southern_earth_kingdom = { ROOT = { add_artifact = petEelHound } }
+							world_southern_waters = { ROOT = { add_artifact = petPolarBearDog } }#It's up to the player to get an arctic camel I'm afriad
+							world_western_earth_kingdom = { ROOT = { add_artifact = petSpidercat } }
+							fallback = { ROOT = { add_artifact = petCat } } #Just in case I missed somewhere
+						}
+					}
+				}
+				10000 = { #Gain rare pet - VERY stringent requirements but practically garunteed if they're met
+					trigger = {
+						tier = EMPEROR
+						wealth = 2000
+						prestige = 5000
+					}
+					if = { limit = { trait = avatar } add_artifact = petCatDeer } #This is so non-canon it hurts
+					else_if = { limit = { trait = innerflame } add_artifact = petDragon }
+					else = { add_artifact = petBear }
+				}
+			}
+		}
+	}
+}
+
+character_event = { #Pet Owner dies - remove pets
+	id = PETS.8
+	is_triggered_only = yes #On artifact inheritance
+	hide_window = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				FROM = { has_artifact_flag = pet }
+			}
+			FROM = { destroy_artifact = yes }
+		}
+	}
+}
+
+character_event = { #Pet dies :c
+	id = PETS.9
+	desc = PETS.9.D
+	picture = GFX_evt_death
+	
+	is_triggered_only = yes #Checked every 10 years
+	
+	trigger = {
+		has_game_rule = {
+			name = pet_mortality
+			value = mortal
+		}
+		any_artifact = {
+			has_artifact_flag = pet
+			OR = {
+				AND = {
+					has_artifact_flag = lifespan_100
+					artifact_age > 100
+				}
+				AND = {
+					has_artifact_flag = lifespan_50
+					artifact_age > 50
+				}
+				AND = {
+					has_artifact_flag = lifespan_20
+					artifact_age > 20
+				}
+				AND = {
+					has_artifact_flag = lifespan_10
+					artifact_age > 10
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		any_artifact = {
+			limit = {
+				has_artifact_flag = pet
+				OR = {
+					AND = {
+						has_artifact_flag = lifespan_100
+						artifact_age > 100
+					}
+					AND = {
+						has_artifact_flag = lifespan_50
+						artifact_age > 50
+					}
+					AND = {
+						has_artifact_flag = lifespan_20
+						artifact_age > 20
+					}
+					AND = {
+						has_artifact_flag = lifespan_10
+						artifact_age > 10
+					}
+				}
+			}
+			save_event_target_as = dying_pet
+		}
+	}
+	
+	option = { #Cremate Pet
+		name = PETS.9.OPTA
+		trigger = { religion_group = fire_religions }
+		piety = 50
+	}
+	option = { #Bury Pet
+		name = PETS.9.OPTB
+		trigger = { NOT = { religion_group = fire_religions } } #Everyone else can theoretically bury their pet, but fire nation only cremates for obvious reasons
+		prestige = 25
+		piety = 25
+	}
+	option = { #Sea Burial
+		name = PETS.9.OPTC
+		trigger = {
+			OR = {
+				religion_group = water_religions
+				religion = pirate_faith
+				religion = great_serpent
+			}
+		}
+		piety = 50
+	}
+	option = { #Sky Burial
+		name =  PETS.9.OPTD
+		trigger = {
+			religion_group = air_religions
+			religion = children_of_si_wong
+		}
+		piety = 50
+	}
+	option = { #Grand Funeral
+		name = PETS.9.OPTE
+		prestige = 50
+	}
+	
+	after = {
+		event_target:dying_pet = {
+			destroy_artifact = yes
+		}
+		clear_event_target = dying_pet
+	}
+}

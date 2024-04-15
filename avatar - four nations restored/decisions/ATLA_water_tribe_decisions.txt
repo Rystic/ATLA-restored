@@ -1,0 +1,184 @@
+decisions = {
+
+	begin_water_tribe_offensive = { # Unify the Tribes -> Begin Water Tribe Offensive
+		is_high_prio = yes
+		only_independent = yes
+		
+		potential = {
+			has_landed_title = k_northern_water_tribe
+			government = water_tribe_government
+			culture_group = water_tribe_cultures
+			religion = tui_and_la
+			NOT = { has_global_flag = begin_watertribe_offensive }
+		}
+		allow = {
+			prisoner = no
+			prestige = 250
+			completely_controls = k_northern_water_tribe
+		}
+		effect = {
+			prestige = -250
+			custom_tooltip = {
+				text = begin_water_tribe_offensive_tooltip
+			}
+			hidden_tooltip = {
+				set_global_flag = begin_watertribe_offensive
+				narrative_event = { id = watertribe.1000 }
+				any_realm_lord = {
+					limit = {
+						primary_title = {
+							NOT = { tier = BARON }
+						}
+					}
+					character_event = { id = watertribe.1001 }
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	wt_chief_of_chiefs = { # Empire Title - can be made, but this requires complete control of both, TODO: touch this up somehow
+		is_high_prio = yes
+		only_independent = yes
+		
+		potential = {
+			NOT = { has_global_flag = foundedWaterEmpire }
+			OR = {
+				has_landed_title = k_northern_water_tribe
+				has_landed_title = k_southern_water_tribe
+			}
+			government = water_tribe_government
+			culture_group = water_tribe_cultures
+		}
+		allow = {
+			prisoner = no
+			prestige = 1000
+			completely_controls = k_northern_water_tribe
+			completely_controls = k_southern_water_tribe
+		}
+		effect = {
+			set_global_flag = foundedWaterEmpire
+			e_water_tribes = {
+				grant_title = ROOT
+			}
+			hidden_tooltip = {
+				character_event = { id = watertribe.7 } #This turns all tributaries into vassals?! Huge effect, but only Northern Tribe focused. Should point out it does this in localisation. - Liz
+			}
+			create_bloodline = {
+				type = water_nation_bloodline
+			}
+			# todo: uncomment this someday
+			# add_artifact = watertriberobe
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	HYW_ally_earth_kingdom = { #  Join the Hundred Year War - Earth Kingdom
+		is_high_prio = yes
+		only_independent = yes
+		
+		potential = {
+			culture_group = water_tribe_cultures
+			has_global_flag = HYW_0
+			NOR = {
+				has_dynasty_flag = HYW_EK_aligned
+				has_dynasty_flag = HYW_FN_aligned
+			}
+			e_earth_kingdom = {
+				has_holder = yes
+			}
+		}
+		allow = {
+			prisoner = no
+		}
+		effect = {
+			custom_tooltip = {
+				text = ally_earth_kingdom_tt
+				hidden_tooltip = {
+					set_dynasty_flag = HYW_EK_aligned
+					character_event = { id = watertribe.9 }
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 0.1
+			modifier = {
+				factor = 0.1
+				NOT = { realm_levies = 4000 }
+			}
+			modifier = {
+				factor = 0
+				has_landed_title = k_northern_water_tribe
+			}
+			modifier = {
+				factor = 0
+				trait = craven
+			}
+			modifier = {
+				factor = 0
+				has_evil_trait_trigger = yes
+			}
+		}
+	}
+	HYW_submit_fire_nation = { #  Join the Hundred Year War - Fire Nation
+		is_high_prio = yes
+		only_playable = yes
+		
+		potential = {
+			culture_group = water_tribe_cultures
+			has_global_flag = HYW_0
+			NOR = {
+				has_dynasty_flag = HYW_EK_aligned
+				has_dynasty_flag = HYW_FN_aligned
+			}
+			e_fire_nation = {
+				has_holder = yes
+			}
+		}
+		allow = {
+			prisoner = no
+		}
+		effect = {
+			custom_tooltip = {
+				text = submit_fire_nation_tt
+				hidden_tooltip = {
+					set_dynasty_flag = HYW_FN_aligned
+					character_event = { id = watertribe.14 }
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 0.1
+			modifier = {
+				factor = 0.1
+				NOT = { realm_levies = 4000 }
+			}
+			modifier = {
+				factor = 0
+				trait = craven
+			}
+			modifier = {
+				factor = 0
+				is_evil_trigger = no
+			}
+		}
+	}
+
+	stop_bloodbending = {
+		ai = no
+		
+		potential = {
+			trait = bloodbender
+		}
+		allow = {
+			prisoner = no
+		}
+		effect = {
+			character_event = { id = special.45 }
+		}
+	}
+	
+}

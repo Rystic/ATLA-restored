@@ -222,7 +222,7 @@ decisions = {
 			is_female = no
 			prisoner = no
 			NOR = {
-				culture_group = air_nomad_culture
+				culture_group = air_nomad_cultures
 				religion_group = air_religions
 				has_landed_title = e_earth_kingdom
 				has_landed_title = k_fire_nation
@@ -350,7 +350,7 @@ decisions = {
 			NOT = { is_inaccessible_trigger = yes }
 			prisoner = no
 			NOR = {
-				culture_group = air_nomad_culture
+				culture_group = air_nomad_cultures
 				religion_group = air_religions
 			}
 			custom_tooltip = {
@@ -501,14 +501,17 @@ decisions = {
 		}
 		effect = {
 			FROM = {
-				if = { # skibison names
+				if = { #Only Sky Bison ever got names, so everyone is a Skybison now I guess - Liz
 					limit = {
-						artifact_type = petSkybison
+						has_artifact_flag = pet
 					}
 
 					if = {
 						limit = {
-							game_rule_mixed_pet_names_trigger = yes
+							has_game_rule = {
+								name = pet_names
+								value = mixed
+							}
 						}
 						prompt_name = {
 							player = ROOT
@@ -518,9 +521,10 @@ decisions = {
 						break = yes
 					}
 					if = {
-						limit = {
-							game_rule_english_pet_names_trigger = yes
-						}
+						has_game_rule = {
+								name = pet_names
+								value = english
+							}
 						prompt_name = {
 							player = ROOT
 							type = RENAME_ARTIFACT_MESSAGE
@@ -529,9 +533,10 @@ decisions = {
 						break = yes
 					}
 					if = {
-						limit = {
-							game_rule_eastern_pet_names_trigger = yes
-						}
+						has_game_rule = {
+								name = pet_names
+								value = eastern
+							}
 						prompt_name = {
 							player = ROOT
 							type = RENAME_ARTIFACT_MESSAGE
@@ -540,7 +545,7 @@ decisions = {
 						break = yes
 					}
 				}
-				# ang rename other things
+				#and rename other things
 				prompt_name = {
 					player = ROOT
 					type = RENAME_ARTIFACT_MESSAGE

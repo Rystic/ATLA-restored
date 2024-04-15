@@ -1,4 +1,4 @@
-namespace=REFORM
+namespace = REFORM
 
 narrative_event = {
 	id = REFORM.1
@@ -35,28 +35,30 @@ narrative_event = {
 		text = air_reform
 		sound = pagan_reformation
 	}
+	desc = { ##TODO: This might not work
+		trigger = {
+			has_dlc = "Holy Fury"
+			ROOT = { barbarism_reformed }
+		}
+		trigger_switch = {
+			on_trigger = has_religion_feature
+			religion_feature_old_barbarism = { text = REFORM_BARBARISM_OLD_WAYS_DESC }
+			religion_feature_new_barbarism = { text = REFORM_BARBARISM_NEW_PATH_DESC }
+			fallback = { text = REFORM_BARBARISM_NEITHER_DESC }
+		}
+		sound = pagan_reformation
+	}
 	desc = {
 		trigger = {
 			NOT = { has_dlc = "Holy Fury" }
 		}
-		text = EVTDESC670
+		text = REFORM.1.BACKUP.DESC
 		sound = pagan_reformation
 	}
 	picture = { 
-		picture = GFX_evt_hellenic_temple
+		picture = GFX_evt_hellenic_temple ##TODO: This needs to be changed per faith. Water religions should have the norse temple picture, for example.
 	}
 	
-#	picture = { 
-#		trigger = { 
-#			ROOT = { 
-#				OR = { 
-#					religion = west_african_pagan
-#					religion = west_african_pagan_reformed
-#				}
-#			}
-#		} 
-#		picture = GFX_evt_west_african_ruler
-#	}
 	border = "GFX_event_narrative_frame_religion"	
 	
 	is_triggered_only = yes
@@ -97,47 +99,12 @@ narrative_event = {
 						modifier = dogmatic_religion
 						years = 1000
 					}
-					#TODO make sure all religions, including reforms, are in this list
-					remove_intermarry = earth_spirituality
-					remove_intermarry = ba_sing_se_cultural_heritage
-					remove_intermarry = omashuan_ethics
-					remove_intermarry = path_of_jin_wei
-					remove_intermarry = path_of_wei_jin
-					remove_intermarry = the_great_serpent
-					remove_intermarry = the_divided
-					remove_intermarry = fortune_telling
-					remove_intermarry = followers_of_kyoshi
-					remove_intermarry = way_of_chin
-					remove_intermarry = unificationism
-					remove_intermarry = earth_monarchism
-					remove_intermarry = children_of_si_wong
-					remove_intermarry = fire_spirituality
-					remove_intermarry = fire_nation_imperialism
-					remove_intermarry = bhanti_spirituality
-					remove_intermarry = the_eternal_flame
-					remove_intermarry = air_spirituality
-					remove_intermarry = nomadic_nihilism
-					remove_intermarry = air_acolytism
-					remove_intermarry = neo-nomadism
-					remove_intermarry = southern_spirituality
-					remove_intermarry = the_great_swamp
-					remove_intermarry = tui_and_la
-					remove_intermarry = witchcraft
-					remove_intermarry = vaatuism
-					remove_intermarry = modernism
-					remove_intermarry = equalism
-					remove_intermarry = anarchism
-					remove_intermarry = piracy
-					remove_intermarry = barbarism
-					remove_intermarry = fortune_telling_reformed
-					remove_intermarry = followers_of_kyoshi_reformed
-					remove_intermarry = the_great_swamp_reformed
-					remove_intermarry = children_of_si_wong_reformed	
-					remove_intermarry = earth_spirituality_reformed
-					remove_intermarry = way_of_chin_reformed
-					remove_intermarry = fire_spirituality_reformed
-					remove_intermarry = bhanti_spirituality_reformed
-					remove_intermarry = the_eternal_flame_reformed
+					remove_intermarry = earth_religions
+					remove_intermarry = water_religions
+					remove_intermarry = fire_religions
+					remove_intermarry = air_religions
+					remove_intermarry = modern_religions
+					remove_intermarry = outlaw_religions
 				} 
 			}
 			if = {
@@ -219,7 +186,7 @@ narrative_event = {
 							cooldown = no
 							opinion_effect = no
 						}
-					} 
+					}
 					recalc_succession = yes
 				}
 			}
@@ -227,23 +194,20 @@ narrative_event = {
 				limit = { #Switch to astrology.
 					ROOT = { has_religion_feature = religion_astrology }
 				}
-				ROOT = { 
+				ROOT = {
 					add_western_zodiac_trait_effect = yes 
 					character_event = { id = REFORM.3 days = 5 } 
-				} 
+				}
 			}
 			if = {
 				limit = { #Apply default special features if player doesn't have dlc.
-					NOT = { has_dlc = "Holy Fury" } 
-					ROOT = { 
-						OR = {
-							religion = southern_spirituality_reformed 
-							religion = tui_and_la_reformed
-						}
+					NOT = { has_dlc = "Holy Fury" }
+					ROOT = {
+						religion = southern_spirituality_reformed 
 					}
 				}
-				ROOT = { 
-					set_allow_rivermovement = yes 
+				ROOT = {
+					set_allow_rivermovement = yes
 					set_seafaring = yes
 					make_reformer_head_of_religion = yes
 				}
@@ -345,6 +309,18 @@ narrative_event = {
 					}
 				} 
 			}
+			if = {
+				limit = { #Apply default special features if player doesn't have the dlc
+					NOT = { has_dlc = "Holy Fury" }
+					ROOT = { religion = barbarism_reformed }
+				}
+				ROOT = {
+					set_allow_rivermovement = yes
+					set_seafaring = yes
+					make_reformer_head_of_religion = yes
+					grant_title_no_opinion = d_barbarism_high_priesthood
+				}
+			}
 			any_courtier = {
 				limit = {
 					is_heresy_of = ROOT
@@ -396,11 +372,6 @@ narrative_event = {
 				}
 				religion_head = { opinion = { who = ROOT modifier = opinion_my_reformer years = 50 } }
 			}
-	#TODO do we need these flags?
-	#		if = {
-	#			limit = { religion = tengri_pagan_reformed }
-	#			set_global_flag = tengri_reformation
-	#		}
 		}
 	}
 

@@ -535,11 +535,9 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 					trait = lavabender
 					trait = voidbender
 				}
-				OR = {
-					trait = powerful_bender
-					trait = competent_bender
-					trait = incompetent_bender
-				}
+				trait = powerful_bender
+				trait = competent_bender
+				trait = incompetent_bender
 			}
 		}
 		
@@ -1142,23 +1140,13 @@ society_decisions = { # Society decisions are only evaluated by members of socie
 				NOT = { has_character_flag = twl_mastery_done }
 				had_character_flag = { flag = twl_mastery_done days = 3650 }
 			}
-			OR = {
-				trait = waterbender
-				trait = earthbender
-				trait = airbender
-				trait = firebender
-			}
-			OR = {
-				NOR = {
-					trait = master_bender
-					trait = legendary_bender
-				}
-				NOR = {
-					trait = lightningbender
-					trait = healer
-					trait = seismicsense_nonblind
-					trait = airbender
-				}
+			is_bender_trigger = yes
+			is_top_tier_bender_trigger = no
+			NOR = {
+				trait = lightningbender
+				trait = healer
+				trait = seismicsense_nonblind
+				trait = voidbender
 			}
 		}
 		
@@ -1613,8 +1601,10 @@ targeted_decisions = {
 			society_rank >= 3
 			society_member_of = monastic_order_elder_council
 			is_adult = yes
-			NOT = { trait = incapable }
-			NOT = { trait = legendary_bender }
+			NOR = {
+				trait = incapable
+				trait = legendary_bender
+			}
 			trait = airbender
 			religion = ROOT
 		}
@@ -1666,26 +1656,7 @@ targeted_decisions = {
 						hidden_tooltip = {
 							FROM = { character_event = { id = MNSAK.3043 } }
 							character_event = { id = MNSAK.3044 }
-							if = {
-								limit = { trait = master_bender }
-								remove_trait = master_bender
-								add_trait = legendary_bender
-							}
-							if = {
-								limit = { trait = powerful_bender }
-								remove_trait = powerful_bender
-								add_trait = master_bender
-							}
-							if = {
-								limit = { trait = competent_bender }
-								remove_trait = competent_bender
-								add_trait = powerful_bender
-							}
-							if = {
-								limit = { trait = incompetent_bender }
-								remove_trait = incompetent_bender
-								add_trait = competent_bender
-							}
+							upgrade_bending_effect = yes
 						}
 					}
 				}
@@ -1706,7 +1677,7 @@ targeted_decisions = {
 					}
 				}
 			}
-			opinion = {										###opinion mostly serves as a 10 years cooldown ; +10 Opinion
+			opinion = {	#opinion mostly serves as a 10 years cooldown ; +10 Opinion
 				who = FROM
 				modifier = opinion_teach_virtue
 				months = 120
@@ -1714,20 +1685,17 @@ targeted_decisions = {
 		}
 		
 		ai_will_do = {
-			factor = 0.5
+			factor = 0.1
 			modifier = {
 				factor = 0.1
 				FROM = {
-					OR = {
-						trait = incompetent_bender
-						trait = competent_bender
-					}
+					is_unexceptional_bender = yes
 				}
 			}
 			modifier = {
-				factor = 10
-				AND = {
-					is_close_relative = FROM
+				factor = 0
+				NAND = {
+					is_close_relative = FROM  #AI will only target landed relatives in the same realm
 					same_realm = FROM
 					OR = {
 						is_landed = yes
@@ -1910,18 +1878,13 @@ targeted_decisions = {
 		}
 		
 		ai_will_do = {
-			factor = 0.1
-			modifier = {
-				factor = 0
-				NOT = {
-					AND = {
-						is_close_relative = FROM						###AI will only target landed relatives in the same realm
-						same_realm = FROM
-						OR = {
-							is_landed = yes
-							is_patrician = yes
-						}
-					}
+			factor = 10
+			AND = {
+				is_close_relative = FROM
+				same_realm = FROM
+				OR = {
+					is_landed = yes
+					is_patrician = yes
 				}
 			}
 		}
@@ -2242,10 +2205,7 @@ targeted_decisions = {
 			is_adult = no
 			trait = firebender
 			NOT = { has_character_flag = received_bak_education_before }
-			NOR = { 
-				trait = legendary_bender
-				trait = master_bender
-			}
+			is_top_tier_bender = no
 		}
 		
 		from_potential = {
@@ -2272,7 +2232,7 @@ targeted_decisions = {
 			}
 			ROOT = {
 				set_character_flag = received_bak_education_before
-				level_up_bending_effect = yes
+				upgrade_bending_effect = yes
 				hidden_tooltip = {
 					character_event = { id = MNSAK.5064 } 
 				}
@@ -2296,10 +2256,7 @@ targeted_decisions = {
 			is_adult = no
 			trait = airbender
 			NOT = { has_character_flag = received_airball_education_before }
-			NOR = { 
-				trait = legendary_bender
-				trait = master_bender
-			}
+			is_top_tier_bender = no
 		}
 		
 		from_potential = {
@@ -2327,7 +2284,7 @@ targeted_decisions = {
 			}
 			ROOT = {
 				set_character_flag = received_airball_education_before
-				level_up_bending_effect = yes
+				upgrade_bending_effect = yes
 			}
 		}
 		
