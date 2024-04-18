@@ -93,7 +93,7 @@ narrative_event = {
 	id = BAR.1
 	title = BAR.1.T
 	desc = BAR.1.D
-	picture = GFX_PLACEHOLDER
+	picture = GFX_evt_witch_burning
 	border = GFX_event_narrative_frame_war
 	is_triggered_only = yes 
 	major = yes
@@ -729,6 +729,24 @@ narrative_event = {
 	option = {
 		name = BAR.9.OPTB
 		trigger = { religion_group = water_religions }
+	}
+}
+
+character_event = {
+	id = BAR.10
+	hide_window = yes
+	
+	is_triggered_only = yes #Fired once on game start
+	
+	trigger = { historical = yes } #Prevents the game firing it again for a ruler designed character. Ruler Design'd characters fire the chronicle event twice, once for the character the player is 'replacing' and once for their OC.
+	
+	immediate = {
+		barbarism = {
+			religion_authority = { #Modifier to tank RA so that executing waterbenders raises MA to allow for reformation
+				modifier = unsettled_blood_feud
+				years = 1000
+			}
+		}
 	}
 }
 
