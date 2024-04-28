@@ -13,7 +13,7 @@ character_event = {
 			NOT = { has_character_flag = agni_def }
 			FROM = {
 				trait = firebender
-				NOT = {
+				NOR = {
 					trait = avatar
 					trait = fullyrealisedavatar
 				}
@@ -26,7 +26,7 @@ character_event = {
 			NOT = { has_character_flag = agni_def }
 			FROM = {
 				trait = airbender
-				NOT = {
+				NOR = {
 					trait = avatar
 					trait = fullyrealisedavatar
 				}
@@ -39,7 +39,7 @@ character_event = {
 			NOT = { has_character_flag = agni_def }
 			FROM = {
 				trait = waterbender
-				NOT = {
+				NOR = {
 					trait = avatar
 					trait = fullyrealisedavatar
 				}
@@ -52,7 +52,7 @@ character_event = {
 			NOT = { has_character_flag = agni_def }
 			FROM = {
 				trait = earthbender
-				NOT = {
+				NOR = {
 					trait = avatar
 					trait = fullyrealisedavatar
 				}
@@ -104,13 +104,11 @@ character_event = {
 		trigger = {
 			NOT = { has_character_flag = agni_def }
 			FROM = {
-				NOT = {
+				NOR = {
 					trait = earthbender
 					trait = airbender
 					trait = waterbender
 					trait = firebender
-				}
-				NOT = { 
 					trait = avatar
 					trait = fullyrealisedavatar
 				}
@@ -125,13 +123,11 @@ character_event = {
 	immediate = {
 		if = {
 			limit = {
-				NOT = {
-					OR = {
-						has_character_flag = first_round
-						has_character_flag = second_round
-						has_character_flag = third_round
-						has_character_flag = fourth_round
-					}
+				NOR = {
+					has_character_flag = first_round
+					has_character_flag = second_round
+					has_character_flag = third_round
+					has_character_flag = fourth_round
 				}
 			}
 			set_character_flag = first_round
@@ -141,17 +137,11 @@ character_event = {
 		name = "EVTOPTAduel.1" #agg attack the head
 		trigger = {
 			ROOT = {
-				NOT = {
+				NOR = {
 					has_character_flag = fourth_round
 					trait = avatar
 					trait = fullyrealisedavatar
-					trait = voidbender
-					trait = lavabender
-					trait = sandbender
-					trait = metalbender
-					trait = bloodbender
-					trait = lightningbender
-					trait = combustionbender
+					is_specialist_bender_trigger = yes
 				}
 			}
 		}
@@ -182,15 +172,7 @@ character_event = {
 						trait = legendary_bender
 					}
 					ROOT = {
-						NOT = {
-							OR = {
-								trait = legendary_bender
-								trait = master_bender
-								trait = powerful_bender
-								trait = competent_bender
-								trait = incompetent_bender
-							}
-						}
+						is_bender_trigger = no
 					}
 				}
 			}
@@ -210,7 +192,7 @@ character_event = {
 								trait = brave
 							}
 						}
-						modifier = {
+						modifier = { ##Is a better bender
 							factor = 2
 							OR = {
 								AND = {
@@ -247,15 +229,7 @@ character_event = {
 								}
 								AND = {
 									FROM = {
-										NOT = {
-											OR = {
-												trait = legendary_bender
-												trait = master_bender
-												trait = powerful_bender
-												trait = competent_bender
-												trait = incompetent_bender
-											}
-										}
+										is_bender_trigger = no
 									}
 									ROOT = {
 										trait = incompetent_bender
@@ -300,26 +274,10 @@ character_event = {
 								}
 								AND = {
 									FROM = {
-										NOT = {
-											OR = {
-												trait = legendary_bender
-												trait = master_bender
-												trait = powerful_bender
-												trait = competent_bender
-												trait = incompetent_bender
-											}
-										}
+										is_bender_trigger = no
 									}
 									ROOT = {
-										NOT = {
-											OR = {
-												trait = legendary_bender
-												trait = master_bender
-												trait = powerful_bender
-												trait = competent_bender
-												trait = incompetent_bender
-											}
-										}
+										is_bender_trigger = no
 									}
 								}
 							}

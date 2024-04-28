@@ -1,149 +1,7 @@
 # The entry should be named in the same way that the elective succession law is named to define it's voter's logic.
-# Root scope - Voter, the character voting in the election
-# From scope - Candidate, Character considered for the title
-# FromFrom scope - The title the nomination is for ALSO FUCKING RULER REEEEEEEEEEEEEEE
-# FromFromFrom scope - The title owner's candidate 
+# Check the CK2 wiki's Succession Voting page for advice if you're here, since the scopes can differ based on the segment you're editing! - Liz
 # The voter will vote for the top score candidate calculated from this script.
 
-### Condensed syntax layout:
-#<elective_law_type> = {
-#	candidate_vote_score = {
-#		<MTTH>
-#	}
-#	elector_selection = {
-#		max_amount = <int>
-#		<MTTH> - if max_amount is set it will pick the X amount of top scorers.
-#				 Negative scores are considered invalid electors - Ruler is always an elector
-#	}
-#	elector_vote_strength = {
-#		<MTTH>
-#	}
-#	elector_stances = { - Intended for the elder council positions
-#		<stance_name> = {
-#			icon = <int>
-#			<MTTH>
-#		}
-#	}
-#	candidate_trigger = {
-#		<trigger>
-#	}
-#}
-
-### Example elective succession setup
-#my_test_law = {
-	#elector_stances = { #Electoral stances visible on the Electors' tab. Do not directly affect voting pattern unless used as triggers in the modifiers of candidate_voter_score.
-#		my_stance = {
-#			icon = 5
-#			days = 1
-#			additive_modifier = {
-#				trait = humble
-#				value = 6
-#			}
-#		}
-#		other_stance = {
-#			icon = 3
-#			days = 1
-#		}
-#		third_stance = {
-#			icon = 1
-#			days = 5
-#			additive_modifier = {
-#				trait = wroth
-#				value = 10
-#			}
-#		}
-#	}
-#	elector_selection = {
-#		days = -5 		# If below 0, ROOT is not valid to be an Elector. Any character above 0 will be an elector.
-#		max_amount = 7 # Determines max amount of electors, with the lower scoring ones being excluded (limit is optional)
-#		additive_modifier = { #
-#			value = 10
-#			OR = { #
-#				AND = {
-#					higher_real_tier_than = BARON
-#					FROMFROM = { real_tier = DUKE } #If the Elector Title is a Duchy, any vassal is an elector, otherwise only Dukes and above.
-#				}
-#				higher_real_tier_than = COUNT
-#			}
-#			OR = { #Either defacto direct vassal, or independent ruler who is dejure vassal.
-#				vassal_of = FROMFROM
-#				independent = yes
-#			}
-#			OR = { #dejure vassal, or any vassal if title titular.
-#				AND = {
-#					FROMFROM = { is_titular = yes }
-#					vassal_of = FROMFROM
-#				}
-#				any_dejure_liege = { title = FROMFROM }
-#			}
-#		}
-#		additive_modifier = {
-#			value = 10
-#			character = FROMFROM
-#		}
-#	}
-#	elector_vote_strength = { #Affects the voting strength of each elector.
-#		days = 1 # 1 elector = 1 vote.
-#		additive_modifier = {
-#			trait = humble
-#			value = 3 # Ex: An Elector with the humble trait is worth an addtional 3 votes.
-#		}
-#	}
-#	candidate_vote_score = { #Chance of an Elector voting for a candidate over the other. The candidate with the highest value will be picked.
-#		days = 1
-#		##########################   Elector voting himself   ##########################
-#		additive_modifier = {
-#			value = 15
-#			localisation_key = tooltip_feudal_elector_vote_myself
-#			character = FROM
-#			NOR = {
-#				trait = humble
-#				trait = content
-#				trait = craven
-#				trait = slothful
-#				trait = stressed
-#				trait = depressed
-#				trait = ambitious
-#			}
-#			NOT = {
-#				FROMFROM = {
-#					holder_scope = {
-#						is_parent_of = ROOT
-#					}
-#				}
-#			}
-#		}
-#	}
-#	candidate_trigger = { #Trigger to determine what characters are valid candidates that can be voted by electors.
-#		always = yes
-#	}
-#}
-
-## Condensed syntax layout:
-#<elective_law_type> = {
-#	candidate_vote_score = {
-#		<MTTH>
-#	}
-#	elector_selection = {
-#		max_amount = <int>
-#		<MTTH> - if max_amount is set it will pick the X amount of top scorers.
-#				 Negative scores are considered invalid electors - Ruler is always an elector
-#	}
-#	elector_vote_strength = {
-#		<MTTH>
-#	}
-#	elector_stances = { - Intended for the elder council positions
-#		<stance_name> = {
-#			icon = <int>
-#			<MTTH>
-#		}
-#	}
-#	candidate_trigger = {
-#		<trigger>
-#	}
-#}
-
-### Example elective succession setup
 succ_earth_king = {
 	#elector_stances = { #Electoral stances visible on the Electors' tab. Do not directly affect voting pattern unless used as triggers in the modifiers of candidate_voter_score.
 	#	my_stance = {
@@ -290,7 +148,7 @@ succ_earth_king = {
 				}
 		}		
 	}
-	candidate_vote_score = { #Chance of an Elector voting for a candidate over the other. The candidate with the highest value will be picked.
+	candidate_vote_score = { #Chance of an Elector voting for a candidate over the other. The candidate with the highest value will be picked. ##TODO: Remove these from being scripted score values, this is a horrible horrible decision, dear gods
 		days = 1
 		vanilla_succ_voting_self = yes
 		vanilla_succ_voting_nepotism = yes
@@ -315,62 +173,370 @@ succ_earth_king = {
 	}
 	candidate_trigger = { #Trigger to determine what characters are valid candidates that can be voted by electors.
 		NOT = { character = FROM } #Ruler is elector not a candidate
-		FROM = { 
-			OR = {
-				AND = {
-					is_ruler = yes
+		FROM = {
+			NOR = { #no lowborn bastards or disinherited sorts
+				AND = { 
+					trait = bastard 
+					is_ruler = no
+					NOT = { FROM = { has_claim = FROMFROM } } #Unless they have a claim, of course
+				}
+				trait = disinherited
+			}
+			OR = { #The candidate must either...
+				AND = { #... be landed and feudal (but not a holy order), or...
 					is_landed = yes
-					is_theocracy = no 
-					is_republic = no
-					is_patrician = no
+					is_feudal = yes
+					is_holy_order = no
+					is_tribal = yes #On the off-chance they've managed to inherit the northern water kingdom or something - though it will have big boy negatives
 				}
-				NOR = {
-					any_heir_title = {
-						is_republic = yes
+				AND = {
+					NOR = { #... not be in line to inherit any non-feudal titles, and-
+						any_heir_title = {
+							is_republic = yes
+						}
+						any_heir_title = {		
+							is_theocracy = yes
+						}
+						any_heir_title = {		
+							is_merchant_republic = yes
+						}
 					}
-					any_heir_title = {		
-						is_theocracy = yes
-					}
-					any_heir_title = {		
-						is_merchant_republic = yes
-					}
-				}
-				NOR = {
-					AND = { 
-						trait = bastard 
-						is_ruler = no
-					}
-					trait = disinherited
-				}
-				OR = {
-					any_liege = { character = ROOT }
+					any_liege = { character = ROOT } # Be a landless courtier of the EK
 					is_ruler = no
 					ROOT_FROMFROM = { holder_scope = { independent = yes } }
-					has_claim = FROMFROM
 				}
 			}
 		}
-		OR = { 
-			is_married = FROM
-			is_close_relative = FROM
-			dynasty = FROM
-			FROM = {
-				AND = {	
-					OR = {
-						trait = born_in_the_purple
-						trait = ek_claimant #<--- Fucking paradox made me do it bc this shit does not accept any of claimant scopes / commands for some fucking reason
-						any_owned_bloodline = {
-							has_bloodline_flag = hey_im_ek_succ_bloodline_flag
-						}
-					}
-					NOR = { 
-						dynasty = FROM
-						is_married = FROM
-						is_close_relative = FROM
+		OR = { #You are a valid candidate if you are either...
+			FROM = { any_claim = { title = ROOT_FROMFROM } } #Claimants are always valid
+			ROOT = { is_close_relative = FROM } #So are spouses or close relatives of the ruler
+			ROOT = { is_married = FROM }
+		}			
+	}
+}
+
+air_nomad_elective = {
+	# elector_stances = { #Electoral stances visible on the Electors' tab. Do not directly affect voting pattern unless used as triggers in the modifiers of candidate_voter_score.
+	# 	my_stance = {
+	# 		icon = 5
+	# 		days = 1
+	# 		additive_modifier = {
+	# 			trait = humble
+	# 			value = 6
+	# 		}
+	# 	}
+	# 	other_stance = {
+	# 		icon = 3
+	# 		days = 1
+	# 	}
+	# 	third_stance = {
+	# 		icon = 1
+	# 		days = 5
+	# 		additive_modifier = {
+	# 			trait = wroth
+	# 			value = 10
+	# 		}
+	# 	}
+	# }
+	
+	elector_selection = {
+		days = -5 		# If below 0, ROOT is not valid to be an Elector. Any character above 0 will be an elector.
+		max_amount = 5 # Determines max amount of electors, with the lower scoring ones being excluded (limit is optional)
+
+		additive_modifier = { #Current ruler is always an elector.
+			value = 10
+			FROMFROM = { #Either title is higher than Duke-tier, or must be primary.
+				OR = {
+					higher_tier_than = DUKE
+					holder_scope = { primary_title = { title = PREVPREV } }
+				}
+			}
+			FROMFROM = {
+				holder_scope = {
+					character = PREVPREV
+				}
+			}
+		}
+
+		additive_modifier = { # elder vassals and courts
+			value = 10
+			vassal_of = FROMFROM
+			trait = airelder
+		}
+	}
+
+	# todo
+	elector_vote_strength = { #Affects the voting strength of each elector.
+		days = 1 # 1 elector = 1 vote.
+		
+		# elder council rank
+		additive_modifier = { 
+			value = 1
+			society_member_of = monastic_order_elder_council
+			society_rank == 1
+		}
+		additive_modifier = { 
+			value = 2
+			society_member_of = monastic_order_elder_council
+			society_rank == 2
+		}
+		additive_modifier = { 
+			value = 3
+			society_member_of = monastic_order_elder_council
+			society_rank == 3
+		}
+		additive_modifier = { 
+			value = 4
+			society_member_of = monastic_order_elder_council
+			society_rank == 4
+		}
+
+		# virtue
+		additive_modifier = {
+			value = 2
+			trait = honest
+		}
+
+		# bending
+		additive_modifier = {
+			value = 3
+			trait = powerful_bender
+		}
+		additive_modifier = {
+			value = 4
+			trait = master_bender
+		}
+		additive_modifier = {
+			value = 5
+			trait = legendary_bender
+		}
+
+		# learning
+		additive_modifier = {
+			value = 4
+			trait = scholarly_theologian
+		}
+		additive_modifier = {
+			value = 5
+			trait = mastermind_theologian
+		}
+	}
+	
+	candidate_vote_score = { #Chance of an Elector voting for a candidate over the other. The candidate with the highest value will be picked.
+		days = 0
+		##########################   Elector voting himself   ##########################
+		additive_modifier = {
+			value = 15
+			localisation_key = tooltip_feudal_elector_vote_myself
+			character = FROM
+			NOR = {
+				trait = humble
+				trait = content
+				trait = craven
+				trait = slothful
+				trait = stressed
+				trait = depressed
+				trait = ambitious
+			}
+			NOT = {
+				FROMFROM = {
+					holder_scope = {
+						is_parent_of = ROOT
 					}
 				}
 			}
-		}	
-	}			
+		}
+		additive_modifier = {
+			value = -15
+			localisation_key = tooltip_feudal_elector_vote_not_myself
+			character = FROM
+			NOT = { trait = ambitious }
+			OR = {
+				trait = humble
+				trait = content
+				trait = craven
+				trait = slothful
+				trait = stressed
+				trait = depressed
+			}
+		}
+		additive_modifier = {
+			value = 40
+			localisation_key = tooltip_feudal_elector_vote_myself_heir
+			character = FROM
+			NOR = {
+				trait = humble
+				trait = content
+				trait = craven
+				trait = slothful
+				trait = stressed
+				trait = depressed
+				trait = ambitious
+			}
+			FROMFROM = {
+				holder_scope = {
+					is_parent_of = ROOT
+				}
+			}
+		}
+		additive_modifier = {
+			value = 40
+			localisation_key = tooltip_feudal_elector_vote_myself_ambitious
+			character = FROM
+			trait = ambitious
+		}
+		additive_modifier = {
+			value = 10
+			# localisation_key = tooltip_feudal_elector_vote_myself_ambitious
+			character = FROM
+			trait = airnomad_tattoos
+		}
+
+		##########################   Candidate's traits   ##########################
+
+		#The heir
+		additive_modifier = { #Current ruler will always try to elect his player heir.
+			value = 50
+			localisation_key = tooltip_feudal_elector_vote_player_heir
+			player_heir = {
+				character = FROM
+				NOT = { character = ROOT }
+				NOT = { is_rival = FROM } #Unless is rival.
+			}
+			FROMFROM = {
+				holder_scope = {
+					character = PREVPREV
+				}
+
+			}
+		}
+
+		# Ageism
+		additive_modifier = {
+			value = -30
+			localisation_key = tooltip_feudal_elector_vote_child
+			NOT = { character = FROM }
+			FROM = {
+				age = 10
+				NOT = {
+					age = 16
+				}
+			}
+		}
+		additive_modifier = { #Still too young for older rulers
+			value = -10
+			localisation_key = tooltip_feudal_elector_vote_youngster
+			NOT = { character = FROM }
+			age = 30
+			FROM = {
+				age = 16
+				NOT = {
+					age = 25
+				}
+			}
+		}
+		additive_modifier = {
+			value = -5
+			localisation_key = tooltip_feudal_elector_vote_youngster
+			NOT = { character = FROM }
+			age = 40
+			FROM = {
+				age = 25
+				NOT = {
+					age = 35
+				}
+			}
+		}
+		additive_modifier = { #Or too old for younger rulers. -Less of a malus for Tanistry
+			value = -5
+			localisation_key = tooltip_feudal_elector_vote_oldtimer
+			NOT = { character = FROM }
+			NOT = { age = 50 }
+			FROM = {
+				age = 40
+				NOT = { age = 50 }
+			}
+		}
+		additive_modifier = { #Or too old for younger rulers. -Less of a malus for Tanistry
+			value = -10
+			localisation_key = tooltip_feudal_elector_vote_oldtimer
+			NOT = { character = FROM }
+			NOT = { age = 60 }
+			FROM = {
+				age = 50
+				NOT = { age = 60 }
+			}
+		}
+		additive_modifier = { #Or too old for younger rulers. -Less of a malus for Tanistry
+			value = -10
+			localisation_key = tooltip_feudal_elector_vote_oldtimer
+			NOT = { character = FROM }
+			NOT = { age = 70 }
+			FROM = {
+				age = 60
+			}
+		}
+
+		# bending
+		additive_modifier = {
+			value = 2
+			NOT = { character = FROM }
+			FROM = {
+				trait = competent_bender
+			}
+		}
+		additive_modifier = {
+			value = 3
+			NOT = { character = FROM }
+			FROM = {
+				trait = powerful_bender
+			}
+		}
+		additive_modifier = {
+			value = 4
+			NOT = { character = FROM }
+			FROM = {
+				trait = master_bender
+			}
+		}
+		additive_modifier = {
+			value = 5
+			NOT = { character = FROM }
+			FROM = {
+				trait = legendary_bender
+			}
+		}
+
+		# learning
+		additive_modifier = {
+			value = 4
+			NOT = { character = FROM }
+			FROM = {
+				trait = scholarly_theologian
+			}
+		}
+		additive_modifier = {
+			value = 5
+			NOT = { character = FROM }
+			FROM = {
+				trait = mastermind_theologian
+			}
+		}
+	}
+
+	#ROOT = Current Title holder, FROM = Candidate, FROMFROM = Title, FROMFROMFROM = Null
+	candidate_trigger = {
+		NOT = { character = FROM } #Not the current ruler.
+		FROM = {
+			culture_group = air_nomad_cultures
+			is_landed = no # they don't elect from rulers
+			host = {
+				character = ROOT
+			}
+			OR = {
+				trait = airnomad
+				trait = airelder
+			}
+		}
+	}
 }
-		

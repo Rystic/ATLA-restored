@@ -1,0 +1,981 @@
+namespace = SRP
+
+character_event = {
+	id = SRP.1
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+				NOT = { religion = the_great_serpent }
+			}
+			remove_province_modifier = rapturous_serpent
+			remove_province_modifier = pleased_serpent
+			remove_province_modifier = stirring_serpent
+			remove_province_modifier = angry_serpent
+		}
+	}
+}
+
+character_event = {
+	id = SRP.1000
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+	}
+	
+	immediate = {
+	
+		remove_character_modifier = weak_serpent_leader
+		remove_character_modifier = strong_serpent_leader
+	
+		set_variable = { which = local_prestige_low_threshold value = 50 }
+		set_variable = { which = local_prestige_high_threshold value = 250 }
+		trigger_switch = {
+			on_trigger = tier
+			COUNT = { set_variable = { which = local_prestige_low_threshold value = 50 } set_variable = { which = local_prestige_high_threshold value = 250 } }
+			DUKE = { set_variable = { which = local_prestige_low_threshold value = 100 } set_variable = { which = local_prestige_high_threshold value = 500 } }
+			KING = { set_variable = { which = local_prestige_low_threshold value = 250 } set_variable = { which = local_prestige_high_threshold value = 1250 } }
+			EMPEROR = { set_variable = { which = local_prestige_low_threshold value = 500 } set_variable = { which = local_prestige_high_threshold value = 2500 } }
+		}
+		
+		if = {
+			limit = {
+				has_global_flag = the_lord_beneath_founded
+			}
+			set_variable = { which = local_prestige_low_threshold value = 50 } set_variable = { which = local_prestige_high_threshold value = 250 }
+		}
+		
+		trigger_switch = {
+			on_trigger = trait
+			brave = { set_variable = { which = local_prestige_low_threshold value = 50 } set_variable = { which = local_prestige_high_threshold value = 250 } }
+			craven = { set_variable = { which = local_prestige_low_threshold value = 500 } set_variable = { which = local_prestige_high_threshold value = 2500 } }
+		}
+		
+		if = {
+			limit = { prestige < local_prestige_low_threshold }
+			add_character_modifier = {
+				name = weak_serpent_leader
+				years = 2
+			}
+		}
+		if = {
+			limit = { prestige > local_prestige_high_threshold }
+			add_character_modifier = {
+				name = strong_serpent_leader
+				years = 2
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.2000
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+		c_north_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+		
+		c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+		c_south_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+			}
+			location = {
+				remove_province_modifier = rapturous_serpent
+				remove_province_modifier = pleased_serpent
+				remove_province_modifier = stirring_serpent
+				remove_province_modifier = angry_serpent
+				if = {
+					limit = {
+						has_global_flag = caretakers_of_the_serpent_founded
+					}
+					add_province_modifier = { name = rapturous_serpent duration = -1 }
+
+				}
+				else = {
+					add_province_modifier = { name = pleased_serpent duration = -1 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.2001
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		OR = {
+			AND = {
+				c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_north_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+				c_south_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }
+			}
+			AND = {
+				c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_south_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+				c_north_serpent = { holder_scope = { NOT = {religion = the_great_serpent } } }
+			}
+			AND = {
+				c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+				NAND = {
+					c_north_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+					c_south_serpent = { holder_scope = { has_character_modifier = strong_serpent_leader } }
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+			}
+			location = {
+				remove_province_modifier = rapturous_serpent
+				remove_province_modifier = pleased_serpent
+				remove_province_modifier = stirring_serpent
+				remove_province_modifier = angry_serpent
+				if = {
+					limit = {
+						has_global_flag = caretakers_of_the_serpent_founded
+					}
+					add_province_modifier = { name = pleased_serpent duration = -1 }
+				}
+				else = {
+					add_province_modifier = { name = stirring_serpent duration = -1 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.2002
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		ROOT = { religion = the_great_serpent }
+		OR = {
+			AND = {
+				c_north_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }
+				c_south_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }
+			}
+			AND = {
+				c_north_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_north_serpent = { holder_scope = { NOT = { has_character_modifier = strong_serpent_leader } } }
+				c_south_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }		
+			}
+			AND = {
+				c_south_serpent = { holder_scope = { religion = the_great_serpent } }
+				c_south_serpent = { holder_scope = { NOT = { has_character_modifier = strong_serpent_leader } } }
+				c_north_serpent = { holder_scope = { NOT = { religion = the_great_serpent } } }		
+			}
+		}
+	}
+	
+	immediate = {
+		any_realm_province = {
+			limit = {
+				port = yes
+			}
+			location = {
+				remove_province_modifier = rapturous_serpent
+				remove_province_modifier = pleased_serpent
+				remove_province_modifier = stirring_serpent
+				remove_province_modifier = angry_serpent
+				if = {
+					limit = {
+						has_global_flag = caretakers_of_the_serpent_founded
+					}
+					add_province_modifier = { name = stirring_serpent duration = -1 }
+
+				}
+				else = {
+					add_province_modifier = { name = angry_serpent duration = -1 }
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.3000
+	picture = GFX_evt_great_serpent
+	border = GFX_event_normal_frame_religion
+	title=SERPENT_SCHOLAR_TITLE
+	desc=event_serpent_scholar_desc
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { trait = serpent_scholar }
+		ROOT = { religion = the_great_serpent }
+		OR = {
+			learning = 12
+			AND = {
+				has_global_flag = sages_of_the_pass_founded
+				learning = 8
+			}
+		}
+		is_ruler = yes
+	}
+	
+	option = { ##TODO: Clean this, there is no reason for this to be so convoluted based on homosexuality
+		add_trait = serpent_scholar
+		name = SERPENT_SCHOLAR_OPTION
+		custom_tooltip = {
+			text = serpent_scholar_add_waterbenders
+		}
+		if = {
+			limit = { has_global_flag = sages_of_the_pass_founded }
+			random = {
+				chance = 60
+				add_trait = scholar
+			}
+		}
+		hidden_tooltip = {
+			random_list = {
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = tui_and_la
+						culture = northern_water_culture
+						female = yes
+						trait = waterbender
+						trait = incompetent_bender
+						trait = lustful
+						age = 16
+					}
+				}
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = southern_spirituality
+						culture = southern_water_culture
+						female = no
+						trait = waterbender
+						trait = competent_bender
+						trait = lustful
+						age = 16
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = no
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = southern_spirituality
+						culture = southern_water_culture
+						female = yes
+						trait = waterbender
+						trait = incompetent_bender
+						age = 20
+					}
+				}
+				10 = {
+					modifier = {
+						AND = {
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 2
+					}
+					modifier = {
+						AND = {
+							trait = lustful
+							OR = {
+								trait = homosexual
+								is_female = yes
+							}
+						}
+						factor = 10
+					}
+					create_character = {
+						random_traits = yes
+						dynasty = random
+						religion = tui_and_la
+						culture = northern_water_culture
+						female = no
+						trait = waterbender
+						trait = competent_bender
+						age = 20
+					}
+				}
+			}
+		}
+		ai_chance = { 
+			factor = 1
+		}
+	}
+}
+
+narrative_event = {
+	id = SRP.4000
+	picture = GFX_evt_great_serpent
+	border = GFX_event_narrative_frame_religion
+	title=FOUND_SERPENT_ORDER_TITLE
+	desc=found_serpent_order_desc
+	is_triggered_only = yes
+	option = {
+		name = FOUND_SAGES_OF_THE_PASS_OPTION
+		custom_tooltip = {
+			text = sages_will_be_founded
+		}
+		character_event = { id = SRP.4001 }
+		character_event = { id = SRP.4004 days = 5 }
+
+	}
+	option = {
+		name = FOUND_CARETAKERS_OF_THE_SERPENT_OPTION
+		custom_tooltip = {
+			text = caretakers_will_be_founded
+		}
+		character_event = { id = SRP.4002 }
+		character_event = { id = SRP.4004 days = 5 }
+	}
+	option = {
+		name = FOUND_THE_LORD_BENEATH_OPTION
+		custom_tooltip = {
+			text = the_lord_beneath_will_be_founded
+		}
+		character_event = { id = SRP.4003 }
+		character_event = { id = SRP.4004 days = 5 }
+	}
+}
+
+character_event = {
+	id = SRP.4001
+	hide_window = yes
+	only_playable = yes
+	is_triggered_only = yes 
+	
+	immediate = {
+		set_global_flag = sages_of_the_pass_founded
+		c_north_serpent = {
+			owner = {
+				create_character = {
+					random_traits = no
+					name = "Slitherus"
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					dynasty = none
+					female = no
+					age = 28
+					trait = mastermind_theologian
+					trait = brave
+					trait = kind
+					trait = zealous
+					trait = scholar
+					trait = earthbender
+					trait = master_bender
+					trait = serpent_scholar
+				}
+				new_character = {
+					save_event_target_as = holy_order_man
+					prestige = 1000
+					change_learning = 8
+				}
+			}
+			activate_title = { title = d_sages_of_the_pass status = yes }
+			c_north_serpent = { grant_title = event_target:holy_order_man }
+			c_south_serpent = { grant_title = event_target:holy_order_man }
+			d_sages_of_the_pass = { grant_title = event_target:holy_order_man }
+			activate_title = { title = d_great_serpent_high_priesthood status = yes }
+			d_great_serpent_high_priesthood = { grant_title = event_target:holy_order_man }
+			owner = {
+				set_defacto_liege = ROOT
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = northern_water_culture
+					female = yes
+					trait = waterbender
+					trait = incompetent_bender
+					trait = lustful
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = northern_water_culture
+					female = yes
+					trait = waterbender
+					trait = competent_bender
+					trait = lustful
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = northern_water_culture
+					female = yes
+					trait = waterbender
+					trait = powerful_bender
+					trait = lustful
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = northern_water_culture
+					female = no
+					trait = waterbender
+					trait = competent_bender
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = northern_water_culture
+					female = no
+					trait = waterbender
+					trait = powerful_bender
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = incompetent_bender
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = competent_bender
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = powerful_bender
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = competent_bender
+					trait = serpent_scholar
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = powerful_bender
+					trait = serpent_scholar
+					age = 16
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.4002
+	hide_window = yes
+	only_playable = yes
+	is_triggered_only = yes 
+	
+	immediate = {
+		set_global_flag = caretakers_of_the_serpent_founded
+		c_north_serpent = {
+			owner = {
+				create_character = {
+					random_traits = no
+					name = "Slitherus"
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					dynasty = none
+					female = no
+					age = 28
+					trait = midas_touched
+					trait = brave
+					trait = administrator
+					trait = zealous
+					trait = scholar
+					trait = earthbender
+					trait = master_bender
+				}
+				new_character = {
+					save_event_target_as = holy_order_man
+					prestige = 1000
+					change_stewardship = 8
+				}
+			}
+			activate_title = { title = d_caretakers_of_the_serpent status = yes }
+			c_north_serpent = { grant_title = event_target:holy_order_man }
+			c_south_serpent = { grant_title = event_target:holy_order_man }
+			d_caretakers_of_the_serpent = { grant_title = event_target:holy_order_man }
+			activate_title = { title = d_great_serpent_high_priesthood status = yes }
+			d_great_serpent_high_priesthood = { grant_title = event_target:holy_order_man }
+			owner = {
+				set_defacto_liege = ROOT
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = competent_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = powerful_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = competent_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = powerful_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = competent_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = powerful_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = competent_bender
+					trait = administrator
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = powerful_bender
+					trait = administrator
+					age = 16
+				}
+			}
+		}
+	}
+}
+
+character_event = {
+	id = SRP.4003
+	hide_window = yes
+	only_playable = yes
+	is_triggered_only = yes 
+	
+	immediate = {
+		set_global_flag = the_lord_beneath_founded
+		c_north_serpent = {
+			owner = {
+				create_character = {
+					random_traits = no
+					name = "Slitherus"
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					dynasty = none
+					female = no
+					age = 28
+					trait = tough_soldier
+					trait = brave
+					trait = strong
+					trait = zealous
+					trait = hunter
+					trait = wroth
+					trait = berserker
+				}
+				new_character = {
+					save_event_target_as = holy_order_man
+					prestige = 1000
+					change_martial = 8
+				}
+			}
+			activate_title = { title = d_the_lord_beneath status = yes }
+			c_north_serpent = { grant_title = event_target:holy_order_man }
+			c_south_serpent = { grant_title = event_target:holy_order_man }
+			d_the_lord_beneath = { grant_title = event_target:holy_order_man }
+			activate_title = { title = d_great_serpent_high_priesthood status = yes }
+			d_great_serpent_high_priesthood = { grant_title = event_target:holy_order_man }
+			owner = {
+				set_defacto_liege = ROOT
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = powerful_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = powerful_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = powerful_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = powerful_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = powerful_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = no
+					trait = earthbender
+					trait = master_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = powerful_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+				create_character = {
+					random_traits = yes
+					dynasty = random
+					religion = the_great_serpent
+					culture = eastern_earth_culture
+					female = yes
+					trait = earthbender
+					trait = master_bender
+					trait = brave
+					trait = strong
+					age = 16
+				}
+			}
+		}
+	}
+}
+
+narrative_event = {
+	id = SRP.4004
+	picture = GFX_evt_great_serpent
+	border = GFX_event_narrative_frame_religion
+	title=FOUND_SERPENT_ORDER_TITLE
+	is_triggered_only = yes
+	major = yes ##Dear god no, this is a notification event, just send it to players - Liz
+	
+	desc = {
+		trigger = {
+			has_global_flag = sages_of_the_pass_founded
+		}
+		text = serpent_order_founded_sages_desc
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = caretakers_of_the_serpent_founded
+		}
+		text = serpent_order_founded_caretakers_desc
+	}
+	
+	desc = {
+		trigger = {
+			has_global_flag = the_lord_beneath_founded
+		}
+		text = serpent_order_founded_lord_beneath_desc
+	}
+
+	option = {
+		name = SERPENT_ORDER_FOUNDED_SAGES_OPTION
+		trigger = {
+			AND = {
+				religion = the_great_serpent
+				has_global_flag = sages_of_the_pass_founded
+			}
+		}
+	}
+	option = {
+		name = SERPENT_ORDER_FOUNDED_CARETAKERS_OPTION
+		trigger = {
+			AND = {
+				religion = the_great_serpent
+				has_global_flag = caretakers_of_the_serpent_founded
+			}
+		}
+	}
+	option = {
+		name = SERPENT_ORDER_FOUNDED_LORD_BENEATH_OPTION
+		trigger = {
+			AND = {
+				religion = the_great_serpent
+				has_global_flag = the_lord_beneath_founded
+			}
+		}
+	}
+	option = {
+		name = SERPENT_ORDER_FOUNDED_NON_SERPENT
+		trigger = {
+			NOT = { religion = the_great_serpent }
+		}
+	}
+}
+
+character_event = {
+	id = SRP.5000
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		primary_title = { title = e_earth_kingdom }
+	}
+	
+	immediate = {
+		the_great_serpent = {
+			c_north_serpent = {
+				location = {
+					trigger_switch = {		##Check this works! - Liz
+						on_trigger = has_province_modifier
+						rapturous_serpent = { religion_authority = { modifier = rapturous_serpent years = 10 } }
+						pleased_serpent = { religion_authority = { modifier = pleased_serpent years = 10 } }
+						stirring_serpent = { religion_authority = { modifier = stirring_serpent years = 10 } }
+						angry_serpent = { religion_authority = { modifier = angry_serpent years = 10 } }
+					}
+#					if = {
+#						limit = {
+#							has_province_modifier = rapturous_serpent
+#						}
+#						religion_authority = {
+#							modifier = rapturous_serpent
+#							years = 10
+#						}
+#					}
+#					if = {
+#						limit = {
+#							has_province_modifier = pleased_serpent
+#						}
+#						religion_authority = {
+#							modifier = pleased_serpent
+#							years = 10
+#						}
+#					}
+#					if = {
+#						limit = {
+#							has_province_modifier = stirring_serpent
+#						}
+#						religion_authority = {
+#							modifier = stirring_serpent
+#							years = 10
+#						}
+#					}
+#					if = {
+#						limit = {
+#							has_province_modifier = angry_serpent
+#						}
+#						religion_authority = {
+#							modifier = angry_serpent
+#							years = 10
+#						}
+#					}
+				}
+			}
+		}
+	}
+}

@@ -3,6 +3,7 @@ decisions = {
 	practice_sand_sailing = {   #Quest Decision
 		is_high_prio = yes
 		ai_check_interval = 12
+		is_in_society = yes
 
 		potential = {
 			has_quest = sand_quest_race_training
@@ -23,6 +24,7 @@ decisions = {
 	maintain_sand_sailer = {   #Quest Decision
 		is_high_prio = yes
 		ai_check_interval = 12
+		is_in_society = yes
 
 		potential = {
 			has_quest = sand_quest_sailer
@@ -42,6 +44,8 @@ decisions = {
 
 	donate_to_sand_society = { #quest decision
 		is_high_prio = yes
+		ai_check_interval = 12
+		is_in_society = yes
 
 		potential = {
 			has_quest = donate_to_sand_society
@@ -61,7 +65,8 @@ decisions = {
 
 	run_gauntlet = {
 		is_high_prio = no
-		ai_check_interval = 5
+		ai_check_interval = 12
+		is_in_society = yes
 
 		potential = {
 			ROOT = {
@@ -91,9 +96,11 @@ decisions = {
 			factor = 5
 		}
 	}
+	
 	become_legend = {
 		is_high_prio = yes
 		ai_check_interval = 12
+		is_in_society = yes
 		
 		potential = {
 			AND = {
@@ -101,24 +108,27 @@ decisions = {
 					society = sand_sailer_racers
 					rank == 4
 				}
-				NOT = {trait = sand_racer_legend}
+				NOT = { trait = sand_racer_legend }
 			}
 		}
 		allow = {
 			society_currency = 10000
-			NOT = {trait = sand_racer_legend}
+			NOT = { trait = sand_racer_legend }
 		}
 		effect = {
-			character_event = {id = sand.14}
+			character_event = { id = sand.14 }
 			change_society_currency = -10000
 		}
 	}
 }
+
 targeted_decisions = {
 
 	talk_shop = {
 		is_high_prio = no
-		ai_check_interval = 5
+		ai_check_interval = 6
+		is_in_society = yes
+		
 		filter = society
 		ai_target_filter = society
 
@@ -135,7 +145,7 @@ targeted_decisions = {
 			custom_tooltip = {
 				text = talk_shop_cd_tt
 				FROM = {
-					NOT = {has_character_modifier = talk_shop_cd}
+					NOT = { has_character_modifier = talk_shop_cd }
 				}
 			}
 			has_society_currency_minor_trigger = yes
@@ -164,8 +174,8 @@ targeted_decisions = {
 
 title_decisions = {
 
-	fervor = {
-		ai_check_interval = 5
+	build_racing_fervor = {
+		ai_check_interval = 8
 		filter = owned
 		ai_target_filter = owned
 
@@ -180,7 +190,7 @@ title_decisions = {
 		potential = {
 			tier = COUNT
 			location = {
-				NOT = {has_province_modifier = fervor_modifier}
+				NOT = { has_province_modifier = racing_fervor_modifier }
 			}
 			holder_scope = {
 				OR = {
@@ -195,7 +205,7 @@ title_decisions = {
 				custom_tooltip = {
 					text = fervor_cd_tt
 					FROM = {
-						NOT = {has_character_modifier = fervor_cd}
+						NOT = { has_character_modifier = racing_fervor_cd }
 					}
 				}
 				society_currency = 5000
@@ -205,7 +215,7 @@ title_decisions = {
 		effect = {
 			location = {
 				add_province_modifier = {
-					name = fervor_modifier
+					name = racing_fervor_modifier
 					months = 4
 					hidden = no
 				}
@@ -213,7 +223,7 @@ title_decisions = {
 			FROM = {
 				change_society_currency = -5000
 				add_character_modifier = {
-					name = fervor_cd
+					name = racing_fervor_cd
 					years = 1
 					hidden = yes
 				}

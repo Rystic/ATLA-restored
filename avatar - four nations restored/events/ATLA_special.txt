@@ -3,7 +3,7 @@ namespace = special
 #for the sub-skills of bending
 
 #Special bending types
-##Healing
+##Healing - Depreciated with the healing hut's introduction
 # narrative_event = {
 	# id = special.1
 	# desc = EVTDESCspecial.1
@@ -71,6 +71,7 @@ character_event = { #gives the blind trait to a newborn child
 	id = special.3
 	is_triggered_only = yes #is given on birth
 	hide_window = yes #doesn't show up and doesn't need localisation
+	
 	immediate = {
 		add_trait = blind
 	}
@@ -113,8 +114,10 @@ narrative_event = { #gives blind earthbender seismicsense
 	trigger = {
 		trait = blind
 		trait = earthbender
-		NOR = { age > 45 
-			trait = seismicsense } #makes an old earthbender unable to learn it
+		NOR = { #makes an old earthbender unable to learn it
+			age > 45 
+			trait = seismicsense
+		}
 		OR = {
 			trait = competent_bender
 			trait = powerful_bender
@@ -126,11 +129,10 @@ narrative_event = { #gives blind earthbender seismicsense
 	option = {
 		name = EVTOPTspecial.5
 		add_trait = seismicsense
-		hidden_tooltip = {
-		}
 	}
 }
-#spreading seismicsense by teaching friends is handled in another file
+
+#spreading seismicsense by teaching friends is handled in another file ##WHERE?! OH MY GOOOOOD TODO FIX THIS FIX THIS FIX THIS **BITES YOU BITES YOU BITES YOU** - Liz
 
 ##lightningbending
 narrative_event = { #firelord randomly learns lightningbending - possibly from ancestor or nature?
@@ -139,7 +141,7 @@ narrative_event = { #firelord randomly learns lightningbending - possibly from a
 	title = EVTTITLEspecial.6
 	picture = GFX_evt_child_reading
 	
-	trigger = {
+	trigger = { ##Becoming firelord aside from rakurai should probably give you a bloodline with said effect, like player-based rome bloodlines. - Liz
 		trait = firebender
 		OR = {
 			AND = {
@@ -148,13 +150,13 @@ narrative_event = { #firelord randomly learns lightningbending - possibly from a
 					trait = master_bender
 					trait = legendary_bender
 				}
-                 		any_owned_bloodline = { has_bloodline_flag = bloodline_rakurai }
+				any_owned_bloodline = { has_bloodline_flag = is_lightningbending_bloodline }
 			}
 			trait = firelord
 		}
 		NOT = { trait = lightningbender }
 	}
-	mean_time_to_happen = {
+	mean_time_to_happen = { #REEEEE TODO FIX THIS
 		years = 10
 		modifier = {
 			factor = 2
@@ -353,13 +355,14 @@ narrative_event = { #character discovers metalbending
 		}
 		NOT = { trait = metalbender }
 	}
-	weight_multiplier = {
+	
+	weight_multiplier = { ##REEEEE TODO FIX THIS
 		days = 1
 		modifier = {
 			factor = 0.0001
 			NOR = { 
-			trait = seismicsense 
-			trait = seismicsense_nonblind 
+				trait = seismicsense 
+				trait = seismicsense_nonblind 
 			}
 		}
 		modifier = {
@@ -375,26 +378,25 @@ narrative_event = { #character discovers metalbending
 			trait = seismicsense_nonblind 
 		}
 	}
-	option = {
+	
+	option = { ##Metalbending founder bloodline should only be added on founding a metalbending school, imo. Which you should be able to do. - Liz
 		name = EVTOPTAspecial.17
 		add_trait = metalbender
 		if = {
 			limit = {
-				any_owned_bloodline = {
-					NOT = { has_bloodline_flag = bloodline_metalbender_founder }
+				NOT = {
+					any_owned_bloodline = {
+						has_bloodline_flag = is_metalbending_bloodline
+					}
 				}
 			}
 			create_bloodline = {
-				type = metalbending_founder
+				type = metalbending_founder_bloodline
 			}
 		}
 		hidden_tooltip = {
 			character_event = { id = special.18 }
 		}	
-	}
-	immediate = {
-	
-
 	}
 }
 
@@ -679,7 +681,7 @@ narrative_event = {
 					host = {
 						character_event = { id = special.33 }
 					}
-					character_event = { id = special.34}
+					character_event = { id = special.34 }
 				}
 			}
 			20 = { #Despite searching for several hours, I've found no exit and has been subdued by the guards
@@ -970,7 +972,7 @@ character_event = { #Stops a bloddbender from being a bloddbender
 
 ##flight
 
-narrative_event = { #learning flight - Needs to be expanded by more events
+narrative_event = { #learning flight - TODO: Needs to be expanded by more events
 	id = special.46
 	desc = EVTDESCspecial.46
 	title = EVTTITLEspecial.46
