@@ -273,118 +273,121 @@ character_event = {
 	only_capable = yes
 	
 	immediate = {
-		any_society_member = {
-			random_list = {
-				95 = { }
-				5 = {
-					trigger = {
-						NOT	= { trait = healer }
-						NOT = { is_inaccessible_trigger = yes }
-					}					
-					modifier = {
-						ai = no
-						factor = 0
-					}
-					modifier = {
-						learning = 8
-						factor = 2
-					}
-					modifier = {
-						learning = 12
-						factor = 2
-					}
-					modifier = {
-						learning = 16
-						factor = 2
-					}
-					modifier = {
-						factor = 3
-						trait = temperate
-					}
-					modifier = {
-						factor = 5
-						trait = kind
-					}
-					modifier = {
-						society_rank = 2
-						factor = 2
-					}
-					modifier = {
-						society_rank = 3
-						factor = 5
-					}
-					modifier = {
-						society_rank = 4
-						factor = 25
-					}
-					add_trait = healer
-					change_learning = 6
-					add_taught_healing = yes
-					# Below was limited to AI = yes, but since above list has a factor 0 for AI = no, we can assume this option is only ever triggered for the AI
-					# TODO: Add event for the player to receive when their spouse/parent develops healing abilities while they are sick
-					any_spouse = {
-						trigger_switch = {
-							on_trigger = trait
-							flu = { remove_trait = flu }
-							dysentery = { remove_trait = dysentery }
-							gout = { remove_trait = gout }
-							food_poisoning = { remove_trait = food_poisoning }
-							rabies = { remove_trait = rabies }
-							cancer = { remove_trait = cancer }
-							pneumonic = { remove_trait = pneumonic }
-							syphilitic = { remove_trait = syphilitic set_character_flag = immune_syphilis }       
-							has_tuberculosis = { remove_trait = has_tuberculosis set_character_flag = immune_tuberculosis }
-							has_typhoid_fever = { remove_trait = has_typhoid_fever set_character_flag = immune_typhoid_fever }
-							has_typhus = { remove_trait = has_typhus set_character_flag = immune_typhus }
-							has_bubonic_plague = { remove_trait = has_bubonic_plague set_character_flag = immune_bubonic_plague }
-							has_measles = { remove_trait = has_measles set_character_flag = immune_measles }
-							has_small_pox = { remove_trait = has_small_pox set_character_flag = immune_smallpox }
-							has_aztec_disease = { remove_trait = has_aztec_disease set_character_flag = immune_aztec_disease }
-							dancing_plague = { remove_trait = dancing_plague }
-							scurvy = { remove_trait = scurvy }
-							ill = { remove_trait = ill }
-							leper = { remove_trait = leper }
-							lovers_pox = { remove_trait = lovers_pox }
-							sickly = { remove_trait = sickly }
+		# IDK why this check doesn't just selfscope and instead scopes the entire society to give them a 5% roll at becoming a healer every time the event is fired but whatever I guess
+		healing_hut_north = {
+			any_society_member = {
+				random_list = {
+					95 = { }
+					5 = {
+						trigger = {
+							NOT	= { trait = healer }
+							NOT = { is_inaccessible_trigger = yes }
+						}					
+						modifier = {
+							ai = no
+							factor = 0
 						}
-						remove_treatment_modifiers_effect = yes
-						clear_disease_level_effect = yes
-						remove_disease_flags_effect = yes
-						# NOTE: Since the effects are applied to a spouse regardless of whether theyre sick or not, it can also clear a disease while its still in its developing stage, without clearing symptoms this would cause already onset symptoms to linger
-						# Alternatively this could be replaced by instead limiting the scope to only spouses/children that already have a disease
-						remove_symptoms_effect = yes			
-					}
-					any_child = {
-						trigger_switch = {
-							on_trigger = trait
-							flu = { remove_trait = flu }
-							dysentery = { remove_trait = dysentery }
-							gout = { remove_trait = gout }
-							food_poisoning = { remove_trait = food_poisoning }
-							rabies = { remove_trait = rabies }
-							cancer = { remove_trait = cancer }
-							pneumonic = { remove_trait = pneumonic }
-							syphilitic = { remove_trait = syphilitic set_character_flag = immune_syphilis }       
-							has_tuberculosis = { remove_trait = has_tuberculosis set_character_flag = immune_tuberculosis }
-							has_typhoid_fever = { remove_trait = has_typhoid_fever set_character_flag = immune_typhoid_fever }
-							has_typhus = { remove_trait = has_typhus set_character_flag = immune_typhus }
-							has_bubonic_plague = { remove_trait = has_bubonic_plague set_character_flag = immune_bubonic_plague }
-							has_measles = { remove_trait = has_measles set_character_flag = immune_measles }
-							has_small_pox = { remove_trait = has_small_pox set_character_flag = immune_smallpox }
-							has_aztec_disease = { remove_trait = has_aztec_disease set_character_flag = immune_aztec_disease }
-							dancing_plague = { remove_trait = dancing_plague }
-							scurvy = { remove_trait = scurvy }
-							ill = { remove_trait = ill }
-							leper = { remove_trait = leper }
-							lovers_pox = { remove_trait = lovers_pox }
-							sickly = { remove_trait = sickly }
+						modifier = {
+							learning = 8
+							factor = 2
 						}
-						remove_treatment_modifiers_effect = yes
-						clear_disease_level_effect = yes
-						remove_disease_flags_effect = yes
-						# NOTE: Since the effects are applied to a spouse regardless of whether theyre sick or not, it can also clear a disease while its still in its developing stage, without clearing symptoms this would cause already onset symptoms to linger
-						# Alternatively this could be replaced by instead limiting the scope to only spouses/children that already have a disease
-						remove_symptoms_effect = yes					
+						modifier = {
+							learning = 12
+							factor = 2
+						}
+						modifier = {
+							learning = 16
+							factor = 2
+						}
+						modifier = {
+							factor = 3
+							trait = temperate
+						}
+						modifier = {
+							factor = 5
+							trait = kind
+						}
+						modifier = {
+							society_rank = 2
+							factor = 2
+						}
+						modifier = {
+							society_rank = 3
+							factor = 5
+						}
+						modifier = {
+							society_rank = 4
+							factor = 25
+						}
+						add_trait = healer
+						change_learning = 6
+						add_taught_healing = yes
+						# Below was limited to AI = yes, but since above list has a factor 0 for AI = no, we can assume this option is only ever triggered for the AI
+						# TODO: Add event for the player to receive when their spouse/parent develops healing abilities while they are sick
+						any_spouse = {
+							trigger_switch = {
+								on_trigger = trait
+								flu = { remove_trait = flu }
+								dysentery = { remove_trait = dysentery }
+								gout = { remove_trait = gout }
+								food_poisoning = { remove_trait = food_poisoning }
+								rabies = { remove_trait = rabies }
+								cancer = { remove_trait = cancer }
+								pneumonic = { remove_trait = pneumonic }
+								syphilitic = { remove_trait = syphilitic set_character_flag = immune_syphilis }       
+								has_tuberculosis = { remove_trait = has_tuberculosis set_character_flag = immune_tuberculosis }
+								has_typhoid_fever = { remove_trait = has_typhoid_fever set_character_flag = immune_typhoid_fever }
+								has_typhus = { remove_trait = has_typhus set_character_flag = immune_typhus }
+								has_bubonic_plague = { remove_trait = has_bubonic_plague set_character_flag = immune_bubonic_plague }
+								has_measles = { remove_trait = has_measles set_character_flag = immune_measles }
+								has_small_pox = { remove_trait = has_small_pox set_character_flag = immune_smallpox }
+								has_aztec_disease = { remove_trait = has_aztec_disease set_character_flag = immune_aztec_disease }
+								dancing_plague = { remove_trait = dancing_plague }
+								scurvy = { remove_trait = scurvy }
+								ill = { remove_trait = ill }
+								leper = { remove_trait = leper }
+								lovers_pox = { remove_trait = lovers_pox }
+								sickly = { remove_trait = sickly }
+							}
+							remove_treatment_modifiers_effect = yes
+							clear_disease_level_effect = yes
+							remove_disease_flags_effect = yes
+							# NOTE: Since the effects are applied to a spouse regardless of whether theyre sick or not, it can also clear a disease while its still in its developing stage, without clearing symptoms this would cause already onset symptoms to linger
+							# Alternatively this could be replaced by instead limiting the scope to only spouses/children that already have a disease
+							remove_symptoms_effect = yes			
+						}
+						any_child = {
+							trigger_switch = {
+								on_trigger = trait
+								flu = { remove_trait = flu }
+								dysentery = { remove_trait = dysentery }
+								gout = { remove_trait = gout }
+								food_poisoning = { remove_trait = food_poisoning }
+								rabies = { remove_trait = rabies }
+								cancer = { remove_trait = cancer }
+								pneumonic = { remove_trait = pneumonic }
+								syphilitic = { remove_trait = syphilitic set_character_flag = immune_syphilis }       
+								has_tuberculosis = { remove_trait = has_tuberculosis set_character_flag = immune_tuberculosis }
+								has_typhoid_fever = { remove_trait = has_typhoid_fever set_character_flag = immune_typhoid_fever }
+								has_typhus = { remove_trait = has_typhus set_character_flag = immune_typhus }
+								has_bubonic_plague = { remove_trait = has_bubonic_plague set_character_flag = immune_bubonic_plague }
+								has_measles = { remove_trait = has_measles set_character_flag = immune_measles }
+								has_small_pox = { remove_trait = has_small_pox set_character_flag = immune_smallpox }
+								has_aztec_disease = { remove_trait = has_aztec_disease set_character_flag = immune_aztec_disease }
+								dancing_plague = { remove_trait = dancing_plague }
+								scurvy = { remove_trait = scurvy }
+								ill = { remove_trait = ill }
+								leper = { remove_trait = leper }
+								lovers_pox = { remove_trait = lovers_pox }
+								sickly = { remove_trait = sickly }
+							}
+							remove_treatment_modifiers_effect = yes
+							clear_disease_level_effect = yes
+							remove_disease_flags_effect = yes
+							# NOTE: Since the effects are applied to a spouse regardless of whether theyre sick or not, it can also clear a disease while its still in its developing stage, without clearing symptoms this would cause already onset symptoms to linger
+							# Alternatively this could be replaced by instead limiting the scope to only spouses/children that already have a disease
+							remove_symptoms_effect = yes					
+						}
 					}
 				}
 			}
