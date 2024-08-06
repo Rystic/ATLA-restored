@@ -29,6 +29,6 @@ Some blocks of code have special ***tags***, beginning with an exclamation point
 * <span style="color:#FF2D00"># !nevercalled</span> - events that declared, but never called somewhere else
 * <span style="color:#FF2D00"># !nopicture</span> - events, or other entities without a picture
 * <span style="color:#FF2D00"># !depends: <span style="color:#FF8C00">
-\<list of events, decisions, etc\></span></span> - some commented events or other entities, like artifacts, were used <span style="color:#FF8C00">somewhere else</span>, but their usage was also commented, so if you uncomment these entitites, don't forget also to uncomment their usage in the code 
+\<list of events, decisions, etc\></span></span> - some commented events or other entities, like artifacts, were used <span style="color:#FF8C00">somewhere else</span>, but their usage was also commented, so if you uncomment these entitites, don't forget also to uncomment their usage in the code
 * <span style="color:#FF2D00"># !alternate</span> - Mention of an alternate start commands, or properties.
 

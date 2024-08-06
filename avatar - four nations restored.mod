@@ -27,7 +27,7 @@ replace_path="history/characters"
 replace_path="history/wars"
 replace_path="history/technology"
 replace_path="music"
-replace_path="map/statics" 
+replace_path="map/statics"
 replace_path="localisation/customizable_localisation"
 replace_path="gfx/characters"
 
