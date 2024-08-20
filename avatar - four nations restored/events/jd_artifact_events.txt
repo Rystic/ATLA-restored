@@ -8,25 +8,25 @@ namespace = JD
 
 ### WRITE A BOOK ### Start (fired from decision)
 character_event = {
-    id = JD.10060
-    title = EVTTITLE_JD_10060
-    picture = GFX_evt_council
-    border = GFX_event_normal_frame_religion
-    is_triggered_only = yes
+	id = JD.10060
+	title = EVTTITLE_JD_10060
+	picture = GFX_evt_council
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 
-    trigger = {
-    	age = 10
-    }
+	trigger = {
+		age = 10
+	}
 
-    immediate = {
-        if = {
-        	limit = {
-	        	calc_true_if = {
+	immediate = {
+		if = {
+			limit = {
+				calc_true_if = {
 					amount = 4
 					OR = {
-	    				martial = 10
-	    				has_education_martial_trigger = yes
-	    			}
+						martial = 10
+						has_education_martial_trigger = yes
+					}
 					OR = {
 						stewardship = 10
 						has_education_stewardship_trigger = yes
@@ -43,7 +43,7 @@ character_event = {
 						has_education_intrigue_trigger = yes
 					}
 				}
-        	}
+			}
 			set_character_flag = prepare_fallback_event
 			random_list = {
 				10 = {
@@ -59,698 +59,698 @@ character_event = {
 					set_character_flag = hide_learning_this_time
 				}
 			}
-        }
-    }
+		}
+	}
 
-    desc = {
-        text = EVTDESC_JD_10060_A
-        trigger = { trait = lunatic }
-    }
-    desc = {
-        text = EVTDESC_JD_10060_B
-        trigger = { is_smart_trigger = yes }
-    }
-    desc = {
-        text = EVTDESC_JD_10060_C
-        trigger = { is_dumb_trigger = yes }
-    }
-    desc = {
-        text = EVTDESC_JD_10060_D
-        trigger = {
-        	is_smart_trigger = no
-        	is_dumb_trigger = no
-        	NOT = { trait = lunatic }
-        }
-    }
+	desc = {
+		text = EVTDESC_JD_10060_A
+		trigger = { trait = lunatic }
+	}
+	desc = {
+		text = EVTDESC_JD_10060_B
+		trigger = { is_smart_trigger = yes }
+	}
+	desc = {
+		text = EVTDESC_JD_10060_C
+		trigger = { is_dumb_trigger = yes }
+	}
+	desc = {
+		text = EVTDESC_JD_10060_D
+		trigger = {
+			is_smart_trigger = no
+			is_dumb_trigger = no
+			NOT = { trait = lunatic }
+		}
+	}
 
-    option = { #(only available with the right education or stats)
-        name = EVTOPTA_JD_10060 #I will write about battle and strategy
-        custom_tooltip = { text = EVTOPTA_JD_10060_TT }
+	option = { #(only available with the right education or stats)
+		name = EVTOPTA_JD_10060 #I will write about battle and strategy
+		custom_tooltip = { text = EVTOPTA_JD_10060_TT }
 
-        set_character_flag = writing_about_battle
+		set_character_flag = writing_about_battle
 
-        if = {
-        	limit = {
-        		OR = {
-	        		NOT = { martial = 5 }
-	        		is_dumb_trigger = yes
-	        		has_bottom_tier_education_trait_trigger = yes
-        		}
-        	}
+		if = {
+			limit = {
+				OR = {
+					NOT = { martial = 5 }
+					is_dumb_trigger = yes
+					has_bottom_tier_education_trait_trigger = yes
+				}
+			}
 			set_character_flag = decent_book_potential
-        }
-        if = {
-        	limit = {
-	        	OR = {
-	        		martial = 7
+		}
+		if = {
+			limit = {
+				OR = {
+					martial = 7
 					has_medium_education_trait_trigger = yes
-	        	}
-        	}
+				}
+			}
 			set_character_flag = good_book_potential
-        }
-        if = {
-        	limit = {
-        		OR = {
-        			martial = 15
-        			trait = brilliant_strategist
-        			is_smart_trigger = yes
-        		}
-        	}
+		}
+		if = {
+			limit = {
+				OR = {
+					martial = 15
+					trait = brilliant_strategist
+					is_smart_trigger = yes
+				}
+			}
 			set_character_flag = great_book_potential
-        }
+		}
 
-        ai_chance = {
-        	factor = 10
-        	modifier = {
-        		factor = 2
-        		trait = brilliant_strategist
-        	}
-        	modifier = {
-        		factor = 1.5
-        		martial = 12
-        	}
-        }
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				trait = brilliant_strategist
+			}
+			modifier = {
+				factor = 1.5
+				martial = 12
+			}
+		}
 
-        trigger = {
-        	OR = {
-        		has_education_martial_trigger = yes
-        		martial = 10
-        	}
-        	NOT = { has_character_flag = hide_martial_this_time }
-        	NOT = { has_character_flag = wrote_about_battle }
-        }
-    }
+		trigger = {
+			OR = {
+				has_education_martial_trigger = yes
+				martial = 10
+			}
+			NOT = { has_character_flag = hide_martial_this_time }
+			NOT = { has_character_flag = wrote_about_battle }
+		}
+	}
 
-    option = { #(only available with the right education or stats)
-        name = EVTOPTB_JD_10060 #I will write about the value and intricacies of diplomatic relationships.
-        custom_tooltip = { text = EVTOPTB_JD_10060_TT }
+	option = { #(only available with the right education or stats)
+		name = EVTOPTB_JD_10060 #I will write about the value and intricacies of diplomatic relationships.
+		custom_tooltip = { text = EVTOPTB_JD_10060_TT }
 
-        set_character_flag = writing_about_relationships
+		set_character_flag = writing_about_relationships
 
-        if = {
-        	limit = {
-        		OR = {
-	        		NOT = { diplomacy = 5 }
-	        		NOT = { intrigue = 5 }
-	        		is_dumb_trigger = yes
-	        		has_bottom_tier_education_trait_trigger = yes
-        		}
-        	}
+		if = {
+			limit = {
+				OR = {
+					NOT = { diplomacy = 5 }
+					NOT = { intrigue = 5 }
+					is_dumb_trigger = yes
+					has_bottom_tier_education_trait_trigger = yes
+				}
+			}
 			set_character_flag = decent_book_potential
-        }
-        if = {
-        	limit = {
-	        	OR = {
+		}
+		if = {
+			limit = {
+				OR = {
 					diplomacy = 8
-	        		intrigue = 8
+					intrigue = 8
 					has_medium_education_trait_trigger = yes
-	        	}
-        	}
+				}
+			}
 			set_character_flag = good_book_potential
-        }
-        if = {
-        	limit = {
-        		OR = {
-        			diplomacy = 15
-        			intrigue = 15
+		}
+		if = {
+			limit = {
+				OR = {
+					diplomacy = 15
+					intrigue = 15
 					trait = elusive_shadow
 					trait = grey_eminence
-        			is_smart_trigger = yes
-        		}
-        	}
+					is_smart_trigger = yes
+				}
+			}
 			set_character_flag = great_book_potential
-        }
+		}
 
-        ai_chance = {
-        	factor = 10
-        	modifier = {
-        		factor = 2
-        		OR = {
-        			trait = elusive_shadow
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
+				OR = {
+					trait = elusive_shadow
 					trait = grey_eminence
-        		}
-        	}
-        	modifier = {
-        		factor = 1.5
-        		OR = {
-	        		diplomacy = 12
-	        		intrigue = 12
-        		}
-        	}
-        }
+				}
+			}
+			modifier = {
+				factor = 1.5
+				OR = {
+					diplomacy = 12
+					intrigue = 12
+				}
+			}
+		}
 
-        trigger = {
-        	OR = {
-        		has_education_diplomacy_trigger = yes
-        		has_education_intrigue_trigger = yes
-        		diplomacy = 10
-        		intrigue = 10
-        	}
-        	NOT = { has_character_flag = hide_relationships_this_time }
-        	NOT = { has_character_flag = wrote_about_relationships }
-        }
-    }
+		trigger = {
+			OR = {
+				has_education_diplomacy_trigger = yes
+				has_education_intrigue_trigger = yes
+				diplomacy = 10
+				intrigue = 10
+			}
+			NOT = { has_character_flag = hide_relationships_this_time }
+			NOT = { has_character_flag = wrote_about_relationships }
+		}
+	}
 
-    option = { #(only available with the right education or stats)
-        name = EVTOPTC_JD_10060 #I will write about managing a realm...
-        custom_tooltip = { text = EVTOPTC_JD_10060_TT }
+	option = { #(only available with the right education or stats)
+		name = EVTOPTC_JD_10060 #I will write about managing a realm...
+		custom_tooltip = { text = EVTOPTC_JD_10060_TT }
 
-        set_character_flag = writing_about_administration
+		set_character_flag = writing_about_administration
 
-        if = {
-        	limit = {
-        		OR = {
-	        		NOT = { stewardship = 5 }
-	        		is_dumb_trigger = yes
-	        		has_bottom_tier_education_trait_trigger = yes
-        		}
-        	}
+		if = {
+			limit = {
+				OR = {
+					NOT = { stewardship = 5 }
+					is_dumb_trigger = yes
+					has_bottom_tier_education_trait_trigger = yes
+				}
+			}
 			set_character_flag = decent_book_potential
-        }
-        if = {
-        	limit = {
-	        	OR = {
-	        		stewardship = 7
+		}
+		if = {
+			limit = {
+				OR = {
+					stewardship = 7
 					has_medium_education_trait_trigger = yes
-	        	}
-        	}
+				}
+			}
 			set_character_flag = good_book_potential
-        }
-        if = {
-        	limit = {
-        		OR = {
-        			stewardship = 15
+		}
+		if = {
+			limit = {
+				OR = {
+					stewardship = 15
 					trait = midas_touched
-        			is_smart_trigger = yes
-        		}
-        	}
+					is_smart_trigger = yes
+				}
+			}
 			set_character_flag = great_book_potential
-        }
+		}
 
-        ai_chance = {
-        	factor = 10
-        	modifier = {
-        		factor = 0.5
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0.5
 				NOT = { trait = midas_touched } #Basically, to decrease the amount of cookbooks in the world. :D
-        	}
-        }
+			}
+		}
 
-        trigger = {
-        	OR = {
-	        	has_education_stewardship_trigger = yes
-	        	stewardship = 10
-        	}
-        	NOT = { has_character_flag = hide_administration_this_time }
-        	NOT = { has_character_flag = wrote_about_administration }
-        }
-    }
+		trigger = {
+			OR = {
+				has_education_stewardship_trigger = yes
+				stewardship = 10
+			}
+			NOT = { has_character_flag = hide_administration_this_time }
+			NOT = { has_character_flag = wrote_about_administration }
+		}
+	}
 
-    option = { #(only available with the right education or stats, OR a monastic member with not great stats or education)
-        name = EVTOPTD_JD_10060 #I will write about religion...
-        custom_tooltip = { text = EVTOPTD_JD_10060_TT }
+	option = { #(only available with the right education or stats, OR a monastic member with not great stats or education)
+		name = EVTOPTD_JD_10060 #I will write about religion...
+		custom_tooltip = { text = EVTOPTD_JD_10060_TT }
 
 		set_character_flag = writing_about_religion
 
 		if = {
-        	limit = {
-        		OR = {
-	        		NOT = { learning = 5 }
-	        		is_dumb_trigger = yes
-	        		has_bottom_tier_education_trait_trigger = yes
-        		}
-        	}
+			limit = {
+				OR = {
+					NOT = { learning = 5 }
+					is_dumb_trigger = yes
+					has_bottom_tier_education_trait_trigger = yes
+				}
+			}
 			set_character_flag = decent_book_potential
-        }
-        if = {
-        	limit = {
-	        	OR = {
-	        		learning = 7
+		}
+		if = {
+			limit = {
+				OR = {
+					learning = 7
 					has_medium_education_trait_trigger = yes
-	        	}
-        	}
+				}
+			}
 			set_character_flag = good_book_potential
-        }
-        if = {
-        	limit = {
-        		OR = {
-        			learning = 15
-        			trait = mastermind_theologian
-        			is_smart_trigger = yes
-        		}
-        	}
+		}
+		if = {
+			limit = {
+				OR = {
+					learning = 15
+					trait = mastermind_theologian
+					is_smart_trigger = yes
+				}
+			}
 			set_character_flag = great_book_potential
-        }
+		}
 
-        ai_chance = {
-        	factor = 10
-        	modifier = {
-        		factor = 2
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 2
 				trait = mastermind_theologian
-        	}
-        	modifier = {
-        		factor = 1.5
+			}
+			modifier = {
+				factor = 1.5
 				is_monastic_member_trigger = yes
-        	}
-        	modifier = {
-        		factor = 1.5
-        		learning = 12
-        	}
-        }
+			}
+			modifier = {
+				factor = 1.5
+				learning = 12
+			}
+		}
 
-        trigger = {
-        	OR = {
-	        	has_education_learning_trigger = yes
-	        	learning = 10
-        		is_monastic_member_trigger = yes
-        	}
-        	NOT = { has_character_flag = hide_learning_this_time }
-        	NOT = { has_character_flag = wrote_about_religion }
-        }
-    }
+		trigger = {
+			OR = {
+				has_education_learning_trigger = yes
+				learning = 10
+				is_monastic_member_trigger = yes
+			}
+			NOT = { has_character_flag = hide_learning_this_time }
+			NOT = { has_character_flag = wrote_about_religion }
+		}
+	}
 
-    option = { #(always available)
-        name = EVTOPTH_JD_10060 #I shall chronicle my family history!
-        custom_tooltip = { text = EVTOPTH_JD_10060_TT }
+	option = { #(always available)
+		name = EVTOPTH_JD_10060 #I shall chronicle my family history!
+		custom_tooltip = { text = EVTOPTH_JD_10060_TT }
 
-        if = {
-        	limit = {
-        		OR = {
-        			calc_true_if = {
+		if = {
+			limit = {
+				OR = {
+					calc_true_if = {
 						amount = 3
-		        		NOT = { diplomacy = 8 }
-	        			NOT = { martial = 8 }
-	        			NOT = { intrigue = 8 }
-	        			NOT = { stewardship = 8 }
-	        			NOT = { learning = 8 }
-        			}
-	        		is_dumb_trigger = yes
-	        		has_bottom_tier_education_trait_trigger = yes
-        		}
-        	}
+						NOT = { diplomacy = 8 }
+						NOT = { martial = 8 }
+						NOT = { intrigue = 8 }
+						NOT = { stewardship = 8 }
+						NOT = { learning = 8 }
+					}
+					is_dumb_trigger = yes
+					has_bottom_tier_education_trait_trigger = yes
+				}
+			}
 			set_character_flag = decent_book_potential
-        }
-        if = {
-        	limit = {
-	        	OR = {
-	        		calc_true_if = {
+		}
+		if = {
+			limit = {
+				OR = {
+					calc_true_if = {
 						amount = 3
-		        		diplomacy = 12
-	        			martial = 12
-	        			intrigue = 12
-	        			stewardship = 12
-	        			learning = 12
-	        		}
+						diplomacy = 12
+						martial = 12
+						intrigue = 12
+						stewardship = 12
+						learning = 12
+					}
 					has_medium_education_trait_trigger = yes
-	        	}
-        	}
+				}
+			}
 			set_character_flag = good_book_potential
-        }
-        if = {
-        	limit = {
-        		OR = {
-        			calc_true_if = {
+		}
+		if = {
+			limit = {
+				OR = {
+					calc_true_if = {
 						amount = 3
-        				diplomacy = 20
-	        			martial = 20
-	        			intrigue = 20
-	        			stewardship = 20
-	        			learning = 20
-	        		}
-        			is_smart_trigger = yes
+						diplomacy = 20
+						martial = 20
+						intrigue = 20
+						stewardship = 20
+						learning = 20
+					}
+					is_smart_trigger = yes
 					has_top_tier_education_trait_trigger = yes
-        		}
-        	}
+				}
+			}
 			set_character_flag = great_book_potential
-        }
+		}
 
-        set_character_flag = writing_about_dynasty
+		set_character_flag = writing_about_dynasty
 
-        ai_chance = {
-        	factor = 10
-        }
+		ai_chance = {
+			factor = 10
+		}
 
-        trigger = {
-        	NOT = { has_character_flag = wrote_about_dynasty }
-        }
-    }
+		trigger = {
+			NOT = { has_character_flag = wrote_about_dynasty }
+		}
+	}
 
-    after = {
-	    if = {
-	    	limit = {
-	    		ai = no
-	    	}
-	    	add_character_modifier = {
+	after = {
+		if = {
+			limit = {
+				ai = no
+			}
+			add_character_modifier = {
 				name = writing_a_book
 				duration = -1
 			}
-	    }
-    	hidden_effect = {
-    		random_list = {
-    			10 = {
-    				character_event = { id = JD.10061 days = 600 random = 1095 } #invest more time/money/hire scribes
-    			}
-    			10 = {
-    				character_event = { id = JD.10062 days = 600 random = 1095 } #change direction/unhappy with work
-    			}
-    			10 = {
-    				character_event = { id = JD.10063 days = 600  random = 1095 } #deal with writer's block
-    			}
-    			10 = {
-    				character_event = { id = JD.10064 days = 600  random = 1095 } #stay up all night studying or not
-    			}
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					character_event = { id = JD.10061 days = 600 random = 1095 } #invest more time/money/hire scribes
+				}
+				10 = {
+					character_event = { id = JD.10062 days = 600 random = 1095 } #change direction/unhappy with work
+				}
+				10 = {
+					character_event = { id = JD.10063 days = 600  random = 1095 } #deal with writer's block
+				}
+				10 = {
+					character_event = { id = JD.10064 days = 600  random = 1095 } #stay up all night studying or not
+				}
 				
 				# testing values....
-#    			10 = {
-#    				character_event = { id = JD.10061 days = 5 random = 5 } #invest more time/money/hire scribes
-#    			}
-#    			10 = {
-#    				character_event = { id = JD.10062 days = 5 random = 5 } #change direction/unhappy with work
-#    			}
-#    			10 = {
-#    				character_event = { id = JD.10063 days = 5  random = 5 } #deal with writer's block
-#    			}
-#    			10 = {
-#    				character_event = { id = JD.10064 days = 5  random = 5 } #stay up all night studying or not
-#    			}
-    		}
-    	}
-    }
+#				10 = {
+#					character_event = { id = JD.10061 days = 5 random = 5 } #invest more time/money/hire scribes
+#				}
+#				10 = {
+#					character_event = { id = JD.10062 days = 5 random = 5 } #change direction/unhappy with work
+#				}
+#				10 = {
+#					character_event = { id = JD.10063 days = 5  random = 5 } #deal with writer's block
+#				}
+#				10 = {
+#					character_event = { id = JD.10064 days = 5  random = 5 } #stay up all night studying or not
+#				}
+			}
+		}
+	}
 }
 
 
 character_event = { #Progress event type 1!  #invest more time/money/hire scribes
-    id = JD.10061
-    picture = GFX_evt_monk
-    title = EVTTITLE_JD_10061
-    border = GFX_event_normal_frame_religion
-    is_triggered_only = yes
+	id = JD.10061
+	picture = GFX_evt_monk
+	title = EVTTITLE_JD_10061
+	border = GFX_event_normal_frame_religion
+	is_triggered_only = yes
 
-    immediate = {
-    	job_chancellor = { #For GetChancellorName
-    		save_event_target_as = advisor_target
-    	}
-    }
+	immediate = {
+		job_chancellor = { #For GetChancellorName
+			save_event_target_as = advisor_target
+		}
+	}
 
-    desc = {
-    	text = EVTDESC_JD_10061_A
-    	trigger = {
-    		job_chancellor = { is_alive = yes }
-    	}
-    }
-    desc = {
-    	text = EVTDESC_JD_10061_B
-    	trigger = {
-    		NOT = { job_chancellor = { is_alive = yes } }
-    	}
-    }
+	desc = {
+		text = EVTDESC_JD_10061_A
+		trigger = {
+			job_chancellor = { is_alive = yes }
+		}
+	}
+	desc = {
+		text = EVTDESC_JD_10061_B
+		trigger = {
+			NOT = { job_chancellor = { is_alive = yes } }
+		}
+	}
 
-    option = { # I want to invest in more into scribes and ink.
-        name = EVTOPTA_JD_10061
-        #custom_tooltip = { text = EVTOPTA_JD_10061_TT }
-        scaled_wealth = -0.2
-    }
-    option = { # Maybe I can help..?
-        name = EVTOPTB_JD_10061
+	option = { # I want to invest in more into scribes and ink.
+		name = EVTOPTA_JD_10061
+		#custom_tooltip = { text = EVTOPTA_JD_10061_TT }
+		scaled_wealth = -0.2
+	}
+	option = { # Maybe I can help..?
+		name = EVTOPTB_JD_10061
 
-        tooltip_info = yes
+		tooltip_info = yes
 
-        if = { #if a learned character, things might go well, regardless!
-        	limit = { NOT = { is_dumb_trigger = yes } }
-	        trigger_switch = {
-	        	on_trigger = trait
-	        	erudite = { custom_tooltip = { text = available_because_trait_erudite_tt } }
-	        	scholar = { custom_tooltip =  { text = available_because_trait_scholar_tt } }
-	        	mastermind_theologian = { custom_tooltip =  { text = available_because_trait_mastermind_theologian_tt } }
-	        	lunatic = { custom_tooltip =  { text = available_because_trait_lunatic_tt } }
-	        }
-        	custom_tooltip = { text = higher_quality_of_book_TT }
-	        set_higher_quality_of_book_flags_effect = yes
-        }
+		if = { #if a learned character, things might go well, regardless!
+			limit = { NOT = { is_dumb_trigger = yes } }
+			trigger_switch = {
+				on_trigger = trait
+				erudite = { custom_tooltip = { text = available_because_trait_erudite_tt } }
+				scholar = { custom_tooltip =  { text = available_because_trait_scholar_tt } }
+				mastermind_theologian = { custom_tooltip =  { text = available_because_trait_mastermind_theologian_tt } }
+				lunatic = { custom_tooltip =  { text = available_because_trait_lunatic_tt } }
+			}
+			custom_tooltip = { text = higher_quality_of_book_TT }
+			set_higher_quality_of_book_flags_effect = yes
+		}
 
-        if = { limit = { is_dumb_trigger = yes } #if a dumb character, you might learn something, but the work might suffer...
-        	custom_tooltip = { text = available_because_is_dumb_tt }
-        	random = {
+		if = { limit = { is_dumb_trigger = yes } #if a dumb character, you might learn something, but the work might suffer...
+			custom_tooltip = { text = available_because_is_dumb_tt }
+			random = {
 				chance = 50
 				change_learning = 1
 			}
 			custom_tooltip = { text = lower_quality_of_book_TT }
-        	set_lower_quality_of_book_flags_effect = yes
-        }
+			set_lower_quality_of_book_flags_effect = yes
+		}
 
-        trigger = {
-        	OR = {
-        		trait = erudite
-        		trait = scholar
-        		trait = mastermind_theologian
-        		trait = lunatic
-        		is_dumb_trigger = yes
-        	}
-        }
-    }
-    option = { # Things are going great!
-        name = EVTOPTC_JD_10061
-        custom_tooltip = { text = lower_quality_of_book_TT }
-        set_lower_quality_of_book_flags_effect = yes
-    }
-    after = {
-    	hidden_effect = {
-    		send_final_book_outcome_event_effect = yes
-    	}
-    }
+		trigger = {
+			OR = {
+				trait = erudite
+				trait = scholar
+				trait = mastermind_theologian
+				trait = lunatic
+				is_dumb_trigger = yes
+			}
+		}
+	}
+	option = { # Things are going great!
+		name = EVTOPTC_JD_10061
+		custom_tooltip = { text = lower_quality_of_book_TT }
+		set_lower_quality_of_book_flags_effect = yes
+	}
+	after = {
+		hidden_effect = {
+			send_final_book_outcome_event_effect = yes
+		}
+	}
 }
 
 character_event = { #Progress event type 2! #Unhappy with work (gain stressed or not)
-    id = JD.10062
-    title = EVTTITLE_JD_10062
-    desc = EVTDESC_JD_10062
-    picture = GFX_evt_library
-    border = GFX_event_normal_frame_religion
+	id = JD.10062
+	title = EVTTITLE_JD_10062
+	desc = EVTDESC_JD_10062
+	picture = GFX_evt_library
+	border = GFX_event_normal_frame_religion
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    immediate = {
-    	random_courtier = { #fallbacks in case no council member... (except lunatics, who just don't care)
-    		save_event_target_as = friendly_advice_target
-    		if = {
-    			limit = { trait = lunatic }
-    			break = yes
-    		}
-    	}
-    	random_courtier = { #better fallbacks in case no council member...
-    		limit = { NOT = { trait = incapable } is_inaccessible_trigger = no }
-    		save_event_target_as = friendly_advice_target
-    	}
-    	random_courtier = { #grown-up fallback in case no council member...
-    		limit = { is_adult = yes NOT = { trait = incapable } is_inaccessible_trigger = no }
-    		save_event_target_as = friendly_advice_target
-    	}
-    	trigger_switch = {
-    		on_trigger = has_character_flag
-    		writing_about_battle = {
-    			if = {
-    				limit = { job_marshal = { is_alive = yes } }
-    				job_marshal = {
-    					save_event_target_as = friendly_advice_target
-    				}
-    			}
-    		}
-    		writing_about_relationships = {
-    			if = {
-    				limit = { job_chancellor = { is_alive = yes } }
-    				job_chancellor = {
-    					save_event_target_as = friendly_advice_target
-    				}
-    			}
-    			if = {
-    				limit = { job_spymaster = { is_alive = yes } }
-    				job_spymaster = {
-    					save_event_target_as = friendly_advice_target
-    				}
-    			}
-    		}
-    		writing_about_administration = {
-    			if = {
-    				limit = { job_treasurer = { is_alive = yes } }
-    				job_treasurer = {
-    					save_event_target_as = friendly_advice_target
-    				}
-    			}
-    		}
-    		writing_about_religion = {
-    			if = {
-    				limit = { job_spiritual = { is_alive = yes } }
-    				job_spiritual = {
-    					save_event_target_as = friendly_advice_target
-    				}
-    			}
-    		}
-    		writing_about_dynasty = {
-    			if = {
-    				limit = { job_chancellor = { is_alive = yes } }
-    				job_chancellor = {
-    					save_event_target_as = friendly_advice_target
-    				}
-    			}
-    			if = {
-    				limit = { is_married = yes }
-    				random_spouse = { save_event_target_as = friendly_advice_target }
-    			}
-    			if = {
-    				limit = { has_lover = yes }
-    				random_lover = { save_event_target_as = friendly_advice_target }
-    			}
-    		}
-    	}
-    }
+	immediate = {
+		random_courtier = { #fallbacks in case no council member... (except lunatics, who just don't care)
+			save_event_target_as = friendly_advice_target
+			if = {
+				limit = { trait = lunatic }
+				break = yes
+			}
+		}
+		random_courtier = { #better fallbacks in case no council member...
+			limit = { NOT = { trait = incapable } is_inaccessible_trigger = no }
+			save_event_target_as = friendly_advice_target
+		}
+		random_courtier = { #grown-up fallback in case no council member...
+			limit = { is_adult = yes NOT = { trait = incapable } is_inaccessible_trigger = no }
+			save_event_target_as = friendly_advice_target
+		}
+		trigger_switch = {
+			on_trigger = has_character_flag
+			writing_about_battle = {
+				if = {
+					limit = { job_marshal = { is_alive = yes } }
+					job_marshal = {
+						save_event_target_as = friendly_advice_target
+					}
+				}
+			}
+			writing_about_relationships = {
+				if = {
+					limit = { job_chancellor = { is_alive = yes } }
+					job_chancellor = {
+						save_event_target_as = friendly_advice_target
+					}
+				}
+				if = {
+					limit = { job_spymaster = { is_alive = yes } }
+					job_spymaster = {
+						save_event_target_as = friendly_advice_target
+					}
+				}
+			}
+			writing_about_administration = {
+				if = {
+					limit = { job_treasurer = { is_alive = yes } }
+					job_treasurer = {
+						save_event_target_as = friendly_advice_target
+					}
+				}
+			}
+			writing_about_religion = {
+				if = {
+					limit = { job_spiritual = { is_alive = yes } }
+					job_spiritual = {
+						save_event_target_as = friendly_advice_target
+					}
+				}
+			}
+			writing_about_dynasty = {
+				if = {
+					limit = { job_chancellor = { is_alive = yes } }
+					job_chancellor = {
+						save_event_target_as = friendly_advice_target
+					}
+				}
+				if = {
+					limit = { is_married = yes }
+					random_spouse = { save_event_target_as = friendly_advice_target }
+				}
+				if = {
+					limit = { has_lover = yes }
+					random_lover = { save_event_target_as = friendly_advice_target }
+				}
+			}
+		}
+	}
 
-    option = { # I'll ask random_target for advice!
-        name = EVTOPTA_JD_10062
+	option = { # I'll ask random_target for advice!
+		name = EVTOPTA_JD_10062
 
-        trigger_switch = {
-        	on_trigger = has_character_flag
-        	writing_about_battle = {
-        		event_target:friendly_advice_target = {
-        			show_scope_change = no
-        			if = {
-        				limit = {
-        					attribute_diff = { character = ROOT attribute = martial value = 3 }
-        				}
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = higher_quality_of_book_TT }
-    	    				set_higher_quality_of_book_flags_effect = yes
-    	    			}
-        			}
-        			else = {
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = lower_quality_of_book_TT }
-    	    				set_lower_quality_of_book_flags_effect = yes
-    	    			}
-        			}
-        		}
-        	}
-        	writing_about_relationships = {
-        		event_target:friendly_advice_target = {
-        			show_scope_change = no
-        			if = {
-        				limit = {
-        					has_job_title = job_chancellor
-       						attribute_diff = { character = ROOT attribute = diplomacy value = 3 }
-        				}
-	        			ROOT = {
-	        				show_scope_change = no
-	        				custom_tooltip = { text = higher_quality_of_book_TT }
-	        				set_higher_quality_of_book_flags_effect = yes
-        				}
-        			}
-        			if = {
-        				limit = {
-        					has_job_title = job_spymaster
-       						attribute_diff = { character = ROOT attribute = intrigue value = 3 }
-        				}
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = higher_quality_of_book_TT }
-	        				set_higher_quality_of_book_flags_effect = yes
-	        			}
-        			}
-        			else = {
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = lower_quality_of_book_TT }
-	        				set_lower_quality_of_book_flags_effect = yes
-	        			}
-        			}
-        		}
-        	}
-        	writing_about_administration = {
-        		event_target:friendly_advice_target = {
-        			show_scope_change = no
-        			if = {
-        				limit = {
-        					attribute_diff = { character = ROOT attribute = stewardship value = 3 }
-        				}
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = higher_quality_of_book_TT }
-    	    				set_higher_quality_of_book_flags_effect = yes
-    	    			}
-        			}
-        			else = {
-        				ROOT = {
-        					show_scope_change = no
-        					custom_tooltip = { text = lower_quality_of_book_TT }
-        					set_lower_quality_of_book_flags_effect = yes
-        				}
-        			}
-        		}
-        	}
-        	writing_about_religion = {
-        		event_target:friendly_advice_target = {
-        			show_scope_change = no
-        			if = {
-        				limit = {
-        					attribute_diff = { character = ROOT attribute = learning value = 3 }
-        				}
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = higher_quality_of_book_TT }
-	        				set_higher_quality_of_book_flags_effect = yes
-	        			}
-        			}
-        			else = {
-        				ROOT = {
-        					show_scope_change = no
-        					custom_tooltip = { text = lower_quality_of_book_TT }
-        					set_lower_quality_of_book_flags_effect = yes
-        				}
-        			}
-        		}
-        	}
-        	writing_about_dynasty = {
-        		event_target:friendly_advice_target = {
-        			show_scope_change = no
-        			if = {
-        				limit = {
-        					OR = {
-        						attribute_diff = { character = ROOT attribute = diplomacy value = 4 }
+		trigger_switch = {
+			on_trigger = has_character_flag
+			writing_about_battle = {
+				event_target:friendly_advice_target = {
+					show_scope_change = no
+					if = {
+						limit = {
+							attribute_diff = { character = ROOT attribute = martial value = 3 }
+						}
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = higher_quality_of_book_TT }
+							set_higher_quality_of_book_flags_effect = yes
+						}
+					}
+					else = {
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = lower_quality_of_book_TT }
+							set_lower_quality_of_book_flags_effect = yes
+						}
+					}
+				}
+			}
+			writing_about_relationships = {
+				event_target:friendly_advice_target = {
+					show_scope_change = no
+					if = {
+						limit = {
+							has_job_title = job_chancellor
+	   						attribute_diff = { character = ROOT attribute = diplomacy value = 3 }
+						}
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = higher_quality_of_book_TT }
+							set_higher_quality_of_book_flags_effect = yes
+						}
+					}
+					if = {
+						limit = {
+							has_job_title = job_spymaster
+	   						attribute_diff = { character = ROOT attribute = intrigue value = 3 }
+						}
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = higher_quality_of_book_TT }
+							set_higher_quality_of_book_flags_effect = yes
+						}
+					}
+					else = {
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = lower_quality_of_book_TT }
+							set_lower_quality_of_book_flags_effect = yes
+						}
+					}
+				}
+			}
+			writing_about_administration = {
+				event_target:friendly_advice_target = {
+					show_scope_change = no
+					if = {
+						limit = {
+							attribute_diff = { character = ROOT attribute = stewardship value = 3 }
+						}
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = higher_quality_of_book_TT }
+							set_higher_quality_of_book_flags_effect = yes
+						}
+					}
+					else = {
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = lower_quality_of_book_TT }
+							set_lower_quality_of_book_flags_effect = yes
+						}
+					}
+				}
+			}
+			writing_about_religion = {
+				event_target:friendly_advice_target = {
+					show_scope_change = no
+					if = {
+						limit = {
+							attribute_diff = { character = ROOT attribute = learning value = 3 }
+						}
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = higher_quality_of_book_TT }
+							set_higher_quality_of_book_flags_effect = yes
+						}
+					}
+					else = {
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = lower_quality_of_book_TT }
+							set_lower_quality_of_book_flags_effect = yes
+						}
+					}
+				}
+			}
+			writing_about_dynasty = {
+				event_target:friendly_advice_target = {
+					show_scope_change = no
+					if = {
+						limit = {
+							OR = {
+								attribute_diff = { character = ROOT attribute = diplomacy value = 4 }
 								attribute_diff = { character = ROOT attribute = learning value = 4 }
-        					}
-        				}
-        				ROOT = {
-        					show_scope_change = no
-        					custom_tooltip = { text = higher_quality_of_book_TT }
-        					set_higher_quality_of_book_flags_effect = yes
-        				}
-        			}
-        			else = {
-        				ROOT = {
-        					show_scope_change = no
-	        				custom_tooltip = { text = lower_quality_of_book_TT }
-	        				set_lower_quality_of_book_flags_effect = yes
-        				}
-        			}
-        		}
-        	}
-        }
+							}
+						}
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = higher_quality_of_book_TT }
+							set_higher_quality_of_book_flags_effect = yes
+						}
+					}
+					else = {
+						ROOT = {
+							show_scope_change = no
+							custom_tooltip = { text = lower_quality_of_book_TT }
+							set_lower_quality_of_book_flags_effect = yes
+						}
+					}
+				}
+			}
+		}
 
-        #Add opinion boost with target.
-        reverse_opinion = {
+		#Add opinion boost with target.
+		reverse_opinion = {
 			who = event_target:friendly_advice_target
 			modifier = opinion_grateful
 			years = 10
 		}
-    }
-    option = { # I'd rather not involve anyone else.
-        name = EVTOPTB_JD_10062
-        add_trait = stressed
-    }
-    after = {
-    	hidden_effect = {
-    		send_final_book_outcome_event_effect = yes
-    	}
-    }
+	}
+	option = { # I'd rather not involve anyone else.
+		name = EVTOPTB_JD_10062
+		add_trait = stressed
+	}
+	after = {
+		hidden_effect = {
+			send_final_book_outcome_event_effect = yes
+		}
+	}
 }
 
 
