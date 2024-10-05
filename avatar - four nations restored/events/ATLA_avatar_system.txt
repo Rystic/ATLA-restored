@@ -1,24 +1,4143 @@
-# new avatar engine - general avatar content
+# newerer avatar engine by LegateElizabeth - because nobody has gotten this right
 # -------------------------------
-# Events to control the system of playing as an avatar
-# -------------------------------
-# written by unlomtrois
-namespace = new_avatar_system
-# pops up at the startup if the player picked an avatar
-# to make loading the unlanded avatar possible
+namespace = NAE
+
 character_event = {
-	id = new_avatar_system.1
-	is_triggered_only = yes
+	id = NAE.001
 	hide_window = yes
-	ai = no
-	trigger = {
-		is_avatar_trigger = yes
-	}
+	
+	is_triggered_only = yes #Fired on_death
+	
+	has_character_flag = is_avatar
+	
+	trigger = { NOT = { has_global_flag = avatar_cycle_broken } } #Set if someone actually kills the Avatar in the Avatar State ##TODO: Adjust when duelling updated
+	
 	immediate = {
-		set_global_flag = playable_avatar
-		find_avatar_effect = yes
-		event_target:avatar = {
-			set_character_flag = playable_avatar
+		set_global_flag = avatar_interregnum
+		export_to_variable = {
+			which = avatar_death_year
+			value = year
+		}
+		any_player = { narrative_event = { id = NAE.005 days = 7 } } #Avatar dead notification event
+		killer = { narrative_event = { id = NAE.008 days = 1 } }
+		any_friend = {
+			limit = { trait = team_avatar }
+			add_trait = former_team_avatar
+		}
+		any_courtier = {
+			limit = { trait = team_avatar }
+			add_trait = former_team_avatar
+		}
+		any_close_relative = { character_event = { id = NAE.331 days = 10 } }
+		
+		trigger_switch = {
+			on_trigger = has_global_flag
+			avatar_water = { clr_global_flag = avatar_water set_global_flag = avatar_earth }
+			avatar_earth = { clr_global_flag = avatar_earth set_global_flag = avatar_fire }
+			avatar_fire = { clr_global_flag = avatar_fire set_global_flag = avatar_air }
+			avatar_air = { clr_global_flag = avatar_air set_global_flag = avatar_water }
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = CANON_AVATARS
+				OR = {
+					has_character_flag = is_kyoshi
+					has_character_flag = is_roku
+					has_character_flag = is_aang
+				}
+			}
+			trigger_switch = { #Spawn correct canon avatar depending on who died in the right place
+				on_trigger = has_character_flag
+				is_kyoshi = { c_fire_palace = { owner = { character_event = { id = NAE.010 years = 3 } } } }
+				is_roku = { c_southern_air_temple = { owner = { character_event = { id = NAE.012 years = 3 } } } }
+				is_aang = { c_southern_water_tribe = { owner = { character_event = { id = NAE.014 days = 14 } } } }
+			}
+		}
+		else = {
+			random_player = { character_event = { id = NAE.004 years = 16 } } #Avatar is born to peasantry
+		}
+		
+		random_player = { character_event = { id = NAE.600 years = 18 } } #Ping event to set up reincarnation events
+	}
+}
+
+character_event = { #Avatar nobility check
+	id = NAE.002
+	hide_window = yes
+
+	has_global_flag = avatar_interregnum
+	
+	is_triggered_only = yes #Fired (quite rarely) on_adolescence
+
+	trigger = {
+		year_of_birth == avatar_death_year
+		is_top_tier_bender_trigger = no
+		has_negative_congenital_trigger = no
+		trigger_switch = {
+			on_trigger = has_global_flag
+			avatar_water = { trait = waterbender }
+			avatar_earth = { trait = earthbender }
+			avatar_fire = { trait = firebender }
+			avatar_air = { trait = airbender }
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		
+		modifier = { #Far fewer benders in the general populace
+			factor = 10
+			has_global_flag = avatar_earth
+		}
+		
+		modifier = {
+			factor = 0.4
+			trigger_switch = {
+				on_trigger = has_global_flag
+				avatar_water = { NOT = { culture_group = water_tribe_cultures } }
+				avatar_earth = { NOT = { culture_group = earth_kingdom_cultures } }
+				avatar_fire = { NOT = { culture_group = fire_nation_cultures } }
+				avatar_air = { NOT = { culture_group = air_nomad_cultures } }
+			}
+		}
+		
+		modifier = {
+			factor = 0.4
+			trigger_switch = {
+				on_trigger = has_global_flag
+				avatar_water = { NOT = { religion_group = water_religions } }
+				avatar_earth = { NOT = { religion_group = earth_religions } }
+				avatar_fire = { NOT = { religion_group = fire_religions } }
+				avatar_air = { NOT = { religion_group = air_religions } }
+			}
+		}
+		
+		modifier = {
+			factor = 2
+			culture = republic_city
+		}
+		modifier = {
+			factor = 1.5
+			culture = pirate_culture
+		}
+	}
+
+	immediate = {
+		set_character_flag = is_avatar
+		set_character_flag = no_court_invites #The Avatar will refuse invites for the same reasons they refuse marriage, they have too much agency
+		add_trait = unrevealedavatar
+		upgrade_bending_effect = yes
+		change_learning = 2
+		save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+		clr_global_flag = avatar_interregnum
+	}
+}
+
+character_event = { #Noble child avatar becomes adult
+	id = NAE.003
+	hide_window = yes
+	
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired on adulthood
+	
+	trigger = { #Canon avatars have their own events
+		NOR = {
+			has_character_flag = is_roku
+			has_character_flag = is_aang
+			has_character_flag = is_korra
+			trait = avatar #Can be revealed when younger via crisis event!
+		}
+	}
+	
+	immediate = {
+		remove_trait = unrevealedavatar
+		add_trait = avatar
+		trigger_switch = {
+			on_trigger = trait
+			firebender = { add_trait = avatar_firebender }
+			airbender = { add_trait = avatar_airbender }
+			waterbender = { add_trait = avatar_waterbender }
+			earthbender = { add_trait = avatar_earthbender }
+		}
+		narrative_event = { id = NAE.006 } #Avatar reveal event
+	}
+}
+
+character_event = { #Spawn peasant avatar - always prefer their own religion/culture, then prefer cultures with multiple kinds of benders, then pick at random
+	id = NAE.004
+	hide_window = yes
+	
+	has_global_flag = avatar_interregnum
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		clr_global_flag = avatar_interregnum
+		
+		trigger_switch = {
+			on_trigger = has_global_flag
+			avatar_water = {
+				random_province = {
+					preferred_limit = {
+						AND = {
+							culture = water_tribe_cultures
+							religion = water_religions
+						}
+					}
+					preferred_limit = { culture_group = water_tribe_cultures }
+					preferred_limit = { religion_group = water_religions }
+					preferred_limit = { culture = republic_city	}
+					preferred_limit = { culture = pirate_culture }
+					create_character = {
+						age = 16
+						female = 50 #50% chance of being a girl
+						attributes = {
+							diplomacy = 8
+							martial = 6
+							stewardship = 6
+							intrigue = 8
+							learning = 10
+						}
+						dynasty = actually_culture
+						random_traits = yes
+						add_trait = avatar
+						add_trait = avatar_waterbender
+					}
+				}
+			}
+			avatar_earth = {
+				random_province = {
+					preferred_limit = {
+						AND = {
+							culture = earth_kingdom_cultures
+							religion = earth_religions
+						}
+					}
+					preferred_limit = { culture_group = earth_kingdom_cultures }
+					preferred_limit = { religion_group = earth_religions }
+					preferred_limit = { culture = republic_city }
+					preferred_limit = { culture = pirate_culture }
+					create_character = {
+						age = 16
+						female = 50 #50% chance of being a girl
+						attributes = {
+							diplomacy = 6
+							martial = 6
+							stewardship = 10
+							intrigue = 6
+							learning = 10
+						}
+						dynasty = actually_culture
+						random_traits = yes
+						add_trait = avatar
+						add_trait = avatar_earthbender
+					}
+				}
+			}
+			avatar_fire = {
+				random_province = {
+					preferred_limit = {
+						AND = {
+							culture = fire_nation_cultures
+							religion = fire_religions
+						}
+					}
+					preferred_limit = { culture_group = fire_nation_cultures }
+					preferred_limit = { religion_group = fire_religions }
+					preferred_limit = { culture = republic_city }
+					preferred_limit = { culture = pirate_culture }
+					create_character = {
+						age = 16
+						female = 50 #50% chance of being a girl
+						attributes = {
+							diplomacy = 6
+							martial = 10
+							stewardship = 6
+							intrigue = 6
+							learning = 10
+						}
+						dynasty = actually_culture
+						random_traits = yes
+						add_trait = avatar
+						add_trait = avatar_firebender
+					}
+				}
+			}
+			avatar_air = {
+				random_province = {
+					preferred_limit = {
+						AND = {
+							culture = air_nomad_cultures
+							religion = air_religions
+						}
+					}
+					preferred_limit = { culture_group = air_nomad_cultures }
+					preferred_limit = { religion_group = air_religions }
+					if = {
+						limit = {
+							OR = {
+								culture = eastern_air_culture
+								culture = western_air_culture
+							}
+						}
+						create_character = {
+							age = 16
+							female = yes
+							attributes = {
+								diplomacy = 6
+								martial = 10
+								stewardship = 6
+								intrigue = 6
+								learning = 10
+							}
+							dynasty = actually_culture
+							random_traits = yes
+							add_trait = avatar
+							add_trait = avatar_airbender
+						}
+					}
+					else_if = {
+						limit = {
+							OR = {
+								culture = southern_air_culture
+								culture = northern_air_culture
+							}
+						}
+						create_character = {
+							age = 16
+							female = no
+							attributes = {
+								diplomacy = 6
+								martial = 10
+								stewardship = 6
+								intrigue = 6
+								learning = 10
+							}
+							dynasty = actually_culture
+							random_traits = yes
+							add_trait = avatar
+							add_trait = avatar_airbender
+						}
+					}
+					else = {
+						create_character = {
+							age = 16
+							female = 50
+							attributes = {
+								diplomacy = 6
+								martial = 4
+								stewardship = 6
+								intrigue = 6
+								learning = 15
+							}
+							dynasty = actually_culture
+							random_traits = yes
+							add_trait = avatar
+							add_trait = avatar_airbender
+						}
+					}
+				}
+			}
+		}
+		new_character = {
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			remove_all_negative_congenital_traits_effect = yes
+			remove_lifestyle_trait_effect = yes
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			narrative_event = { id = NAE.006 days = 3 }
+
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							trait = avatar_waterbender
+							culture_group = water_tribe_cultures
+							religion_group = water_religions
+						}
+						AND = {
+							trait = avatar_earthbender
+							culture_group = earth_kingdom_cultures
+							religion_group = earth_religions
+						}
+						AND = {
+							trait = avatar_firebender
+							culture_group = fire_nation_cultures
+							religion_group = fire_religions
+						}
+						AND = {
+							trait = avatar_airbender
+							culture_group = air_nomad_cultures
+							religion_group = air_religions
+						}
+					}
+				}
+				add_trait = powerful_bender
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = {
+							trait = avatar_waterbender
+							NOR = {
+								culture_group = water_tribe_cultures
+								religion_group = water_religions
+							}
+						}
+						AND = {
+							trait = avatar_earthbender
+							NOR  = {
+								culture_group = earth_kingdom_cultures
+								religion_group = earth_religions
+							}
+						}
+						AND = {
+							trait = avatar_firebender
+							NOR = {
+								culture_group = fire_nation_cultures
+								religion_group = fire_religions
+							}
+						}
+						AND = {
+							trait = avatar_airbender
+							NOR = {
+								culture_group = air_nomad_cultures
+								religion_group = air_religions
+							}
+						}
+					}
+				}
+				add_trait = incompetent_bender
+			}
+			else = { add_trait = competent_bender }
+		}
+	}
+}
+
+narrative_event = { #Avatar is dead announcement
+	id = NAE.005
+	desc = {
+		trigger = {
+			OR = {
+				had_global_flag = { flag = avatar_water years < 20 }
+				had_global_flag = { flag = avatar_earth years < 20 }
+				had_global_flag = { flag = avatar_fire years < 20 }
+				had_global_flag = { flag = avatar_air years < 20 }
+			}
+		}
+		text = NAE.005.D1 #Special event text if the Avatar died while a child
+	}
+	desc = {
+		trigger = {
+			OR = {
+				had_global_flag = { flag = avatar_water years = 20 }
+				had_global_flag = { flag = avatar_earth years = 20 }
+				had_global_flag = { flag = avatar_fire years = 20 }
+				had_global_flag = { flag = avatar_air years = 20 }
+			}
+		}
+		text = NAE.005.D2
+	}
+	title = NAE.005.T
+	picture = GFX_evt_avatar_death
+	portrait = FROM
+	border = GFX_event_narrative_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = { #A great loss
+		name = NAE.005.OPTA
+		trigger = {
+			NOR = {
+				trait = team_avatar
+				trait = former_team_avatar
+			}
+		}
+	}
+	option = { #Goodbye, old friend
+		name = NAE.005.OPTB
+		trigger = {
+			OR = {
+				trait = team_avatar
+				trait = former_team_avatar
+			}
+		}
+		tooltip_info = team_avatar
+		hidden_tooltip = { add_trait = former_team_avatar } #It shouldn't be possible for players to have 'team avatar' anyway, since it's only for the unlanded, but good safety procedure
+	}
+	option = { #Get dunked on, nerd
+		name = NAE.005.OPTC
+		trigger = {
+			NOR = {
+				trait = team_avatar
+				trait = former_team_avatar
+			}
+		}
+	}
+}
+
+narrative_event = { #Avatar adult notification (peasant spawn or noble coming of-age)
+	id = NAE.006
+	desc = {
+		trigger = {
+			FROM = { trait = incompetent_bender } #This can only happen if the Avatar is a peasant to an extinct people
+		}
+		text = NAE.006.D1 #'Without a connection to their people, the Avatar will surely struggle to master their own element'
+	}
+	desc = {
+		trigger = {
+			FROM = { NOT = { trait = incompetent_bender } }
+		}
+		text = NAE.006.D2
+	}
+	title = NAE.006.T
+	picture = {
+		trigger = { has_global_flag = avatar_air }
+		picture = GFX_evt_avatar_reveal_air_nomad_culture
+	}
+	picture = {
+		trigger = { has_global_flag = avatar_fire }
+		picture = GFX_evt_avatar_reveal_fire_nation_cultures
+	}
+	picture = {
+		trigger = { has_global_flag = avatar_water }
+		picture = GFX_evt_avatar_reveal_water_tribe_culture
+	}
+	picture = {
+		trigger = { has_global_flag = avatar_earth }
+		picture = GFX_evt_earth_temple
+	}
+	portrait = FROM
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	
+	is_triggered_only = yes #Fired from adulthood event or from spawn event
+	
+	major_trigger = { ai = no } #Only players need it
+	
+	immediate = { #Ensure the Avatar isn't a living contradiction
+		
+		set_variable = { #We put the value to 0 so that it won't get saved, to cut down on bloat.
+			which = avatar_death_year
+			value = 0
+		}
+		
+		if = {
+			limit = {
+				OR = {
+					religion = modernism
+					religion = equalism
+					religion = way_of_chin
+				}
+			}
+			religion = followers_of_kyoshi #And of course takes inspiration from Kyoshi
+		}
+	}
+	
+	option = { #And to me!
+		name = NAE.006.OPTA
+		trigger = { any_courtier = { trait = avatar } }
+		prestige = 200
+	}
+	option = { #And to my blood!
+		name = NAE.006.OPTB
+		trigger = { any_dynasty_member = { trait = avatar } }
+		prestige = 300
+	}
+	option = { #Interesting times...
+		name = NAE.006.OPTC
+		trigger = { NOT = { trait = avatar } }
+	}
+	option = { #Avatar option - assign them a generic bloodline (remember, canon avatars won't see this event!)
+		name = NAE.006.OPTD
+		trigger = { trait = avatar }
+		random_list = {
+			10 = { create_bloodline = { type = bloodline_avatar_1 } }
+			10 = { create_bloodline = { type = bloodline_avatar_2 } }
+			10 = { create_bloodline = { type = bloodline_avatar_3 } }
+			10 = { create_bloodline = { type = bloodline_avatar_4 } }
+		}
+		set_special_character_title = AVATAR_TITLE #This will make them "Avatar so-and-so", no matter their actual title or honourary titles
+		if = {
+			limit = { is_female = yes }
+			add_trait = homosexual ##TODO: Change this to bisexual when that's implemented. ##NOTE: This is canon. All male avatars are straight, all female avatars (who have lovers) are bi.
+		}
+	}
+}
+
+narrative_event = { #Avatar Killer gets to reflect on their actions
+	id = NAE.008
+	desc = NAE.008.D
+	title = NAE.008.T
+	picture = GFX_evt_avatar_defeat
+	border = GFX_event_narrative_frame_avatar
+	
+	is_triggered_only = yes #Fired from avatar death event
+	
+	option = { #What have I done?!
+		name = NAE.008.OPTA
+		trigger = {
+			NOR = {
+				religion = way_of_chin
+				religion = equalism
+				religion = barbarism
+				religion = barbarism_reformed
+				religion = fire_imperialism
+				religion = followers_of_kyoshi
+				culture = pirate_culture
+				culture = barbarian_culture
+			}
+		}
+		piety = -500
+		random = {
+			chance = 70
+			add_trait = stressed
+		}
+		create_bloodline = { type = avatar_killer_bloodline }
+	}
+	option = { #I'm the greatest!
+		name = NAE.008.OPTB
+		trigger = {
+			OR = {
+				religion = way_of_chin
+				religion = equalism
+				religion = barbarism
+				religion = barbarism_reformed
+				religion = fire_imperialism
+				culture = barbarian_culture
+				culture = pirate_culture
+			}
+		}
+		add_trait = proud
+		prestige = 500
+		create_bloodline = { type = avatar_killer_bloodline }
+	}
+	option = { #This is unforgiveable
+		name = NAE.008.OPTC
+		trigger = { religion = followers_of_kyoshi }
+		piety = -1000
+		add_trait = stressed
+		random = {
+			chance = 30
+			add_trait = lunatic
+		}
+		create_bloodline = { type = avatar_killer_bloodline }
+	}
+	option = { #There's only one way to gain back a scrap of honour...
+		name = NAE.008.OPTD
+		trigger = { religion = followers_of_kyoshi }
+		piety = -1000
+		add_character_modifier = {
+			modifier = suicide
+			duration = -1
+		}
+		death = { death_reason = death_suicide }
+	}
+}
+
+character_event = { #Spawn non-historical Roku
+	id = NAE.010
+	desc = NAE.010.D
+	picture = GFX_evt_fire_palace
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		create_character = {
+			age = 3
+			name = "Roku"
+			dynasty = 536
+			random_traits = no
+			female = no
+			religion = fire_spirituality
+			race = customPortrait_roku_and_ta_min #This is the graphical culture Roku uses, which should make him look like Roku. SHOULD. If not, portrait mod him on adulthood.
+			culture = fire_imperial_culture
+			dna = "000000a0b00"
+			historical = yes #Render Roku immune to being pruned
+			trait = firebender
+			trait = competent_bender
+			trait = canon_character
+			trait = unrevealedavatar
+			trait = idolizer
+		}
+		new_character = {
+			set_character_flag = is_roku
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			
+		}
+	}
+	
+	option = {
+		name = NAE.010.OPTA
+		new_character = { prestige = 50 }
+	}
+}
+
+narrative_event = { #Roku comes of age
+	id = NAE.011
+	desc = NAE.011.D
+	title = NAE.011.T
+	picture = GFX_evt_avatar_reveal_fire_nation_cultures
+	portrait = ROOT
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	
+	has_character_flag = is_roku
+	
+	is_triggered_only = yes #Fired from on_adulthood
+	
+	major_trigger = { ai = no }
+	
+	option = { #Roku option
+		name = NAE.011.OPTA
+		trigger = { trait = unrevealedavatar }
+		remove_trait = unrevealedavatar
+		remove_trait = firebender
+		add_trait = avatar
+		add_trait = avatar_firebender
+		create_bloodline = { type = roku_bloodline } #TODO: Non-historical Roku bloodline?
+		set_special_character_title = AVATAR_TITLE
+		if = {
+			limit = { any_host_courtier = { character = c_2 } }
+			c_2 = { add_friend = ROOT }
+		}
+	}
+	option = { #Player notification option
+		name = NAE.011.OPTB
+		trigger = { NOT = { trait = unrevealedavatar } }
+	}
+}
+
+character_event = { #Aang is born
+	id = NAE.012
+	desc = NAE.012.D
+	picture = GFX_evt_southern_air_temple_from_tlok
+	border = GFX_event_normal_frame_learning
+	
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		create_character = {
+			age = 3
+			name = "Aang"
+			dynasty = 1504
+			religion = air_spirituality
+			culture = southern_air_nomad
+			random_traits = no
+			female = no
+			trait = airbender
+			trait = powerful_bender
+			trait = airnomad
+			trait = unrevealedavatar
+			trait = canon_character
+			trait = affectionate
+			historical = yes
+		}
+		new_character = {
+			set_character_flag = is_aang
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+		}
+		
+	}
+	
+	option = {
+		name = NAE.012.OPTA
+		new_character = { prestige = 50 }
+	}
+}
+
+narrative_event = { #Aang comes of age
+	id = NAE.013
+	desc = NAE.013.D
+	title = NAE.013.T
+	picture = GFX_evt_avatar_reveal_air_nomad_culture
+	portrait = ROOT
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	
+	has_character_flag = is_aang
+	
+	is_triggered_only = yes #Fired from on_adulthood
+	
+	major_trigger = { ai = no }
+	
+	option = { #Aang option
+		name = NAE.013.OPTA
+		trigger = { trait = unrevealedavatar }
+		remove_trait = unrevealedavatar
+		remove_trait = airbender
+		add_trait = avatar
+		add_trait = avatar_airbender
+		create_bloodline = { type = aang_bloodline } #TODO: Child Aang bloodline? Likely coming with Air Nomad rework!
+		set_special_character_title = AVATAR_TITLE
+	}
+	option = { #Player notification option
+		name = NAE.013.OPTB
+		trigger = { NOT = { trait = unrevealedavatar } }
+	}
+}
+
+character_event = { #Spawn Korra
+	id = NAE.014
+	desc = NAE.014.D
+	picture = GFX_evt_southern_water_tribe
+	border = GFX_event_normal_frame_diplomacy
+	
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		create_character = {
+			age = 0
+			name = "Korra"
+			dynasty = 163
+			race = customPortrait_korra
+			religion = southern_spirituality
+			culture = southern_water_culture
+			random_traits = no
+			female = yes
+			trait = avatar_waterbender
+			trait = competent_bender
+			trait = strong
+			trait = unrevealedavatar
+			trait = rowdy
+			trait = haughty
+			trait = willful
+		}
+		new_character = {
+			set_character_flag = is_korra
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+		}
+	}
+	
+	option = {
+		name = NAE.014.OPTA
+		new_character = { prestige = 50 }
+	}
+}
+
+character_event = { #Korra gains additional bending
+	id = NAE.015
+	desc = NAE.015.D
+	picture = GFX_evt_waterbending_sparring_fail
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 4
+	has_character_flag = is_korra
+	
+	is_triggered_only = yes #Fired on childhood pulse - so will only fire three times!
+	
+	immediate = {
+		if = {
+			limit = { trait = unrevealedavatar }
+			remove_trait = unrevealedavatar
+			add_trait = avatar
+		}
+		if = {
+			limit = { trait = waterbender }
+			remove_trait = waterbender
+			add_trait = avatar_waterbender
+		}
+	}
+	
+	option = {
+		name = NAE.015.OPTA
+		trigger = { NOT = { trait = avatar_earthbender } }
+		add_trait = avatar_earthbender
+		upgrade_bending_effect = yes
+	}
+	option = {
+		name = NAE.015.OPTA
+		trigger = {
+			trait = avatar_earthbender
+			NOT = { trait = avatar_firebender }
+		}
+		add_trait = avatar_firebender
+		upgrade_bending_effect = yes
+	}
+	option = {
+		name = NAE.015.OPTA
+		trigger = {
+			trait = avatar_firebender
+			NOT = { trait = avatar_airbender }
+		}
+		add_trait = avatar_airbender
+	}
+	
+	after = { guardian = { character_event = { id = NAE.016 } } }
+}
+
+character_event = { #Guardian notified of Korra's growth
+	id = NAE.016
+	desc = NAE.016.D
+	picture = GFX_evt_waterbending_sparring_fail
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NAE.016.OPTA
+	}
+}
+
+narrative_event = { #Korra comes of age
+	id = NAE.017
+	desc = NAE.017.D
+	title = NAE.017.T
+	picture = GFX_evt_avatar_reveal_water_tribe_culture
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	
+	has_character_flag = is_korra
+	
+	major_trigger = { ai = no }
+	
+	is_triggered_only = yes #Fired on adulthood
+	
+	option = {
+		name = NAE.017.OPTA
+		trigger = { trait = avatar }
+		add_trait = homosexual
+		create_bloodline = { type = korra_bloodline }
+		set_special_character_title = AVATAR_TITLE
+	}
+	option = {
+		name = NAE.017.OPTB
+		trigger = { NOT = { trait = avatar } }
+	}
+}
+
+## AVATAR ADMIN EVENTS ##
+character_event = { #Avatar maintainence
+	id = NAE.100
+	hide_window = yes
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	
+	trigger = {
+		NOT = { has_character_flag = dealing_with_crisis } #This is for crisis wars, like the fifth nation forming
+	}
+	
+	is_triggered_only = yes #Fired on yearly pulse
+	
+	immediate = {
+		
+		if = {
+			limit = {
+				OR = {
+					had_character_flag = {
+						flag = withdrawn_avatar
+						years = 11
+					}
+					had_global_flag = { #The players decisions clear this flag, and therefore this checks for inactivity on their part
+						flag = avatar_available
+						years = 11 #Remember, these are *continuous* years!
+					}
+				}
+			}
+			character_event = { id = NAE.106 } #Declared bad avatar
+		}
+		
+		if = {
+			limit = {
+				OR = {
+					religion = fire_imperialism
+					religion = way_of_chin
+					religion = equalism
+				}
+			}
+			character_event = { id = NAE.115 days = 4 }
+		}
+		
+		any_consort = { #If someone has taken the Avatar as a consort, the Avatar leaves
+			limit = { is_senior_consort_party = yes }
+			letter_event = { id = NAE.107 }
+		}
+		
+		if = {
+			limit = { ai = no }
+			remove_character_modifier = avatar_interfere_cooldown #This is just for the player
+			break = yes
+		}
+		
+		## AI ONLY BELOW THIS POINT ##
+		
+		random_list = { #Chance to marry a lover, if they have them (and aren't already married!)
+			trigger = { is_married = no }
+			30 = {
+				trigger = { is_female = yes }
+				random_lover = {
+					limit = {
+						is_ruler = no
+						is_married = no
+					}
+					add_spouse_matrilineal = ROOT
+				}
+			}
+			30 = {
+				trigger = { is_female = no }
+				random_lover = {
+					limit = {
+						is_ruler = no
+						is_married = no
+					}
+					add_spouse = ROOT
+				}
+			}
+			70 = { }
+		}
+		
+		random_friend = { #Chance to gain lover
+			limit = {
+				possibly_romantically_interested_in_each_other_trigger = yes
+				is_hostile_to_avatar_trigger = no
+				age_diff < 6
+				is_ruler = no #If the Avatar wants to get into relationships with rulers, it'll have to happen naturally
+				is_married = no
+				can_marry = yes
+			}
+			preferred_limit = {
+				OR = {
+					trait = team_avatar
+					trait = former_team_avatar
+				}
+			}
+			random_list = {
+				10 = { add_lover = ROOT }
+				90 = {
+					piety = 10
+					
+					modifier = { #Less likely if the Avatar already has a lover (unless they're lustful, of course)
+						num_of_lovers = 1
+						factor = 2
+					}
+					modifier = {
+						num_of_lovers = 3
+						factor = 10
+					}
+					modifier = {
+						trait = lustful
+						factor = 0.4
+					}
+				}
+			}
+		}
+		
+		if = { #Chance to gain friends
+			limit = {
+				any_friend = {
+					count < 5
+					at_location = ROOT
+				}
+			}
+			any_host_courtier = {
+				limit = {
+					is_ruler = no
+					is_married = no
+					is_betrothed = no
+					has_job_title = no #Avatar won't steal your councillors!
+					NOT = { has_character_flag = no_court_invites } #This filters out loyal servants, like eunuchs and physicians etc
+					min_age = 12 #The Avatar will occasionally take teenagers with them
+					age_diff = {
+						who = ROOT
+						years < 6
+					}
+					useless_character_trigger = no #Has to be healthy enough to travel
+					is_inaccessible_trigger = no
+					current_scope_and_root_make_sense_as_friendlies_trigger = yes
+					is_hostile_to_avatar_trigger = no
+				}
+				score_value = {
+					value = 20
+					interesting_courtier_selection_score = yes #Pick someone at least slightly interesting
+				}
+				add_friend = ROOT
+				add_trait = team_avatar
+			}
+		}
+		
+		random_list = { #Determines whether the Avatar is going to train or not
+			trigger = {
+				NOT = {
+					has_opinion_modifier = { #This always last two years from when it's set, and is always set on the Avatar staying in someone's court
+						who = employer
+						modifier = opinion_loyal_servant
+					}
+				}
+			}
+			50 = {
+				character_event = { id = NAE.200 } #Avatar wander prompt - won't fire if landed
+				
+				modifier = {
+					trait = incompetent_bender
+					factor = 10
+				}
+				modifier = {
+					trait = competent_bender
+					factor = 5
+				}
+				modifier = { #If only 2 or 1 bending trait, much more likely
+					calc_true_if = {
+						amount < 3
+						trait = avatar_waterbender
+						trait = avatar_earthbender
+						trait = avatar_firebender
+						trait = avatar_airbender
+					}
+					factor = 5
+				}
+				modifier = { #This factor is so low since fully_realised_avatar removes all other bending traits - so it's dealing with the 5x factor above too!
+					trait = fully_realised_avatar
+					factor = 0.1 #This means the Avatar will do a super intervention around a third of the time
+				}
+			}
+			
+			50 = { set_global_flag = avatar_available } #Avatar does the ronin thing
+		}
+	}
+}
+
+character_event = { #Avatar learns waterbending
+	id = NAE.101
+	desc = NAE.10X.D
+	picture = GFX_evt_waterbending_basics
+	border = GFX_event_normal_frame_diplomacy
+	
+	min_age = 16
+	only_capable = yes
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired randomly on_yearly_pulse
+	
+	trigger = {
+		trait = avatar_airbender
+		NOR = {
+			trait = fully_realised_avatar
+			trait = avatar_waterbender
+		}
+	}
+	
+	weight_multiplier = { #Chance of 8%. TODO: See if this is properly balanced. It *should* mean that an avatar will fully realise in around 50 years.
+		days = 1
+		
+		modifier = {
+			factor = 0
+			OR = {
+				trait = fully_realised_avatar
+				trait = avatar_waterbender
+			}
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = diligent
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = slothful
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = envious
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = shy
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = powerful_bender
+					trait = waterbender
+				}
+			}
+			factor = 1.5
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = master_bender
+					trait = waterbender
+				}
+			}
+			factor = 2
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = legendary_bender
+					trait = waterbender
+				}
+			}
+			factor = 2.5
+		}	
+#		
+#		modifier = {
+#			has_character_modifier = sparring_partner #NOTE: To be added in upcoming update. Stay tuned! - Liz
+#			any_friend = {
+#				has_character_modifier = sparring_partner
+#				trait = waterbender
+#				is_exceptional_bender_trigger = yes
+#			}
+#			factor = 2
+#		}
+#		modifier = {
+#			has_focus = bending ##NOTE: Future update. Stay tuned! - Liz
+#			factor = 1.5
+#		}
+
+		modifier = { #It takes a VERY long time for an Avatar with no people to learn anything new
+			trait = incompetent_bender
+			factor = 0.2
+		}
+		modifier = { #Slightly slower for inexperienced Avatars
+			trait = competent_bender
+			factor = 0.7
+		}
+		modifier = { #Slightly faster for experienced avatars
+			trait = master_bender
+			factor = 1.2
+		}
+		modifier = { #A little tougher for the opposing element
+			has_global_flag = avatar_fire
+			factor = 0.8
+		}
+		
+		## Water personality modifiers - adaptive and peaceful
+		modifier = { 
+			trait = arbitrary
+			factor = 1.4
+		}
+		modifier = { 
+			trait = kind
+			factor = 1.4
+		}
+		modifier = { 
+			trait = gregarious
+			factor = 1.4
+		}
+		modifier = { 
+			trait = trusting
+			factor = 1.4
+		}
+		modifier = { 
+			trait = humble
+			factor = 1.4
+		}
+		modifier = { 
+			trait = trickster
+			factor = 1.4
+		}
+		modifier = { 
+			trait = arbitrary
+			factor = 1.4
+		}
+		modifier = { 
+			trait = kind
+			factor = 1.4
+		}
+		modifier = { 
+			trait = gregarious
+			factor = 1.4
+		}
+		modifier = { 
+			trait = trusting
+			factor = 1.4
+		}
+		modifier = { 
+			trait = humble
+			factor = 1.4
+		}
+		modifier = { 
+			trait = trickster
+			factor = 1.4
+		}
+	}
+	
+	option = {
+		name = NAE.10X.OPTA
+		add_trait = avatar_waterbender
+		upgrade_bending_effect = yes
+	}
+}
+
+character_event = { #Avatar learns earthbending
+	id = NAE.102
+	desc = NAE.10X.D
+	picture = GFX_evt_terra_team
+	border = GFX_event_normal_frame_stewardship
+	
+	min_age = 16
+	only_capable = yes
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired randomly on_yearly_pulse
+	
+	trigger = {
+		trait = avatar_waterbender
+		NOR = {
+			trait = fully_realised_avatar
+			trait = avatar_earthbender
+		}
+	}
+	
+	weight_multiplier = { #Chance of 8%. TODO: See if this is properly balanced. It *should* mean that an avatar will fully realise in around 50 years.
+		days = 1
+		
+		modifier = {
+			factor = 0
+			OR = {
+				trait = fully_realised_avatar
+				trait = avatar_earthbender
+			}
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = diligent
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = slothful
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = envious
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = shy
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = powerful_bender
+					trait = earthbender
+				}
+			}
+			factor = 1.5
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = master_bender
+					trait = earthbender
+				}
+			}
+			factor = 2
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = legendary_bender
+					trait = earthbender
+				}
+			}
+			factor = 2.5
+		}	
+#		
+#		modifier = {
+#			has_character_modifier = sparring_partner #NOTE: To be added in upcoming update. Stay tuned! - Liz
+#			any_friend = {
+#				has_character_modifier = sparring_partner
+#				trait = earthbender
+#				is_exceptional_bender_trigger = yes
+#			}
+#			factor = 2
+#		}
+#		modifier = {
+#			has_focus = bending ##NOTE: Future update. Stay tuned! - Liz
+#			factor = 1.5
+#		}
+
+		modifier = { #It takes a VERY long time for an Avatar with no people to learn anything new
+			trait = incompetent_bender
+			factor = 0.2
+		}
+		modifier = { #Slightly slower for inexperienced Avatars
+			trait = competent_bender
+			factor = 0.7
+		}
+		modifier = { #Slightly faster for experienced avatars
+			trait = master_bender
+			factor = 1.2
+		}
+		modifier = { #A little tougher for the opposing element
+			has_global_flag = avatar_air
+			factor = 0.8
+		}
+		
+		## Earth personality modifiers - stubborn and tough
+		modifier = {
+			trait = stubborn
+			factor = 1.4
+		}
+		modifier = {
+			trait = honest
+			factor = 1.4
+		}
+		modifier = {
+			is_strong_trigger = yes
+			factor = 1.4
+		}
+		modifier = {
+			trait = patient
+			factor = 1.4
+		}
+		modifier = {
+			trait = cynical
+			factor = 1.4
+		}
+		modifier = {
+			trait = unyielding_leader
+			factor = 1.4
+		}
+		modifier = {
+			trait = craven
+			factor = 0.7
+		}
+		modifier = {
+			trait = deceitful
+			factor = 0.7
+		}
+		modifier = {
+			is_weak_trigger = yes
+			factor = 0.7
+		}
+		modifier = {
+			trait = wroth
+			factor = 0.7
+		}
+		modifier = {
+			trait = zealous
+			factor = 0.7
+		}
+		modifier = {
+			trait = aggressive_leader
+			factor = 0.7
+		}
+	}
+	
+	option = {
+		name = NAE.10X.OPTA
+		add_trait = avatar_earthbender
+		upgrade_bending_effect = yes
+	}
+}
+
+character_event = { #Avatar learns firebending
+	id = NAE.103
+	desc = NAE.10X.D
+	picture = GFX_evt_firebenders_fight
+	border = GFX_event_normal_frame_war
+	
+	min_age = 16
+	only_capable = yes
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired randomly on_yearly_pulse
+	
+	trigger = {
+		trait = avatar_earthbender
+		NOR = {
+			trait = fully_realised_avatar
+			trait = avatar_firebender
+		}
+	}
+	
+	weight_multiplier = { #Chance of 8%. TODO: See if this is properly balanced. It *should* mean that an avatar will fully realise in around 50 years.
+		days = 1
+		
+		modifier = {
+			factor = 0
+			OR = {
+				trait = fully_realised_avatar
+				trait = avatar_firebender
+			}
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = diligent
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = slothful
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = envious
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = shy
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = powerful_bender
+					trait = firebender
+				}
+			}
+			factor = 1.5
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = master_bender
+					trait = firebender
+				}
+			}
+			factor = 2
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = legendary_bender
+					trait = firebender
+				}
+			}
+			factor = 2.5
+		}	
+#		
+#		modifier = {
+#			has_character_modifier = sparring_partner #NOTE: To be added in upcoming update. Stay tuned! - Liz
+#			any_friend = {
+#				has_character_modifier = sparring_partner
+#				trait = firebender
+#				is_exceptional_bender_trigger = yes
+#			}
+#			factor = 2
+#		}
+#		modifier = {
+#			has_focus = bending ##NOTE: Future update. Stay tuned! - Liz
+#			factor = 1.5
+#		}
+
+		modifier = { #It takes a VERY long time for an Avatar with no people to learn anything new
+			trait = incompetent_bender
+			factor = 0.2
+		}
+		modifier = { #Slightly slower for inexperienced Avatars
+			trait = competent_bender
+			factor = 0.7
+		}
+		modifier = { #Slightly faster for experienced avatars
+			trait = master_bender
+			factor = 1.2
+		}
+		modifier = { #A little tougher for the opposing element
+			has_global_flag = avatar_water
+			factor = 0.8
+		}
+		
+		## Fire personality modifiers - energetic and passionate (this doesn't apply to Sun Warriors but its whatever)
+		modifier = {
+			trait = lustful
+			factor = 1.4
+		}
+		modifier = {
+			trait = wroth
+			factor = 1.4
+		}
+		modifier = {
+			trait = zealous
+			factor = 1.4
+		}
+		modifier = {
+			trait = ambitious
+			factor = 1.4
+		}
+		modifier = {
+			trait = brave
+			factor = 1.4
+		}
+		modifier = {
+			trait = aggressive_leader
+			factor = 1.4
+		}
+		modifier = {
+			trait = chaste
+			factor = 0.7
+		}
+		modifier = {
+			trait = patient
+			factor = 0.7
+		}
+		modifier = {
+			pacifist = yes
+			factor = 0.7
+		}
+		modifier = {
+			trait = content
+			factor = 0.7
+		}
+		modifier = {
+			trait = craven
+			factor = 0.7
+		}
+		modifier = {
+			trait = defensive_leader
+			factor = 0.7
+		}
+	}
+	
+	option = {
+		name = NAE.10X.OPTA
+		add_trait = avatar_firebender
+		upgrade_bending_effect = yes
+	}
+}
+
+character_event = { #Avatar learns airbending
+	id = NAE.104
+	desc = NAE.10X.D
+	picture = GFX_evt_airnomad_sparring
+	border = GFX_event_normal_frame_learning
+	
+	min_age = 16
+	only_capable = yes
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired randomly on_yearly_pulse
+	
+	trigger = {
+		trait = avatar_firebender
+		NOR = {
+			trait = fully_realised_avatar
+			trait = avatar_airbender
+		}
+	}
+	
+	weight_multiplier = { #Chance of 8%. TODO: See if this is properly balanced. It *should* mean that an avatar will fully realise in around 50 years.
+		days = 1
+		
+		modifier = {
+			factor = 0
+			OR = {
+				trait = fully_realised_avatar
+				trait = avatar_airbender
+			}
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = diligent
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = slothful
+		}
+		
+		modifier = {
+			factor = 1.6
+			trait = envious
+		}
+		
+		modifier = {
+			factor = 0.6
+			trait = shy
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = powerful_bender
+					trait = airbender
+				}
+			}
+			factor = 1.5
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = master_bender
+					trait = airbender
+				}
+			}
+			factor = 2
+		}
+		
+		modifier = {
+			any_host_courtier = {
+				AND = {
+					trait = legendary_bender
+					trait = airbender
+				}
+			}
+			factor = 2.5
+		}	
+#		
+#		modifier = {
+#			has_character_modifier = sparring_partner #NOTE: To be added in upcoming update. Stay tuned! - Liz
+#			any_friend = {
+#				has_character_modifier = sparring_partner
+#				trait = airbender
+#				is_exceptional_bender_trigger = yes
+#			}
+#			factor = 2
+#		}
+#		modifier = {
+#			has_focus = bending ##NOTE: Future update. Stay tuned! - Liz
+#			factor = 1.5
+#		}
+
+		modifier = { #It takes a VERY long time for an Avatar with no people to learn anything new
+			trait = incompetent_bender
+			factor = 0.2
+		}
+		modifier = { #Slightly slower for inexperienced Avatars
+			trait = competent_bender
+			factor = 0.7
+		}
+		modifier = { #Slightly faster for experienced avatars
+			trait = master_bender
+			factor = 1.2
+		}
+		modifier = { #A little tougher for the opposing element
+			has_global_flag = avatar_earth
+			factor = 0.8
+		}
+		
+		##Air personality modifiers - detachment and spirituality
+		modifier = {
+			has_education_learning_trigger = yes
+			factor = 1.4
+		}
+		modifier = {
+			trait = ambitious
+			factor = 0.7
+		}
+		modifier = {
+			trait = lustful
+			factor = 0.7
+		}
+		modifier = {
+			trait = gluttonous
+			factor = 0.7
+		}
+		modifier = {
+			trait = greedy
+			factor = 0.7
+		}
+		modifier = {
+			trait = aggressive_leader
+			factor = 0.7
+		}
+		modifier = {
+			trait = content
+			factor = 1.4
+		}
+		modifier = {
+			trait = chaste
+			factor = 1.4
+		}
+		modifier = {
+			trait = temperate
+			factor = 1.4
+		}
+		modifier = {
+			trait = charitable
+			factor = 1.4
+		}
+		modifier = {
+			trait = defensive_leader
+			factor = 1.4
+		}
+	}
+	
+	option = {
+		name = NAE.10X.OPTA
+		add_trait = avatar_airbender
+		upgrade_bending_effect = yes
+	}
+}
+
+character_event = { #Avatar becomes fully realised ##TODO: Tie this into spiritual journey or something when that system is reworked!!
+	id = NAE.105
+	desc = NAE.105.D
+	picture = GFX_evt_beam_of_light
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 21
+	has_character_flag = is_avatar
+	only_capable = yes
+	
+	is_triggered_only = yes #Fired randomly on_yearly_pulse
+	
+	trigger = {
+		trait = avatar_waterbender
+		trait = avatar_earthbender
+		trait = avatar_firebender
+		trait = avatar_airbender
+	}
+	
+	weight_multiplier = { #No other modifiers. There are no fast-tracks to mastery.
+		days = 1
+		modifier = {
+			piety = 1000
+			factor = 2
+		}
+		modifier = {
+			piety = 2000
+			factor = 2
+		}
+	}
+	
+	option = {
+		name = NAE.105.OPTA
+		add_trait = fully_realised_avatar
+		custom_tooltip = { text = NAE.105.TT } #Explains that all bending traits are now part of fully realised
+	}
+}
+
+narrative_event = { #Avatar found unworthy
+	id = NAE.106
+	desc = NAE.106.D
+	title = NAE.106.T
+	picture = GFX_evt_eartharena_southern_spirituality
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	
+	major_trigger = { ai = no }
+	
+	is_triggered_only = yes #Fired directly from various sources
+
+	option = {
+		name = NAE.106.OPTA
+		trigger = { has_character_flag = is_avatar }
+		add_trait = bad_avatar
+		piety = -200
+		prestige = -200
+	}
+	option = { #Most inauspicious!
+		name = NAE.106.OPTB
+		trigger = { NOT = { has_character_flag = is_avatar } }
+	}
+}
+
+letter_event = { #Avatar refuses to be a concubine
+	id = NAE.107
+	desc = {
+		trigger = { is_lover = FROM }
+		text = NAE.107.DL #More sympathetic text for lovers
+	}
+	desc = {
+		trigger = {
+			NOT = { is_lover = FROM }
+		}
+		text = NAE.107.D
+	}
+	border = GFX_event_letter_frame_intrigue
+	
+	is_triggered_only = yes #Fired from Avatar maintainence
+	
+	option = { #Avatar nopes out
+		name = NAE.107.OPTA
+		FROM = {
+			remove_consort = ROOT
+			opinion = {
+				who = ROOT
+				modifier = opinion_disrespects_me
+				years = 2
+			}
+		}
+	}
+}
+character_event = { #Trying to force-consort the Avatar results in a nasty surprise
+	id = NAE.108
+	desc = NAE.108.D
+	picture = GFX_evt_kemurikage_4
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes #on_forced_consort
+	
+	trigger = { FROM = { trait = avatar } }
+	
+	option = {
+		name = NAE.108.OPTA
+		remove_consort = FROM
+		if = {
+			limit = { is_male = yes }
+			add_trait = eunuch
+			add_trait = wounded
+		}
+		else = { add_maimed_trait_effect = yes }
+		character_event = { id = NAE.200 } #Avatar wander prompt so the Avatar leaves
+		
+	}
+}
+
+character_event = { #An imprisoned Avatar breaks out
+	id = NAE.110
+	hide_window = yes
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = yes
+	
+	is_triggered_only = yes #Fired on_imprisoned_for_any_reason
+	
+	immediate = { #Determine what the Avatar will do, then set a timer for them to escape if they would
+		if = {
+			limit = {
+				NOT = { trait = depressed } #Depression is an awful thing
+				calc_true_if = {
+					value = 2
+					trait = wroth
+					trait = brave
+					trait = fully_realised_avatar
+					has_education_martial_trigger = yes
+					has_lifestyle_martial_trigger = yes
+					has_education_intrigue_trigger = yes
+					has_lifestyle_intrigue_trigger = yes
+					any_friend = {
+						count = 3
+						trait = team_avatar
+					}
+					ai_honor < -25
+					ai_ambition = 20
+					ai_zeal = 20
+				}
+			}
+			character_event = { id = NAE.111 days = 40 } #Avatar fast breakout
+		}
+		else = {
+			character_event = { id = NAE.111 days = 400 }
+		}
+	}
+}
+
+character_event = { #Avatar breakout event
+	id = NAE.111
+	desc = {
+		trigger = { team_avatar = { count = 2 } }
+		text = NAE.111.D1
+	}
+	desc = {
+		trigger = { team_avatar = { count < 2 } }
+		text = NAE.111.D2
+	}
+	picture = GFX_evt_avatar_resist
+	border = GFX_event_normal_frame_war
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = yes
+	
+	is_triggered_only = yes
+	
+	option = { #Freedom!
+		name = NAE.111.OPTA
+		trigger = { team_avatar = { count = 2 } }
+		team_avatar = { increase_battle_experience_effect = yes }
+		team_avatar = { increase_battle_experience_effect = yes }
+	}
+	
+	option = {
+		name = NAE.111.OPTA #Not an error
+		trigger = { team_avatar = { count < 2 } }
+		increase_battle_experience_effect = yes
+	}
+	
+	after = {
+		host = { character_event = NAE.112 }
+		imprison = no
+	}
+}
+
+character_event = { #Avatar breakout follow-up
+	id = NAE.112
+	desc = NAE.112.D
+	picture = GFX_evt_avatar_resist
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes
+	
+	option = { #Dammit!
+		name = NAE.112.OPTA
+		prestige = -50
+	}
+}
+	
+character_event = { #Unlanded Avatar clean-up
+	id = NAE.113
+	hide_window = yes
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired on_unlanded
+	
+	immediate = {
+		clr_character_flag = avatar_settled
+		character_event = { id = NAE.200 } #Wander prompt - the host change will keep team avatar with them
+	}
+}
+
+character_event = { ##Slaps the player for being the Avatar improperly so they don't break anything.
+	id = NAE.114
+	desc = NAE.114.D
+	picture = GFX_evt_wanshitong_attack
+	border = GFX_event_normal_frame_avatar
+	
+	ai = no
+	only_capable = yes
+	
+	is_triggered_only = yes #Fired every year
+	
+	trigger = {
+		OR = {
+			trait = avatar
+			trait = fully_realised_avatar
+		}
+		NOT = { has_character_flag = is_avatar }
+	}
+	
+	option = {
+		name = NAE.114.OPTA
+		add_trait = incapable
+		add_age = 40
+		custom_tooltip = { text = NAE.114.TT }
+		remove_trait = avatar
+		remove_trait = fully_realised_avatar
+		remove_bending_effect = yes
+	}
+}
+
+character_event = { #Avatar is a living contradiction
+	id = NAE.115
+	desc = NAE.115.D
+	picture = GFX_evt_monks_meditate
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 18
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired from NAE.100 and on_character_convert_religion
+	
+	trigger = {
+		NOT = { trait = bad_avatar }
+		OR = {
+			religion = fire_imperialism
+			religion = way_of_chin
+			religion = equalism
+		}
+	}
+
+	option = { #Yeah I should stop believing I'm wrong
+		name = NAE.115.OPTA
+		trigger = { religion = equalism }
+		religion = modernism
+	}
+	option = {
+		name = NAE.115.OPTA
+		trigger = { religion = fire_imperialism }
+		religion = fire_spirituality
+	}
+	option = { #I need to draw closer to the Avatar
+		name = NAE.115.OPTB
+		religion = followers_of_kyoshi
+	}
+	option = { #No, I believe what I believe
+		name = NAE.115.OPTC
+		custom_tooltip = { text = NAE.115.TT } #There will be dire consequences...
+		narrative_event = { id = NAE.106 }
+	}
+}
+
+## LANDED AVATAR ##
+
+character_event = { #Landed Avatar maintainence
+	id = NAE.400
+	hide_window = yes
+	
+	ai = yes
+	only_rulers = yes
+	
+	min_age = 16
+	only_capable = yes
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired bi-yearly
+	
+	immediate = {
+		if = { ##Determine if the Avatar can leave/declare indie
+			limit = {
+				NOT = { has_character_flag = avatar_settled }
+				OR = {
+					lower_tier_than = DUKE
+					liege = { is_hostile_to_avatar_trigger = yes }
+					opinion = {
+						who = liege
+						value < -30
+					}
+					AND = {
+						liege = { has_tyrannical_personality_trigger = yes }
+						opinion = {
+							who = liege
+							value < -10
+						}
+						OR = {
+							has_opinion_modifier = {
+								who = liege
+								modifier = opinion_tyrant
+							}
+							has_opinion_modifier = {
+								who = liege
+								modifier = opinion_evil_tyrant
+							}
+						}
+					}
+					AND = {
+						calc_true_if = {
+							count = 5
+							trait = ambitious
+							trait = wroth
+							trait = brave
+							AND = {
+								OR = {
+									is_married = yes
+									any_child = { age < 21 }
+								}
+								trait = cruel
+							}
+							trait = diliget
+							trait = humble
+							trait = arbitrary
+							trait = honest
+							trait = stubborn
+							trait = zealous
+							trait = gregarious
+							age < 40
+						}
+						calc_true_if = {
+							count < 6 #If it's a tie the Avatar will go
+							trait = content
+							trait = patient
+							trait = craven
+							OR = {
+								is_married = yes
+								any_child = { age < 21 }
+							}
+							AND = {
+								OR = {
+									is_married = yes
+									any_child = { age < 21 }
+								}
+								trait = kind
+							}
+							trait = slothful
+							trait = envious
+							trait = greedy
+							trait = shy
+							trait = paranoid
+						}
+					}
+				}
+			}
+			if = {
+				limit = { higher_tier_than = COUNT }
+				liege = { letter_event = { id = NAE.404 } } #Indie
+			}
+			else = { liege = { letter_event = { id = NAE.403 } } } #Wander
+		}
+		
+		else_if = {
+			limit = {
+				trait = fully_realised_avatar
+				NOT = { has_character_modifier = superhero_cooldown }
+			}
+			random = {
+				chance = 20
+				character_event = { id = NAE.220 } #Superhero tombola
+			}
+		}
+	}
+}
+
+character_event = { #Landed Avatar set-up
+	id = NAE.401
+	hide_window = yes
+	
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired from NAE.402
+	
+	immediate = {
+		any_friend = { #Avatar brings their friends to court!
+			limit = {
+				is_ruler = no
+				is_heir = no
+				has_job_title = no #Avatar won't steal your councillors!
+				NOT = { has_character_flag = no_court_invites } #This filters out loyal servants, like eunuchs and physicians etc
+				OR = {
+					is_married = no
+					spouse = { is_ruler = no }
+				}
+				useless_character_trigger = no #Has to be healthy enough to travel
+				is_inaccessible_trigger = no
+				is_hostile_to_avatar_trigger = no
+			}
+			set_defacto_liege = ROOT
+			spouse = { set_defacto_liege = ROOT }
+			any_child = { set_defacto_liege = ROOT }
+		}
+		
+		spawn_good_commander_effect = yes
+		spawn_good_commander_effect = yes
+		spawn_great_commander_effect = yes
+		spawn_fantastic_scholar_effect = yes
+		
+		create_random_diplomat = { #Generate master waterbender
+			random_traits = yes
+			dynasty = actually_culture
+			religion = southern_spirituality
+			culture = southern_water_culture
+			female = 50
+
+			attributes = {
+				martial = 5
+				diplomacy = 10
+				stewardship = 3
+				intrigue = 3
+				learning = 5
+			}
+
+			add_trait = waterbender
+			add_trait = master_bender
+		}
+		create_random_soldier = { #Generate master firebender
+			random_traits = yes
+			dynasty = actually_culture
+			religion = fire_spirituality
+			culture = fire_islander
+			female = 50
+
+			attributes = {
+				martial = 10
+				diplomacy = 3
+				stewardship = 5
+				intrigue = 5
+				learning = 3
+			}
+
+			trait = firebender
+			trait = master_bender
+		}
+		create_random_steward = { #Generate master earthbender
+			random_traits = yes
+			dynasty = actually_culture
+			religion = earth_spirituality
+			culture = omashuan
+			female = 50
+
+			attributes = {
+				martial = 5
+				diplomacy = 5
+				stewardship = 10
+				intrigue = 3
+				learning = 3
+			}
+
+			add_trait = earthbender
+			add_trait = master_bender
+		}
+		if = {
+			limit = {
+				NOT = { start_date = 830.3.13 }
+				create_random_priest = { #Generate master airbender (if not genocided)
+					random_traits = yes
+					dynasty = actually_culture
+					religion = air_spirituality
+					culture = eastern_air_culture
+					female = yes
+
+					attributes = {
+						martial = 3
+						diplomacy = 5
+						stewardship = 5
+						intrigue = 3
+						learning = 10
+					}
+
+					add_trait = airbender
+					add_trait = master_bender
+				}
+			}
+		}
+		
+		any_player = { character_event = NAE.409 }
+	}
+}
+
+letter_event = { Avatar offered land response - cannot be offered if they wouldn't accept
+	id = NAE.402
+	desc = NAE.402.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes #see "offer_avatar_land" decision
+	
+	option = {
+		name = NAE.402.OPTA
+		persistent_event_target:the_avatar = { set_defacto_liege = ROOT }
+		random_demesne_title = {
+			limit = {
+				tier = COUNT
+				duchy = {
+					owner = {
+						character = ROOT
+						NOT = {
+							capital_scope = {
+								county = {
+									de_jure_liege = PREVPREVPREV
+								}
+							}
+						}
+					}
+				}
+			}
+			gain_title_plus_barony_if_unlanded = persistent_event_target:the_avatar
+			duchy = { grant_title = persistent_event_target:the_avatar }
+		}
+		wealth = -200
+		persistent_event_target:the_avatar = {
+			character_event = { id = NAE.401 days = 21 }
+			wealth = 200
+			add_friend = ROOT
+		}
+	}
+	option = {
+		name = NAE.402.OPTB
+		persistent_event_target:the_avatar = { set_defacto_liege = ROOT }
+		random_demesne_title = {
+			limit = {
+				tier = COUNT
+				duchy = {
+					owner = {
+						character = ROOT
+						NOT = {
+							capital_scope = {
+								county = {
+									de_jure_liege = PREVPREVPREV
+								}
+							}
+						}
+					}
+				}
+			}
+			gain_title_plus_barony_if_unlanded = persistent_event_target:the_avatar
+			duchy = { grant_title = persistent_event_target:the_avatar }
+		}
+		wealth = -200
+		persistent_event_target:the_avatar = {
+			character_event = { id = NAE.401 days = 21 }
+			wealth = 200
+			add_friend = ROOT
+		}
+	}
+	option = {
+		name = NAE.402.OPTC
+		persistent_event_target:the_avatar = { set_defacto_liege = ROOT }
+		random_demesne_title = {
+			limit = {
+				tier = COUNT
+				duchy = {
+					owner = {
+						character = ROOT
+						NOT = {
+							capital_scope = {
+								county = {
+									de_jure_liege = PREVPREVPREV
+								}
+							}
+						}
+					}
+				}
+			}
+			gain_title_plus_barony_if_unlanded = persistent_event_target:the_avatar
+			duchy = { grant_title = persistent_event_target:the_avatar }
+		}
+		wealth = -200
+		persistent_event_target:the_avatar = {
+			character_event = { id = NAE.401 days = 21 }
+			wealth = 200
+			add_friend = ROOT
+		}
+	}
+	option = {
+		name = NAE.402.OPTD
+		reverse_opinion = {
+			who = persistent_event_target:the_avatar
+			modifier = opinion_irritated
+			years = 5
+		}
+	}
+	
+	after = { persistent_event_target:the_avatar = { clr_character_flag = avatar_considering_candidate } } 
+}
+
+letter_event = { #Avatar leaves their liege to wander
+	id = NAE.403
+	desc = NAE.403.D #Regretfully, my duties as Avatar require me to leave your service. Farewell.
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NAE.403.OPTA
+		FROM = { abdicate = yes } #If they didn't abdicate to their kid, it'll be to whoever
+	}
+}
+
+letter_event = { #Avatar demands independence
+	id = NAE.404
+	desc = NAE.404.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = { #Farewell
+		name = NAE.404.OPTA
+		if = {
+			limit = { is_independent = yes }
+			persistent_event_target:the_avatar = { set_defacto_liege = THIS }
+		}
+		else = {
+			liege = {
+				set_defacto_vassal = persistent_event_target:the_avatar
+				letter_event = { id = NAE.404 } 
+			}
+		}
+	}
+	
+	option = { #Over my dead body!
+		name = NAE.404.OPTB
+		persistent_event_target:the_avatar = {
+			set_character_flag = avatar_settled #Either way, won't leave again
+			unsafe_war = {
+				target = liege
+				casus_belli = bid_for_independence
+			}
+			character_event = { id = NAE.406 days = 12 } #Spawns special troops
+		}
+	}
+}
+
+character_event = { #Avatar considers leaving if they have an adult child to take over
+	id = NAE.405
+	desc = NAE.405.D
+	picture = GFX_evt_welcome_to_whaletail
+	border = GFX_event_normal_frame_diplomacy
+	only_playable = yes
+	
+	min_age = 16
+	prisoner = no
+	only_capable = yes
+	
+	has_character_flag = is_avatar
+
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		any_child = {
+			is_adult = yes
+			is_inaccessible_or_incapable_trigger = no
+			is_primary_heir = yes
+		}
+	}
+	
+	option = { #Yes, I'd like to wander
+		name = NAE.405.OPTA
+		liege = { letter_event = { id = NAE.403 } }
+		
+		ai_chance = {
+			factor = 80
+			
+			modifier = {
+				factor = 2
+				trait = ambitious
+			}
+			modifier = {
+				factor = 2
+				trait = wroth
+			}
+			modifier = {
+				factor = 2
+				trait = brave
+			}
+			modifier = {
+				factor = 2
+				trait = cruel
+			}
+			modifier = {
+				factor = 2
+				trait = diligent
+			}
+			modifier = {
+				factor = 2
+				trait = humble
+			}
+			modifier = {
+				factor = 2
+				trait = arbitrary
+			}
+			modifier = {
+				factor = 2
+				trait = honest
+			}
+			modifier = {
+				factor = 2
+				trait = stubborn
+			}
+			modifier = {
+				factor = 2
+				trait = zealous
+			}
+		}
+	}
+	
+	option = { #Settle permanently
+		name = NAE.405.OPTB
+		random = {
+			chance = 80
+			add_trait = content
+		}
+		set_character_flag = avatar_settled
+		
+		ai_chance = {
+			factor = 30
+			
+			modifier = {
+				factor = 2
+				trait = content
+			}
+			modifier = {
+				factor = 2
+				trait = patient
+			}
+			modifier = {
+				factor = 2
+				trait = craven
+			}
+			modifier = {
+				factor = 2
+				trait = kind
+			}
+			modifier = {
+				factor = 2
+				trait = slothful
+			}
+			modifier = {
+				factor = 2
+				trait = envious
+			}
+			modifier = {
+				factor = 2
+				trait = greedy
+			}
+			modifier = {
+				factor = 2
+				trait = paranoid
+			}
+		}
+	}
+}
+
+character_event = { #Avatar spawns additional soldiers for defensive wars declared on them
+	id = NAE.406
+	desc = NAE.406.D
+	picture = GFX_evt_warlord_era
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes #Fired on_war_started
+	
+	trigger = {
+		character = ROOT
+		ROOT = { trait = avatar }
+	}
+	
+	option = { #Accept the help
+		name = NAE.406.OPTA
+		capital_scope = { #Some basic reinforcements
+			ROOT = {
+				spawn_unit = {
+					province = PREV
+					owner = ROOT
+					match_character = ROOT
+					match_mult = 0.038
+					attrition = 1.0
+					reinforces = no
+					disband_on_peace = yes
+				}
+				spawn_unit = {
+					province = PREV
+					owner = ROOT
+					match_character = ROOT
+					match_mult = 0.038
+					attrition = 1.0
+					reinforces = no
+					disband_on_peace = yes
+				}
+				spawn_unit = {
+					province = PREV
+					owner = ROOT
+					match_character = ROOT
+					match_mult = 0.038
+					attrition = 1.0
+					reinforces = no
+					disband_on_peace = yes
+				}
+				spawn_unit = { #And some muscle! ##NOTE: This may need some pretty severe tweaking! - Liz
+					owner = ROOT
+					province = PREV
+					home = PREV
+					troops = {
+						archers = { 122 122 }
+						light_infantry = { 71 71 }
+						heavy_infantry = { 85 85 }
+						pikemen = { 78 78 }
+						light_cavalry = { 113 113 }
+						knights = { 24 24 }
+					}
+					attrition = 1
+					reinforces = no
+					disband_on_peace = yes
+				}
+			}
+		}
+	}
+	
+	option = { #Stand down, this isn't your war
+		name = NAE.406.OPTB
+		prestige = 200
+	}
+}
+
+character_event = { #Force landed Avatars to go to war with rivals every so often if they're in a good spot - way of 'arresting' them. Seperate from normal maintence to pre-filter more effectively.
+	id = NAE.407
+	hide_window = yes
+	
+	ai = yes
+	only_playable = yes
+	
+	has_character_flag = is_avatar
+	rivals = yes
+	war = no
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	trigger = {
+		any_rival = {
+			OR = {
+				is_independent = yes
+				same_liege = ROOT
+			}
+			relative_power_including_allies_defender = {
+				who = ROOT
+				power <= 1.2 #The Avatar can punch a little above their weight
+			}
+		}
+	}
+	
+	is_triggered_only = yes #Fires every 5 years
+	
+	immediate = {
+		random_rival = {
+			limit = {
+				OR = {
+					is_independent = yes
+					same_liege = ROOT
+				}
+				realm_levy_diff = {
+					who = ROOT
+					value <= 3000
+				}
+			}
+			reverse_war = {
+				casus_belli = rivalry_cb
+				target = ROOT
+			}
+		}
+	}
+}
+
+character_event = { #Gain Team Avatar or friend. This isn't in NAE.400 maintainence because that's only for AI
+	id = NAE.408
+	desc = NAE.408.D
+	picture = GFX_evt_young_gyatso_and_roku
+	border = GFX_event_normal_frame_diplomacy
+	
+	ai = no #AI does this during maintainence
+	only_playable = yes
+	min_age = 16
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired bi-yearly
+	
+	trigger = {
+		any_courtier = {
+			OR = {
+				AND = {
+					friend = ROOT
+					NOT = { trait = team_avatar }
+				}
+				AND = {
+					trait = team_avatar
+					NOT = { friend = ROOT }
+				}
+				AND = {
+					trait = former_team_avatar
+					NOR = {
+						trait = mangled
+						trait = maimed
+						trait = syphilitic
+						trait = incapable
+						trait = infirm
+						trait = has_aztec_disease
+						trait = gout
+						trait = cancer
+						trait = leper
+					}
+				}
+			}
+		}
+	}
+	
+	option = { #I feel I can rely on my friends
+		name = NAE.408.OPTA
+		trigger = {
+			any_courtier = {
+				friend = ROOT
+				NOT = { trait = team_avatar }
+			}
+		}
+		random_courtier = {
+			limit = {
+				friend = ROOT
+				NOT = { trait = team_avatar }
+			}
+			add_friend = ROOT
+		}
+	}
+	
+	option = { #I've grown closer to my team
+		name = NAE.408.OPTB
+		trigger = {
+			any_courtier = {
+				NOT = { friend = ROOT }
+				trait = team_avatar
+			}
+		}
+		random_courtier = {
+			limit = {
+				NOT = { friend = ROOT }
+				trait = team_avatar
+			}
+			add_friend = ROOT
+		}
+	}
+	
+	option = { #They've proven themselves in the past
+		name = NAE.408.OPTC
+		trigger = {
+			any_courtier = {
+				trait = former_team_avatar
+				NOR = {
+					trait = mangled
+					trait = maimed
+					trait = syphilitic
+					trait = incapable
+					trait = infirm
+					trait = has_aztec_disease
+					trait = gout
+					trait = cancer
+					trait = leper
+				}
+			}
+		}
+		random_courtier = {
+			limit = {
+				trait = former_team_avatar
+				NOR = {
+					trait = mangled
+					trait = maimed
+					trait = syphilitic
+					trait = incapable
+					trait = infirm
+					trait = has_aztec_disease
+					trait = gout
+					trait = cancer
+					trait = leper
+				}
+			}
+			add_friend = ROOT
+			add_trait = team_avatar
+		}
+	}
+	
+	option = {
+		name = NAE.408.OPTD
+		trigger = {
+			any_courtier = {
+				OR = {
+					trait = team_avatar
+					friend = ROOT
+				}
+			}
+		}
+		random_courtier = {
+			limit = {
+				OR = {
+					friend = ROOT
+					trait = team_avatar
+				}
+			}
+			add_lover = ROOT
+		}
+	}
+}
+
+character_event = { #Avatar landed announcement
+	id = NAE.409
+	desc = NAE.409.D
+	title = NAE.409.T
+	portrait = persistent_event_target:the_avatar
+	picture = GFX_evt_noble_house
+	border = GFX_event_normal_frame_avatar
+		
+	is_triggered_only = yes
+	
+	option = { #Good for them
+		name = NAE.409.OPTA
+	}
+	
+	option = { #I wonder what they'll get up to...
+		name = NAE.409.OPTB
+		trigger = {
+			is_multiplayer_host_character = yes #This is also true for single players
+			FROM = {
+				NOR = {
+					government = republic_government
+					government = theocracy_government
+					government = order_government
+				}
+			}
+		}
+		set_player_character = FROM
+	}
+}
+
+## AVATAR FLAVOUR ##
+character_event = { #Ping event off player for Avatar reincarnation scoping
+	id = NAE.600
+	hide_window = yes
+	
+	is_triggered_only = yes ##Fired (many many years later) from the Avatar's on_death event
+	
+	immediate = {
+		persistent_event_target:the_avatar = { character_event = { id = NAE.601 } }
+	}
+}
+
+character_event = { #Avatar feels the weight of their past lives
+	id = NAE.601
+	desc = NAE.601.D
+	title = NAE.601.T
+	picture = GFX_evt_air_temple_sanctuary_statues
+	portrait = FROMFROM #This should be the dead avatar!
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = { #I have lived a thousand lives...
+		name = NAE.601.OPTA
+		custom_tooltip = {
+			text = NAE.601.TT1
+			set_reincarnation = FROMFROM
+		}
+		copy_random_personality_trait = FROMFROM
+	}
+	
+	option = { #I refuse to be anyone except my own person!
+		name = NAE.601.OPTB
+		trigger = { ai = no }
+		custom_tooltip = { text = NAE.601.TT2 }
+		add_trait = proud
+	}
+}
+
+character_event = { #Troubled Avatar seeks their past life for guidance
+	id = NAE.602
+	desc = NAE.602.D
+	picture = GFX_evt_air_temple_sanctuary_statues
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = no
+	war = no
+	only_capable = yes
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		is_reincarnated = yes
+		NOT = { personality_traits = 5 }
+		reincarnation_scope = {
+			ROOT = { can_copy_personality_trait_from = PREV }
+		}
+	}
+	
+	option = { #I'll do what they did
+		name = NAE.602.OPTA
+		copy_random_personality_trait = reincarnation_scope
+		add_character_modifier = {
+			name = emulating_legend
+			years = 5
+		}
+	}
+	
+	option = { #I'll seek council from all past avatars
+		name = NAE.602.OPTB
+		random_list = {
+			16 = { change_diplomacy = 1 }
+			16 = { change_martial = 1 }
+			16 = { change_stewardship = 1 }
+			16 = { change_intrigue = 1 }
+			16 = { change_learning = 1 }
+			20 = { }
+		}
+	}
+}
+
+character_event = { #Avatar remembers their killer
+	id = NAE.603
+	desc = NAE.603.D
+	picture = GFX_evt_avatar_defeat
+	border = GFX_event_normal_frame_intrigue
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = no
+	war = no
+	only_capable = yes
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		is_reincarnated = yes
+		reincarnation_scope = {
+			killer = {
+				is_alive = yes
+				NOR = {
+					is_rival = ROOT
+					has_opinion_modifier = {
+						who = ROOT
+						modifier = opinion_forgiven
+					}
+				}
+			}
+		}
+	}
+	
+	option = { #They'll pay for this
+		name = NAE.603.OPTA
+		reincarnation_scope = {
+			killer = { add_rival = ROOT }
+		}
+	}
+	
+	option = { #Their entire family will pay for this
+		name = NAE.603.OPTB
+		custom_tooltip = {
+			text = NAE.603.TT #Will start a dynastic feud!
+			reincarnation_scope = {
+				killer = {
+					add_rival = ROOT
+					any_dynasty_member = {
+						limit = {
+							OR = {
+								is_ruler = yes
+								is_close_relative = PREV
+								is_cousin_of = PREV
+							}
+						}
+						ROOT = {
+							random_dynasty_member = { add_rival = PREVPREV }
+						}
+					}
+				}
+			}
+		}
+		add_trait = wroth
+	}
+	
+	option = { #I'm not that person.
+		name = NAE.603.OPTC
+		trigger = { trait = kind }
+		tooltip_info = kind
+		reincarnation_scope = {
+			killer = {
+				opinion = { 
+					who = ROOT
+					modifier = opinion_forgiven
+					years = 30
+				}
+			}
+		}
+	}
+}
+
+character_event = { #Avatar develops sympathy for past life's religion
+	id = NAE.604
+	desc = NAE.604.D
+	picture = GFX_evt_whaletail_night_pray
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = no
+	war = no
+	only_capable = yes
+
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		has_any_sympathy_trait_trigger = no
+		NOT = { trait = zealous }
+		is_reincarnated = yes
+		reincarnation_scope = { NOT = { religion_group = ROOT } }
+	}
+	
+	option = {
+		name = NAE.604.OPTA
+		reincarnation_scope = { ##NOTE: I cannot emphasise enough that this is less painful than using the 'add sympathy' scripted effect. Base game CK2 code can be nightmarishly bad sometimes. - Liz
+			trigger_switch = {
+				on_trigger = religion_group
+				fire_religions = { ROOT = { add_trait = sympathy_fire_religions } }
+				earth_religions = { ROOT = { add_trait = sympathy_earth_religions } }
+				water_religions = { ROOT = { add_trait = sympathy_water_religions } }
+				air_religions= { ROOT = { add_trait = sympathy_air_religions } }
+				modern_religions = { ROOT = { add_trait = sympathy_modern_religions } }
+				outlaw_religions= { ROOT = { add_trait = sympathy_outlaw_religions } }
+			}
+		}
+	}
+	
+	option = {
+		name = NAE.604.OPTB
+		add_trait = zealous
+		piety = 80
+	}
+}
+
+character_event = { #Avatar remembers their family
+	id = NAE.605
+	desc = NAE.605.D
+	picture = GFX_evt_earth_kingdom_village
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = no
+	war = no
+	only_capable = yes
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = { is_reincarnated = yes }
+	
+	option = { #I should go see them
+		name = NAE.605.OPTA
+		trigger = {
+			reincarnation_scope = {
+				any_close_relative = {
+					is_alive = yes
+					NOT = { location = ROOT }
+				}
+			}
+		}
+		reincarnation_scope = {
+			random_close_relative = {
+				preferred_limit = { ai = no }
+				preferred_limit = { is_parent_of = PREV }
+				preferred_limit = { is_child_of = PREV }
+				character_event = { id = NAE.606 days = 2 }
+			}
+		}
+	}
+	option = { #There are so many families I'll never know...
+		name = NAE.605.OPTB
+		add_character_modifier = {
+			modifier = honoring_the_dead
+			years = 2
+		}
+	}
+	option = { #At least I have my family
+		name = NAE.605.OPTC
+		trigger = {
+			reincarnation_scope = {
+				NOT = {
+					any_close_relative = {
+						is_alive = yes
+					}
+				}
+			}
+		}
+		any_close_relative = {
+			opinion = {
+				who = ROOT
+				modifier = opinion_family_love
+			}
+			reverse_opinion = {
+				who = ROOT
+				modifier = opinion_family_love
+			}
+		}
+	}
+
+}
+
+character_event = { #New Avatar arrives to speak to their old family
+	id = NAE.606
+	desc = NAE.606.D
+	portrait = FROM
+	picture = GFX_evt_fire_nation_inn
+	border = GFX_event_normal_frame_diplomacy
+	
+	is_triggered_only = yes
+	
+	option = { #I don't let them in
+		name = NAE.606.OPTA
+		trigger = { ai = no }
+		reverse_opinion = {
+			who = FROM
+			modifier = opinion_disappointed
+			years = 2
+		}
+	}
+	
+	option = { #I welcome them in
+		name = NAE.606.OPTB
+		opinion = {
+			who = FROM
+			modifier = opinion_family_love
+		}
+		FROM = { character_event = { id = NAE.607 days = 2 } }
+	}
+}
+
+character_event = { #Avatar family visit resolution - for the avatar
+	id = NAE.607
+	desc = NAE.607.D
+	picture = GFX_evt_fire_nation_inn
+	portrait = event_target:avatar_host
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+	
+	option = { #These people are strangers to me
+		name = NAE.607.OPTA
+		add_trait = cynical
+	}
+	option = { #I still feel like I know them
+		name = NAE.607.OPTB
+		add_trait = gregarious
+		add_trait = trusting
+	}
+	option = { #I wish they were my family
+		name = NAE.607.OPTC
+		trigger = { ai = no }
+		add_trait = envious
+		dynasty = FROM
+		add_friend = FROM
+	}
+	option = { #We should travel together!
+		name = NAE.607.OPTD
+		trigger = { FROM = { is_ruler = no } }
+		FROM = {
+			add_friend = ROOT
+			add_trait = team_avatar
+			move_character = ROOT
+		}
+	}
+	
+	after = { FROM = { character_event = { id = NAE.608 } } }
+}
+
+character_event = { #Avatar family visit resolution - for the host
+	id = NAE.608
+	desc = NAE.608.D
+	picture = GFX_evt_fire_nation_inn
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+	
+	trigger = { NOT = { trait = team_avatar } }
+	
+	option = { #That person was a stranger to me
+		name = NAE.608.OPTA
+		add_trait = cynical
+	}
+	option = { #I still feel like I know them
+		name = NAE.608.OPTB
+		add_friend = FROM 
+		
+		ai_chance = {
+			factor = 90
+			
+			modifier = {
+				factor = 0
+				FROM = { trait = cynical } #Means the Avatar didn't care for them
+			}
+		}
+	}
+	option = { #They were kind of cute...
+		name = NAE.608.OPTC
+		trigger = {
+			trait = seducer
+			FROM = {
+				ai = yes
+				prefers_men_trigger = yes
+			}
+		}
+		tooltip_info = seducer
+		add_lover = FROM
+	}
+	
+	option = { #They were kind of cute...
+		name = NAE.608.OPTC
+		trigger = {
+			trait = seductress
+			FROM = {
+				ai = yes
+				prefers_women_trigger = yes
+			}
+		}
+		tooltip_info = seductress
+		add_lover = FROM
+	}
+}
+
+character_event = { #Avatar remembers their friends
+	id = NAE.609
+	desc = NAE.609.D
+	picture = GFX_evt_roku_airgliding
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = no
+	war = no
+	only_capable = yes
+	
+	trigger = { is_reincarnated = yes }
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	option = { #I should visit one of them!
+		name = NAE.609.OPTA
+		trigger = {
+			former_team_avatar = {
+				is_alive = yes
+				NOT = { location = ROOT }
+			}
+		}
+		former_team_avatar = {
+			preferred_limit = { ai = no }
+			preferred_limit = { is_playable = no }
+			preferred_limit = { war = no }
+			character_event = { id = NAE.610 days = 2 }
+		}
+	}
+	option = { #How many more adventures did I miss?
+		name = NAE.609.OPTB
+		add_character_modifier = {
+			modifier = honoring_the_dead
+			years = 2
+		}
+	}
+	option = { #I see now why I was like that...
+		name = NAE.609.OPTC
+		copy_random_personality_trait = reincarnation_scope
+		add_character_modifier = {
+			name = emulating_legend
+			years = 5
+		}
+	}
+}
+
+character_event = { #New Avatar arrives to speak to their old friend
+	id = NAE.610
+	desc = NAE.610.D
+	picture = GFX_evt_fire_nation_inn
+	border = GFX_event_normal_frame_diplomacy
+	
+	is_triggered_only = yes
+	
+	option = { #I don't let them in
+		name = NAE.610.OPTA
+		trigger = { ai = no }
+		opinion = {
+			who = FROM
+			modifier = opinion_disappointed
+			years = 2
+		}
+	}
+	
+	option = { #I welcome them in
+		name = NAE.610.OPTB
+		opinion = {
+			who = FROM
+			modifier = opinion_not_abandon_friendship
+		}
+		FROM = { character_event = { id = NAE.612 days = 2 } }
+	}
+}
+
+character_event = { #Avatar friend visit resolution - for the avatar
+	id = NAE.612
+	desc = NAE.612.D
+	picture = GFX_evt_fire_nation_inn
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+	
+	option = { #I could never have been friends with this person!
+		name = NAE.612.OPTA
+		add_rival = FROM
+		add_trait = envious
+	}
+	option = { #I still feel like I know them
+		name = NAE.612.OPTB
+		add_trait = gregarious
+		add_trait = trusting
+	}
+	option = { #They're kind of cute...
+		name = NAE.612.OPTC
+		trigger = {
+			trait = seducer
+			FROM = {
+				ai = yes
+				prefers_men_trigger = yes
+			}
+		}
+		tooltip_info = seducer
+		add_lover = FROM
+	}
+	option = { #They're kind of cute...
+		name = NAE.612.OPTC
+		trigger = {
+			trait = seductress
+			FROM = {
+				ai = yes
+				prefers_women_trigger = yes
+			}
+		}
+		tooltip_info = seductress
+		add_lover = FROM
+	}
+	option = { #We should travel together!
+		name = NAE.612.OPTD
+		trigger = { FROM = { is_ruler = no } }
+		FROM = {
+			add_trait = team_avatar
+			add_friend = ROOT
+			move_character = ROOT
+		}
+	}
+	
+	after = { FROM = { character_event = { id = NAE.613 } } }
+}
+
+character_event = { #Avatar friend visit resolution - for the host
+	id = NAE.613
+	desc = NAE.613.D
+	picture = GFX_evt_fire_nation_inn
+	border = GFX_event_normal_frame_diplomacy
+
+	is_triggered_only = yes
+	
+	trigger = { NOT = { trait = team_avatar } }
+	
+	option = { #That person was a stranger to me
+		name = NAE.613.OPT
+		add_trait = cynical
+	}
+	option = { #I still feel like I know them
+		name = NAE.613.OPTB
+		trigger = {
+			FROM = {
+				NOR = {
+					trait = cynical
+					rival = ROOT
+				}
+			}
+		}
+		add_friend = FROM
+	}
+	option = { #They were kind of cute...
+		name = NAE.613.OPTC
+		trigger = {
+			trait = seducer
+			FROM = {
+				ai = yes
+				prefers_men_trigger = yes
+			}
+		}
+		tooltip_info = seducer
+		add_lover = FROM
+	}
+	
+	option = { #They were kind of cute...
+		name = NAE.613.OPTC
+		trigger = {
+			trait = seductress
+			FROM = {
+				ai = yes
+				prefers_women_trigger = yes
+			}
+		}
+		tooltip_info = seductress
+		add_lover = FROM
+	}
+}
+
+character_event = { #Avatar finds animal companion
+	id = NAE.614
+	desc = NAE.614.D
+	picture = GFX_evt_snek
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 16
+	has_character_flag = is_avatar
+	prisoner = no
+	war = no
+	only_capable = yes
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		NOT = {
+			any_artifact = { has_artifact_flag = pet }
+		}
+	}
+	
+	option = { #I shall adopt it, avatars always have companions
+		name = NAE.614.OPTA
+		trigger_switch = {
+			on_trigger = culture_group
+			fire_nation_cultures = {
+				random_list = {
+					5 = {
+						add_artifact = petDragon
+						modifier = {
+							factor = 100
+							has_character_flag = is_roku
+						}
+						modifier = {
+							factor = 2
+							trait = master_bender
+						}
+						modifier = {
+							factor = 2
+							trait = temperate
+						}
+						modifier = {
+							factor = 2
+							trait = humble
+						}
+						modifier = {
+							factor = 2
+							trait = just
+						}
+						modifier = {
+							factor = 0.1
+							trait = greedy
+						}
+					}
+					10 = {
+						add_artifact = petFireFerret
+						modifier = {
+							factor = 3
+							trait = kind
+						}
+						modifier = {
+							factor = 3
+							trait = charitable
+						}
+						modifier = {
+							factor = 3
+							trait = patient
+						}
+					}
+					10 = {
+						add_artifact = petEelHound
+						modifier = {
+							factor = 3
+							trait = proud
+						}
+						modifier = {
+							factor = 3
+							trait = ambitious
+						}
+						modifier = {
+							factor = 3
+							trait = cruel
+						}
+					}
+				}
+			}
+			air_nomad_cultures = {
+				random_list = {
+					10 = {
+						add_artifact = petSkybison
+						modifier = {
+							factor = 2
+							trait = patient
+						}
+					}
+					5 = {
+						add_artifact = petWingedLemur
+						modifier = {
+							factor = 3
+							trait = kind
+						}
+					}
+				}
+			}
+			water_tribe_cultures = {
+				random_list = {
+					10 = {
+						add_artifact = petArcticCamel
+						modifier = {
+							factor = 2
+							trait = humble
+						}
+					}
+					10 = {
+						add_artifact = petBuffaloYak
+						modifier = {
+							factor = 2
+							trait = content
+						}
+					}
+					1 = {
+						add_artifact = petPolarBearDog
+						modifier = {
+							factor = 2
+							trait = proud
+						}
+						modifier = {
+							factor = 200
+							has_character_flag = is_korra
+						}
+					}
+				}
+			}
+			earth_kingdom_cultures = {
+				random_list = {
+					5 = {
+						add_artifact = petOstrichHorse
+						modifier = {
+							factor = 2
+							trait = patient
+						}
+					}
+					5 = {
+						add_artifact = petGiantRhinocerosBeetle
+						modifier = {
+							factor = 2
+							trait = sandbender
+						}
+					}
+					5 = {
+						add_artifact = petSpiderCat
+						modifier = {
+							factor = 2
+							trait = proud
+						}
+						modifier = {
+							factor = 2
+							trait = ambitious
+						}
+						modifier = {
+							factor = 2
+							trait = cruel
+						}
+					}
+					1 = {
+						add_artifact = petGoatGorilla
+						modifier = {
+							factor = 2
+							trait = genius
+						}
+					}
+				}
+			}
+		}
+	}
+	option = { #Maybe something a little more traditional?
+		name = NAE.614.OPTB
+		random_list = {
+			40 = { add_artifact = petCat }
+			40 = { add_artifact = petDog }
+			5 = {
+				add_character_modifier = {
+					name = pet_owl
+					duration = -1
+				}
+				hidden_tooltip = { character_event = { id = 77800 days = 3500 random = 2000 } } #Owl dies
+				
+				modifier = {
+					factor = 10
+					trait = falconer
+				}
+				modifier = {
+					factor = 10
+					trait = hunter
+				}
+			}
+			5 = {
+				add_character_modifier = {  
+					name = pet_hunting_eagle
+					duration = -1
+				}
+				hidden_tooltip = { character_event = { id = HF.25631 days = 7300 random = 1500 } } #Eagle dies
+				
+				modifier = {
+					factor = 10
+					trait = falconer
+				}
+				modifier = {
+					factor = 10
+					trait = hunter
+				}
+			}
+		}
+	}
+	option = { #Lunch!
+		name = NAE.614.OPTC
+		add_character_modifier = {
+			name = well_fed
+			years = 2
+		}
+		pacifists_lose_piety_effect = yes
+		random_list = {
+			10 = {
+				trigger = { trait = kind }
+				remove_trait = kind
+			}
+			10 = {
+				trigger = { NOT = { trait = kind } }
+				add_trait = cruel
+			}
+			10 = {
+				trigger = { trait = temperate }
+				remove_trait = temperate
+			}
+			10 = {
+				trigger = { NOT = { trait = temperate } }
+				add_trait = gluttonous
+			}
+			20 = { }
+		}
+	}
+}
+
+character_event = { #Avatar suffers from the bleeding effect, ala Yangchen with Gun
+	id = NAE.620
+	desc = NAE.620.D
+	picture = GFX_evt_council_of_five
+	border = GFX_event_normal_frame_avatar
+	
+	min_age = 14
+	max_age = 30 #It should present while you're young
+	has_character_flag = is_avatar
+	only_capable = yes
+	prisoner = no
+	war = no
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		NOR = {
+			trait = possessed
+			trait = lunatic
+			trait = fully_realised_avatar
+			has_character_modifier = sleep_deprivation
+		}
+	}
+	
+	option = { #Maybe it was my past life?
+		name = NAE.620.OPTA
+	}
+	
+	option = { #It's probably nothing.
+		name = NAE.620.OPTB
+	}
+	
+	after = {
+		character_event = { id = NAE.621 days = 300 random = 300 }
+		random_courtier = {
+			opinion = {
+				who = ROOT
+				modifier = not_feeling_apreciated #Sic, the game actually spells it wrong
+				years = 2
+			}
+		}
+	}
+}
+
+long_character_event = { #Avatar's bleeding effect progresses
+	id = NAE.621
+	desc = NAE.621.D
+	picture = GFX_evt_spirit_world
+	border = GFX_event_long_frame_avatar
+	
+	min_age = 14
+	has_character_flag = is_avatar
+
+	is_triggered_only = yes
+	
+	option = { #I need to see the physician.
+		name = NAE.621.OPTA
+		random_list = {
+			80 = {
+				add_character_modifier = {
+					name = good_nights_sleep
+					years = 3
+				}
+			}
+			20 = {
+				add_character_modifier = {
+					name = sleep_deprivation
+					duration = -1
+				}
+			}
+		}
+	}
+	option = { #I should consult the other Avatars
+		name = NAE.621.OPTB
+		add_character_modifier = {
+			name = sleep_deprivation
+			duration = -1
+		}
+		custom_tooltip = {
+			long_character_event = { id = NAE.622 days = 4 }
+			text = NAE.621.TT #Tells player this progresses the quest line
+		}
+	}
+	option = { #I'm sure it's fine.
+		name = NAE.621.OPTC
+		add_character_modifier = {
+			name = sleep_deprivation
+			duration = -1
+		}
+	}
+	
+}
+
+long_character_event = { #Avatar consults their past lives about their bleeding effect
+	id = NAE.622
+	desc = NAE.622.D
+	picture = GFX_evt_spirit_portal
+	border = GFX_event_long_frame_avatar
+	
+	min_age = 14
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes
+	
+	option = { #I'll dedicate myself to this.
+		name = NAE.622.OPTA
+		if = {
+			limit = { has_dlc = "Way of Life" }
+			set_focus = focus_theology
+		}
+		piety = 200
+		custom_tooltip = { text = NAE.622.TT }
+	}
+	option = { #I hope I'll fully realise in time
+		name = NAE.622.OPTB
+		piety = 100
+	}
+}
+
+long_character_event = { #Avatars bleeding effect progresses further
+	id = NAE.623
+	desc = NAE.623.D
+	picture = GFX_evt_battlefield
+	border = GFX_event_long_frame_avatar
+	
+	min_age = 14
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired every 5 years
+	
+	trigger = {
+		is_reincarnated = yes
+		has_character_modifier = sleep_deprivation
+	}
+	
+	option = { #This has to stop. Right now.
+		name = NAE.623.OPTA
+		custom_tooltip = { NAE.623.TT }
+		health = -0.5
+		lose_weight_medium_effect = yes
+		weight_trait_check_effect = yes
+		
+		random_list = {
+			20 = {
+				trigger = { NOT = { trait = wounded } }
+				add_trait = wounded
+			}
+			10 = {
+				trigger = { has_dlc = "Reapers" }
+				add_symptom_effect = yes
+			}
+			10 = {
+				trigger = { NOT = { has_dlc = "Reapers" } }
+				add_trait = ill
+			}
+			10 = {
+				trigger = { NOT = { trait = stressed } }
+				add_trait = stressed
+			}
+			3 = { }
+		}
+		random_list = {
+			48 = { add_trait = possessed }
+			52 = { remove_character_modifier = sleep_deprivation }
+		}
+	}
+	option = { #Thankfully I've mastered my past lives.
+		name = NAE.623.OPTB
+		trigger = { trait = fully_realised_avatar }
+		tooltip_info = fully_realised_avatar
+		remove_character_modifier = sleep_deprivation
+	}
+	option = { #I'm just in touch with my past lives. It's fine.
+		name = NAE.623.OPTC
+		add_trait = possessed
+		piety = 200
+	}
+	
+	after = { long_character_event = { id = NAE.624 days = 1200 random = 300 } } #No getting lucky and dodging it now
+}
+
+long_character_event = { #Bleeding effect last chance
+	id = NAE.624
+	desc = NAE.624.D
+	picture = GFX_evt_kemurikage_1
+	border = GFX_event_long_frame_avatar
+	
+	min_age = 14
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		is_reincarnated = yes
+		has_character_modifier = sleep_deprivation
+		trait = possessed
+	}
+	
+	option = { #By any means necessary
+		name = NAE.624.OPTA
+		add_character_modifier = {
+			name = mystic_treatment_poor
+			years = 2
+		}
+		custom_tooltip = { text = NAE.624.TT }
+		random_list = {
+			15 = {
+				remove_character_modifier = sleep_deprivation
+			}
+			85 = {
+				add_trait = lunatic
+			}
+		}
+	}
+	option = {
+		name = NAE.624.OPTB
+		trigger = { trait = fully_realised_avatar }
+		tooltip_info = fully_realised_avatar
+		remove_trait = possessed
+		remove_character_modifier = sleep_deprivation
+	}
+	option = {
+		name = NAE.624.OPTC
+		remove_trait = stressed
+		add_character_modifier = { 
+			name = good_nights_sleep
+			years = 3
+		}
+	}
+	
+	after = { long_character_event = { id = NAE.625 days = 300 random = 100 } }
+}
+
+long_character_event = { #Avatar's bleeding effect breaks them completely
+	id = NAE.625
+	desc = NAE.625.D
+	picture = GFX_evt_air_defeat
+	border = GFX_event_long_frame_avatar
+	
+	min_age = 14
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		is_reincarnated = yes
+		has_character_modifier = sleep_deprivation
+		trait = possessed
+		trait = lunatic
+	}
+	
+	option = { #I hope my successor doesn't suffer from this.
+		name = NAE.625.OPTA
+		remove_character_modifier = sleep_deprivation
+		diplomacy = -2
+		martial = -2
+		stewardship = -2
+		intrigue = -2
+		learning = -2
+		health = -0.25
+	}
+	option = { #I've mastered my past lives.
+		name = NAE.625.OPTB
+		trigger = { trait = fully_realised_avatar }
+		tooltip_info = fully_realised_avatar
+		remove_trait = possessed
+		remove_trait = lunatic
+		remove_character_modifier = sleep_deprivation
+	}
+	option = { #I'm not fit to rule anymore.
+		name = NAE.625.OPTC
+		abdicate = yes
+	}
+	option = { #There's only one option left to me now...
+		name = NAE.624.OPTD
+		custom_tooltip = { text = NAE.625.TT }
+		prestige = -200
+		random_list = {
+			90 = {
+				hidden_tooltip = {
+					add_character_modifier = {
+						modifier = suicide
+						duration = -1
+					}
+				}
+				death = { death_reason = death_suicide }
+			}
+			10 = {
+				add_trait = wounded
+				add_trait = incapable
+			}
+		}
+	}
+}
+
+## !! TODO: Move this to somewhere more appropriate during the next megapatch! !! ##
+
+character_event = { #Marriage request determiner
+	id = NAE.901
+	hide_window = yes
+	
+	ai = yes #Players can just gay marry whoever they please
+	min_age = 16
+	only_capable = yes
+	prisoner = no
+	is_married = no
+	
+	is_triggered_only = yes #Fired on a pulse as part of random court events
+	
+	trigger = {
+		independent = no #Controlled by decision
+		OR = {
+			AND = {
+				is_ruler = no
+				lover = { is_ruler = no }
+					
+			}
+			AND = {
+				is_landed = yes
+				lover = {
+					is_landed = yes
+					same_liege = ROOT
+					same_sex = ROOT #Otherwise they'd just... marry
+				}
+			}
+		}
+		num_of_lovers == 1
+		can_marry = yes
+		lover = {
+			num_of_lovers == 1
+			can_marry = yes
+			ai = no
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		
+		modifier = {
+			trait = brave
+			factor = 1.2
+		}
+		
+		modifier = {
+			age = 45
+			factor = 0.5
+		}
+		
+		modifier = {
+			trait = pregnant #Don't want kid to be bastard
+			factor = 10
+		}
+		
+		modifier = {
+			trait = honest
+			factor = 1.2
+		}
+		
+		modifier = {
+			same_sex = lover
+			factor = 2 #Only way they can get married
+		}
+	}
+	
+	immediate = {
+		liege = { character_event = { id = NAE.902 } }
+	}
+}
+
+character_event = { #Marriage request: allows people other than the Avatar to get gay married (and for lovers to marry)
+	id = NAE.902
+	desc = {
+		trigger = { FROM = { same_sex = lover } }
+		text = NAE.902.DG
+	}
+	desc = {
+		trigger = { FROM = { can_marry = lover } }
+		text = NAE.902.D
+	}
+	picture = GFX_evt_firenation_temple
+	border = GFX_event_normal_frame_stewardship
+	
+	is_triggered_only = yes
+	
+	option = { #Approve!
+		name = NAE.902.OPTA
+		FROM = {
+			opinion = {
+				who = ROOT
+				modifier = opinion_very_grateful
+				years = 5
+			}
+			if = {
+				limit = {
+					is_female = yes
+					OR = {
+						is_heir = yes
+						AND = {
+							lover = { is_heir = no }
+							is_lowborn = no
+						}
+					}
+				}
+				add_spouse_matrilineal = lover
+			}
+			else = { add_spouse = lover }
+		}
+	}
+	
+	option = { #Disapprove
+		name = NAE.902.OPTB
+		trigger = {
+			OR = {
+				ai = no
+				trait = cruel
+			}
+		}
+		FROM = {
+			opinion = {
+				who = ROOT
+				modifier = opinion_very_disappointed
+				years = 5
+			}
+		}
+	}
+}
+
+letter_event = { #Gay marriage decision request
+	id = NAE.903
+	desc = NAE.903.D
+	is_friendly = yes
+	
+	is_triggered_only = yes #Fired by the AI against independent or vassal gay players
+	
+	option = { #Of course I'll marry you!
+		name = NAE.903.OPTA
+		if = {
+			limit = { is_female = yes }
+			add_spouse_matrilineal = FROMFROM
+		}
+		else = { add_spouse = FROMFROM }
+		reverse_opinion = {
+			who = FROMFROM
+			modifier = opinion_fulfilled_marriage_wish
+		}
+	}
+	
+	option = { #My dynasty comes first
+		name = NAE.903.OPTB
+		reverse_opinion = {
+			who = FROMFROM
+			modifier = opinion_crestfallen
+			years = 3
+		}
+		random = {
+			chance = 20
+			remove_lover = FROMFROM
 		}
 	}
 }

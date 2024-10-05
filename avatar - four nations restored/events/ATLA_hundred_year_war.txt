@@ -144,6 +144,7 @@ character_event = { # Avatar goes to confront the Firelord
 			}
 		}
 	}
+	
 }
 
 character_event = { # Firelord confronted.
@@ -160,7 +161,7 @@ character_event = { # Firelord confronted.
 			character_event = { id = ATLAE.3 }
 		}
 		custom_tooltip = {
-			text = EVTTOOLTIPHYW001
+				text = EVTTOOLTIPHYW001
 		}
 		ai_chance = {
 			factor = 49
@@ -175,13 +176,14 @@ character_event = { # Firelord confronted.
 			character_event = { id = ATLAE.4 }
 		}
 		custom_tooltip = {
-			text = EVTTOOLTIPHYW002
+				text = EVTTOOLTIPHYW002
 		}
 		set_global_flag = HYW_2
 		ai_chance = {
 			factor = 1
 		}
 	}
+	
 }
 
 character_event = { # Avatar Destroys Palace
@@ -197,6 +199,7 @@ character_event = { # Avatar Destroys Palace
 			character_event = { id = ATLAE.5 }
 		}
 	}
+	
 }
 
 character_event = { # Firelord Backs Down - Colonies Destroyed
@@ -214,6 +217,7 @@ character_event = { # Firelord Backs Down - Colonies Destroyed
 			character_event = { id = ATLAE.9 }
 		}
 	}
+	
 }
 
 character_event = { # Firelord Backs Down - Colonies Intact
@@ -233,6 +237,7 @@ character_event = { # Firelord Backs Down - Colonies Intact
 			}
 		}
 	}
+	
 }
 
 character_event = { # World Informed of Avatar's Actions - Colonies Destroyed
@@ -252,6 +257,7 @@ character_event = { # World Informed of Avatar's Actions - Colonies Destroyed
 	option = { # Yay
 		name = EVTOPTAh.7
 	}
+	
 }
 
 character_event = { # World Informed of Avatar's Actions - Colonies Intact
@@ -270,6 +276,7 @@ character_event = { # World Informed of Avatar's Actions - Colonies Intact
 	option = { # Yay
 		name = EVTOPTAh.8
 	}
+	
 }
 
 character_event = { # COLONIES DESTROYED
@@ -360,6 +367,7 @@ character_event = { # COLONIES DESTROYED
 			set_defacto_liege = THIS
 		}
 	}
+	
 }
 
 character_event = { # Death of Roku
@@ -383,6 +391,7 @@ character_event = { # Death of Roku
 			death = { death_reason = death_volcano }
 		}
 	}
+	
 }
 
 # character_event = { # Western Air Temple Destroyed
@@ -716,20 +725,11 @@ character_event = { # Death of Roku
 				# ROOT = {
 					# if = {
 						# limit = {
-							# NOT = { has_character_flag = avatar_unrevealed }
-							# NOT = { trait = avatar }
-							# NOT = { trait = fullyrealisedavatar }
-						# }
-						# death = { death_reason = death_murder killer = PREV }
-					# }
-					# if = {
-						# limit = {
-							# OR = {
-								# has_character_flag = avatar_unrevealed
-							# }
+							# has_character_flag = is_avatar
 						# }
 						# character_event = { id = ATLAE.38 }
 					# }
+					# else = { death = { death_reason = death_murder killer = PREV } }
 				# }
 			# }
 		# }
@@ -737,7 +737,7 @@ character_event = { # Death of Roku
 	
 # }
 
-character_event = { # Death of Roku - ROKU
+character_event = { # Death of Roku - ROKU 
 	id = ATLAE.19
 	desc = "EVTDESCHYW.16"
 	picture = "GFX_evt_avatar_defeat"
@@ -804,26 +804,12 @@ character_event = { # Ta Min
 
 	trigger = {
 		NOT = { year = 795 }
-		is_title_active = d_avatar
-		d_avatar = {
-			owner = {
-				has_character_flag = is_roku
-				NOT = {
-					has_character_flag = avatar_journey
-				}
-			}
-		}
+		persistent_event_target:the_avatar = { has_character_flag = is_roku }
 	}
 
-	option = {
-		hidden_tooltip = {
-			remove_trait = celibate
-			d_avatar = {
-				owner = {
-					add_spouse = ROOT
-				}
-			}
-		}
+	immediate = {
+		remove_trait = celibate
+		add_spouse = persistent_event_target:the_avatar
 	}
 }
 
@@ -858,6 +844,7 @@ character_event = { # Firelord reminded of approaching Comet
 			}
 		}
 	}
+	
 }
 
 character_event = { # World warned of Comet
@@ -873,6 +860,7 @@ character_event = { # World warned of Comet
 	option = {
 		name = EVTOPTAh.16
 	}
+	
 }
 
 narrative_event = { # Sozin's Comet Arrives
@@ -958,7 +946,7 @@ character_event = { # Launch Air Temple Assault
 	
 	immediate = {
 		if = {
-			limit = {
+			limit = { 
 				ai = yes
 			}
 			spawn_unit = {
@@ -1038,7 +1026,7 @@ character_event = { # Launch Air Temple Assault
 			}
 			primary_title = {
 				owner = {
-					FROM = { war = { target = PREVPREVPREV casus_belli = air_destruction_cb thirdparty_title = PREVPREV tier = KING } }
+					FROM = { war = { target = PREVPREVPREV casus_belli = air_destruction_cb thirdparty_title = PREVPREV tier = KING } } 
 				}
 			}
 		}
@@ -1142,7 +1130,6 @@ character_event = { # Launch Air Temple Assault
 		# trigger = {
 			# NOT = { religion_group = earth_religions }
 			# NOT = { trait = avatar }
-			# NOT = { trait = fullyrealisedavatar }
 		# }
 	# }
 	
@@ -1151,7 +1138,6 @@ character_event = { # Launch Air Temple Assault
 		# trigger = {
 			# NOT = { religion_group = air_religions }
 			# NOT = { trait = avatar }
-			# NOT = { trait = fullyrealisedavatar }
 		# }
 	# }
 	
@@ -1159,7 +1145,6 @@ character_event = { # Launch Air Temple Assault
 		# name = EVTOPTAh.22
 		# trigger = {
 			# NOT = { trait = avatar }
-			# NOT = { trait = fullyrealisedavatar }
 		# }
 	# }
 	
@@ -1181,7 +1166,7 @@ character_event = { # Early Strike
 		trait = firelord
 		NOT = { has_character_flag = refused_strike }
 		has_global_flag = avatar_air
-		has_global_flag = avatar_unrevealed
+		has_global_flag = avatar_interregnum
 		has_game_rule = {
 			name = campaign_events
 			value = on
@@ -1198,6 +1183,7 @@ character_event = { # Early Strike
 		set_global_flag = HYW_9
 		character_event = { id = ATLAE.27 }
 	}
+	
 }
 
 # narrative_event = { # Sozin's Comet Arrives
@@ -1241,6 +1227,7 @@ character_event = { # Fire Nation - Air Avatar Threat - ITO Version
 		name = EVTOPTAh.25
 		set_global_flag = HYW_15
 	}
+	
 }
 
 character_event = { # Fire Nation - Air Avatar Threat - Trigger Version
@@ -1268,6 +1255,7 @@ character_event = { # Fire Nation - Air Avatar Threat - Trigger Version
 		name = EVTOPTAh.25
 		set_global_flag = HYW_15
 	}
+	
 }
 
 # character_event = { # Avatar Disappears - ROOT
@@ -1289,7 +1277,7 @@ character_event = { # Fire Nation - Air Avatar Threat - Trigger Version
 		# any_playable_ruler = {
 			# narrative_event = { id = ATLAE.39 days = 31 }
 		# }
-	# }
+	# } 
 # }
 
 # narrative_event = { # Avatar Disappears - WORLD
@@ -1305,6 +1293,7 @@ character_event = { # Fire Nation - Air Avatar Threat - Trigger Version
 	# option = {
 		# name = EVTOPTAh.16
 	# }
+	
 # }
 
 character_event = { # COLONY DESTROYED - GOVERNOR
@@ -1316,6 +1305,7 @@ character_event = { # COLONY DESTROYED - GOVERNOR
 	option = {
 		name = EVTOPTAh.4
 	}
+	
 }
 
 character_event = { # COLONY REJOINS NATION
@@ -1338,6 +1328,7 @@ character_event = { # COLONY REJOINS NATION
 	option = {
 		name = EVTOPTAh.28
 	}
+	
 }
 
 # narrative_event = { # GAME START - SOZIN
@@ -1539,7 +1530,7 @@ character_event = { # COLONY REJOINS NATION
 	# }
 # }
 
-# narrative_event = { # GAME START - AZULON
+# narrative_event = { # GAME START - AZULON 
 	# id = ATLAE.44
 	# title = BM_HUNDRED
 	# desc = "BM_BM_HUNDRD_DESC"
@@ -1789,10 +1780,10 @@ character_event = { # Fire Spiritulists Rebellion - Firelord
 						}
 					}
 				}
-				war = {
+				war = { 
 					target = ROOT
 					casus_belli = fire_nation_revolt
-					thirdparty_title = e_fire_nation
+					thirdparty_title = e_fire_nation 
 				}
 				opinion = {
 					who = ROOT
@@ -1861,22 +1852,22 @@ character_event = { # Fire Spiritulists Rebellion - Crushed - Firelord
 			# }
 			# k_eastern_air_temple = {
 				# owner = {
-					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } }
+					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } } 
 				# }
 			# }
 			# k_northern_air_temple = {
 				# owner = {
-					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } }
+					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } } 
 				# }
 			# }
 			# k_southern_air_temple = {
 				# owner = {
-					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } }
+					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } } 
 				# }
 			# }
 			# k_western_air_temple = {
 				# owner = {
-					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } }
+					# FROM = { war = { target = PREVPREV casus_belli = air_temple_attack thirdparty_title = PREV tier = KING } } 
 				# }
 			# }
 		# }
@@ -2038,7 +2029,7 @@ character_event = { # Fire Spiritulists Rebellion - Sozin Start
 				war = {
 					target = ROOT
 					casus_belli = fire_nation_revolt
-					thirdparty_title = e_fire_nation
+					thirdparty_title = e_fire_nation 
 				}
 				opinion = {
 					who = ROOT
@@ -2167,7 +2158,7 @@ character_event = { # King Bumi - King of Omashu
 				war = {
 					target = ROOT
 					casus_belli = omashu_revolt
-					thirdparty_title = k_omashu
+					thirdparty_title = k_omashu 
 				}
 				opinion = {
 					who = ROOT
@@ -2340,7 +2331,7 @@ character_event = { # King Bumi - Sozin Start
 				war = {
 					target = ROOT
 					casus_belli = omashu_revolt
-					thirdparty_title = k_omashu
+					thirdparty_title = k_omashu 
 				}
 				opinion = {
 					who = ROOT
@@ -2411,7 +2402,7 @@ narrative_event = { # Firelord Sozin - Death
 		name = EVTOPTAh.38
 		trigger = {
 			AND = {
-				culture_group = fire_nation_cultures
+				culture_group = fire_nation_cultures 
 				NOT = { culture = sun_warrior }
 			}
 		}
@@ -2440,7 +2431,7 @@ narrative_event = { # Firelord Azulon - Death
 		name = EVTOPTAh.38
 		trigger = {
 			AND = {
-				culture_group = fire_nation_cultures
+				culture_group = fire_nation_cultures 
 				NOT = { culture = sun_warrior }
 			}
 		}
@@ -2761,7 +2752,7 @@ character_event = { # Crown Prince Azulon - Target challenged
 	}
 }
 
-character_event = { # Crown Prince Azulon - Firelord hears of refusal
+character_event = { # Crown Prince Azulon - Firelord hears of refusal 
 	id = ATLAE.75
 	desc = "EVTDESCHYW.75"
 	picture = "GFX_evt_son_asks_firelord"
@@ -2775,7 +2766,7 @@ character_event = { # Crown Prince Azulon - Firelord hears of refusal
 	}
 }
 
-character_event = { # Crown Prince Azulon - Azulon hears of refusal
+character_event = { # Crown Prince Azulon - Azulon hears of refusal 
 	id = ATLAE.76
 	desc = "EVTDESCHYW.76"
 	picture = "GFX_evt_son_asks_firelord"
@@ -2922,7 +2913,7 @@ character_event = { # Crown Prince Azulon - Firelord hears of Victory
 					is_alive = yes
 				}
 			}
-			FROMFROM = {
+			FROMFROM = { 
 				add_trait = agnikaiburnt
 				opinion = { modifier = opinion_hate who = ROOT years = 100 }
 			}
@@ -3035,7 +3026,7 @@ character_event = { # Crown Prince Azulon - Bounce Event off Target
 			# limit = {
 				# has_character_flag = is_malu
 			# }
-			# add_trait = airbender
+			# add_trait = airbender 
 			# add_trait = incompetent_bender
 		# }
 	# }
@@ -3184,14 +3175,14 @@ character_event = { # HYW - Fire Nation Offensive
 				# NOT = { has_global_flag = campaign_hu_xin_provinces_victory }
 				# e_fire_nation = {
 					# holder_scope = {
-						# completely_controls = d_yu_dao
-						# completely_controls = d_gangxi
-						# completely_controls = d_haiyang
-						# completely_controls = d_han_tui
-						# completely_controls = d_north_plain
-						# completely_controls = d_riluodi
-						# completely_controls = d_yantai
-						# completely_controls = d_badaji
+						# completely_controls = d_yu_dao 
+						# completely_controls = d_gangxi 
+						# completely_controls = d_haiyang 
+						# completely_controls = d_han_tui 
+						# completely_controls = d_north_plain 
+						# completely_controls = d_riluodi 
+						# completely_controls = d_yantai 
+						# completely_controls = d_badaji 
 						# completely_controls = d_senlin
 					# }
 				# }
@@ -3334,8 +3325,8 @@ character_event = { # SHDS - Vision of the Future - DENIED - FIRELORD
 				k_dragon_host = {
 					activate_title = { title = THIS status = yes } # Otherwise grant_title doesn't work
 					grant_title = PREV
-					make_primary_title = yes
-					set_defacto_liege = e_fire_nation
+					make_primary_title = yes 
+					set_defacto_liege = e_fire_nation 
 					copy_title_laws = e_fire_nation
 				}
 			}
@@ -3528,8 +3519,8 @@ character_event = { # SHDS - Vision of the Future - Launch Invasion
 				k_dragon_host = {
 					activate_title = { title = THIS status = yes } # Otherwise grant_title doesn't work
 					grant_title = PREV
-					make_primary_title = yes
-					set_defacto_liege = e_fire_nation
+					make_primary_title = yes 
+					set_defacto_liege = e_fire_nation 
 					copy_title_laws = e_fire_nation
 				}
 				e_fire_nation = {
@@ -4115,7 +4106,7 @@ character_event = { # SHDS - Vision of the Future - Launch Invasion
 	
 	option = {
 		name = EVTOPTAhA.110
-		trigger = {
+		trigger = { 
 			capital_scope = {
 				NOT = { region = world_ba_sing_se }
 			}
@@ -4123,7 +4114,7 @@ character_event = { # SHDS - Vision of the Future - Launch Invasion
 	}
 	option = {
 		name = EVTOPTAhB.110
-		trigger = {
+		trigger = { 
 			capital_scope = {
 				region = world_ba_sing_se
 			}
@@ -4164,9 +4155,9 @@ narrative_event = {
 	
 	option = {
 		name = EVTOPTAhA.112
-		trigger = {
+		trigger = { 
 			OR = {
-				has_landed_title = e_earth_kingdom
+				has_landed_title = e_earth_kingdom 
 				has_landed_title = k_earth_kingdom
 			}
 		}
@@ -4221,18 +4212,18 @@ narrative_event = {
 	}
 	option = {
 		name = EVTOPTAhC.112
-		trigger = {
+		trigger = { 
 			culture_group = fire_nation_cultures
 			NOT = { has_landed_title = e_fire_nation }
 		}
 	}
 	option = {
 		name = EVTOPTAhD.112
-		trigger = {
+		trigger = { 
 			NOT = { culture_group = fire_nation_cultures }
-			NOR = {
+			NOR = { 
 				has_landed_title = k_earth_kingdom
-				has_landed_title = e_earth_kingdom
+				has_landed_title = e_earth_kingdom 
 			}
 		}
 	}
@@ -4247,13 +4238,13 @@ character_event = { # SHDS - Outer Wall Breached
 	
 	option = {
 		name = EVTOPTAhA.113
-		trigger = {
+		trigger = { 
 			culture_group = fire_nation_cultures
 		}
 	}
 	option = {
 		name = EVTOPTAhB.113
-		trigger = {
+		trigger = { 
 			NOT = { culture_group = fire_nation_cultures }
 		}
 	}
@@ -4268,21 +4259,21 @@ character_event = { # SHDS - Agri Ring Conquered
 	
 	option = {
 		name = EVTOPTAhA.114
-		trigger = {
+		trigger = { 
 			culture_group = fire_nation_cultures
 			NOT = { has_landed_title = e_earth_kingdom }
 		}
 	}
 	option = {
 		name = EVTOPTAhB.114
-		trigger = {
+		trigger = { 
 			NOT = { culture_group = fire_nation_cultures }
 			NOT = { has_landed_title = e_earth_kingdom }
 		}
 	}
 	option = {
 		name = EVTOPTAhC.114
-		trigger = {
+		trigger = { 
 			has_landed_title = e_earth_kingdom
 		}
 		any_realm_province = {
@@ -4301,13 +4292,13 @@ character_event = { # SHDS - Outer Ring Breached
 	
 	option = {
 		name = EVTOPTAhA.115
-		trigger = {
+		trigger = { 
 			culture_group = fire_nation_cultures
 		}
 	}
 	option = {
 		name = EVTOPTAhB.115
-		trigger = {
+		trigger = { 
 			NOT = { culture_group = fire_nation_cultures }
 		}
 	}
@@ -4322,13 +4313,13 @@ character_event = { # SHDS - Middle Ring Breached
 	
 	option = {
 		name = EVTOPTAhA.116
-		trigger = {
+		trigger = { 
 			culture_group = fire_nation_cultures
 		}
 	}
 	option = {
 		name = EVTOPTAhB.116
-		trigger = {
+		trigger = { 
 			NOT = { culture_group = fire_nation_cultures }
 		}
 	}
@@ -4344,7 +4335,7 @@ narrative_event = { # SHDS - Ba Sing Se falls!
 	
 	option = {
 		name = EVTOPTAhA.117
-		trigger = {
+		trigger = { 
 			culture_group = fire_nation_cultures
 			NOT = { has_landed_title = e_earth_kingdom }
 			NOT = { has_landed_title = k_dragon_host }
@@ -4352,7 +4343,7 @@ narrative_event = { # SHDS - Ba Sing Se falls!
 	}
 	option = {
 		name = EVTOPTAhB.117
-		trigger = {
+		trigger = { 
 			NOT = { culture_group = fire_nation_cultures }
 			NOT = { has_landed_title = e_earth_kingdom }
 			NOT = { has_landed_title = k_dragon_host }
@@ -4771,7 +4762,7 @@ character_event = { # The Banished Prince - Beginning
 			}
 			save_event_target_as = banished_son
 			set_character_flag = banished_son
-			event_target:banished_son = { character_event = { id = ATLAE.135 days = 7 } }
+			event_target:banished_son = { character_event = { id = ATLAE.135 days = 7 } } 
 			break = yes
 		}
 		random_child = {
@@ -4780,7 +4771,7 @@ character_event = { # The Banished Prince - Beginning
 			}
 			save_event_target_as = banished_son
 			set_character_flag = banished_son
-			event_target:banished_son = { character_event = { id = ATLAE.135 days = 7 } }
+			event_target:banished_son = { character_event = { id = ATLAE.135 days = 7 } } 
 		}
 	}
 }
@@ -4975,8 +4966,8 @@ character_event = { # The Banished Prince - END - Prince is exiled alone
 		  culture = ROOT
 		  ruler = HUNT_PRINCE
 		  ruler_female = HUNT_PRINCESS
-		  name = "PRINCES_HUNT"
-		  holder = THIS
+		  name = "PRINCES_HUNT" 
+		  holder = THIS 
 		}
 		hidden_tooltip = {
 			set_character_flag = avatar_hunter
@@ -5009,8 +5000,8 @@ character_event = { # The Banished Prince - END - FINAL
 		  culture = ROOT
 		  ruler = HUNT_PRINCE
 		  ruler_female = HUNT_PRINCESS
-		  name = "PRINCES_HUNT"
-		  holder = THIS
+		  name = "PRINCES_HUNT" 
+		  holder = THIS 
 		}
 		hidden_tooltip = {
 			set_character_flag = avatar_hunter
@@ -5085,8 +5076,8 @@ character_event = { # The Banished Prince - END - Prince leaves alone
 		  culture = ROOT
 		  ruler = HUNT_PRINCE
 		  ruler_female = HUNT_PRINCESS
-		  name = "PRINCES_HUNT"
-		  holder = THIS
+		  name = "PRINCES_HUNT" 
+		  holder = THIS 
 		}
 		hidden_tooltip = {
 			set_character_flag = avatar_hunter
@@ -5119,8 +5110,8 @@ character_event = { # The Banished Prince - END - FINAL
 		  culture = ROOT
 		  ruler = HUNT_PRINCE
 		  ruler_female = HUNT_PRINCESS
-		  name = "PRINCES_HUNT"
-		  holder = THIS
+		  name = "PRINCES_HUNT" 
+		  holder = THIS 
 		}
 		hidden_tooltip = {
 			set_character_flag = avatar_hunter

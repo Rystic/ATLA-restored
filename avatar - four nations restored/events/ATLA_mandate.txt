@@ -11,13 +11,13 @@ namespace = mandate
 #4 - Dynasty Chooser
 #5 - Turn Weak EK into puppet
 #6 - Change Bureaocracy law to left
-#7 - Gib mandate modifer
+#7 - Gib mandate modifer 
 #8-28 - Random Mandate RA gain/loss events
 #29 - Declare Mandate War
 #30 - Fate of Earth Kingdom (Peasant and Noble Claimant)
 #31 - New Dynasty Ascends ( news event )
 #32 - Dismantlement of Earth Kingdom ( news event )
-###
+# ##
 #Used Flags
 #noble_pretender
 #peasant_leader
@@ -41,7 +41,7 @@ namespace = mandate
 #dynasty_uushin		
 #dynasty_gorlos	
 #ek_dyn_choose_site_1
-#ek_dyn_choose_site_2
+#ek_dyn_choose_site_2 
 #ek_dyn_choose_site_3
 #given_temple_name_by_script
 ###
@@ -53,84 +53,39 @@ character_event = {
 	picture = GFX_evt_chinese_bureaucrat
 	is_triggered_only = yes
 	
+	only_playable = yes
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		check_variable = { which = global_royalAuthority value <= -11 }
 		NOT = { has_character_modifier = ek_law_low_mandate_change }
-		OR = {
-			e_earth_kingdom = {
-				NOT = { has_law = ze_admin_anarchy }
-			}
+		primary_title = {
+			NOT = { has_law = ze_admin_anarchy }
 		}
 	}
 	
 	option = {
 		name = mandate.1
+		change_variable = { which = global_royalAuthority value = -10 }
+		add_character_modifier = {
+			name = ek_law_low_mandate_change 
+			years = 10
+		}
 		primary_title = {
-			if = {
-				limit = {
-					has_law = ze_admin_territories
-				}
-				revoke_law = ze_admin_territories
-				add_law = ze_admin_anarchy
-				change_variable = { which = global_royalAuthority value = -10 }
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}
-			}
-			if = {
-				limit = {
-					has_law = ze_admin_province
-				}
-				revoke_law = ze_admin_province
-				add_law = ze_admin_territories
-				change_variable = { which = global_royalAuthority value = -10 }	
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}
-			}		
-			if = {
-				limit = {
-					has_law = ze_admin_balance
-				}
-				revoke_law = ze_admin_balance
-				add_law = ze_admin_province
-				change_variable = { which = global_royalAuthority value = -10 }
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}
-			}
-			if = {
-				limit = {
-					has_law = ze_admin_slight_central
-				}
-				revoke_law = ze_admin_slight_central
-				add_law = ze_admin_balance	
-				change_variable = { which = global_royalAuthority value = -10 }	
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}
+			trigger_switch = {
+				on_trigger = has_law
+				ze_admin_territories = { add_law_w_cooldown = ze_admin_anarchy }
+				ze_admin_province = { add_law_w_cooldown = ze_admin_territories }
+				ze_admin_balance = { add_law_w_cooldown = ze_admin_province }
+				ze_admin_slight_central = { add_law_w_cooldown = ze_admin_balance }
+				ze_admin_central = { add_law_w_cooldown = ze_admin_slight_central }
+				
 			}
 		}
 	}	
 	
 	weight_multiplier = {
-		months = 1
+		factor = 1
 		modifier = {
 			factor = 15
 			check_variable = { which = global_royalAuthority value <= -60 }		
@@ -146,299 +101,203 @@ character_event = {
 	}
 }
 
-# character_event = { #make rebellion leader
-	# id = mandate.2
-	# desc = EVTDESCMAND2
-	# picture = GFX_evt_china_expansionist
-	# is_triggered_only = yes
+character_event = { #make rebellion leader ###TODO!!!
+	id = mandate.2
+	desc = EVTDESCMAND2
+	picture = GFX_evt_china_expansionist
+	is_triggered_only = yes
 	
-	# trigger = {
-		# has_landed_title = c_royal_earth_palace
-		# OR = {
-			# has_landed_title = k_earth_kingdom
-			# has_landed_title = e_earth_kingdom
-		# }
-		# OR = {
-			# check_variable = { which = global_royalAuthority value <= -80 }
-			# AND = {
-				# stewardship <= 3
-				# diplomacy <= 3
-				# check_variable = { which = global_royalAuthority value <= -30 }
-			# }
-		# }
-		# NOT = {
-			# any_war = {
-				# defender = { character = ROOT }
-				# using_cb = mandate_revolt # Already under mandate_revolt
-			# }
-		# }
-	# }
+	only_playable = yes
 	
-	# option = {
-	# }
-		# name = mandate.2
-				
-		# primary_title = {
-			# save_event_target_as = ek_title
-		# }
-
-		# change_variable = { which = global_royalAuthority value = 50 }
+	trigger = {
+		has_landed_title = c_royal_earth_palace
+		government = chinese_imperial_government
+		OR = {
+			check_variable = { which = global_royalAuthority value <= -80 }
+			AND = {
+				stewardship <= 3
+				diplomacy <= 3
+				check_variable = { which = global_royalAuthority value <= -30 }
+			}
+		}
+		NOT = {
+			any_war = {
+				defender = { character = ROOT }
+				using_cb = mandate_revolt ##Already under mandate_revolt
+			}
+		}
+	}
+	
+	option = {
+		name = mandate.2
+		change_variable = { which = global_royalAuthority value = 50 }
 		
-		# random_list = {
-			# 50 = { #peasant
-				# custom_tooltip = {
-					# text = MANDATE_PEASANT_REVOLT
-				# }
-				# hidden_tooltip = {
-					# create_character = {
-						# random_traits = yes
-						# religion = ROOT
-						# culture = ROOT
-						# attributes = {
-							# martial = 16
-						# }
-						# age = 16
-						# add_trait = brilliant_strategist
-						# add_trait = uncouth
-						# add_trait = peasant_leader
-						# flag = peasant_pretender
-					# }
-					# new_character = {
-						# k_yellow_turbans = {
-							# activate_title = { title = k_yellow_turbans status = yes }
-							# copy_title_laws = event_target:ek_title
-						# }
-						# grant_title = k_yellow_turbans
+		random_realm_province = {
+			location = {
+				random_list = {
+					50 = { #peasant
+						custom_tooltip = {
+							text = MANDATE_PEASANT_REVOLT
+						}
+						hidden_tooltip = {
+							create_character = {
+								random_traits = yes
+								religion = earth_monarchism
+								culture = ba_sing_se_culture
+								attributes = { martial = 16 }
+								age = 16
+								add_trait = brilliant_strategist
+								add_trait = uncouth
+								add_trait = peasant_leader
+								add_trait = earthbender
+								add_trait = powerful_bender
+							}
+						}
+					}
+					50 = { #noble
+						custom_tooltip = {
+							text = MANDATE_NOBLE_REVOLT
+						}
+						hidden_tooltip = {
 						
-						# if = {
-							# limit = { ROOT = { tier = king } }
-							# wealth = 750
-						# }
-						# if = {
-							# limit = { ROOT = { tier = emperor } }
-							# wealth = 1500
-						# }							
+							create_character = {
+								random_traits = yes
+								religion = earth_monarchism
+								culture = ba_sing_se_culture
+								attributes = { martial = 13 }
+								age = 35
+								trait = brilliant_strategist
+								trait = groomed
+								trait = earthbender
+								trait = powerful_bender
+							}
+						}
+					}
+				}
+				new_character = {
+					hidden_tooltip = {
+						create_title = {
+							tier = KING
+							landless = yes
+							temporary = yes
+							culture = ROOT
+							name = "CLAIMANT_ADVENTURE"
+							holder = THIS
+						}
+						add_claim = c_royal_earth_palace
+						add_claim = k_earth_kingdom
+						add_claim = e_earth_kingdom
 						
-						# save_event_target_as = rebellion_leader
-						# set_character_flag = mandate_revolt_leader
-					# }
-				# }
-			# }
-			# 50 = { #noble
-				# custom_tooltip = {
-					# text = MANDATE_NOBLE_REVOLT
-				# }
-				# hidden_tooltip = {
-				
-					# create_character = {
-						# random_traits = yes
-						# religion = ROOT
-						# culture = ROOT
-						# attributes = {
-							# martial = 13
-						# }
-						# age = 35
-						# add_trait = brilliant_strategist
-						# add_trait = groomed
-						# flag = noble_pretender
-					# }
-					# new_character = {
-						# k_three_rings = {	
-							# activate_title = { title = k_three_rings status = yes }
-							# copy_title_laws = event_target:ek_title
-						# }
-						# grant_title = k_three_rings
+						wealth = 1500
+						spawn_unit = {
+							province = PREV
+							home = PREV
+							owner = THIS
+							leader = THIS
+							match_character = ROOT
+							match_mult = 0.2
+							earmark = decadence_revolters
+							reinforces = yes
+							reinforce_rate_multiplier = 0.25
+						}
+						create_character = {
+							random_traits = yes
+							dynasty = THIS
+							religion = THIS
+							culture = THIS
+							female = 40
+							age = 18
+							attributes = { martial = 7 }
+							trait = skilled_tactician
+							trait = earthbender
+							trait = powerful_bender
+						}
+						new_character = {
+							set_father = PREV
+							spawn_unit = {
+								province = PREVPREV
+								home = PREVPREV
+								owner = PREV
+								match_character = ROOT
+								match_mult = 0.2
+								reinforces = yes
+								reinforce_rate_multiplier = 0.25
+							}
+						}
 						
-						# if = {
-							# limit = { ROOT = { tier = king } }
-							# wealth = 1500
-						# }
-						# if = {
-							# limit = { ROOT = { tier = emperor } }
-							# wealth = 3000
-						# }						
+						create_character = {
+							random_traits = yes
+							dynasty = THIS
+							religion = THIS
+							culture = THIS
+							female = 40
+							age = 20
+							attributes = { martial = 7 }
+							trait = skilled_tactician
+							trait = earthbender
+							trait = powerful_bender
+						}
+						new_character = {
+							set_father = PREV
+							spawn_unit = {
+								province = PREVPREV
+								home = PREVPREV
+								owner = PREV
+								match_character = ROOT
+								match_mult = 0.2
+								reinforces = yes
+								reinforce_rate_multiplier = 0.25
+							}
+						}
 						
-						# save_event_target_as = rebellion_leader
-						# set_character_flag = mandate_revolt_leader
-					# }
+						spawn_good_commander_effect = yes
+						new_character = {
+							spawn_unit = {
+								province = PREVPREV
+								home = PREVPREV
+								owner = PREV
+								match_character = ROOT
+								match_mult = 0.2
+								reinforces = yes
+								reinforce_rate_multiplier = 0.25
+							}
+						}
+						spawn_good_commander_effect = yes
+						new_character = {
+							spawn_unit = {
+								province = PREVPREV
+								home = PREVPREV
+								owner = PREV
+								match_character = ROOT
+								match_mult = 0.2
+								reinforces = yes
+								reinforce_rate_multiplier = 0.25
+							}
+						}
+						spawn_good_commander_effect = yes
+						new_character = {
+							spawn_unit = {
+								province = PREVPREV
+								home = PREVPREV
+								owner = PREV
+								match_character = ROOT
+								match_mult = 0.2
+								reinforces = yes
+								reinforce_rate_multiplier = 0.25
+							}
+						}
+					}
 					
-				# }
-			# }
-		# }
-		
-		# hidden_tooltip = {
-			# random_realm_province = {
-				# preferred_limit = {
-					# NOT = { title = c_royal_earth_palace }
-					# de_jure_liege_or_above = k_earth_kingdom
-					# AND = {
-						# is_title_active = k_yellow_turbans
-						# OR = {
-							# NOT = { de_jure_liege_or_above = d_upper_ring }
-							# NOT = { de_jure_liege_or_above = d_middle_ring }
-						# }
-					# }
-					# AND = {
-						# is_title_active = k_three_rings
-						# OR = {
-							# de_jure_liege_or_above = d_upper_ring
-							# de_jure_liege_or_above = d_middle_ring
-						# }
-					# }		
-				# }
+					unsafe_war = {
+						target = ROOT
+						casus_belli = claim_all
+					}
+				}
+			}
+		}
+	}
+}
 
-				# location = {
-					# event_target:rebellion_leader = {
-						# spawn_unit = {
-							# province = PREV
-							# home = PREV
-							# owner = THIS
-							# leader = THIS
-							# match_character = ROOT
-							# match_mult = 0.2
-							# earmark = mandate_revolters
-							# reinforces = yes
-							# reinforce_rate_multiplier = 0.25
-						# }
-						# create_character = {
-							# random_traits = yes
-							# dynasty = THIS
-							# religion = ROOT
-							# culture = ROOT
-							# female = no
-							# age = 18
-							# attributes = {
-								# martial = 7
-							# }
-							# trait = skilled_tactician
-						# }
-						# new_character = {
-							# set_father = PREV
-							# spawn_unit = {
-								# province = PREVPREV
-								# home = PREVPREV
-								# owner = PREV
-								# match_character = ROOT
-								# match_mult = 0.2
-								# earmark = mandate_revolters
-								# reinforces = yes
-								# reinforce_rate_multiplier = 0.25
-							# }
-						# }
-						
-						# create_character = {
-							# random_traits = yes
-							# dynasty = THIS
-							# religion = ROOT
-							# culture = ROOT
-							# female = no
-							# age = 20
-							# attributes = {
-								# martial = 7
-							# }
-							# trait = skilled_tactician
-						# }
-						# new_character = {
-							# set_father = PREV
-							# spawn_unit = {
-								# province = PREVPREV
-								# home = PREVPREV
-								# owner = PREV
-								# leader = THIS
-								# match_character = ROOT
-								# match_mult = 0.2
-								# earmark = mandate_revolters
-								# reinforces = yes
-								# reinforce_rate_multiplier = 0.25
-							# }
-						# }
-						
-						# create_character = {
-							# random_traits = yes
-							# dynasty = NONE
-							# religion = ROOT
-							# culture = ROOT
-							# female = no
-							# age = 20
-							# attributes = {
-								# martial = 7
-							# }
-							# trait = skilled_tactician
-						# }
-						# new_character = {
-							# spawn_unit = {
-								# province = PREVPREV
-								# home = PREVPREV
-								# owner = PREV
-								# leader = THIS
-								# match_character = ROOT
-								# match_mult = 0.2
-								# earmark = mandate_revolters
-								# reinforces = yes
-								# reinforce_rate_multiplier = 0.25
-							# }
-						# }
-						# create_character = {
-							# random_traits = yes
-							# dynasty = NONE
-							# religion = ROOT
-							# culture = ROOT
-							# female = no
-							# age = 22
-							# attributes = {
-								# martial = 7
-							# }
-							# trait = skilled_tactician
-						# }
-						# new_character = {
-							# spawn_unit = {
-								# province = PREVPREV
-								# home = PREVPREV
-								# owner = PREV
-								# leader = THIS
-								# match_character = ROOT
-								# match_mult = 0.2
-								# earmark = mandate_revolters
-								# reinforces = yes
-								# reinforce_rate_multiplier = 0.25
-							# }
-						# }
-						# create_character = {
-							# random_traits = yes
-							# dynasty = NONE
-							# religion = ROOT
-							# culture = ROOT
-							# female = no
-							# age = 22
-							# attributes = {
-								# martial = 7
-							# }
-							# trait = skilled_tactician
-						# }
-						# new_character = {
-							# spawn_unit = {
-								# province = PREVPREV
-								# home = PREVPREV
-								# owner = PREV
-								# leader = THIS
-								# match_character = ROOT
-								# match_mult = 0.2
-								# earmark = mandate_revolters
-								# reinforces = yes
-								# reinforce_rate_multiplier = 0.25
-							# }
-						# }
-						
-						# war = {
-							# target = ROOT
-							# casus_belli = mandate_revolt
-						# }
-					# }
-				# }
-			# }
-		# }
-	# }
-# }
 narrative_event = {
 	id = mandate.3
 	desc = EVTDESCMAND3
@@ -447,7 +306,7 @@ narrative_event = {
 	hide_window = no
 	is_triggered_only = yes
 	
-	trigger = {
+	trigger = { 
 		OR = {
 			has_landed_title = k_earth_kingdom
 			has_landed_title = e_earth_kingdom
@@ -496,8 +355,8 @@ narrative_event = {
 	immediate = {
 		if = {
 			limit = {
-				NOR = {
-					has_character_flag = ek_dyn_choose_site_2
+				NOR = { 
+					has_character_flag = ek_dyn_choose_site_2 
 					has_character_flag = ek_dyn_choose_site_3
 				}
 			}
@@ -514,8 +373,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		dynasty = 3989
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -552,8 +411,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		dynasty = 3990
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -574,7 +433,7 @@ narrative_event = {
 		random_list = {
 			1 = { set_name = Xizu }
 			1 = { set_name = Chunzu }
-			1 = { set_name = Dashengzu }
+			1 = { set_name = Dashengzu } 
 			1 = { set_name = Taichuzu }
 		}
 		set_character_flag = given_temple_name_by_script
@@ -590,8 +449,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		dynasty = 3991
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -621,7 +480,7 @@ narrative_event = {
 
 	option = { #next site
 		name = mandate_dyn_next_site
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		set_character_flag = ek_dyn_choose_site_2
@@ -638,8 +497,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		dynasty = 3992
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -676,8 +535,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		dynasty = 3993
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -698,7 +557,7 @@ narrative_event = {
 		random_list = {
 			1 = { set_name = Xizu }
 			1 = { set_name = Chunzu }
-			1 = { set_name = Dashengzu }
+			1 = { set_name = Dashengzu } 
 			1 = { set_name = Taichuzu }
 		}
 		set_character_flag = given_temple_name_by_script	
@@ -714,8 +573,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		dynasty = 3996
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -745,7 +604,7 @@ narrative_event = {
 
 	option = { #next site
 		name = mandate_dyn_next_site
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		set_character_flag = ek_dyn_choose_site_3
@@ -762,8 +621,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_3
 		}
 		dynasty = 3997
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -784,7 +643,7 @@ narrative_event = {
 		random_list = {
 			1 = { set_name = Xizu }
 			1 = { set_name = Chunzu }
-			1 = { set_name = Dashengzu }
+			1 = { set_name = Dashengzu } 
 			1 = { set_name = Taichuzu }
 		}
 		set_character_flag = given_temple_name_by_script
@@ -803,25 +662,27 @@ narrative_event = {
 	
 	option = { #exit
 		name = mandate_dyn_exit
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_3
 			ai = no
 		}
 		clr_character_flag = ek_dyn_choose_site_3
 		clr_character_flag = ek_conqueror
 		create_bloodline = {
-			type = earth_king_bloodline
+			type = earth_king_bloodline 
 		}	
 		random_list = {
 			1 = { set_name = Yizu  }
 			1 = { set_name = Zhaozu }
 			1 = { set_name = Taizu }
 			1 = { set_name = Dashengzu }
-		}
+		}	
 		culture = yuan
 		set_character_flag = given_temple_name_by_script
 	}
+	
 }
+		
 
 #choose dynasty for new ek dynasty (not bastards) bastards will be able to choose between adopting his father/mother dynasty or to fire this event
 narrative_event = {
@@ -831,11 +692,8 @@ narrative_event = {
 	picture = GFX_evt_china_golden_age
 	is_triggered_only = yes
 	
-	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+	trigger = { 
+		government = chinese_imperial_government
 		AND  = {
 			has_character_flag = ek_conqueror
 			NOR = { #just to be sure that it will not fire for already existing dynasty
@@ -902,8 +760,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		dynasty = 3979
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -939,8 +797,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		dynasty = 3980
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -961,7 +819,7 @@ narrative_event = {
 		random_list = {
 			1 = { set_name = Xizu }
 			1 = { set_name = Chunzu }
-			1 = { set_name = Dashengzu }
+			1 = { set_name = Dashengzu } 
 			1 = { set_name = Taichuzu }
 		}
 		set_character_flag = given_temple_name_by_script		
@@ -976,8 +834,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		dynasty = 3981
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1006,7 +864,7 @@ narrative_event = {
 	
 	option = { #next site
 		name = mandate_dyn_next_site
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_1
 		}
 		set_character_flag = ek_dyn_choose_site_2
@@ -1023,8 +881,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		dynasty = 3982
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1060,8 +918,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		dynasty = 3983
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1097,8 +955,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		dynasty = 3984
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1126,7 +984,7 @@ narrative_event = {
 	
 	option = { #next site
 		name = mandate_dyn_next_site
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_2
 		}
 		set_character_flag = ek_dyn_choose_site_3
@@ -1143,8 +1001,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_3
 		}
 		dynasty = 3985
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1180,8 +1038,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_3
 		}
 		dynasty = 3986
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1217,8 +1075,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_3
 		}
 		dynasty = 3987
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1247,7 +1105,7 @@ narrative_event = {
 	
 	option = { #next site
 		name = mandate_dyn_next_site
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_3
 		}
 		set_character_flag = ek_dyn_choose_site_4
@@ -1264,8 +1122,8 @@ narrative_event = {
 			has_character_flag = ek_dyn_choose_site_4
 		}
 		dynasty = 3988
-		create_bloodline = {
-			type = earth_king_bloodline
+		create_bloodline = { 
+			type = earth_king_bloodline 
 		}
 		any_sibling_even_if_dead = {
 			limit = { NOT = { trait = bastard } }
@@ -1295,7 +1153,7 @@ narrative_event = {
 
 	option = { #go back
 		name = mandate_dyn_go_back
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_4
 		}
 		set_character_flag = ek_dyn_choose_site_1
@@ -1305,23 +1163,24 @@ narrative_event = {
 	
 	option = { #exit
 		name = mandate_dyn_exit
-		trigger = {
+		trigger = { 
 			has_character_flag = ek_dyn_choose_site_4
 			ai = no
 		}
 		clr_character_flag = ek_dyn_choose_site_4
 		clr_character_flag = ek_conqueror
 		create_bloodline = {
-			type = earth_king_bloodline
-		}
+			type = earth_king_bloodline 
+		}	
 		random_list = {
-			1 = { set_name = Yizu }
+			1 = { set_name = Yizu  }
 			1 = { set_name = Zhaozu }
 			1 = { set_name = Taizu }
 			1 = { set_name = Dashengzu }
-		}
+		}		
 		set_character_flag = given_temple_name_by_script
 	}
+	
 }
 
 #turn weak ek to puppet
@@ -1330,6 +1189,8 @@ character_event = {
 	desc = EVTDESCMAND5
 	picture = GFX_evt_accused
 	is_triggered_only = yes
+	
+	only_playable = yes
 	
 	trigger = {
 		OR = {
@@ -1341,36 +1202,25 @@ character_event = {
 		}
 		OR = {
 			AND = {
-				ROOT = {
-					stewardship <= 3
-					diplomacy <= 3
-					OR = {
-						check_variable = { which = global_royalAuthority value <= -75 }
-						has_character_flag = weak_ek
-					}
-				}
+				stewardship <= 3
+				diplomacy <= 3
+				check_variable = { which = global_royalAuthority value <= -75 }
 			}
 			AND = {
-				ROOT = {
-					is_adult = no
-					OR = {
-						diplomacy <= 3
-						stewardship <= 3
-					}
+				is_adult = no
+				OR = {
+					diplomacy <= 3
+					stewardship <= 3
 				}
-				is_title_active = d_dai_li
 			}
-		}		
+		}
+		is_title_active = d_dai_li		
 	}
 	
 	option = {
 		name = mandatepuppet
+		trigger = { trait = earthking }
 		
-		trigger = {
-			trait = earthking
-		}
-		
-		clr_global_flag = earth_king_in_power
 		remove_trait = earthking
 		add_trait = earthkingpuppet
 	}
@@ -1378,11 +1228,9 @@ character_event = {
 	option = {
 		name = mandatepuppetcons
 		
-		trigger = {
-			trait = earthkingconstitution
-		}
+		trigger = { trait = earthkingconstitution }
 		
-		clr_global_flag = ek_gave_some_power
+		clr_global_flag = ek_gave_some_power 
 		clr_global_flag = ek_forced_give_power
 		remove_trait = earthkingconstitution
 		add_trait = earthkingpuppet	
@@ -1396,10 +1244,7 @@ character_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		check_variable = { which = global_royalAuthority value <= -11 }
 		NOT = { has_character_modifier = ek_law_low_mandate_change }
 		primary_title = {
@@ -1409,54 +1254,25 @@ character_event = {
 	
 	option = {
 		name = mandate.6
-		primary_title = {
-			if = {
-				limit = {
-					has_law = underfunded_bureaucracy
-				}
-				revoke_law = underfunded_bureaucracy
-				add_law = bureaucracy_anarchy
-				set_variable = { which = global_royalAuthority value = -10 }
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}
-			}
-			if = {
-				limit = {
-					has_law = balanced_bureaucracy
-				}
-				revoke_law = balanced_bureaucracy
-				add_law = underfunded_bureaucracy
-				set_variable = { which = global_royalAuthority value = -10 }
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}				
-			}
-			if = {
-				limit = {
-					has_law = slight_bureaucratic_dominance
-				}
-				revoke_law = slight_bureaucratic_dominance
-				add_law = good_bureaucracy
-				set_variable = { which = global_royalAuthority value = -10 }
-				PREV = {
-					add_character_modifier = {
-						name = ek_law_low_mandate_change
-						years = 10
-					}
-				}
-			}				
+		change_variable = { which = global_royalAuthority value = -10 }
+		add_character_modifier = {
+			name = ek_law_low_mandate_change 
+			years = 10
 		}
-	}	
+		primary_title = {
+			trigger_switch = {
+				on_trigger = has_law
+				underfunded_bureaucracy = { add_law_w_cooldown = bureaucracy_anarchy }
+				balanced_bureaucracy = { add_law_w_cooldown = underfunded_bureaucracy }
+				good_bureaucracy = { add_law_w_cooldown = balanced_bureaucracy }
+				slight_bureaucratic_dominance = { add_law_w_cooldown = good_bureaucracy }
+				bureaucratic_dominance = { add_law_w_cooldown = slight_bureaucratic_dominance }
+			}
+		}
+	}
 	
 	weight_multiplier = {
-		months = 1
+		factor = 1
 		modifier = {
 			factor = 1000
 			check_variable = { which = global_royalAuthority value <= -60 }		
@@ -1474,336 +1290,132 @@ character_event = {
 
 character_event = {
 	id = mandate.7
-	is_triggered_only = yes
+	is_triggered_only = yes #Fired on_yearly_pulse ##TODO
 	hide_window = yes
 	
+	only_playable = yes
+	
 	trigger = {
-		always = yes
+		government = chinese_imperial_government
 	}
 	
-	option = {
+	immediate = { ##Adjusted to use else_if. We start at the highest value, then work downward. Trigger switch would be more efficient, but variables are incompatible with it. - Liz
 		if = {
 			limit = {
-				OR = {
-					has_landed_title = k_earth_kingdom
-					has_landed_title = e_earth_kingdom
-				}
+				check_variable = { which = global_royalAuthority value = 100 }
 			}
-			repeat_event = {
-				id = mandate.7
-				days = 30
+			add_character_modifier = {
+				name = mandateposituvemodifier6
+				years = 1 ##If you lose the Earth King this means it'll wear off
 			}
-			if = {
-				limit = {
-					AND ={
-						check_variable = { which = global_royalAuthority value >= 11 }
-						check_variable = { which = global_royalAuthority value <= 19 }
-					}
-					NOT = { has_character_modifier = mandateposituvemodifier1 }
-				}
-				add_character_modifier = {
-					name = mandateposituvemodifier1
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = 80 }
 			}
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value >= 20 }
-						check_variable = { which = global_royalAuthority value <= 39 }
-					}
-					NOT = { has_character_modifier = mandateposituvemodifier2 }
-				}
-				add_character_modifier = {
-					name = mandateposituvemodifier2
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1	
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
-			}	
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value >= 40 }
-						check_variable = { which = global_royalAuthority value <= 59 }
-					}
-					NOT = { has_character_modifier = mandateposituvemodifier3 }
-				}
-				add_character_modifier = {
-					name = mandateposituvemodifier3
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
+			add_character_modifier = {
+				name = mandateposituvemodifier5
+				years = 1
 			}
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value >= 60 }
-						check_variable = { which = global_royalAuthority value <= 79 }
-					}
-					NOT = { has_character_modifier = mandateposituvemodifier4 }
-				}
-				add_character_modifier = {
-					name = mandateposituvemodifier4
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6
-			}	
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value >= 80 }
-						check_variable = { which = global_royalAuthority value <= 99 }
-					}
-					NOT = { has_character_modifier = mandateposituvemodifier5 }
-				}
-				add_character_modifier = {
-					name = mandateposituvemodifier5
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
-			}	
-			if = {
-				limit = {
-					check_variable = { which = global_royalAuthority value >= 100 }
-					NOT = { has_character_modifier = mandateposituvemodifier6 }
-				}
-				add_character_modifier = {
-					name = mandateposituvemodifier6
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
-			}			
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value >= -10 }
-						check_variable = { which = global_royalAuthority value <= 10 }
-					}
-				}
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = 60 }
 			}
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value <= -11 }
-						check_variable = { which = global_royalAuthority value >= -19 }
-					}	
-					NOT = { has_character_modifier = mandatenegativemodifier1 }
-				}
-				add_character_modifier = {
-					name = mandatenegativemodifier1
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6
+			add_character_modifier = {
+				name = mandateposituvemodifier4
+				years = 1
 			}
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value <= -20 }
-						check_variable = { which = global_royalAuthority value >= -39 }
-					}
-					NOT = { has_character_modifier = mandatenegativemodifier2 }
-				}
-				add_character_modifier = {
-					name = mandatenegativemodifier2
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
-			}	
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value <= -40 }
-						check_variable = { which = global_royalAuthority value >= -59 }
-					}
-					NOT = { has_character_modifier = mandatenegativemodifier3 }
-				}
-				add_character_modifier = {
-					name = mandatenegativemodifier3
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = 40 }
 			}
-			if = {
-				limit = {
-					AND = {
-						check_variable = { which = global_royalAuthority value <= -60 }
-						check_variable = { which = global_royalAuthority value >= -79 }
-					}
-					NOT = { has_character_modifier = mandatenegativemodifier4 }
-				}
-				add_character_modifier = {
-					name = mandatenegativemodifier4
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier5
-				remove_character_modifier = mandatenegativemodifier6				
-			}	
-			if = {
-				limit = {
-					check_variable = { which = global_royalAuthority value <= -80 }
-					check_variable = { which = global_royalAuthority value >= -99 }
-					NOT = { has_character_modifier = mandatenegativemodifier5 }
-				}
-				add_character_modifier = {
-					name = mandatenegativemodifier5
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier6				
-			}	
-			if = {
-				limit = {
-					check_variable = { which = global_royalAuthority value <= -100 }
-					NOT = { has_character_modifier = mandatenegativemodifier6 }
-				}
-				add_character_modifier = {
-					name = mandatenegativemodifier6
-					days = -1
-					hidden = yes
-				}
-				remove_character_modifier = mandateposituvemodifier2
-				remove_character_modifier = mandateposituvemodifier3
-				remove_character_modifier = mandateposituvemodifier4
-				remove_character_modifier = mandateposituvemodifier5
-				remove_character_modifier = mandateposituvemodifier6
-				remove_character_modifier = mandateposituvemodifier1
-				remove_character_modifier = mandatenegativemodifier1
-				remove_character_modifier = mandatenegativemodifier2
-				remove_character_modifier = mandatenegativemodifier3
-				remove_character_modifier = mandatenegativemodifier4
-				remove_character_modifier = mandatenegativemodifier5			
+			add_character_modifier = {
+				name = mandateposituvemodifier3
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = 20 }
+			}
+			add_character_modifier = {
+				name = mandateposituvemodifier2
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = 1 }
+			}
+			add_character_modifier = {
+				name = mandateposituvemodifier1
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value == 0 } ##This is to stop the game deleting the authority value
+			}
+			set_variable = { which = global_royalAuthority value = 1 }
+			add_character_modifier = {
+				name = mandateposituvemodifier1
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = -10 }
+			}
+			add_character_modifier = {
+				name = mandatenegativemodifier1
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = -20 }
+			}
+			add_character_modifier = {
+				name = mandatenegativemodifier2
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = -40 }
+			}
+			add_character_modifier = {
+				name = mandatenegativemodifier3
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = -60 }
+			}
+			add_character_modifier = {
+				name = mandatenegativemodifier4
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value = -80 }
+			}
+			add_character_modifier = {
+				name = mandatenegativemodifier5
+				years = 1
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { which = global_royalAuthority value < -80 }
+			}
+			add_character_modifier = {
+				name = mandatenegativemodifier6
+				years = 1
 			}
 		}
 	}
@@ -1815,11 +1427,10 @@ character_event = {
 	picture = GFX_evt_china_open
 	is_triggered_only = yes
 	
+	only_playable = yes
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		stewardship >= 15
 		NOT = { is_adult = no }
 	}
@@ -1830,7 +1441,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		years = 4
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -1858,13 +1470,12 @@ character_event = {
 	picture = GFX_evt_china_golden_age
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		diplomacy >= 15
-		NOT = { is_adult = no }
 	}
 	
 	option = {
@@ -1873,7 +1484,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -1901,13 +1513,12 @@ character_event = {
 	picture = GFX_evt_china_invades
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
-		learning >= 15
-		NOT = { is_adult = no }
+		government = chinese_imperial_government
+		learning >=15
 		religion = earth_monarchism
 	}
 	
@@ -1917,7 +1528,8 @@ character_event = {
 	}
 		
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -1945,11 +1557,12 @@ character_event = {
 	picture = GFX_evt_bloodlines
 	is_triggered_only = yes
 	
+	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = just
 	}
 	
@@ -1959,7 +1572,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -1987,11 +1601,12 @@ character_event = {
 	picture = GFX_evt_holy_emperor
 	is_triggered_only = yes
 	
+	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = arbitrary
 	}
 	
@@ -2001,7 +1616,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 3
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2029,11 +1645,11 @@ character_event = {
 	picture = GFX_evt_scandal
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = ambitious
 	}
 	
@@ -2043,7 +1659,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2071,11 +1688,11 @@ character_event = {
 	picture = GFX_evt_recovery
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = slothful
 	}
 	
@@ -2085,7 +1702,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 3
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2113,11 +1731,11 @@ character_event = {
 	picture = GFX_evt_open_book_hf
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = diligent
 	}
 	
@@ -2127,7 +1745,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2155,11 +1774,11 @@ character_event = {
 	picture = GFX_evt_feast
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = content
 	}
 	
@@ -2169,7 +1788,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2196,11 +1816,11 @@ character_event = {
 	picture = GFX_evt_china_diplomatic_success
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = gregarious
 	}
 	
@@ -2210,7 +1830,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2238,11 +1859,11 @@ character_event = {
 	picture = GFX_evt_china_diplomatic_incident
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = shy
 	}
 	
@@ -2252,7 +1873,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2281,11 +1903,11 @@ character_event = {
 	picture = GFX_evt_china_diplomatic_incident
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = stutter
 	}
 	
@@ -2295,7 +1917,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2323,11 +1946,11 @@ character_event = {
 	picture = GFX_evt_china_diplomatic_incident
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = lisp
 	}
 	
@@ -2343,7 +1966,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2371,11 +1995,11 @@ character_event = {
 	is_triggered_only = yes
 	picture = GFX_evt_tribal_shrine
 
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = kind
 	}
 	
@@ -2385,7 +2009,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2413,11 +2038,11 @@ character_event = {
 	picture = GFX_evt_beheading
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = cruel
 	}
 	
@@ -2427,7 +2052,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2455,11 +2081,11 @@ character_event = {
 	picture = GFX_evt_bad_news
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = trusting
 	}
 	
@@ -2469,7 +2095,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2497,11 +2124,11 @@ character_event = {
 	picture = GFX_evt_bleeding_from_neck_hf
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = paranoid
 	}
 	
@@ -2517,7 +2144,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2545,11 +2173,11 @@ character_event = {
 	picture = GFX_evt_sultan
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = lustful
 	}
 	
@@ -2559,7 +2187,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 3
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2587,11 +2216,11 @@ character_event = {
 	desc = EVTDESCMAND11
 	is_triggered_only = yes
 	
+	only_playable = yes
+	min_age = 16
+	
 	trigger = {
-		OR = {
-			has_landed_title = e_earth_kingdom
-			has_landed_title = k_earth_kingdom
-		}
+		government = chinese_imperial_government
 		trait = depressed
 	}
 	
@@ -2601,7 +2230,8 @@ character_event = {
 	}
 	
 	weight_multiplier = {
-		months = 7
+		factor = 1
+		
 		modifier = {
 			factor = 0.05
 			check_variable = { which = global_royalAuthority value <= -80 }
@@ -2621,151 +2251,4 @@ character_event = {
 			check_variable = { which = global_royalAuthority value = 80 }
 		}
 	}
-}		
-
-# narrative_event = {
-	# id = mandate.30
-	# title = EVTMADTIT30
-	# desc = EVTDESCMAND30
-	# is_triggered_only = yes
-	# picture = GFX_evt_ba_sing_se
-	
-	# trigger = {
-		# OR = {
-			# has_landed_title = e_earth_kingdom
-			# has_landed_title = k_earth_kingdom
-		# }
-		# OR = {
-			# has_character_flag = noble_pretender
-			# has_character_flag = peasant_leader
-		# }
-	# }
-	
-	# option = {
-		# name = mandatetakecrown
-		# set_variable = { which = global_royalAuthority value = 0 }
-		# any_playable_ruler = {
-			# narrative_event = { id = mandate.31 }
-		# }
-		# ai_chance = {
-			# factor = 0.7
-		# }
-	# }
-	
-	# option = {
-		# name = mandatebcbasingking
-		# set_variable = { which = global_royalAuthority value = 0 }
-		# k_ba_sing_se= {
-			# grant_title = ROOT
-			# activate_title = { title = k_earth_kingdom status = yes }
-			# copy_title_history = k_earth_kingdom
-			# copy_title_laws = k_earth_kingdom
-			# make_primary_title = yes
-		# }
-		# e_earth_kingdom = { destroy_landed_title = THIS }
-		# any_playable_ruler = {
-			# narrative_event = { id = mandate.32 }
-		# }
-		# hidden_tooltip = {
-			# e_earth_kingdom = { destroy_landed_title = THIS }
-		# }
-		# ai_chance = {
-			# factor = 0.3
-		# }
-	# }
-
-	# When peasant rep gov will be finished here will be option to establish peasant republic of ba sing se and export the revolution - TypicalCrusader
-# }
-
-# narrative_event = {
-	# id = mandate.31
-	# title = EVTTITMAND31
-	# desc = EVTDESCMAND31
-	# is_triggered_only = yes
-	# picture = GFX_evt_ba_sing_se
-	
-	# trigger = {
-		# is_title_active = e_earth_kingdom
-		# e_earth_kingdom = {
-			# holder_scope = {
-				# OR = {
-					# has_character_flag = noble_pretender
-					# has_character_flag = peasant_leader
-				# }
-			# }
-		# }
-	# }
-	
-	# option = {
-		# trigger = {
-			# OR = {
-				# has_landed_title = e_earth_kingdom
-				# has_landed_title = k_earth_kingdom
-			# }
-		# }
-		# name = mandate.31a
-		# clr_character_flag = noble_pretender
-		# clr_character_flag = peasant_leader
-	# }	
-	
-	# option = {
-		# trigger = {
-			# culture_group = earth_kingdom_cultures
-			# NOT = { has_landed_title = e_earth_kingdom }
-		# }
-		# name = mandate.31b
-	# }
-	
-	# option = {
-		# trigger = {
-			# NOT = { culture_group = earth_kingdom_cultures }
-			# NOT = { has_landed_title = e_earth_kingdom }
-		# }
-		# name = mandate.31c
-	# }
-# }	
-	
-# narrative_event = {
-	# id = mandate.32
-	# title = EVTTITMAND32
-	# desc = EVTDESCMAND32
-	# is_triggered_only = yes
-	# picture = GFX_evt_ba_sing_se
-
-	# trigger = {
-		# is_title_active = k_earth_kingdom
-		# k_earth_kingdom = {
-			# holder_scope = {
-				# OR = {
-					# has_character_flag = noble_pretender
-					# has_character_flag = peasant_leader
-				# }
-			# }
-		# }
-	# }
-	
-	# option = {
-		# trigger = {
-			# has_landed_title = k_earth_kingdom
-		# }
-		# name = mandate.32a
-		# clr_character_flag = noble_pretender
-		# clr_character_flag = peasant_leader
-	# }	
-	
-	# option = {
-		# trigger = {
-			# culture_group = earth_kingdom_cultures
-			# NOT = { has_landed_title = k_earth_kingdom }
-		# }
-		# name = mandate.32b
-	# }
-	
-	# option = {
-		# trigger = {
-			# NOT = { culture_group = earth_kingdom_cultures }
-			# NOT = { has_landed_title = k_earth_kingdom }
-		# }
-		# name = mandate.32c
-	# }
-# }
+}
