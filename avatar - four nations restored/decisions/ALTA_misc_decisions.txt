@@ -46,7 +46,7 @@ decisions = {
 			character_event = { id = bending.200 }
 		}
 		ai_will_do = {
-			factor = 0
+			factor = 0 
 		}
 	}
 	
@@ -63,7 +63,7 @@ decisions = {
 			is_adult = yes
 			has_dlc = "Sons of Abraham"
 			OR = {
-				AND = {
+				AND = { 
 					religion_group = fire_religions
 					is_alternate_start = no
 				}
@@ -75,8 +75,8 @@ decisions = {
 			is_adult = yes
 			is_ruler = no
 			religion = FROM
-			NOR = {
-				trait = incapable
+			NOR = { 
+				trait = incapable 
 				trait = fire_sage
 				trait = bad_priest_fire
 			}
@@ -84,17 +84,17 @@ decisions = {
 		}
 		
 		allow = {
-			OR = {
-				AND = {
+			OR = { 
+				AND = { 
 					is_married = no
 					custom_tooltip = {
 						text = NOT_HEIR_TITLE_TT
 						NOT = {
-							any_heir_title = {
-								always = yes
-							}
-						}
-					}
+                        	any_heir_title = { 
+                            	always = yes
+                            }
+                        }
+                    }
 				}
 				prisoner = yes
 			}
@@ -105,14 +105,14 @@ decisions = {
 			FROM = { piety = -50 }
 			add_ascetic_trait_effect = yes #Adds religion-based monk-traits.
 			if = { #For fire-religion and Altstart
-				limit = {
-					NOR = {
-						religion_group = earth_religions
+				limit = { 
+					NOR = { 
+						religion_group = earth_religions 
 						religion_group = water_religions
 						religion_group = air_religions
 						religion_group = modern_religions
-				  		religion_group = outlaw_religions
-					}
+                  		religion_group = outlaw_religions
+					} 
 				}
 				add_trait = fire_sage
 			}
@@ -175,16 +175,16 @@ decisions = {
 			modifier = { #There are better spares.
 				factor = 20
 				is_child_of = FROM
-				OR = {
+				OR = { 
 					has_negative_congenital_trigger = yes
 					has_infertile_trait_trigger = yes
 					has_severe_disability_trigger = yes
 				}
-				FROM = {
-					any_child = {
+				FROM = { 
+					any_child = { 
 						is_alive = yes
-						NOR = {
-							character = ROOT
+						NOR = { 
+							character = ROOT 
 							has_negative_congenital_trigger = yes
 							has_infertile_trait_trigger = yes
 							has_severe_disability_trigger = yes
@@ -195,12 +195,12 @@ decisions = {
 			modifier = { #Must preserve the realm from falling to evil.
 				factor = 5
 				is_evil_trigger = yes
-				FROM = {
-					is_benevolent_trigger = yes
-					any_child = {
+				FROM = { 
+					is_benevolent_trigger = yes 
+					any_child = { 
 						is_alive = yes
-						NOR = {
-							character = ROOT
+						NOR = { 
+							character = ROOT 
 							is_evil_trigger = yes
 						}
 					}
@@ -263,7 +263,7 @@ decisions = {
 				has_landed_title = e_earth_kingdom
 				has_landed_title = k_earth_kingdom
 			}
-			any_realm_lord = {
+			any_realm_lord = { 
 				AND = {
 					ai = yes
 					has_landed_title = c_royal_earth_palace
@@ -272,8 +272,8 @@ decisions = {
 		}
 		allow = {
 			NOT = { has_landed_title = c_royal_earth_palace }
-			any_realm_lord = {
-				has_landed_title = c_royal_earth_palace
+			any_realm_lord = { 
+				has_landed_title = c_royal_earth_palace 
 			}
 		}
 		effect = {
@@ -297,7 +297,7 @@ decisions = {
 		potential = {
 			has_landed_title = e_fire_nation
 			NOT = { has_global_flag = founded_the_republic }
-			NOT = {
+			NOT = { 
 				religion = fire_nation_imperialism
 			}
 			any_realm_province = {
@@ -406,7 +406,7 @@ decisions = {
 						limit = { #Nobody who already has an appropriate fire lord bloodline gets a second one
 							NOT = {
 								any_bloodline = {
-									has_bloodline_flag = is_firelord_bloodline
+									has_bloodline_flag = is_firelord_bloodline 
 								}
 							}
 						}
@@ -428,25 +428,22 @@ decisions = {
 	form_one_nation = { # Empire Title ##TODO: Localisation
 		is_high_prio = yes
 		only_independent = yes
-		ai_check_interval = 48 #The AI is realistically never going to do this, lets be honest
+		ai_check_interval = 480 #The AI is realistically never going to do this, lets be honest
 		
 		potential = {
 			NOT = { has_global_flag = founded_one_nation }
-			any_demesne_title = { #Only tell a player clearly bent on world domination
-				tier = EMPEROR
-				count = 2
-			}
+			realm_size = 300 #Only tell a player clearly bent on world domination - there are ~200 provinces in the game, so there's on average about 600 realm size up for grabs
 		}
 
 		allow = {
 			prisoner = no
 			prestige = 10000
 			piety = 10000
-			AND = {
-				has_landed_title = e_air_nomads
-				completely_controls_region = world_greater_earth_kingdom
-				has_landed_title = e_fire_nation
-				has_landed_title = e_water_tribes
+			NOT = {
+				any_independent_ruler = { #This excludes ROOT
+					limit = { is_landed = yes }
+					is_alive = yes
+				}
 			}
 		}
 	
@@ -455,6 +452,7 @@ decisions = {
 			set_global_flag = founded_one_nation
 			e_one_nation = {
 				grant_title = ROOT
+				make_primary_title = yes
 			}
 			create_bloodline = {
 				type = one_nation_bloodline
@@ -907,6 +905,7 @@ decisions = {
 					NOT = { culture_group = ROOT }
 				}
 			}
+			
 			modifier = {
 				factor = 0.1
 				liege = {
