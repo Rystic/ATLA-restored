@@ -896,7 +896,7 @@ ambition_five_year_county_conquest = {
 
 # age_cb_unification_war = {
 	# name = CB_UNIFICATION_WAR
-	# war_name = WAR_CUNIFICATION_WAR
+	# war_name = WAR_UNIFICATION_WAR
 	# sprite = 16
 	# truce_days = 1825
 	# hostile_against_others = yes
@@ -1096,3 +1096,116 @@ ambition_five_year_county_conquest = {
 		# factor = 100
 	# }
 # }
+
+cb_shatter_realm = { #Used by the Avatar for Crisis Wars
+	name = CB_AVATAR_CRISIS_WAR
+	war_name = WAR_AVATAR_CRISIS_WAR
+	is_permanent = no #Declared via event
+	sprite = 30
+	truce_days = 365
+	can_ask_to_join_war = yes
+	allow_whitepeace = no
+	attacker_alliance_occ_warscore = yes
+	defender_unoccupied_warscore = yes
+
+	on_success = {
+		FROM = {
+			custom_tooltip = {
+				text = destabilization_china_success_tt ##Not a mistake! Appropriate. - Liz
+				hidden_effect = {
+					religion_authority = {
+						modifier = lost_crusade
+						years = 30
+					}
+					any_realm_title = { #Targets vassals AND ruler!
+						limit = {
+							higher_tier_than = DUKE
+							controls_religion = no
+						}
+						unsafe_destroy_landed_title = THIS
+					}
+					any_player = {
+						narrative_event = { id = NAE.707 }
+					}
+				}
+			}
+			death = { death_reason = death_berserker_rage killer = persistent_event_target:the_avatar }
+		}
+		any_attacker = {
+			hidden_tooltip = { 
+				participation_scaled_prestige = 250
+				participation_scaled_piety = 400
+				if = {
+					limit = { uses_decadence = yes }
+					participation_scaled_decadence = -50
+				}
+				wealth = 120
+			}
+		}
+	}
+
+	on_reverse_demand = {
+		ROOT = {
+			piety = -200
+			transfer_scaled_wealth = {
+				to = FROM
+				value = 5.0
+				min = 500
+			}
+			any_demesne_title = {
+				limit = {
+					higher_tier_than = DUKE
+					controls_religion = no
+				}
+				unsafe_destroy_landed_title = THIS
+			}
+			any_player = {
+				narrative_event = { id = NAE.708 }
+			}
+		}
+		FROM = {
+			religion_authority = {
+				modifier = won_crusade
+				years = 30
+			}
+		}
+		any_defender = {
+			hidden_tooltip = { 
+				participation_scaled_prestige = 250
+				participation_scaled_piety = 400
+				if = {
+					limit = { uses_decadence = yes }
+					participation_scaled_decadence = -50
+				}
+				wealth = 120
+			}
+		}
+
+		persistent_event_target:the_avatar = {
+			any_demesne_title = {
+				limit = { controls_religion = no } #If the Avatar was landed, their king and emperor tier titles were destroyed since they'd be ROOT
+				gain_title = {
+					target = FROM
+					type = invasion
+				}
+			}
+			add_maimed_trait_effect = yes
+		}	
+	}
+	
+	attacker_ai_victory_worth = {
+		factor = -1 # always accept
+	}
+	
+	attacker_ai_defeat_worth = {
+		factor = 100
+	}
+
+	defender_ai_victory_worth = {
+		factor = -1 # always accept
+	}
+	
+	defender_ai_defeat_worth = {
+		factor = 100
+	}
+}
