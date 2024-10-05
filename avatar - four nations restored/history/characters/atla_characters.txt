@@ -116,15 +116,10 @@
 	father = 52021 # was 52020 "Old Zuko" but this character canonically cannot exist
 	748.6.7 = {
 		birth = yes
-		effect = {
-			set_character_flag = is_sozin
-			set_global_flag = sozin_exists # for new avatar engine
-		}
+		effect = { set_character_flag = is_sozin }
 	}
 	756.3.13 = {
-		effect = {
-			add_friend = 3
-		}
+		effect = { add_friend = 3 }
 	}
 	764.6.7 = {
 		remove_trait = competent_bender
@@ -232,7 +227,7 @@
 	culture = customPortrait_roku_and_ta_min
 	dna = "000000a0b00"
 	properties = "ki0fcg00000000"
-	disallow_random_traits = yes
+	random_traits = no
 	trait = firebender
 	trait = competent_bender
 	trait = canon_character
@@ -240,96 +235,56 @@
 		birth = yes
 		culture = fire_imperial_culture
 		effect = {
-			set_character_flag = avatar_unrevealed
-			clr_global_flag = avatar_earth
-			clr_global_flag = avatar_dead
-			set_global_flag = avatar_fire
-			set_global_flag = avatar_unrevealed
-			save_global_event_target_as = global_avatar
 			set_character_flag = is_roku
-			set_global_flag = Roku
-
-			activate_title = { title = d_avatar_unrevealed status = yes }
-			d_avatar_unrevealed = {
-				grant_title = 3
-			}
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			clr_global_flag = avatar_earth
+			set_global_flag = avatar_fire
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
 		}
 	}
 	756.3.13 = {
-		effect = {
-			add_friend = 2
-			find_avatar_effect = yes
-			find_firelord_effect = yes
-			event_target:firelord = {
-				move_avatar_effect = yes
-				job_spiritual = {
-					save_event_target_as = sage_of_firenaton
-				}
-			}
-
-			set_guardian = event_target:sage_of_firenaton
-			clear_event_target = sage_of_firenaton
-		}
+		employer = 2
+		effect = { add_friend = 2 }
 	}
 	764.6.6 = {
-		effect = {
-			set_character_flag = avatar_revealed
-			clr_character_flag = avatar_unrevealed
-			clr_global_flag = avatar_unrevealed
-			set_global_flag = avatar_revealed
-	
-			add_trait = on_journey
-			add_trait = avatar
-			add_trait = just
-			add_trait = temperate
-			add_trait = mastermind_theologian
-
-			set_character_flag = avatar_journey
-	
-			activate_title = { title = d_avatar status = yes }
-			activate_title = { title = d_avatar_unrevealed status = no }
-			unsafe_destroy_landed_title = d_avatar_unrevealed
-			d_avatar = {
-				grant_title = 3
-			}
-			
-			add_trait = avatar_learning_airbending
-		}
+		employer = 7 #Moves to Gyatso to learn airZending
+		add_trait = roku_learning_airbending #Change portrait
+		
+		remove_trait = firebender
+		add_trait = avatar
+		add_trait = avatar_firebender
+		add_trait = just
+		add_trait = temperate
+		add_trait = mastermind_theologian
 	}
-	767.1.15 = { # 3 years to master airbending
-		effect = {
-			add_trait = avatar_airbender
-			add_friend = 7 # Gyatso
-			remove_trait = avatar_learning_airbending
-			add_trait = avatar_learning_waterbending
-		}
+	767.1.15 = {
+		employer = 5124 #Moves to Northern Water to learn Waterbending
+		add_trait = avatar_airbender
+		
+		remove_trait = roku_learning_airbending
+		add_trait = roku_learning_waterbending
+		
+		effect = { add_friend = 7 }
 	}
-	# Now he has d_avatar
-	# 772.3.31 = {
-	# 	employer = 2 # Employed by Sozin when Sozin gets his titles
-	# }
-	772.3.21 = { # 5 years to master waterbending
-		effect = {
-			add_trait = avatar_waterbender
-			remove_trait = avatar_learning_waterbending
-			add_trait = avatar_learning_earthbending
-		}
+	772.3.21 = {
+		employer = 6 #Moves to Sud to learn Earthbending
+		add_trait = avatar_waterbender
+		
+		remove_trait = roku_learning_waterbending
+		add_trait = roku_learning_earthbending
 	}
-	775.8.4 = { # 3 years to master earthbending
-		effect = {
-			add_friend = 6 # Sud
-			add_trait = avatar_earthbender
-			remove_trait = avatar_learning_earthbending
-		}
+	775.8.4 = {
+		employer = 6727 #Moves to Crescent Island to study Avatar state
+		add_trait = avatar_earthbender
+		effect = { add_friend = 6 }
+		
+		remove_trait = roku_learning_earthbending
 	}
-	776.10.21 = { # mastering avatar state
-		effect = {
-			remove_trait = avatar
-			add_trait = fullyrealisedavatar
-			
-			remove_trait = on_journey
-			clr_character_flag = avatar_journey
-		}
+	776.10.21 = {
+		employer = 2 #Moves home again
+		add_trait = fully_realised_avatar
+		
 		create_bloodline = {
 			type = roku_bloodline
 		}
@@ -341,6 +296,7 @@
 		death = {
 			death_reason = death_volcano
 		}
+		effect = { clear_persistent_event_target = the_avatar }
 	}
 }
 4 = {
@@ -447,7 +403,7 @@
 	culture = northern_water_culture
 	trait = waterbender
 	dna = "blbgzhdpfax"
-	properties = "fijad000000000"
+	properties = "fijad000000000" 
 	712.2.17 = {
 		birth = yes
 		employer = 5112
@@ -556,8 +512,8 @@
 		add_trait = temperate
 	}
 	# 8 doesn't exist
-	# 741.11.13 = {
-	# 	add_spouse = 8
+	# 741.11.13 = { 
+	# 	add_spouse = 8 
 	# }
 	770.1.14 = {
 		death = yes
@@ -662,7 +618,6 @@
 	mother = 5
 	trait = firebender
 	trait = competent_bender
-	trait = directdescendantavatar
 	801.6.17 = {
 		birth = yes
 		effect = {
@@ -1048,7 +1003,6 @@
 	female = yes
 	religion = "fire_spirituality"
 	culture = customPortrait_iroh
-	trait = descendantavatar
 	trait = canon_character
 	mother = 18
 	father = 19
@@ -1350,11 +1304,8 @@
 	culture = customPortrait_kyoshi
 	female = yes
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = earthbender
-	trait = avatar_firebender
-	trait = avatar_airbender
-	trait = avatar_waterbender
+	trait = fully_realised_avatar
+	trait = giant
 	trait = master_bender
 	trait = healer
 	trait = lavabender
@@ -1365,12 +1316,10 @@
 		birth = yes
 		effect = {
 			set_character_flag = is_kyoshi
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
 			set_global_flag = avatar_earth
-			save_global_event_target_as = global_avatar
-			set_character_flag = avatar_revealed
-			set_global_flag = avatar_revealed
-
-			set_global_flag = Kyoshi
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
 		}
 		culture = earth_islander
 	}
@@ -1384,11 +1333,12 @@
 			add_artifact = kyoshifan
 		}
 	}
+	537.8.17 = {
+		trait = immortal
+		immortal_age = 22 #She learns to *perform* the technique far younger, but it lets her choose which age to remain at, and she sure doesn't look like a teenager
+	}
 	555.3.12 = {
 		effect = {
-			d_avatar = {
-				make_primary_title = yes
-			}
 			spawn_unit = {
 				province = 389 # Kyoshi Island
 				owner = ROOT
@@ -1404,10 +1354,12 @@
 				maintenance = no
 				reinforces = yes
 			}
+			set_character_flag = avatar_settled #Makes sure Kyoshi doesn't wander off
 		}
 	}
 	748.6.6 = {
 		death = yes
+		effect = { clear_persistent_event_target = the_avatar }
 	}
 }
 35 = {
@@ -1459,7 +1411,6 @@
 	disallow_random_traits = yes
 	trait = earthbender
 	trait = powerful_bender
-	trait = directdescendantavatar
 	683.10.21 = {
 		birth = yes
 	}
@@ -1480,7 +1431,6 @@
 	mother = 36
 	trait = earthbender
 	trait = powerful_bender
-	trait = descendantavatar
 	713.6.12 = {
 		birth = yes
 	}
@@ -1499,11 +1449,7 @@
 	religion = tui_and_la
 	culture = customPortrait_kyoshi
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = waterbender
-	trait = avatar_earthbender
-	trait = avatar_firebender
-	trait = avatar_airbender
+	trait = fully_realised_avatar
 	trait = powerful_bender
 	trait = proud
 	trait = strong
@@ -1537,11 +1483,7 @@
 	properties = "00000000000000"
 	female = yes
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = airbender
-	trait = avatar_waterbender
-	trait = avatar_earthbender
-	trait = avatar_firebender
+	trait = fully_realised_avatar
 	trait = powerful_bender
 	trait = just
 	trait = airnomad
@@ -1563,7 +1505,7 @@
 40 = {
 	name = "Chin"
 	dynasty = 336
-	father = 50505
+        father = 50505
 	religion = "way_of_chin"
 	culture = northern_earth_culture
 	dna = 00eb00c0000
@@ -2123,40 +2065,34 @@
 	intrigue = 4
 	stewardship = 2
 	religion = "southern_spirituality"
-	culture = customPortrait_korra
+	culture = southern_water_culture
 	father = 46
 	mother = 2614
 	disallow_random_traits = yes
 	female = yes
-	trait = waterbender
+	trait = avatar_waterbender
 	trait = master_bender
 	trait = strong
 	trait = healer
 	trait = robust
-	983.2.16 = {
+	982.6.28 = {
 		birth = yes
-		culture = southern_water_culture
 		add_trait = fussy
 		add_trait = rowdy
 		add_trait = haughty
 		add_trait = willful
 		effect = {
 			set_character_flag = is_korra
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			clr_global_flag = avatar_air
 			set_global_flag = avatar_water
-			save_global_event_target_as = global_avatar
-			set_character_flag = avatar_revealed
-			set_global_flag = avatar_revealed
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
 		}
 	}
 	989.2.16 = {
 		add_trait = avatar
 		add_trait = avatar_firebender
-		effect = {
-			set_character_flag = avatar_revealed
-			clr_character_flag = avatar_unrevealed
-			clr_global_flag = avatar_unrevealed
-			set_global_flag = avatar_revealed
-		}
 	}
 	992.5.14 = {
 		add_trait = avatar_earthbender
@@ -2175,9 +2111,7 @@
 		add_trait = brave
 	}
 	1000.12.6 = {
-		add_trait = avatar_airbender
-		remove_trait = avatar
-		add_trait = fullyrealisedavatar
+		add_trait = fully_realised_avatar
 	}
 	1001.5.21 = {
 		add_trait = metalbender
@@ -2192,6 +2126,7 @@
 	}
 	1082.12.17 = {
 		death = yes
+		clear_persistent_event_target = the_avatar
 	}
 }
 57 = {
@@ -2272,6 +2207,12 @@
 		birth = yes
 		effect = {
 			set_character_flag = is_aang
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			clr_global_flag = avatar_fire
+			set_global_flag = avatar_air
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			
 		}
 	}
 	828.3.14 = {
@@ -2284,7 +2225,7 @@
 			}
 		}
 	}
-	830.2.13 = {
+	830.2.13 = { ##TODO: Change this to make Aang alive & inaccessiZle
 		death = {
 			death_reason = death_missing
 		}
@@ -2316,7 +2257,6 @@
 	father = 87
 	mother = 58
 	disallow_random_traits = yes
-	trait = directdescendantavatar
 	trait = curious
 	trait = rowdy
 	trait = willful
@@ -2363,7 +2303,6 @@
 	father = 87
 	mother = 58
 	disallow_random_traits = yes
-	trait = directdescendantavatar
 	trait = waterbender
 	trait = incompetent_bender
 	trait = conscientious
@@ -3081,7 +3020,6 @@
 	father = 87
 	mother = 58
 	disallow_random_traits = yes
-	trait = directdescendantavatar
 	trait = idolizer
 	trait = conscientious
 	trait = brooding
@@ -3214,10 +3152,10 @@
 			add_artifact = staffGlider
 
 			set_character_flag = is_aang
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
 			set_global_flag = avatar_air
-			save_global_event_target_as = global_avatar
-			set_character_flag = avatar_revealed
-			set_global_flag = avatar_revealed
 		}
 	}
 	929.11.4 = {
@@ -3226,10 +3164,6 @@
 			add_friend = 58
 			add_friend = 47
 			add_friend = 42
-			set_character_flag = avatar_revealed
-			clr_character_flag = avatar_unrevealed
-			clr_global_flag = avatar_unrevealed
-			set_global_flag = avatar_revealed
 		}
 	}
 	930.1.23 = {
@@ -3254,8 +3188,7 @@
 		}
 	}
 	930.8.26 = {
-		remove_trait = avatar
-		add_trait = fullyrealisedavatar
+		add_trait = fully_realised_avatar
 		create_bloodline = {
 			type = aang_bloodline
 		}
@@ -3279,12 +3212,14 @@
 	936.11.8 = {
 		religion = air_acolytism
 		culture = air_acolytes
+		set_character_flag = avatar_settled #Makes sure Aang doesn't wander off
 	}
 	939.12.16 = {
 		add_spouse = 58
 	}
 	982.6.28 = {
 		death = yes
+		clear_persistent_event_target = the_avatar
 	}
 }
 88 = {
@@ -3492,7 +3427,10 @@
 	932.10.13 = {
 		effect = {
 			set_name = "Ursa"
-			add_trait = descendantavatar
+			random_bloodline = {
+				limit = { has_bloodline_flag = is_roku_bloodline }
+				add_bloodline_member = ROOT
+			}
 		}
 		employer = 27
 		dynasty = 1393
@@ -4262,7 +4200,7 @@
 		birth = yes
 	}
 	670.3.15 = {
-		add_trait = thrifty_clerk
+		add_trait = thrifty_clerk 
 	}
 	712.5.8 = {
 		death = yes
@@ -4690,7 +4628,6 @@
 	father = 84
 	mother = 99
 	disallow_random_traits = yes
-	trait = descendantavatar
 	trait = quick
 	trait = idolizer
 	trait = airbender
@@ -4738,7 +4675,6 @@
 	father = 84
 	mother = 99
 	disallow_random_traits = yes
-	trait = descendantavatar
 	trait = playful
 	trait = airbender
 	trait = incompetent_bender
@@ -4768,7 +4704,6 @@
 	father = 84
 	mother = 99
 	disallow_random_traits = yes
-	trait = descendantavatar
 	trait = rowdy
 	trait = airbender
 	trait = incompetent_bender
@@ -4796,7 +4731,6 @@
 	father = 84
 	mother = 99
 	disallow_random_traits = yes
-	trait = descendantavatar
 	trait = indolent
 	1000.11.28 = {
 		birth = yes
@@ -4950,14 +4884,14 @@
 		birth = yes
 	}
 	979.7.22 = {
-		remove_trait = incompetent_bender
+	        remove_trait = incompetent_bender
 		add_trait = competent_bender
 		add_trait = willful
 	}
 	984.7.22 = {
-		remove_trait = competent_bender
+	        remove_trait = competent_bender
 		add_trait = powerful_bender
-		remove_trait = conscientious
+	        remove_trait = conscientious
 		remove_trait = willful
 		add_trait = brave
 		add_trait = diligent
@@ -4967,10 +4901,10 @@
 		add_trait = skilled_tactician
 		add_trait = experimenter
 		add_trait = inspiring_leader
-		remove_trait = powerful_bender
+	        remove_trait = powerful_bender
 		add_trait = master_bender
 		add_trait = lightningbender
-		remove_trait = curious
+	        remove_trait = curious
 		add_trait = robust
 		add_trait = humble
 		add_trait = patient
@@ -4994,13 +4928,13 @@
 		birth = yes
 	}
 	989.11.7 = {
-		remove_trait = incompetent_bender
+	        remove_trait = incompetent_bender
 		add_trait = competent_bender
 		add_trait = curious
 	}
 	993.11.7 = {
 		add_trait = charismatic_negotiator
-		remove_trait = indolent
+	        remove_trait = indolent
 		remove_trait = curious
 		add_trait = patient
 		add_trait = gregarious
@@ -5021,15 +4955,15 @@
 		birth = yes
 	}
 	871.8.6 = {
-		remove_trait = incompetent_bender
+	        remove_trait = incompetent_bender
 		add_trait = competent_bender
 		add_trait = willful
 		add_trait = brooding
 	}
 	877.8.6 = {
-		remove_trait = competent_bender
+	        remove_trait = competent_bender
 		add_trait = powerful_bender
-		remove_trait = conscientious
+	        remove_trait = conscientious
 		remove_trait = willful
 		add_trait = brave
 		add_trait = temperate
@@ -5040,10 +4974,10 @@
 		add_trait = defensive_leader
 		add_trait = narrow_flank_leader
 		add_trait = rough_terrain_leader
-		remove_trait = powerful_bender
+	        remove_trait = powerful_bender
 		add_trait = master_bender
-		remove_trait = brooding
-		remove_trait = curious
+	        remove_trait = brooding
+	        remove_trait = curious
 		add_trait = envious
 		add_trait = patient
 	}
@@ -5071,13 +5005,13 @@
 		birth = yes
 	}
 	890.3.19 = {
-		remove_trait = conscientious
+	        remove_trait = conscientious
 		add_trait = diligent
 		add_trait = willful
 		add_trait = curious
 	}
 	896.3.19 = {
-		remove_trait = fussy
+	        remove_trait = fussy
 		remove_trait = willful
 		add_trait = idolizer
 		add_trait = brave
@@ -5089,9 +5023,9 @@
 		add_trait = organizer
 		add_trait = narrow_flank_leader
 		add_trait = rough_terrain_leader
-		remove_trait = idolizer
-		remove_trait = curious
-		remove_trait = weapons_expert
+	        remove_trait = idolizer
+	        remove_trait = curious
+	        remove_trait = weapons_expert
 		add_trait = weapon_master
 		add_trait = erudite
 		add_trait = shrewd
@@ -5213,12 +5147,9 @@
 	religion = earth_spirituality
 	disallow_random_traits = yes
 	trait = twin
-	trait = fullyrealisedavatar
-	trait = earthbender
+	trait = avatar
+	trait = fully_realised_avatar
 	trait = bastard
-	trait = avatar_firebender
-	trait = avatar_waterbender
-	trait = avatar_airbender
 	trait = master_bender
 	trait = neutral_jing
 	trait = robust
@@ -5244,11 +5175,8 @@
 	culture = fire_imperial_culture
 	religion = fire_spirituality
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = firebender
-	trait = avatar_earthbender
-	trait = avatar_waterbender
-	trait = avatar_airbender
+	trait = avatar
+	trait = fully_realised_avatar
 	trait = master_bender
 	trait = midas_touched
 	trait = humble
@@ -5274,35 +5202,32 @@
 	}
 }
 51001 = {
-	name = "Wan"
-	dynasty = 4008
-	culture = fire_islander
-	religion = bhanti_spirituality
-	disallow_random_traits = yes
-	trait = grey_eminence
-	trait = fullyrealisedavatar
-	trait = firebender
-	trait = avatar_earthbender
-	trait = avatar_waterbender
-	trait = avatar_airbender
-	trait = master_bender
-	trait = innerflame
-	trait = just
-	trait = quick
-	trait = humble
-	trait = honest
-	trait = charitable
-	trait = gregarious
-	trait = inspiring_leader
-	trait = brave
-	1.1.1 = {
-		birth = yes
-	}
-	52.1.11 = {
-		death = {
+name = "Wan"
+      dynasty = 4008
+      culture = fire_islander
+      religion = bhanti_spirituality
+	  disallow_random_traits = yes
+	  trait = grey_eminence
+      trait = fully_realised_avatar
+      trait = avatar
+      trait = master_bender
+      trait = innerflame
+	  trait = just
+	  trait = quick
+	  trait = humble
+	  trait = honest
+	  trait = charitable
+	  trait = gregarious
+	  trait = inspiring_leader
+	  trait = brave
+      1.1.1 = {
+    		birth = yes
+      }
+      52.1.11 = {
+      	death = {
 			death_reason = death_battle
-		}
-	}
+			}
+      }
 }
 51002 = {
 	name = "Mumik"
@@ -5310,11 +5235,8 @@
 	culture = southern_water_culture
 	religion = southern_spirituality
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = waterbender
-	trait = avatar_earthbender
-	trait = avatar_firebender
-	trait = avatar_airbender
+	trait = fully_realised_avatar
+	trait = avatar
 	trait = master_bender
 	trait = skilled_tactician
 	trait = winter_soldier
@@ -5339,11 +5261,8 @@
 	religion = air_spirituality
 	culture = northern_air_nomad
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = airbender
-	trait = avatar_waterbender
-	trait = avatar_earthbender
-	trait = avatar_firebender
+	trait = fully_realised_avatar
+	trait = avatar
 	trait = powerful_bender
 	trait = just
 	trait = airnomad_tattoos
@@ -5367,62 +5286,56 @@
 }
 51004 = {
 name = "Kazumi"
-	dynasty = 4011
-	culture = fire_islander
-	religion = fire_spirituality
-	female = yes
-	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = firebender
-	trait = avatar_earthbender
-	trait = avatar_waterbender
-	trait = avatar_airbender
-	trait = powerful_bender
-	trait = martial_cleric
-	trait = proud
-	trait = brave
-	trait = just
-	trait = ambitious
-	trait = stutter
-	trait = feeble
-	trait = innerflame
-	trait = patient
-	191.2.25 = {
-		birth = yes
-	}
-	219.7.11 = {
-		death = yes
-	}
+      dynasty = 4011
+      culture = fire_islander
+      religion = fire_spirituality
+	  female = yes
+	  disallow_random_traits = yes
+      trait = fully_realised_avatar
+      trait = avatar
+      trait = powerful_bender
+      trait = martial_cleric
+      trait = proud
+      trait = brave
+      trait = just
+      trait = ambitious
+      trait = stutter
+	  trait = feeble
+      trait = innerflame
+	  trait = patient
+      191.2.25 = {
+    		birth = yes
+      }
+      219.7.11 = {
+      	death = yes
+      }
 }
 51005 = {
 	name = "Jin"
-	dynasty = 4012
-	culture = northern_earth_culture
-	religion = earth_spirituality
-	disallow_random_traits = yes
-	diplomacy = 6
-	martial = 3
-	stewardship = 4
-	intrigue = 3
-	trait = fullyrealisedavatar
-	trait = earthbender
-	trait = avatar_firebender
-	trait = avatar_waterbender
-	trait = avatar_airbender
-	trait = powerful_bender
-	trait = neutral_jing
-	trait = tough_soldier
-	trait = zealous
-	trait = charitable
-	trait = holy_warrior
-	trait = patient
-	trait = trusting
-	150.4.9 = {
-		birth = yes
-	}
-	190.8.30 = {
-		death = yes
-	}
+      dynasty = 4012
+      culture = northern_earth_culture
+      religion = earth_spirituality
+	  disallow_random_traits = yes
+	  diplomacy = 6
+	  martial = 3
+	  stewardship = 4
+	  intrigue = 3
+      trait = fully_realised_avatar
+      trait = avatar
+      trait = powerful_bender
+      trait = neutral_jing
+      trait = tough_soldier
+	  trait = zealous
+	  trait = charitable
+	  trait = holy_warrior
+	  trait = patient
+	  trait = trusting
+      150.4.9 = {
+    		birth = yes
+      }
+      190.8.30 = {
+      	death = yes
+      }
 }
 51006 = {
 	name = "Ula"
@@ -5431,11 +5344,8 @@ name = "Kazumi"
 	religion = tui_and_la
 	female = yes
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = waterbender
-	trait = avatar_earthbender
-	trait = avatar_firebender
-	trait = avatar_airbender
+	trait = fully_realised_avatar
+	trait = avatar
 	trait = master_bender
 	trait = grey_eminence
 	trait = kind
@@ -5457,11 +5367,8 @@ name = "Kazumi"
 	religion = air_spirituality
 	culture = northern_air_nomad
 	disallow_random_traits = yes
-	trait = fullyrealisedavatar
-	trait = airbender
-	trait = avatar_waterbender
-	trait = avatar_earthbender
-	trait = avatar_firebender
+	trait = fully_realised_avatar
+	trait = avatar
 	trait = powerful_bender
 	trait = just
 	trait = airnomad_tattoos
