@@ -20,108 +20,143 @@
 ## AVATAR TRAITS ##
 avatar = {
 	customizer = no
-	diplomacy = 5
-	martial = 7
-	cached = yes # Keep a cache of all trait holder, to use with the corresponding event trigger
-	cannot_inherit = yes
+	random = no
+	
+	caste_tier = 1 ##NOTE: This is ONLY to display the 'Avatar' trait after all the education traits.If a religion is ever made with a caste sytem, change this, as it will be effected!!
+	culture_flex = 80
+	religion_flex = 80
 	cannot_marry = yes
-	monthly_character_prestige = 0.75
-	random = no
-	health = 20.0
-	opposite_opinion = 15 #makes him/her like the avatar more than they already do because they're close friends
-	general_opinion = 15
-	combat_rating = 30
-	tolerates_earth_religions = yes
-	tolerates_fire_religions = yes
-	tolerates_air_religions = yes
-	tolerates_water_religions = yes
-	tolerates_modern_religions = yes
-	way_of_chin_opinion = -200
-	opposites = {
-		fullyrealisedavatar
-	}
-}
-
-fullyrealisedavatar = {
-	customizer = no
-	diplomacy = 5
-	martial = 17
-	cached = yes # Keep a cache of all trait holder, to use with the corresponding event trigger
-	monthly_character_piety = 1.0
-	monthly_character_prestige = 1.5
-	random = no
-	health = 20.0
-	opposite_opinion = 15 #makes him/her like the avatar more than they already do because they're close friends
-	general_opinion = 15
-	combat_rating = 50
-	tolerates_earth_religions = yes
-	tolerates_fire_religions = yes
-	tolerates_air_religions = yes
-	tolerates_water_religions = yes
-	tolerates_modern_religions = yes
-	way_of_chin_opinion = -200
-	opposites = {
-		avatar
-	}
-}
-
-unrevealedavatar = { #Ensures avatars don't die while still children
-	customizer = no
-	hidden = yes
-	health = 20.0
-}
-
-directdescendantavatar = {
-	customizer = no
-	diplomacy = 2
-	martial = 1
+	
+	monthly_character_piety = 0.5
 	monthly_character_prestige = 0.5
-	monthly_character_piety = 0.1
-	random = no
-	same_opinion = 10
-	opposite_opinion = 10
-	general_opinion = 10
-	way_of_chin_opinion = -200
+	
+	health = 4
+	
+	diplomacy = 8
+	martial = 6
+	stewardship = 6
+	intrigue = 6
+	learning = 9
+	
+	
+	ai_ambition = -30 #This makes the Avatar much less likely to go around declaring wars etc
+	ai_honor = 20 #This makes the Avatar less likely to be a scheming douchebag.
+	
 	opposites = {
-		descendantavatar
+		legendary_bender
+		unrevealedavatar
+	}
+}
+
+fully_realised_avatar = { #Trait replaces all bending traits, so gives all their bonuses and a little more! Avatar state is mostly event driven.
+	customizer = no
+	random = no
+	
+	education = yes #For display purposes
+	general_opinion = 20
+	
+	defensive_plot_power_modifier = 0.3
+	combat_rating = 30
+	
+	command_modifier = { #The avatar is functionally a one-man army now
+		damage = 0.2
+		defence = 0.2
+		morale_offence = 0.2
+		morale_defence = 0.2
+		siege = 0.8
+		speed = 0.15
+		retreat = 0.2
+		pursue = 0.25
+	}
+
+	opposites = {
+		avatar_waterbender
+		avatar_earthbender
+		avatar_firebender
+		avatar_airbender
+	}
+}
+
+unrevealedavatar = { #Ensures avatars don't die of natural causes while still children
+	customizer = no
+	random = no
+	hidden = yes
+	health = 20
+	
+	opposites = {
 		avatar
-		fullyrealisedavatar
 	}
 }
 
-descendantavatar = {
+team_avatar = {
 	customizer = no
-	monthly_character_prestige = 0.3
 	random = no
-	same_opinion = 10
-	opposite_opinion = 10
+	cached = yes
+	
+	caste_tier = 2
+	
+	monthly_character_prestige = 0.5
 	general_opinion = 5
+	same_opinion = 25
+	former_team_avatar_opinion = 25
+	fertility = -0.60 #Not much time for that sort of thing!
+	combat_rating = 10
+	
+	
 	opposites = {
-		directdescendantavatar
+		former_team_avatar
 	}
 }
-avatar_on_training = {
-	monthly_character_piety = 0.1
-	same_religion_opinion = 5
 
-	# why do
-	pilgrimage = no
+former_team_avatar = {
 	customizer = no
 	random = no
+	
+	caste_tier = 3
+	
+	monthly_character_prestige = 0.25
+	general_opinion = 5
+	same_opinion = 25
+	team_avatar_opinion = 25
+	combat_rating = 10
+	
+	
+	opposites = {
+		team_avatar
+	}
+}
+
+avatars_peace_trait = {
+	customizer = no
+	random = no
+	hidden = yes
+	
+	ai_ambition = -50
+	ai_zeal = -30
 }
 
 canon_character = { #Not strictly avatar related but close enough
-	health = 7.0
+	health = 2
 	hidden = yes
 	random = no
 	customizer = no
 	cached = yes
 }
 
+bad_avatar = {
+	customizer = no
+	random = no
+	
+	education = yes #For display purposes
+	general_opinion = -30
+	monthly_character_piety = -1
+	monthly_character_prestige = -1
+}
+
 ## RULER TRAITS ##
 earthkingpuppet = { #Earth king who IS a puppet, not a puppet of the EK
 	random = no
-	pilgrimage = yes	# Will need a regent, but can still be guardian to children
+	pilgrimage = yes    # Will need a regent, but can still be guardian to children
 	stewardship = 2
 	ai_honor = 10
 	vassal_opinion = 10
@@ -325,7 +360,7 @@ fortuneteller = { ##Used, but very sparingly. Expand or delete - this is just be
 	customizer = no
 }
 
-serpent_scholar = { #This is just 'sympathy water_religion. Use base game sympathy, add the learning itself in the gain events.
+serpent_scholar = { #This is just 'sympathy water_religion. Use base game syncretic sympathy system, add the learning itself in the gain events.
 	
 	opposites =  {
 		craven
@@ -352,7 +387,7 @@ serpent_scholar = { #This is just 'sympathy water_religion. Use base game sympat
 	child_insult_adj = INSULT_STUPID
 }
 
-true_follower_of_wei_jin = { ##Used only for CBs. Since the wei-jin/jin-wei are always heresies of one another, just use religion - assuming divide content stays, which maybe it shouldn't. - Liz
+true_follower_of_wei_jin = { ##Used only for CBs. Since the wei-jin/jin-wei are always heresies of one another, just use religion. - Liz
 	opposites = {
 		true_follower_of_jin_wei
 	}
@@ -420,7 +455,7 @@ kyoshiwarrior = {
 }
 
 fire_sage = { ##Wouldn't this just be the equivalent of 'nun'/'monk'? Just rename that 'Sage' in the files, and let everyone take it with 'take the vows'. - Liz
-	same_opinion = 10
+    same_opinion = 10
 	monthly_character_piety = 0.3
 	monthly_character_prestige = 0.1
 	church_opinion = 5
@@ -449,7 +484,7 @@ fire_sage = { ##Wouldn't this just be the equivalent of 'nun'/'monk'? Just renam
 }
 
 bad_priest_fire = { #fire spirituality ##!unobtainable, nigh-unused. Should be added for all religious groups and implemented with base-game equivalent mechanics.
-	same_opinion = 25
+    same_opinion = 25
 	monthly_character_piety = -1
 
 	opposites =  {
@@ -477,14 +512,6 @@ cactusaddict = { #It'll quench ya! ##This is way, WAY too harsh, compared to som
 	diplomacy = -5
 	martial = -2
 	learning = -6
-}
-
-paraplegic = { ##!unobtainable history trait. Change to infirm + one legged, schedule for deletion
-	is_health = yes
-	martial = -5
-	health = -0.5
-	fertility = -0.1
-	random = no
 }
 
 swamp_inbred = {
@@ -1278,14 +1305,14 @@ on_journey = {
 	monthly_character_piety = 0.1
 	same_religion_opinion = 5
 
-	pilgrimage = yes	# Will need a regent, but can still be guardian to children
+	pilgrimage = yes    # Will need a regent, but can still be guardian to children
 	customizer = no
 	random = no
 }
 
 inexile = {
 	monthly_character_piety = 0.1
-	pilgrimage = yes	# Will need a regent, but can still be guardian to children
+	pilgrimage = yes    # Will need a regent, but can still be guardian to children
 	cannot_inherit = yes
 	cannot_marry = yes
 	customizer = no
@@ -1296,12 +1323,27 @@ inexile = {
 }
 
 folk_legend = { #!unobtainable history trait. Ultimately harmless, but why?
-	customizer = no
+    customizer = no
 	random = no
 }
 
+bisexual = { #!unobtainable. TODO: Finish, then add to the way the game calculates 'prefers men/women', appropriate base-game events (e.g. learning sexuality, seduction focus, etc), etc
+	sex_appeal_opinion = 15 # Only to those of the same sex
+	
+	fertility = -0.15
+	
+	ruler_designer_cost = 0
+	
+	male_insult = INSULT_SODOMITE
+	male_insult_adj = INSULT_EFFEMINATE
+	female_insult = INSULT_LESBIAN
+	female_insult_adj = INSULT_SAPPHIC
+	child_insult = INSULT_PEABRAIN
+	child_insult_adj = INSULT_CRAZY
+}
+
 ## ADMIN
-warlord_of_chin = { ##Used for special CB for way of chin county conquests by an incompetent modder. Inherently tied to religion, so just... use religion, ala barbarian religion ##TODO: Rework system when Dev Intent confirmed
+warlord_of_chin = { ##Used for special CB for way of chin county conquests by an incompetent modder. Inherently tied to religion, so just... use religion. ##TODO: Coming with EK rework!
 	customizer = no
 	random = no
 	religious = yes
@@ -1310,26 +1352,50 @@ warlord_of_chin = { ##Used for special CB for way of chin county conquests by an
 
 ## ROKU PORTRAITS - DON'T TOUCH!! ##
 
-avatar_learning_waterbending = {
+roku_learning_waterbending = {
 	customizer = no
 	random = no
 	hidden = yes
+	
+	opposites = {
+		roku_learning_airbending
+		roku_learning_earthbending
+		roku_learning_firebending
+	}
 }
 
-avatar_learning_earthbending = {
+roku_learning_earthbending = {
 	customizer = no
 	random = no
 	hidden = yes
+	
+	opposites = {
+		roku_learning_airbending
+		roku_learning_waterbending
+		roku_learning_firebending
+	}
 }
 
-avatar_learning_firebending = {
+roku_learning_firebending = {
 	customizer = no
 	random = no
 	hidden = yes
+	
+	opposites = {
+		roku_learning_airbending
+		roku_learning_earthbending
+		roku_learning_waterbending
+	}
 }
 
-avatar_learning_airbending = {
+roku_learning_airbending = {
 	customizer = no
 	random = no
 	hidden = yes
+	
+	opposites = {
+		roku_learning_waterbending
+		roku_learning_earthbending
+		roku_learning_firebending
+	}
 }

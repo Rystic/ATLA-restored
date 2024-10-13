@@ -1,0 +1,27 @@
+AVATAR SYSTEM DOCUMENTATION
+
+== NUMBERING SYSTEM ==
+0XX: Avatar Succession system [ATLA_avatar_system.txt]
+1XX: Avatar maintainence [ATLA_avatar_system.txt]
+2XX: Avatar intereference events [ATLA_avatar_interfere_events.txt]
+3XX: Avatar acquintance events [ATLA_avatar_acquintances_events.txt]
+4XX: Landed Avatar events [ATLA_avatar_system.txt]
+5XX: Notification events for the player [ATLA_avatar_interfere_events.txt]
+6XX: Avatar flavour events [ATLA_avatar_system.txt]
+7XX: Avatar crisis events [ATLA_interfere_events.txt]
+
+All decisions are in ATLA_avatar_decisions, both for the Avatar and for decisions specifically relating to them
+
+== Avatar Interference ==
+RANDOMISATION: There's no option for the Avatar to do nothing, since we want to keep them moving and active in the world. While on_action is randomised inherently, since it triggers for different rulers at different times based on a variety of factors, we need to be able to use the weight multipliers to represent what the AVATAR is more likely to do.
+If this system proves to unreliable, simply switch all the on_action events from random to set, and it'll still seem random because of how the dates are selected per-character. If you do this, ENSURE that the trigger is set for the Avatar to not be AI-controlled, and disable everything in 'atla_avatar_player_decisions'.
+
+The events don't actually ping off the Avatar at all, it's all smoke and mirrors. This allows us to pre-filter FAR more efficiently than using, say, a tombola that's sent from the Avatar. The Avatar is set to be the portrait and often it's a letter event written 'from the Avatar' to give the illusion, but it's just an illusion. Any effects on the Avatar are minor and can scope to them specifically, since the Avatar is always an event target.
+
+Naturally this means we always filter out the Avatar being player-controlled. In these instances, the player manually fires these events via targeted decision on a cooldown. We DON'T use this as a trigger, however, to ensure that the event can still fire! So it's in the weight multipliers instead.
+
+== Notification Events ==
+I would love to be able to have a special category just for 'avatar notification events', so that the player could set the importance of these kinds of messages, but the categories for notification messages are, to my knowledge, hardcoded.
+If I'm wrong, or if a workaround is ever found, please tell me and I'll amend this section! As it stands all modded notification events are a single category, which is pretty awful.
+
+This is mostly here so that the player can feel the activity of the Avatar, but it also doubles up as a bug-testing method. Since if the Avatar is activating the events they should, it'll show up.

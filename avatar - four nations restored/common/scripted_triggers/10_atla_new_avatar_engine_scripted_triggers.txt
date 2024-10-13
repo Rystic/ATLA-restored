@@ -1,149 +1,30 @@
-is_suitable_mother_of_avatar_trigger = {
-	is_female = yes
-	is_adult = yes
-	is_married = yes
-
-	OR = {
-		liege = {
-			higher_real_tier_than = BARON
-		}
-		top_liege = {
-			higher_real_tier_than = COUNT
-		}
-	}
-
+is_hostile_to_avatar_trigger = {
+	custom_tooltip = { text = hostile_to_avatar_tt }
 	OR = {
 		AND = {
-			has_global_flag = avatar_fire
-			is_suitable_mother_of_avatar_fire_trigger = yes
+			is_heretic = yes
+			NOT = { religion = followers_of_kyoshi }
 		}
-		AND = {
-			has_global_flag = avatar_air
-			is_suitable_mother_of_avatar_air_trigger = yes
-		}
-		AND = {
-			has_global_flag = avatar_water
-			is_suitable_mother_of_avatar_water_trigger = yes
-		}
-		AND = {
-			has_global_flag = avatar_earth
-			is_suitable_mother_of_avatar_earth_trigger = yes
-		}
+		religion = way_of_chin
+		religion = equalist
+		religion = barbarism
+		has_religion_feature = religion_feature_old_barbarism #This is the 'We're gonna extinguish the waterbenders' doctrine
+		has_religion_feature = religion_feature_new_barbarism #This is the 'We are going to sacrifice people en-masse to dark gods' doctrine
+		religion = fire_imperialism
+		has_law = slavery_legal
+		any_rival = { trait = avatar }
+		any_current_enemy = { trait = avatar } #Checks the Avatar isn't currently at war with them
 	}
 }
 
-is_suitable_mother_of_avatar_roku_trigger = {
-	at_location = d_capital_province
-
-	is_female = yes
-	is_adult = yes
-	is_married = yes
-
-	is_suitable_mother_of_avatar_fire_trigger = yes
-}
-
-is_suitable_mother_of_avatar_fire_trigger = {
-	OR = {
-		trait = firebender
-		spouse_even_if_dead = {
-			trait = firebender
-		}
-	}
-}
-
-is_suitable_mother_of_avatar_air_trigger = {
-	OR = {
-		trait = airbender
-		spouse_even_if_dead = {
-			trait = airbender
-		}
-	}
-}
-
-is_suitable_mother_of_avatar_water_trigger = {
-	OR = {
-		trait = waterbender
-		spouse_even_if_dead = {
-			trait = waterbender
-		}
-	}
-}
-
-is_suitable_mother_of_avatar_earth_trigger = {
-	OR = {
-		trait = earthbender
-		spouse_even_if_dead = {
-			trait = earthbender
-		}
-	}
-}
-
-is_suitable_teacher_of_avatar_trigger = {
-   NOT = { trait = incompetent_bender } #Having a bender trait means you're a bender, so we don't need to check for 'is_bender'
-
-	OR = {
-		AND = {
-			has_global_flag = avatar_fire
-			trait = firebender
-		}
-		AND = {
-			has_global_flag = avatar_air
-			trait = airbender
-			trait = airelder
-		}
-		AND = {
-			has_global_flag = avatar_water
-			trait = waterbender
-		}
-		AND = {
-			has_global_flag = avatar_earth
-			trait = earthbender
-		}
-	}
-}
-
-
-###################################
-# new avatar engine - fire avatar #
-###################################
-
-
-is_fire_lord_trigger = {
-	is_landed = yes
-	OR = {
-		any_owned_bloodline = { has_bloodline_flag = is_firelord_bloodline }
-		trait = firelord
-		trait = bad_king_fire
-	}
-}
-
-is_avatar_trigger = {
-	OR = {
-		trait = avatar
-		trait = fullyrealisedavatar
-		has_character_flag = avatar_revealed
-		has_character_flag = avatar_unrevealed
-	}
-}
-
-has_flying_pet_or_artifact_trigger = {
-	any_artifact = {
-		OR = {
-			has_artifact_flag = flying_pet
-			has_artifact_flag = staffglider
-		}
-		is_artifact_active = yes
-	}
-	OR = {
-		has_artifact = petDragon
-		has_artifact = petSkybison
-		has_artifact = staffGlider
-	}
-}
-
-is_already_at_firelord_court_trigger = {
-	is_tributary = {
-		type = unrevealed_avatar_tributary
-		suzerain = event_target:firelord
+has_tyrannical_personality_trigger = { #These numbers are chosen specifically to ensure certain personality combinations trip it. Don't adjust them!
+	custom_tooltip = { text = tyrannical_personality_tt } #Has tyrannical personality
+	calc_true_if = {
+		value = 3
+		ai_greed = 25 #Greed is more a degeneracy check
+		ai_ambition = 22
+		ai_honor <= -15 #Remember that 'honor' is closer to 'trustworthyness' than anything else. This isn't a check for raw niceness.
+		ai_rationality <= -30 #Tyrants are fine, MAD Tyrants are all the rage!
+#		ai_zeal ##We don't check AI zeal. Both, for example, arbitrary and content lower it by 10. It's not very consistent as either 'energy to do stuff' or 'religiosity'.
 	}
 }

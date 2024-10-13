@@ -5,7 +5,7 @@ narrative_event = {
 	title = "EVTNAME670"
 	desc = {
 		trigger = {
-			has_dlc = "Holy Fury"
+			has_dlc = "Holy Fury" 
 			ROOT = { religion_group = water_religions }
 		}
 		text = water_reform
@@ -13,7 +13,7 @@ narrative_event = {
 	}	
 	desc = {
 		trigger = {
-			has_dlc = "Holy Fury"
+			has_dlc = "Holy Fury" 
 			ROOT = { religion_group = earth_religions }
 		}
 		text = earth_reform
@@ -21,7 +21,7 @@ narrative_event = {
 	}
 	desc = {
 		trigger = {
-			has_dlc = "Holy Fury"
+			has_dlc = "Holy Fury" 
 			ROOT = { religion_group = fire_religions }
 		}
 		text = fire_reform
@@ -29,25 +29,40 @@ narrative_event = {
 	}
 	desc = {
 		trigger = {
-			has_dlc = "Holy Fury"
+			has_dlc = "Holy Fury" 
 			ROOT = { religion_group = air_religions }
 		}
 		text = air_reform
 		sound = pagan_reformation
 	}
-	desc = { ##TODO: This might not work
+	desc = {
 		trigger = {
 			has_dlc = "Holy Fury"
 			ROOT = { religion = barbarism_reformed }
+			barbarism_reformed = { has_religion_feature = religion_feature_old_barbarism }
 		}
-		trigger_switch = {
-			on_trigger = has_religion_feature
-			religion_feature_old_barbarism = { text = REFORM_BARBARISM_OLD_WAYS_DESC }
-			religion_feature_new_barbarism = { text = REFORM_BARBARISM_NEW_PATH_DESC }
-			fallback = { text = REFORM_BARBARISM_NEITHER_DESC }
+		text = REFORM_BARBARISM_OLD_WAYS_DESC
+	}
+	desc = {
+		trigger = {
+			has_dlc = "Holy Fury"
+			ROOT = { religion = barbarism_reformed }
+			barbarism_reformed = { has_religion_feature = religion_feature_new_barbarism }
 		}
-		text = REFORM.1.BACKUP.DESC
-		sound = pagan_reformation
+		text = REFORM_BARBARISM_NEW_PATH_DESC
+	}
+	desc = {
+		trigger = {
+			has_dlc = "Holy Fury"
+			ROOT = { religion = barbarism_reformed }
+			barbarism_reformed = {
+				NOR = {
+					has_religion_feature = religion_feature_old_barbarism
+					has_religion_feature = religion_feature_new_barbarism
+				}
+			}
+		}
+		text = REFORM_BARBARISM_NEITHER_DESC
 	}
 	desc = {
 		trigger = {
@@ -56,7 +71,7 @@ narrative_event = {
 		text = REFORM.1.BACKUP.DESC
 		sound = pagan_reformation
 	}
-	picture = {
+	picture = { 
 		picture = GFX_evt_hellenic_temple ##TODO: This needs to be changed per faith. Water religions should have the norse temple picture, for example.
 	}
 	
@@ -80,16 +95,16 @@ narrative_event = {
 						modifier = cosmopolitan_religion
 						years = 1000
 					}
-					any_playable_ruler = {
+					any_playable_ruler = { 
 						limit = { NOT = { distance_from_realm = { who = ROOT value = 200 } } }
 						add_intermarry = ROOT
 						ROOT = { add_intermarry = PREV }
 					}
-					any_neighbor_independent_ruler = {
+					any_neighbor_independent_ruler = { 
 						add_intermarry = ROOT
 						ROOT = { add_intermarry = PREV }
 					}
-				}
+				} 
 			}
 			if = {
 				limit = { #Modifier not applied correctly by pagan reformation screen.
@@ -106,20 +121,20 @@ narrative_event = {
 					remove_intermarry = air_religions
 					remove_intermarry = modern_religions
 					remove_intermarry = outlaw_religions
-				}
+				} 
 			}
 			if = {
 				limit = { #Switch to matriarchy.
-					ROOT = {
-						has_religion_feature = religion_matriarchal
-						NOR = {
+					ROOT = { 
+						has_religion_feature = religion_matriarchal 
+						NOR = {  
 							is_merchant_republic = yes
 							is_republic = yes
 						}
 					}
 				}
-				ROOT = {
-					any_demesne_title = {
+				ROOT = { 
+					any_demesne_title = { 
 						add_law = {
 							law = enatic_succession
 							cooldown = no
@@ -135,24 +150,24 @@ narrative_event = {
 							cooldown = no
 							opinion_effect = no
 						}
-					}
+					} 
 					recalc_succession = yes
-				}
+				} 
 			}
 			if = {
 				limit = { #Switch to equality.
-					ROOT = {
-						OR = {
-							has_religion_feature = religion_equal
+					ROOT = { 
+						OR = { 
+							has_religion_feature = religion_equal 
 						}
-						NOR = {
+						NOR = {  
 							is_merchant_republic = yes
 							is_republic = yes
 						}
 					}
 				}
-				ROOT = {
-					any_demesne_title = {
+				ROOT = { 
+					any_demesne_title = { 
 						add_law = {
 							law = true_cognatic_succession
 							cooldown = no
@@ -164,14 +179,14 @@ narrative_event = {
 							opinion_effect = no
 						}
 					}
-				}
+				} 
 			}
 			if = {
 				limit = { #Switch to patriarchy.
 					ROOT = { has_religion_feature = religion_patriarchal }
 				}
-				ROOT = {
-					any_demesne_title = {
+				ROOT = { 
+					any_demesne_title = { 
 						add_law = {
 							law = agnatic_succession
 							cooldown = no
@@ -196,15 +211,15 @@ narrative_event = {
 					ROOT = { has_religion_feature = religion_astrology }
 				}
 				ROOT = {
-					add_western_zodiac_trait_effect = yes
-					character_event = { id = REFORM.3 days = 5 }
+					add_western_zodiac_trait_effect = yes 
+					character_event = { id = REFORM.3 days = 5 } 
 				}
 			}
 #			if = {
 #				limit = { #Apply default special features if player doesn't have dlc.
 #					NOT = { has_dlc = "Holy Fury" }
 #					ROOT = {
-#						religion = southern_spirituality_reformed
+#						religion = southern_spirituality_reformed 
 #					}
 #				}
 #				ROOT = {
@@ -216,12 +231,12 @@ narrative_event = {
 #			}
 			if = {
 				limit = { #Apply default special features if player doesn't have dlc.
-					NOT = { has_dlc = "Holy Fury" }
-					ROOT = {
-						religion = children_of_si_wong_reformed
-					}
+					NOT = { has_dlc = "Holy Fury" } 
+					ROOT = { 
+						religion = children_of_si_wong_reformed 
+					} 
 				}
-				ROOT = {
+				ROOT = { 
 					set_unit_modifier = {		
 						garrison_size = 0.2
 						levy_size = 0.2
@@ -244,16 +259,16 @@ narrative_event = {
 						
 						key = "DEF_RELIGION_HOME_TERRITORY"
 					}
-				}
+				} 
 			}
 #			if = {
 #				limit = { #Apply default special features if player doesn't have dlc.
-#					NOT = { has_dlc = "Holy Fury" }
-#					ROOT = {
-#						religion = fire_spirituality_reformed
-#					}
+#					NOT = { has_dlc = "Holy Fury" } 
+#					ROOT = { 
+#						religion = fire_spirituality_reformed 
+#					} 
 #				}
-#				ROOT = {
+#				ROOT = { 
 #					set_unit_modifier = {		
 #						garrison_size = 0.3
 #						levy_size = 0.1
@@ -276,14 +291,14 @@ narrative_event = {
 #						
 #						key = "DEF_RELIGION_HOME_TERRITORY"
 #					}
-#				}
+#				} 
 #			}
 			if = {
 				limit = { #Apply default special features if player doesn't have dlc.
-					NOT = { has_dlc = "Holy Fury" }
+					NOT = { has_dlc = "Holy Fury" } 
 					religion_group = air_religions
 				}
-				ROOT = {
+				ROOT = { 
 					set_unit_modifier = {		
 						garrison_size = 0.4
 					
@@ -305,7 +320,7 @@ narrative_event = {
 						
 						key = "DEF_RELIGION_HOME_TERRITORY"
 					}
-				}
+				} 
 			}
 			if = {
 				limit = { #Apply default special features if player doesn't have the dlc
@@ -347,12 +362,12 @@ narrative_event = {
 				}
 			}
 			#if = {
-			#	limit = {
+			#	limit = { 
 			#		OR = {
-			#			NOT = { has_dlc = "Holy Fury" }
-			#			has_religion_feature = religion_temporal_head
-			#		}
-			#		religion = norse_pagan_reformed
+			#			NOT = { has_dlc = "Holy Fury" } 
+			#			has_religion_feature = religion_temporal_head 
+			#		} 
+			#		religion = norse_pagan_reformed 
 			#
 			#	}
 			#	add_artifact = crown_fylkir
@@ -360,12 +375,12 @@ narrative_event = {
 
 			#Opinion boost to new religious head (if any) and Reformer.
 			if = {
-				limit = {
-					has_dlc = "Holy Fury"
+				limit = { 
+					has_dlc = "Holy Fury" 
 					OR = {
 						has_religion_feature = religion_theocratic_head
-						has_religion_feature = religion_autocephaly
-					}
+						has_religion_feature = religion_autocephaly 
+					} 
 
 				}
 				religion_head = { opinion = { who = ROOT modifier = opinion_my_reformer years = 50 } }
@@ -385,11 +400,11 @@ narrative_event = {
 		}
 		hidden_tooltip = {
 			if = {
-				limit = {
+				limit = { 
 					ROOT = { has_religion_feature = religion_matriarchal }
 				}
-				ROOT = {
-					any_demesne_title = {
+				ROOT = { 
+					any_demesne_title = { 
 						add_law = {
 							law = enatic_succession
 							cooldown = no
@@ -400,16 +415,16 @@ narrative_event = {
 							cooldown = no
 							opinion_effect = no
 						}
-					}
+					} 
 					recalc_succession = yes
-				}
+				} 
 			}
 			if = {
-				limit = {
+				limit = { 
 					ROOT = { has_religion_feature = religion_patriarchal }
 				}
-				ROOT = {
-					any_demesne_title = {
+				ROOT = { 
+					any_demesne_title = { 
 						add_law = {
 							law = agnatic_succession
 							cooldown = no
@@ -420,20 +435,20 @@ narrative_event = {
 							cooldown = no
 							opinion_effect = no
 						}
-					}
+					} 
 					recalc_succession = yes
-				}
+				} 
 			}
 			if = {
-				limit = {
+				limit = { 
 					ROOT = {
-						OR = {
-							has_religion_feature = religion_equal
+						OR = { 
+							has_religion_feature = religion_equal 
 						}
 					}
 				}
-				ROOT = {
-					any_demesne_title = {
+				ROOT = { 
+					any_demesne_title = { 
 						add_law = {
 							law = true_cognatic_succession
 							cooldown = no
@@ -444,48 +459,48 @@ narrative_event = {
 							cooldown = no
 							opinion_effect = no
 						}
-					}
+					} 
 					recalc_succession = yes
-				}
+				} 
 			}
 			ROOT = {
 				if = {
-					limit = {
-						has_religion_feature = religion_matriarchal
+					limit = { 
+						has_religion_feature = religion_matriarchal 
 					}
-					any_close_relative = {
+					any_close_relative = { 
 					limit = { is_female = no }
-						opinion = {
-							who = ROOT
+						opinion = { 
+							who = ROOT 
 							modifier = bad_succ_law_change
 							years = 100
 						}
 					}
-					any_close_relative = {
+					any_close_relative = { 
 						limit = { is_female = yes }
-						opinion = {
-							who = ROOT
+						opinion = { 
+							who = ROOT 
 							modifier = good_succ_law_change
 							years = 100
 						}
 					}
 				}
 				if = {
-					limit = {
-						has_religion_feature = religion_patriarchal
+					limit = { 
+						has_religion_feature = religion_patriarchal 
 					}
-					any_close_relative = {
+					any_close_relative = { 
 						limit = { is_female = yes }
-						opinion = {
-							who = ROOT
+						opinion = { 
+							who = ROOT 
 							modifier = bad_succ_law_change
 							years = 100
 						}
 					}
-					any_close_relative = {
+					any_close_relative = { 
 						limit = { is_female = no }
-						opinion = {
-							who = ROOT
+						opinion = { 
+							who = ROOT 
 							modifier = good_succ_law_change
 							years = 100
 						}
@@ -504,7 +519,7 @@ narrative_event = {
 				ROOT = { has_religion_feature = religion_no_leader }
 				ai = yes
 			}		
-			hidden_tooltip = {
+			hidden_tooltip = {  
 				character_event = { id = REFORM.2 days = 20 random = 20 }
 			}
 		}
@@ -513,8 +528,8 @@ narrative_event = {
 				ROOT = { has_religion_feature = religion_matriarchal }
 			}
 			custom_tooltip = { text = tooltip_HF23014_A }
-			hidden_tooltip = {
-				any_demesne_title = {
+			hidden_tooltip = { 
+				any_demesne_title = { 
 					add_law = {
 						law = enatic_succession
 						cooldown = no
@@ -525,17 +540,17 @@ narrative_event = {
 						cooldown = no
 						opinion_effect = no
 					}
-				}
+				} 
 				recalc_succession = yes
-			}
+			} 
 		}
 		if = {
 			limit = { #Offer chance to switch the vassals' succession laws.
 				ROOT = { has_religion_feature = religion_patriarchal }
 			}
 			custom_tooltip = { text = tooltip_HF23015_A }
-			hidden_tooltip = {
-				any_demesne_title = {
+			hidden_tooltip = { 
+				any_demesne_title = { 
 					add_law = {
 						law = agnatic_succession
 						cooldown = no
@@ -546,17 +561,17 @@ narrative_event = {
 						cooldown = no
 						opinion_effect = no
 					}
-				}
+				} 
 				recalc_succession = yes
-			}
+			} 
 		}
 		if = {
 			limit = { #Offer chance to switch the vassals' succession laws.
 				ROOT = { has_religion_feature = religion_equal }
 			}
 			custom_tooltip = { text = tooltip_HF23016_A }
-			hidden_tooltip = {
-				any_demesne_title = {
+			hidden_tooltip = { 
+				any_demesne_title = { 
 					add_law = {
 						law = true_cognatic_succession
 						cooldown = no
@@ -567,9 +582,9 @@ narrative_event = {
 						cooldown = no
 						opinion_effect = no
 					}
-				}
+				} 
 				recalc_succession = yes
-			}
+			} 
 		}
 		if = {
 			limit = { ai = no }
@@ -675,55 +690,55 @@ character_event = {
 	
 	is_triggered_only = yes
 
-	trigger = {
-		has_religion_feature = religion_no_leader
-		NOR = {
+	trigger = { 
+		has_religion_feature = religion_no_leader 
+		NOR = { 
 			trait = pagan_branch_1
 			trait = pagan_branch_2
-			trait = pagan_branch_3
+			trait = pagan_branch_3 
 			trait = pagan_branch_4
 		}
 	}
 	
-	option = {
+	option = { 
 		name = EVTOPTAHF23016
-		trigger = {
-			NOT = {
-				has_religion_feature = religion_dogmatic
-			}
+		trigger = { 
+			NOT = { 
+				has_religion_feature = religion_dogmatic 
+			} 
 		}
 		add_trait = pagan_branch_1
-		ai_chance = {
-			factor = 5
-			modifier = {
+		ai_chance = { 
+			factor = 5 
+			modifier = { 
 				factor = 0.1
 				has_religion_feature = religion_jizya
 			}
 		}
 	}
-	option = {
+	option = { 
 		name = EVTOPTBHF23016
 		add_trait = pagan_branch_2
-		ai_chance = {
-			factor = 25
-			modifier = {
+		ai_chance = { 
+			factor = 25 
+			modifier = { 
 				factor = 1.5
-				OR = {
+				OR = { 
 					trait = scholar
 					trait = theologian
 					trait = mystic
 					trait = zealous
 					has_focus = focus_scholarship
 					has_focus = focus_theology
-					trait = detached_priest
-					trait = martial_cleric
-					trait = scholarly_theologian
-					trait = mastermind_theologian
+					trait = detached_priest 
+					trait = martial_cleric  
+					trait = scholarly_theologian 
+					trait = mastermind_theologian 
 				}
-			}
-			modifier = {
+			} 
+			modifier = { 
 				factor = 0.5
-				OR = {
+				OR = { 
 					trait = lustful
 					trait = hedonist
 					trait = gluttonous
@@ -734,29 +749,29 @@ character_event = {
 			}
 		}
 	}
-	option = {
+	option = { 
 		name = EVTOPTCHF23016
 		add_trait = pagan_branch_3
-		ai_chance = {
-			factor = 25
-			modifier = {
+		ai_chance = { 
+			factor = 25 
+			modifier = { 
 				factor = 1.5
-				OR = {
+				OR = { 
 					trait = duelist
 					trait = hunter
 					trait = strategist
 					trait = zealous
 					has_focus = focus_war
 					has_focus = focus_hunting
-					trait = misguided_warrior
-					trait = tough_soldier
-					trait = skilled_tactician
-					trait = brilliant_strategist
+					trait = misguided_warrior 
+					trait = tough_soldier   
+					trait = skilled_tactician 
+					trait = brilliant_strategist 
 				}
 			}
-			modifier = {
+			modifier = { 
 				factor = 0.5
-				OR = {
+				OR = { 
 					trait = craven
 					trait = paranoid
 					trait = shy
@@ -764,21 +779,21 @@ character_event = {
 			}
 		}
 	}
-	option = {
+	option = { 
 		name = EVTOPTDHF23016
 		add_trait = pagan_branch_4
-		ai_chance = {
-			factor = 25
-			modifier = {
+		ai_chance = { 
+			factor = 25 
+			modifier = { 
 				factor = 1.5
-				OR = {
+				OR = { 
 					any_child = { NOT = { age = 16 } count = 3 }
 					has_focus = focus_family
 					has_focus = focus_carousing
-					trait = misguided_warrior
-					trait = tough_soldier
-					trait = skilled_tactician
-					trait = brilliant_strategist
+					trait = misguided_warrior 
+					trait = tough_soldier   
+					trait = skilled_tactician 
+					trait = brilliant_strategist 
 				}
 			}
 		}
@@ -867,7 +882,7 @@ character_event = {
 	
 	is_triggered_only = yes
 	
-	option = {
+	option = { 
 		name = EVTOPTAHF23025
 	}
 }

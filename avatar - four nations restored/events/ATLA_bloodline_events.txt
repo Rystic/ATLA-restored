@@ -6,19 +6,16 @@ character_event = {
 	title = EVTTITLEbender_bloodlines.1
 	desc = EVTDESCbender_bloodlines.1
 	picture = GFX_evt_chin_war
-	min_age = 16
+	
 	trigger = {
-		NOR = {
-			trait = ambitious
-			has_character_flag = ambitious_check
-		}
+		NOT = { trait = ambitious }
 		any_owned_bloodline = {
 			has_bloodline_flag = is_chin_bloodline
 		}
 	}
-	mean_time_to_happen = {
-		months = 1
-	}
+	
+	is_triggered_only = yes #Fired on_adulthood
+
 	option = {
 		name = EVTOPTbender_bloodlines.1
 		tooltip_info_custom = because_bloodline_tt
@@ -68,68 +65,38 @@ character_event = {
 				add_trait = craven
 			}
 		}
-		set_character_flag = ambitious_check
 	}
 }
 
-# general avatar bloodline event
-narrative_event = {
+character_event = { #Cleans up dead bloodlines - if they aren't active for either parent, child doesn't inherit.
 	id = BLOODEV.2
-	title = EVTTbender_bloodlines.2
-	desc = EVTDESCbender_bloodlines.2
-	picture = GFX_evt_avatar_conflict
-	min_age = 16
-	trigger = {
-		AND = {
-			trait = fullyrealisedavatar
-			NOT = {
-				any_owned_bloodline = {
-					has_bloodline_flag = is_avatar_bloodline
-				}
+	hide_window = yes
+	
+	is_triggered_only = yes #Fired on birth
+	
+	immediate = {
+		any_owned_bloodline = {
+			NOR = {
+				bloodline_is_active_for = ROOT
+				bloodline_is_active_for = father_even_if_dead
+				bloodline_is_active_for = mother_even_if_dead
 			}
+			remove_bloodline_member = ROOT
 		}
-	}
-	mean_time_to_happen = {
-		months = 1
-	}
-	option = {
-		name = EVTOPTbender_bloodlines.2
-		random_list = {
-			25 = {
-				create_bloodline = {
-					type = bloodline_avatar_1
-					inheritance = all_descendants
-				}
-			}
-			25 = {
-				create_bloodline = {
-					type = bloodline_avatar_2
-					inheritance = all_descendants
-				}
-			}
-			25 = {
-				create_bloodline = {
-					type = bloodline_avatar_3
-					inheritance = all_descendants
-				}
-			}
-			25 = {
-				create_bloodline = {
-					type = bloodline_avatar_4
-					inheritance = all_descendants
-				}
-			}
-		}
-		new_bloodline = {
-			set_name = generic_avatar_bloodline
-			set_description = generic_avatar_bloodline_desc
-			# random_list = {
-			# 	#Randomize names
-			# 	20 = {  }
-			# 	20 = { set_name = bloodline_legendary_eagle_hunter_B }
-			# 	20 = { set_name = bloodline_legendary_eagle_hunter_C }
-			# 	20 = { set_name = bloodline_legendary_eagle_hunter_D }
-			# }
+		trigger_switch = { #We also scrub any custom graphical cultures
+			on_trigger = graphical_culture
+			aanggfx = { set_graphical_culture = northern_air_nomad }
+			rokuandtamingfx = { set_graphical_culture = fire_islander }
+			kataragfx = { set_graphical_culture = southern_water_tribe }
+			hodakagfx = { set_graphical_culture = southern_water_tribe }
+			oldavatargfx = { set_graphical_culture = earth_islander }
+			royalfiregfx = { set_graphical_culture = fire_imperial_culture }
+			royalfiretwogfx = { set_graphical_culture = fire_imperial_culture }
+			royalfirethreegfx = { set_graphical_culture = fire_imperial_culture }
+			waterroyalgfx = { set_graphical_culture = northern_water_tribe }
+			earthherogfx = { set_graphical_culture = omashuan }
+			earthroyalgfx = { set_graphical_culture = ba_sing_se_culture }
+			korragfx = { set_graphical_culture = southern_water_tribe }
 		}
 	}
 }
@@ -185,83 +152,562 @@ character_event = {
 	}
 }
 
-character_event = {
-	# kyoshi dies in personal duel
+character_event = { #Killed the Avatar - approving religion gains commander
 	id = BLOODEV.4
-	hide_window = yes
-	is_triggered_only = yes
+	desc = BLOODEV.4.D
+	picture = GFX_evt_chin_army
+	border = GFX_event_normal_frame_war
+	
+	only_playable = yes
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes #Fired every five years, in keeping with base game frequency
+	
 	trigger = {
-		character = 34
-		OR = {
-			death_reason = death_duel
-			death_reason = death_mission_duel
-			death_reason = death_battle_duel
-			death_reason = death_legendary_fail_duel
-			death_reason = death_legendary_win_duel
-			death_reason = death_claim_duel_attacker
-			death_reason = death_claim_duel_defender
+		any_owned_bloodline = {
+			has_bloodline_flag = is_avatar_killer_bloodline
+			is_bloodline_active_for = ROOT
 		}
-		killer = {
-			is_alive = yes
+		OR = {
+			religion = way_of_chin
+			religion = fire_imperialism
+			religion = equalism
+			culture = pirate_culture
+			culture = barbarian_culture
+			religion = barbarism
+		}
+		NOT = {
+			any_courtier_or_vassal = {
+				count = 4
+				trait = holy_warrior
+			}
 		}
 	}
+	
+	weight_multiplier = {
+		days = 1
+		
+		modifier = {
+			factor = 1.5
+			trait = zealous
+		}
+	}
+	
 	immediate = {
-		if = {
-			limit = {
-				killer = { religion = way_of_chin }
+		spawn_fantastic_commander_effect = yes
+		new_character = {
+			add_trait = holy_warrior
+			add_trait = zealous
+			opinion = {
+				who = ROOT
+				modifier = loyal_servant
 			}
-			killer = {
-				narrative_event = {
-					id = BLOODEV.5
-					days = 3
-					random = 2
+		}
+	}
+		
+	option = { #I'll put them to work immediately
+		name = BLOODEV.4.OPTA
+		if = {
+			limit = { 
+				new_character = { can_hold_title = title_commander }
+				can_grant_title = title_commander
+			}
+			give_minor_title = title_commander
+		}
+		else = {
+			random_realm_character = {
+				limit = { has_minor_title = title_commander }
+				preferred_limit = { martial < 10 }
+				preferred_limit = { martial < 14 }
+				preferred_limit = { martial < 18 }
+				remove_title = title_commander
+			}
+			new_character = { give_minor_title = title_commander }
+		}
+	}
+	
+	option = { #Huzzah!
+		name = EXCELLENT
+	}
+	
+	after = { tiered_piety_reward_effect = yes }
+}
+
+character_event = { #Killed the Avatar - other religion ##Mistreated for bloodline
+	id = BLOODEV.5
+	desc = {
+		trigger = { is_adult = no }
+		text = BLOODEV.5.D1
+	}
+	desc = {
+		trigger = { is_adult = yes }
+		text = BLOODEV.5.D2
+	}
+	picture = GFX_evt_child_bully
+	border = GFX_event_normal_frame_intrigue
+	
+	only_playable = yes
+	only_capable = yes
+	prisoner = no
+	min_age = 6
+	
+	is_triggered_only = yes #Fired randomly every few years
+	
+	trigger = {
+		any_owned_bloodline = {
+			has_bloodline_flag = is_avatar_killer_bloodline
+			is_bloodline_active_for = ROOT
+		}
+		NOR = {
+			religion = way_of_chin
+			religion = fire_imperialism
+			religion = equalism
+			culture = pirate_culture
+			culture = barbarian_culture
+			religion = barbarism
+			religion = followers_of_kyoshi
+		}
+	}
+	
+	option = { #If they will not love me, they will fear me instead.
+		name = BLOODEV.5.OPTA
+		trigger = { age = 14 }
+		
+		random_vassal = {
+			limit = {
+				ai = yes
+				is_powerful_vassal = no
+			}
+			preferred_limit = { NOT = { dynasty = ROOT } }
+			preferred_limit = { NOT = { among_most_powerful_vassals = 10 } }
+			save_event_target_as = kinslayer_target
+			death = {
+				death_reason = death_execution_flaying
+				killer = ROOT
+			}
+			hidden_tooltip = {
+				mother = {
+					opinion = {
+						modifier = opinion_executed_child
+						who = ROOT
+					}
 				}
+				father = {
+					opinion = {
+						modifier = opinion_executed_child
+						who = ROOT
+					}
+				}
+				spouse = {
+					opinion = {
+						modifier = opinion_spouse_slayer
+						who = ROOT
+					}
+				}
+				any_child = {
+					opinion = {
+						modifier = opinion_killed_close_kin
+						who = ROOT
+					}
+				}
+				any_sibling = {
+					opinion = {
+						modifier = opinion_killed_close_kin
+						who = ROOT
+					}
+				}
+			}
+		}
+		
+		add_kinslayer_trait_effect = yes
+		custom_tooltip = {
+			text = tooltip_decision_brazen_bull
+			any_courtier_or_vassal = {
+				limit = {
+					age = 5 #Old enough to witness and understand what's happening
+					NOT = { trait = brave } 
+				}
+				opinion = {
+					who = ROOT
+					modifier = opinion_scared_into_submission
+					years = 4
+				}
+			}
+			add_character_modifier = { 
+				modifier = intimidated_plotters
+				duration = 1250
+			}
+		}
+		
+		if = {
+			limit = { trait = kind }
+			random = {
+				chance = 25
+				remove_trait = kind
 			}
 		}
 		else = {
-			killer = {
-				narrative_event = {
-					id = BLOODEV.6
-					days = 3
-					random = 2
+			random = {
+				chance = 25
+				add_trait = cruel
+			}
+		}
+		piety = -100
+		
+		ai_chance = {
+			factor = 10
+			
+			modifier = {
+				factor = 2
+				trait = cruel
+			}
+			modifier = {
+				factor = 0.5
+				trait = kind
+			}
+			modifier = {
+				factor = 2
+				higher_tier_than = DUKE
+			}
+			modifier = {
+				factor = 0.5
+				tier = COUNT
+			}
+		}
+	}
+	
+	option = { #I deserve to be viewed this way
+		name = BLOODEV.5.OPTB
+		add_trait = humble
+		tiered_piety_reward_effect = yes
+		random_list = {
+			10 = { add_trait = shy }
+			10 = { add_trait = depressed }
+			10 = { }
+		}
+		if = {
+			limit = { trait = depressed }
+			random = {
+				chance = 5
+				death = { death_reason = death_suicide }
+			}
+		}
+		
+		ai_chance = {
+			factor = 30
+			
+			modifier = {
+				factor = 10
+				trait = depressed
+			}
+			modifier = {
+				factor = 10
+				trait = humble
+			}
+		}
+	}
+	
+	option = { #Punch the other kids
+		name = BLOODEV.5.OPTC
+		trigger = { age < 14 }
+		random_courtier_or_vassal = {
+			limit = { is_adult = no }
+			preferred_limit = { NOT = { dynasty = ROOT } }
+			preferred_limit = { age_diff = { who = ROOT value < 5 } }
+			add_rival = ROOT
+		}
+		random_list = {
+			10 = {
+				trigger = { NOT = { trait = rowdy } }
+				add_trait = rowdy
+			}
+			20 = {
+				trigger = { trait = kind }
+				remove_trait = kind
+			}
+			5 = {
+				trigger = {
+					NOR = {
+						trait = kind
+						trait = cruel
+					}
+				}
+				add_trait = cruel
+			}
+			10 = { change_martial = 1 }
+			10 = {
+				trigger = { NOT = { trait = wounded } }
+				add_trait = wounded
+			}
+			10 = {
+				trigger = { NOT = { trait = wroth } }
+				add_trait = wroth
+			}
+		}
+		
+		ai_chance = {
+			factor = 30
+			
+			modifier = {
+				factor = 2
+				has_focus = focus_ed_martial
+			}
+			modifier = {
+				factor = 10
+				trait = wroth
+			}
+			modifier = {
+				factor = 0.5
+				trait = patient
+			}
+		}
+	}
+	
+	option = { #I should ignore them and stay inside instead
+		name = BLOODEV.5.OPTD
+		change_learning = 1
+		
+		random_list = {
+			5 = {
+				trigger = { NOT = { trait = erudite } }
+				add_trait = erudite
+			}
+			10 = {
+				trigger = { NOT = { trait = paranoid } }
+				add_trait = paranoid
+			}
+			10 = {
+				trigger = {
+					OR = {
+						trait = sturdy
+						trait = robust
+					}
+				}
+				remove_trait = sturdy
+				remove_trait = robust
+			}
+			10 = {
+				trigger = {
+					NOR = {
+						trait = sturdy
+						trait = robust
+						trait = frail
+					}
+				}
+				add_trait = frail
+			}
+			10 = { change_learning = 1 }
+			10 = {
+				trigger = { trait = brave }
+				remove_trait = brave
+			}
+			10 = {
+				trigger = {
+					NOR = {
+						trait = brave
+						trait = craven
+					}
+				}
+				add_trait = craven
+			}
+		}
+			
+		ai_chance = {
+			factor = 30
+			
+			modifier = {
+				factor = 2
+				has_focus = focus_ed_learning
+			}
+			
+			modifier = {
+				factor = 2
+				has_education_learning_trigger = yes
+			}
+		}
+	}
+	
+	after = { tiered_piety_negative_effect = yes }
+}
+	
+character_event = { #Killed the Avatar - Follower of Kyoshi (regret/redemption/etc)
+	id = BLOODEV.6
+	desc = BLOODEV.6.D
+	picture = GFX_evt_scandal
+	border = GFX_event_normal_frame_stewardship
+	
+	only_playable = yes
+	only_capable = yes
+	prisoner = no
+	min_age = 16
+	
+	is_triggered_only = yes #Fired randomly every few years
+	
+	trigger = {
+		any_owned_bloodline = {
+			has_bloodline_flag = is_avatar_killer_bloodline
+			is_bloodline_active_for = ROOT
+		}
+		NOT = { has_character_modifier = buddhist_ascetic }
+		religion = followers_of_kyoshi
+	}
+	
+	option = { #I can forgive them
+		name = BLOODEV.6.OPTA
+		add_character_modifier = {
+			modifier = tormented_modifier
+			years = 3
+		}
+		tiered_piety_reward_effect = yes
+		random_list = {
+			40 = {
+				trigger = { NOT = { trait = patient } }
+				add_trait = patient
+				modifier = {
+					factor = 2
+					trait = kind
+				}
+			}
+			40 = {
+				trigger = { NOT = { trait = kind } }
+				add_trait = kind
+				modifier = {
+					factor = 2
+					trait = patient
+				}
+			}
+			20 = { }
+		}
+	}
+	option = { #I'll forego luxuries to make amends
+		name = BLOODEV.6.OPTB
+		lose_weight_medium_effect = yes
+		add_character_modifier = {
+			modifier = stay_strong
+			years = 3
+		}
+		trigger_switch = {
+			on_trigger = real_tier
+			COUNT = { prestige = -200 }
+			DUKE = { prestige = -500 }
+			KING = { prestige = -750 }
+			EMPEROR = { prestige = -1000 }
+		}
+		random_list = {
+			40 = {
+				trigger = { NOT = { trait = temperate } }
+				add_trait = temperate
+				modifier = {
+					factor = 2
+					trait = chaste
+				}
+			}
+			40 = {
+				trigger = { NOT = { trait = chaste } }
+				add_trait = chaste
+				modifier = {
+					factor = 2
+					trait = temperate
+				}
+			}
+			20 = { }
+		}
+	}
+	option = { #I'll invest time and money in making people's lives better
+		name = BLOODEV.6.OPTC
+		scaled_wealth = {
+			value = -0.4
+			max= -50
+			max = -500
+		}
+		add_character_modifier = {
+			modifier = recently_donated_to_charity
+			years = 3
+		}
+		random_list = {
+			40 = {
+				trigger = { NOT = { trait = diligent } }
+				add_trait = diligent
+				modifier = {
+					factor = 2
+					trait = charitable
+				}
+			}
+			40 = {
+				trigger = { NOT = { trait = charitable } }
+				add_trait = charitable
+				modifier = {
+					factor = 2
+					trait = diligent
+				}
+			}
+			20 = { }
+		}
+		random = {
+			chance = 20
+			add_trait = stressed
+		}
+	}
+	option = { #I've done all I can...
+		name = BLOODEV.6.OPTD
+		trigger = {
+			calc_true_if = {
+				amount = 6
+				trait = chaste
+				trait = temperate
+				trait = charitable
+				trait = diligent
+				trait = patient
+				trait = kind
+				trait = humble
+			}
+		}
+		character_event = { id = BLOODEV.7 days = 24 }
+	}
+	option = { #You know who else was wronged by the Avatar?!
+		name = BLOODEV.6.OPTE
+		religion = way_of_chin
+		piety = -250
+	}
+}
+
+character_event = { #Pious Kyoshi follower given chance to lose bloodline
+	id = BLOODEV.7
+	desc = BLOODEV.7.D
+	picture = GFX_evt_kyoshi_warriors
+	border = GFX_event_normal_frame_learning
+	
+	is_triggered_only = yes
+	
+	option = { #I'm finally redeemed...
+		name = BLOODEV.7.OPTA
+		any_owned_bloodline = {
+			limit = { has_bloodline_flag = is_avatar_killer_bloodline }
+			remove_bloodline_member = ROOT
+		}
+		hidden_tooltip = {
+			any_child = {
+				any_owned_bloodline = {
+					limit = { has_bloodline_flag = is_avatar_killer_bloodline }
+					remove_bloodline_member = PREV
 				}
 			}
 		}
 	}
-}
-
-# todo: add loc
-# !loc
-narrative_event = {
-	id = BLOODEV.5
-	desc = EVTDESCbender_bloodlines.5
-	title = EVTTbender_bloodlines.5
-	picture = GFX_evt_avatar_death
-	is_triggered_only = yes
-	option = {
-		name = BLOODEV.5.opt
-		prestige = 250
-		create_bloodline = {
-			type = chin_kyoshi_killer_bloodline
+	
+	option = { #No, this is my burden to bear
+		name = BLOODEV.7.OPTB
+		add_trait = humble
+		piety = 2000
+		add_character_modifier = {
+			modifier = respected_by_the_people
+			years = 10
 		}
-	}
-}
-
-
-# todo: add loc
-# !loc
-narrative_event = {
-	id = BLOODEV.6
-	desc = EVTDESCbender_bloodlines.6
-	title = EVTTbender_bloodlines.6
-	picture = GFX_evt_avatar_death
-	is_triggered_only = yes
-	option = {
-		# name = BLOODEV.6.opt
-		name = OK
-		prestige = 250
-		create_bloodline = {
-			type = kyoshi_killer_bloodline
+		add_character_modifier = {
+			modifier = buddhist_ascetic
+			years = -1
 		}
 	}
 }
@@ -379,17 +825,53 @@ character_event = {
 			limit = {
 				trait = firebender
 				NOR = {
-					any_owned_bloodline = {
+					any_owned_bloodline = { 
 						has_bloodline_flag = is_sun_bloodline # If you don't have the sun bloodline, it'll create one
 					}
 					has_character_flag = sunwarrior_check # not founded one before
-				}
+				} 
 			}
 			create_bloodline = { #create one
 				type = sun_bloodline
 				inheritance = patrilineal
 			}
 			set_character_flag = sunwarrior_check
+		}
+	}
+}
+
+character_event = { #Kyoshi's bloodline can make you giant
+	id = BLOODEV.12
+	hide_window = yes
+	
+	is_triggered_only = yes #Fired on_birth
+	
+	trigger = {
+		any_owned_bloodline = { has_bloodline_flag = is_takahama_bloodline  }
+	}
+	
+	immediate = {
+		random = {
+			chance = 15
+			add_trait = giant
+		}
+	}
+}
+
+character_event = { #Korra's Bloodline can make you strong
+	id = BLOODEV.13
+	hide_window = yes
+	
+	is_triggered_only = yes #Fired on_birth
+	
+	trigger = {
+		any_owned_bloodline = { has_bloodline_flag = is_korra_bloodline }
+	}
+	
+	immediate = {
+		random = {
+			chance = 15
+			add_trait = strong
 		}
 	}
 }

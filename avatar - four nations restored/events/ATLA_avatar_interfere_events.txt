@@ -1,0 +1,3217 @@
+character_event = { #Avatar wander prompt
+	id = NAE.200
+	hide_window = yes
+	
+	ai = yes
+	min_age = 16
+	has_character_flag = is_avatar
+	
+	is_triggered_only = yes #Fired either from refusing events, or from the Avatar maintainence event - if the latter, it ensures the Avatar isn't available
+	
+	trigger = { is_ruler = no }
+	
+	immediate = {
+		
+		if = { #Non-full Avatars seek out masters to learn bending from - the trait checks ensure that the Avatar learns in the proper cycle of elements
+			limit = {
+				trait = avatar_waterbender
+				NOT = { trait = avatar_earthbender }
+			}
+			random_playable_ruler = { #Prefer better benders to be present - if not, pick someone at random
+				preferred_limit = {
+					ROOT = { has_character_flag = is_roku } #If Roku, try to move to Sud
+					OR = {
+						character = c_6
+						any_courtier = { character = c_6 }
+					}
+				}
+				preferred_limit = { #If Aang, find Bumi
+					ROOT = { has_character_flag = is_aang }
+					OR = {
+						character = c_42
+						any_courtier = { character = c_42 }
+					}
+				}
+				preferred_limit = { #If Bumi's gone, find Toph
+					ROOT = { has_character_flag = is_aang }
+					OR = {
+						character = c_68
+						any_courtier = { character = c_68 }
+					}
+				}
+				preferred_limit = {
+					trait = earthbender
+					is_top_tier_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = earthbender
+							is_top_tier_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = {
+					trait = earthbender
+					is_exceptional_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = earthbender
+							is_exceptional_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = { trait = earthbender }
+				preferred_limit = { any_courtier = { trait = earthbender } }
+				letter_event = { id = NAE.219 } #Avatar asks to stay
+			}
+		}
+		else_if = { #Non-full Avatars seek out masters to learn bending from
+			limit = {
+				trait = avatar_earthbender
+				NOT = { trait = avatar_firebender }
+			}
+			random_playable_ruler = {
+				preferred_limit = { #Aang should seek out Jeong Jeong if he's a deserter, because why not?
+					ROOT = { has_character_flag = is_aang }
+					OR = {
+						AND = {
+							religion = fire_spirituality
+							character = c_161
+						}
+						any_courtier = {
+							AND = {
+								religion = fire_spirituality
+								character = c_161
+							}
+						}
+					}
+				}
+				preferred_limit = {  #If he isn't, just find a Sun Warrior
+					ROOT = { has_character_flag = is_aang }
+					culture = sun_warrior
+				}
+				preferred_limit = {
+					trait = firebender
+					is_top_tier_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = firebender
+							is_top_tier_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = {
+					trait = firebender
+					is_exceptional_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = firebender
+							is_exceptional_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = { trait = firebender }
+				preferred_limit = { any_courtier = { trait = firebender } }
+				letter_event = { id = NAE.219 } #Avatar asks to stay
+			}
+		}
+		else_if = { #Non-full Avatars seek out masters to learn bending from
+			limit = {
+				trait = avatar_firebender
+				NOT = { trait = avatar_airbender }
+			}
+			random_playable_ruler = {
+				preferred_limit = { #If Roku, move to Gyatso
+					ROOT = { has_character_flag = is_roku }
+					OR = {
+						character = c_7
+						any_courtier = { character = c_7 }
+					}
+				}
+				preferred_limit = {
+					trait = airbender
+					is_top_tier_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = airbender
+							is_top_tier_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = {
+					trait = airbender
+					is_exceptional_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = airbender
+							is_exceptional_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = { trait = airbender }
+				preferred_limit = { any_courtier = { trait = airbender } }
+				letter_event = { id = NAE.219 } #Avatar asks to stay
+			}
+		}
+		else_if = { #Non-full Avatars seek out masters to learn bending from
+			limit = {
+				trait = avatar_airbender
+				NOT = { trait = avatar_waterbender }
+			}
+			random_playable_ruler = { #No preferred limit for Aang, Katara would be a terrible tutor
+				preferred_limit = {
+					ROOT = { has_character_flag = is_roku }
+					OR = {
+						character = c_5124
+						any_courtier = { character = c_5124 }
+					}
+				}
+				preferred_limit = {
+					trait = waterbender
+					is_top_tier_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = waterbender
+							is_top_tier_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = {
+					trait = waterbender
+					is_exceptional_bender_trigger = yes
+				}
+				preferred_limit = {
+					any_courtier = {
+						AND = {
+							trait = waterbender
+							is_exceptional_bender_trigger = yes
+						}
+					}
+				}
+				preferred_limit = { trait = waterbender }
+				preferred_limit = { any_courtier = { trait = waterbender } }
+				letter_event = { id = NAE.219 } #Avatar asks to stay
+			}
+		}
+		else_if = {
+			limit = {
+				trait = fully_realised_avatar
+				NOT = { has_character_modifier = superhero_cooldown }
+			}
+			character_event = { id = NAE.220 } #Superhero event randomiser
+		}
+		else = { #Avatar just goes where they wish
+			random_playable_ruler = {
+				limit = {
+					is_hostile_to_avatar_trigger = no
+					opinion = {
+						who = ROOT
+						value = 20
+					}
+					reverse_opinion = {
+						who = ROOT
+						value = 20
+					}
+				}
+				letter_event = { id = NAE.219 } #Avatar asks to stay
+			}
+		}
+	}
+}
+
+letter_event = { #Avatar makes peace
+	id = NAE.201
+	desc = NAE.201.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_independent = yes
+	war = yes
+	only_capable = yes
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		has_tyrannical_personality_trigger = no
+		NAND = {
+			ai = yes
+			any_current_enemy = { ai = yes }
+		}
+		is_hostile_to_avatar_trigger = no
+		in_revolt = no
+		is_primary_war_attacker = yes #Since revolters are always the aggressors, this lets us filter only to people warring on other rulers
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { has_education_diplomacy_trigger = yes }
+		}
+		modifier = {
+			factor = 1.1
+			persistent_event_target:the_avatar = { has_benevolent_trait_trigger = yes }
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { is_benevolent_trigger = yes }
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { has_pleasant_trait_trigger = yes }
+		}
+		modifier = {
+			factor = 1.4
+			persistent_event_target:the_avatar = { pacifist = yes }
+		}
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Agree to peace
+		name = NAE.201.OPTA
+		any_war = { end_war = whitepeace }
+		remove_trait = ambitious
+		add_character_modifier = {
+			name = avatars_peace
+			years = 5
+		}
+		add_trait = { avatars_peace_trait }
+		character_event = { NAE.2061 years = 5 } #Remove trait
+		
+		any_player = { character_event = { id = NAE.501 } }
+		
+		ai_chance = {
+			factor = 70
+			modifier = { #Scales with Avatar's diplomacy score
+				persistent_event_target:the_avatar = { diplomacy = 12 }
+				factor = 1.1
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 16 }
+				factor = 1.2
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 21 }
+				factor = 1.3
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 26 }
+				factor = 1.4
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 31 }
+				factor = 1.5
+			}
+		}
+	}
+	
+	option = { #Refuse to end wars
+		name = NAE.201.OPTB
+		add_rival = { persistent_event_target:the_avatar }
+		
+		ai_chance = {
+			factor = 30
+			modifier = {
+				has_tyrannical_personality_trigger = yes
+				factor = 5
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy < 8 }
+				factor = 2
+			}
+			modifier = {
+				factor = 2
+				trait = stubborn
+			}
+			modifier = {
+				tier = EMPEROR
+				factor = 3
+			}
+		}
+	}
+	
+	after = {
+		clr_global_flag = avatar_available
+		persistent_event_target:the_avatar = { character_event = { id = NAE.200 } } #Avatar wander prompt
+	}
+}
+
+letter_event = { #Avatar stomps heresy
+	id = NAE.202
+	desc = NAE.202.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_playable = yes
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		is_hostile_to_avatar_trigger = no
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		OR = {
+			AND = {
+				is_heretic = yes
+				NOT = { religion = followers_of_kyoshi }
+			}
+			any_demesne_province = {
+				AND = {
+					is_heretic = yes
+					NOT = { religion = followers_of_kyoshi }
+				}
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		modifier = {
+			persistent_event_target:the_avatar = { has_heresies = yes } #Avatar more likely to go help if they know how heresy problems feel
+			factor = 1.1
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { has_education_learning_trigger = yes }
+			factor = 1.8
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { trait = theologian }
+			factor = 1.4
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { learning < 14 }
+			factor = 0.5
+		}
+		modifier = {
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+			factor = 0
+		}
+	}
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		if = {
+			limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+		}
+		else = { spawn_elder_effect = yes }
+		
+		any_demesne_province = {
+			limit = {
+				NOT = { followers_of_kyoshi }
+				is_heretic = yes
+			}
+			abandon_heresy = yes
+		}
+		any_courtier = {
+			limit = {
+				is_heretic = yes
+				is_ruler = no
+				NOT = { religion = followers_of_kyoshi }
+			}
+			abandon_heresy = yes
+		}
+		any_player = { character_event = { id = NAE.502 } }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+		ai_chance = { factor = 90 }
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = {
+			OR = {
+				is_heretic = yes
+				ai = no
+			}
+		}
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+			letter_event = { id = NAE.552 }
+		}
+		
+		ai_chance = {
+			factor = 1
+			
+			modifier = {
+				is_heretic = yes
+				factor = 50
+			}
+			modifier = {
+				AND = {
+					is_heretic = yes
+					trait = brave
+				}
+				factor = 50
+			}
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+letter_event = { #Avatar helps the raided
+	id = NAE.203
+	desc = NAE.203.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_independent = yes
+	war = no
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		is_allowed_to_loot = no
+		any_realm_province = { any_province_holding = { has_holding_modifier = looted_modifier } }
+		lower_tier_than = EMPEROR
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+	}
+	
+	weight_multiplier = {
+		modifier = {
+			persistent_event_target:the_avatar = { is_allowed_to_loot = yes }
+			factor = 0.5
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { has_education_martial_trigger = yes }
+			factor = 1.8
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { ai_honor = 20 }
+			factor = 1.4
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { martial < 14 }
+			factor = 0.5
+		}
+		modifier = {
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+			factor = 0
+		}
+	}
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		if = {
+			limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+		}
+		else = {
+			spawn_great_commander_effect = yes
+			new_character = {
+				culture = persistent_event_target:the_avatar
+				religion = persistent_event_target:the_avatar
+			}
+		}
+		capital_scope = {
+			spawn_unit = {
+				province = THIS
+				home = THIS
+				owner = ROOT
+				scaled_by_biggest_garrison = 0.75
+				troops = {
+					archers = { 6 6 }
+					light_cavalry = { 4 4 }
+					light_infantry = { 10 10 }
+				}
+				reinforces = no
+				attrition = 1.0
+				maintenance_multiplier = 0
+				merge = yes
+			}
+		}
+		any_player = { character_event = { id = NAE.503 } }
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+character_event = { #Avatar protects a plot victim - uniquely, this targets plotters to ping the target
+	id = NAE.204
+	hide_window = yes
+	
+	is_part_of_plot = yes
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired from bi-yearly avatar intereference block
+	
+	trigger = {
+		has_plot = plot_kill_character #This means it'll only fire for the one trying to do it
+		NOT = { any_plot_backer = { trait = avatar } }
+		plot_power = 0.7 #The plot should have a reasonable chance of success
+		plot_target_char = {
+			is_playable = yes
+			is_hostile_to_avatar_trigger = no
+			is_benevolent_trigger = yes
+			NOT = { any_courtier = { trait = avatar } }
+		}
+	}
+	
+	weight_multiplier = {
+		modifier = {
+			persistent_event_target:the_avatar = { has_benevolent_trait_trigger = yes } 
+			factor = 1.2
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { has_education_intrigue_trigger = yes }
+			factor = 1.8
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { trait = master_schemer }
+			factor = 1.4
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { intrigue < 14 }
+			factor = 0.5
+		}
+		modifier = {
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+			factor = 0
+		}
+	}
+	
+	immediate = {
+		plot_target_char = { character_event = { id = NAE.205 } } #Below event
+	}
+}
+
+letter_event = {
+	id = NAE.205
+	desc = NAE.205.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes #Fired from above event
+	
+	option = { #Accept
+		name = NAE.ACCEPT.OPT
+		if = {
+			limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+		}
+		else = {
+			create_random_intriguer = {
+				attributes = {
+					diplomacy = 6
+					martial = 8
+					stewardship = 6
+					intrigue = 12
+					learning = 4
+				}
+			}	
+			new_character = {
+				culture = persistent_event_target:the_avatar #Sets the faith/culture of the spy to the Avatar's, to mimic being from their court
+				religion = persistent_event_target:the_avatar
+				opinion_modifier = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+				}
+				remove_all_negative_congenital_traits_effect = yes
+				add_trait = shrewd
+			}
+		}
+		add_character_modifier = {
+			name = hired_body_guards
+			years = 5
+		}
+		add_character_modifier = {
+			name = prepared_home
+			years = 5
+		}
+		any_player = { character_event = { id = NAE.504 } }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+	}
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+			letter_event = { id = NAE.552 }
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+letter_event = { #Avatar interferes in civil war
+	id = NAE.206
+	desc = NAE.206.D
+	border = GFX_event_letter_frame_avatar
+	portrait = persistent_event_target:the_avatar
+	
+	is_triggered_only = yes #Fired from bi-yearly avatar intereference block
+	
+	only_independent = yes #Vassals are a liege's problem
+	war = yes
+	has_global_flag = avatar_available
+	
+	trigger = {
+		is_primary_war_defender = yes
+		any_current_enemy = { in_revolt = yes }
+		persistent_event_target:the_avatar = {
+			NOR = {
+				any_liege = ROOT
+				any_current_enemy = ROOT
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		modifier = {
+			OR = {
+				persistent_event_target:the_avatar = { has_education_diplomacy_trigger = yes }
+				persistent_event_target:the_avatar = { has_education_martial_trigger = yes }
+			}
+			factor = 1.8
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { martial < 14 }
+			factor = 0.5
+		}
+		modifier = {
+			any_war = { using_cb = liberation_revolt }
+			factor = 1.5
+		}
+		modifier = {
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+			factor = 0
+		}
+	}
+	
+	option = { #Avatar joins the enemy
+		name = NAE.206.OPTA
+		trigger = {
+			OR = {
+				AND = {
+					OR = {
+						has_tyrannical_personality_trigger = yes
+						is_hostile_to_avatar_trigger = yes
+					}
+					any_war = { using_cb = overthrow_ruler }
+				}
+				AND = {
+					any_current_enemy = {
+						is_hostile_to_avatar_trigger = no
+						NOR = {
+							culture_group = ROOT
+							religion_group = ROOT
+						}
+						any_war = { using_cb = cb_faction_independence }
+					}
+				}
+				AND = {
+					OR = {
+						is_hostile_to_avatar_trigger = yes
+						has_tyrannical_personality_trigger = yes
+					}
+					any_current_enemy = {
+						OR = {
+							any_war = { using_cb = claim_on_liege }
+							any_war = { using_cb = other_claim_on_liege }
+						}
+						supported_claimant = {
+							AND = {
+								is_hostile_to_avatar_trigger = no
+								has_tyrannical_personality_trigger = no
+							}
+						}
+					}
+				}
+			}
+		}
+		random_current_enemy = {
+			limit = { in_revolt = yes }
+			letter_event = { id = NAE.208 } #Notifies them the Avatar has joined them
+		}
+	}
+	option = { #Avatar keeps the peace
+		name = NAE.206.OPTB
+		trigger = {
+			NOR = { #There is 0 chance this is the most efficient way to write this ##TODO: Get someone who ISN'T me to check this code! - Liz
+				AND = {
+					OR = {
+						has_tyrannical_personality_trigger = yes
+						is_hostile_to_avatar_trigger = yes
+					}
+					any_war = { using_cb = overthrow_ruler }
+				}
+				AND = {
+					any_current_enemy = {
+						is_hostile_to_avatar_trigger = no
+						NOR = {
+							culture_group = ROOT
+							religion_group = ROOT
+						}
+						any_war = { using_cb = cb_faction_independence }
+					}
+				}
+				AND = {
+					OR = {
+						is_hostile_to_avatar_trigger = yes
+						has_tyrannical_personality_trigger = yes
+					}
+					any_current_enemy = {
+						OR = {
+							any_war = { using_cb = claim_on_liege }
+							any_war = { using_cb = other_claim_on_liege }
+						}
+						supported_claimant = {
+							AND = {
+								is_hostile_to_avatar_trigger = no
+								has_tyrannical_personality_trigger = no
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				any_current_enemy = { #It's not fair to just rug pull the player, horrid game feel
+					in_revolt = yes
+					ai = no
+				}
+			}
+			wealth = 100 #Throw a little help the liege's way
+		}
+		else = {
+			any_current_enemy = {
+				limit = { in_revolt = yes }
+				any_war = { end_war = whitepeace }
+				add_character_modifier = {
+					name = avatars_peace
+					years = 5
+				}
+				add_trait = { avatars_peace_trait }
+				character_event = { NAE.2061 years = 5 } #Remove trait
+			}
+			add_character_modifier = {
+				name = avatars_peace
+				years = 5
+			}
+			add_trait = { avatars_peace_trait }
+			character_event = { NAE.2061 years = 5 } #Remove trait
+		}
+		any_player = { character_event = { id = NAE.502 } }
+		persistent_event_target:the_avatar = { character_event = { id = NAE.200 } } #Avatar wander event
+		clr_global_flag = avatar_available
+		character_event = { NAE.2061 years = 5 } #Remove trait
+	}
+}
+
+character_event = {
+	id = NAE.2061
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = { remove_trait = avatars_peace_trait }
+}
+	
+letter_event = { #Avatar interferes in rebellion
+	id = NAE.207
+	desc = NAE.207.D
+	border = GFX_event_letter_frame_avatar
+	portrait = persistent_event_target:the_avatar
+	
+	is_triggered_only = yes #Fired from bi-yearly avatar intereference block
+	
+	only_independent = yes #Rebels always target top-liege
+	war = yes
+	has_global_flag = avatar_available
+	
+	trigger = {
+		is_primary_war_defender = yes
+		any_current_enemy = {
+			rebel = yes
+			any_war = { war_score = 30 } #Checks the war might actually work out
+		}
+		persistent_event_target:the_avatar = {
+			NOR = {
+				any_current_enemy = ROOT
+				any_liege = ROOT
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		modifier = {
+			OR = {
+				persistent_event_target:the_avatar = { has_education_diplomacy_trigger = yes }
+				persistent_event_target:the_avatar = { has_education_martial_trigger = yes }
+			}
+			factor = 1.8
+		}
+		modifier = {
+			persistent_event_target:the_avatar = { martial < 14 }
+			factor = 0.5
+		}
+		modifier = {
+			any_war = { using_cb = liberation_revolt }
+			factor = 1.5
+		}
+		modifier = {
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+			factor = 0
+		}
+	}
+	
+	option = { #Avatar helps rebels
+		name = NAE.207.OPTA
+		trigger = {
+			OR = {
+				any_war = { using_cb = liberation_revolt }
+				AND = {
+					is_hostile_to_avatar_trigger = yes
+					any_current_enemy = {
+						is_rebel = yes
+						is_hostile_to_avatar_trigger = no
+					}
+				}
+				calc_true_if = { #If true, will support revolt against tyrant 
+					amount = 3
+					any_vassal = { #This means the liege is a criminal and not a rival (though it will filter out rival-criminals)
+						AND = {
+							is_foe = liege
+							NOT = { is_rival = liege }
+						}
+					}
+					any_vassal = {
+						has_opinion_modifier = {
+							who = liege
+							modifier = opinion_tyrant
+						}
+					}
+					any_vassal = {
+						has_opinion_modifier = {
+							who = liege
+							modifier = opinion_evil_tyrant
+						}
+					}
+					has_character_modifier = known_murderer
+					has_tyrannical_personality_trigger = yes
+				}
+			}
+		}
+		random_current_enemy = {
+			limit = { is_rebel = yes }
+			letter_event = { id = NAE.208 }
+		}
+	}
+	option = { #Avatar enforces peace
+		name = NAE.207.OPTB
+		trigger = {
+			NOR = {
+				any_war = { using_cb = liberation_revolt }
+				AND = {
+					is_hostile_to_avatar_trigger = yes
+					any_current_enemy = {
+						is_rebel = yes
+						is_hostile_to_avatar_trigger = no
+					}
+				}
+				calc_true_if = { #If true, will support revolt against tyrant 
+					amount = 3
+					any_vassal = { #This means the liege is a criminal and not a rival (though it will filter out rival-criminals)
+						AND = {
+							is_foe = liege
+							NOT = { is_rival = liege }
+						}
+					}
+					any_vassal = {
+						has_opinion_modifier = {
+							who = liege
+							modifier = opinion_tyrant
+						}
+					}
+					any_vassal = {
+						has_opinion_modifier = {
+							who = LIEGE
+							modifier = opinion_evil_tyrant
+						}
+					}
+					has_character_modifier = known_murderer
+					has_tyrannical_personality_trigger = yes
+				}
+			}
+		}
+		any_current_enemy = {
+			limit = { is_rebel = yes }
+			any_war = { end_war = whitepeace }
+		}
+		persistent_event_target:the_avatar = { character_event = { id = NAE.200 } } #Avatar wander prompt
+		clr_global_flag = avatar_available
+		any_player = { character_event = { id = NAE.501 } }
+	}
+}
+
+letter_event = { #Revolter/Revolutionary notified the Avatar is joining them
+	id = NAE.208
+	desc = NAE.208.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes #Fired on the above events
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		if = {
+			limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+		}
+		else = {
+			spawn_great_commander_effect = yes
+			new_character = {
+				culture = persistent_event_target:the_avatar
+				religion = persistent_event_target:the_avatar
+			}
+		}
+		capital_scope = {
+			spawn_unit = {
+				province = THIS
+				home = THIS
+				owner = ROOT
+				scaled_by_biggest_garrison = 0.75
+				troops = {
+					archers = { 6 6 }
+					light_cavalry = { 4 4 }
+					light_infantry = { 10 10 }
+				}
+				reinforces = no
+				attrition = 1.0
+				disband_on_peace = yes
+				maintenance_multiplier = 0
+				merge = yes
+			}
+		}
+		any_player = { character_event = { id = NAE.505 } }
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+letter_event = { #Avatar aids with succession crisis
+	id = NAE.209
+	desc = {
+		trigger = { persistent_event_target:the_avatar = { is_ruler = no } } #Avatar requests regency - remember, the Avatar is speaking to a child
+		text = NAE.209.D1
+	}
+	desc = {
+		trigger = { persistent_event_target:the_avatar = { is_ruler = yes } } #Avatar forges alliance
+		text = NAE.209.D2
+	}
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_playable = yes
+	max_age = 12
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		has_tyrannical_personality_trigger = no
+		is_hostile_to_avatar_trigger = no
+		OR = {
+			persistent_event_target:the_avatar = { ai = no }
+			higher_tier_than = DUKE
+			any_vassal = {
+				count = 15 #Check for realm size via vassals - vassals make for the succession crisis!
+				NOT = { tier = BARON }
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 2
+			persistent_event_target:the_avatar = { has_pleasant_personality_trigger = yes }
+		}
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		if = {
+			limit = {
+				persistent_event_target:the_avatar = { is_ruler = yes }
+			}
+			persistent_event_target:the_avatar = {
+				set_guardian = ROOT
+				letter_event = { id = NAE.551 }
+				add_alliance = {
+					who = ROOT
+					years = 15
+				}
+			}
+		}
+		else = {
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				give_minor_title = title_appointed_regent
+				opinion = {
+					who = ROOT
+					opinion = opinion_loyal_servant
+					years = 5 #Uniquely long instance of this modifier
+				}
+			}
+		}
+		any_player = { character_event = { id = NAE.506 } }
+	}
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+			letter_event = { id = NAE.552 }
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+character_event = { #Avatar arrives to deal with murderer
+	id = NAE.210
+	desc = NAE.210.D
+	picture = GFX_evt_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	
+	only_playable = yes
+	min_age = 21
+	only_capable = yes
+	prisoner = no
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		persistent_event_target:the_avatar = {
+			has_severe_disability_trigger = no
+			has_injury_trigger = no
+			has_disease_trigger = no
+			any_friend = { trait = team_avatar }
+		}
+		OR = {
+			persistent_event_target:the_avatar = { ai = no }
+			any_kill_list_character = { count = 20 }
+			rival = persistent_event_target:the_avatar
+			AND = {
+				has_character_modifier = known_murderer
+				any_kill_list_character = { count = 10 }
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 1.2
+			is_hostile_to_avatar_trigger = yes
+		}
+		modifier = {
+			factor = 1.2
+			has_tyrannical_personality_trigger = yes
+		}
+		modifier = {
+			factor = 1.5
+			persistent_event_target:the_avatar = {
+				OR = {
+					has_education_martial_trigger = yes
+					has_education_intrigue_trigger = yes
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Duel the Avatar
+		name = NAE.210.OPTA
+		persistent_event_target:the_avatar = { save_event_target_as = challenger }
+		
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 4
+				ai_honor = 30
+			}
+			modifier = {
+				factor = 3
+				trait = brave
+			}
+			modifier = {
+				factor = 0.2
+				combat_rating_diff = { #Less likely if they're hopelessly outmatched
+					character = persistent_event_target:the_avatar
+					value < -30
+				}
+			}
+		}
+	}
+	
+	option = { #Try to fight one of their friends and escape
+		name = NAE.210.OPTB
+		trigger = { intrigue = 16 } ##TODO: Find a better trigger for this
+		tooltip_info = intrigue
+		hidden_tooltip = {
+			save_event_target_as = combatant_1
+			set_character_flag = flag_antagonizer_duel
+			apply_degree_of_dishonorable_duel_effect = yes
+			pacifists_lose_piety_effect = yes
+			
+			persistent_event_target:the_avatar = {
+				any_friend = {
+					limit = { trait = team_avatar }
+					
+					set_character_flag = flag_antagonizer_duel #Prevents merciless penalty
+					save_event_target_as = combatant_2 #the target of the duel
+					set_character_flag = add_duel_xp
+				}
+			}
+		
+			character_event = { id = HFP.10096 days = 2 } #Starts duel - we skip the eval for the opponent in this instance
+		}
+		
+		ai_chance = {
+			factor = 40 #Very high base chance, if the option is available
+			modifier = {
+				factor = 2
+				has_evil_trait_trigger = yes
+			}
+			modifier = {
+				factor = 2
+				ai_honor < -5
+			}
+		}
+	}
+	
+	option = { #Run!
+		name = NAE.210.OPTC
+		capital_holding = {
+			destroy_random_building = yes
+			destroy_random_building = yes
+		}
+		
+		random_list = {
+			50 = { add_trait = wounded }
+			30 = { add_maimed_trait_effect = yes }
+			20 = { }
+		}
+		random_courtier = {
+			limit = { has_minor_title = commander }
+			death = { #Strictly speaking Aang shouldn't do this, he's uniquely pacifistic, but he's thrown people off mountains.
+				death_reason = death_battle
+				killer = { persistent_event_target:the_avatar }
+			}
+		}
+		random_courtier = { #Do this two more times
+			limit = { has_minor_title = commander }
+			death = {
+				death_reason = death_battle
+				killer = { persistent_event_target:the_avatar }
+			}
+		}
+		random_courtier = {
+			limit = { has_minor_title = commander }
+			death = {
+				death_reason = death_battle
+				killer = { persistent_event_target:the_avatar }
+			}
+		}
+		
+		if = {
+			limit = { trait = brave }
+			remove_trait = brave
+		}
+		else = {
+			random = {
+				chance = 33
+				add_trait = coward
+			}
+		}
+	
+		ai_chance = {
+			factor = 20
+			modifier = {
+				trait = craven
+				factor = 4
+			}
+			modifier = {
+				ai_honor < -5
+				factor = 2
+			}
+		}
+	}
+	
+	after = {
+		persistent_event_target:the_avatar = { character_event = { id = NAE.211 } }
+		clr_global_flag = avatar_available
+	}
+}
+
+character_event = { #Follow up from the above event
+	id = NAE.211
+	desc = { #Avatar got challenged to a duel
+		trigger = { event_target:challenger = { character = ROOT } }
+		text = NAE.211.DD
+	}
+	desc = { #Avatar friend got duelled...
+		trigger = { event_target:combatant_2 = { trait = team_avatar } }
+		text = NAE.211.DF
+	}
+	desc = {
+		trigger = {
+			NOR = {
+				event_target:challenger = { character = ROOT }
+				event_target:combatant_2 = { trait = team_avatar }
+			}
+		}
+		text = NAE.211.D
+	}
+	picture = GFX_evt_conflict
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NAE.211.OPTA
+		trigger = { event_target:challenger = { character = ROOT } }
+		FROM = { character_event = { id = ADUEL.13 } }
+	}
+	option = {
+		name = NAE.211.OPTB
+		trigger = { event_target:combatant_2 = { trait = team_avatar } }
+		show_portrait = event_target:combatant_2
+		add_rival = FROM
+	}
+	option = { #Get back here, Shocker! SHOOOOCKEERRRRRR!
+		name = NAE.211.OPTC
+		trigger = {
+			NOR = {
+				event_target:challenger = { character = ROOT }
+				event_target:combatant_2 = { trait = team_avatar }
+			}
+		}
+		add_rival = FROM
+	}
+}
+
+letter_event = { #Avatar helps with economy
+	id = NAE.212
+	desc = NAE.212.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_playable = yes
+	war = no
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		is_hostile_to_avatar_trigger = no
+		OR = {
+			persistent_event_target:the_avatar = { ai = no }
+			scaled_wealth = -1.5 #Has to be in a LOT of debt
+		}
+		NOT = { any_realm_character = { has_character_flag = is_avatar } }
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 1.5
+			persistent_event_target:the_avatar = { has_education_stewardship_trigger = yes }
+		}
+		modifier = {
+			factor = 0.3
+			has_tyrannical_personality_trigger = yes
+		}
+		modifier = {
+			factor = 1.1
+			has_benevolent_trait_trigger = yes
+		}
+		modifier = {
+			factor = 1.2
+			is_benevolent_trigger = yes
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { has_pleasant_trait_trigger = yes }
+		}
+		modifier = {
+			factor = 1.4
+			persistent_event_target:the_avatar = { pacifist = yes }
+		}
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		capital_scope = {
+			add_province_modifier = {
+				modifier = stewardship_advice
+				years = 2
+			}
+		}
+		add_character_modifier = {
+			modifier = the_bountiful
+			years = 2
+		}
+		any_player = { character_event = { id = NAE.507 } }
+		
+		if = {
+			limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+		}
+		else = {
+			create_random_steward = {
+				random_traits = yes
+				female = 50
+				culture = persistent_event_target:the_avatar
+				religion = persistent_event_target:the_avatar
+			}
+			new_character = {
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+				}
+				remove_all_negative_congenital_traits_effect = yes
+			}
+			persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+		}
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+			letter_event = { id = NAE.552 }
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+character_event = { #Avatar teaches a court
+	id = NAE.213
+	desc = NAE.213.D
+	picture = GFX_evt_waterbending_master
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	
+	only_playable = yes
+	war = no
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		is_hostile_to_avatar_trigger = no
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+	}
+	
+	weight_multiplier = {
+		days = 1
+		modifier = {
+			factor = 1.4
+			persistent_event_target:the_avatar = { has_education_learning_trigger = yes }
+		}
+		modifier = {
+			factor = 1.4
+			persistent_event_target:the_avatar = { has_pleasant_personality_trigger = yes }
+		}
+		modifier = {
+			factor = 1.4
+			persistent_event_target:the_avatar = { has_pleasant_trait_trigger = yes }
+		}
+		modifier = {
+			factor = 1.4
+			persistent_event_target:the_avatar = { pacifist = yes }
+		}
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		custom_tooltip = {
+			text = NAE.213.TT
+			if = {
+				limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+				persistent_event_target:the_avatar = {
+					set_defacto_liege = ROOT
+					opinion = {
+						who = ROOT
+						modifier = opinion_loyal_servant
+						years = 2
+					}
+				}
+			}
+			any_courtier = {
+				limit = { age < 16 }
+				random_list = {
+					18 = { change_diplomacy = 1 }
+					18 = { change_martial = 1 }
+					18 = { change_stewardship = 1 }
+					18 = { change_intrigue = 1 }
+					18 = { change_learning = 1 }
+					10 = { }
+				}
+				random_list = {
+					18 = { change_diplomacy = 1 }
+					18 = { change_martial = 1 }
+					18 = { change_stewardship = 1 }
+					18 = { change_intrigue = 1 }
+					18 = { change_learning = 1 }
+					10 = { }
+				}
+				random_list = {
+					18 = { change_diplomacy = 1 }
+					18 = { change_martial = 1 }
+					18 = { change_stewardship = 1 }
+					18 = { change_intrigue = 1 }
+					18 = { change_learning = 1 }
+					10 = { }
+				}
+			}
+			any_voter = {
+				trigger_switch = {
+					on_trigger = has_job_title
+					job_chancellor = { change_diplomacy = 2 }
+					job_marshal = { change_martial = 2 }
+					job_treasurer = { change_stewardship = 2 }
+					job_spymaster = { change_intrigue = 2 }
+					job_spiritual = { change_learning = 2 }
+				}
+			}
+		}
+		any_player = { character_event = { id = NAE.508 } }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+			letter_event = { id = NAE.552 }
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+letter_event = { #Avatar endorses a good character
+	id = NAE.214
+	desc = NAE.214.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	is_friendly = yes #Always use compliments
+	
+	only_playable = yes
+	min_age = 16
+	only_capable = yes
+	prisoner = no
+	war = no
+#	has_global_flag = avatar_available #This event is deliberately exempt from the usual requirement
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		is_hostile_to_avatar_trigger = no
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		OR = {
+			persistent_event_target:the_avatar = { ai = no }
+			AND = {
+				has_vice_trigger = no
+				has_virtue_trigger = yes
+				is_benevolent_trigger = yes
+			}
+		}
+		NOT = { has_character_modifier = avatars_endorsement }
+	}
+	
+	weight_multiplier = { #No modifiers! This one's just random.
+		days = 1
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Accept endorsement
+		name = NAE.ACCEPT.OPT
+		add_character_modifier = {
+			name = avatars_endorsement
+			years = 5
+		}
+	}
+}
+
+letter_event = { #Avatar rebukes an evil character
+	id = NAE.215
+	desc = NAE.215.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_playable = yes
+	min_age = 16
+	only_capable = yes
+	prisoner = no
+	war = no
+#	has_global_flag = avatar_available #This event is deliberately exempt from the usual requirement
+	
+	is_triggered_only = yes #Fired on Avatar interefere pulse
+	
+	trigger = {
+		is_hostile_to_avatar_trigger = no #Wouldn't care
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		OR = {
+			persistent_event_target:the_avatar = { ai = no }
+			AND = {
+				has_vice_trigger = yes
+				has_virtue_trigger = no
+				is_benevolent_trigger = no
+			}
+		}
+		NOT = { has_character_modifier = avatars_condemnation }
+	}
+	
+	weight_multiplier = { #No modifiers! This one's just random.
+		days = 1
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = { #Damn them!
+		name = NAE.215.OPTA
+		add_character_modifier = {
+			name = avatars_condemnation
+			years = 5
+		}
+	}
+}
+
+letter_event = { #Avatar cleans up a duke-tier character
+	id = NAE.216
+	desc = NAE.216.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	only_playable = yes
+	war = no
+	has_global_flag = avatar_available
+	
+	is_triggered_only = yes #Fired bi-yearly in the 'Avatar intereference' block
+	
+	trigger = {
+		tier = DUKE
+		is_hostile_to_avatar_trigger = no
+		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+	}
+	
+	weight_multiplier = { #No modifiers! This one's just random.
+		days = 1
+		
+		modifier = {
+			factor = 1.2
+			is_benevolent_trigger = yes
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { trait = diligent }
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { trait = charitable }
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { trait = proud }
+		}
+		modifier = {
+			factor = 1.2
+			persistent_event_target:the_avatar = { trait = wroth }
+		}
+		modifier = {
+			factor = 0
+			persistent_event_target:the_avatar = {
+				OR = {
+					ai = no
+					trait = bad_avatar
+					has_character_flag = withdrawn_avatar
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = NAE.ACCEPT.OPT
+		custom_tooltip = {
+			text = NAE.216.TT
+			any_realm_province = {
+				remove_province_modifier = thieves_guild
+				remove_province_modifier = thugs_rampant
+				remove_province_modifier = temple_corruption
+				remove_province_modifier = local_death_cult
+				remove_province_modifier = peasant_unrest
+				remove_province_modifier = religious_unrest
+				remove_province_modifier = cultural_unrest
+				remove_province_modifier = incompetent_rule
+				remove_province_modifier = caravan_raiders
+				remove_province_modifier = smugglers_ring
+				remove_province_modifier = highway_robber_band
+				remove_province_modifier = excessive_bureaucracy
+				remove_province_modifier = sabotaged_buildings
+				remove_province_modifier = sabotaged_defences
+				remove_province_modifier = sabotaged_unrest
+				
+				random_list = {
+					10 = {
+						add_province_modifier = {
+							name = new_shrines
+							duration = 730
+						}
+					}
+					10 = {
+						add_province_modifier = {
+							name = inspired_peasantry
+							duration = 730
+						}
+					}
+					10 = {
+						add_province_modifier = {
+							name = new_roads
+							duration = 730
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = { persistent_event_target:the_avatar = { is_ruler = no } }
+			persistent_event_target:the_avatar = {
+				set_defacto_liege = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+		}
+		any_player = { character_event = { id = NAE.509 } }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+			letter_event = { id = NAE.552 }
+		}
+	}
+	
+	after = { clr_global_flag = avatar_available }
+}
+
+letter_event = { #Player Avatar enforces peace - much looser requirements!
+	id = NAE.217
+	desc = NAE.201.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes #Fired from player avatar decision - all filters are in the decision
+	
+	option = { #Agree to peace
+		name = NAE.201.OPTA
+		any_war = { end_war = whitepeace }
+		add_character_modifier = {
+			name = avatars_peace
+			years = 5
+		}
+		remove_trait = ambitious
+		add_trait = avatars_peace_trait
+		
+		any_current_enemy = {
+			add_character_modifier = {
+				name = avatars_peace
+				years = 5
+			}
+			add_trait = avatars_peace_trait
+		}
+		any_player = { character_event = { id = NAE.501 } }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+		
+		ai_chance = {
+			factor = 70
+			modifier = { #Scales with Avatar's diplomacy score
+				persistent_event_target:the_avatar = { diplomacy = 12 }
+				factor = 1.1
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 16 }
+				factor = 1.2
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 21 }
+				factor = 1.3
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 26 }
+				factor = 1.4
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy = 31 }
+				factor = 1.5
+			}
+		}
+	}
+	
+	option = { #Refuse to end wars
+		name = NAE.201.OPTA
+		persistent_event_target:the_avatar = {
+			letter_event = { id = NAE.552 }
+		}
+		
+		ai_chance = {
+			factor = 30
+			modifier = {
+				has_tyrannical_personality_trigger = yes
+				factor = 5
+			}
+			modifier = {
+				persistent_event_target:the_avatar = { diplomacy < 8 }
+				factor = 2
+			}
+			modifier = {
+				factor = 2
+				trait = stubborn
+			}
+			modifier = {
+				tier = EMPEROR
+				factor = 3
+			}
+		}
+	}
+}
+
+letter_event = { #Player Avatar lends support to war - much looser requirements
+	id = NAE.218
+	desc = NAE.218.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes #Fired from decision by player avatar - all filters in event
+	
+	option = { #Accept help
+		name = NAE.ACCEPT.OPT
+		spawn_great_commander_effect = yes
+		new_character = {
+			culture = persistent_event_target:the_avatar
+			religion = persistent_event_target:the_avatar
+		}
+		capital_scope = {
+			spawn_unit = {
+				province = THIS
+				home = THIS
+				owner = ROOT
+				scaled_by_biggest_garrison = 0.75
+				troops = {
+					archers = { 6 6 }
+					light_cavalry = { 4 4 }
+					light_infantry = { 10 10 }
+				}
+				reinforces = no
+				attrition = 1.0
+				disband_on_peace = yes
+				maintenance_multiplier = 0
+				merge = yes
+			}
+		}
+		opinion = {
+			who = persistent_event_target:the_avatar
+			modifier = opinion_very_grateful_donation
+			years = 2
+		}
+		any_player = { character_event = { id = NAE.505 } }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.551 } }
+	}
+	
+	option = { #Refuse
+		name = NAE.REFUSE.OPT
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = { letter_event = { id = NAE.552 } }
+	}
+}
+
+letter_event = { #Avatar asks to stay for training
+	id = NAE.219
+	desc = NAE.219
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes #Fired from wander prompt
+	
+	option = { #Accept
+		name = NAE.219.OPTA
+		reverse_opinion = {
+			who = persistent_event_target:the_avatar
+			modifier = opinion_loyal_servant
+			years = 2
+		}
+		any_player = { character_event = { id = NAE.500 } }
+	}
+	
+	option = { #Refuse
+		name = NAE.219.OPTB
+		trigger = { ai = no }
+		persistent_event_target:the_avatar = {
+			opinion = {
+				who = ROOT
+				name = opinion_did_not_trust_me
+			}
+			character_event = { id = NAE.200 } #Avatar wander prompt
+		}
+	}
+}
+
+character_event = { #Superhero event randomiser
+	id = NAE.220
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		add_character_modifier = {
+				name = superhero_cooldown
+				years = 5
+		}
+		health = -1 #Takes up the Avatar's power
+		
+		random_list = {
+			10 = { #Destroys entire slaver county
+				character_event = { id = NAE.200 days = 14 } #Keep the avatar on the move
+				
+				random_playable_ruler = {
+					limit = {
+						tier = COUNT
+						ai = yes
+						OR = {
+							government = pirate_cartel
+							government = lawless_piracy
+						}
+						has_law = slavery_legal
+					}
+					capital_scope = { #This is VERY destructive
+						any_province_holding = {
+							destroy_random_building = yes
+							destroy_random_building = yes
+							destroy_random_building = yes
+						}
+					}
+					create_character = {
+						culture = ROOT
+						religion = ROOT
+						dynasty = random
+						random_traits = yes
+						female = 50
+						attributes = {
+							diplomacy = 6
+							martial = 12
+							stewardship = 6
+							intrigue = 4
+							learning = 4
+						}
+					}
+					
+					primary_title = {
+						gain_title_plus_barony_if_unlanded = {
+							target = new_character
+							type = revolt
+						}
+					}
+					new_character = {
+						wealth = 500
+						prestige = 500
+						piety = 500
+						set_defacto_liege = THIS
+						set_government = republic_government
+						set_law = slavery_outlawed
+					}
+					if = {
+						limit = {
+							persistent_event_target:the_avatar = { is_playable = yes }
+						}
+						persistent_event_target:the_avatar = {
+							make_tributary = {
+								who = new_character
+								type = permanent
+							}
+						}
+					}
+					death = {
+						death_reason = death_battle
+						killer = ROOT
+					}
+					any_liege = {
+						limit = { ai = no } #We send a pop-up to players who just lost some of their territory!
+						character_event = { id = NAE.222 }
+					}
+					any_player = { character_event = { id = NAE.510 } }
+				}
+			}
+			10 = { #Burns down whole colonies if the Avatar is sufficiently cold-hearted
+				trigger = {
+					is_evil_trigger = yes
+					always = no ##TODO: Remove this when the colonisation overhaul is finished!
+				}
+				character_event = { id = NAE.200 days = 14 } #Keep the avatar on the move
+				
+				random_independent_ruler = {
+					limit = {
+						any_fort = { fort_has_any_building = yes } #Assuming here fort buildings always contribute to colonies
+					}
+					any_fort = { destroy_fort = THIS }
+#						character_event = { id = NAE.223 }
+#						any_player = { character_event = { id = NAE.512 } }
+				}
+			}
+			10 = { #Brings harmony to an entire kingdom
+				random_playable_ruler = {
+					limit = {
+						is_hostile_to_avatar_trigger = no
+						tier = KING
+						realm_size = 30 #Ensure it's not some podunk king of nothing
+						NOT = { any_realm_lord = { trait = avatar } }
+					}
+					letter_event = { id = NAE.224 } #Inform event, adds opinion of Avatar, moves to court if unlanded
+					any_player = { id = NAE.509 } #Player notification
+				}
+			}
+			10 = { #Destabilises an entire kingdom via Spirits
+				trigger = {
+					learning = 21
+					always = no ##TODO: Make this when spiritualism overhaul is done!
+				}
+				character_event = { id = NAE.200 days = 14 } #Keep the avatar on the move
+				
+				random_playable_ruler = {
+					limit = { is_hostile_to_avatar_trigger = yes }
+					preferred_limit = { has_tyrannical_personality_trigger = yes }
+					preferred_limit = { is_benevolent_trigger = no }
+#						character_event = { id = NAE.225 } #Ruler notification event
+#						any_player = { character_event = { id = NAE.514 } }
+				}
+			}
+			10 = { #Sabotages an evil ruler's realm
+				trigger = { intrigue = 21 }
+				character_event = { id = NAE.200 days = 14 } #Keep the avatar on the move
+				
+				random_playable_ruler = {
+					limit = { is_hostile_to_avatar_trigger = yes }
+					preferred_limit = { has_tyrannical_personality_trigger = yes }
+					preferred_limit = { is_benevolent_trigger = no }
+					character_event = { id = NAE.226 } #Ruler notification event
+					any_player = { character_event = { id = NAE.515 } }
+				}
+			}
+		}
+	}
+}
+
+character_event = { #Avatar's peace breakers get slapped
+	id = NAE.221
+	desc = NAE.221.D
+	picture = GFX_evt_avatar_firelord
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes #Fired on_war_started - thus the lack of pre-triggers
+	
+	trigger = { has_character_modifier = avatars_peace }
+	
+	option = { #I'm gonna go to war anyway
+		name = NAE.221.OPTA
+		piety = -200
+		remove_character_modifier = avatars_peace
+		add_character_modifier = {
+			modifier = truce_breaker
+			years = 5
+		}
+	}
+	option = { #It must have been a diplomatic mistake...
+		name = NAE.221.OPTB
+		trigger = { ai = no }
+		prestige = -500
+		any_war = {
+			limit = { is_primary_war_attacker = yes }
+			end_war = inconclusive
+		}
+	}
+}
+
+character_event = { #Avatar has destroyed one of your slaver counts
+	id = NAE.222
+	desc = NAE.222.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = DAMNATION
+	}
+}
+
+letter_event = { #Avatar harmonises realm - king
+	id = NAE.224
+	desc = NAE.216.D
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_letter_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NAE.ACCEPT.OPT
+		custom_tooltip = {
+			text = NAE.216.TT
+			any_realm_province = {
+				remove_province_modifier = thieves_guild
+				remove_province_modifier = thugs_rampant
+				remove_province_modifier = temple_corruption
+				remove_province_modifier = local_death_cult
+				remove_province_modifier = peasant_unrest
+				remove_province_modifier = religious_unrest
+				remove_province_modifier = cultural_unrest
+				remove_province_modifier = incompetent_rule
+				remove_province_modifier = caravan_raiders
+				remove_province_modifier = smugglers_ring
+				remove_province_modifier = highway_robber_band
+				remove_province_modifier = excessive_bureaucracy
+				remove_province_modifier = sabotaged_buildings
+				remove_province_modifier = sabotaged_defences
+				remove_province_modifier = sabotaged_unrest
+				
+				random_list = {
+					10 = {
+						add_province_modifier = {
+							name = new_shrines
+							duration = 730
+						}
+					}
+					10 = {
+						add_province_modifier = {
+							name = inspired_peasantry
+							duration = 730
+						}
+					}
+					10 = {
+						add_province_modifier = {
+							name = new_roads
+							duration = 730
+						}
+					}
+				}
+			}
+		}
+		persistent_event_target:the_avatar = {
+			if = {
+				limit = { is_ruler = no }
+				move_character = ROOT
+				opinion = {
+					who = ROOT
+					modifier = opinion_loyal_servant
+					years = 2
+				}
+			}
+			letter_event = { id = NAE.551 }
+		}
+	}
+}
+
+character_event = { #Avatar sabotaged ruler
+	id = NAE.226
+	desc = NAE.226.D
+	picture = GFX_evt_avatar_conflict
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = { #Damn them! Enact martial law!
+		name = NAE.226.OPTA
+		add_character_modifier = {
+			name = forging_legend_martial_law_1
+			years = 2
+		}
+	}
+	option = { #Damn them! The peasants are revolting!
+		name = NAE.226.OPTA
+		add_character_modifier = {
+			name = forging_legend_peasant_disobedience_1
+			years = 2
+		}
+	}
+	
+	after = {
+		any_demesne_province = {
+			random_province_holding = {
+				destroy_random_building = yes
+				destroy_random_building = yes
+			}
+		}
+		scaled_wealth = -0.3
+	}
+}
+
+character_event = { #Player Avatar destroys slaver realm - ping event target
+	id = NAE.227
+	hide_window = yes
+	
+	ai = yes
+	only_playable = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		persistent_event_target:the_avatar = { character_event = { id = NAE.228 } }
+	}
+}
+
+character_event = {
+	id = NAE.228
+	desc = NAE.228.D
+	picture = GFX_evt_arson_hf
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes
+	
+	option = { #Do it. Destroy them.
+		name = NAE.228.OPTA
+		custom_tooltip = {
+			text = PLAYER_AVATAR_SUPERHERO_HEALTH_TT
+			health = -1
+		}
+		add_character_modifier = {
+			modifier = avatar_interfere_cooldown
+			years = 2
+		}
+		clr_character_flag = avatar_decisions_open
+		
+		custom_tooltip = {
+			text = NAE.228.TT #This will free a county from slaver control, putting a new count in charge as your tributary. It will be destructive.
+			
+			create_character = {
+				culture = ROOT
+				religion = ROOT
+				dynasty = random
+				random_traits = yes
+				female = 50
+				attributes = {
+					diplomacy = 6
+					martial = 12
+					stewardship = 6
+					intrigue = 4
+					learning = 4
+				}
+			}
+			
+			FROM = {
+				primary_title = {
+					gain_title_plus_barony_if_unlanded = {
+						target = new_character
+						type = revolt
+					}
+				}
+				death = {
+					death_reason = death_battle
+					killer = ROOT
+				}
+				any_liege = {
+					limit = { ai = no } #We send a pop-up to players who just lost some of their territory!
+					character_event = { id = NAE.222 days = 1 }
+				}
+			}
+			
+			new_character = {
+				wealth = 500
+				prestige = 500
+				piety = 500
+				set_defacto_liege = THIS
+				set_government = republic_government
+				set_law = slavery_outlawed
+			}
+			
+			make_tributary = {
+				who = new_character
+				type = permanent
+			}
+			any_player = { character_event = { id = NAE.510 } }
+		}
+	}
+			
+	option = { #Perhaps the time isn't right...
+		name = NAE.228.OPTB
+	}
+}
+
+## NOTIFICATION EVENTS ## ##The player can be notified of what the Avatar is up to, so they know they're out there!
+
+character_event = { #Avatar arrives in someone's court
+	id = NAE.500
+	desc = NAE.500.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Made peace
+	id = NAE.501
+	desc = NAE.501.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Purged Heresy
+	id = NAE.502
+	desc = NAE.502.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Helps raid victims
+	id = NAE.503
+	desc = NAE.503.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Guards plot victim
+	id = NAE.504
+	desc = NAE.504.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Joins revolt/rebellion
+	id = NAE.505
+	desc = NAE.505.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Wards young ruler
+	id = NAE.506
+	desc = NAE.506.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Aids economic crisis
+	id = NAE.507
+	desc = NAE.507.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Tutors court
+	id = NAE.508
+	desc = NAE.508.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Cleans up realm
+	id = NAE.509
+	desc = NAE.509.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Kills Slavers
+	id = NAE.510
+	desc = NAE.510.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Sabotages evil ruler
+	id = NAE.515
+	desc = NAE.515.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Avatar enters withdrawal
+	id = NAE.516
+	desc = NAE.516.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+character_event = { #Avatar exits withdrawal
+	id = NAE.517
+	desc = NAE.517.D
+	picture = GFX_evt_avatar_conflict
+	portrait = persistent_event_target:the_avatar
+	border = GFX_event_normal_frame_avatar
+	notification = yes
+	
+	trigger = { NOT = { trait = avatar } }
+
+	is_triggered_only = yes
+	
+	option = {
+		name = OK
+	}
+}
+
+letter_event = { #Thank notification for helpful player Avatar
+	id = NAE.551
+	desc = NAE.551.D
+	border = GFX_event_normal_frame_avatar
+	
+	ai = no
+	is_triggered_only = yes
+	
+	option = {
+		name = NAE.551.OPTA
+	}
+}
+
+letter_event = { #Angry notification letter for hostile player Avatar
+	id = NAE.552
+	desc = NAE.552.D
+	border = GFX_event_normal_frame_avatar
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NAE.552.OPTA
+	}
+}
+
+## AVATAR CRISIS EVENTS ##
+narrative_event = { #Target (and any players) notified of upcoming war
+	id = NAE.701
+	title = NAE.701.T
+	desc = NAE.701.D
+	portrait = event_target:crisis_defender
+	picture = GFX_evt_earth_victory
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	major_trigger = { ai = no } 
+	
+	is_triggered_only = yes #Fired from decision
+	
+	option = { #We'll have to watch this with great interest...
+		name = NAE.701.OPTA
+		trigger = {
+			NOR = {
+				character = ROOT
+				trait = avatar
+			}
+		}
+	}
+	option = { #I should join when the time comes!
+		name = NAE.701.OPTB
+		trigger = {
+			NOR = {
+				character = ROOT
+				trait = avatar
+			}
+		}
+		custom_tooltip = { NAE.701.TT } #Tells the player they join by event
+	}
+	option = { #I better prepare...
+		name = NAE.701.OPTC
+		trigger = {
+			OR = {
+				character = ROOT
+				trait = avatar
+			}
+		}
+	}
+
+	after = {
+		persistent_event_target:the_avatar = {
+			set_character_flag = preparing_for_crisis_war
+			set_character_flag = dealing_with_crisis
+		}
+	}
+}
+
+character_event = { #Defender gets a small host
+	id = NAE.702
+	desc = NAE.702.D
+	picture = GFX_evt_fire_navy_landing
+	border = GFX_event_normal_frame_war
+	
+	is_triggered_only = yes
+	
+	option = { #I'm honoured
+		name = NAE.702.OPTA
+		spawn_great_commander_effect = yes
+		spawn_unit = {
+			province = capital_scope
+			home = capital_scope
+			owner = ROOT
+			troops = {
+				light_infantry = { 300 300 }
+				archers = { 100 100 }
+			}
+			attrition = 1
+			maintenance_multiplier = 0
+			reinforces = no
+		}
+	}
+	
+	option = { #This isn't your fight
+		name = NAE.702.OPTB
+		trigger = { ai = no }
+		prestige = 100
+	}
+	
+	after = { persistent_event_target:the_avatar = { character_event = { id = NAE.703 } } }
+}
+
+character_event = { #Avatar troop spawner
+	id = NAE.703
+	desc = {
+		trigger = { war = yes }
+		text = NAE.703.D1
+	}
+	desc = {
+		trigger = { war = no }
+		text = NAE.703.D2
+	}
+	hide_from = yes
+	picture = GFX_evt_fire_navy_landing
+	border = GFX_event_normal_frame_war
+	
+	has_character_flag = preparing_for_crisis_war
+	
+	is_triggered_only = yes
+	
+	option = { #Thank you for the troops
+		name = NAE.703.OPTA
+		trigger = { is_playable = yes }
+		spawn_unit = {
+			province = capital_scope
+			home = capital_scope
+			owner = ROOT
+			troops = {
+				light_infantry = { 300 300 }
+				heavy_infantry = { 200 200 }
+				archers = { 100 100 }
+			}
+			earmark = crisis_troops
+			attrition = 1
+			maintenance_multiplier = 0
+			reinforces = no
+		}
+		
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = { #Thank you for the ships
+		name = NAE.703.OPTB
+		trigger = { is_playable = yes }
+		spawn_fleet = {
+			province = closest
+			owner = ROOT
+			earmark = crisis_ships
+			troops = {
+				galleys = { 10 10 }
+			}
+		}
+		
+		ai_chance = {
+			factor = 50
+			
+			modifier = {
+				capital_scope = {
+					event_target:crisis_defender = {
+						capital_scope = {
+							can_land_path_to = PREVPREV
+						}
+					}
+				}
+				factor = 0
+			}
+		}
+	}
+	option = { #Thank you for your service
+		name = NAE.703.OPTC
+		trigger = { is_playable = yes }
+		spawn_great_commander_effect = yes
+		
+		ai_chance = {
+			factor = 5
+			
+			modifier = {
+				any_courtier = {
+					limit = { has_minor_title = title_commander }
+					martial < 16
+				}
+				factor = 100
+			}
+		}
+	}
+	option = { #This isn't your fight
+		name = NAE.702.OPTD
+		trigger = { ai = no }
+		prestige = 100
+	}
+	option = { #I'm an unlanded AI so I get all my troops at the end
+		name = OK
+		trigger = {
+			ai = yes
+			OR = {
+				tier = BARON
+				is_ruler = no
+			}
+		}
+		
+		ai_chance = { factor = 1000 }
+	}
+	
+#	option = { #Some other contingency thing, probably. ##This space reserved
+	
+	after = { character_event = { id = NAE.703 days = 90 random = 20 } }
+}
+
+character_event = { #Avatar crisis war prep
+	id = NAE.704
+	hide_window = yes
+	
+	immediate = {
+		liege = {
+			capital_scope = { save_event_target_as:host_capital }
+		}
+		
+		clr_character_flag = preparing_for_crisis_war
+		set_character_flag = declared_crisis_war
+		
+		if = {
+			limit = { is_playable = no }
+			create_title = {
+				tier = DUKE
+				landless = yes
+				temporary = yes
+				adventurer = yes
+				culture = ROOT
+				name = "CLAIMANT_ADVENTURE"
+				holder = ROOT
+			}
+			set_defacto_liege = ROOT
+			spawn_unit = {
+				owner = ROOT
+				province = event_target:host_capital
+				home = event_target:host_capital
+				troops = {
+					heavy_infantry = { 500 500 }
+					pikemen = { 500 500 }
+					light_cavalry = { 500 500 }
+					archers = { 500 500 }
+				}
+				earmark = crisis_troops
+				attrition = 1
+				maintenance_multiplier = 0
+			}
+
+			spawn_fleet = {
+				province = closest
+				owner = ROOT
+				earmark = crisis_ships
+				troops = {
+					galleys = { 40 40 }
+				}
+			}
+		}
+		
+		unsafe_war = {
+			target = crisis_defender
+			casus_belli = cb_shatter_realm
+		}
+	}
+}
+
+narrative_event = { #Ready or not, here war comes!
+	id = NAE.705
+	title = NAE.705.T
+	desc = NAE.705.D
+	portrait = event_target:crisis_defender
+	picture = GFX_evt_fire_victory
+	border = GFX_event_narrative_frame_avatar
+	major = yes
+	major_trigger = { is_playable = yes }
+	
+	only_playable = yes
+	
+	is_triggered_only = yes
+	
+	option = { #I'll join the Avatar!
+		name = NAE.705.OPTA
+		trigger = {
+			NOR = {
+				liege = ROOT
+				character = ROOT
+				trait = avatar
+				is_hostile_to_avatar_trigger = yes #This won't prevent the wily player from joining a war manually, but should at least not signal that it's an option...
+			}
+		}
+		tiered_piety_reward_effect = yes
+		join_attacker_wars = persistent_event_target:the_avatar
+		hidden_tooltip = { join_defender_wars = persistent_event_target:the_avatar } #Just in case...
+		
+		ai_chance = {
+			factor = 60
+			
+			modifier = {
+				factor = 3
+				trait = zealous #All religions that aren't hostile respect the Avatar, and hostile religions are already filtered out
+			}
+			
+			modifier = {
+				factor = 3
+				liege = persistent_event_target:the_avatar
+			}
+			
+			modifier = {
+				factor = 3
+				likes_better_than = { #This would be actually quite difficult if you aren't hostile to the avatar
+					who = persistent_event_target:the_avatar
+					than = ROOT
+				}
+			}
+			
+			modifier = {
+				factor = 1.5
+				opinion = {
+					who = persistent_event_target:the_avatar
+					value = 30
+				}
+			}
+			
+			modifier = {
+				factor = 1.5
+				opinion = {
+					who = persistent_event_target:the_avatar
+					value = 60
+				}
+			}
+			
+			modifier = {
+				factor = 1.5
+				opinion = {
+					who = persistent_event_target:the_avatar
+					value = 90
+				}
+			}
+		}
+	}
+	
+	option = { #I'll sit this one out for now
+		name = NAE.705.OPTB
+		trigger = {
+			NOR = {
+				trait = avatar
+				character = ROOT
+			}
+		}
+		custom_tooltip = { text = NAE.705.TT } #You can always change your mind later
+		
+		ai_chance = {
+			factor = 20
+			
+			modifier = {
+				factor = 3
+				trait = craven
+			}
+			modifier = {
+				factor = 0.5
+				trait = brave
+			}
+			modifier = {
+				factor = 3
+				pacifist = yes
+			}
+			modifier = {
+				factor = 5
+				opinion_diff = { #If you like/dislike them more or less evenly, you won't really care
+					first = ROOT
+					second = persistent_event_target:the_avatar
+					value < 20
+				}
+			}
+			modifier = {
+				factor = 3
+				ai_honor < -20
+			}
+			modifier = {
+				factor = 2
+				ai_ambition < -15
+			}
+			
+			modifier = {
+				factor = 0.5
+				ai_ambition = 40
+			}
+			modifier = {
+				factor = 0.5
+				ai_zeal = 20
+			}
+			modifier = {
+				factor = 0.5
+				has_education_martial_trigger = yes #Obviously wants to fight wars
+			}
+		}
+	}
+	
+	option = { #I'll join the defender!
+		name = NAE.705.OPTC
+		trigger = {
+			NOR = {
+				liege = persistent_event_target:the_avatar
+				trait = avatar
+				character = ROOT
+				religion = followers_of_kyoshi #This won't prevent the wily player from joining a war manually, but should at least not signal that it's an option...
+			}
+		}
+		join_defender_wars = ROOT
+		
+		ai_chance = {
+			factor = 60
+			
+			modifier = {
+				OR = {
+					religion = way_of_chin
+					religion = equalist
+					religion = barbarism
+					religion = barbarism_reformed
+					religion = fire_imperialism
+				}
+				trait = zealous
+				factor = 3
+			}
+			
+			modifier = {	
+				is_hostile_to_avatar_trigger = yes
+				factor = 2
+			}
+			
+			modifier = {
+				factor = 3
+				liege = ROOT
+			}
+			
+			modifier = {
+				factor = 3
+				likes_better_than = { #This would be actually quite difficult if you aren't hostile to the avatar
+					who = ROOT
+					than = persistent_event_target:the_avatar
+				}
+			}
+			
+			modifier = {
+				factor = 2
+				opinion = {
+					who = ROOT
+					value = 30
+				}
+			}
+			
+			modifier = {
+				factor = 2
+				opinion = {
+					who = ROOT
+					value = 60
+				}
+			}
+			
+			modifier = {
+				factor = 2
+				opinion = {
+					who = ROOT
+					value = 90
+				}
+			}
+	}
+	option = { #I AM the defender!
+		name = NAE.705.OPTD
+		trigger = { character = ROOT }
+	}
+	option = { #I AM the Avatar!
+		name = NAE.705.OPTE
+		trigger = { trait = avatar }
+	}
+}
+
+narrative_event = { #Avatar wins!
+	id = NAE.707
+	title = NAE.707.T
+	desc = NAE.707.D
+	picture = GFX_evt_firelord_defeat
+	border = GFX_event_narrative_frame_war
+	
+	ai = no
+	
+	is_triggered_only = yes #Fired to players as part of the CB
+	
+	option = { #Balance is restored...
+		name = NAE.707.OPTA
+	}
+	
+	after = {
+		persistent_event_target:the_avatar = {
+			disband_event_forces = crisis_ships
+			disband_event_forces = crisis_troops
+			clr_character_flag = dealing_with_crisis
+		}
+	}
+}
+
+narrative_event = { #Defender wins!
+	id = NAE.708
+	title = NAE.708.T
+	desc = NAE.708.D
+	picture = GFX_evt_chin_defeat
+	border = GFX_event_narrative_frame_avatar
+	
+	ai = no
+	
+	is_triggered_only = yes #Fired to players as part of the CB
+	
+	option = { #The world certainly is changing
+		name = NAE.708.OPTA
+	}
+	
+	after = {
+		persistent_event_target:the_avatar = {
+			disband_event_forces = crisis_ships
+			disband_event_forces = crisis_troops
+			clr_character_flag = dealing_with_crisis
+		}
+	}
+}
