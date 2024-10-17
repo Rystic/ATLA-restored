@@ -75,40 +75,68 @@ character_event = { #Cleans up dead bloodlines - if they aren't active for eithe
 	is_triggered_only = yes #Fired on birth
 	
 	immediate = {
-		any_owned_bloodline = {
-			NOR = {
-				bloodline_is_active_for = ROOT
-				bloodline_is_active_for = father_even_if_dead
-				bloodline_is_active_for = mother_even_if_dead
+		father_even_if_dead = {
+			ROOT = {
+				mother_even_if_dead = {
+					any_owned_bloodline = {
+						limit = {
+							NOR = {
+								bloodline_is_active_for = PREV
+								bloodline_is_active_for = PREVPREV
+								bloodline_is_active_for = PREVPREVPREV
+							}
+						}
+						remove_bloodline_member = ROOT
+					}
+				}
 			}
-			remove_bloodline_member = ROOT
 		}
+		mother_even_if_dead = {
+			ROOT = {
+				father_even_if_dead = {
+					any_owned_bloodline = {
+						limit = {
+							NOR = {
+								bloodline_is_active_for = PREV
+								bloodline_is_active_for = PREVPREV
+								bloodline_is_active_for = PREVPREVPREV
+							}
+						}
+						remove_bloodline_member = ROOT
+					}
+				}
+			}
+		}
+		
 		trigger_switch = { #We also scrub any custom graphical cultures
 			on_trigger = graphical_culture
 			aanggfx = { set_graphical_culture = northern_air_nomad }
 			rokuandtamingfx = { set_graphical_culture = fire_islander }
-			kataragfx = { set_graphical_culture = southern_water_tribe }
-			hodakagfx = { set_graphical_culture = southern_water_tribe }
+			kataragfx = { set_graphical_culture = southern_water_culture }
+			hodakagfx = { set_graphical_culture = southern_water_culture }
 			oldavatargfx = { set_graphical_culture = earth_islander }
 			royalfiregfx = { set_graphical_culture = fire_imperial_culture }
 			royalfiretwogfx = { set_graphical_culture = fire_imperial_culture }
 			royalfirethreegfx = { set_graphical_culture = fire_imperial_culture }
-			waterroyalgfx = { set_graphical_culture = northern_water_tribe }
+			waterroyalgfx = { set_graphical_culture = northern_water_culture }
 			earthherogfx = { set_graphical_culture = omashuan }
 			earthroyalgfx = { set_graphical_culture = ba_sing_se_culture }
-			korragfx = { set_graphical_culture = southern_water_tribe }
+			korra_gfx = { set_graphical_culture = southern_water_culture }
 		}
 	}
 }
 
-# metalbender founder's descedants get metalbender trait or improve their bending
+# metalbender founder's descedants get metalbender trait or improve their bending ##NOTE: Suspended until bending rework is done, this is spitting out errors left and right - Liz
 character_event = {
 	id = BLOODEV.3
 	title = EVTTITLEbender_bloodlines.3
 	desc = EVTDESCbender_bloodlines.3
 	picture = GFX_evt_metalbending_discovery
 	min_age = 16
+	
+	is_triggered_only = yes
 	trigger = {
+		always = no
 		trait = earthbender
 		NOR = {
 			trait = metalbender
@@ -118,20 +146,11 @@ character_event = {
 			has_bloodline_flag = is_metalbending_bloodline
 		}
 	}
-	immediate = {
-		any_owned_bloodline = {
-			limit = {
-				has_bloodline_flag = is_metalbending_bloodline
-			}
-			save_event_target_as = bloodline_metalbending
-			founder = {
-				save_event_target_as = bloodline_metalbending_ancestor
-			}
-		}
-	}
-	mean_time_to_happen = { #REEEEEEEEEE TODO
-		months = 1
-	}
+	
+#	weight_multiplier = {
+#		factor = 1
+#	}
+	
 	option = {
 		name = EVTOPTbender_bloodlines.3
 		tooltip_info_custom = because_bloodline_tt
@@ -168,11 +187,12 @@ character_event = { #Killed the Avatar - approving religion gains commander
 	trigger = {
 		any_owned_bloodline = {
 			has_bloodline_flag = is_avatar_killer_bloodline
-			is_bloodline_active_for = ROOT
+			bloodline_is_active_for = ROOT
 		}
+		NOT = { religion = followers_of_kyoshi }
 		OR = {
 			religion = way_of_chin
-			religion = fire_imperialism
+			religion = fire_nation_imperialism
 			religion = equalism
 			culture = pirate_culture
 			culture = barbarian_culture
@@ -202,7 +222,7 @@ character_event = { #Killed the Avatar - approving religion gains commander
 			add_trait = zealous
 			opinion = {
 				who = ROOT
-				modifier = loyal_servant
+				modifier = opinion_loyal_servant
 			}
 		}
 	}
@@ -258,11 +278,11 @@ character_event = { #Killed the Avatar - other religion ##Mistreated for bloodli
 	trigger = {
 		any_owned_bloodline = {
 			has_bloodline_flag = is_avatar_killer_bloodline
-			is_bloodline_active_for = ROOT
+			bloodline_is_active_for = ROOT
 		}
 		NOR = {
 			religion = way_of_chin
-			religion = fire_imperialism
+			religion = fire_nation_imperialism
 			religion = equalism
 			culture = pirate_culture
 			culture = barbarian_culture
@@ -415,7 +435,7 @@ character_event = { #Killed the Avatar - other religion ##Mistreated for bloodli
 		random_courtier_or_vassal = {
 			limit = { is_adult = no }
 			preferred_limit = { NOT = { dynasty = ROOT } }
-			preferred_limit = { age_diff = { who = ROOT value < 5 } }
+			preferred_limit = { age_diff = { who = ROOT years < 5 } }
 			add_rival = ROOT
 		}
 		random_list = {
@@ -493,10 +513,10 @@ character_event = { #Killed the Avatar - other religion ##Mistreated for bloodli
 					NOR = {
 						trait = sturdy
 						trait = robust
-						trait = frail
+						trait = feeble
 					}
 				}
-				add_trait = frail
+				add_trait = feeble
 			}
 			10 = { change_learning = 1 }
 			10 = {
@@ -536,7 +556,7 @@ character_event = { #Killed the Avatar - Follower of Kyoshi (regret/redemption/e
 	id = BLOODEV.6
 	desc = BLOODEV.6.D
 	picture = GFX_evt_scandal
-	border = GFX_event_normal_frame_stewardship
+	border = GFX_event_normal_frame_economy
 	
 	only_playable = yes
 	only_capable = yes
@@ -548,7 +568,7 @@ character_event = { #Killed the Avatar - Follower of Kyoshi (regret/redemption/e
 	trigger = {
 		any_owned_bloodline = {
 			has_bloodline_flag = is_avatar_killer_bloodline
-			is_bloodline_active_for = ROOT
+			bloodline_is_active_for = ROOT
 		}
 		NOT = { has_character_modifier = buddhist_ascetic }
 		religion = followers_of_kyoshi
@@ -619,7 +639,7 @@ character_event = { #Killed the Avatar - Follower of Kyoshi (regret/redemption/e
 		name = BLOODEV.6.OPTC
 		scaled_wealth = {
 			value = -0.4
-			max= -50
+			min = -50
 			max = -500
 		}
 		add_character_modifier = {
@@ -677,7 +697,7 @@ character_event = { #Pious Kyoshi follower given chance to lose bloodline
 	id = BLOODEV.7
 	desc = BLOODEV.7.D
 	picture = GFX_evt_kyoshi_warriors
-	border = GFX_event_normal_frame_learning
+	border = GFX_event_normal_frame_religion
 	
 	is_triggered_only = yes
 	

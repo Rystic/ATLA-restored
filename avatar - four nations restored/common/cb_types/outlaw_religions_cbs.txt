@@ -1626,46 +1626,6 @@ cb_slave_colony = {
 				value = 1
 			}
 		}
-
-		custom_tooltip = {
-			text = religious_liberation_cb_succ_tip
-		}
-
-		
-		hidden_tooltip = {
-			create_character = {
-				religion = ROOT
-				culture = THIS
-				dynasty = random
-				random_traits = yes
-				female = no
-				age = 20
-				health = 7
-				fertility = 0.7
-				attributes = {
-					martial = 15
-					diplomacy = 10
-					stewardship = 5
-				}
-			}
-			new_character = {
-				remove_trait = content
-				add_trait = ambitious
-				add_trait = cruel
-				add_trait = pirate_trait
-				wealth = 500
-				prestige = 500
-				piety = 500
-				save_event_target_as = new_ruler
-				usurp_title_plus_barony_if_unlanded_and_vassals = PREV ##TODO: Fix
-			}
-
-			ROOT = {
-				make_tributary = { who = event_target:new_ruler tributary_type = slave_colony_tributary }
-				event_target:new_ruler = { set_defacto_liege = event_target:new_ruler }
-				event_target:new_ruler = { set_government_type = pirate_cartel }
-			}
-		}
 		
 		ROOT = {
 			show_scope_change = no
@@ -1690,6 +1650,46 @@ cb_slave_colony = {
 					modifier = established_slave_colony
 					years = 20
 				}
+			}
+		}
+	}
+	
+	on_success_title = {
+		custom_tooltip = {
+			text = religious_liberation_cb_succ_tip
+			create_character = {
+				religion = ROOT
+				culture = THIS
+				dynasty = random
+				random_traits = yes
+				female = 50
+				age = 20
+				health = 7
+				fertility = 0.7
+				attributes = {
+					martial = 15
+					diplomacy = 10
+					stewardship = 5
+				}
+			}
+			new_character = {
+				remove_trait = content
+				add_trait = ambitious
+				add_trait = cruel
+				add_trait = pirate_trait
+				wealth = 500
+				prestige = 500
+				piety = 500
+			}
+			usurp_title_plus_barony_if_unlanded_and_vassals = {
+				target = new_character
+				type = invasion
+			}
+
+			ROOT = {
+				make_tributary = { who = new_character tributary_type = slave_colony_tributary }
+				new_character = { set_defacto_liege = THIS }
+				new_character = { set_government_type = pirate_cartel }
 			}
 		}
 	}

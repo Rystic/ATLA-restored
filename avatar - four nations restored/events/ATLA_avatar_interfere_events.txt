@@ -1,3 +1,5 @@
+namespace = NAE
+
 character_event = { #Avatar wander prompt
 	id = NAE.200
 	hide_window = yes
@@ -254,7 +256,7 @@ letter_event = { #Avatar makes peace
 		is_hostile_to_avatar_trigger = no
 		in_revolt = no
 		is_primary_war_attacker = yes #Since revolters are always the aggressors, this lets us filter only to people warring on other rulers
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOT = { any_realm_lord = { trait = avatar } }
 	}
 	
 	weight_multiplier = {
@@ -299,8 +301,8 @@ letter_event = { #Avatar makes peace
 			name = avatars_peace
 			years = 5
 		}
-		add_trait = { avatars_peace_trait }
-		character_event = { NAE.2061 years = 5 } #Remove trait
+		add_trait = avatars_peace_trait
+		character_event = { id = NAE.2061 years = 5 } #Remove trait
 		
 		any_player = { character_event = { id = NAE.501 } }
 		
@@ -331,7 +333,7 @@ letter_event = { #Avatar makes peace
 	
 	option = { #Refuse to end wars
 		name = NAE.201.OPTB
-		add_rival = { persistent_event_target:the_avatar }
+		add_rival = persistent_event_target:the_avatar
 		
 		ai_chance = {
 			factor = 30
@@ -373,7 +375,7 @@ letter_event = { #Avatar stomps heresy
 	
 	trigger = {
 		is_hostile_to_avatar_trigger = no
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOT = { any_realm_lord = { trait = avatar } }
 		OR = {
 			AND = {
 				is_heretic = yes
@@ -389,6 +391,8 @@ letter_event = { #Avatar stomps heresy
 	}
 	
 	weight_multiplier = {
+		days = 1
+		
 		modifier = {
 			persistent_event_target:the_avatar = { has_heresies = yes } #Avatar more likely to go help if they know how heresy problems feel
 			factor = 1.1
@@ -434,7 +438,7 @@ letter_event = { #Avatar stomps heresy
 		
 		any_demesne_province = {
 			limit = {
-				NOT = { followers_of_kyoshi }
+				NOT = { religion = followers_of_kyoshi }
 				is_heretic = yes
 			}
 			abandon_heresy = yes
@@ -505,10 +509,12 @@ letter_event = { #Avatar helps the raided
 		is_allowed_to_loot = no
 		any_realm_province = { any_province_holding = { has_holding_modifier = looted_modifier } }
 		lower_tier_than = EMPEROR
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOT = { any_realm_lord = { trait = avatar } }
 	}
 	
 	weight_multiplier = {
+		days = 1
+		
 		modifier = {
 			persistent_event_target:the_avatar = { is_allowed_to_loot = yes }
 			factor = 0.5
@@ -557,22 +563,20 @@ letter_event = { #Avatar helps the raided
 				religion = persistent_event_target:the_avatar
 			}
 		}
-		capital_scope = {
-			spawn_unit = {
-				province = THIS
-				home = THIS
-				owner = ROOT
-				scaled_by_biggest_garrison = 0.75
-				troops = {
-					archers = { 6 6 }
-					light_cavalry = { 4 4 }
-					light_infantry = { 10 10 }
-				}
-				reinforces = no
-				attrition = 1.0
-				maintenance_multiplier = 0
-				merge = yes
+		spawn_unit = {
+			province = capital_scope
+			home = capital_scope
+			owner = ROOT
+			scaled_by_biggest_garrison = 0.75
+			troops = {
+				archers = { 6 6 }
+				light_cavalry = { 4 4 }
+				light_infantry = { 10 10 }
 			}
+			reinforces = no
+			attrition = 1.0
+			maintenance_multiplier = 0
+			merge = yes
 		}
 		any_player = { character_event = { id = NAE.503 } }
 	}
@@ -614,6 +618,8 @@ character_event = { #Avatar protects a plot victim - uniquely, this targets plot
 	}
 	
 	weight_multiplier = {
+		days = 1
+		
 		modifier = {
 			persistent_event_target:the_avatar = { has_benevolent_trait_trigger = yes } 
 			factor = 1.2
@@ -623,7 +629,7 @@ character_event = { #Avatar protects a plot victim - uniquely, this targets plot
 			factor = 1.8
 		}
 		modifier = {
-			persistent_event_target:the_avatar = { trait = master_schemer }
+			persistent_event_target:the_avatar = { trait = schemer }
 			factor = 1.4
 		}
 		modifier = {
@@ -681,7 +687,7 @@ letter_event = {
 			new_character = {
 				culture = persistent_event_target:the_avatar #Sets the faith/culture of the spy to the Avatar's, to mimic being from their court
 				religion = persistent_event_target:the_avatar
-				opinion_modifier = {
+				opinion = {
 					who = ROOT
 					modifier = opinion_loyal_servant
 				}
@@ -731,15 +737,15 @@ letter_event = { #Avatar interferes in civil war
 	trigger = {
 		is_primary_war_defender = yes
 		any_current_enemy = { in_revolt = yes }
-		persistent_event_target:the_avatar = {
-			NOR = {
-				any_liege = ROOT
-				any_current_enemy = ROOT
-			}
+		NOR = {
+			any_current_enemy = { trait = avatar }
+			any_realm_lord = { trait = avatar }
 		}
 	}
 	
 	weight_multiplier = {
+		days = 1
+		
 		modifier = {
 			OR = {
 				persistent_event_target:the_avatar = { has_education_diplomacy_trigger = yes }
@@ -872,20 +878,20 @@ letter_event = { #Avatar interferes in civil war
 					name = avatars_peace
 					years = 5
 				}
-				add_trait = { avatars_peace_trait }
-				character_event = { NAE.2061 years = 5 } #Remove trait
+				add_trait = avatars_peace_trait
+				character_event = { id = NAE.2061 years = 5 } #Remove trait
 			}
 			add_character_modifier = {
 				name = avatars_peace
 				years = 5
 			}
-			add_trait = { avatars_peace_trait }
-			character_event = { NAE.2061 years = 5 } #Remove trait
+			add_trait = avatars_peace_trait
+			character_event = { id = NAE.2061 years = 5 } #Remove trait
 		}
 		any_player = { character_event = { id = NAE.502 } }
 		persistent_event_target:the_avatar = { character_event = { id = NAE.200 } } #Avatar wander event
 		clr_global_flag = avatar_available
-		character_event = { NAE.2061 years = 5 } #Remove trait
+		character_event = { id = NAE.2061 years = 5 } #Remove trait
 	}
 }
 
@@ -916,15 +922,15 @@ letter_event = { #Avatar interferes in rebellion
 			rebel = yes
 			any_war = { war_score = 30 } #Checks the war might actually work out
 		}
-		persistent_event_target:the_avatar = {
-			NOR = {
-				any_current_enemy = ROOT
-				any_liege = ROOT
-			}
+		NOR = {
+			any_current_enemy = { trait = avatar }
+			any_realm_lord = { trait = avatar }
 		}
 	}
 	
 	weight_multiplier = {
+		days = 1
+		
 		modifier = {
 			OR = {
 				persistent_event_target:the_avatar = { has_education_diplomacy_trigger = yes }
@@ -960,7 +966,7 @@ letter_event = { #Avatar interferes in rebellion
 				AND = {
 					is_hostile_to_avatar_trigger = yes
 					any_current_enemy = {
-						is_rebel = yes
+						rebel = yes
 						is_hostile_to_avatar_trigger = no
 					}
 				}
@@ -990,7 +996,7 @@ letter_event = { #Avatar interferes in rebellion
 			}
 		}
 		random_current_enemy = {
-			limit = { is_rebel = yes }
+			limit = { rebel = yes }
 			letter_event = { id = NAE.208 }
 		}
 	}
@@ -1002,7 +1008,7 @@ letter_event = { #Avatar interferes in rebellion
 				AND = {
 					is_hostile_to_avatar_trigger = yes
 					any_current_enemy = {
-						is_rebel = yes
+						rebel = yes
 						is_hostile_to_avatar_trigger = no
 					}
 				}
@@ -1032,7 +1038,7 @@ letter_event = { #Avatar interferes in rebellion
 			}
 		}
 		any_current_enemy = {
-			limit = { is_rebel = yes }
+			limit = { rebel = yes }
 			any_war = { end_war = whitepeace }
 		}
 		persistent_event_target:the_avatar = { character_event = { id = NAE.200 } } #Avatar wander prompt
@@ -1069,23 +1075,21 @@ letter_event = { #Revolter/Revolutionary notified the Avatar is joining them
 				religion = persistent_event_target:the_avatar
 			}
 		}
-		capital_scope = {
-			spawn_unit = {
-				province = THIS
-				home = THIS
-				owner = ROOT
-				scaled_by_biggest_garrison = 0.75
-				troops = {
-					archers = { 6 6 }
-					light_cavalry = { 4 4 }
-					light_infantry = { 10 10 }
-				}
-				reinforces = no
-				attrition = 1.0
-				disband_on_peace = yes
-				maintenance_multiplier = 0
-				merge = yes
+		spawn_unit = {
+			province = capital_scope
+			home = capital_scope
+			owner = ROOT
+			scaled_by_biggest_garrison = 0.75
+			troops = {
+				archers = { 6 6 }
+				light_cavalry = { 4 4 }
+				light_infantry = { 10 10 }
 			}
+			reinforces = no
+			attrition = 1.0
+			disband_on_peace = yes
+			maintenance_multiplier = 0
+			merge = yes
 		}
 		any_player = { character_event = { id = NAE.505 } }
 	}
@@ -1176,7 +1180,7 @@ letter_event = { #Avatar aids with succession crisis
 				give_minor_title = title_appointed_regent
 				opinion = {
 					who = ROOT
-					opinion = opinion_loyal_servant
+					modifier = opinion_loyal_servant
 					years = 5 #Uniquely long instance of this modifier
 				}
 			}
@@ -1224,7 +1228,7 @@ character_event = { #Avatar arrives to deal with murderer
 		OR = {
 			persistent_event_target:the_avatar = { ai = no }
 			any_kill_list_character = { count = 20 }
-			rival = persistent_event_target:the_avatar
+			is_rival = persistent_event_target:the_avatar
 			AND = {
 				has_character_modifier = known_murderer
 				any_kill_list_character = { count = 10 }
@@ -1336,24 +1340,24 @@ character_event = { #Avatar arrives to deal with murderer
 			20 = { }
 		}
 		random_courtier = {
-			limit = { has_minor_title = commander }
+			limit = { has_minor_title = title_commander }
 			death = { #Strictly speaking Aang shouldn't do this, he's uniquely pacifistic, but he's thrown people off mountains.
 				death_reason = death_battle
-				killer = { persistent_event_target:the_avatar }
+				killer = persistent_event_target:the_avatar
 			}
 		}
 		random_courtier = { #Do this two more times
-			limit = { has_minor_title = commander }
+			limit = { has_minor_title = title_commander }
 			death = {
 				death_reason = death_battle
-				killer = { persistent_event_target:the_avatar }
+				killer = persistent_event_target:the_avatar
 			}
 		}
 		random_courtier = {
-			limit = { has_minor_title = commander }
+			limit = { has_minor_title = title_commander }
 			death = {
 				death_reason = death_battle
-				killer = { persistent_event_target:the_avatar }
+				killer = persistent_event_target:the_avatar
 			}
 		}
 		
@@ -1364,7 +1368,7 @@ character_event = { #Avatar arrives to deal with murderer
 		else = {
 			random = {
 				chance = 33
-				add_trait = coward
+				add_trait = craven
 			}
 		}
 	
@@ -1567,7 +1571,7 @@ character_event = { #Avatar teaches a court
 	
 	trigger = {
 		is_hostile_to_avatar_trigger = no
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOT = { any_realm_lord = { trait = avatar } }
 	}
 	
 	weight_multiplier = {
@@ -1691,7 +1695,10 @@ letter_event = { #Avatar endorses a good character
 	
 	trigger = {
 		is_hostile_to_avatar_trigger = no
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOR = {
+			has_character_modifier = avatars_endorsement
+			any_realm_lord = { trait = avatar }
+		}
 		OR = {
 			persistent_event_target:the_avatar = { ai = no }
 			AND = {
@@ -1700,7 +1707,6 @@ letter_event = { #Avatar endorses a good character
 				is_benevolent_trigger = yes
 			}
 		}
-		NOT = { has_character_modifier = avatars_endorsement }
 	}
 	
 	weight_multiplier = { #No modifiers! This one's just random.
@@ -1743,7 +1749,10 @@ letter_event = { #Avatar rebukes an evil character
 	
 	trigger = {
 		is_hostile_to_avatar_trigger = no #Wouldn't care
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOR = {
+			has_character_modifier = avatars_condemnation
+			any_realm_lord = { trait = avatar }
+		}
 		OR = {
 			persistent_event_target:the_avatar = { ai = no }
 			AND = {
@@ -1752,7 +1761,6 @@ letter_event = { #Avatar rebukes an evil character
 				is_benevolent_trigger = no
 			}
 		}
-		NOT = { has_character_modifier = avatars_condemnation }
 	}
 	
 	weight_multiplier = { #No modifiers! This one's just random.
@@ -1793,7 +1801,7 @@ letter_event = { #Avatar cleans up a duke-tier character
 	trigger = {
 		tier = DUKE
 		is_hostile_to_avatar_trigger = no
-		persistent_event_target:the_avatar = { NOT = { any_liege = ROOT } }
+		NOT = { any_realm_lord = { trait = avatar } }
 	}
 	
 	weight_multiplier = { #No modifiers! This one's just random.
@@ -1909,7 +1917,7 @@ letter_event = { #Player Avatar enforces peace - much looser requirements!
 	id = NAE.217
 	desc = NAE.201.D
 	portrait = persistent_event_target:the_avatar
-	border = GFX_event_normal_frame_avatar
+	border = GFX_event_letter_frame_avatar
 	
 	is_triggered_only = yes #Fired from player avatar decision - all filters are in the decision
 	
@@ -2001,23 +2009,20 @@ letter_event = { #Player Avatar lends support to war - much looser requirements
 			culture = persistent_event_target:the_avatar
 			religion = persistent_event_target:the_avatar
 		}
-		capital_scope = {
-			spawn_unit = {
-				province = THIS
-				home = THIS
-				owner = ROOT
-				scaled_by_biggest_garrison = 0.75
-				troops = {
-					archers = { 6 6 }
-					light_cavalry = { 4 4 }
-					light_infantry = { 10 10 }
-				}
-				reinforces = no
-				attrition = 1.0
-				disband_on_peace = yes
-				maintenance_multiplier = 0
-				merge = yes
+		spawn_unit = {
+			province = capital_scope
+			owner = ROOT
+			scaled_by_biggest_garrison = 0.75
+			troops = {
+				archers = { 6 6 }
+				light_cavalry = { 4 4 }
+				light_infantry = { 10 10 }
 			}
+			reinforces = no
+			attrition = 1.0
+			disband_on_peace = yes
+			maintenance_multiplier = 0
+			merge = yes
 		}
 		opinion = {
 			who = persistent_event_target:the_avatar
@@ -2074,8 +2079,9 @@ character_event = { #Superhero event randomiser
 	
 	immediate = {
 		add_character_modifier = {
-				name = superhero_cooldown
-				years = 5
+			name = superhero_cooldown
+			years = 5
+			hidden = yes
 		}
 		health = -1 #Takes up the Avatar's power
 		
@@ -2126,8 +2132,8 @@ character_event = { #Superhero event randomiser
 						prestige = 500
 						piety = 500
 						set_defacto_liege = THIS
-						set_government = republic_government
-						set_law = slavery_outlawed
+						set_government_type = republic_government
+						primary_title = { add_law = slavery_outlawed }
 					}
 					if = {
 						limit = {
@@ -2136,7 +2142,7 @@ character_event = { #Superhero event randomiser
 						persistent_event_target:the_avatar = {
 							make_tributary = {
 								who = new_character
-								type = permanent
+								tributary_type = permanent
 							}
 						}
 					}
@@ -2176,7 +2182,7 @@ character_event = { #Superhero event randomiser
 						NOT = { any_realm_lord = { trait = avatar } }
 					}
 					letter_event = { id = NAE.224 } #Inform event, adds opinion of Avatar, moves to court if unlanded
-					any_player = { id = NAE.509 } #Player notification
+					any_player = { character_event = { id = NAE.509 } } #Player notification
 				}
 			}
 			10 = { #Destabilises an entire kingdom via Spirits
@@ -2190,8 +2196,8 @@ character_event = { #Superhero event randomiser
 					limit = { is_hostile_to_avatar_trigger = yes }
 					preferred_limit = { has_tyrannical_personality_trigger = yes }
 					preferred_limit = { is_benevolent_trigger = no }
-#						character_event = { id = NAE.225 } #Ruler notification event
-#						any_player = { character_event = { id = NAE.514 } }
+#					character_event = { id = NAE.225 } #Ruler notification event
+#					any_player = { character_event = { id = NAE.514 } }
 				}
 			}
 			10 = { #Sabotages an evil ruler's realm
@@ -2224,6 +2230,7 @@ character_event = { #Avatar's peace breakers get slapped
 		name = NAE.221.OPTA
 		piety = -200
 		remove_character_modifier = avatars_peace
+		remove_trait = avatars_peace_trait
 		add_character_modifier = {
 			modifier = truce_breaker
 			years = 5
@@ -2235,7 +2242,7 @@ character_event = { #Avatar's peace breakers get slapped
 		prestige = -500
 		any_war = {
 			limit = { is_primary_war_attacker = yes }
-			end_war = inconclusive
+			end_war = invalid
 		}
 	}
 }
@@ -2245,7 +2252,7 @@ character_event = { #Avatar has destroyed one of your slaver counts
 	desc = NAE.222.D
 	picture = GFX_evt_avatar_conflict
 	portrait = persistent_event_target:the_avatar
-	border = GFX_event_letter_frame_avatar
+	border = GFX_event_normal_frame_avatar
 	
 	is_triggered_only = yes
 	
@@ -2382,10 +2389,6 @@ character_event = {
 			text = PLAYER_AVATAR_SUPERHERO_HEALTH_TT
 			health = -1
 		}
-		add_character_modifier = {
-			modifier = avatar_interfere_cooldown
-			years = 2
-		}
 		clr_character_flag = avatar_decisions_open
 		
 		custom_tooltip = {
@@ -2428,20 +2431,21 @@ character_event = {
 				prestige = 500
 				piety = 500
 				set_defacto_liege = THIS
-				set_government = republic_government
-				set_law = slavery_outlawed
+				set_government_type = republic_government
+				primary_title = { add_law = slavery_outlawed }
 			}
 			
 			make_tributary = {
 				who = new_character
-				type = permanent
+				tributary_type = permanent
 			}
 			any_player = { character_event = { id = NAE.510 } }
 		}
 	}
-			
+
 	option = { #Perhaps the time isn't right...
 		name = NAE.228.OPTB
+		remove_character_modifier = avatar_interfere_cooldown
 	}
 }
 
@@ -2688,7 +2692,7 @@ character_event = { #Avatar exits withdrawal
 letter_event = { #Thank notification for helpful player Avatar
 	id = NAE.551
 	desc = NAE.551.D
-	border = GFX_event_normal_frame_avatar
+	border = GFX_event_letter_frame_avatar
 	
 	ai = no
 	is_triggered_only = yes
@@ -2701,7 +2705,7 @@ letter_event = { #Thank notification for helpful player Avatar
 letter_event = { #Angry notification letter for hostile player Avatar
 	id = NAE.552
 	desc = NAE.552.D
-	border = GFX_event_normal_frame_avatar
+	border = GFX_event_letter_frame_avatar
 	
 	is_triggered_only = yes
 	
@@ -2740,7 +2744,7 @@ narrative_event = { #Target (and any players) notified of upcoming war
 				trait = avatar
 			}
 		}
-		custom_tooltip = { NAE.701.TT } #Tells the player they join by event
+		custom_tooltip = { text = NAE.701.TT } #Tells the player they join by event
 	}
 	option = { #I better prepare...
 		name = NAE.701.OPTC
@@ -2851,7 +2855,7 @@ character_event = { #Avatar troop spawner
 			
 			modifier = {
 				capital_scope = {
-					event_target:crisis_defender = {
+					FROM = {
 						capital_scope = {
 							can_land_path_to = PREVPREV
 						}
@@ -2871,7 +2875,7 @@ character_event = { #Avatar troop spawner
 			
 			modifier = {
 				any_courtier = {
-					limit = { has_minor_title = title_commander }
+					has_minor_title = title_commander
 					martial < 16
 				}
 				factor = 100
@@ -2896,8 +2900,6 @@ character_event = { #Avatar troop spawner
 		ai_chance = { factor = 1000 }
 	}
 	
-#	option = { #Some other contingency thing, probably. ##This space reserved
-	
 	after = { character_event = { id = NAE.703 days = 90 random = 20 } }
 }
 
@@ -2905,9 +2907,11 @@ character_event = { #Avatar crisis war prep
 	id = NAE.704
 	hide_window = yes
 	
+	is_triggered_only = yes
+	
 	immediate = {
 		liege = {
-			capital_scope = { save_event_target_as:host_capital }
+			capital_scope = { save_event_target_as = host_capital }
 		}
 		
 		clr_character_flag = preparing_for_crisis_war
@@ -2951,7 +2955,7 @@ character_event = { #Avatar crisis war prep
 		}
 		
 		unsafe_war = {
-			target = crisis_defender
+			target = event_target:crisis_defender
 			casus_belli = cb_shatter_realm
 		}
 	}
@@ -2975,9 +2979,8 @@ narrative_event = { #Ready or not, here war comes!
 		name = NAE.705.OPTA
 		trigger = {
 			NOR = {
-				liege = ROOT
-				character = ROOT
-				trait = avatar
+				liege = { character = ROOT }
+				any_war = { using_cb = cb_shatter_realm }
 				is_hostile_to_avatar_trigger = yes #This won't prevent the wily player from joining a war manually, but should at least not signal that it's an option...
 			}
 		}
@@ -2995,7 +2998,7 @@ narrative_event = { #Ready or not, here war comes!
 			
 			modifier = {
 				factor = 3
-				liege = persistent_event_target:the_avatar
+				liege = { trait = avatar }
 			}
 			
 			modifier = {
@@ -3093,9 +3096,8 @@ narrative_event = { #Ready or not, here war comes!
 		name = NAE.705.OPTC
 		trigger = {
 			NOR = {
-				liege = persistent_event_target:the_avatar
-				trait = avatar
-				character = ROOT
+				liege = { trait = avatar }
+				any_war = { using_cb = cb_shatter_realm } #Excludes the Avatar and the foe
 				religion = followers_of_kyoshi #This won't prevent the wily player from joining a war manually, but should at least not signal that it's an option...
 			}
 		}
@@ -3107,10 +3109,10 @@ narrative_event = { #Ready or not, here war comes!
 			modifier = {
 				OR = {
 					religion = way_of_chin
-					religion = equalist
+					religion = equalism
 					religion = barbarism
 					religion = barbarism_reformed
-					religion = fire_imperialism
+					religion = fire_nation_imperialism
 				}
 				trait = zealous
 				factor = 3
@@ -3123,7 +3125,7 @@ narrative_event = { #Ready or not, here war comes!
 			
 			modifier = {
 				factor = 3
-				liege = ROOT
+				liege = { character = ROOT }
 			}
 			
 			modifier = {
@@ -3157,6 +3159,7 @@ narrative_event = { #Ready or not, here war comes!
 					value = 90
 				}
 			}
+		}
 	}
 	option = { #I AM the defender!
 		name = NAE.705.OPTD

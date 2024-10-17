@@ -3,6 +3,7 @@ targetted_decisions = {
 	ask_to_convert = { ##TODO: Overhaul this to an AI acceptance system based on opinion and how different religions are
 		filter = realm
 		ai_target_filter = realm
+		ai_check_interval = 60
 
 		from_potential = {
 			is_ruler = yes
@@ -377,26 +378,17 @@ targetted_decisions = {
 					}
 				}
 			}
-			if = {
-				limit = { liege = { trait = pagan_branch_1 } } ##Remember that reformed spiritualists can still get these! - Liz
-				add_trait = pagan_branch_1
-			}
-			if = {
-				limit = { liege = { trait = pagan_branch_2 } }
-				add_trait = pagan_branch_2
-			}
-			if = {
-				limit = { liege = { trait = pagan_branch_3 } }
-				add_trait = pagan_branch_3
-			}
-			if = {
-				limit = { liege = { trait = pagan_branch_4 } }
-				add_trait = pagan_branch_4
+			liege = {
+				trigger_switch = {
+					on_trigger = trait
+					pagan_branch_1 = { ROOT = { add_trait = pagan_branch_1 } }
+					pagan_branch_2 = { ROOT = { add_trait = pagan_branch_2 } }
+					pagan_branch_3 = { ROOT = { add_trait = pagan_branch_3 } }
+					pagan_branch_4 = { ROOT = { add_trait = pagan_branch_4 } }
+				}
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
 			factor = 0
 		}
@@ -461,9 +453,7 @@ targetted_decisions = {
 				}
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
 			factor = 0
 		}
@@ -495,9 +485,7 @@ targetted_decisions = {
 				culture = ROOT
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
 			factor = 0
 		}
@@ -528,9 +516,7 @@ targetted_decisions = {
 				reverse_culture = ROOT
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
 			factor = 0
 		}
@@ -578,14 +564,10 @@ targetted_decisions = {
 				}
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0.25
-			}
+			factor = 0.25
+
 			modifier = {
 				factor = 0
 				primary_title = {
@@ -763,9 +745,7 @@ targetted_decisions = {
 				}
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
 			factor = 0
 		}
@@ -800,9 +780,7 @@ targetted_decisions = {
 				modifier = ruler_converted_to
 			}
 		}
-		revoke_allowed = {
-			always = no
-		}
+
 		ai_will_do = {
 			factor = 0
 		}
@@ -919,10 +897,6 @@ targetted_decisions = {
 #			religion_authority = {
 #				modifier = ruler_converted_from
 #			}
-#		}
-#		
-#		revoke_allowed = {
-#			always = no
 #		}
 #		
 #		ai_will_do = {

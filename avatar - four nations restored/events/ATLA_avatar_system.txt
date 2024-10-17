@@ -10,7 +10,7 @@ character_event = {
 	
 	has_character_flag = is_avatar
 	
-	trigger = { NOT = { has_global_flag = avatar_cycle_broken } } #Set if someone actually kills the Avatar in the Avatar State ##TODO: Adjust when duelling updated
+	trigger = { NOT = { has_global_flag = avatar_cycle_broken } } #Set if someone actually kills the Avatar in the Avatar State ##TODO: Adjust when duelling updated, and write accompanying unique event
 	
 	immediate = {
 		set_global_flag = avatar_interregnum
@@ -40,7 +40,10 @@ character_event = {
 		
 		if = {
 			limit = {
-				has_game_rule = CANON_AVATARS
+				has_game_rule = {
+					name = avatar_system
+					value = canon_avatars
+				}
 				OR = {
 					has_character_flag = is_kyoshi
 					has_character_flag = is_roku
@@ -74,12 +77,23 @@ character_event = { #Avatar nobility check
 		year_of_birth == avatar_death_year
 		is_top_tier_bender_trigger = no
 		has_negative_congenital_trigger = no
-		trigger_switch = {
-			on_trigger = has_global_flag
-			avatar_water = { trait = waterbender }
-			avatar_earth = { trait = earthbender }
-			avatar_fire = { trait = firebender }
-			avatar_air = { trait = airbender }
+		OR = {
+			AND = {
+				has_global_flag = avatar_water
+				trait = waterbender
+			}
+			AND = {
+				has_global_flag = avatar_earth
+				trait = earthbender
+			}
+			AND = {
+				has_global_flag = avatar_fire
+				trait = firebender
+			}
+			AND = {
+				has_global_flag = avatar_air
+				trait = airbender
+			}
 		}
 	}
 	
@@ -93,23 +107,45 @@ character_event = { #Avatar nobility check
 		
 		modifier = {
 			factor = 0.4
-			trigger_switch = {
-				on_trigger = has_global_flag
-				avatar_water = { NOT = { culture_group = water_tribe_cultures } }
-				avatar_earth = { NOT = { culture_group = earth_kingdom_cultures } }
-				avatar_fire = { NOT = { culture_group = fire_nation_cultures } }
-				avatar_air = { NOT = { culture_group = air_nomad_cultures } }
+			OR = {
+				AND = {
+					has_global_flag = avatar_water
+					NOT = { culture_group = water_tribe_cultures }
+				}
+				AND = {
+					has_global_flag = avatar_earth
+					NOT = { culture_group = earth_kingdom_cultures }
+				}
+				AND = {
+					has_global_flag = avatar_fire
+					NOT = { culture_group = fire_nation_cultures }
+				}
+				AND = { 
+					has_global_flag = avatar_air
+					NOT = { culture_group = air_nomad_cultures }
+				}
 			}
 		}
 		
 		modifier = {
 			factor = 0.4
-			trigger_switch = {
-				on_trigger = has_global_flag
-				avatar_water = { NOT = { religion_group = water_religions } }
-				avatar_earth = { NOT = { religion_group = earth_religions } }
-				avatar_fire = { NOT = { religion_group = fire_religions } }
-				avatar_air = { NOT = { religion_group = air_religions } }
+			OR = {
+				AND = {
+					has_global_flag = avatar_water
+					NOT = { religion_group = water_religions }
+				}
+				AND = {
+					has_global_flag = avatar_earth
+					NOT = { religion_group = earth_religions }
+				}
+				AND = {
+					has_global_flag = avatar_fire
+					NOT = { religion_group = fire_religions }
+				}
+				AND = { 
+					has_global_flag = avatar_air
+					NOT = { religion_group = air_religions }
+				}
 			}
 		}
 		
@@ -129,7 +165,7 @@ character_event = { #Avatar nobility check
 		add_trait = unrevealedavatar
 		upgrade_bending_effect = yes
 		change_learning = 2
-		save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+		save_persistent_event_target = { name = the_avatar scope = THIS }
 		clr_global_flag = avatar_interregnum
 	}
 }
@@ -182,8 +218,8 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 				random_province = {
 					preferred_limit = {
 						AND = {
-							culture = water_tribe_cultures
-							religion = water_religions
+							culture_group = water_tribe_cultures
+							religion_group = water_religions
 						}
 					}
 					preferred_limit = { culture_group = water_tribe_cultures }
@@ -211,8 +247,8 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 				random_province = {
 					preferred_limit = {
 						AND = {
-							culture = earth_kingdom_cultures
-							religion = earth_religions
+							culture_group = earth_kingdom_cultures
+							religion_group = earth_religions
 						}
 					}
 					preferred_limit = { culture_group = earth_kingdom_cultures }
@@ -240,8 +276,8 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 				random_province = {
 					preferred_limit = {
 						AND = {
-							culture = fire_nation_cultures
-							religion = fire_religions
+							culture_group = fire_nation_cultures
+							religion_group = fire_religions
 						}
 					}
 					preferred_limit = { culture_group = fire_nation_cultures }
@@ -269,8 +305,8 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 				random_province = {
 					preferred_limit = {
 						AND = {
-							culture = air_nomad_cultures
-							religion = air_religions
+							culture_group = air_nomad_cultures
+							religion_group = air_religions
 						}
 					}
 					preferred_limit = { culture_group = air_nomad_cultures }
@@ -278,8 +314,8 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 					if = {
 						limit = {
 							OR = {
-								culture = eastern_air_culture
-								culture = western_air_culture
+								culture = eastern_air_nomad
+								culture = western_air_nomad
 							}
 						}
 						create_character = {
@@ -301,8 +337,8 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 					else_if = {
 						limit = {
 							OR = {
-								culture = southern_air_culture
-								culture = northern_air_culture
+								culture = southern_air_nomad
+								culture = northern_air_nomad
 							}
 						}
 						create_character = {
@@ -346,7 +382,7 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 			set_character_flag = no_court_invites
 			remove_all_negative_congenital_traits_effect = yes
 			remove_lifestyle_trait_effect = yes
-			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			save_persistent_event_target = { name = the_avatar scope = THIS }
 			narrative_event = { id = NAE.006 days = 3 }
 
 			if = {
@@ -584,7 +620,7 @@ narrative_event = { #Avatar Killer gets to reflect on their actions
 				religion = equalism
 				religion = barbarism
 				religion = barbarism_reformed
-				religion = fire_imperialism
+				religion = fire_nation_imperialism
 				religion = followers_of_kyoshi
 				culture = pirate_culture
 				culture = barbarian_culture
@@ -605,10 +641,11 @@ narrative_event = { #Avatar Killer gets to reflect on their actions
 				religion = equalism
 				religion = barbarism
 				religion = barbarism_reformed
-				religion = fire_imperialism
+				religion = fire_nation_imperialism
 				culture = barbarian_culture
 				culture = pirate_culture
 			}
+			NOT = { religion = followers_of_kyoshi }
 		}
 		add_trait = proud
 		prestige = 500
@@ -667,7 +704,7 @@ character_event = { #Spawn non-historical Roku
 			set_character_flag = is_roku
 			set_character_flag = is_avatar
 			set_character_flag = no_court_invites
-			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			save_persistent_event_target = { name = the_avatar scope = THIS }
 			
 		}
 	}
@@ -717,7 +754,7 @@ character_event = { #Aang is born
 	id = NAE.012
 	desc = NAE.012.D
 	picture = GFX_evt_southern_air_temple_from_tlok
-	border = GFX_event_normal_frame_learning
+	border = GFX_event_normal_frame_religion
 	
 	
 	is_triggered_only = yes
@@ -743,7 +780,7 @@ character_event = { #Aang is born
 			set_character_flag = is_aang
 			set_character_flag = is_avatar
 			set_character_flag = no_court_invites
-			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			save_persistent_event_target = { name = the_avatar scope = THIS }
 		}
 		
 	}
@@ -816,7 +853,7 @@ character_event = { #Spawn Korra
 			set_character_flag = is_korra
 			set_character_flag = is_avatar
 			set_character_flag = no_court_invites
-			save_persistent_event_target = { name = the_avatar scope = event_target:THIS }
+			save_persistent_event_target = { name = the_avatar scope = THIS }
 		}
 	}
 	
@@ -952,7 +989,7 @@ character_event = { #Avatar maintainence
 		if = {
 			limit = {
 				OR = {
-					religion = fire_imperialism
+					religion = fire_nation_imperialism
 					religion = way_of_chin
 					religion = equalism
 				}
@@ -974,9 +1011,11 @@ character_event = { #Avatar maintainence
 		## AI ONLY BELOW THIS POINT ##
 		
 		random_list = { #Chance to marry a lover, if they have them (and aren't already married!)
-			trigger = { is_married = no }
 			30 = {
-				trigger = { is_female = yes }
+				trigger = {
+					is_female = yes
+					is_married = no
+				}
 				random_lover = {
 					limit = {
 						is_ruler = no
@@ -986,7 +1025,10 @@ character_event = { #Avatar maintainence
 				}
 			}
 			30 = {
-				trigger = { is_female = no }
+				trigger = {
+					is_female = no
+					is_married = no
+				}
 				random_lover = {
 					limit = {
 						is_ruler = no
@@ -1002,7 +1044,10 @@ character_event = { #Avatar maintainence
 			limit = {
 				possibly_romantically_interested_in_each_other_trigger = yes
 				is_hostile_to_avatar_trigger = no
-				age_diff < 6
+				age_diff = {
+					who = ROOT
+					years < 6
+				}
 				is_ruler = no #If the Avatar wants to get into relationships with rulers, it'll have to happen naturally
 				is_married = no
 				can_marry = yes
@@ -1048,7 +1093,7 @@ character_event = { #Avatar maintainence
 					is_betrothed = no
 					has_job_title = no #Avatar won't steal your councillors!
 					NOT = { has_character_flag = no_court_invites } #This filters out loyal servants, like eunuchs and physicians etc
-					min_age = 12 #The Avatar will occasionally take teenagers with them
+					age = 12 #The Avatar will occasionally take teenagers with them
 					age_diff = {
 						who = ROOT
 						years < 6
@@ -1068,15 +1113,20 @@ character_event = { #Avatar maintainence
 		}
 		
 		random_list = { #Determines whether the Avatar is going to train or not
-			trigger = {
-				NOT = {
-					has_opinion_modifier = { #This always last two years from when it's set, and is always set on the Avatar staying in someone's court
-						who = employer
-						modifier = opinion_loyal_servant
+			500 = {
+				trigger = {
+					employer = {
+						ROOT = {
+							NOT = {
+								has_opinion_modifier = { #This always last two years from when it's set, and is always set on the Avatar staying in someone's court
+									who = PREV
+									modifier = opinion_loyal_servant
+								}
+							}
+						}
 					}
 				}
-			}
-			50 = {
+			
 				character_event = { id = NAE.200 } #Avatar wander prompt - won't fire if landed
 				
 				modifier = {
@@ -1103,7 +1153,22 @@ character_event = { #Avatar maintainence
 				}
 			}
 			
-			50 = { set_global_flag = avatar_available } #Avatar does the ronin thing
+			500 = {
+				trigger = {
+					employer = {
+						ROOT = {
+							NOT = {
+								has_opinion_modifier = { #This always last two years from when it's set, and is always set on the Avatar staying in someone's court
+									who = PREV
+									modifier = opinion_loyal_servant
+								}
+							}
+						}
+					}
+				}
+				set_global_flag = avatar_available #Avatar does the ronin thing
+			}
+			1 = { }
 		}
 	}
 }
@@ -1246,28 +1311,28 @@ character_event = { #Avatar learns waterbending
 			factor = 1.4
 		}
 		modifier = { 
-			trait = arbitrary
-			factor = 1.4
+			trait = just
+			factor = 0.7
 		}
 		modifier = { 
-			trait = kind
-			factor = 1.4
+			trait = envious
+			factor = 0.7
+		}
+		modifier = {
+			trait = cruel
+			factor = 0.7
 		}
 		modifier = { 
-			trait = gregarious
-			factor = 1.4
+			trait = shy
+			factor = 0.7
 		}
 		modifier = { 
-			trait = trusting
-			factor = 1.4
+			trait = deceitful
+			factor = 0.7
 		}
 		modifier = { 
-			trait = humble
-			factor = 1.4
-		}
-		modifier = { 
-			trait = trickster
-			factor = 1.4
+			trait = proud
+			factor = 0.7
 		}
 	}
 	
@@ -1282,7 +1347,7 @@ character_event = { #Avatar learns earthbending
 	id = NAE.102
 	desc = NAE.10X.D
 	picture = GFX_evt_terra_team
-	border = GFX_event_normal_frame_stewardship
+	border = GFX_event_normal_frame_economy
 	
 	min_age = 16
 	only_capable = yes
@@ -1622,7 +1687,7 @@ character_event = { #Avatar learns airbending
 	id = NAE.104
 	desc = NAE.10X.D
 	picture = GFX_evt_airnomad_sparring
-	border = GFX_event_normal_frame_learning
+	border = GFX_event_normal_frame_religion
 	
 	min_age = 16
 	only_capable = yes
@@ -1889,7 +1954,7 @@ character_event = { #Trying to force-consort the Avatar results in a nasty surpr
 		name = NAE.108.OPTA
 		remove_consort = FROM
 		if = {
-			limit = { is_male = yes }
+			limit = { is_female = no }
 			add_trait = eunuch
 			add_trait = wounded
 		}
@@ -1914,7 +1979,7 @@ character_event = { #An imprisoned Avatar breaks out
 			limit = {
 				NOT = { trait = depressed } #Depression is an awful thing
 				calc_true_if = {
-					value = 2
+					amount = 2
 					trait = wroth
 					trait = brave
 					trait = fully_realised_avatar
@@ -1972,7 +2037,7 @@ character_event = { #Avatar breakout event
 	}
 	
 	after = {
-		host = { character_event = NAE.112 }
+		host = { character_event = { id = NAE.112 } }
 		imprison = no
 	}
 }
@@ -2051,7 +2116,7 @@ character_event = { #Avatar is a living contradiction
 	trigger = {
 		NOT = { trait = bad_avatar }
 		OR = {
-			religion = fire_imperialism
+			religion = fire_nation_imperialism
 			religion = way_of_chin
 			religion = equalism
 		}
@@ -2064,7 +2129,7 @@ character_event = { #Avatar is a living contradiction
 	}
 	option = {
 		name = NAE.115.OPTA
-		trigger = { religion = fire_imperialism }
+		trigger = { religion = fire_nation_imperialism }
 		religion = fire_spirituality
 	}
 	option = { #I need to draw closer to the Avatar
@@ -2123,7 +2188,7 @@ character_event = { #Landed Avatar maintainence
 					}
 					AND = {
 						calc_true_if = {
-							count = 5
+							amount = 5
 							trait = ambitious
 							trait = wroth
 							trait = brave
@@ -2134,7 +2199,7 @@ character_event = { #Landed Avatar maintainence
 								}
 								trait = cruel
 							}
-							trait = diliget
+							trait = diligent
 							trait = humble
 							trait = arbitrary
 							trait = honest
@@ -2144,7 +2209,7 @@ character_event = { #Landed Avatar maintainence
 							age < 40
 						}
 						calc_true_if = {
-							count < 6 #If it's a tie the Avatar will go
+							amount < 6 #If it's a tie the Avatar will go
 							trait = content
 							trait = patient
 							trait = craven
@@ -2278,32 +2343,32 @@ character_event = { #Landed Avatar set-up
 		if = {
 			limit = {
 				NOT = { start_date = 830.3.13 }
-				create_random_priest = { #Generate master airbender (if not genocided)
-					random_traits = yes
-					dynasty = actually_culture
-					religion = air_spirituality
-					culture = eastern_air_culture
-					female = yes
+			}
+			create_random_priest = { #Generate master airbender (if not genocided)
+				random_traits = yes
+				dynasty = actually_culture
+				religion = air_spirituality
+				culture = eastern_air_nomad
+				female = yes
 
-					attributes = {
-						martial = 3
-						diplomacy = 5
-						stewardship = 5
-						intrigue = 3
-						learning = 10
-					}
-
-					add_trait = airbender
-					add_trait = master_bender
+				attributes = {
+					martial = 3
+					diplomacy = 5
+					stewardship = 5
+					intrigue = 3
+					learning = 10
 				}
+
+				add_trait = airbender
+				add_trait = master_bender
 			}
 		}
 		
-		any_player = { character_event = NAE.409 }
+		any_player = { character_event = { id = NAE.409 } }
 	}
 }
 
-letter_event = { Avatar offered land response - cannot be offered if they wouldn't accept
+letter_event = { #Avatar offered land response - cannot be offered if they wouldn't accept
 	id = NAE.402
 	desc = NAE.402.D
 	portrait = persistent_event_target:the_avatar
@@ -2434,7 +2499,7 @@ letter_event = { #Avatar demands independence
 	option = { #Farewell
 		name = NAE.404.OPTA
 		if = {
-			limit = { is_independent = yes }
+			limit = { independent = yes }
 			persistent_event_target:the_avatar = { set_defacto_liege = THIS }
 		}
 		else = {
@@ -2665,7 +2730,7 @@ character_event = { #Force landed Avatars to go to war with rivals every so ofte
 	trigger = {
 		any_rival = {
 			OR = {
-				is_independent = yes
+				independent = yes
 				same_liege = ROOT
 			}
 			relative_power_including_allies_defender = {
@@ -2681,7 +2746,7 @@ character_event = { #Force landed Avatars to go to war with rivals every so ofte
 		random_rival = {
 			limit = {
 				OR = {
-					is_independent = yes
+					independent = yes
 					same_liege = ROOT
 				}
 				realm_levy_diff = {
@@ -2714,12 +2779,12 @@ character_event = { #Gain Team Avatar or friend. This isn't in NAE.400 maintaine
 		any_courtier = {
 			OR = {
 				AND = {
-					friend = ROOT
+					is_friend = ROOT
 					NOT = { trait = team_avatar }
 				}
 				AND = {
 					trait = team_avatar
-					NOT = { friend = ROOT }
+					NOT = { is_friend = ROOT }
 				}
 				AND = {
 					trait = former_team_avatar
@@ -2743,13 +2808,13 @@ character_event = { #Gain Team Avatar or friend. This isn't in NAE.400 maintaine
 		name = NAE.408.OPTA
 		trigger = {
 			any_courtier = {
-				friend = ROOT
+				is_friend = ROOT
 				NOT = { trait = team_avatar }
 			}
 		}
 		random_courtier = {
 			limit = {
-				friend = ROOT
+				is_friend = ROOT
 				NOT = { trait = team_avatar }
 			}
 			add_friend = ROOT
@@ -2760,13 +2825,13 @@ character_event = { #Gain Team Avatar or friend. This isn't in NAE.400 maintaine
 		name = NAE.408.OPTB
 		trigger = {
 			any_courtier = {
-				NOT = { friend = ROOT }
+				NOT = { is_friend = ROOT }
 				trait = team_avatar
 			}
 		}
 		random_courtier = {
 			limit = {
-				NOT = { friend = ROOT }
+				NOT = { is_friend = ROOT }
 				trait = team_avatar
 			}
 			add_friend = ROOT
@@ -2817,14 +2882,14 @@ character_event = { #Gain Team Avatar or friend. This isn't in NAE.400 maintaine
 			any_courtier = {
 				OR = {
 					trait = team_avatar
-					friend = ROOT
+					is_friend = ROOT
 				}
 			}
 		}
 		random_courtier = {
 			limit = {
 				OR = {
-					friend = ROOT
+					is_friend = ROOT
 					trait = team_avatar
 				}
 			}
@@ -2926,7 +2991,9 @@ character_event = { #Troubled Avatar seeks their past life for guidance
 	
 	option = { #I'll do what they did
 		name = NAE.602.OPTA
-		copy_random_personality_trait = reincarnation_scope
+		reincarnation_scope = {
+			ROOT = { copy_random_personality_trait = PREV }
+		}
 		add_character_modifier = {
 			name = emulating_legend
 			years = 5
@@ -3089,7 +3156,7 @@ character_event = { #Avatar remembers their family
 			reincarnation_scope = {
 				any_close_relative = {
 					is_alive = yes
-					NOT = { location = ROOT }
+					NOT = { host = { character = ROOT } }
 				}
 			}
 		}
@@ -3167,7 +3234,6 @@ character_event = { #Avatar family visit resolution - for the avatar
 	id = NAE.607
 	desc = NAE.607.D
 	picture = GFX_evt_fire_nation_inn
-	portrait = event_target:avatar_host
 	border = GFX_event_normal_frame_diplomacy
 
 	is_triggered_only = yes
@@ -3247,7 +3313,7 @@ character_event = { #Avatar family visit resolution - for the host
 			trait = seductress
 			FROM = {
 				ai = yes
-				prefers_women_trigger = yes
+				prefers_men_trigger = no
 			}
 		}
 		tooltip_info = seductress
@@ -3276,13 +3342,11 @@ character_event = { #Avatar remembers their friends
 		trigger = {
 			former_team_avatar = {
 				is_alive = yes
-				NOT = { location = ROOT }
+				NOT = { host = { character = ROOT } }
 			}
 		}
 		former_team_avatar = {
-			preferred_limit = { ai = no }
-			preferred_limit = { is_playable = no }
-			preferred_limit = { war = no }
+			limit = { ai = no }
 			character_event = { id = NAE.610 days = 2 }
 		}
 	}
@@ -3295,7 +3359,11 @@ character_event = { #Avatar remembers their friends
 	}
 	option = { #I see now why I was like that...
 		name = NAE.609.OPTC
-		copy_random_personality_trait = reincarnation_scope
+		reincarnation_scope = {
+			ROOT = {
+				copy_random_personality_trait = PREV
+			}
+		}
 		add_character_modifier = {
 			name = emulating_legend
 			years = 5
@@ -3367,7 +3435,7 @@ character_event = { #Avatar friend visit resolution - for the avatar
 			trait = seductress
 			FROM = {
 				ai = yes
-				prefers_women_trigger = yes
+				prefers_men_trigger = no
 			}
 		}
 		tooltip_info = seductress
@@ -3406,7 +3474,7 @@ character_event = { #Avatar friend visit resolution - for the host
 			FROM = {
 				NOR = {
 					trait = cynical
-					rival = ROOT
+					is_rival = ROOT
 				}
 			}
 		}
@@ -3431,7 +3499,7 @@ character_event = { #Avatar friend visit resolution - for the host
 			trait = seductress
 			FROM = {
 				ai = yes
-				prefers_women_trigger = yes
+				prefers_men_trigger = no
 			}
 		}
 		tooltip_info = seductress
@@ -3588,7 +3656,7 @@ character_event = { #Avatar finds animal companion
 						}
 					}
 					5 = {
-						add_artifact = petSpiderCat
+						add_artifact = petSpidercat
 						modifier = {
 							factor = 2
 							trait = proud
@@ -3637,9 +3705,8 @@ character_event = { #Avatar finds animal companion
 			5 = {
 				add_character_modifier = {  
 					name = pet_hunting_eagle
-					duration = -1
+					duration = 7500
 				}
-				hidden_tooltip = { character_event = { id = HF.25631 days = 7300 random = 1500 } } #Eagle dies
 				
 				modifier = {
 					factor = 10
@@ -3818,7 +3885,7 @@ long_character_event = { #Avatars bleeding effect progresses further
 	
 	option = { #This has to stop. Right now.
 		name = NAE.623.OPTA
-		custom_tooltip = { NAE.623.TT }
+		custom_tooltip = { text = NAE.623.TT }
 		health = -0.5
 		lose_weight_medium_effect = yes
 		weight_trait_check_effect = yes
@@ -3935,11 +4002,11 @@ long_character_event = { #Avatar's bleeding effect breaks them completely
 	option = { #I hope my successor doesn't suffer from this.
 		name = NAE.625.OPTA
 		remove_character_modifier = sleep_deprivation
-		diplomacy = -2
-		martial = -2
-		stewardship = -2
-		intrigue = -2
-		learning = -2
+		change_diplomacy = -2
+		change_martial = -2
+		change_stewardship = -2
+		change_intrigue = -2
+		change_learning = -2
 		health = -0.25
 	}
 	option = { #I've mastered my past lives.
@@ -3996,7 +4063,6 @@ character_event = { #Marriage request determiner
 			AND = {
 				is_ruler = no
 				lover = { is_ruler = no }
-					
 			}
 			AND = {
 				is_landed = yes
@@ -4040,7 +4106,7 @@ character_event = { #Marriage request determiner
 		}
 		
 		modifier = {
-			same_sex = lover
+			lover = { same_sex = ROOT }
 			factor = 2 #Only way they can get married
 		}
 	}
@@ -4053,15 +4119,15 @@ character_event = { #Marriage request determiner
 character_event = { #Marriage request: allows people other than the Avatar to get gay married (and for lovers to marry)
 	id = NAE.902
 	desc = {
-		trigger = { FROM = { same_sex = lover } }
+		trigger = { FROM = { lover = { same_sex = FROM } } }
 		text = NAE.902.DG
 	}
 	desc = {
-		trigger = { FROM = { can_marry = lover } }
+		trigger = { FROM = { lover = { can_marry = FROM } } }
 		text = NAE.902.D
 	}
 	picture = GFX_evt_firenation_temple
-	border = GFX_event_normal_frame_stewardship
+	border = GFX_event_normal_frame_economy
 	
 	is_triggered_only = yes
 	
@@ -4084,9 +4150,9 @@ character_event = { #Marriage request: allows people other than the Avatar to ge
 						}
 					}
 				}
-				add_spouse_matrilineal = lover
+				lover = { add_spouse_matrilineal = FROM } ##TODO: Ensure this works as intended with gay couples
 			}
-			else = { add_spouse = lover }
+			else = { lover = { add_spouse = FROM } }
 		}
 	}
 	

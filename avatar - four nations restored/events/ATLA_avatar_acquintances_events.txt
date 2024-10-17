@@ -1,3 +1,5 @@
+namespace = NAE
+
 character_event = { #Avatar team maintainence + tombola - get stronger, get injured, return home, etc
 	id = NAE.300
 	hide_window = yes
@@ -18,7 +20,7 @@ character_event = { #Avatar team maintainence + tombola - get stronger, get inju
 			10 = { #Gain sympathy for other faiths
 				trigger = {
 					calc_true_if = { #Can't have 3 traits, or you've got them all! Except non-bending faiths, but those are avatar hostile/ambivolent, so can't be gained here.
-						value < 3
+						amount < 3
 						trait = sympathy_fire_religions
 						trait = sympathy_air_religions
 						trait = sympathy_earth_religions
@@ -105,25 +107,29 @@ character_event = { #Avatar team maintainence + tombola - get stronger, get inju
 							has_job_title = job_chancellor
 						}
 					}
-					20 = { change_martial = 1
+					20 = {
+						change_martial = 1
 						modifier = {
 							factor = 10
 							has_job_title = job_marshal
 						}
 					}
-					20 = { change_stewardship = 1
+					20 = {
+						change_stewardship = 1
 						modifier = {
 							factor = 10
 							has_job_title = job_treasurer
 						}
 					}
-					20 = { change_intrigue = 1
+					20 = {
+						change_intrigue = 1
 						modifier = {
 							factor = 10
 							has_job_title = job_spymaster
 						}
 					}
-					20 = { change_learning = 1
+					20 = {
+						change_learning = 1
 						modifier = {
 							factor = 10
 							has_job_title = job_spiritual
@@ -139,14 +145,14 @@ character_event = { #Avatar team maintainence + tombola - get stronger, get inju
 				wealth = 50
 			}
 			10 = { #Gain some prestige - chances doubled to be a 'pass' if the Avatar is landed
-				prestige = 100
+				prestige = 50
 				modifier = {
 					factor = 2
 					persistent_event_target:the_avatar = { is_ruler = yes }
 				}
 			}
 			10 = { #Gain some piety - chances doubled to be a 'pass' if the Avatar is landed
-				piety = 100
+				piety = 50
 				modifier = {
 					factor = 2
 					persistent_event_target:the_avatar = { is_ruler = yes }
@@ -171,7 +177,7 @@ character_event = { #Avatar team maintainence + tombola - get stronger, get inju
 						trigger_switch = {
 							on_trigger = culture_group
 							fire_nation_cultures = { add_artifact = lance_tier_1_new }
-							water_tribe_cultures = { add_artifact = ax_tier_1_new }
+							water_tribe_cultures = { add_artifact = axe_tier_1_new }
 							air_nomad_cultures = { add_artifact = engraved_dagger }
 							earth_kingdom_cultures = { add_artifact = scimitar_tier_1_new }
 							fallback = { add_artifact = bow_tier_1_new }
@@ -194,13 +200,20 @@ character_event = { #Avatar team maintainence + tombola - get stronger, get inju
 			10 = { #Makes friend
 				any_host_courtier = {
 					limit = {
-						min_age = 16
+						trait = team_avatar
+						NOT = { is_friend = ROOT }
+					}
+					add_friend = ROOT
+				}
+				any_host_courtier = {
+					limit = {
+						age = 16
 						useless_character_trigger = no
 						is_inaccessible_trigger = no
 						current_scope_and_root_make_sense_as_friendlies_trigger = yes
 						is_hostile_to_avatar_trigger = no
+						NOT = { is_friend = ROOT }
 					}
-					preferred_limit = { trait = team_avatar } #Team Avatar should be friends with one another
 					score_value = {
 						value = 20
 						interesting_courtier_selection_score = yes #Pick someone at least slightly interesting
@@ -219,11 +232,12 @@ character_event = { #Avatar team maintainence + tombola - get stronger, get inju
 			10 = { #Makes rival
 				any_host_courtier = {
 					limit = {
-						min_age = 16
+						age = 16
 						useless_character_trigger = no
 						is_inaccessible_trigger = no
 						current_scope_and_root_make_sense_as_rivals_trigger = yes
 						is_hostile_to_avatar_trigger = no
+						NOT = { is_rival = ROOT }
 					}
 					score_value = {
 						value = 20
@@ -288,7 +302,7 @@ character_event = { #Avatar team follows Avatar, unless they're unable to contin
 						trait = leper
 						AND = {
 							trait = pregnant
-							NOT = { lover = ROOT }
+							NOT = { is_lover = ROOT }
 						}
 					}
 				}
@@ -320,7 +334,7 @@ character_event = { #Event for Avatar team mates who gain land
 	id = NAE.303
 	desc = NAE.303.D
 	picture = GFX_evt_earth_kingdom_fort_2
-	border = GFX_event_normal_frame_stewardship
+	border = GFX_event_normal_frame_economy
 	
 	is_triggered_only = yes
 	
@@ -351,7 +365,7 @@ character_event = { #Relative asks to go work with the landed avatar
 		any_close_relative = {
 			is_inaccessible_or_incapable_trigger = no
 			dynasty = ROOT
-			host = ROOT
+			host = { character = ROOT }
 			NOR = {
 				trait = avatar
 				trait = team_avatar
@@ -386,7 +400,7 @@ character_event = { #Relative asks to go work with the landed avatar
 			limit = {
 				is_inaccessible_or_incapable_trigger = no
 				dynasty = ROOT
-				host = ROOT
+				host = { character = ROOT }
 				has_job_title = no
 				age < 30
 				age = 12
@@ -458,6 +472,7 @@ character_event = { #Avatar follow-up for previous event
 				event_target:avatar_candidate = { move_character = PREV }
 			}
 		}
+		FROM = { letter_event = { id = NAE.306 } }
 		
 		ai_chance = {
 			factor = 80
@@ -592,7 +607,14 @@ character_event = { #Host Assessment for Avatar team mates returning home
 		}
 		else_if = {
 			limit = { any_dynasty_member = { is_landed = yes } }
-			highest_ranked_relative = { character_event = { id = NAE.311 } } #Homecoming event
+			random_dynasty_member = {
+				limit = { is_landed = yes }
+				preferred_limit = { tier = EMPEROR }
+				preferred_limit = { tier = KING }
+				preferred_limit = { tier = DUKE }
+				preferred_limit = { tier = COUNT }
+				character_event = { id = NAE.311 } #Homecoming event
+			}
 		}
 		else = { add_trait = former_team_avatar } #This just stops them travelling with the Avatar
 	}
@@ -824,9 +846,11 @@ character_event = { #Homecoming: bender specialisation
 							}
 						}
 						30 = {
-							OR = {
-								has_global_flag = metalbending_discovered
-								has_character_flag = is_toph
+							trigger = {
+								OR = {
+									has_global_flag = metalbending_discovered
+									has_character_flag = is_toph
+								}
 							}
 							add_trait = metalbender
 							
@@ -847,7 +871,7 @@ character_event = { #Homecoming: Spoils
 	id = NAE.315
 	desc = NAE.315.D
 	picture = GFX_evt_fire_nation_carriage
-	border = GFX_event_normal_frame_stewardship
+	border = GFX_event_normal_frame_economy
 	
 	is_triggered_only = yes
 	
@@ -898,7 +922,7 @@ character_event = { #Homecoming: Died
 					10 = { death = { death_reason = death_accident_generic_beast } }
 					10 = { death = { death_reason = death_accident_drowning } }
 					10 = { death = { death_reason = death_accident_wonder_traps } }
-					10 = { death = { death_reason = death_accident_snake } }
+					10 = { death = { death_reason = death_accident_snakes } }
 					10 = { death = { death_reason = death_accident_boar } }
 					10 = { death = { death_reason = death_accident_tiger } }
 					10 = { death = { death_reason = death_drank_poison } }
@@ -911,7 +935,7 @@ character_event = { #Homecoming: Died
 					10 = { death = { death_reason = death_execution_live_burial } }
 					10 = { death = { death_reason = death_execution_beheading } }
 					10 = { death = { death_reason = death_execution_flaying } }
-					10 = { death = { death_reason = death_execution_impalement } }
+					10 = { death = { death_reason = death_execution_impaling } }
 					10 = { death = { death_reason = death_execution_elephants } }
 					10 = { death = { death_reason = death_execution_bamboo } }
 					10 = { death = { death_reason = death_execution_horses } }
@@ -991,7 +1015,7 @@ character_event = { #Homecoming: Physical
 		FROMFROM = {
 			add_trait = former_team_avatar
 			add_trait = robust
-			add_scarred_tier_effect = yes
+			add_scarred_tiered_effect = yes
 		}
 	}
 }
@@ -1018,7 +1042,7 @@ character_event = { #Homecoming: Education Upgrade
 	id = NAE.321
 	desc = NAE.321.D
 	picture = GFX_evt_fire_council
-	border = GFX_event_normal_frame_learning
+	border = GFX_event_normal_frame_religion
 	
 	is_triggered_only = yes
 	
@@ -1053,7 +1077,7 @@ character_event = { #Homecoming: New Spouse
 				}
 			}
 			else_if = {
-				limit = { prefers_women_trigger = yes }
+				limit = { prefers_men_trigger = no }
 				create_character = {
 					random_traits = yes
 					dynasty = NONE
@@ -1090,7 +1114,7 @@ character_event = { #Homecoming: New Spouse
 					random_list = {
 						10 = { culture = fire_islander }
 						10 = {
-							trigger = { e_fire_nation = { active = yes } }
+							trigger = { e_fire_nation = { has_holder = yes } }
 							culture = fire_imperial_culture
 						}
 #						10 = {
@@ -1163,14 +1187,14 @@ character_event = { #Homecoming: New Spouse
 					if = {
 						limit = { is_female = yes }
 						random_list = {
-							50 = { culture = eastern_air_culture }
-							50 = { culture = western_air_culture }
+							50 = { culture = eastern_air_nomad }
+							50 = { culture = western_air_nomad }
 						}
 					}
 					else = {
 						random_list = {
-							50 = { culture = northern_air_culture }
-							50 = { culture = southern_air_culture }
+							50 = { culture = northern_air_nomad }
+							50 = { culture = southern_air_nomad }
 						}
 					}
 				}
@@ -1210,7 +1234,7 @@ character_event = { #Avatar's family mourns their death
 	id = NAE.331
 	desc = NAE.331.D #You're gone. You weren't always there. but ultimately...
 	picture = GFX_evt_died_funeral
-	border = GFX_event_normal_frame_learning
+	border = GFX_event_normal_frame_religion
 	
 	is_triggered_only = yes #Fired from avatar death event
 	
@@ -1227,7 +1251,7 @@ character_event = { #Avatar's family mourns their death
 	option = { #... *I* needed you. Not the Avatar. You.
 		name = NAE.331.OPTC
 		custom_tooltip = { text = NAE.331.TT } #You let go of your pain, and grieve
-		remove_trait = depression
+		remove_trait = depressed
 		remove_trait = stressed
 		remove_trait = wroth
 		add_trait = kind	
@@ -1255,6 +1279,10 @@ character_event = { #Avatar's child misses their parent
 			father = { trait = avatar }
 			mother = { trait = avatar }
 		}
+	}
+	
+	weight_multiplier = {
+		days = 1
 	}
 	
 	option = { #I'm sure they'll be back soon!
@@ -1295,7 +1323,7 @@ character_event = { #Avatar's child misses their parent
 	}
 	option = { #Screw them! I hate them!
 		name = NAE.332.OPTC
-		persistent_event_target:the_avatar = { rival = ROOT }
+		persistent_event_target:the_avatar = { add_rival = ROOT }
 		
 		random_list = {
 			10 = {
@@ -1351,12 +1379,23 @@ character_event = { #Avatar's parents miss their child
 		}
 	}
 	
+	weight_multiplier = {
+		days = 1
+	}
+	
 	option = { #I'm never going to stop worrying
 		name = NAE.333.OPTA
-		long_character_event = { id = NAE.304 days = 14 }
+		long_character_event = { id = NAE.334 days = 14 }
 	}
 	option = { #I'm sure they're doing fine
 		name = NAE.333.OPTB
+		if = {
+			limit = { trait = stressed }
+			random = {
+				chance = 20
+				remove_trait = stressed
+			}
+		}
 	}
 }
 
@@ -1492,7 +1531,7 @@ character_event = { #Peasants come to give offerings to avatar family member/spo
 	id = NAE.336
 	desc = NAE.336.D
 	picture = GFX_evt_firenation_village
-	border = GFX_event_normal_frame_stewardship
+	border = GFX_event_normal_frame_economy
 	
 	only_playable = yes
 	min_age = 16
@@ -1507,6 +1546,10 @@ character_event = { #Peasants come to give offerings to avatar family member/spo
 			any_close_relative = { trait = avatar }
 			spouse = { trait = avatar }
 		}
+	}
+	
+	weight_multiplier = {
+		days = 1
 	}
 	
 	option = { #I don't want them
