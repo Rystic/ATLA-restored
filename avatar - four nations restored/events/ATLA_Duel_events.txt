@@ -13,61 +13,31 @@ character_event = { # START DUEL - Event Handler - Current Scope: Challenged
 	is_triggered_only = yes
 	hide_window = yes
 	
-	option = { # Duel: Firebender v Firebender
-		trigger = {
-			trait = firebender
-			FROMFROM = {
+	immediate = {
+		if = {
+			limit = {
 				trait = firebender
-			}
-		}
-		character_event = { id = ADUEL.2 days = 3 } # Agni Kai - Challenge
-	}
-	option = { # Duel: Bender v Bender
-		trigger = {
-			is_bender_trigger = yes
-			FROMFROM = {
-				is_bender_trigger = yes
-			}
-			NOR = {
-				AND = {
-					trait = firebender
-					FROMFROM = {
+				FROMFROM = {
+					OR = {
 						trait = firebender
+						AND = {
+							has_global_flag = avatar_fire
+							trait = avatar
+						}
 					}
 				}
 			}
+			character_event = { id = ADUEL.2 days = 3 } # Agni Kai - Challenge
 		}
-		character_event = { id = ADUEL.3 days = 3 } # Bending Battle - Challenge
-	}
-	option = { # Duel Muggle v Muggle
-		trigger = {
-			is_bender_trigger = no
-			FROMFROM = {
-				is_bender_trigger = no
-			}
-		}
-		character_event = { id = ADUEL.3 days = 3 } # Nonbender Battle - Challenge
-	}
-	option = { # Duel Bender v Muggle
-		trigger = {
-			is_bender_trigger = no
-			FROMFROM = {
-				is_bender_trigger = yes
-			}
-		}
-		character_event = { id = ADUEL.3 days = 3 } # Nonbender v Bender Battle - Challenge
-		#FROMFROM = {
-			#character_event = { id = ADUEL.4 } # Bender v Nonbender Battle - Challenger (Currently Not Compelte)
-		#}
-	}
-	option = { # Duel Muggle v Bender
-		trigger = {
-			is_bender_trigger = yes
-			FROMFROM = {
-				is_bender_trigger = no
-			}
-		}
-		character_event = { id = ADUEL.3 days = 3 } # Nonbender v Bender Battle - Challenge
+#		else_if = { ##Note: unfinished
+#			limit = {
+#				is_bender_trigger = no
+#				FROMFROM = { is_bender_trigger = yes }
+#			}
+#			character_event = { id = ADUEL.3 days = 3 }
+#			FROMFROM = { character_event = { id = ADUEL.4 } } #Bender/Muggle Battle - Challenge
+#		}
+		else = { character_event = { id = ADUEL.3 days = 3 } } # Normal Battle - Challenge
 	}
 }
 
@@ -210,20 +180,16 @@ character_event = {
 	option = { # Refuse Challenge - Great Dishonor
 		name = ADUELoptB.3
 		if = {
-			limit = { 
-				NOT = { trait = craven }
-				NOT = { trait = brave }
-			}
-			random = {
-				chance = 40
-				add_trait = craven
-			}
-		}
-		if = {
 			limit = {
 				trait = brave
 			}
 			remove_trait = brave
+		}
+		else = {
+			random = {
+				chance = 40
+				add_trait = craven
+			}
 		}
 		prestige = -100
 		add_character_modifier = {
@@ -716,8 +682,10 @@ character_event = {
 		if = {
 			limit = {
 				check_variable = { which = mySTAcap which = mySTA }
-				NOT = { has_character_flag = been_crushed }
-				NOT = { has_character_flag = is_chi_blocked }
+				NOR = {
+					has_character_flag = been_crushed
+					has_character_flag = is_chi_blocked
+				}
 			}
 			change_variable = { which = mySTAcha value = 1 }
 			if = {
@@ -804,6 +772,14 @@ character_event = {
 					trait = firebender
 				}
 				modifier = {
+					factor = 1.5
+					trait = avatar_firebender
+				}
+				modifier = {
+					factor = 1.5
+					trait = fully_realised_avatar
+				}
+				modifier = {
 					factor = 1.4
 					trait = competent_bender
 				}
@@ -854,8 +830,18 @@ character_event = {
 				}
 				modifier = {
 					factor = 2
-					NOT = { trait = airbender }
-					event_target:hostile = { trait = airbender }
+					NOR = {
+						trait = airbender
+						trait = avatar_airbender
+						trait = fully_realised_avatar
+					}
+					event_target:hostile = {
+						OR = {
+							trait = avatar_airbender
+							trait = airbender
+							trait = fully_realised_avatar
+						}
+					}
 				}
 				modifier = {
 					factor = 1.3
@@ -863,7 +849,12 @@ character_event = {
 				}
 				modifier = {
 					factor = 1.2
-					event_target:hostile = { trait = earthbender }
+					event_target:hostile = {
+						OR = {
+							trait = earthbender
+							trait = avatar_earthbender
+						}
+					}
 				}
 				modifier = {
 					factor = 1.5
@@ -1026,6 +1017,14 @@ character_event = {
 					trait = firebender
 				}
 				modifier = {
+					factor = 1.5
+					trait = avatar_firebender
+				}
+				modifier = {
+					factor = 1.5
+					trait = fully_realised_avatar
+				}
+				modifier = {
 					factor = 1.4
 					trait = competent_bender
 				}
@@ -1076,8 +1075,18 @@ character_event = {
 				}
 				modifier = {
 					factor = 2
-					NOT = { trait = airbender }
-					event_target:hostile = { trait = airbender }
+					NOR = {
+						trait = airbender
+						trait = avatar_airbender
+						trait = fully_realised_avatar
+					}
+					event_target:hostile = {
+						OR = {
+							trait = avatar_airbender
+							trait = airbender
+							trait = fully_realised_avatar
+						}
+					}
 				}
 				modifier = {
 					factor = 1.3
@@ -1085,7 +1094,12 @@ character_event = {
 				}
 				modifier = {
 					factor = 1.2
-					event_target:hostile = { trait = earthbender }
+					event_target:hostile = {
+						OR = {
+							trait = earthbender
+							trait = avatar_earthbender
+						}
+					}
 				}
 				modifier = {
 					factor = 1.5
@@ -1104,7 +1118,11 @@ character_event = {
 		tooltip_info = earthbender
 		show_trait = earthbender
 		trigger = {
-			trait = earthbender
+			OR = {
+				trait = earthbender
+				trait = avatar_earthbender
+				trait = fully_realised_avatar
+			}
 			NOT = { has_character_flag = used_earthquake }
 		}
 		custom_tooltip = {
@@ -1183,7 +1201,11 @@ character_event = {
 		tooltip_info = firebender
 		show_trait = firebender
 		trigger = {
-			trait = firebender
+			OR = {
+				trait = firebender
+				trait = avatar_firebender
+				trait = fully_realised_avatar
+			}
 			NOT = { has_character_flag = has_used_fireball }
 		}
 		custom_tooltip = {
@@ -1199,7 +1221,11 @@ character_event = {
 		tooltip_info = waterbender
 		show_trait = waterbender
 		trigger = {
-			trait = waterbender
+			OR = {
+				trait = waterbender
+				trait = avatar_waterbender
+				trait = fully_realised_avatar
+			}
 		}
 		custom_tooltip = {
 			text = ADUEL_ATK_WATERBENDER_TOOLTIP
@@ -1214,7 +1240,11 @@ character_event = {
 		tooltip_info = airbender
 		show_trait = airbender
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 			OR = {
 				ai = no
 				NOT = { check_variable = { which = myHP value = 15 } }
@@ -1408,25 +1438,41 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			trait = earthbender
+			OR = {
+				trait = earthbender
+				trait = avatar_earthbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescB.16
 	}
 	desc = { # Firebender
 		trigger = {
-			trait = firebender
+			OR = {
+				trait = firebender
+				trait = avatar_firebender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescC.16
 	}
 	desc = { # Waterbender
 		trigger = {
-			trait = waterbender
+			OR = {
+				trait = waterbender
+				trait = avatar_waterbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescD.16
 	}
 	desc = { # Airbender
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescE.16
 	}
@@ -1465,25 +1511,41 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			trait = earthbender
+			OR = {
+				trait = earthbender
+				trait = avatar_earthbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescB.17
 	}
 	desc = { # Firebender
 		trigger = {
-			trait = firebender
+			OR = {
+				trait = firebender
+				trait = avatar_firebender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescC.17
 	}
 	desc = { # Waterbender
 		trigger = {
-			trait = waterbender
+			OR = {
+				trait = waterbender
+				trait = avatar_waterbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescD.17
 	}
 	desc = { # Airbender
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescE.17
 	}
@@ -1553,25 +1615,41 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			trait = earthbender
+			OR = {
+				trait = earthbender
+				trait = avatar_earthbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescB.18
 	}
 	desc = { # Firebender
 		trigger = {
-			trait = firebender
+			OR = {
+				trait = firebender
+				trait = avatar_firebender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescC.18
 	}
 	desc = { # Waterbender
 		trigger = {
-			trait = waterbender
+			OR = {
+				trait = waterbender
+				trait = avatar_waterbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescD.18
 	}
 	desc = { # Airbender
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescE.18
 	}
@@ -1642,25 +1720,41 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			trait = earthbender
+			OR = {
+				trait = earthbender
+				trait = avatar_earthbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescB.19
 	}
 	desc = { # Firebender
 		trigger = {
-			trait = firebender
+			OR = {
+				trait = firebender
+				trait = avatar_firebender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescC.19
 	}
 	desc = { # Waterbender
 		trigger = {
-			trait = waterbender
+			OR = {
+				trait = waterbender
+				trait = avatar_waterbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescD.19
 	}
 	desc = { # Airbender
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescE.19
 	}
@@ -1731,25 +1825,41 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			trait = earthbender
+			OR = {
+				trait = earthbender
+				trait = avatar_earthbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescB.20
 	}
 	desc = { # Firebender
 		trigger = {
-			trait = firebender
+			OR = {
+				trait = firebender
+				trait = avatar_firebender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescC.20
 	}
 	desc = { # Waterbender
 		trigger = {
-			trait = waterbender
+			OR = {
+				trait = waterbender
+				trait = avatar_waterbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescD.20
 	}
 	desc = { # Airbender
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 		}
 		text = ADUELdescE.20
 	}
@@ -1781,25 +1891,49 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			FROM = { trait = earthbender }
+			FROM = {
+				OR = {
+					trait = earthbender
+					trait = avatar_earthbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescB.21
 	}
 	desc = { # Firebender
 		trigger = {
-			FROM = { trait = firebender }
+			FROM = {
+				OR = {
+					trait = firebender
+					trait = avatar_firebender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescC.21
 	}
 	desc = { # Waterbender
 		trigger = {
-			FROM = { trait = waterbender }
+			FROM = {
+				OR = {
+					trait = waterbender
+					trait = avatar_waterbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescD.21
 	}
 	desc = { # Airbender
 		trigger = {
-			FROM = { trait = airbender }
+			FROM = {
+				OR = {
+					trait = airbender
+					trait = avatar_airbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescE.21
 	}
@@ -1829,25 +1963,49 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			FROM = { trait = earthbender }
+			FROM = {
+				OR = {
+					trait = earthbender
+					trait = avatar_earthbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescB.22
 	}
 	desc = { # Firebender
 		trigger = {
-			FROM = { trait = firebender }
+			FROM = {
+				OR = {
+					trait = firebender
+					trait = avatar_firebender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescC.22
 	}
 	desc = { # Waterbender
 		trigger = {
-			FROM = { trait = waterbender }
+			FROM = {
+				OR = {
+					trait = waterbender
+					trait = avatar_waterbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescD.22
 	}
 	desc = { # Airbender
 		trigger = {
-			FROM = { trait = airbender }
+			FROM = {
+				OR = {
+					trait = airbender
+					trait = avatar_airbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescE.22
 	}
@@ -1893,25 +2051,49 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			FROM = { trait = earthbender }
+			FROM = {
+				OR = {
+					trait = earthbender
+					trait = avatar_earthbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescB.23
 	}
 	desc = { # Firebender
 		trigger = {
-			FROM = { trait = firebender }
+			FROM = {
+				OR = {
+					trait = firebender
+					trait = avatar_firebender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescC.23
 	}
 	desc = { # Waterbender
 		trigger = {
-			FROM = { trait = waterbender }
+			FROM = {
+				OR = {
+					trait = waterbender
+					trait = avatar_waterbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescD.23
 	}
 	desc = { # Airbender
 		trigger = {
-			FROM = { trait = airbender }
+			FROM = {
+				OR = {
+					trait = airbender
+					trait = avatar_airbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescE.23
 	}
@@ -1957,25 +2139,49 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			FROM = { trait = earthbender }
+			FROM = {
+				OR = {
+					trait = earthbender
+					trait = avatar_earthbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescB.24
 	}
 	desc = { # Firebender
 		trigger = {
-			FROM = { trait = firebender }
+			FROM = {
+				OR = {
+					trait = firebender
+					trait = avatar_firebender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescC.24
 	}
 	desc = { # Waterbender
 		trigger = {
-			FROM = { trait = waterbender }
+			FROM = {
+				OR = {
+					trait = waterbender
+					trait = avatar_waterbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescD.24
 	}
 	desc = { # Airbender
 		trigger = {
-			FROM = { trait = airbender }
+			FROM = {
+				OR = {
+					trait = airbender
+					trait = avatar_airbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescE.24
 	}
@@ -2021,25 +2227,49 @@ character_event = {
 	}
 	desc = { # Earthbender
 		trigger = {
-			FROM = { trait = earthbender }
+			FROM = {
+				OR = {
+					trait = earthbender
+					trait = avatar_earthbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescB.25
 	}
 	desc = { # Firebender
 		trigger = {
-			FROM = { trait = firebender }
+			FROM = {
+				OR = {
+					trait = firebender
+					trait = avatar_firebender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescC.25
 	}
 	desc = { # Waterbender
 		trigger = {
-			FROM = { trait = waterbender }
+			FROM = {
+				OR = {
+					trait = waterbender
+					trait = avatar_waterbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescD.25
 	}
 	desc = { # Airbender
 		trigger = {
-			FROM = { trait = airbender }
+			FROM = {
+				OR = {
+					trait = airbender
+					trait = avatar_airbender
+					trait = fully_realised_avatar
+				}
+			}
 		}
 		text = ADUELdescE.25
 	}
@@ -2088,7 +2318,11 @@ character_event = {
 	option = {
 		name = ADUELoptB.26
 		trigger = {
-			trait = airbender
+			OR = {
+				trait = airbender
+				trait = avatar_airbender
+				trait = fully_realised_avatar
+			}
 		}
 		tooltip_info = airbender
 		show_trait = airbender
