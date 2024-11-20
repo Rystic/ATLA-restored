@@ -286,100 +286,6 @@ character_event = { #Ruler Designer trait conversions
 	}
 }
 
-character_event = { #Earth Kingdom settings
-	id = ATLA.103
-	is_triggered_only = yes
-	hide_window = yes
-	only_independent = yes
-	trigger = {
-		is_save_game = no
-		OR = {
-			has_landed_title = e_earth_kingdom
-			AND = {
-				has_landed_title = k_earth_kingdom
-				e_earth_kingdom = { has_holder = no }
-			}
-			year >= 610
-		}
-	}
-	
-	immediate = {
-		any_independent_ruler = {
-			if = {
-				limit = {
-					NOR = {
-						culture = sandbender_culture
-						culture = southern_earth_culture
-						culture = barbarian_culture
-					}
-					capital_scope = {
-						OR = {
-							region = world_north_west_kingdom
-							region = world_north_east_earth_kingdom
-							region = world_central_desert
-							region = world_western_earth_kingdom
-							region = world_eastern_coast
-						}
-					}
-				}
-				suzerain = { remove_tributary = PREV }
-				ROOT = {
-					make_tributary = {
-						who = PREV
-						percentage = 0.16
-						tributary_type = earth_kingdom_province_tributary
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					capital_scope = {
-						OR = {
-							region = world_southern_earth_kingdom
-							region = world_earth_islands
-							region = world_eastern_coast
-							region = world_si_wong_fringe
-						}
-					}
-				}
-				suzerain = { remove_tributary = PREV }
-				ROOT = {
-					make_tributary = {
-						who = PREV
-						percentage = 0.12
-						tributary_type = earth_kingdom_territory_tributary
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					OR = {
-						culture = barbarian_culture
-						culture = sandbender_culture
-					}
-					capital_scope = {
-						OR = {
-							region = world_si_wong
-							region = world_western_earth_kingdom
-							region = world_north_east_earth_kingdom
-						}
-					}
-				}
-				suzerain = {
-					remove_tributary = PREV
-				}
-				ROOT = {
-					make_tributary = {
-						who = PREV
-						percentage = 0.1
-						tributary_type = earth_kingdom_outpost_tributary
-					}
-				}
-			}
-		}
-	}
-}
-
 character_event = { #Asked to convert by special mod decision
 	id = ATLA.104
 	desc = EVTDESCATLA.104
@@ -462,24 +368,6 @@ character_event = { #Check Ambition Status
 			id = ATLA.106
 			days = 14
 		}
-	}
-}
-
-character_event = { #Earth King setup for RD characters
-	id = ATLA.11100
-	is_triggered_only = yes
-	hide_window = yes
-	only_independent = yes
-	ai = no
-	trigger = {
-		is_save_game = no
-		OR = {
-			has_landed_title = k_earth_kingdom
-			has_landed_title = e_earth_kingdom
-		}
-	}
-	immediate = {
-		character_event = { id = ATLA.103 }
 	}
 }
 
