@@ -15,7 +15,7 @@ character_event = {
 	immediate = {
 		set_global_flag = avatar_interregnum
 		export_to_variable = {
-			which = avatar_death_year
+			which = global_avatar_death_year
 			value = year
 		}
 		any_player = { narrative_event = { id = NAE.005 days = 7 } } #Avatar dead notification event
@@ -44,17 +44,13 @@ character_event = {
 					name = avatar_system
 					value = canon_avatars
 				}
-				OR = {
-					has_character_flag = is_kyoshi
-					has_character_flag = is_roku
-					has_character_flag = is_aang
-				}
 			}
 			trigger_switch = { #Spawn correct canon avatar depending on who died in the right place
 				on_trigger = has_character_flag
 				is_kyoshi = { c_fire_palace = { owner = { character_event = { id = NAE.010 years = 3 } } } }
 				is_roku = { c_southern_air_temple = { owner = { character_event = { id = NAE.012 years = 3 } } } }
 				is_aang = { c_southern_water_tribe = { owner = { character_event = { id = NAE.014 days = 14 } } } }
+				fallback = { random_player = { character_event = { id = NAE.004 years = 16 } } } #Avatar is born to peasantry
 			}
 		}
 		else = {
@@ -74,7 +70,10 @@ character_event = { #Avatar nobility check
 	is_triggered_only = yes #Fired (quite rarely) on_adolescence
 
 	trigger = {
-		year_of_birth == avatar_death_year
+		is_variable_equal = {
+			which = global_avatar_death_year
+			value = year_of_birth
+		}
 		is_top_tier_bender_trigger = no
 		has_negative_congenital_trigger = no
 		OR = {
@@ -226,21 +225,7 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 					preferred_limit = { religion_group = water_religions }
 					preferred_limit = { culture = republic_city	}
 					preferred_limit = { culture = pirate_culture }
-					create_character = {
-						age = 16
-						female = 50 #50% chance of being a girl
-						attributes = {
-							diplomacy = 8
-							martial = 6
-							stewardship = 6
-							intrigue = 8
-							learning = 10
-						}
-						dynasty = actually_culture
-						random_traits = yes
-						add_trait = avatar
-						add_trait = avatar_waterbender
-					}
+					province_event = { id = NAE.0041 }
 				}
 			}
 			avatar_earth = {
@@ -255,21 +240,7 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 					preferred_limit = { religion_group = earth_religions }
 					preferred_limit = { culture = republic_city }
 					preferred_limit = { culture = pirate_culture }
-					create_character = {
-						age = 16
-						female = 50 #50% chance of being a girl
-						attributes = {
-							diplomacy = 6
-							martial = 6
-							stewardship = 10
-							intrigue = 6
-							learning = 10
-						}
-						dynasty = actually_culture
-						random_traits = yes
-						add_trait = avatar
-						add_trait = avatar_earthbender
-					}
+					province_event = { id = NAE.0041 }
 				}
 			}
 			avatar_fire = {
@@ -284,21 +255,7 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 					preferred_limit = { religion_group = fire_religions }
 					preferred_limit = { culture = republic_city }
 					preferred_limit = { culture = pirate_culture }
-					create_character = {
-						age = 16
-						female = 50 #50% chance of being a girl
-						attributes = {
-							diplomacy = 6
-							martial = 10
-							stewardship = 6
-							intrigue = 6
-							learning = 10
-						}
-						dynasty = actually_culture
-						random_traits = yes
-						add_trait = avatar
-						add_trait = avatar_firebender
-					}
+					province_event = { id = NAE.0041 }
 				}
 			}
 			avatar_air = {
@@ -311,69 +268,7 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 					}
 					preferred_limit = { culture_group = air_nomad_cultures }
 					preferred_limit = { religion_group = air_religions }
-					if = {
-						limit = {
-							OR = {
-								culture = eastern_air_nomad
-								culture = western_air_nomad
-							}
-						}
-						create_character = {
-							age = 16
-							female = yes
-							attributes = {
-								diplomacy = 6
-								martial = 10
-								stewardship = 6
-								intrigue = 6
-								learning = 10
-							}
-							dynasty = actually_culture
-							random_traits = yes
-							add_trait = avatar
-							add_trait = avatar_airbender
-						}
-					}
-					else_if = {
-						limit = {
-							OR = {
-								culture = southern_air_nomad
-								culture = northern_air_nomad
-							}
-						}
-						create_character = {
-							age = 16
-							female = no
-							attributes = {
-								diplomacy = 6
-								martial = 10
-								stewardship = 6
-								intrigue = 6
-								learning = 10
-							}
-							dynasty = actually_culture
-							random_traits = yes
-							add_trait = avatar
-							add_trait = avatar_airbender
-						}
-					}
-					else = {
-						create_character = {
-							age = 16
-							female = 50
-							attributes = {
-								diplomacy = 6
-								martial = 4
-								stewardship = 6
-								intrigue = 6
-								learning = 15
-							}
-							dynasty = actually_culture
-							random_traits = yes
-							add_trait = avatar
-							add_trait = avatar_airbender
-						}
-					}
+					province_event = { id = NAE.0041 }
 				}
 			}
 		}
@@ -385,6 +280,116 @@ character_event = { #Spawn peasant avatar - always prefer their own religion/cul
 			save_persistent_event_target = { name = the_avatar scope = THIS }
 			narrative_event = { id = NAE.006 days = 3 }
 
+			trigger_switch = {
+				on_trigger = culture
+				eastern_air_nomad = { set_gender = female }
+				western_air_nomad = { set_gender = female }
+				southern_air_nomad = { set_gender = male }
+				northern_air_nomad = { set_gender = male }
+			}
+			
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							trait = avatar_waterbender
+							culture_group = water_tribe_cultures
+							religion_group = water_religions
+						}
+						AND = {
+							trait = avatar_earthbender
+							culture_group = earth_kingdom_cultures
+							religion_group = earth_religions
+						}
+						AND = {
+							trait = avatar_firebender
+							culture_group = fire_nation_cultures
+							religion_group = fire_religions
+						}
+						AND = {
+							trait = avatar_airbender
+							culture_group = air_nomad_cultures
+							religion_group = air_religions
+						}
+					}
+				}
+				add_trait = powerful_bender
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = {
+							trait = avatar_waterbender
+							NOR = {
+								culture_group = water_tribe_cultures
+								religion_group = water_religions
+							}
+						}
+						AND = {
+							trait = avatar_earthbender
+							NOR  = {
+								culture_group = earth_kingdom_cultures
+								religion_group = earth_religions
+							}
+						}
+						AND = {
+							trait = avatar_firebender
+							NOR = {
+								culture_group = fire_nation_cultures
+								religion_group = fire_religions
+							}
+						}
+						AND = {
+							trait = avatar_airbender
+							NOR = {
+								culture_group = air_nomad_cultures
+								religion_group = air_religions
+							}
+						}
+					}
+				}
+				add_trait = incompetent_bender
+			}
+			else = { add_trait = competent_bender }
+		}
+	}
+}
+
+province_event = {
+	id = NAE.0041
+	hide_window = yes
+	
+	immediate = {
+		create_character = {
+			age = 16
+			female = 50 #50% chance of being a girl
+			attributes = {
+				diplomacy = 8
+				martial = 6
+				stewardship = 6
+				intrigue = 8
+				learning = 10
+			}
+			dynasty = actually_culture
+			random_traits = yes
+			add_trait = avatar
+		}
+		new_character = {
+			set_character_flag = is_avatar
+			set_character_flag = no_court_invites
+			remove_all_negative_congenital_traits_effect = yes
+			remove_lifestyle_trait_effect = yes
+			save_persistent_event_target = { name = the_avatar scope = THIS }
+			narrative_event = { id = NAE.006 days = 3 }
+			
+			trigger_switch = {
+				on_trigger = has_global_flag
+				avatar_water = { add_trait = avatar_waterbender }
+				avatar_earth = { add_trait = avatar_earthbender }
+				avatar_fire = { add_trait = avatar_firebender }
+				avatar_air = { add_trait = avatar_airbender }
+			}
+			
 			if = {
 				limit = {
 					OR = {
@@ -765,6 +770,7 @@ character_event = { #Aang is born
 			name = "Aang"
 			dynasty = 1504
 			religion = air_spirituality
+			race = customPortrait_aang
 			culture = southern_air_nomad
 			random_traits = no
 			female = no
