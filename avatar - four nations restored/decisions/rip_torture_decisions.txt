@@ -876,7 +876,7 @@ targetted_decisions = {
 				reverse_opinion = { who = FROM value = 40 }
 			}
 			modifier = {
-				factor = 0
+				factor = 5
 				FROM = { trait = kind }
 			}
 			modifier = {
@@ -894,6 +894,201 @@ targetted_decisions = {
 						is_primary_heir = yes
 					}
 				}
+			}
+		}
+	}
+	
+	execute_eat = {
+		only_playable = yes
+		filter = court
+		ai_target_filter = court
+		ai_check_interval = 12
+		
+		from_potential = {
+			has_dlc = "Reapers"
+			is_playable = yes
+			is_adult = yes
+			prisoner = no
+			NOT = { trait = incapable }
+			OR = {
+				has_character_modifier = cannibal
+				trait = cannibal_trait
+				graphical_culture = beargfx
+				graphical_culture = dragongfx
+			}
+			OR = {
+				trait = possessed
+				trait = lunatic
+				graphical_culture = beargfx
+				graphical_culture = dragongfx
+			}
+		}
+
+		potential = {
+			host = { character = FROM }
+			prisoner = yes
+			age = 12
+		}
+		
+		allow = {
+			NOT = { diplomatic_immunity = yes }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+		
+		effect = {
+			hidden_tooltip = {
+				any_dynasty_member = {
+					limit = {
+						is_offmap_ruler = no
+						is_close_relative = ROOT
+						NOT = { character = FROM }
+					}
+					character_event = { id = RIP.11511 days = 1 }
+				}
+				FROM = {
+					add_blood_splatter_effect = yes
+					random_list = {
+						50 = { # Nothing happens
+							modifier = {
+								factor = 0
+								OR = {
+									ROOT = { immortal = yes }
+									AND = {
+										ROOT = { controls_religion = yes }
+										FROM = { NOT = { religion_group = ROOT } }
+									}
+								}
+							}
+						}
+						40 = { # Get sick
+							modifier = {
+								factor = 0
+								OR = {
+									immortal = yes
+									has_character_flag = demon_child
+									has_character_flag = is_avatar
+									ROOT = { immortal = yes }
+									AND = {
+										ROOT = { controls_religion = yes }
+										FROM = { NOT = { religion_group = ROOT } }
+									}
+								}
+							}
+							random_list = {
+								50 = { # Food Poisoning
+									if = {
+										limit = {
+											NOR = {
+												num_of_symptoms = 1
+												is_ill = yes
+												has_character_flag = developing_illness
+												has_character_flag = disease_not_serious
+											}
+										}
+										set_character_flag = got_food_poisoning
+										set_character_flag = developing_illness
+										character_event = { id = RIP.5023 days = 5 }
+									}
+								}
+								25 = { # Diarrhea - Not Serious
+									if = {
+										limit = {
+											NOR = {
+												num_of_symptoms = 1
+												is_ill = yes
+												has_character_flag = developing_illness
+												has_character_flag = disease_not_serious
+											}
+										}
+										set_character_flag = disease_not_serious
+										character_event = { id = RIP.5002 days = 5 }
+										character_event = { id = RIP.11004 days = 10 random = 50 }
+									}
+								}
+								25 = { # Vomiting - Not Serious
+									if = {
+										limit = {
+											NOR = {
+												num_of_symptoms = 1
+												is_ill = yes
+												has_character_flag = developing_illness
+												has_character_flag = disease_not_serious
+											}
+										}
+										set_character_flag = disease_not_serious
+										character_event = { id = RIP.5003 days = 5 }
+										character_event = { id = RIP.11005 days = 10 random = 50 }
+									}
+								}
+							}
+						}
+						10 = { # Gain power!
+							modifier = {
+								factor = 0
+								has_game_rule = {
+									name = supernatural_events
+									value = off
+								}
+							}
+							
+							character_event = { id = RIP.11510 }
+						}
+					}
+					if = {
+						limit = {
+							has_nickname = no
+						}
+						random_list = {
+							20 = { # Get nickname The Cannibal
+								give_nickname = nick_the_cannibal
+							}
+							15 = { # Get nickname The Dragon
+								give_nickname = nick_the_dragon
+							}
+							15 = { # Get nickname The Abomination
+								give_nickname = nick_the_abomination
+							}
+							10 = { # Get nickname The Monster
+								give_nickname = nick_the_monster
+							}
+							40 = { } # No nickname
+						}
+					}
+				}
+			}
+			death = {
+				death_reason = death_execution_eaten
+				killer = FROM
+			}
+			save_event_target_as = kinslayer_target
+			FROM = {
+				if = {
+					limit = {
+						NOR = {
+							trait = lunatic
+							graphical_culture = beargfx
+							graphical_culture = dragongfx
+						}
+					}
+					add_trait = lunatic
+				}
+				if = {
+					limit = {
+						NOR = {
+							has_character_modifier = crazy_cannibal
+							graphical_culture = beargfx
+							graphical_culture = dragongfx
+						}
+					}
+					add_character_modifier = {
+						name = crazy_cannibal
+						duration = -1
+					}
+				}
+				add_kinslayer_trait_effect = yes
 			}
 		}
 	}
